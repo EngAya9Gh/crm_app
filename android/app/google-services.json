@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "102540138446",
+    "project_id": "crmapp-8f9de",
+    "storage_bucket": "crmapp-8f9de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102540138446:android:bc175820eaf396efe5fd9f",
+        "android_client_info": {
+          "package_name": "com.mpluse.crmsmart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102540138446-3t54rlpe28ablktbgsic8b2rkqjhkdtr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPc1bZGUTKYilLcLMJbxd8I4RInrPo8AQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102540138446-3t54rlpe28ablktbgsic8b2rkqjhkdtr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
