@@ -27,15 +27,17 @@ class ticketdetail extends StatelessWidget {
         children: [
 
            cardRow(title: 'قام بتحويل التذكرة ',
-              value: getnameshort( namefrom)),
+              value: getnameshort( namefrom)
+           ,isrow: false,
+           ),
            cardRow(title: 'الشخص المحول له ',
-              value: getnameshort( nameto)),
+              value: getnameshort( nameto),isrow: false,),
 
            cardRow(title: 'تاريخ تحويل التذكرة ',
               value:  date.toString()) ,
            cardRow(title: ' سبب التحويل ',
-              value:  resoan) ,
-           Divider(thickness: 1,color: Colors.grey,),
+              value:  resoan,isrow: false,) ,
+            Divider(thickness: 1,color: Colors.grey,),
           // Row(
           //
           //   children: [
@@ -225,30 +227,33 @@ class ticketdetail extends StatelessWidget {
                 ):Container(),
 
                 ticketModel.dateClose!=null?
-                cardRow(title: 'قام بإغلاق التذكرة ',value: getnameshort( ticketModel.nameuserclose.toString())):Container(),
+                cardRow(isrow: false,title: 'قام بإغلاق التذكرة ',value: getnameshort( ticketModel.nameuserclose.toString())):Container(),
 
                 ticketModel.dateClose!=null?
-                cardRow(title: 'تاريخ إغلاق التذكرة ',value: ticketModel.dateClose.toString()):Container(),
+                cardRow(isrow: false,title: 'تاريخ إغلاق التذكرة ',value: ticketModel.dateClose.toString()):Container(),
 
                 ticketModel.dateClose!=null?
-                cardRow(title: '  ملاحظات إغلاق التذكرة ',value: ticketModel.notesTicket.toString()):Container(),
-
+                cardRow(isrow: false,title: '  ملاحظات إغلاق التذكرة ',value: ticketModel.notesTicket.toString()):Container(),
+                Divider(thickness: 1,color: Colors.grey,),
                 for(int i=0;i<ticketModel.transferticket!.length;i++)
                _tranferall(ticketModel.transferticket![i]!.nameuserto.toString(),
                    ticketModel.transferticket![i]!.nameuserfrom.toString(),
                    ticketModel.transferticket![i]!.date_assigntr.toString(),
                    ticketModel.transferticket![i]!.resoantransfer_ticket.toString()
                ),
-               ticketModel.dateRecive!=null?
-                cardRow(title: 'قام باستلام التذكرة ',value: getnameshort( ticketModel.nameuserrecive.toString())):Container(),
-                ticketModel.dateRecive!=null?
-                cardRow(title: 'تاريخ استلام التذكرة ',value:  ticketModel.dateRecive.toString()):Container(),
 
-                cardRow(title: 'قام بفتح التذكرة ',value: getnameshort( ticketModel.nameuseropen.toString())),
-                cardRow(title: 'تاريخ فتح التذكرة ',value: ticketModel.dateOpen.toString()),
-                cardRow(title: 'نوع التذكرة',value:  ticketModel.typeProblem.toString()),
+                ticketModel.dateRecive!=null?
+                cardRow(isrow: false,title: 'قام باستلام التذكرة ',value: getnameshort( ticketModel.nameuserrecive.toString())):Container(),
+                ticketModel.dateRecive!=null?
+                cardRow(isrow: false,title: 'تاريخ استلام التذكرة ',value:  ticketModel.dateRecive.toString()):Container(),
+
+                Divider(thickness: 1,color: Colors.grey,),
+                cardRow(isrow: false,title: 'قام بفتح التذكرة ',value: getnameshort( ticketModel.nameuseropen.toString())),
+                cardRow(isrow: false,title: 'تاريخ فتح التذكرة ',value: ticketModel.dateOpen.toString()),
+                Divider(thickness: 1,color: Colors.grey,),
+                cardRow(isrow: false,title: 'نوع التذكرة',value:  ticketModel.typeProblem.toString()),
                 //cardRow(title: 'وصف المشكلة',value: widget.ticketModel.detailsProblem.toString(),isExpanded: true,),
-                cardRow(title: 'تفاصيل التذكرة',value: ticketModel.detailsProblem.toString(),isExpanded: true,),
+                cardRow(isrow: false,title: 'تفاصيل التذكرة',value: ticketModel.detailsProblem.toString(),isExpanded: true,),
                 SizedBox(height: 10,),
               ],
             ),

@@ -298,7 +298,9 @@ class invoice_vm extends ChangeNotifier{
           ,{'all':'all'});
     }
     else{
-
+      String params='';
+      for(int i=0;i<listparam.length;i++)
+        params+='&maincity[]=${listparam[i]}';
     idexist= listparam.indexWhere((element) => element.id_maincity=='0');
      print(idexist);
      print(state);
@@ -321,7 +323,7 @@ class invoice_vm extends ChangeNotifier{
       case 'allmaincity':
         listInvoicesAccept = await Invoice_Service()
             .getinvoicemaincity(
-            'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&&state=$state'
+            'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=$state'
        ,{'allmaincity':'allmaincity'}
         );
         break;
@@ -331,7 +333,7 @@ class invoice_vm extends ChangeNotifier{
         for(int i=0;i<listparam.length;i++)
           listval.add(int.parse( listparam[i].id_maincity));
         listInvoicesAccept = await Invoice_Service()
-            .getinvoicemaincity('client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&&maincity_fks=$listval'
+            .getinvoicemaincity('client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}$params'
         ,{'allstate':'allstate'}
         );
         break;
@@ -339,7 +341,7 @@ class invoice_vm extends ChangeNotifier{
         for(int i=0;i<listparam.length;i++)
           listval.add(int.parse( listparam[i].id_maincity));
         listInvoicesAccept = await Invoice_Service()
-            .getinvoicemaincity('client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&&state=$state&&maincity_fks=$listval'
+            .getinvoicemaincity('client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=$state$params'
         ,{'allmix':'allmix'});
         break;
       case 'all':

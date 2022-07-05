@@ -138,6 +138,7 @@ class client_vm extends ChangeNotifier {
         {
           for(int i=0;i<listparam.length;i++)
             listval.add(int.parse( listparam[i].id_maincity));
+
         _list = await ClientService()
             .getAllClientsupport(usercurrent!.fkCountry.toString(), listval);
         }

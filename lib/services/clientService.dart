@@ -63,11 +63,17 @@ class ClientService{
   }
   Future<List<ClientModel>> getAllClientsupport(String? fkcountry,List<int>? listparam) async {
     List<dynamic> data =[];
-    if(listparam!=null)
-    data=await Api()
-        .get(url:url+ 'client/getclientfilteraccept.php?fk_country=$fkcountry&&maincity=$listparam');
-
-   else data=await Api()
+    if(listparam!=null) {
+      String params='';
+      for(int i=0;i<listparam.length;i++)
+        params+='&maincity[]=${listparam[i]}';
+      print('params');
+      print(params);
+      data = await Api()
+          .get(url: url +
+          'client/getclientfilteraccept.php?fk_country=$fkcountry$params');
+    }
+    else data=await Api()
         .get(url:url+ 'client/getclientfilteraccept.php?fk_country=$fkcountry');
 
     List<ClientModel> prodlist = [];

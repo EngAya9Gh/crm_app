@@ -24,4 +24,15 @@ class selected_button_provider extends ChangeNotifier{
     notifyListeners();
   }
 
+  int isbarsales= 0;
+  void selectValuebarsales(val){
+    isbarsales=val;
+    notifyListeners();
+  }
+  int isbarsalestype= 0;
+  void selectValuebarsalestype(val){
+    isbarsalestype=val;
+    notifyListeners();
+  }
+
 }

@@ -110,6 +110,8 @@ class _privilge_pageState extends State<privilge_page> {
 
                case 'notify':
                   return 'الإشعارات';
+               case 'report':
+                  return 'التقارير';
 
 
               }
