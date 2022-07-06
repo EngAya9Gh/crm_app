@@ -8,7 +8,9 @@ import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/rowtitle.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
+import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:group_button/group_button.dart';
@@ -17,36 +19,44 @@ import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
 
-class BarChartAPI extends StatefulWidget {
-  const BarChartAPI({Key? key}) : super(key: key);
+class salesproduct extends StatefulWidget {
+  const salesproduct({Key? key}) : super(key: key);
 
   @override
-  State<BarChartAPI> createState() => _BarChartAPIState();
+  State<salesproduct> createState() => _salesproductState();
 }
-
-class _BarChartAPIState extends State<BarChartAPI> {
+class _salesproductState extends State<salesproduct> {
   static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
 
   List<BarModel> salesresult = [];
   List<BarModel> salestempdataclientresult = [];
   List<DataRow> rowsdata=[];
-
+  late String iduser ='0';
+  late String idregoin='0';
   bool loading = true;
   String type = 'userSum';
   String typeproduct = 'الكل';
   double totalval=0;
   @override
   void initState() {
+
     super.initState();
-    getData();
+    // WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    // if(  Provider.of<privilge_vm>(context,listen: false)
+    //       .checkprivlge('89')==true)
+    //    type='userSum';
+    // if(  Provider.of<privilge_vm>(context,listen: false)
+    //       .checkprivlge('90')==true)
+    //    type='userSum';
+    // if(  Provider.of<privilge_vm>(context,listen: false)
+    //       .checkprivlge('89')==true)
+    //    type='userSum';
+    // });
+      getData();
   }
 
   Future<void> getData() async {
-    // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1)
-    // &&_selectedDate!=DateTime(1, 1, 1)&&_selectedDatemonth!=DateTime(1, 1, 1)
-    // )
 
-    // if(_se)
     setState(() {
       loading=true;
     });
@@ -55,102 +65,105 @@ class _BarChartAPIState extends State<BarChartAPI> {
     UserModel usermodel=Provider.of<user_vm_provider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
-    String iduser = usermodel.idUser.toString();
-    String idregoin = usermodel.fkRegoin.toString();
+    if(iduser=='0')
+    iduser=usermodel.idUser.toString();
+
+    if(idregoin=='0')
+    idregoin=usermodel.fkRegoin.toString();
 
     String paramprivilge='';
     if(Provider.of<privilge_vm>(context,listen: false)
-        .checkprivlge('80')==true )
-    paramprivilge='&id_user=${iduser}';
-    else {
-      if(Provider.of<privilge_vm>(context,listen: false)
-          .checkprivlge('81')==true )
-        paramprivilge='&id_regoin=${idregoin}';
-    }
-    if(Provider.of<privilge_vm>(context,listen: false).checkprivlge('82')==true ||
-        Provider.of<privilge_vm>(context,listen: false)
-            .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
-        .checkprivlge('81')==true){
-    var data;
-    String params='';
-    if(typeproduct=='أجهزة') params='&product=0';
-    if(typeproduct=='برامج') params='&product=1';
-    switch (type) {
-      case "userSum":
-        data = await Api().post(
-            url: url + "reports/reportsales.php?fk_country=$fkcountry$params$paramprivilge",
-            body: {'type': type});
-        break;
-      case "dateyear":
-        data = await Api().post(
-            url: url +
-                "reports/reportsales.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge",
-            body: {'type': type});
-        break;
-      case "datemonth":
-        data = await Api().post(
-            url: url +
-                "reports/reportsales.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge",
-            body: {'type': type});
-        break;
-      case "datedays":
-        data = await Api().post(
-            url: url +
-                "reports/reportsales.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge",
-            body: {'type': type});
-        break;
+        .checkprivlge('87')==true )
+      paramprivilge='&id_user=${iduser}';
+    if(Provider.of<privilge_vm>(context,listen: false)
+        .checkprivlge('90')==true )
+      paramprivilge='&id_regoin=${idregoin}';
+    if(Provider.of<privilge_vm>(context,listen: false)
+        .checkprivlge('89')==true ) {
+      if(iduser==''&&idregoin!='')
+      paramprivilge='&id_regoin=${idregoin}';
+
+      if(iduser!=''&&idregoin=='')
+        paramprivilge='&id_user=${iduser}';
     }
 
-    //userSum
-    //List<BarModel> tempdata = genderModelFromJson(data);
-    List<BarModel> tempdataclient = [];
-    totalval=0;
-    for (int i = 0; i < data.length; i++) {
-      tempdata.add(BarModel.fromJson(data[i]));
-      print(tempdata[i].y);
-      totalval+=tempdata[i].y;
-      rowsdata.add(
-          DataRow(
-            cells: <DataCell>[
-              DataCell( SizedBox(
-                width: 15.0,
-                height: 15.0,
-                child:  DecoratedBox(
-                  decoration:  BoxDecoration(
-                      color: tempdata[i].colorval
+    if(Provider.of<privilge_vm>(context,listen: false)
+        .checkprivlge('87')==true ||
+       Provider.of<privilge_vm>(context,listen: false)
+        .checkprivlge('89')==true ||
+       Provider.of<privilge_vm>(context,listen: false)
+        .checkprivlge('90')==true ) {
+
+      var data;
+      switch (type) {
+        case "userSum":
+          data = await Api().post(
+              url: url + "reports/sales_product.php?fk_country=$fkcountry$paramprivilge",
+              body: {'type': type});
+          break;
+        case "dateyear":
+          data = await Api().post(
+              url: url +
+                  "reports/sales_product.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$paramprivilge",
+              body: {'type': type});
+          break;
+        case "datemonth":
+          data = await Api().post(
+              url: url +
+                  "reports/sales_product.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$paramprivilge",
+              body: {'type': type});
+          break;
+        case "datedays":
+          data = await Api().post(
+              url: url +
+                  "reports/sales_product.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramprivilge",
+              body: {'type': type});
+          break;
+      }
+      List<BarModel> tempdataclient = [];
+      totalval=0;
+      for (int i = 0; i < data.length; i++) {
+        tempdata.add(BarModel.fromJson(data[i]));
+        print(tempdata[i].y);
+        totalval+=tempdata[i].y;
+        rowsdata.add(
+            DataRow(
+              cells: <DataCell>[
+                DataCell( SizedBox(
+                  width: 15.0,
+                  height: 15.0,
+                  child:  DecoratedBox(
+                    decoration:  BoxDecoration(
+                        color: tempdata[i].colorval
+                    ),
                   ),
-                ),
-              )),
-              //Text('tempdata[i].colorval')),
-              DataCell( TextUtilis(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: FontWeight.normal,
-                textstring:getnameshort(tempdata[i].x),
-                underline: TextDecoration.none,
-              )),
-              DataCell( TextUtilis(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: FontWeight.normal,
-                textstring: tempdata[i].y.toString(),
-                underline: TextDecoration.none,
-              )),
-              DataCell( TextUtilis(
-                color: Colors.black,
-                fontSize: 25,
-                fontWeight: FontWeight.normal,
-                textstring: tempdata[i].countclient.toString(),
-                underline: TextDecoration.none,
-              )),
-            ],
-          ));
-      // tempdataclient.add(BarModel.fromJson(data[i]));
-    }}
-    // for(int i=0;i<salesresult.length;i++)
+                )),
+                DataCell( TextUtilis(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: FontWeight.normal,
+                  textstring:getnamelong(tempdata[i].x),
+                  underline: TextDecoration.none,
+                )),
+                DataCell( TextUtilis(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: FontWeight.normal,
+                  textstring: tempdata[i].y.toString(),
+                  underline: TextDecoration.none,
+                )),
+                DataCell( TextUtilis(
+                  color: Colors.black,
+                  fontSize: 25,
+                  fontWeight: FontWeight.normal,
+                  textstring: tempdata[i].countclient.toString(),
+                  underline: TextDecoration.none,
+                )),
+              ],
+            ));
+      }}
     setState(() {
       salesresult = tempdata;
-      // salestempdataclientresult = tempdataclient;
       loading = false;
     });
   }
@@ -170,7 +183,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
         //     charts.MaterialPalette.teal.shadeDefault,
         colorFn: (BarModel bar,_) =>charts.ColorUtil.fromDartColor(bar.colorval),
         // charts.MaterialPalette.indigo.shadeDefault,
-        domainFn: (BarModel genderModel, _) => genderModel.x,
+        domainFn: (BarModel genderModel, _) =>getnameshort(genderModel.x),
         measureFn: (BarModel genderModel,__) =>  genderModel.y,
         // measureFormatterFn: (BarModel genderModel,_) => ,
         labelAccessorFn:  (BarModel row, __) => '${row.y}',
@@ -202,7 +215,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("تقارير مبيعات الموظفين"),
+        title: Text("تقارير مبيعات البرامج"),
       ),
       body:
       SafeArea(
@@ -255,47 +268,103 @@ class _BarChartAPIState extends State<BarChartAPI> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Consumer<selected_button_provider>(
-                          builder: (context, selectedProvider, child) {
-                            return GroupButton(
-                                controller: GroupButtonController(
-                                  selectedIndex: selectedProvider.isbarsalestype,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Provider.of<privilge_vm>(context,listen: true)
+                        .checkprivlge('89')==true?
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0,right: 8),
+                        child: Consumer<regoin_vm>(
+                          builder: (context, cart, child){
+                            return
+                              DropdownButton(
+                                isExpanded: true,
+                                hint: Text("الفرع"),
+                                items: cart.listregoinfilter.map((level_one) {
+                                  return DropdownMenuItem(
+
+                                    child: Text(level_one.name_regoin), //label of item
+                                    value: level_one.id_regoin, //value of item
+                                  );
+                                }).toList(),
+                                value:cart.selectedValueLevel,
+                                onChanged:(value) {
+                                  //  setState(() {
+                                  cart.changeVal(value.toString());
+                                   idregoin=value.toString();
+                                   iduser='';
+                                   getData();
+                                },
+                              );
+                          },
+                        ),
+                      ),
+                    )
+                        :Container(),
+                    Expanded(
+                      child:
+                      Provider.of<privilge_vm>(context,listen: true)
+                          .checkprivlge('89')==true||
+                          Provider.of<privilge_vm>(context,listen: true)
+                              .checkprivlge('90')==true ? //user
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0,right: 8,),
+                        child:
+                        Consumer<user_vm_provider>(
+                          builder: (context, cart, child){
+                            return  DropdownSearch<UserModel>(
+
+                              mode: Mode.DIALOG,
+                              // label: " الموظف ",
+                              //hint: 'الموظف',
+                              //onFind: (String filter) => cart.getfilteruser(filter),
+                              filterFn: (user, filter) => user!.getfilteruser(filter!),
+                              //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+                              // itemAsString: (UserModel u) => u.userAsStringByName(),
+                              items: cart.userall,
+                              itemAsString: (u) => u!.userAsString(),
+                              onChanged: (data) {
+                                iduser=data!.idUser!;
+                                idregoin='';
+                                cart.changevalueuser(data);
+                                getData();
+                                //filtershow();
+                              } ,
+                              selectedItem: cart.selecteduser,
+                              showSearchBox: true,
+                              dropdownSearchDecoration:
+                              InputDecoration(
+                                //filled: true,
+                                isCollapsed: true,
+                                hintText: 'الموظف',
+                                alignLabelWithHint: true,
+                                fillColor:  Colors.grey.withOpacity(0.2),
+                                //labelText: "choose a user",
+                                contentPadding: EdgeInsets.all(0),
+                                //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                // focusedBorder: OutlineInputBorder(
+                                //     borderRadius: BorderRadius.circular(10),
+                                //     borderSide: const BorderSide(color: Colors.white)),
+                                border:
+                                UnderlineInputBorder(
+                                    borderSide: const BorderSide(  color: Colors.grey)
                                 ),
-                                options: GroupButtonOptions(
-                                    buttonWidth: 110,
-                                    borderRadius: BorderRadius.circular(10)),
-                                buttons: ['الكل', 'أجهزة', 'برامج'],
-                                onSelected: (index, isselected) {
+                                // OutlineInputBorder(
+                                //     borderRadius: BorderRadius.circular(10),
+                                //     borderSide: const BorderSide( color: Colors.white)),
+                              ),
+                              // InputDecoration(border: InputBorder.none),
 
-                                  print(index);
-                                  switch(index){
-                                    case 0:
-                                      typeproduct = 'الكل';
-                                      break;
-                                    case 1:
-                                      typeproduct = 'أجهزة';
-                                      break;
-                                    case 2:
-                                      typeproduct = 'برامج';
-                                      break;
+                            );
 
-                                  }
-                                  if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1)
-                                      ||_selectedDate!=DateTime(1, 1, 1)||_selectedDatemonth!=DateTime(1, 1, 1)
-                                  )
-                                    getData();
-                                  //setState(() {
-                                  //typeinstallController=index.toString();
-                                  selectedProvider.selectValuebarsalestype(index);
-                                  //  });
-                                });
-                          }),
-                    ],
-                  ),
+                          },
+                        ),
+                      ):Container(),
+                    ),
+                  ],
                 ),
                 Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 0 ?
@@ -528,67 +597,67 @@ class _BarChartAPIState extends State<BarChartAPI> {
                                 ],
                               ),
                               Container(
-                                height: 300, //BarChart
-                                child: charts.BarChart(
-                                  _createSampleData(),
-                                  // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                                  barGroupingType: charts.BarGroupingType.grouped,
-                                  animate: true,
-                                  barRendererDecorator: (
-                                      charts.BarLabelDecorator<String>(
-                                        insideLabelStyleSpec: fl.TextStyleSpec(
-                                            fontSize: 12, color: fl.Color.black),
-                                        labelPosition: fl.BarLabelPosition.inside,
-                                        labelAnchor:fl. BarLabelAnchor.middle,
-                                      )),
-                                  // vertical: false,
-                                  // barGroupingType: charts.BarGroupingType.grouped,
-                                  // defaultRenderer: charts.BarRendererConfig(
-                                  //   groupingType: charts.BarGroupingType.grouped,
-                                  //   strokeWidthPx: 1.0,
-                                  // ),
-                                  domainAxis: charts.OrdinalAxisSpec(
-                                    renderSpec: charts.GridlineRendererSpec(),
-                                  ),
-                                  // Set a bar label decorator.
-                                  // Example configuring different styles for inside/outside:
+                               height: 300, //BarChart
+                               child: charts.BarChart(
+                                 _createSampleData(),
+                                 // barRendererDecorator: new charts.BarLabelDecorator<String>(),
+                                 barGroupingType: charts.BarGroupingType.grouped,
+                                 animate: true,
+                                 // barRendererDecorator: (
+                                 //     charts.BarLabelDecorator<String>(
+                                 //       insideLabelStyleSpec: fl.TextStyleSpec(
+                                 //           fontSize: 12, color: fl.Color.black),
+                                 //       labelPosition: fl.BarLabelPosition.inside,
+                                 //       labelAnchor:fl. BarLabelAnchor.middle,
+                                 //     )),
+                                 // vertical: false,
+                                 // barGroupingType: charts.BarGroupingType.grouped,
+                                 // defaultRenderer: charts.BarRendererConfig(
+                                 //   groupingType: charts.BarGroupingType.grouped,
+                                 //   strokeWidthPx: 1.0,
+                                 // ),
+                                 domainAxis: charts.OrdinalAxisSpec(
+                                   renderSpec: charts.GridlineRendererSpec(),
+                                 ),
+                                 // Set a bar label decorator.
+                                 // Example configuring different styles for inside/outside:
 
-                                  // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                                  // // Hide domain axis.
-                                  // domainAxis:
-                                  // new charts.OrdinalAxisSpec(renderSpec: new charts.NoneRenderSpec()),
+                                 // barRendererDecorator: new charts.BarLabelDecorator<String>(),
+                                 // // Hide domain axis.
+                                 // domainAxis:
+                                 // new charts.OrdinalAxisSpec(renderSpec: new charts.NoneRenderSpec()),
 
-                                  // behaviors: [
-                                  //      new charts.SeriesLegend(
-                                  //
-                                  //      )
-                                  //    // new charts.DatumLegend(//SeriesLegend
-                                  //    //   outsideJustification:
-                                  //    //       charts.OutsideJustification.start,
-                                  //    //   horizontalFirst: false,
-                                  //    //   desiredMaxRows: 2,
-                                  //    //   cellPadding: new EdgeInsets.only(
-                                  //    //       right: 4.0, bottom: 4.0, top: 4.0,left: 10),
-                                  //    //   entryTextStyle: charts.TextStyleSpec(
-                                  //    //       color: charts.MaterialPalette.purple.shadeDefault,
-                                  //    //       fontFamily: 'Georgia',
-                                  //    //       fontSize: 18),
-                                  //    // )
-                                  // ],
-                                  //  defaultRenderer: new charts.ArcRendererConfig(
-                                  //      arcWidth: 100,
-                                  //      arcRendererDecorators: [
-                                  //        new charts.ArcLabelDecorator(
-                                  //            labelPosition: charts.ArcLabelPosition.inside)
-                                  //      ]),
+                                 // behaviors: [
+                                 //      new charts.SeriesLegend(
+                                 //
+                                 //      )
+                                 //    // new charts.DatumLegend(//SeriesLegend
+                                 //    //   outsideJustification:
+                                 //    //       charts.OutsideJustification.start,
+                                 //    //   horizontalFirst: false,
+                                 //    //   desiredMaxRows: 2,
+                                 //    //   cellPadding: new EdgeInsets.only(
+                                 //    //       right: 4.0, bottom: 4.0, top: 4.0,left: 10),
+                                 //    //   entryTextStyle: charts.TextStyleSpec(
+                                 //    //       color: charts.MaterialPalette.purple.shadeDefault,
+                                 //    //       fontFamily: 'Georgia',
+                                 //    //       fontSize: 18),
+                                 //    // )
+                                 // ],
+                                 //  defaultRenderer: new charts.ArcRendererConfig(
+                                 //      arcWidth: 100,
+                                 //      arcRendererDecorators: [
+                                 //        new charts.ArcLabelDecorator(
+                                 //            labelPosition: charts.ArcLabelPosition.inside)
+                                 //      ]),
 
-                                  // defaultRenderer: charts.ArcRendererConfig(
-                                  //     arcRendererDecorators: [
-                                  //       charts.ArcLabelDecorator(
-                                  //           labelPosition: charts.ArcLabelPosition.inside)
-                                  //     ])
+                                 // defaultRenderer: charts.ArcRendererConfig(
+                                 //     arcRendererDecorators: [
+                                 //       charts.ArcLabelDecorator(
+                                 //           labelPosition: charts.ArcLabelPosition.inside)
+                                 //     ])
+                               ),
                                 ),
-                              ),
                               Padding(
                                 padding: const EdgeInsets.all(15.0),
                                 child: SingleChildScrollView(
@@ -604,7 +673,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                                         ),
                                         DataColumn(
                                           label: Text(
-                                            'الموظف',
+                                            'المنتج',
                                             style: TextStyle(fontStyle: FontStyle.normal),
                                           ),
                                         ),
@@ -615,13 +684,13 @@ class _BarChartAPIState extends State<BarChartAPI> {
                                           ),
                                         ),    DataColumn(
                                           label: Text(
-                                            'عدد العملاء',
+                                            'العدد ',
                                             style: TextStyle(fontStyle: FontStyle.normal),
                                           ),
                                         ),
                                       ],
                                       rows:rowsdata,dividerThickness: 3,
-                                      horizontalMargin: 3,columnSpacing: 35,
+                                      horizontalMargin: 2,columnSpacing: 50,
                                       //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
                                       //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
                                       //     <DataRow>[
