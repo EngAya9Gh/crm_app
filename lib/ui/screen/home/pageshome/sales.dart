@@ -9,6 +9,8 @@ import 'package:crm_smart/ui/screen/home/widgethomeitem.dart';
 import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
 import 'package:crm_smart/ui/screen/report/chartsales_regoin.dart';
 import 'package:crm_smart/ui/screen/report/chartsales_user.dart';
+import 'package:crm_smart/ui/screen/report/deptsales.dart';
+import 'package:crm_smart/ui/screen/report/sales_reportstate.dart';
 import 'package:crm_smart/ui/screen/report/salesproduct.dart';
 import 'package:crm_smart/ui/screen/support/support_view.dart';
 import 'package:crm_smart/ui/screen/target/target_page.dart';
@@ -69,128 +71,152 @@ class _salesState extends State<sales> {
       // builder: (context, privilge, child){
        Padding(
       padding: EdgeInsets.only(top: 50),
-      child: Column(
-            children: [
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('36')==true?
-              buildSelectCategory(
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(
-                        builder: (context)=>
-                            tabclients()));
-              }, title: ' قائمة العملاء') :Container(),
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('39')==true?
-              buildSelectCategory(
-                  colorbag:   Colors.white,
-                  colortitle: Colors.black,
-                  colorarrow: Colors.black,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context)=>
-                            invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
-                    ));
-                  }, title:'فواتير العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+      child: SingleChildScrollView(
+        child: Column(
+              children: [
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('36')==true?
+                buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                          builder: (context)=>
+                              tabclients()));
+                }, title: ' قائمة العملاء') :Container(),
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('39')==true?
+                buildSelectCategory(
+                    colorbag:   Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>
+                              invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
+                      ));
+                    }, title:'فواتير العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
 
-              buildSelectCategory(
-                  colorbag:   Colors.white,
-                  colortitle: Colors.black,
-                  colorarrow: Colors.black,
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context)=>
-                            TransferPage() //AcceptPage()   // support_view(type: 'client',)
-                    ));
-                  }, title:'موافقات تحويل العملاء' ),//تاريخ الفاتورة جنبو اسم المؤسسة
+                buildSelectCategory(
+                    colorbag:   Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>
+                              TransferPage() //AcceptPage()   // support_view(type: 'client',)
+                      ));
+                    }, title:'موافقات تحويل العملاء' ),//تاريخ الفاتورة جنبو اسم المؤسسة
 
 
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('40')==true?
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('40')==true?
     buildSelectCategory(
-        colorbag: Colors.white,
-        colortitle: Colors.black,
-        colorarrow: Colors.black,
-        onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context)=>
-                      ApprovePage()));
-            }, title:  ' طلبات الموافقة '):Container(),
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('85')==true?
-              buildSelectCategory(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context)=>
-                          BarChartAPI()));
-                }, title:  ' تقارير المبيعات ',
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,):Container(),
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('86')==true?
-              buildSelectCategory(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context)=>
-                          BarChartregoinsales()));
-                }, title:  ' تقارير الفروع ',
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,):Container(),
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('88')==true?
-              buildSelectCategory(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context)=>
-                          salesproduct()));
-                }, title:  ' تقارير المنتجات ',
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,):Container(),
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('5')==true?
-              buildSelectCategory(
-                onTap: () {
+          colorbag: Colors.white,
+          colortitle: Colors.black,
+          colorarrow: Colors.black,
+          onTap: () {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context)=>
-                        TargetPage()));
-              }, title:  'تاركيت الموظف ',
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,):Container(),
-
-              Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('14')==true?
-    buildSelectCategory(
-        colorbag: Colors.white,
-        colortitle: Colors.black,
-        colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context)=>
-                     deletedinvoice()));
-                     },
-                      title:  'الفواتير المحذوفة'):Container(),
-
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('35')==true?
-              buildSelectCategory(
-                  colorbag: Colors.white,
-                  colortitle: Colors.black,
-                  colorarrow: Colors.black,
+                        ApprovePage()));
+              }, title:  ' طلبات الموافقة '):Container(),
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('85')==true?
+                buildSelectCategory(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context)=>
-                            OutClient() //AcceptPage()   // support_view(type: 'client',)
-                    ));
-                  }, title:'الفواتير المنسحبة' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+                            BarChartAPI()));
+                  }, title:  ' تقارير المبيعات ',
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,):Container(),
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('86')==true?
+                buildSelectCategory(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context)=>
+                            BarChartregoinsales()));
+                  }, title:  ' تقارير الفروع ',
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,):Container(),
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('88')==true?
+                buildSelectCategory(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context)=>
+                            salesproduct()));
+                  }, title:  ' تقارير المنتجات ',
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,):Container(),
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('91')==true?
+                buildSelectCategory(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context)=>
+                            deptsales()));
+                  }, title:  ' تقارير الديون ',
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,):Container(),
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('95')==true?
+                buildSelectCategory(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context)=>
+                            sales_reportstate()));
+                  }, title:  ' تقارير حالات العملاء ',
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,):Container(),
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('5')==true?
+                buildSelectCategory(
+                  onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context)=>
+                          TargetPage()));
+                }, title:  'تاركيت الموظف ',
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,):Container(),
 
-          ],),
+                Provider.of<privilge_vm>(context,listen: true)
+                  .checkprivlge('14')==true?
+    buildSelectCategory(
+          colorbag: Colors.white,
+          colortitle: Colors.black,
+          colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context)=>
+                       deletedinvoice()));
+                       },
+                        title:  'الفواتير المحذوفة'):Container(),
+
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('35')==true?
+                buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>
+                              OutClient() //AcceptPage()   // support_view(type: 'client',)
+                      ));
+                    }, title:'الفواتير المنسحبة' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+
+            ],),
+      ),
       ),
      // },),
     );

@@ -2,6 +2,7 @@ import 'package:crm_smart/ui/screen/calendar/calendar.dart';
 import 'package:crm_smart/ui/screen/calendar/event_view_page.dart';
 import 'package:crm_smart/ui/screen/client/client_accept.dart';
 import 'package:crm_smart/ui/screen/client/client_wating.dart';
+import 'package:crm_smart/ui/screen/report/support_intall_report.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/screen/support/support_view.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/task_widget.dart';
@@ -98,6 +99,16 @@ class _supportpageState extends State<supportpage> {
                   builder: (context)=>
                       support_table()));
             }, title: 'جدول التركيب للعملاء'):Container(),
+           privilge.checkprivlge('18')==true?
+           buildSelectCategory(
+               colorbag: Colors.white,
+               colortitle: Colors.black,
+               colorarrow: Colors.black,
+               onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context)=>
+                      support_install_report()));
+            }, title: 'تقرير التركيب للعملاء'):Container(),
             // buildSelectCategory(onTap: () {
             //   //
             //   Navigator.push(context, MaterialPageRoute(
