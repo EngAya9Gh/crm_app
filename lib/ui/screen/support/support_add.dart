@@ -281,7 +281,7 @@ class _support_addState extends State<support_add> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child:
-            buildcardExpansion('فاتورة  '+_invoice!.dateCreate.toString(),'',
+            buildcardExpansion('فاتورة  '+_invoice!.date_approve.toString(),'',
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 5),
                   child: Column(

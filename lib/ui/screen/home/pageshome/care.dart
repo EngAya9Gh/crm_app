@@ -4,6 +4,7 @@ import 'package:crm_smart/ui/screen/care/view_installed.dart';
 import 'package:crm_smart/ui/screen/care/view_welcome.dart';
 import 'package:crm_smart/ui/screen/client/client_accept.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketclientview.dart';
+import 'package:crm_smart/ui/screen/report/support_intall_report.dart';
 import 'package:crm_smart/ui/screen/support/support_view.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
@@ -147,8 +148,31 @@ class _carepageState extends State<carepage> {
                         ticketclientview()));
               }, title: 'تذاكر العملاء  '
               ):Container(),
+            Provider.of<privilge_vm>(context,listen: true)
+                .checkprivlge('102')==true?
+            buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context)=>
+                          support_install_report()));
+                }, title: 'تقرير العناية بالعملاء'):Container(),
+            Provider.of<privilge_vm>(context,listen: true)
+                .checkprivlge('103')==true?
+            buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context)=>
+                          support_install_report()));
+                }, title: 'تقرير مستوى التقييم'):Container(),
 
-        ],),
+
+          ],),
 
       ),
     );

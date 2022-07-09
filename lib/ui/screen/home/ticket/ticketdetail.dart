@@ -3,6 +3,7 @@ import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/rowdivided.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
@@ -26,17 +27,16 @@ class ticketdetail extends StatelessWidget {
       return    Column(
         children: [
 
-           cardRow(title: 'قام بتحويل التذكرة ',
-              value: getnameshort( namefrom)
-           ,isrow: false,
+           cardRowDivided(title: 'قام بتحويل التذكرة ',
+              value: getnameshort( namefrom),
            ),
-           cardRow(title: 'الشخص المحول له ',
-              value: getnameshort( nameto),isrow: false,),
+          cardRowDivided(title: 'الشخص المحول له ',
+              value: getnameshort( nameto),),
 
-           cardRow(title: 'تاريخ تحويل التذكرة ',
+          cardRowDivided(title: 'تاريخ تحويل التذكرة ',
               value:  date.toString()) ,
-           cardRow(title: ' سبب التحويل ',
-              value:  resoan,isrow: false,) ,
+          cardRowDivided(title: ' سبب التحويل ',
+              value:  resoan,isExpanded: true,) ,
             Divider(thickness: 1,color: Colors.grey,),
           // Row(
           //
@@ -129,7 +129,7 @@ class ticketdetail extends StatelessWidget {
         style: TextStyle(color: kWhiteColor),
         ),centerTitle: true,),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(left: 10.0,top: 10,right: 10),
         child: SingleChildScrollView(
           child: Directionality(
             textDirection: TextDirection.rtl,
@@ -227,13 +227,14 @@ class ticketdetail extends StatelessWidget {
                 ):Container(),
 
                 ticketModel.dateClose!=null?
-                cardRow(isrow: false,title: 'قام بإغلاق التذكرة ',value: getnameshort( ticketModel.nameuserclose.toString())):Container(),
+                cardRowDivided( title: 'قام بإغلاق التذكرة ',value: getnameshort( ticketModel.nameuserclose.toString())):Container(),
 
                 ticketModel.dateClose!=null?
-                cardRow(isrow: false,title: 'تاريخ إغلاق التذكرة ',value: ticketModel.dateClose.toString()):Container(),
+                cardRowDivided(title: 'تاريخ إغلاق التذكرة ',value: ticketModel.dateClose.toString()):Container(),
 
                 ticketModel.dateClose!=null?
-                cardRow(isrow: false,title: '  ملاحظات إغلاق التذكرة ',value: ticketModel.notesTicket.toString()):Container(),
+                cardRowDivided(title: '  ملاحظات إغلاق التذكرة ',
+                    value: ticketModel.notesTicket.toString(),isExpanded: true,):Container(),
                 Divider(thickness: 1,color: Colors.grey,),
                 for(int i=0;i<ticketModel.transferticket!.length;i++)
                _tranferall(ticketModel.transferticket![i]!.nameuserto.toString(),
@@ -243,17 +244,18 @@ class ticketdetail extends StatelessWidget {
                ),
 
                 ticketModel.dateRecive!=null?
-                cardRow(isrow: false,title: 'قام باستلام التذكرة ',value: getnameshort( ticketModel.nameuserrecive.toString())):Container(),
+                cardRowDivided(title: 'قام باستلام التذكرة ',value: getnameshort( ticketModel.nameuserrecive.toString())):Container(),
                 ticketModel.dateRecive!=null?
-                cardRow(isrow: false,title: 'تاريخ استلام التذكرة ',value:  ticketModel.dateRecive.toString()):Container(),
+                cardRowDivided( title: 'تاريخ استلام التذكرة ',value:  ticketModel.dateRecive.toString()):Container(),
 
                 Divider(thickness: 1,color: Colors.grey,),
-                cardRow(isrow: false,title: 'قام بفتح التذكرة ',value: getnameshort( ticketModel.nameuseropen.toString())),
-                cardRow(isrow: false,title: 'تاريخ فتح التذكرة ',value: ticketModel.dateOpen.toString()),
+                cardRowDivided( title: 'قام بفتح التذكرة ',value: getnameshort( ticketModel.nameuseropen.toString())),
+                cardRowDivided( title: 'تاريخ فتح التذكرة ',value: ticketModel.dateOpen.toString()),
                 Divider(thickness: 1,color: Colors.grey,),
-                cardRow(isrow: false,title: 'نوع التذكرة',value:  ticketModel.typeProblem.toString()),
+                cardRowDivided( title: 'نوع التذكرة',value:  ticketModel.typeProblem.toString()),
                 //cardRow(title: 'وصف المشكلة',value: widget.ticketModel.detailsProblem.toString(),isExpanded: true,),
-                cardRow(isrow: false,title: 'تفاصيل التذكرة',value: ticketModel.detailsProblem.toString(),isExpanded: true,),
+                cardRowDivided(title: 'تفاصيل التذكرة',
+                  value: ticketModel.detailsProblem.toString(),isExpanded: true,),
                 SizedBox(height: 10,),
               ],
             ),

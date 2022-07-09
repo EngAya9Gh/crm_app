@@ -6,8 +6,8 @@ import 'package:crm_smart/ui/widgets/custom_widget/separatorLine.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class cardRow extends StatelessWidget {
-  cardRow({
+class cardRowDivided extends StatelessWidget {
+  cardRowDivided({
     this.alignment,required this.value,required this.title,
     this.isExpanded,Key? key})
       : super(key: key);
@@ -19,17 +19,17 @@ class cardRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-        //mainAxisAlignment: MainAxisAlignment.start,
-       // crossAxisAlignment: CrossAxisAlignment.start,
+      //mainAxisAlignment: MainAxisAlignment.start,
+      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: alignment==null? MainAxisAlignment.spaceBetween:alignment,
-         crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(title,style: TextStyle(
-               fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w600,
                 fontFamily: kfontfamily2),),
-           SizedBox(width: 50,),
+            SizedBox(width: 50,),
             //Spacer(flex: 1,),
             isExpanded==true?
             Expanded(
@@ -37,11 +37,11 @@ class cardRow extends StatelessWidget {
                 child: Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(value,style: TextStyle( fontWeight: FontWeight.w500,fontFamily: kfontfamily2),)))
-          :Text(value,style: TextStyle( fontWeight: FontWeight.w500,fontFamily: kfontfamily2),),],
+                :Text(value,style: TextStyle( fontWeight: FontWeight.w500,fontFamily: kfontfamily2),),],
         ),
         //Spacer(),
-      //  isrow==true?
-        Divider(thickness: 1,color: Colors.grey,),//:Container(),
+        //  isrow==true?
+        //Divider(thickness: 1,color: Colors.grey,),//:Container(),
         //const MySeparator(color: Colors.grey),
         SizedBox(height: 5,),
 
@@ -50,24 +50,3 @@ class cardRow extends StatelessWidget {
   }
 }
 
-// Widget cardRow(String title,String value){
-//   return Column(
-//
-//     children: [
-//       Row(
-//         mainAxisAlignment: alignment==null? MainAxisAlignment.spaceBetween:alignment,
-//         children: [
-//           Text(title,style: TextStyle(fontFamily: kfontfamily3),),
-//           Spacer(),
-//           Text(value,style: TextStyle(fontFamily: kfontfamily2),),
-//         ],
-//       ),
-//       //Spacer(),
-//       Divider(thickness: 2,color: Colors.amberAccent,),
-//       //const MySeparator(color: Colors.grey),
-//       SizedBox(height: 10,),
-//
-//     ],
-//   );
-//
-// }

@@ -131,7 +131,7 @@ class _support_install_reportState extends State<support_install_report> {
                   color: Colors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.normal,
-                  textstring: tempdata[i].y.toString(),
+                  textstring: tempdata[i].y.toInt().toString(),
                   underline: TextDecoration.none,
                 )),
                 DataCell( TextUtilis(
@@ -387,7 +387,8 @@ class _support_install_reportState extends State<support_install_report> {
                   ),
                 ): Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 3
-                    ? Row (
+                    ?
+                Row (
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -480,7 +481,8 @@ class _support_install_reportState extends State<support_install_report> {
                                 children: [
                                   Text('الإجمالي '),
                                   Text(
-                                      totalval.toString()),
+                                      totalval.toInt().toString()
+                                  ),
                                 ],
                               ),
                               Container(

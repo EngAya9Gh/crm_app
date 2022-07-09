@@ -67,6 +67,8 @@ class InvoiceModel extends CacheRepository{
     this.nummostda,
     this.numTax,
     this.imagelogopath,
+    this.hoursdelaytabel,
+    this.hoursdelayinstall,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -126,6 +128,8 @@ class InvoiceModel extends CacheRepository{
     String? numusers;
     String? nummostda;
     String? numTax;
+    String? hoursdelaytabel;
+    String? hoursdelayinstall;
     String?  city,
   name_city,
   namemaincity,
@@ -204,6 +208,8 @@ class InvoiceModel extends CacheRepository{
     numusers = jsondata['numusers'];
     nummostda = jsondata['nummostda'];
     numTax = jsondata['numTax'];
+    hoursdelaytabel = jsondata['hoursdelaytabel'];
+    hoursdelayinstall = jsondata['hoursdelayinstall'];
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']
@@ -295,6 +301,8 @@ class InvoiceModel extends CacheRepository{
     _data['nummostda'] = nummostda;
     _data['numusers'] = numusers;
     _data['numTax'] = numTax;
+    _data['hoursdelaytabel'] = hoursdelaytabel;
+    _data['hoursdelayinstall'] = hoursdelayinstall;
     _data['products'] =
         products!.map((e)=>e.toJson()).toList();
     return _data;

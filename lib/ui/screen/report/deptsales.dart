@@ -475,30 +475,28 @@ class _deptsalesState extends State<deptsales> {
                                 // ),
                               ),
                             ):labelxx=='user'||labelxx=='regoin'?
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Container(
-                                 height: 500,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: listInvoicesAccept.length,
-                                    itemBuilder: (context, index) {
+                        Column(
+                          children: [
+                            Container(
+                               height: 500,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: listInvoicesAccept.length,
+                                  itemBuilder: (context, index) {
 
-                                      return SingleChildScrollView(
-                                          child: Padding(
-                                              padding: const EdgeInsets.all(2),
-                                              child:
-                                              CardInvoiceClient(
-                                                itemProd: listInvoicesAccept[index],
-                                                //itemClient :  itemClient,
+                                    return SingleChildScrollView(
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child:
+                                            CardInvoiceClient(
+                                              itemProd: listInvoicesAccept[index],
+                                              //itemClient :  itemClient,
 
-                                              )
-                                          ));
-                                    }),
-                              ),
-                            ],
-                          ),
+                                            )
+                                        ));
+                                  }),
+                            ),
+                          ],
                         ):Container()
                           ] ),
                     ),

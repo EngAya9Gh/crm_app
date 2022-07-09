@@ -89,9 +89,12 @@ class ticketprofileState extends State<ticketprofile> {
                         Builder
                           (builder:
                             (context)=>
-                                cardticket(
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: cardticket(
                               ticketModel: list_ticket[index],
-                            )) ,
+                            ),
+                                )) ,
                   ),
                 ),
               ),

@@ -2,6 +2,9 @@ import 'package:crm_smart/ui/screen/calendar/calendar.dart';
 import 'package:crm_smart/ui/screen/calendar/event_view_page.dart';
 import 'package:crm_smart/ui/screen/client/client_accept.dart';
 import 'package:crm_smart/ui/screen/client/client_wating.dart';
+import 'package:crm_smart/ui/screen/report/delayafterinstall.dart';
+import 'package:crm_smart/ui/screen/report/delayinstall.dart';
+import 'package:crm_smart/ui/screen/report/deptsales.dart';
 import 'package:crm_smart/ui/screen/report/support_intall_report.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/screen/support/support_view.dart';
@@ -99,7 +102,7 @@ class _supportpageState extends State<supportpage> {
                   builder: (context)=>
                       support_table()));
             }, title: 'جدول التركيب للعملاء'):Container(),
-           privilge.checkprivlge('18')==true?
+           privilge.checkprivlge('99')==true?
            buildSelectCategory(
                colorbag: Colors.white,
                colortitle: Colors.black,
@@ -109,6 +112,26 @@ class _supportpageState extends State<supportpage> {
                   builder: (context)=>
                       support_install_report()));
             }, title: 'تقرير التركيب للعملاء'):Container(),
+           privilge.checkprivlge('100')==true?
+           buildSelectCategory(
+               colorbag: Colors.white,
+               colortitle: Colors.black,
+               colorarrow: Colors.black,
+               onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context)=>
+                      delayinstall()));
+            }, title: 'تقرير التأخير عن الجدولة للعملاء'):Container(),
+               privilge.checkprivlge('101')==true?
+           buildSelectCategory(
+               colorbag: Colors.white,
+               colortitle: Colors.black,
+               colorarrow: Colors.black,
+               onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context)=>
+                      delayafterinstall()));
+            }, title: 'تقرير التأخير عن التركيب للعملاء'):Container(),
             // buildSelectCategory(onTap: () {
             //   //
             //   Navigator.push(context, MaterialPageRoute(

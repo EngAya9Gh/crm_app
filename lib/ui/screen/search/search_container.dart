@@ -18,7 +18,8 @@ class search_widget extends StatelessWidget {
   //List<dynamic> list;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return
+      Container(
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(
@@ -50,6 +51,12 @@ class search_widget extends StatelessWidget {
                     Provider.of<client_vm>(context,listen: false)
                         .searchProducts(pattern);
                     break;
+
+                    // case 'delayinstall':
+                    // Provider.of<client_vm>(context,listen: false)
+                    //     .searchdelay(pattern);
+                    // break;
+
                     case 'clientmarketing':
                     Provider.of<client_vm>(context,listen: false)
                         .searchmarket(pattern);
