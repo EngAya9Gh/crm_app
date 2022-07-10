@@ -33,11 +33,17 @@ class _care_reportState extends State<care_report> {
 
   bool loading = true;
   String type = 'userSum';
-  String typeproduct = 'الكل';
+  String typeproduct = 'ترحيب';
   double totalval=0;
   @override
   void initState() {
-    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+      Provider.of<selected_button_provider>(context,listen: false)
+      .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context,listen: false)
+      .selectValuebarsales(0);
+      super.initState();
+    });
     getData();
   }
 
@@ -55,8 +61,7 @@ class _care_reportState extends State<care_report> {
     UserModel usermodel=Provider.of<user_vm_provider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
-    String iduser = usermodel.idUser.toString();
-    String idregoin = usermodel.fkRegoin.toString();
+
 
     // String paramprivilge='';
     // if(Provider.of<privilge_vm>(context,listen: false)
@@ -71,7 +76,9 @@ class _care_reportState extends State<care_report> {
     //     Provider.of<privilge_vm>(context,listen: false)
     //         .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
     //     .checkprivlge('81')==true){
-      var data;
+    // isbarsalestype
+
+    var data;
       String params='';
       if(typeproduct=='ترحيب') params='&product=ترحيب';
       if(typeproduct=='جودة') params='&product=تركيب';
@@ -79,25 +86,25 @@ class _care_reportState extends State<care_report> {
       switch (type) {
         case "userSum":
           data = await Api().post(
-              url: url + "reports/reportsales.php?fk_country=$fkcountry$params",
+              url: url + "reports/care_report.php?fk_country=$fkcountry$params",
               body: {'type': type});
           break;
         case "dateyear":
           data = await Api().post(
               url: url +
-                  "reports/reportsales.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params",
+                  "reports/care_report.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params",
               body: {'type': type});
           break;
         case "datemonth":
           data = await Api().post(
               url: url +
-                  "reports/reportsales.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params",
+                  "reports/care_report.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params",
               body: {'type': type});
           break;
         case "datedays":
           data = await Api().post(
               url: url +
-                  "reports/reportsales.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params",
+                  "reports/care_report.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params",
               body: {'type': type});
           break;
       }
@@ -134,7 +141,7 @@ class _care_reportState extends State<care_report> {
                   color: Colors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.normal,
-                  textstring: tempdata[i].y.toString(),
+                  textstring: tempdata[i].y.toInt().toString(),
                   underline: TextDecoration.none,
                 )),
                 DataCell( TextUtilis(
@@ -146,13 +153,10 @@ class _care_reportState extends State<care_report> {
                 )),
               ],
             ));
-        // tempdataclient.add(BarModel.fromJson(data[i]));
+
       }
-  //}
-    // for(int i=0;i<salesresult.length;i++)
     setState(() {
       salesresult = tempdata;
-      // salestempdataclientresult = tempdataclient;
       loading = false;
     });
   }
@@ -173,7 +177,7 @@ class _care_reportState extends State<care_report> {
         colorFn: (BarModel bar,_) =>charts.ColorUtil.fromDartColor(bar.colorval),
         // charts.MaterialPalette.indigo.shadeDefault,
         domainFn: (BarModel genderModel, _) => genderModel.x,
-        measureFn: (BarModel genderModel,__) =>  genderModel.y,
+        measureFn: (BarModel genderModel,__) =>  genderModel.y.floor(),
         // measureFormatterFn: (BarModel genderModel,_) => ,
         labelAccessorFn:  (BarModel row, __) => '${row.y}',
         fillPatternFn: (_,__)=>charts.FillPatternType.solid,
@@ -204,7 +208,7 @@ class _care_reportState extends State<care_report> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("تقارير مبيعات الموظفين"),
+        title: Text("تقارير العناية بالعملاء "),
       ),
       body:
       SafeArea(
@@ -272,7 +276,6 @@ class _care_reportState extends State<care_report> {
                                     borderRadius: BorderRadius.circular(10)),
                                 buttons: ['ترحيب', 'جودة', 'العناية'],
                                 onSelected: (index, isselected) {
-
                                   print(index);
                                   switch(index){
                                     case 0:
@@ -524,34 +527,34 @@ class _care_reportState extends State<care_report> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text('إجمالي المبيعات'),
+                                  Text('إجمالي '),
                                   Text(
                                       totalval.toString()),
                                 ],
                               ),
                               Container(
                                 height: 300, //BarChart
-                                child: charts.BarChart(
+                                child: charts.PieChart(
                                   _createSampleData(),
                                   // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                                  barGroupingType: charts.BarGroupingType.grouped,
+                                 /* barGroupingType: charts.BarGroupingType.grouped,*/
                                   animate: true,
-                                  barRendererDecorator: (
+                                 /* barRendererDecorator: (
                                       charts.BarLabelDecorator<String>(
                                         insideLabelStyleSpec: fl.TextStyleSpec(
                                             fontSize: 12, color: fl.Color.black),
                                         labelPosition: fl.BarLabelPosition.inside,
                                         labelAnchor:fl. BarLabelAnchor.middle,
-                                      )),
+                                      )),*/
                                   // vertical: false,
                                   // barGroupingType: charts.BarGroupingType.grouped,
                                   // defaultRenderer: charts.BarRendererConfig(
                                   //   groupingType: charts.BarGroupingType.grouped,
                                   //   strokeWidthPx: 1.0,
                                   // ),
-                                  domainAxis: charts.OrdinalAxisSpec(
+                                /*  domainAxis: charts.OrdinalAxisSpec(
                                     renderSpec: charts.GridlineRendererSpec(),
-                                  ),
+                                  ),*/
                                   // Set a bar label decorator.
                                   // Example configuring different styles for inside/outside:
 
@@ -612,7 +615,7 @@ class _care_reportState extends State<care_report> {
                                         ),
                                         DataColumn(
                                           label: Text(
-                                            'المبيعات',
+                                            'العدد',
                                             style: TextStyle(fontStyle: FontStyle.normal),
                                           ),
                                         ),    DataColumn(

@@ -4,6 +4,8 @@ import 'package:crm_smart/ui/screen/care/view_installed.dart';
 import 'package:crm_smart/ui/screen/care/view_welcome.dart';
 import 'package:crm_smart/ui/screen/client/client_accept.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketclientview.dart';
+import 'package:crm_smart/ui/screen/report/care_report.dart';
+import 'package:crm_smart/ui/screen/report/report_rate.dart';
 import 'package:crm_smart/ui/screen/report/support_intall_report.dart';
 import 'package:crm_smart/ui/screen/support/support_view.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
@@ -157,7 +159,7 @@ class _carepageState extends State<carepage> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context)=>
-                          support_install_report()));
+                          care_report()));
                 }, title: 'تقرير العناية بالعملاء'):Container(),
             Provider.of<privilge_vm>(context,listen: true)
                 .checkprivlge('103')==true?
@@ -168,7 +170,7 @@ class _carepageState extends State<carepage> {
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context)=>
-                          support_install_report()));
+                          report_rate()));
                 }, title: 'تقرير مستوى التقييم'):Container(),
 
 
