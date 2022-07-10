@@ -529,7 +529,7 @@ class _care_reportState extends State<care_report> {
                                 children: [
                                   Text('إجمالي '),
                                   Text(
-                                      totalval.toString()),
+                                      totalval.toInt().toString()),
                                 ],
                               ),
                               Container(

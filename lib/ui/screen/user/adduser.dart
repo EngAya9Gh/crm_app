@@ -279,7 +279,7 @@ class _addUserState extends State<addUser> {
                        Provider.of<user_vm_provider>(context,listen: false)
                         .adduser_vm(body)
                            .then((value) =>
-                        value != "error"
+                        value != "repeat"
                             ? clear()
                             :error()
                         );
@@ -309,7 +309,7 @@ void error(){
   Provider.of<LoadProvider>(context, listen: false)
       .changeboolValueUser(false);
   _scaffoldKey.currentState!.showSnackBar(
-      SnackBar(content: Text(label_errorAddProd)));
+      SnackBar(content: Text('الموظف مضاف مسبقاً')));
 }
 
   void clear(){

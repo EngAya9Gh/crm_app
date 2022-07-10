@@ -13,6 +13,11 @@ Future<UserModel> addUser(body) async {
     body:body,
     //token: '',
   );
+   if(data=='repeatuser'){
+     UserModel usermodel=UserModel(
+       idUser: '0',
+         isActive: '', fkuserAdd: '', created_at: '', nameuserAdd: '');
+    return UserModel.fromJson(usermodel);}
   return UserModel.fromJson(data[0]);//UserModel.fromJson(data);
 }
 

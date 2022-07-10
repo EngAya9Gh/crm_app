@@ -134,88 +134,92 @@ class _report_rateState extends State<report_rate> {
           child: SingleChildScrollView(
             child: Column(
                 children: [
-
                   Padding(
-                    padding: const EdgeInsets.only(right: 15.0,left: 15,top: 8,bottom: 8),
-                    child: Row (
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('from'),
-                              TextFormField(
-                                validator: (value) {
-                                  if (_selectedDatefrom == DateTime(1, 1, 1)) {
-                                    return 'يرجى تعيين التاريخ ';
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.date_range,
-                                    color: kMainColor,
-                                  ),
-                                  hintStyle: const TextStyle(
-                                      color: Colors.black45,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  hintText: _selectedDatefrom == DateTime(1, 1, 1)
-                                      ? 'from' //_currentDate.toString()
-                                      : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
-                                  //_invoice!.dateinstall_task.toString(),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
-                                ),
-                                readOnly: true,
-                                onTap: () {
-                                  _selectDatefrom(context, DateTime.now());
-                                  if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                    getData();
+                        Text('from'),
+                        TextFormField(
+                          validator: (value) {
+                            if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                              return 'يرجى تعيين التاريخ ';
+                            }
+                          },
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range,
+                              color: kMainColor,
+                            ),
+                            hintStyle: const TextStyle(
+                                color: Colors.black45,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                            hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                ? 'from' //_currentDate.toString()
+                                : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                            //_invoice!.dateinstall_task.toString(),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                          ),
+                          readOnly: true,
+                          onTap: () {
+                            _selectDatefrom(context, DateTime.now());
+                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                              getData();
 
-                                  // _selectDate(context, DateTime.now());
-                                },
-                              ),
-                            ],
-                          ),
+                            // _selectDate(context, DateTime.now());
+                          },
                         ),
-                        Flexible(
-                          child: Column(
-                            children: [
-                              Text('to'),
-                              TextFormField(
-                                validator: (value) {
-                                  if (_selectedDateto == DateTime(1, 1, 1)) {
-                                    return 'يرجى تعيين التاريخ ';
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  prefixIcon: Icon(
-                                    Icons.date_range,
-                                    color: kMainColor,
-                                  ),
-                                  hintStyle: const TextStyle(
-                                      color: Colors.black45,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  hintText: _selectedDateto == DateTime(1, 1, 1)
-                                      ? 'to' //_currentDate.toString()
-                                      : DateFormat('yyyy-MM-dd').format(_selectedDateto),
-                                  //_invoice!.dateinstall_task.toString(),
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
-                                ),
-                                readOnly: true,
-                                onTap: () {
-                                  _selectDateto(context, DateTime.now());
-                                  if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                    getData();
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],),
+                      ],
+                    ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children: [
+                        Text('to'),
+                        TextFormField(
+                          validator: (value) {
+                            if (_selectedDateto == DateTime(1, 1, 1)) {
+                              return 'يرجى تعيين التاريخ ';
+                            }
+                          },
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range,
+                              color: kMainColor,
+                            ),
+                            hintStyle: const TextStyle(
+                                color: Colors.black45,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                            hintText: _selectedDateto == DateTime(1, 1, 1)
+                                ? 'to' //_currentDate.toString()
+                                : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                            //_invoice!.dateinstall_task.toString(),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                          ),
+                          readOnly: true,
+                          onTap: () {
+                            _selectDateto(context, DateTime.now());
+                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                              getData();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 15.0,left: 15,top: 8,bottom: 8),
+                  //   child: Column (
+                  //     children: [
+                  //
+                  //     ],),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
@@ -227,7 +231,7 @@ class _report_rateState extends State<report_rate> {
                                     selectedIndex: selectedProvider.isbarsalestype,
                                   ),
                                   options: GroupButtonOptions(
-                                      buttonWidth: 110,
+                                      buttonWidth: 40,
                                       borderRadius: BorderRadius.circular(10)),
                                   buttons: ['1', '2', '3','4','5'],
                                   onSelected: (index, isselected) {

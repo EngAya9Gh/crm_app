@@ -121,14 +121,14 @@ class _managmentpageState extends State<managmentpage> {
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute<void>(
-                  //     builder: (BuildContext context)
-                  //     => config_view(),
-                  //
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (BuildContext context)
+                      => config_view(),
+
+                    ),
+                  );
                 }, title: 'تغيير الدولة'):Container(),
             privilge.checkprivlge('63')==true?
             buildSelectCategory(

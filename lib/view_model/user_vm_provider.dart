@@ -63,16 +63,16 @@ class user_vm_provider extends ChangeNotifier{
   }
     Future<String> adduser_vm(Map<String, String?> body) async {
     UserModel us= await UserService().addUser(body);
-    // if (res!="false") {
-    //   body.addAll({
-    //     'id_user':res,
-    //     'img_image':'',
-    //     'img_thumbnail':'',
-    //   });
+   String result='';
+    if(us.idUser=='0'){
+      result='repeat';
+    }else{
       userall.insert(0, us);
       listuserfilter.insert(0, us);
       notifyListeners();
-        return "done";
+      result='done';
+    }
+        return result;
   }
 
   Future<void> searchProducts(
