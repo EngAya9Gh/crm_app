@@ -16,7 +16,8 @@ Future<UserModel> addUser(body) async {
    if(data=='repeatuser'){
      UserModel usermodel=UserModel(
        idUser: '0',
-         isActive: '', fkuserAdd: '', created_at: '', nameuserAdd: '');
+         isActive: '', fkuserAdd: '', created_at: '',
+         nameuserAdd: '', updated_at: '', fkuserupdate: '', nameuserupdate: '');
     return UserModel.fromJson(usermodel);}
   return UserModel.fromJson(data[0]);//UserModel.fromJson(data);
 }

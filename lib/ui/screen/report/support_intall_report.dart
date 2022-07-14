@@ -37,6 +37,12 @@ class _support_install_reportState extends State<support_install_report> {
   double totalval=0;
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsales(0);
+    });
     super.initState();
     getData();
   }

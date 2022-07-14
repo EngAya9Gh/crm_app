@@ -43,6 +43,14 @@ class _delayafterinstallState extends State<delayafterinstall> {
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsales(0);
+      Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+
+    });
     super.initState();
     getData();
   }
@@ -80,7 +88,8 @@ class _delayafterinstallState extends State<delayafterinstall> {
     //         .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
     //     .checkprivlge('81')==true){
     var data;
-
+print(paramprivilge);
+print(type);
     switch (type) {
       case "userSum":
         data = await Api().post(
@@ -98,6 +107,7 @@ class _delayafterinstallState extends State<delayafterinstall> {
 
     //userSum
     totalval = 0;
+    listInvoicesAccept=[];
     for (int i = 0; i < data.length; i++) {
       listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
 

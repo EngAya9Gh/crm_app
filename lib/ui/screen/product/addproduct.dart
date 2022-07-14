@@ -270,7 +270,10 @@ class _addProductState extends State<addProduct> {
                                               : "null",
                                           "value_config": valtaxrate
                                               ? taxrate.value_config
-                                              : "null"
+                                              : "null",
+                                          "created_at":DateTime.now().toString(),
+                                          "fkusercreate":Provider.of<user_vm_provider>
+                                            (context,listen: false).currentUser.idUser.toString(),
                                           //
                                         }).then((value) => value != "false"
                                                     ? clear(context)

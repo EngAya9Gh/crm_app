@@ -44,6 +44,14 @@ class _delayinstallState extends State<delayinstall> {
 
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsales(0);
+      Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+
+    });
     super.initState();
     getData();
   }
@@ -95,6 +103,7 @@ class _delayinstallState extends State<delayinstall> {
     //List<BarModel> tempdata = genderModelFromJson(data);
     List<BarModel> tempdataclient = [];
     totalval = 0;
+    listInvoicesAccept=[];
     for (int i = 0; i < data.length; i++) {
       // tempdata.add(BarModel.fromJson(data[i]));
       // print(tempdata[i].y);
@@ -128,220 +137,221 @@ class _delayinstallState extends State<delayinstall> {
       SafeArea(
         child: Directionality(
           textDirection: myui.TextDirection.rtl,
-          child: Column(
-              children: [
+          child: SingleChildScrollView(
+            child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0,right: 8,),
+                    child:
+                    Consumer<user_vm_provider>(
+                      builder: (context, cart, child){
+                        return  DropdownSearch<UserModel>(
 
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0,right: 8,),
-                  child:
-                  Consumer<user_vm_provider>(
-                    builder: (context, cart, child){
-                      return  DropdownSearch<UserModel>(
-
-                        mode: Mode.DIALOG,
-                        // label: " الموظف ",
-                        //hint: 'الموظف',
-                        //onFind: (String filter) => cart.getfilteruser(filter),
-                        filterFn: (user, filter) => user!.getfilteruser(filter!),
-                        //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                        // itemAsString: (UserModel u) => u.userAsStringByName(),
-                        items: cart.userall,
-                        itemAsString: (u) => u!.userAsString(),
-                        onChanged: (data) {
-                          iduser=data!.idUser!;
-                          // idregoin='';
-                          cart.changevalueuser(data);
-                          getData();
-                          //filtershow();
-                        } ,
-                        selectedItem: cart.selecteduser,
-                        showSearchBox: true,
-                        dropdownSearchDecoration:
-                        InputDecoration(
-                          //filled: true,
-                          isCollapsed: true,
-                          hintText: 'الموظف',
-                          alignLabelWithHint: true,
-                          fillColor:  Colors.grey.withOpacity(0.2),
-                          //labelText: "choose a user",
-                          contentPadding: EdgeInsets.all(0),
-                          //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                          // focusedBorder: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: const BorderSide(color: Colors.white)),
-                          border:
-                          UnderlineInputBorder(
-                              borderSide: const BorderSide(  color: Colors.grey)
+                          mode: Mode.DIALOG,
+                          // label: " الموظف ",
+                          //hint: 'الموظف',
+                          //onFind: (String filter) => cart.getfilteruser(filter),
+                          filterFn: (user, filter) => user!.getfilteruser(filter!),
+                          //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+                          // itemAsString: (UserModel u) => u.userAsStringByName(),
+                          items: cart.userall,
+                          itemAsString: (u) => u!.userAsString(),
+                          onChanged: (data) {
+                            iduser=data!.idUser!;
+                            // idregoin='';
+                            cart.changevalueuser(data);
+                            getData();
+                            //filtershow();
+                          } ,
+                          selectedItem: cart.selecteduser,
+                          showSearchBox: true,
+                          dropdownSearchDecoration:
+                          InputDecoration(
+                            //filled: true,
+                            isCollapsed: true,
+                            hintText: 'الموظف',
+                            alignLabelWithHint: true,
+                            fillColor:  Colors.grey.withOpacity(0.2),
+                            //labelText: "choose a user",
+                            contentPadding: EdgeInsets.all(0),
+                            //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                            // focusedBorder: OutlineInputBorder(
+                            //     borderRadius: BorderRadius.circular(10),
+                            //     borderSide: const BorderSide(color: Colors.white)),
+                            border:
+                            UnderlineInputBorder(
+                                borderSide: const BorderSide(  color: Colors.grey)
+                            ),
+                            // OutlineInputBorder(
+                            //     borderRadius: BorderRadius.circular(10),
+                            //     borderSide: const BorderSide( color: Colors.white)),
                           ),
-                          // OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: const BorderSide( color: Colors.white)),
-                        ),
-                        // InputDecoration(border: InputBorder.none),
+                          // InputDecoration(border: InputBorder.none),
 
-                      );
+                        );
 
-                    },
+                      },
+                    ),
                   ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
-                      )),
-                  height: 50,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.search,
-                          color: Colors.black,
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(5),
+                        )),
+                    height: 50,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        title: TextField(
-                          textInputAction: TextInputAction.search,
-                          onChanged: (pattern) async {
+                        child: ListTile(
+                          leading: Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          ),
+                          title: TextField(
+                            textInputAction: TextInputAction.search,
+                            onChanged: (pattern) async {
     String searchKey =pattern;
     List<InvoiceModel> clientlistsearch=[];
     if(pattern.isNotEmpty ) {
       listInvoicesAccept.forEach((element) {
         if (element.name_enterprise!.contains(searchKey, 0)
-            || element.nameClient!.contains(searchKey, 0)
-            || element.mobile!.contains(searchKey, 0))
-          clientlistsearch.add(element);
+              || element.nameClient!.contains(searchKey, 0)
+              || element.mobile!.contains(searchKey, 0))
+            clientlistsearch.add(element);
       });
       setState(() {
         listInvoicesAccept = List.from(clientlistsearch);
       });
     } else getData();
     },
-                          decoration: InputDecoration(
-                            hintText: 'المؤسسة , العميل ....',
-                            border: InputBorder.none,
+                            decoration: InputDecoration(
+                              hintText: 'المؤسسة , العميل ....',
+                              border: InputBorder.none,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Center(
-                  child: loading
-                      ? CircularProgressIndicator()
-                      : Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Column(
-                      // scrollDirection: Axis.horizontal,
-                        children:[
-                          Container(
-                             height: MediaQuery.of(context).size.height*0.75,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: listInvoicesAccept.length,
-                                  itemBuilder: (context, index) {
+                  Center(
+                    child: loading
+                        ? CircularProgressIndicator()
+                        : Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Column(
+                        // scrollDirection: Axis.horizontal,
+                          children:[
+                            Container(
+                               height: MediaQuery.of(context).size.height*0.75,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: listInvoicesAccept.length,
+                                    itemBuilder: (context, index) {
 
-                                    return SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(30)),
-                                            boxShadow: <BoxShadow>[
-                                              BoxShadow(
-                                                offset: Offset(1.0, 1.0),
-                                                blurRadius: 8.0,
-                                                color: Colors.black87.withOpacity(0.2),
-                                              ),
-                                            ],
-                                            color: Colors.white30,
-                                          ),
-                                          child: Center(
-                                            child: InkWell(
-                                              onTap: (){//pushReplacement
-                                                Navigator.push(context,
-                                                    MaterialPageRoute(builder:
-                                                        (context) =>
-                                                        ProfileClient(
-                                                          idclient: listInvoicesAccept[index].fkIdClient,)));
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                      return SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(30)),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                  offset: Offset(1.0, 1.0),
+                                                  blurRadius: 8.0,
+                                                  color: Colors.black87.withOpacity(0.2),
                                                 ),
-                                                //height: 70,//MediaQuery.of(context).size.height*0.15,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: Flex(
-                                                    direction: Axis.vertical,
-                                                    children: [
-                                                      Column(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: [
-                                                              Text(
-                                                                listInvoicesAccept[index].name_regoin.toString(),
-                                                                style: TextStyle(
-                                                                  //fontWeight: FontWeight.bold,
-                                                                    fontSize: 12,
-                                                                    fontFamily: kfontfamily2,
-                                                                    color: kMainColor),
-                                                              ),
-                                                              Text(
-                                                                listInvoicesAccept[index].hoursdelaytabel.toString()=='-1'?
-                                                                'لم تتم الجدولة بعد':
-                                                                listInvoicesAccept[index].hoursdelaytabel.toString(),
-                                                                style: TextStyle(
-                                                                    fontSize: 12,
-                                                                    // fontWeight: FontWeight.bold,
-                                                                    fontFamily: kfontfamily2,
-                                                                    color: kMainColor),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Row(
-                                                            //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                            children: [
-                                                              Text(
-                                                                listInvoicesAccept[index].name_enterprise.toString(),
-                                                                style: TextStyle(
-                                                                  fontWeight: FontWeight.bold,
-                                                                  fontSize: 12,
-                                                                  fontFamily: kfontfamily2,
+                                              ],
+                                              color: Colors.white30,
+                                            ),
+                                            child: Center(
+                                              child: InkWell(
+                                                onTap: (){//pushReplacement
+                                                  Navigator.push(context,
+                                                      MaterialPageRoute(builder:
+                                                          (context) =>
+                                                          ProfileClient(
+                                                            idclient: listInvoicesAccept[index].fkIdClient,)));
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                                                  ),
+                                                  //height: 70,//MediaQuery.of(context).size.height*0.15,
+                                                  child: Padding(
+                                                    padding: EdgeInsets.all(8),
+                                                    child: Flex(
+                                                      direction: Axis.vertical,
+                                                      children: [
+                                                        Column(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              children: [
+                                                                Text(
+                                                                  listInvoicesAccept[index].name_regoin.toString(),
+                                                                  style: TextStyle(
+                                                                    //fontWeight: FontWeight.bold,
+                                                                      fontSize: 12,
+                                                                      fontFamily: kfontfamily2,
+                                                                      color: kMainColor),
                                                                 ),
-                                                              ),
-                                                              // Text(
-                                                              //   itemapprove.nameUser.toString(),
-                                                              //   style: TextStyle(fontFamily: kfontfamily2),
-                                                              // ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      )
-                                                    ],
+                                                                Text(
+                                                                  listInvoicesAccept[index].hoursdelaytabel.toString()=='-1'?
+                                                                  'لم تتم الجدولة بعد':
+                                                                  listInvoicesAccept[index].hoursdelaytabel.toString(),
+                                                                  style: TextStyle(
+                                                                      fontSize: 12,
+                                                                      // fontWeight: FontWeight.bold,
+                                                                      fontFamily: kfontfamily2,
+                                                                      color: kMainColor),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Row(
+                                                              //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                              children: [
+                                                                Text(
+                                                                  listInvoicesAccept[index].name_enterprise.toString(),
+                                                                  style: TextStyle(
+                                                                    fontWeight: FontWeight.bold,
+                                                                    fontSize: 12,
+                                                                    fontFamily: kfontfamily2,
+                                                                  ),
+                                                                ),
+                                                                // Text(
+                                                                //   itemapprove.nameUser.toString(),
+                                                                //   style: TextStyle(fontFamily: kfontfamily2),
+                                                                // ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  }),
-                            ),
-                          )
+                                      );
+                                    }),
+                              ),
+                            )
 
-                        ] ),
+                          ] ),
+                    ),
                   ),
-                ),
-              ]),
+                ]),
+          ),
         ),
       ),
     );

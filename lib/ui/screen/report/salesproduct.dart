@@ -39,7 +39,14 @@ class _salesproductState extends State<salesproduct> {
   double totalval=0;
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsales(0);
+      Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
 
+    });
     super.initState();
     // WidgetsBinding.instance!.addPostFrameCallback((_)async {
     // if(  Provider.of<privilge_vm>(context,listen: false)
@@ -138,16 +145,18 @@ class _salesproductState extends State<salesproduct> {
                     ),
                   ),
                 )),
-                DataCell( TextUtilis(
+                DataCell(
+                  TextUtilis(
                   color: Colors.black,
-                  fontSize: 25,
+                  fontSize: 15,
                   fontWeight: FontWeight.normal,
-                  textstring:getnamelong(tempdata[i].x),
+                  textstring:tempdata[i].x,//getnamelong(tempdata[i].x),
                   underline: TextDecoration.none,
                 )),
-                DataCell( TextUtilis(
+                DataCell( 
+                    TextUtilis(
                   color: Colors.black,
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.normal,
                   textstring: tempdata[i].y.toString(),
                   underline: TextDecoration.none,
@@ -502,42 +511,44 @@ class _salesproductState extends State<salesproduct> {
                     .isbarsales == 3
                     ? Row (
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('from'),
-                        TextFormField(
-                          validator: (value) {
-                            if (_selectedDatefrom == DateTime(1, 1, 1)) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: kMainColor,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('from'),
+                          TextFormField(
+                            validator: (value) {
+                              if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                return 'يرجى تعيين التاريخ ';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.date_range,
+                                color: kMainColor,
+                              ),
+                              hintStyle: const TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                  ? 'from' //_currentDate.toString()
+                                  : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                              //_invoice!.dateinstall_task.toString(),
+                              filled: true,
+                              fillColor: Colors.grey.shade200,
                             ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: _selectedDatefrom == DateTime(1, 1, 1)
-                                ? 'from' //_currentDate.toString()
-                                : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
-                            //_invoice!.dateinstall_task.toString(),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            _selectDatefrom(context, DateTime.now());
-                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                              getData();
+                            readOnly: true,
+                            onTap: () {
+                              _selectDatefrom(context, DateTime.now());
+                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                                getData();
 
-                            // _selectDate(context, DateTime.now());
-                          },
-                        ),
-                      ],
+                              // _selectDate(context, DateTime.now());
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Flexible(
                       child: Column(
@@ -598,10 +609,10 @@ class _salesproductState extends State<salesproduct> {
                               ),
                               Container(
                                height: 300, //BarChart
-                               child: charts.BarChart(
+                               child: charts.PieChart(
                                  _createSampleData(),
                                  // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                                 barGroupingType: charts.BarGroupingType.grouped,
+                                 // barGroupingType: charts.BarGroupingType.grouped,
                                  animate: true,
                                  // barRendererDecorator: (
                                  //     charts.BarLabelDecorator<String>(
@@ -616,9 +627,9 @@ class _salesproductState extends State<salesproduct> {
                                  //   groupingType: charts.BarGroupingType.grouped,
                                  //   strokeWidthPx: 1.0,
                                  // ),
-                                 domainAxis: charts.OrdinalAxisSpec(
+                                 /*domainAxis: charts.OrdinalAxisSpec(
                                    renderSpec: charts.GridlineRendererSpec(),
-                                 ),
+                                 ),*/
                                  // Set a bar label decorator.
                                  // Example configuring different styles for inside/outside:
 
@@ -690,7 +701,7 @@ class _salesproductState extends State<salesproduct> {
                                         ),
                                       ],
                                       rows:rowsdata,dividerThickness: 3,
-                                      horizontalMargin: 2,columnSpacing: 50,
+                                      horizontalMargin: 1,columnSpacing: 50,
                                       //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
                                       //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
                                       //     <DataRow>[

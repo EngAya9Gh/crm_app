@@ -182,6 +182,9 @@ class _EditUserState extends State<EditUser> {
                   'name_regoin':regoinname,
                   'name_level' :levelname,
                   'isActive' :isAcive,
+                  "updated_at":DateTime.now().toString(),
+                  "fkuserupdate":Provider.of<user_vm_provider>
+                    (context,listen: false).currentUser.idUser.toString(),
                 };
               Provider.of<user_vm_provider>(context,listen: false)
                   .updateuser_vm(body,

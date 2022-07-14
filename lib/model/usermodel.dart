@@ -19,6 +19,9 @@ class UserModel {
   String fkuserAdd;
   String nameuserAdd;
   String created_at;
+  String? fkuserupdate;
+  String? updated_at;
+  String? nameuserupdate;
   String? img_image = '';
   String? img_thumbnail = '';
   String? path = '';
@@ -40,6 +43,9 @@ class UserModel {
      required this.fkuserAdd,
      required this.created_at,
      required this.nameuserAdd,
+     required this.fkuserupdate,
+     required this.updated_at,
+     required this.nameuserupdate,
     this.name_level,
     this.currency,
     this.img_image,
@@ -51,6 +57,7 @@ class UserModel {
     return UserModel(
       idUser: jsonData['id_user'],
       nameUser: jsonData['nameUser'],
+
       email: jsonData['email'],
       mobile: jsonData['mobile'],
       codeVerfiy: jsonData!['code_verfiy'],
@@ -71,6 +78,9 @@ class UserModel {
       jsonData['img_image']: urlimage+ jsonData['img_image'],
       img_thumbnail:urlimage+ jsonData['img_thumbnail'],
       path: jsonData['path'],
+      fkuserupdate: jsonData['fkuserupdate'],
+      updated_at: jsonData['updated_at'],
+      nameuserupdate: jsonData['nameuserupdate'],
     );
   }
 
@@ -78,6 +88,9 @@ class UserModel {
     final _data = <String, dynamic>{};
      _data['id_user']=idUser;
      _data['nameUser']=nameUser;
+     _data['fkuserupdate']=fkuserupdate;
+     _data['updated_at']=updated_at;
+     _data['nameuserupdate']=nameuserupdate;
      _data['email']=email;
      _data['mobile']=mobile;
      _data['code_verfiy']=codeVerfiy;

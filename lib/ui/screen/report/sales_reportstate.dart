@@ -39,7 +39,14 @@ class _sales_reportstateState extends State<sales_reportstate> {
   double totalval=0;
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsales(0);
+      Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
 
+    });
     super.initState();
     // WidgetsBinding.instance!.addPostFrameCallback((_)async {
     // if(  Provider.of<privilge_vm>(context,listen: false)
@@ -95,6 +102,9 @@ class _sales_reportstateState extends State<sales_reportstate> {
             .checkprivlge('98')==true ) {
       print(type);
       print(paramprivilge);
+      if(idregoin=='0'){
+        type='userSum';
+      }
       var data;
       switch (type) {
         case "userSum":
@@ -151,16 +161,16 @@ class _sales_reportstateState extends State<sales_reportstate> {
                   color: Colors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.normal,
-                  textstring: tempdata[i].y.toString(),
+                  textstring: tempdata[i].y.toInt().toString(),
                   underline: TextDecoration.none,
                 )),
-                DataCell( TextUtilis(
-                  color: Colors.black,
-                  fontSize: 25,
-                  fontWeight: FontWeight.normal,
-                  textstring: tempdata[i].countclient.toString(),
-                  underline: TextDecoration.none,
-                )),
+                // DataCell( TextUtilis(
+                //   color: Colors.black,
+                //   fontSize: 25,
+                //   fontWeight: FontWeight.normal,
+                //   textstring: tempdata[i].countclient.toString(),
+                //   underline: TextDecoration.none,
+                // )),
               ],
             ));
       }
@@ -490,42 +500,44 @@ class _sales_reportstateState extends State<sales_reportstate> {
                     .isbarsales == 3
                     ? Row (
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('from'),
-                        TextFormField(
-                          validator: (value) {
-                            if (_selectedDatefrom == DateTime(1, 1, 1)) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: kMainColor,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('from'),
+                          TextFormField(
+                            validator: (value) {
+                              if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                return 'يرجى تعيين التاريخ ';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.date_range,
+                                color: kMainColor,
+                              ),
+                              hintStyle: const TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                  ? 'from' //_currentDate.toString()
+                                  : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                              //_invoice!.dateinstall_task.toString(),
+                              filled: true,
+                              fillColor: Colors.grey.shade200,
                             ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: _selectedDatefrom == DateTime(1, 1, 1)
-                                ? 'from' //_currentDate.toString()
-                                : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
-                            //_invoice!.dateinstall_task.toString(),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            _selectDatefrom(context, DateTime.now());
-                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                              getData();
+                            readOnly: true,
+                            onTap: () {
+                              _selectDatefrom(context, DateTime.now());
+                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                                getData();
 
-                            // _selectDate(context, DateTime.now());
-                          },
-                        ),
-                      ],
+                              // _selectDate(context, DateTime.now());
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Flexible(
                       child: Column(
@@ -576,14 +588,14 @@ class _sales_reportstateState extends State<sales_reportstate> {
                         child: Column(
                           // scrollDirection: Axis.horizontal,
                             children:[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Text('العدد '),
-                                  Text(
-                                      totalval.toString()),
-                                ],
-                              ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              //   children: [
+                              //     Text('العدد '),
+                              //     Text(
+                              //         totalval.toInt().toString()),
+                              //   ],
+                              // ),
                               Container(
                                 height: 300, //BarChart
                                 child: charts.BarChart(
@@ -670,12 +682,13 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                             'العدد',
                                             style: TextStyle(fontStyle: FontStyle.normal),
                                           ),
-                                        ),    DataColumn(
-                                          label: Text(
-                                            'العدد ',
-                                            style: TextStyle(fontStyle: FontStyle.normal),
-                                          ),
                                         ),
+                                        // DataColumn(
+                                        //   label: Text(
+                                        //     'العدد ',
+                                        //     style: TextStyle(fontStyle: FontStyle.normal),
+                                        //   ),
+                                        // ),
                                       ],
                                       rows:rowsdata,dividerThickness: 3,
                                       horizontalMargin: 2,columnSpacing: 50,

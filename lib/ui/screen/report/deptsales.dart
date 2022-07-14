@@ -42,7 +42,13 @@ class _deptsalesState extends State<deptsales> {
   double totalval=0;
   @override
   void initState() {
-
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context,listen: false)
+          .selectValuebarsales(0);
+    Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+    });
     super.initState();
     // WidgetsBinding.instance!.addPostFrameCallback((_)async {
     // if(  Provider.of<privilge_vm>(context,listen: false)
@@ -104,6 +110,10 @@ class _deptsalesState extends State<deptsales> {
         Provider.of<privilge_vm>(context,listen: false)
             .checkprivlge('94')==true ) {
       print(type);
+      if(idregoin=='0'){
+        type='allregoin';
+        labelxx='الفرع';
+      }
       print(paramprivilge);
       var data;
       switch (type) {
@@ -170,6 +180,7 @@ class _deptsalesState extends State<deptsales> {
             ));
       }}
       else{
+        listInvoicesAccept=[];
         for (int i = 0; i < data.length; i++) {
           listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
           totalval+=double.parse(listInvoicesAccept[i].total.toString())-
@@ -237,272 +248,270 @@ class _deptsalesState extends State<deptsales> {
       SafeArea(
         child: Directionality(
           textDirection: myui.TextDirection.rtl,
-          child: Expanded(
-            child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('94')==true?
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8.0,right: 8),
-                          child: Consumer<regoin_vm>(
-                            builder: (context, cart, child){
-                              return
-                                DropdownButton(
-                                  isExpanded: true,
-                                  hint: Text("الفرع"),
-                                  items: cart.listregoinfilter.map((level_one) {
-                                    return DropdownMenuItem(
+          child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Provider.of<privilge_vm>(context,listen: true)
+                        .checkprivlge('94')==true?
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 8.0,right: 8),
+                        child: Consumer<regoin_vm>(
+                          builder: (context, cart, child){
+                            return
+                              DropdownButton(
+                                isExpanded: true,
+                                hint: Text("الفرع"),
+                                items: cart.listregoinfilter.map((level_one) {
+                                  return DropdownMenuItem(
 
-                                      child: Text(level_one.name_regoin), //label of item
-                                      value: level_one.id_regoin, //value of item
-                                    );
-                                  }).toList(),
-                                  value:cart.selectedValueLevel,
-                                  onChanged:(value) {
-                                    //  setState(() {
-                                    cart.changeVal(value.toString());
-                                    idregoin=value.toString();
-                                    iduser='';
-                                    labelxx='regoin';
-                                    getData();
-                                  },
-                                );
-                            },
-                          ),
-                        ),
-                      )
-                          :Container(),
-                      Expanded(
-                        child:
-                        Provider.of<privilge_vm>(context,listen: true)
-                            .checkprivlge('94')==true||
-                            Provider.of<privilge_vm>(context,listen: true)
-                                .checkprivlge('93')==true ? //user
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0,right: 8,),
-                          child:
-                          Consumer<user_vm_provider>(
-                            builder: (context, cart, child){
-                              return  DropdownSearch<UserModel>(
-
-                                mode: Mode.DIALOG,
-                                // label: " الموظف ",
-                                //hint: 'الموظف',
-                                //onFind: (String filter) => cart.getfilteruser(filter),
-                                filterFn: (user, filter) => user!.getfilteruser(filter!),
-                                //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                                // itemAsString: (UserModel u) => u.userAsStringByName(),
-                                items: cart.userall,
-                                itemAsString: (u) => u!.userAsString(),
-                                onChanged: (data) {
-                                  iduser=data!.idUser!;
-                                  idregoin='';
-                                  cart.changevalueuser(data);
-                                  labelxx='user';
+                                    child: Text(level_one.name_regoin), //label of item
+                                    value: level_one.id_regoin, //value of item
+                                  );
+                                }).toList(),
+                                value:cart.selectedValueLevel,
+                                onChanged:(value) {
+                                  //  setState(() {
+                                  cart.changeVal(value.toString());
+                                  idregoin=value.toString();
+                                  iduser='';
+                                  labelxx='regoin';
                                   getData();
-                                  //filtershow();
-                                } ,
-                                selectedItem: cart.selecteduser,
-                                showSearchBox: true,
-                                dropdownSearchDecoration:
-                                InputDecoration(
-                                  //filled: true,
-                                  isCollapsed: true,
-                                  hintText: 'الموظف',
-                                  alignLabelWithHint: true,
-                                  fillColor:  Colors.grey.withOpacity(0.2),
-                                  //labelText: "choose a user",
-                                  contentPadding: EdgeInsets.all(0),
-                                  //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                  // focusedBorder: OutlineInputBorder(
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //     borderSide: const BorderSide(color: Colors.white)),
-                                  border:
-                                  UnderlineInputBorder(
-                                      borderSide: const BorderSide(  color: Colors.grey)
-                                  ),
-                                  // OutlineInputBorder(
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //     borderSide: const BorderSide( color: Colors.white)),
-                                ),
-                                // InputDecoration(border: InputBorder.none),
-
+                                },
                               );
-
-                            },
-                          ),
-                        ):Container(),
+                          },
+                        ),
                       ),
-                    ],
-                  ),
-                  Center(
-                    child: loading
-                        ? CircularProgressIndicator()
-                        : Padding(
-                      padding: const EdgeInsets.only(top: 35.0),
-                      child: Column(
-                        // scrollDirection: Axis.horizontal,
-                          children:[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text('إجمالي الديون'),
-                                Text(
-                                    totalval.toString()),
-                              ],
-                            ),
-                            // Container(
-                            //   height: 100, //BarChart
-                            //   child: charts.BarChart(
-                            //     _createSampleData(),
-                            //     // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                            //     barGroupingType: charts.BarGroupingType.grouped,
-                            //     animate: true,
-                            //     // barRendererDecorator: (
-                            //     //     charts.BarLabelDecorator<String>(
-                            //     //       insideLabelStyleSpec: fl.TextStyleSpec(
-                            //     //           fontSize: 12, color: fl.Color.black),
-                            //     //       labelPosition: fl.BarLabelPosition.inside,
-                            //     //       labelAnchor:fl. BarLabelAnchor.middle,
-                            //     //     )),
-                            //     // vertical: false,
-                            //     // barGroupingType: charts.BarGroupingType.grouped,
-                            //     // defaultRenderer: charts.BarRendererConfig(
-                            //     //   groupingType: charts.BarGroupingType.grouped,
-                            //     //   strokeWidthPx: 1.0,
-                            //     // ),
-                            //     domainAxis: charts.OrdinalAxisSpec(
-                            //       renderSpec: charts.GridlineRendererSpec(),
-                            //     ),
-                            //     // Set a bar label decorator.
-                            //     // Example configuring different styles for inside/outside:
-                            //
-                            //     // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                            //     // // Hide domain axis.
-                            //     // domainAxis:
-                            //     // new charts.OrdinalAxisSpec(renderSpec: new charts.NoneRenderSpec()),
-                            //
-                            //     // behaviors: [
-                            //     //      new charts.SeriesLegend(
-                            //     //
-                            //     //      )
-                            //     //    // new charts.DatumLegend(//SeriesLegend
-                            //     //    //   outsideJustification:
-                            //     //    //       charts.OutsideJustification.start,
-                            //     //    //   horizontalFirst: false,
-                            //     //    //   desiredMaxRows: 2,
-                            //     //    //   cellPadding: new EdgeInsets.only(
-                            //     //    //       right: 4.0, bottom: 4.0, top: 4.0,left: 10),
-                            //     //    //   entryTextStyle: charts.TextStyleSpec(
-                            //     //    //       color: charts.MaterialPalette.purple.shadeDefault,
-                            //     //    //       fontFamily: 'Georgia',
-                            //     //    //       fontSize: 18),
-                            //     //    // )
-                            //     // ],
-                            //     //  defaultRenderer: new charts.ArcRendererConfig(
-                            //     //      arcWidth: 100,
-                            //     //      arcRendererDecorators: [
-                            //     //        new charts.ArcLabelDecorator(
-                            //     //            labelPosition: charts.ArcLabelPosition.inside)
-                            //     //      ]),
-                            //
-                            //     // defaultRenderer: charts.ArcRendererConfig(
-                            //     //     arcRendererDecorators: [
-                            //     //       charts.ArcLabelDecorator(
-                            //     //           labelPosition: charts.ArcLabelPosition.inside)
-                            //     //     ])
-                            //   ),
-                            // ),
-                        labelxx=='الفرع'?
-                        Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: SingleChildScrollView(
-                                  child:
-                                  DataTable(
+                    )
+                        :Container(),
+                    Expanded(
+                      child:
+                      Provider.of<privilge_vm>(context,listen: true)
+                          .checkprivlge('94')==true||
+                          Provider.of<privilge_vm>(context,listen: true)
+                              .checkprivlge('93')==true ? //user
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0,right: 8,),
+                        child:
+                        Consumer<user_vm_provider>(
+                          builder: (context, cart, child){
+                            return  DropdownSearch<UserModel>(
 
-                                    columns: const <DataColumn>[
-                                      DataColumn(
-                                        label: Text(
-                                          '',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: Text(
-                                          'الفرع',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: Text(
-                                          'الديون',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
-                                        ),
-                                      ),    DataColumn(
-                                        label: Text(
-                                          'عدد العملاء ',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
-                                        ),
-                                      ),
-                                    ],
-                                    rows:rowsdata,dividerThickness: 3,
-                                    horizontalMargin: 2,columnSpacing: 50,
-                                    //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
-                                    //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
-                                    //     <DataRow>[
-                                    //   DataRow(
-                                    //     cells: <DataCell>[
-                                    //       DataCell(Text('Sarah')),
-                                    //       DataCell(Text('19')),
-                                    //       DataCell(Text('Student')),
-                                    //       DataCell(Text('Student')),
-                                    //     ],
-                                    //   ),
-                                    // ],
-                                  )
-                                // Column(
-                                //   children: [
-                                //     RowEditTitle(color: null,name: 'الموظف', des2: ' مبيعاته', des: 'عدد العملاء',),
-                                //     for(int i=0;i<salesresult.length;i++)
-                                //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
-                                //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
-                                //   ],
-                                // ),
+                              mode: Mode.DIALOG,
+                              // label: " الموظف ",
+                              //hint: 'الموظف',
+                              //onFind: (String filter) => cart.getfilteruser(filter),
+                              filterFn: (user, filter) => user!.getfilteruser(filter!),
+                              //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+                              // itemAsString: (UserModel u) => u.userAsStringByName(),
+                              items: cart.userall,
+                              itemAsString: (u) => u!.userAsString(),
+                              onChanged: (data) {
+                                iduser=data!.idUser!;
+                                idregoin='';
+                                cart.changevalueuser(data);
+                                labelxx='user';
+                                getData();
+                                //filtershow();
+                              } ,
+                              selectedItem: cart.selecteduser,
+                              showSearchBox: true,
+                              dropdownSearchDecoration:
+                              InputDecoration(
+                                //filled: true,
+                                isCollapsed: true,
+                                hintText: 'الموظف',
+                                alignLabelWithHint: true,
+                                fillColor:  Colors.grey.withOpacity(0.2),
+                                //labelText: "choose a user",
+                                contentPadding: EdgeInsets.all(0),
+                                //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                // focusedBorder: OutlineInputBorder(
+                                //     borderRadius: BorderRadius.circular(10),
+                                //     borderSide: const BorderSide(color: Colors.white)),
+                                border:
+                                UnderlineInputBorder(
+                                    borderSide: const BorderSide(  color: Colors.grey)
+                                ),
+                                // OutlineInputBorder(
+                                //     borderRadius: BorderRadius.circular(10),
+                                //     borderSide: const BorderSide( color: Colors.white)),
                               ),
-                            ):labelxx=='user'||labelxx=='regoin'?
-                        Column(
-                          children: [
-                            Container(
-                               height: 500,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: listInvoicesAccept.length,
-                                  itemBuilder: (context, index) {
+                              // InputDecoration(border: InputBorder.none),
 
-                                    return SingleChildScrollView(
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(2),
-                                            child:
-                                            CardInvoiceClient(
-                                              itemProd: listInvoicesAccept[index],
-                                              //itemClient :  itemClient,
+                            );
 
-                                            )
-                                        ));
-                                  }),
-                            ),
-                          ],
-                        ):Container()
-                          ] ),
+                          },
+                        ),
+                      ):Container(),
                     ),
+                  ],
+                ),
+                Center(
+                  child: loading
+                      ? CircularProgressIndicator()
+                      : Padding(
+                    padding: const EdgeInsets.only(top: 35.0),
+                    child: Column(
+                      // scrollDirection: Axis.horizontal,
+                        children:[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text('إجمالي الديون'),
+                              Text(
+                                  totalval.toString()),
+                            ],
+                          ),
+                          // Container(
+                          //   height: 100, //BarChart
+                          //   child: charts.BarChart(
+                          //     _createSampleData(),
+                          //     // barRendererDecorator: new charts.BarLabelDecorator<String>(),
+                          //     barGroupingType: charts.BarGroupingType.grouped,
+                          //     animate: true,
+                          //     // barRendererDecorator: (
+                          //     //     charts.BarLabelDecorator<String>(
+                          //     //       insideLabelStyleSpec: fl.TextStyleSpec(
+                          //     //           fontSize: 12, color: fl.Color.black),
+                          //     //       labelPosition: fl.BarLabelPosition.inside,
+                          //     //       labelAnchor:fl. BarLabelAnchor.middle,
+                          //     //     )),
+                          //     // vertical: false,
+                          //     // barGroupingType: charts.BarGroupingType.grouped,
+                          //     // defaultRenderer: charts.BarRendererConfig(
+                          //     //   groupingType: charts.BarGroupingType.grouped,
+                          //     //   strokeWidthPx: 1.0,
+                          //     // ),
+                          //     domainAxis: charts.OrdinalAxisSpec(
+                          //       renderSpec: charts.GridlineRendererSpec(),
+                          //     ),
+                          //     // Set a bar label decorator.
+                          //     // Example configuring different styles for inside/outside:
+                          //
+                          //     // barRendererDecorator: new charts.BarLabelDecorator<String>(),
+                          //     // // Hide domain axis.
+                          //     // domainAxis:
+                          //     // new charts.OrdinalAxisSpec(renderSpec: new charts.NoneRenderSpec()),
+                          //
+                          //     // behaviors: [
+                          //     //      new charts.SeriesLegend(
+                          //     //
+                          //     //      )
+                          //     //    // new charts.DatumLegend(//SeriesLegend
+                          //     //    //   outsideJustification:
+                          //     //    //       charts.OutsideJustification.start,
+                          //     //    //   horizontalFirst: false,
+                          //     //    //   desiredMaxRows: 2,
+                          //     //    //   cellPadding: new EdgeInsets.only(
+                          //     //    //       right: 4.0, bottom: 4.0, top: 4.0,left: 10),
+                          //     //    //   entryTextStyle: charts.TextStyleSpec(
+                          //     //    //       color: charts.MaterialPalette.purple.shadeDefault,
+                          //     //    //       fontFamily: 'Georgia',
+                          //     //    //       fontSize: 18),
+                          //     //    // )
+                          //     // ],
+                          //     //  defaultRenderer: new charts.ArcRendererConfig(
+                          //     //      arcWidth: 100,
+                          //     //      arcRendererDecorators: [
+                          //     //        new charts.ArcLabelDecorator(
+                          //     //            labelPosition: charts.ArcLabelPosition.inside)
+                          //     //      ]),
+                          //
+                          //     // defaultRenderer: charts.ArcRendererConfig(
+                          //     //     arcRendererDecorators: [
+                          //     //       charts.ArcLabelDecorator(
+                          //     //           labelPosition: charts.ArcLabelPosition.inside)
+                          //     //     ])
+                          //   ),
+                          // ),
+                      labelxx=='الفرع'?
+                      Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: SingleChildScrollView(
+                                child:
+                                DataTable(
+
+                                  columns: const <DataColumn>[
+                                    DataColumn(
+                                      label: Text(
+                                        '',
+                                        style: TextStyle(fontStyle: FontStyle.normal),
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: Text(
+                                        'الفرع',
+                                        style: TextStyle(fontStyle: FontStyle.normal),
+                                      ),
+                                    ),
+                                    DataColumn(
+                                      label: Text(
+                                        'الديون',
+                                        style: TextStyle(fontStyle: FontStyle.normal),
+                                      ),
+                                    ),    DataColumn(
+                                      label: Text(
+                                        'عدد العملاء ',
+                                        style: TextStyle(fontStyle: FontStyle.normal),
+                                      ),
+                                    ),
+                                  ],
+                                  rows:rowsdata,dividerThickness: 3,
+                                  horizontalMargin: 2,columnSpacing: 50,
+                                  //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
+                                  //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
+                                  //     <DataRow>[
+                                  //   DataRow(
+                                  //     cells: <DataCell>[
+                                  //       DataCell(Text('Sarah')),
+                                  //       DataCell(Text('19')),
+                                  //       DataCell(Text('Student')),
+                                  //       DataCell(Text('Student')),
+                                  //     ],
+                                  //   ),
+                                  // ],
+                                )
+                              // Column(
+                              //   children: [
+                              //     RowEditTitle(color: null,name: 'الموظف', des2: ' مبيعاته', des: 'عدد العملاء',),
+                              //     for(int i=0;i<salesresult.length;i++)
+                              //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
+                              //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
+                              //   ],
+                              // ),
+                            ),
+                          ):labelxx=='user'||labelxx=='regoin'?
+                      Column(
+                        children: [
+                          Container(
+                             height: 500,
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: listInvoicesAccept.length,
+                                itemBuilder: (context, index) {
+
+                                  return SingleChildScrollView(
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(2),
+                                          child:
+                                          CardInvoiceClient(
+                                            itemProd: listInvoicesAccept[index],
+                                            //itemClient :  itemClient,
+
+                                          )
+                                      ));
+                                }),
+                          ),
+                        ],
+                      ):Container()
+                        ] ),
                   ),
-                ]),
-          ),
+                ),
+              ]),
         ),
       ),
     );

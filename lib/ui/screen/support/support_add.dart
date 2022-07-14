@@ -444,6 +444,12 @@ class _support_addState extends State<support_add> {
                       title: ' تم التركيب من قبل ',
                       value: getnameshort(
                           _invoice!.nameuserinstall.toString())),
+                _invoice!.clientusername == null
+                    ? Container()
+                    : cardRow(
+                    title: 'يوزر العميل ',
+                    value: getnameshort(
+                        _invoice!.clientusername.toString())),
 //////////////////////////////////////////////////////////////////////////////////////////
                   _invoice!.daterepaly != null
                       ? cardRow(

@@ -376,6 +376,42 @@ class _UserScreenState extends State<UserScreen> {
                                         ),
                                       )),
                                   SizedBox(height: 10,),
+                                  useredit.nameuserupdate==null?
+                                  Container():
+                                  ContainerShadows(
+                                      width: double.infinity,
+                                      height: 50,
+                                      margin: EdgeInsets.only(),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                        ),
+                                        child: RowEdit(
+                                          des:
+                                          //controllerUser.userall![widget.index]
+                                          getnameshort(useredit.nameuserupdate.toString()),
+                                          name: 'تم التعديل من قبل ',
+                                        ),
+                                      )),
+                                  SizedBox(height: 10,),
+                                  useredit.updated_at==null
+                                  ?Container():ContainerShadows(
+                                      width: double.infinity,
+                                      height: 50,
+                                      margin: EdgeInsets.only(),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                        ),
+                                        child: RowEdit(
+                                          des:
+                                          //controllerUser.userall![widget.index]
+                                          useredit.updated_at.toString(),
+                                          name: 'تاريخ التعديل',
+                                        ),
+                                      )),
                                 ],
                               ),
                             ),

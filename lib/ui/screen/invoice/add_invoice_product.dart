@@ -82,12 +82,11 @@ void calculate(){
     setState(() {
       double totaltax=0;
       if(listProduct.isNotEmpty){
-        _textprice.text=listProduct[index].priceProduct;
+        _textprice.text= double.parse(listProduct[index].priceProduct).toStringAsFixed(2);
         String? taxCountry=listProduct[index].value_config;
        print('tax'); print(taxCountry);
        print('price'); print(_textprice.text);
-        if(taxCountry!=null)
-        {
+        if(taxCountry!=null)  {
           double pricewithtax=double.parse(_textprice.text)* double.parse(taxCountry)/100;
           print(pricewithtax);
           _textprice.text =(double.parse(_textprice.text) +pricewithtax).toString();
@@ -110,7 +109,7 @@ void calculate(){
         double totalprice=double.parse(_textprice.text)
             *double.parse( _amount.text.isEmpty?'1':_amount.text);
         // totalprice.floorToDouble();
-        _textprice.text=totalprice.toString();
+        _textprice.text=totalprice.toStringAsFixed(2).toString();
         print(totalprice.toStringAsFixed(2));
       }
 

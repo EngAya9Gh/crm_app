@@ -37,6 +37,14 @@ class _BarChartAPIState extends State<BarChartAPI> {
   double totalval=0;
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(0);
+      Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+
+    });
     super.initState();
     getData();
   }
@@ -433,42 +441,44 @@ class _BarChartAPIState extends State<BarChartAPI> {
                     .isbarsales == 3
                     ? Row (
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('from'),
-                        TextFormField(
-                          validator: (value) {
-                            if (_selectedDatefrom == DateTime(1, 1, 1)) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: kMainColor,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('from'),
+                          TextFormField(
+                            validator: (value) {
+                              if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                return 'يرجى تعيين التاريخ ';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.date_range,
+                                color: kMainColor,
+                              ),
+                              hintStyle: const TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                  ? 'from' //_currentDate.toString()
+                                  : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                              //_invoice!.dateinstall_task.toString(),
+                              filled: true,
+                              fillColor: Colors.grey.shade200,
                             ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: _selectedDatefrom == DateTime(1, 1, 1)
-                                ? 'from' //_currentDate.toString()
-                                : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
-                            //_invoice!.dateinstall_task.toString(),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            _selectDatefrom(context, DateTime.now());
-                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                              getData();
+                            readOnly: true,
+                            onTap: () {
+                              _selectDatefrom(context, DateTime.now());
+                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                                getData();
 
-                            // _selectDate(context, DateTime.now());
-                          },
-                        ),
-                      ],
+                              // _selectDate(context, DateTime.now());
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Flexible(
                       child: Column(
@@ -529,27 +539,27 @@ class _BarChartAPIState extends State<BarChartAPI> {
                               ),
                               Container(
                                 height: 300, //BarChart
-                                child: charts.BarChart(
+                                child: charts.PieChart(
                                   _createSampleData(),
                                   // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                                  barGroupingType: charts.BarGroupingType.grouped,
+                                  // barGroupingType: charts.BarGroupingType.grouped,
                                   animate: true,
-                                  barRendererDecorator: (
+                                  /*barRendererDecorator: (
                                       charts.BarLabelDecorator<String>(
                                         insideLabelStyleSpec: fl.TextStyleSpec(
                                             fontSize: 12, color: fl.Color.black),
                                         labelPosition: fl.BarLabelPosition.inside,
                                         labelAnchor:fl. BarLabelAnchor.middle,
-                                      )),
+                                      )),*/
                                   // vertical: false,
                                   // barGroupingType: charts.BarGroupingType.grouped,
                                   // defaultRenderer: charts.BarRendererConfig(
                                   //   groupingType: charts.BarGroupingType.grouped,
                                   //   strokeWidthPx: 1.0,
                                   // ),
-                                  domainAxis: charts.OrdinalAxisSpec(
+                                 /* domainAxis: charts.OrdinalAxisSpec(
                                     renderSpec: charts.GridlineRendererSpec(),
-                                  ),
+                                  ),*/
                                   // Set a bar label decorator.
                                   // Example configuring different styles for inside/outside:
 

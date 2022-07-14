@@ -524,10 +524,10 @@ else{
                           ],
                         ),
                         Provider.of<privilge_vm>(context,listen: true)
-                            .checkprivlge('76')==true  ?
+                            .checkprivlge('76')==true  && _invoice!.idInvoice != null&&_invoice!.userinstall!=null?
                             RowEdit(name: 'يوزر العميل', des: ''):Container(),
                   Provider.of<privilge_vm>(context,listen: true)
-                      .checkprivlge('76')==true  ?
+                      .checkprivlge('76')==true &&_invoice!.idInvoice != null &&_invoice!.userinstall!=null ?
                   EditTextFormField(
                               paddcustom: EdgeInsets.all(16),
                               hintText: '',

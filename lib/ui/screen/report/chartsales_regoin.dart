@@ -37,6 +37,12 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   double totalval=0;
   @override
   void initState() {
+    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(0);
+    });
     super.initState();
     getData();
   }
@@ -65,10 +71,16 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     if(Provider.of<privilge_vm>(context,listen: false).checkprivlge('83')==true ||
         Provider.of<privilge_vm>(context,listen: false)
             .checkprivlge('84')==true){
-    var data;
+
+      var data;
     String params='';
     if(typeproduct=='أجهزة') params='&product=0';
     if(typeproduct=='برامج') params='&product=1';
+    print(type);
+      // if(idregoin=='0'){
+      //   type='userSum';
+      //   paramprivilge='';
+      // }
     switch (type) {
       case "userSum":
         data = await Api().post(
@@ -424,42 +436,44 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                     .isbarsales == 3
                     ? Row (
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('from'),
-                        TextFormField(
-                          validator: (value) {
-                            if (_selectedDatefrom == DateTime(1, 1, 1)) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: kMainColor,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('from'),
+                          TextFormField(
+                            validator: (value) {
+                              if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                return 'يرجى تعيين التاريخ ';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.date_range,
+                                color: kMainColor,
+                              ),
+                              hintStyle: const TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                  ? 'from' //_currentDate.toString()
+                                  : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                              //_invoice!.dateinstall_task.toString(),
+                              filled: true,
+                              fillColor: Colors.grey.shade200,
                             ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: _selectedDatefrom == DateTime(1, 1, 1)
-                                ? 'from' //_currentDate.toString()
-                                : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
-                            //_invoice!.dateinstall_task.toString(),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            _selectDatefrom(context, DateTime.now());
-                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                              getData();
+                            readOnly: true,
+                            onTap: () {
+                              _selectDatefrom(context, DateTime.now());
+                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                                getData();
 
-                            // _selectDate(context, DateTime.now());
-                          },
-                        ),
-                      ],
+                              // _selectDate(context, DateTime.now());
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Flexible(
                       child: Column(
