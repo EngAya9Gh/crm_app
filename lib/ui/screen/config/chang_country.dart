@@ -22,10 +22,11 @@ class _change_countryState extends State<change_country> {
 
     WidgetsBinding.instance!.addPostFrameCallback((_)async {
       String fkcoun=Provider.of<user_vm_provider>(context,listen: false).currentUser.fkCountry.toString();
+      await Provider.of<country_vm>(context,listen: false).getcountry();
       Provider.of<country_vm>(context,listen: false).changeValuser(fkcoun);
     });
   }
-      @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
 

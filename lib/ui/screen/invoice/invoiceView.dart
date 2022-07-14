@@ -388,6 +388,19 @@ class _InvoiceViewState extends State<InvoiceView> {
                         title: 'عدد المستخدمين',
                         value:  widget.invoice!.numusers.toString()
                              ):Container(),
+            widget.invoice!.address_invoice.toString()==''?
+                    cardRow(
+                        title: 'عنوان الفاتورة',
+                        value:  widget.invoice!.address_invoice.toString()
+                             ):Container(),
+
+                    Provider.of<privilge_vm>(context,listen: true)
+                        .checkprivlge('76')==true  ?
+                    cardRow( title:'يوزر العميل',
+                        value:
+                        widget.invoice!.clientusername==null?'':
+                        widget.invoice!.clientusername.toString()):Container(),
+
                     widget.invoice!.imagelogo != null&& widget.invoice!.imagelogo.toString().isNotEmpty?
                     widgetlogo(
                         title: 'شعار المؤسسة',

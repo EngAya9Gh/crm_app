@@ -53,7 +53,6 @@ class InvoiceModel extends CacheRepository{
 
     this.daterepaly,
     this.fkuserdatareplay,
-
     this.iduser_approve,
     this.isApprove,
     this.mobile,
@@ -69,6 +68,8 @@ class InvoiceModel extends CacheRepository{
     this.imagelogopath,
     this.hoursdelaytabel,
     this.hoursdelayinstall,
+    this.clientusername,
+    this.address_invoice,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -130,6 +131,8 @@ class InvoiceModel extends CacheRepository{
     String? numTax;
     String? hoursdelaytabel;
     String? hoursdelayinstall;
+    String? clientusername;
+    String? address_invoice;
     String?  city,
   name_city,
   namemaincity,
@@ -210,6 +213,8 @@ class InvoiceModel extends CacheRepository{
     numTax = jsondata['numTax'];
     hoursdelaytabel = jsondata['hoursdelaytabel'];
     hoursdelayinstall = jsondata['hoursdelayinstall'];
+    clientusername = jsondata['clientusername'];
+    address_invoice = jsondata['address_invoice'];
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']
@@ -303,6 +308,8 @@ class InvoiceModel extends CacheRepository{
     _data['numTax'] = numTax;
     _data['hoursdelaytabel'] = hoursdelaytabel;
     _data['hoursdelayinstall'] = hoursdelayinstall;
+    _data['clientusername'] = clientusername;
+    _data['address_invoice'] = address_invoice;
     _data['products'] =
         products!.map((e)=>e.toJson()).toList();
     return _data;

@@ -16,6 +16,7 @@ import 'package:crm_smart/ui/widgets/photoviewcustom.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
+import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,12 +73,14 @@ class _addinvoiceState extends State<addinvoice> {
    final TextEditingController noteController = TextEditingController();
    final TextEditingController numbranchController = TextEditingController();
    final TextEditingController numuserController = TextEditingController();
+   final TextEditingController userclientController = TextEditingController();
    final TextEditingController nummostawdaController = TextEditingController();
    final TextEditingController numTaxController = TextEditingController();
    // final TextEditingController numTaxController = TextEditingController();
 
    final TextEditingController imageController = TextEditingController();
    final TextEditingController logoController = TextEditingController();
+   final TextEditingController addressController = TextEditingController();
    final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
    String? _fileName;
    String? _saveAsFileName;
@@ -102,6 +105,8 @@ void dispose() async{
   nummostawdaController.dispose();
   numbranchController.dispose();
   numTaxController.dispose();
+  userclientController.dispose();
+  addressController.dispose();
   print('in dispos add invoice *****************');
   //_resetState();
   //await FilePicker.platform.clearTemporaryFiles();
@@ -131,6 +136,8 @@ void dispose() async{
     nummostawdaController.text=_invoice!.nummostda==null?'':_invoice!.nummostda.toString();
     numbranchController.text=_invoice!.numbarnch==null?'':_invoice!.numbarnch.toString();
     numTaxController.text=_invoice!.numTax==null?'':_invoice!.numTax.toString();
+    userclientController.text=_invoice!.clientusername==null?'':_invoice!.clientusername.toString();
+    addressController.text=_invoice!.address_invoice==null?'':_invoice!.address_invoice.toString();
 
     amount_paidController.text=_invoice!.amountPaid.toString();
     renewController.text=_invoice!.renewYear.toString();
@@ -512,7 +519,29 @@ else{
                                 ],
                               ),
                             ),
+
+
                           ],
+                        ),
+                        Provider.of<privilge_vm>(context,listen: true)
+                            .checkprivlge('76')==true  ?
+                            RowEdit(name: 'يوزر العميل', des: ''):Container(),
+                  Provider.of<privilge_vm>(context,listen: true)
+                      .checkprivlge('76')==true  ?
+                  EditTextFormField(
+                              paddcustom: EdgeInsets.all(16),
+                              hintText: '',
+                              obscureText: false,
+                              controller: userclientController,
+                            )
+                          :Container(),
+                        RowEdit(name: 'عنوان الفاتورة', des: ''),
+                        EditTextFormField(
+                          maxline: 3,
+                          paddcustom: EdgeInsets.all(16),
+                          hintText: '',
+                          obscureText: false,
+                          controller: addressController,
                         ),
                         //CustomButton(text: 'd',width: 50,onTap: (){},),
                         RowEdit(name: 'شعار المؤسسة', des: ''),
@@ -742,6 +771,8 @@ else{
                                           'nummostda':nummostawdaController.text,
                                           'numusers':numuserController.text,
                                           'numTax':numTaxController.text,
+                                          'address_invoice':addressController.text,
+                                          'clientusername':userclientController.text,
                                           'date_lastuserupdate':DateTime.now().toString(),
                                            //"date_changetype":,
                                         },invoiceID,
@@ -782,6 +813,7 @@ else{
                                           'numbarnch':numbranchController.text,
                                           'nummostda':nummostawdaController.text,
                                           'numusers':numuserController.text,
+                                          'address_invoice':addressController.text,
                                           //'date_lastuserupdate':DateTime.now().toString(),
                                           //"date_changetype":,
                                           //'message':"",

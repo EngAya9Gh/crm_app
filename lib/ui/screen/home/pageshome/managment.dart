@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/config/addreson.dart';
+import 'package:crm_smart/ui/screen/config/chang_country.dart';
 import 'package:crm_smart/ui/screen/config/config_view.dart';
 import 'package:crm_smart/ui/screen/config/maincityview.dart';
 import 'package:crm_smart/ui/screen/config/manageview.dart';
@@ -125,7 +126,7 @@ class _managmentpageState extends State<managmentpage> {
                     context,
                     MaterialPageRoute<void>(
                       builder: (BuildContext context)
-                      => config_view(),
+                      => change_country(),
 
                     ),
                   );

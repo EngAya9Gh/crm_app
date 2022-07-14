@@ -7,9 +7,6 @@ import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:flutter/cupertino.dart';
-
-import '../../../constants.dart';
 
 class invoices extends StatefulWidget {
    invoices({required this.itemClient, required this.fkclient,

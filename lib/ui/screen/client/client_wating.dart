@@ -217,11 +217,12 @@ class _ClientWaitingState extends State<ClientWaiting> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('عدد العملاء',style: TextStyle(
+                              Text('عدد الفواتير',style: TextStyle(
                                   fontFamily: kfontfamily2,fontWeight: FontWeight.bold
                               ),),
                               Text(
-                                Provider.of<invoice_vm>(context,listen: true).listInvoicesAccept.length.toString(),style: TextStyle(
+                                Provider.of<invoice_vm>(context,listen: true)
+                                    .listInvoicesAccept.length.toString(),style: TextStyle(
                                   fontFamily: kfontfamily2,fontWeight: FontWeight.bold
                               ),),
                             ],),

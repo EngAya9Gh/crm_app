@@ -230,9 +230,7 @@ class _addUserState extends State<addUser> {
                   ),
                   //RowEdit(name: 'Image', des: ''),
                   SizedBox(height: 35,),
-
                   //show chose image
-
                   Center(
                     child: custom_button_new(
                      // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),

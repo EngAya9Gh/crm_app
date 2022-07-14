@@ -31,7 +31,7 @@ const String label_cliententerprise='اسم المؤسسة';
 const String label_clientmobile='رقم الجوال';
 const String label_client_typejob='نوع النشاط';
 const String label_clientcity='المدينة';
-const String label_usernameclient='يوزر العميل';
+const String label_usernameclient='عنوان العميل';
 const String label_clientlocation='الموقع';
 
 const String label_clientregoin='المنطقة';

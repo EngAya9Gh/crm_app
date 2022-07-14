@@ -55,6 +55,8 @@ class _editclientState extends State<editclient> {
   final TextEditingController resaonController = TextEditingController();
   final TextEditingController valueBackController = TextEditingController();
   final TextEditingController descresaonController = TextEditingController();
+  // final TextEditingController address_client = TextEditingController();
+
   late typeclient typeclient_provider;
   late final UserModel currentUser;
   late String? namemanage='';
@@ -70,6 +72,7 @@ class _editclientState extends State<editclient> {
     valueBackController.dispose();
     descresaonController.dispose();
     usernameclientController.dispose();
+    // address_client.dispose();
     super.dispose();
   }
   @override
@@ -83,8 +86,8 @@ class _editclientState extends State<editclient> {
     typejobController.text=widget.itemClient.typeJob!.toString();
     locationController.text=widget.itemClient.location!.toString();
     regoinController.text=widget.itemClient.name_regoin!.toString();
-    usernameclientController.text=widget.itemClient.clientusername==null?'':
-        widget.itemClient.clientusername.toString();
+    usernameclientController.text=widget.itemClient.address_client==null?'':
+        widget.itemClient.address_client.toString();
     //////////////////////////////////////////////////////////
     ////////////////////////////////////////
     //print( typeclient_provider.selectedValuemanag);
@@ -204,6 +207,7 @@ void didChangeDependencies() {
           'name_enterprise': nameEnterpriseController.text,
           'type_job': typejobController.text,
           'city': cityController,
+
           'location': locationController.text.toString(),
           //"fk_regoin":currentUser.fkRegoin==null?"null" :currentUser.fkRegoin,
           //"date_create": ,
@@ -213,7 +217,7 @@ void didChangeDependencies() {
           //"fk_user":widget.fkuser,
           // "date_transfer":,
           "mobile": mobileController.text,
-          "clientusername":usernameclientController.text,
+          "address_client":usernameclientController.text,
           "offer_price": offerpriceController.text,
           "reason_change":resaonController.text,
           // typeclient_provider.selectedValuemanag == "منسحب"
@@ -322,7 +326,21 @@ void didChangeDependencies() {
                       SizedBox(
                         height: 5,
                       ),
-
+                      RowEdit(name: label_usernameclient, des: 'Required') ,
+                      EditTextFormField(
+                        maxline: 3,
+                        vaild: (value) {
+                          if (value!.toString().trim().isEmpty) {
+                            return label_empty;
+                          }
+                        },
+                        hintText: label_usernameclient,
+                        obscureText: false,
+                        controller: usernameclientController,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       //admin
 
                       RowEdit(name: label_clientcity, des: 'Required'),
@@ -406,18 +424,8 @@ void didChangeDependencies() {
                         obscureText: false,
                         controller: locationController,
                       ),
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('76')==true ?
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: label_usernameclient,
-                        obscureText: false,
-                        controller: usernameclientController,
-                      ):Container(),
+
+
                       ////////////////////////////////////////////////
                       SizedBox(
                         height: 15,

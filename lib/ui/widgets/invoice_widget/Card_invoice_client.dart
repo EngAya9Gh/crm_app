@@ -108,6 +108,13 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                         ),
                       ],
                     ),
+                    widget.itemProd.address_invoice!=null?
+                    Text(
+                      widget.itemProd.address_invoice.toString(),
+                      style: TextStyle(
+                          fontFamily: kfontfamily2,
+                          fontWeight: FontWeight.bold),
+                    ):Container(),
                     Text(
                       widget.itemProd.name_enterprise.toString(),
                       style: TextStyle(

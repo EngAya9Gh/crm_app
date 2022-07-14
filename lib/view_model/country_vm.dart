@@ -1,7 +1,9 @@
 
 
 
+import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/countrymodel.dart';
+import 'package:crm_smart/services/RegoinServices.dart';
 import 'package:flutter/cupertino.dart';
 
 class country_vm extends ChangeNotifier{
@@ -32,5 +34,27 @@ class country_vm extends ChangeNotifier{
   setIDRegoin(val){
     this.id_regoin=val;
     notifyListeners();
+  }
+  //
+  Future<void> getcountry()async {
+    listcountry=[];
+    if (listcountry.isEmpty) {
+      List<dynamic> data = [];
+      listcountry= await RegoinService().getAllCountry();
+      // data = await Api()
+      //     .get(url: url +
+      //     'country/get_regoinByIdCountry.php?fk_country=${usercurrent!
+      //         .fkCountry}');
+      // print(data);
+      // if (data != null) {
+      //   for (int i = 0; i < data.length; i++) {
+      //     listregoin.add(RegoinModel.fromJson(data[i]));
+      //   }
+      // }
+    }
+
+    notifyListeners();
+    //var  data=await RegoinService().getRegoinByCountry("1");
+    //listregoin= data as  List<RegoinModel>;
   }
 }

@@ -46,6 +46,7 @@ class _addClientState extends State<addClient> {
   final TextEditingController mobileController = TextEditingController();
 
   final TextEditingController typejobController = TextEditingController();
+  final TextEditingController address_client = TextEditingController();
 
   String? cityController ;
 
@@ -60,6 +61,7 @@ class _addClientState extends State<addClient> {
     typejobController.dispose();
     locationController.dispose();
     regoinController.dispose();
+    address_client.dispose();
 
     super.dispose();
   }
@@ -160,6 +162,25 @@ class _addClientState extends State<addClient> {
                         },
                         controller: typejobController, //اسم المؤسسة
                         label: label_client_typejob,
+                        onChanged: (val) {
+                          // nameprod = val;
+                        },
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      RowEdit(name: label_usernameclient, des: 'Required') ,
+
+                      EditTextFormField(
+                        hintText: label_usernameclient,
+                        obscureText: false,
+                        vaild: (value) {
+                          if (value!.toString().trim().isEmpty) {
+                            return label_empty;
+                          }
+                        },
+                        controller: address_client, //اسم المؤسسة
+                        label:label_usernameclient,
                         onChanged: (val) {
                           // nameprod = val;
                         },
@@ -298,6 +319,7 @@ class _addClientState extends State<addClient> {
                                 Provider.of<client_vm>(context, listen: false)
                                     .addclient_vm({
                                   'name_client': nameclientController.text,
+                                  'address_client':address_client.text,
                                   'name_enterprise': nameEnterpriseController
                                       .text,
                                   'type_job': typejobController.text,

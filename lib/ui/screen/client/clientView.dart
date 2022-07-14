@@ -134,16 +134,16 @@ class _ClientViewState extends State<ClientView> {
                 (clientModel.reasonTransfer==null||
                     clientModel.reasonTransfer=="null")&&clientModel.fkusertrasfer!=null?
                 cardRow( title:'تاريخ التحويل',value:clientModel.dateTransfer.toString()):Container(),
+                clientModel.location.toString()==''?Container():
                 cardRow( title:' الموقع',value:clientModel.location.toString()),
                 clientModel.ismarketing=='1' ?
                 cardRow( title:' عميل تسويق الكتروني',
                 value:clientModel.ismarketing=='1'?'نعم':''):Container(),
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('76')==true  ?
-                cardRow( title:'يوزر العميل',
+
+                cardRow( title:'عنوان العميل',
                 value:
-                clientModel.clientusername==null?'':
-                clientModel.clientusername.toString()):Container(),
+                clientModel.address_client==null?'':
+                clientModel.address_client.toString()) ,
 
                 Center(
                 child: Row(

@@ -30,7 +30,7 @@ class RegoinService{
     }
     return _Regoinlist;
   }
-  Future<List<CountryModel>?> getAllCountry() async {
+  Future<List<CountryModel>> getAllCountry() async {
     List<dynamic> data=[];
     try{
      data= await Api()
