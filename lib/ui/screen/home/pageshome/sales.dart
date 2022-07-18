@@ -129,7 +129,7 @@ class _salesState extends State<sales> {
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context)=>
                             BarChartAPI()));
-                  }, title:  ' تقارير المبيعات ',
+                  }, title:  'تقارير مبيعات الموظفين ',
                   colorbag: Colors.white,
                   colortitle: Colors.black,
                   colorarrow: Colors.black,):Container(),
@@ -140,7 +140,7 @@ class _salesState extends State<sales> {
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context)=>
                             BarChartregoinsales()));
-                  }, title:  ' تقارير الفروع ',
+                  }, title:  ' تقارير مبيعات الفروع ',
                   colorbag: Colors.white,
                   colortitle: Colors.black,
                   colorarrow: Colors.black,):Container(),
@@ -151,7 +151,7 @@ class _salesState extends State<sales> {
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context)=>
                             salesproduct()));
-                  }, title:  ' تقارير المنتجات ',
+                  }, title:  ' تقارير مبيعات المنتجات ',
                   colorbag: Colors.white,
                   colortitle: Colors.black,
                   colorarrow: Colors.black,):Container(),
@@ -162,7 +162,7 @@ class _salesState extends State<sales> {
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context)=>
                             deptsales()));
-                  }, title:  ' تقارير الديون ',
+                  }, title:  ' تقارير ديون العملاء ',
                   colorbag: Colors.white,
                   colortitle: Colors.black,
                   colorarrow: Colors.black,):Container(),

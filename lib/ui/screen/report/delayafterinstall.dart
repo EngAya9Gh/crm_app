@@ -389,7 +389,7 @@ print(type);
                                                                 Text(
                                                                   listInvoicesAccept[index].hoursdelayinstall.toString()=='-1'?
                                                                   'لم يتم التركيب بعد':
-                                                                  listInvoicesAccept[index].hoursdelayinstall.toString(),
+                                                              ' ساعة '+    listInvoicesAccept[index].hoursdelayinstall.toString(),
                                                                   style: TextStyle(
                                                                       fontSize: 12,
                                                                       // fontWeight: FontWeight.bold,

@@ -214,8 +214,10 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
           child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0,left: 10,right: 15,bottom: 8),
+                  padding: const EdgeInsets.only(top: 8.0,bottom: 8),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
                     children: [
                       Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
@@ -225,7 +227,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                 ),
                                 options: GroupButtonOptions(
                                     buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
-                                buttons: ['سنوي', 'ربعي', 'شهري', 'يومي'],
+                                buttons: ['سنوي', 'شهري', 'يومي'],
                                 onSelected: (index, isselected) {
                                   print(index);
                                   switch(index){
@@ -234,12 +236,12 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                       if(_selectedDate != DateTime(1, 1, 1) )
                                         getData();
                                       break;
-                                    case 2:
+                                    case 1:
                                       type='datemonth';
                                       if(_selectedDatemonth != DateTime(1, 1, 1) )
                                         getData();
                                       break;
-                                    case 3:
+                                    case 2:
                                       type='datedays';
                                       if(_selectedDatefrom != DateTime(1, 1, 1)&& _selectedDateto != DateTime(1, 1, 1))
                                         getData();
@@ -366,7 +368,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                   },
                 )
                     : Provider.of<selected_button_provider>(context, listen: true)
-                    .isbarsales == 2
+                    .isbarsales == 1
                     ? Flexible(
                   child: TextFormField(
                     validator: (value) {
@@ -433,7 +435,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                     },
                   ),
                 ): Provider.of<selected_button_provider>(context, listen: true)
-                    .isbarsales == 3
+                    .isbarsales == 2
                     ? Row (
                   children: [
                     Flexible(
@@ -534,27 +536,27 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                               ),
                               Container(
                                 height: 300, //BarChart
-                                child: charts.BarChart(
+                                child: charts.PieChart(
                                   _createSampleData(),
                                   // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                                  barGroupingType: charts.BarGroupingType.grouped,
+                                  /*barGroupingType: charts.BarGroupingType.grouped, */
                                   animate: true,
-                                  barRendererDecorator: (
+                                  /*barRendererDecorator: (
                                       charts.BarLabelDecorator<String>(
                                         insideLabelStyleSpec: fl.TextStyleSpec(
                                             fontSize: 12, color: fl.Color.black),
                                         labelPosition: fl.BarLabelPosition.inside,
                                         labelAnchor:fl. BarLabelAnchor.middle,
-                                      )),
+                                      )),*/
                                   // vertical: false,
                                   // barGroupingType: charts.BarGroupingType.grouped,
                                   // defaultRenderer: charts.BarRendererConfig(
                                   //   groupingType: charts.BarGroupingType.grouped,
                                   //   strokeWidthPx: 1.0,
                                   // ),
-                                  domainAxis: charts.OrdinalAxisSpec(
+                                  /*domainAxis: charts.OrdinalAxisSpec(
                                     renderSpec: charts.GridlineRendererSpec(),
-                                  ),
+                                  ),*/
                                   // Set a bar label decorator.
                                   // Example configuring different styles for inside/outside:
 
@@ -620,7 +622,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                           ),
                                         ),    DataColumn(
                                           label: Text(
-                                            'عدد العملاء',
+                                            'عدد الفواتير',
                                             style: TextStyle(fontStyle: FontStyle.normal),
                                           ),
                                         ),

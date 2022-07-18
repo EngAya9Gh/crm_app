@@ -143,6 +143,21 @@ class _invoice_marketingState extends State<invoice_marketing> {
                             hintnamefilter,''
                         ),
                         SizedBox(height: 5,),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30.0,right: 30),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('عدد الفواتير',style: TextStyle(
+                                  fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                              ),),
+                              Text(
+                                Provider.of<invoice_vm>(context,listen: true)
+                                    .listinvoicesMarketing.length.toString(),style: TextStyle(
+                                  fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                              ),),
+                            ],),
+                        ),
                         Container(
                           height: MediaQuery
                               .of(context)

@@ -306,7 +306,7 @@ class _delayinstallState extends State<delayinstall> {
                                                                 Text(
                                                                   listInvoicesAccept[index].hoursdelaytabel.toString()=='-1'?
                                                                   'لم تتم الجدولة بعد':
-                                                                  listInvoicesAccept[index].hoursdelaytabel.toString(),
+                                                                 ' ساعة '+ listInvoicesAccept[index].hoursdelaytabel.toString(),
                                                                   style: TextStyle(
                                                                       fontSize: 12,
                                                                       // fontWeight: FontWeight.bold,

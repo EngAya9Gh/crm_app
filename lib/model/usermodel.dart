@@ -16,9 +16,9 @@ class UserModel {
   String? name_level;
   String? currency;
   String isActive;
-  String fkuserAdd;
-  String nameuserAdd;
-  String created_at;
+  String? fkuserAdd;
+  String? nameuserAdd;
+  String? created_at;
   String? fkuserupdate;
   String? updated_at;
   String? nameuserupdate;

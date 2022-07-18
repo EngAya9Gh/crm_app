@@ -215,8 +215,10 @@ class _support_install_reportState extends State<support_install_report> {
           child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0,left: 10,right: 15,bottom: 8),
+                  padding: const EdgeInsets.only(top: 8.0,bottom: 8),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
                     children: [
                       Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
@@ -226,7 +228,7 @@ class _support_install_reportState extends State<support_install_report> {
                                 ),
                                 options: GroupButtonOptions(
                                     buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
-                                buttons: ['سنوي', 'ربعي', 'شهري', 'يومي'],
+                                buttons: ['سنوي', 'شهري', 'يومي'],
                                 onSelected: (index, isselected) {
                                   print(index);
                                   switch(index){
@@ -235,12 +237,12 @@ class _support_install_reportState extends State<support_install_report> {
                                       if(_selectedDate != DateTime(1, 1, 1) )
                                         getData();
                                       break;
-                                    case 2:
+                                    case 1:
                                       type='datemonth';
                                       if(_selectedDatemonth != DateTime(1, 1, 1) )
                                         getData();
                                       break;
-                                    case 3:
+                                    case 2:
                                       type='datedays';
                                       if(_selectedDatefrom != DateTime(1, 1, 1)&& _selectedDateto != DateTime(1, 1, 1))
                                         getData();
@@ -325,7 +327,7 @@ class _support_install_reportState extends State<support_install_report> {
                   },
                 )
                     : Provider.of<selected_button_provider>(context, listen: true)
-                    .isbarsales == 2
+                    .isbarsales == 1
                     ? Flexible(
                   child: TextFormField(
                     validator: (value) {
@@ -392,46 +394,48 @@ class _support_install_reportState extends State<support_install_report> {
                     },
                   ),
                 ): Provider.of<selected_button_provider>(context, listen: true)
-                    .isbarsales == 3
+                    .isbarsales == 2
                     ?
                 Row (
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('from'),
-                        TextFormField(
-                          validator: (value) {
-                            if (_selectedDatefrom == DateTime(1, 1, 1)) {
-                              return 'يرجى تعيين التاريخ ';
-                            }
-                          },
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.date_range,
-                              color: kMainColor,
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('from'),
+                          TextFormField(
+                            validator: (value) {
+                              if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                return 'يرجى تعيين التاريخ ';
+                              }
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.date_range,
+                                color: kMainColor,
+                              ),
+                              hintStyle: const TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                  ? 'from' //_currentDate.toString()
+                                  : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                              //_invoice!.dateinstall_task.toString(),
+                              filled: true,
+                              fillColor: Colors.grey.shade200,
                             ),
-                            hintStyle: const TextStyle(
-                                color: Colors.black45,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500),
-                            hintText: _selectedDatefrom == DateTime(1, 1, 1)
-                                ? 'from' //_currentDate.toString()
-                                : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
-                            //_invoice!.dateinstall_task.toString(),
-                            filled: true,
-                            fillColor: Colors.grey.shade200,
-                          ),
-                          readOnly: true,
-                          onTap: () {
-                            _selectDatefrom(context, DateTime.now());
-                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                              getData();
+                            readOnly: true,
+                            onTap: () {
+                              _selectDatefrom(context, DateTime.now());
+                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                                getData();
 
-                            // _selectDate(context, DateTime.now());
-                          },
-                        ),
-                      ],
+                              // _selectDate(context, DateTime.now());
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                     Flexible(
                       child: Column(

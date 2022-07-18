@@ -283,6 +283,21 @@ class _clientmarketingState extends State<clientmarketing> {
                           SizedBox(
                             height: 5,
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0,right: 30),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('عدد العملاء',style: TextStyle(
+                                    fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                                ),),
+                                Text(
+                                  Provider.of<client_vm>(context,listen: true)
+                                      .listClientMarketing.length.toString(),style: TextStyle(
+                                    fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                                ),),
+                              ],),
+                          ),
                           Container(
                             height: MediaQuery.of(context).size.height*0.75,
                             child: Padding(

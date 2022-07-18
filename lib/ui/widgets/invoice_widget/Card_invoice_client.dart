@@ -115,12 +115,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           fontFamily: kfontfamily2,
                           fontWeight: FontWeight.bold),
                     ):Container(),
-                    Text(
-                      widget.itemProd.name_enterprise.toString(),
-                      style: TextStyle(
-                          fontFamily: kfontfamily2,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    // Text(
+                    //   widget.itemProd.name_enterprise.toString(),
+                    //   style: TextStyle(
+                    //       fontFamily: kfontfamily2,
+                    //       fontWeight: FontWeight.bold),
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

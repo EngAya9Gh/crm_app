@@ -217,8 +217,10 @@ class _care_reportState extends State<care_report> {
           child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0,left: 10,right: 15,bottom: 8),
+                  padding: const EdgeInsets.only(top: 8.0,bottom: 8),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
                     children: [
                       Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
@@ -228,7 +230,7 @@ class _care_reportState extends State<care_report> {
                                 ),
                                 options: GroupButtonOptions(
                                     buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
-                                buttons: ['سنوي', 'ربعي', 'شهري', 'يومي'],
+                                buttons: ['سنوي', 'شهري', 'يومي'],
                                 onSelected: (index, isselected) {
                                   print(index);
                                   switch(index){
@@ -237,12 +239,12 @@ class _care_reportState extends State<care_report> {
                                       if(_selectedDate != DateTime(1, 1, 1) )
                                         getData();
                                       break;
-                                    case 2:
+                                    case 1:
                                       type='datemonth';
                                       if(_selectedDatemonth != DateTime(1, 1, 1) )
                                         getData();
                                       break;
-                                    case 3:
+                                    case 2:
                                       type='datedays';
                                       if(_selectedDatefrom != DateTime(1, 1, 1)&& _selectedDateto != DateTime(1, 1, 1))
                                         getData();
@@ -368,7 +370,7 @@ class _care_reportState extends State<care_report> {
                   },
                 )
                     : Provider.of<selected_button_provider>(context, listen: true)
-                    .isbarsales == 2
+                    .isbarsales == 1
                     ? Flexible(
                   child: TextFormField(
                     validator: (value) {
@@ -435,7 +437,7 @@ class _care_reportState extends State<care_report> {
                     },
                   ),
                 ): Provider.of<selected_button_provider>(context, listen: true)
-                    .isbarsales == 3
+                    .isbarsales == 2
                     ? Row (
                   children: [
                     Flexible(

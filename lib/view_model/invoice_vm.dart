@@ -301,7 +301,7 @@ class invoice_vm extends ChangeNotifier{
       String params='';
       for(int i=0;i<listparam.length;i++)
         params+='&maincity[]=${listparam[i]}';
-    idexist= listparam.indexWhere((element) => element.id_maincity=='0');
+     idexist= listparam.indexWhere((element) => element.id_maincity=='0');
      print(idexist);
      print(state);
      print('idexist');

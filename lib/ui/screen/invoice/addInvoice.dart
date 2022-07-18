@@ -289,6 +289,19 @@ else{
                         SizedBox(
                           height: 5,
                         ),
+                        RowEdit(name: 'عنوان الفاتورة', des: ''),
+                        EditTextFormField(
+                          vaild: (value) {
+                            if (value.toString().trim().isEmpty) {
+                              return label_empty;
+                            }
+                          },
+                          maxline: 3,
+                          paddcustom: EdgeInsets.all(16),
+                          hintText: '',
+                          obscureText: false,
+                          controller: addressController,
+                        ),
                         RowEdit(name: label_amount_paid, des: 'required'),
                         EditTextFormField(
                           obscureText: false,
@@ -535,14 +548,7 @@ else{
                               controller: userclientController,
                             )
                           :Container(),
-                        RowEdit(name: 'عنوان الفاتورة', des: ''),
-                        EditTextFormField(
-                          maxline: 3,
-                          paddcustom: EdgeInsets.all(16),
-                          hintText: '',
-                          obscureText: false,
-                          controller: addressController,
-                        ),
+
                         //CustomButton(text: 'd',width: 50,onTap: (){},),
                         RowEdit(name: 'شعار المؤسسة', des: ''),
                        TextFormField(
