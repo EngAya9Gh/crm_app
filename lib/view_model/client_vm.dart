@@ -105,13 +105,13 @@ class client_vm extends ChangeNotifier {
           if(element.fkRegoin==regoin)
             list.add(element);
         });
-      }
+      }      
       else{//الكل لفلتر المنطقة
         listClientAccept.forEach((element) {
           if( element.fkcountry==usercurrent!.fkCountry)
             list.add(element);
         });
-      }
+      }      
     }
     listClientAccept=list;
     notifyListeners();

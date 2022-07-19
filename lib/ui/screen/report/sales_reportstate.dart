@@ -133,7 +133,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
       }
       List<BarModel> tempdataclient = [];
       totalval=0;
-
+      rowsdata=[];
       for (int i = 0; i < data.length; i++) {
         tempdata.add(BarModel.fromJson(data[i]));
         print(tempdata[i].y);
@@ -532,8 +532,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                             readOnly: true,
                             onTap: () {
                               _selectDatefrom(context, DateTime.now());
-                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                getData();
+
 
                               // _selectDate(context, DateTime.now());
                             },
@@ -570,8 +569,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                             readOnly: true,
                             onTap: () {
                               _selectDateto(context, DateTime.now());
-                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                getData();
+                              // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                              //   getData();
                               // _selectDate(context, DateTime.now());
                             },
                           ),
@@ -742,6 +741,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
         print(_selectedDatefrom.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
       });
   }
   Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
@@ -758,6 +759,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
         print(_selectedDateto.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
       });
   }
 }

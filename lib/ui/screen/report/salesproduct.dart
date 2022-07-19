@@ -82,9 +82,11 @@ class _salesproductState extends State<salesproduct> {
     if(Provider.of<privilge_vm>(context,listen: false)
         .checkprivlge('87')==true )
       paramprivilge='&id_user=${iduser}';
+
     if(Provider.of<privilge_vm>(context,listen: false)
         .checkprivlge('90')==true )
       paramprivilge='&id_regoin=${idregoin}';
+
     if(Provider.of<privilge_vm>(context,listen: false)
         .checkprivlge('89')==true ) {
       if(iduser==''&&idregoin!='')
@@ -128,7 +130,7 @@ class _salesproductState extends State<salesproduct> {
           break;
       }
       List<BarModel> tempdataclient = [];
-      totalval=0;
+      totalval=0;rowsdata=[];
       for (int i = 0; i < data.length; i++) {
         tempdata.add(BarModel.fromJson(data[i]));
         print(tempdata[i].y);
@@ -444,72 +446,76 @@ class _salesproductState extends State<salesproduct> {
                 )
                     : Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 1
-                    ? Flexible(
+                    ? Row(
+                      children: [
+                        Flexible(
                   child: TextFormField(
-                    validator: (value) {
-                      if (_selectedDatemonth == DateTime(1, 1, 1)) {
-                        return 'يرجى تعيين التاريخ ';
-                      }
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.date_range,
-                        color: kMainColor,
-                      ),
-                      hintStyle: const TextStyle(
-                          color: Colors.black45,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                      hintText: _selectedDatemonth == DateTime(1, 1, 1)
-                          ? 'الشهر' //_currentDate.toString()
-                          : DateFormat('yyyy-MM').format(_selectedDatemonth),
-                      //_invoice!.dateinstall_task.toString(),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                    ),
-                    readOnly: true,
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Select month"),
-                            content: Container(
-                              // Need to use container to add size constraint.
-                              width: 300,
-                              height: 300,
-                              child: MonthPicker(
-                                firstDate: DateTime(DateTime.now().year-100, 1),
-                                lastDate:
-                                DateTime(DateTime.now().year+100,1),
-                                // : DateTime.now(),
-                                // save the selected date to _selectedDate DateTime variable.
-                                // It's used to set the previous selected date when
-                                // re-showing the dialog.
-                                selectedDate:DateTime.now(), //_selectedDatemonth,
-                                onChanged: (DateTime dateTime) {
-                                  setState(() {
-                                    _selectedDatemonth = dateTime;
-                                  });
-
-                                  print(_selectedDatemonth);
-                                  // close the dialog when year is selected.
-                                  Navigator.pop(context);
-                                  getData();
-
-                                  // Do something with the dateTime selected.
-                                  // Remember that you need to use dateTime.year to get the year
-                                },
-                              ),
-                            ),
-                          );
+                        validator: (value) {
+                          if (_selectedDatemonth == DateTime(1, 1, 1)) {
+                            return 'يرجى تعيين التاريخ ';
+                          }
                         },
-                      );
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: kMainColor,
+                          ),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          hintText: _selectedDatemonth == DateTime(1, 1, 1)
+                              ? 'الشهر' //_currentDate.toString()
+                              : DateFormat('yyyy-MM').format(_selectedDatemonth),
+                          //_invoice!.dateinstall_task.toString(),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Select month"),
+                                content: Container(
+                                  // Need to use container to add size constraint.
+                                  width: 300,
+                                  height: 300,
+                                  child: MonthPicker(
+                                    firstDate: DateTime(DateTime.now().year-100, 1),
+                                    lastDate:
+                                    DateTime(DateTime.now().year+100,1),
+                                    // : DateTime.now(),
+                                    // save the selected date to _selectedDate DateTime variable.
+                                    // It's used to set the previous selected date when
+                                    // re-showing the dialog.
+                                    selectedDate:DateTime.now(), //_selectedDatemonth,
+                                    onChanged: (DateTime dateTime) {
+                                      setState(() {
+                                        _selectedDatemonth = dateTime;
+                                      });
 
-                      // _selectDate(context, DateTime.now());
-                    },
+                                      print(_selectedDatemonth);
+                                      // close the dialog when year is selected.
+                                      Navigator.pop(context);
+                                      getData();
+
+                                      // Do something with the dateTime selected.
+                                      // Remember that you need to use dateTime.year to get the year
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+
+                          // _selectDate(context, DateTime.now());
+                        },
                   ),
-                ): Provider.of<selected_button_provider>(context, listen: true)
+                ),
+                      ],
+                    ): Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 2
                     ? Row (
                   children: [
@@ -543,8 +549,6 @@ class _salesproductState extends State<salesproduct> {
                             readOnly: true,
                             onTap: () {
                               _selectDatefrom(context, DateTime.now());
-                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                getData();
 
                               // _selectDate(context, DateTime.now());
                             },
@@ -581,8 +585,8 @@ class _salesproductState extends State<salesproduct> {
                             readOnly: true,
                             onTap: () {
                               _selectDateto(context, DateTime.now());
-                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                getData();
+                              // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                              //   getData();
                               // _selectDate(context, DateTime.now());
                             },
                           ),
@@ -754,6 +758,9 @@ class _salesproductState extends State<salesproduct> {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
         print(_selectedDatefrom.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
+
       });
   }
   Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
@@ -770,6 +777,9 @@ class _salesproductState extends State<salesproduct> {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
         print(_selectedDateto.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
+
       });
   }
 }

@@ -210,7 +210,7 @@ Widget buildCity(){
 
  Future < List<CountryModel>> getCountryAll()async {
 
-    Countrylist=(await RegoinService().getAllCountry())!;
+    Countrylist=(await RegoinService().getAllCountry());
     //select_dataItem=Countrylist[0];
     print(Countrylist.length);//default country
     return Countrylist;

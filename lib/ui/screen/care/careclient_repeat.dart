@@ -61,7 +61,6 @@ class _careRepeatState extends State<careRepeat> {
 
               SizedBox(height: 10,),
 
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

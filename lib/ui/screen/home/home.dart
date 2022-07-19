@@ -71,8 +71,7 @@ class _HomeState extends State<Home> {
     // Provider.of<user_vm_provider>(context, listen: false)
     //     .getcurrentuser();
     print('in home...init');
-    WidgetsBinding.instance!.addPostFrameCallback((_){
-
+    WidgetsBinding.instance!.addPostFrameCallback((_)async{
       // Add Your Code here.
       //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
       Provider.of<regoin_vm>(context,listen: false).getregoin();
@@ -83,35 +82,26 @@ class _HomeState extends State<Home> {
 
       Provider.of<ticket_vm>(context, listen: false)
           .getticket();
-    });
-    // List<PrivilgeModel> list= Provider.of<privilge_vm>(context,listen: false).privilgelist;
-    //check level user
-    //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
-    // Provider.of<client_vm>(context, listen: false)
-    //     . getclient_vm();
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-    //   Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
-    //   Provider.of<client_vm>(context, listen: false)
-    //       . getclient_vm();
-    // });
+
     Provider.of<invoice_vm>(context, listen: false)
         .getinvoices();
+    await Provider.of<privilge_vm>
+      (context,listen: false).getprivlg_usercurrent();
+
+     // Provider.of<notifyvm>(context, listen: false)
+     //    .getNotification();
+
+    List<PrivilgeModel> list=
+           Provider.of<privilge_vm>(context,listen: false).privilgelist;
+    Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
+
+     Provider.of<client_vm>(context, listen: false)
+        .getallclient();//getclient_vm();
+    });
   }
   @override
   void didChangeDependencies() {
      Future.delayed(Duration(milliseconds: 60)).then((_) async {
-      await Provider.of<privilge_vm>
-        (context,listen: false).getprivlg_usercurrent();
-
-      await Provider.of<notifyvm>(context, listen: false)
-          .getNotification();
-
-      List<PrivilgeModel> list=
-      await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
-      Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-
-      await Provider.of<client_vm>(context, listen: false)
-          .getallclient();//getclient_vm();
 
     });
     super.didChangeDependencies();

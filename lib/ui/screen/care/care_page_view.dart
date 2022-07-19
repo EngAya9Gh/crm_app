@@ -64,7 +64,6 @@ class _care_page_viewState extends State<care_page_view> {
       Provider.of<client_vm>(context, listen: false)
           . getclient_Local('مشترك');
 
-
     });
 
     super.initState();
@@ -89,7 +88,6 @@ class _care_page_viewState extends State<care_page_view> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            // privilge.checkprivlge('1') == true ? //regoin
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -120,32 +118,7 @@ class _care_page_viewState extends State<care_page_view> {
                                   },
                                 ),
                               ),
-                            ),// : Container(),
-                            // Consumer<typeclient>(
-                            //     builder: (context, selectedProvider, child){
-                            //       return  GroupButton(
-                            //           controller: GroupButtonController(
-                            //             selectedIndex:selectedProvider.selectedinstall,
-                            //
-                            //           ),
-                            //           options: GroupButtonOptions(
-                            //               selectedColor: kMainColor,
-                            //
-                            //               buttonWidth: 110,
-                            //               borderRadius: BorderRadius.circular(10)),
-                            //           buttons: ['الكل','بالإنتظار','تم التركيب'],
-                            //           onSelected: (index,isselected){
-                            //             print(index);
-                            //             //setState(() {
-                            //             typepayController=index.toString();
-                            //             selectedProvider.changeinstall(index);
-                            //             filtershow();
-                            //             //});
-                            //           }
-                            //       );
-                            //     }
-                            //
-                            // ),
+                            ),//
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 20.0,right: 8),
@@ -155,16 +128,16 @@ class _care_page_viewState extends State<care_page_view> {
                                         isExpanded: true,
                                         hint: Text('الحالة'),
                                         //hint: Text("حدد حالة العميل"),
-                                        items: cart.listtype_install.map((level_one) {
+                                        items: cart.listtype_care.map((level_one) {
                                           return DropdownMenuItem(
                                             child: Text(level_one), //label of item
                                             value: level_one, //value of item
                                           );
                                         }).toList(),
-                                        value:cart.selectedlisttype_install,
+                                        value:cart.selectedlisttype_care,
                                         onChanged:(value) {
                                           //namemanage=value.toString();
-                                          cart.changelisttype_install(value.toString());
+                                          cart.changelisttype_care(value.toString());
                                           typeclientvalue=value.toString();
                                           print('filter state'+value.toString());
                                           print(typeclientvalue);

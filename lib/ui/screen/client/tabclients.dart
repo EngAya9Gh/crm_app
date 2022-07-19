@@ -48,10 +48,10 @@ class _tabclientsState extends State<tabclients> {
     super.initState();
 
     WidgetsBinding.instance!.addPostFrameCallback((_)async{
-      Provider.of<user_vm_provider>(context,listen: false)
-          .getuser_vm();
-      print(Provider.of<user_vm_provider>(context,listen: false)
-          .userall.length);
+      // Provider.of<user_vm_provider>(context,listen: false)
+      //     .getuser_vm();
+      // print(Provider.of<user_vm_provider>(context,listen: false)
+      //     .userall.length);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
       Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
       Provider.of<typeclient>(context,listen: false).changevaluefilter(null);
@@ -64,8 +64,6 @@ class _tabclientsState extends State<tabclients> {
       await Provider.of<client_vm>(context, listen: false)
           .getclient_vm();
     });
-
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
   }
   @override
   void didChangeDependencies() {

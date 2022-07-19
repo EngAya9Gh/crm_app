@@ -298,10 +298,14 @@ class invoice_vm extends ChangeNotifier{
           ,{'all':'all'});
     }
     else{
-      String params='';
-      for(int i=0;i<listparam.length;i++)
-        params+='&maincity[]=${listparam[i]}';
+
      idexist= listparam.indexWhere((element) => element.id_maincity=='0');
+     if(idexist ==-1)
+       {
+         String params='';
+         for(int i=0;i<listparam.length;i++)
+           params+='&maincity[]=${listparam[i]}';
+       }
      print(idexist);
      print(state);
      print('idexist');

@@ -137,7 +137,7 @@ class _deptsalesState extends State<deptsales> {
       }
       List<BarModel> tempdataclient = [];
 
-      totalval=0;
+      totalval=0;rowsdata=[];
       if(type=='allregoin'){
       for (int i = 0; i < data.length; i++) {
         tempdata.add(BarModel.fromJson(data[i]));
