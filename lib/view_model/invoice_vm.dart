@@ -284,6 +284,18 @@ class invoice_vm extends ChangeNotifier{
     listInvoicesAccept= List.from(_listInvoicesAccept);
     notifyListeners();
   }
+  Future<void> getinvoice_waiting()async{
+    isloading=true;
+    notifyListeners();
+    String? state=null;
+    listInvoicesAccept = await Invoice_Service()
+        .getinvoicemaincity(
+        'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=$state'
+        ,{'allmaincity':'allmaincity'}
+    );
+    isloading=false;
+    notifyListeners();
+  }
   Future<void> getfilter_maincity(List<MainCityModel>? listparam, String? state)async{
     print(state);
     String type='';
@@ -298,11 +310,11 @@ class invoice_vm extends ChangeNotifier{
           ,{'all':'all'});
     }
     else{
+      String params='';
 
      idexist= listparam.indexWhere((element) => element.id_maincity=='0');
      if(idexist ==-1)
        {
-         String params='';
          for(int i=0;i<listparam.length;i++)
            params+='&maincity[]=${listparam[i]}';
        }

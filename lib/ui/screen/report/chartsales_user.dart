@@ -477,8 +477,6 @@ class _BarChartAPIState extends State<BarChartAPI> {
                             readOnly: true,
                             onTap: () {
                               _selectDatefrom(context, DateTime.now());
-
-
                               // _selectDate(context, DateTime.now());
                             },
                           ),

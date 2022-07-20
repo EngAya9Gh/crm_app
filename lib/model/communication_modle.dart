@@ -15,6 +15,7 @@ class CommunicationModel {
     required this.nameUser,
     required this.id_invoice,
     required this.date_create,
+    this.hoursdelaylabel,
     required this.dateinstall_done,
      this.mobile,
      this.name_regoin,
@@ -42,10 +43,12 @@ class CommunicationModel {
   late final String? name_regoin;
   late final String? fk_regoin;
   late final String? nameClient;
+  late  String? hoursdelaylabel;
 
   CommunicationModel.fromJson(Map<String, dynamic> json){
     idCommunication = json['id_communication'];
     fkClient = json['fk_client'];
+    hoursdelaylabel = json['hoursdelaylabel'];
     fkUser = json['fk_user'];
     dateCommunication = json['date_communication'];
     result = json['result'];;
@@ -71,6 +74,7 @@ class CommunicationModel {
     final _data = <String, dynamic>{};
     _data['id_communication'] = idCommunication;
     _data['fk_client'] = fkClient;
+    _data['hoursdelaylabel'] = hoursdelaylabel;
     _data['fk_user'] = fkUser;
     _data['date_communication'] = dateCommunication;
     _data['result'] = result;

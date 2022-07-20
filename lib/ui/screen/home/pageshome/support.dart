@@ -6,6 +6,7 @@ import 'package:crm_smart/ui/screen/report/delayafterinstall.dart';
 import 'package:crm_smart/ui/screen/report/delayinstall.dart';
 import 'package:crm_smart/ui/screen/report/deptsales.dart';
 import 'package:crm_smart/ui/screen/report/support_intall_report.dart';
+import 'package:crm_smart/ui/screen/report/waiting_report.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/screen/support/support_view.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/task_widget.dart';
@@ -112,6 +113,16 @@ class _supportpageState extends State<supportpage> {
                   builder: (context)=>
                       support_install_report()));
             }, title: 'تقرير التركيب للعملاء'):Container(),
+
+           buildSelectCategory(
+               colorbag: Colors.white,
+               colortitle: Colors.black,
+               colorarrow: Colors.black,
+               onTap: () {
+              Navigator.push(context, MaterialPageRoute(
+                  builder: (context)=>
+                      waiting_report()));
+            }, title: 'تقرير عملاء الانتظار') ,
            privilge.checkprivlge('100')==true?
            buildSelectCategory(
                colorbag: Colors.white,

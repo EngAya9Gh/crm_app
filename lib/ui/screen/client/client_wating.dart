@@ -104,31 +104,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
                                 child:
-                                // Consumer<maincity_vm>(
-                                //   builder: (context, cart, child) {
-                                //     return
-                                //       DropdownButton(
-                                //         isExpanded: true,
-                                //         hint: Text("المناطق"),
-                                //         items: cart.listmaincity.map((level_one) {
-                                //           return DropdownMenuItem(
-                                //             child: Text(level_one.namemaincity),
-                                //             //label of item
-                                //             value: level_one
-                                //                 .id_maincity, //value of item
-                                //           );
-                                //         }).toList(),
-                                //         value: cart.selectedValuemanag,
-                                //         onChanged: (value) {
-                                //           //  setState(() {
-                                //           cart.changevalue(value.toString());
-                                //           regoin = value.toString();
-                                //           filtershow();
-                                //         },
-                                //       );
-                                //     //);
-                                //   },
-                                // ),
+
                                 Consumer<maincity_vm>(
                                   builder: (context, cart, child){
                                     return  DropdownSearch<MainCityModel>.multiSelection(

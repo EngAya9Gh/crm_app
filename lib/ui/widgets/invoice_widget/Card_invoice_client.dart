@@ -100,7 +100,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               fontSize: 12),
                         ),
                         Text(
-                          widget.itemProd.dateCreate.toString(),
+                          widget.itemProd.date_approve.toString(),
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,

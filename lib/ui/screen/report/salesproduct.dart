@@ -89,13 +89,13 @@ class _salesproductState extends State<salesproduct> {
 
     if(Provider.of<privilge_vm>(context,listen: false)
         .checkprivlge('89')==true ) {
+
       if(iduser==''&&idregoin!='')
       paramprivilge='&id_regoin=${idregoin}';
 
       if(iduser!=''&&idregoin=='')
         paramprivilge='&id_user=${iduser}';
     }
-
     if(Provider.of<privilge_vm>(context,listen: false)
         .checkprivlge('87')==true ||
        Provider.of<privilge_vm>(context,listen: false)
@@ -308,7 +308,7 @@ class _salesproductState extends State<salesproduct> {
                                   //  setState(() {
                                   cart.changeVal(value.toString());
                                    idregoin=value.toString();
-                                   iduser='';
+                                   // iduser='';
                                    getData();
                                 },
                               );
@@ -341,7 +341,7 @@ class _salesproductState extends State<salesproduct> {
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 iduser=data!.idUser!;
-                                idregoin='';
+                                // idregoin='';
                                 cart.changevalueuser(data);
                                 getData();
                                 //filtershow();

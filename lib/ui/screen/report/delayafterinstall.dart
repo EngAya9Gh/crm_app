@@ -110,7 +110,6 @@ print(type);
     listInvoicesAccept=[];
     for (int i = 0; i < data.length; i++) {
       listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
-
     }
 
     print('length result'+listInvoicesAccept.length.toString());
@@ -228,8 +227,7 @@ print(type);
                                 readOnly: true,
                                 onTap: () {
                                   _selectDatefrom(context, DateTime.now());
-                                  if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                    getData();
+
 
                                   // _selectDate(context, DateTime.now());
                                 },
@@ -266,8 +264,8 @@ print(type);
                                 readOnly: true,
                                 onTap: () {
                                   _selectDateto(context, DateTime.now());
-                                  if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                    getData();
+                                  // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                                  //   getData();
                                 },
                               ),
                             ],
@@ -453,6 +451,8 @@ print(type);
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
         print(_selectedDatefrom.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
       });
   }
   Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
@@ -469,6 +469,8 @@ print(type);
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
         print(_selectedDateto.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
       });
   }
 }

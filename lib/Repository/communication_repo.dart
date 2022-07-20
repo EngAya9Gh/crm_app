@@ -1,0 +1,32 @@
+
+
+
+
+import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/model/communication_modle.dart';
+
+import '../constants.dart';
+
+class communication_repo {
+
+ static List<CommunicationModel> listCommunication=[];
+
+ static Future<List<CommunicationModel>> getCommunicationall(String country)async {
+    listCommunication=[];
+    // if(listComments.isEmpty){
+    List<dynamic> data=[];
+
+    data= await Api()
+        .get(url:url+ 'care/getcomm_repeat.php?fkcountry=$country');
+    print(data);
+    if(data.length.toString().isNotEmpty) {
+      for (int i = 0; i < data.length; i++) {
+        listCommunication.add(CommunicationModel.fromJson(data[i]));
+      }
+
+    }
+    return listCommunication;
+  }
+
+
+}

@@ -22,14 +22,14 @@ String namelevel;
 }
 
 class _privilge_pageState extends State<privilge_page> {
-  List _elements = [
-    {'name': 'John', 'group': 'Team A'},
-    {'name': 'Will', 'group': 'Team B'},
-    {'name': 'Beth', 'group': 'Team A'},
-    {'name': 'Miranda', 'group': 'Team B'},
-    {'name': 'Mike', 'group': 'Team C'},
-    {'name': 'Danny', 'group': 'Team C'},
-  ];
+  // List _elements = [
+  //   {'name': 'John', 'group': 'Team A'},
+  //   {'name': 'Will', 'group': 'Team B'},
+  //   {'name': 'Beth', 'group': 'Team A'},
+  //   {'name': 'Miranda', 'group': 'Team B'},
+  //   {'name': 'Mike', 'group': 'Team C'},
+  //   {'name': 'Danny', 'group': 'Team C'},
+  // ];
   @override void initState() {
     Provider.of<privilge_vm>(context,listen: false)
         .getPrivilgepage(widget.fk_level);

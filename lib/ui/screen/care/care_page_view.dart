@@ -4,8 +4,10 @@
 
 import 'dart:ffi';
 
+import 'package:crm_smart/Repository/communication_repo.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/clientmodel.dart';
+import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
@@ -22,6 +24,7 @@ import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
@@ -38,6 +41,8 @@ class care_page_view extends StatefulWidget {
 class _care_page_viewState extends State<care_page_view> {
   String? regoin;
   String? typeclientvalue;
+  String? fkcountry;
+  bool isloading=false;
   // late String typepayController;
   @override void didChangeDependencies() async {
 
@@ -49,6 +54,8 @@ class _care_page_viewState extends State<care_page_view> {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
+      fkcountry= Provider.of<user_vm_provider>
+        (context,listen: false).currentUser.fkCountry.toString();
       await  Provider.of<communication_vm>(context, listen: false)
           .getCommunicationall('');
       await Provider.of<privilge_vm>(context,listen: false)
@@ -63,14 +70,30 @@ class _care_page_viewState extends State<care_page_view> {
       //   .getallclient();
       Provider.of<client_vm>(context, listen: false)
           . getclient_Local('مشترك');
+      // care/getcomm_repeat.php
 
+      // Provider.of<invoice_vm>(context)
     });
-
     super.initState();
+    getdata();
   }
+  List<CommunicationModel> listCommunication=[];
 
+   getdata()async{
+    setState(() {
+      isloading=true;
+      listCommunication=[];
+    });
+    listCommunication=await
+        communication_repo.getCommunicationall(fkcountry.toString());
+
+     setState(() {
+       isloading=false;
+     });
+   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('العناية بالعملاء',style: TextStyle(color: kWhiteColor),),
@@ -158,6 +181,7 @@ class _care_page_viewState extends State<care_page_view> {
                           //     .listInvoicesAccept,
                         ),
                         SizedBox(height: 5,),
+
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0,right: 30),
                           child: Row(
@@ -167,7 +191,7 @@ class _care_page_viewState extends State<care_page_view> {
                                   fontFamily: kfontfamily2,fontWeight: FontWeight.bold
                               ),),
                               Text(
-                               Provider.of<client_vm>(context,listen: true).listClientAccept.length.toString(),style: TextStyle(
+                                listCommunication.length.toString(),style: TextStyle(
                                   fontFamily: kfontfamily2,fontWeight: FontWeight.bold
                               ),),
                             ],),
@@ -181,13 +205,11 @@ class _care_page_viewState extends State<care_page_view> {
 
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Consumer<client_vm>(
-                                builder: (context, value, child) {
-                                  return value.isloading==true?
+                            child: isloading==true?
                                   Center(
                                       child: CircularProgressIndicator()
                                   ) :
-                                  value.listClientAccept.length == 0 ?
+                                  listCommunication.length == 0 ?
                                   Center(
                                       child: Text(messageNoData)
                                   )  : Column(
@@ -195,7 +217,7 @@ class _care_page_viewState extends State<care_page_view> {
                                       Expanded(
                                         child: ListView.builder(
                                             scrollDirection: Axis.vertical,
-                                            itemCount: value.listClientAccept.length,
+                                            itemCount: listCommunication.length,
                                             itemBuilder: (context, index) {
                                               return SingleChildScrollView(
                                                   child: Padding(
@@ -227,31 +249,69 @@ class _care_page_viewState extends State<care_page_view> {
                                                                     careRepeat(
                                                                       // tabindex:2, //move to tab support in profile client
                                                                         idclient:
-                                                                        value.listClientAccept[index])
+                                                                       Provider.of<client_vm>(context,listen: true)
+                                                                        .listClient.firstWhere((element) =>
+                                                                      element.idClients== listCommunication[index].fkClient) )
                                                                 ));
                                                           },
-                                                          child: Container(
+                                                          child:
+                                                          Container(
                                                             decoration: BoxDecoration(
-                                                              color:Colors.white,
-
+                                                              color: Colors.white,
+                                                              borderRadius: BorderRadius.all(Radius.circular(5)),
                                                             ),
-
+                                                            //height: 70,//MediaQuery.of(context).size.height*0.15,
                                                             child: Padding(
-                                                              padding: const EdgeInsets.all(15.0),
-                                                              child: Column(
-                                                                //crossAxisAlignment: CrossAxisAlignment.start,
+                                                              padding: EdgeInsets.all(8),
+                                                              child: Flex(
+                                                                direction: Axis.vertical,
                                                                 children: [
-                                                                  Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                      children: [
-                                                                        Expanded(
-                                                                          child: Text(value.listClientAccept[index].nameEnterprise.toString(),
+                                                                  Column(
+                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    children: [
+                                                                      Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                        children: [
+                                                                          Text(
+                                                                            listCommunication[index].name_regoin.toString(),
                                                                             style: TextStyle(
-                                                                                fontWeight: FontWeight.bold,
-                                                                                fontFamily: kfontfamily2),),
-                                                                        ),
-                                                                      ]),
-                                                                  //Row(),
+                                                                              //fontWeight: FontWeight.bold,
+                                                                                fontSize: 12,
+                                                                                fontFamily: kfontfamily2,
+                                                                                color: kMainColor),
+                                                                          ),
+                                                                          Text(
+                                                                           int.parse( listCommunication[index].hoursdelaylabel.toString())<0?
+                                                                            'تأخر عن التواصل'+ ' يوم '+ listCommunication[index]
+                                                                                .hoursdelaylabel.toString():
+                                                                            ' يوم '+ listCommunication[index]
+                                                                                .hoursdelaylabel.toString(),
+                                                                            style: TextStyle(
+                                                                                fontSize: 12,
+                                                                                // fontWeight: FontWeight.bold,
+                                                                                fontFamily: kfontfamily2,
+                                                                                color: kMainColor),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                        children: [
+                                                                          Text(
+                                                                            listCommunication[index].nameEnterprise.toString(),
+                                                                            style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 12,
+                                                                              fontFamily: kfontfamily2,
+                                                                            ),
+                                                                          ),
+                                                                          // Text(
+                                                                          //   itemapprove.nameUser.toString(),
+                                                                          //   style: TextStyle(fontFamily: kfontfamily2),
+                                                                          // ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  )
                                                                 ],
                                                               ),
                                                             ),
@@ -267,8 +327,8 @@ class _care_page_viewState extends State<care_page_view> {
                                             }),
                                       ),
                                     ],
-                                  );
-                                }),
+                                  ),
+
                           ),
                         ),
                       ],

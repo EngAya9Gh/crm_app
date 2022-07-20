@@ -255,7 +255,8 @@ class _delayinstallState extends State<delayinstall> {
                                     itemCount: listInvoicesAccept.length,
                                     itemBuilder: (context, index) {
 
-                                      return SingleChildScrollView(
+                                      return
+                                        SingleChildScrollView(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
