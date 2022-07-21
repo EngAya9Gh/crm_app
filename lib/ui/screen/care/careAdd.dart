@@ -203,10 +203,10 @@ class _careAddState extends State<careAdd> {
                           // print(datanext);
                           Provider.of<communication_vm>
                             (context,listen: false).addcommuncation({
-
+                             'type':'دوري',
                              'fk_user':Provider.of<user_vm_provider>
                               (context,listen: false).
-                             currentUser.idUser.toString(),
+                               currentUser.idUser.toString(),
                              'date_communication':DateTime.now().toString(),
                              'result':typepayController,//
                              'rate':rate.toString(),

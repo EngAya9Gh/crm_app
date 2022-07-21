@@ -85,7 +85,8 @@ class _care_page_viewState extends State<care_page_view> {
       listCommunication=[];
     });
     listCommunication=await
-        communication_repo.getCommunicationall(fkcountry.toString());
+        communication_repo.getCommunicationall(Provider.of<user_vm_provider>
+          (context,listen: false).currentUser.fkCountry.toString());
 
      setState(() {
        isloading=false;
@@ -280,11 +281,11 @@ class _care_page_viewState extends State<care_page_view> {
                                                                                 color: kMainColor),
                                                                           ),
                                                                           Text(
-                                                                           int.parse( listCommunication[index].hoursdelaylabel.toString())<0?
-                                                                            'تأخر عن التواصل'+ ' يوم '+ listCommunication[index]
-                                                                                .hoursdelaylabel.toString():
-                                                                            ' يوم '+ listCommunication[index]
-                                                                                .hoursdelaylabel.toString(),
+                                                                           int.parse(listCommunication[index].hoursdelaylabel.toString())<0?
+                                                                             ' تأخر عن التواصل  '+ listCommunication[index] .hoursdelaylabel.toString()+ ' يوم '
+                                                                               :
+                                                                            ' باقي '+ listCommunication[index].hoursdelaylabel.toString()+' يوم '
+                                                                                ,
                                                                             style: TextStyle(
                                                                                 fontSize: 12,
                                                                                 // fontWeight: FontWeight.bold,

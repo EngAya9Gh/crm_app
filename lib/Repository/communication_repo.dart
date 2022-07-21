@@ -17,7 +17,7 @@ class communication_repo {
     List<dynamic> data=[];
 
     data= await Api()
-        .get(url:url+ 'care/getcomm_repeat.php?fkcountry=$country');
+        .get(url:url+ 'care/getcomm_repeat.php?fk_country=$country');
     print(data);
     if(data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {

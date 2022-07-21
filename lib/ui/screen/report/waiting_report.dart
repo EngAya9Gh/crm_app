@@ -15,8 +15,11 @@ class waiting_report extends StatefulWidget {
 
 class _waiting_reportState extends State<waiting_report> {
   @override void initState() {
-    Provider.of<invoice_vm>(context,listen: false)
-    .getinvoice_waiting();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+     await Provider.of<invoice_vm>(context, listen: false)
+          .getinvoice_waiting();
+    });
     super.initState();
   }
   @override
@@ -32,10 +35,10 @@ class _waiting_reportState extends State<waiting_report> {
               children:[
 
                 Container(
-                  height: MediaQuery.of(context).size.height*0.65,
+                  height: MediaQuery.of(context).size.height*0.95,
                   child:Consumer<invoice_vm>(
-        builder: (context, value, child) {
-                    return Padding(
+                      builder: (context, value, child) {
+                     return Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,

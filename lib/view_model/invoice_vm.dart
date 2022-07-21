@@ -290,7 +290,7 @@ class invoice_vm extends ChangeNotifier{
     String? state=null;
     listInvoicesAccept = await Invoice_Service()
         .getinvoicemaincity(
-        'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=$state'
+        'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}'
         ,{'allmaincity':'allmaincity'}
     );
     isloading=false;
@@ -339,7 +339,7 @@ class invoice_vm extends ChangeNotifier{
       case 'allmaincity':
         listInvoicesAccept = await Invoice_Service()
             .getinvoicemaincity(
-            'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=$state'
+            'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}'
        ,{'allmaincity':'allmaincity'}
         );
         break;
