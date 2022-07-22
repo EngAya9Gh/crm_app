@@ -136,7 +136,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                 color: Colors.black,
                 fontSize: 25,
                 fontWeight: FontWeight.normal,
-                textstring: tempdata[i].y.toString(),
+                textstring: tempdata[i].y.toStringAsFixed(2),
                 underline: TextDecoration.none,
               )),
               DataCell( TextUtilis(

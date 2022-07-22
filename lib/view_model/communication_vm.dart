@@ -12,6 +12,7 @@ import '../constants.dart';
 class communication_vm extends ChangeNotifier{
 
   List<CommunicationModel> listCommunication=[];
+  List<CommunicationModel> listCommunicationrepeat=[];
   List<CommunicationModel> listCommunicationInstall=[];
   List<CommunicationModel> listCommunicationWelcome=[];
   List<CommunicationModel> listCommunicationClient=[];
@@ -35,25 +36,45 @@ class communication_vm extends ChangeNotifier{
     notifyListeners();
     if(listCommunication.isNotEmpty){
       listCommunication.forEach((element) {
-        if(element.fkClient==fk_client&&element.fkUser!=null)
+        if(element.fkClient==fk_client&&element.dateCommunication!=null)
           listCommunicationClient.add(element);
       });
     }
       notifyListeners();
   }
-  void getCommunicationclientrepeat(String fk_client) {
-    listCommunicationClient=[];
+  void isloadval(bool val){
+    isload=val;
     notifyListeners();
-    if(listCommunication.isNotEmpty){
-      listCommunication.forEach((element) {
-        if(element.fkClient==fk_client && element.typeCommuncation=='دوري'
-            //&&element.fkUser==null
-        )
-          listCommunicationClient.add(element);
-      });
-    }
-      notifyListeners();
   }
+ Future<void> getCommunicationclientrepeat(String fk_client) async{
+    listCommunicationClient=[];
+    List<CommunicationModel> list=[];
+    isloading=true;
+    notifyListeners();
+    List<dynamic> data=[];
+
+    data= await Api()
+        .get(url:url+ 'care/view_communcation.php?fk_client=${fk_client}');
+    print(data);
+    if(data.length.toString().isNotEmpty) {
+      for (int i = 0; i < data.length; i++) {
+        listCommunicationClient
+            .add(CommunicationModel.fromJson(data[i]));
+      }
+      if(listCommunicationClient.isNotEmpty){
+        listCommunicationClient.forEach((element) {
+          if(element.fkClient==fk_client
+              &&element.dateCommunication!=null&&
+              element.typeCommuncation=='دوري'
+          //&&element.fkUser==null
+          ) list.add(element);
+        });
+
+      }
+      listCommunicationClient= List.from(list);
+      isloading=false;
+      notifyListeners();
+  }}
   void getcommtype_filter(String? filter,String? regoin,String tyype)async{
     // listInvoicesAccept=[];
     await getCommunicationWelcome();
@@ -273,9 +294,31 @@ class communication_vm extends ChangeNotifier{
     isloading=false;
     notifyListeners();
   }
-  //addcommuncation
   bool isload=false;
-  Future<CommunicationModel> addcommuncation(Map<String, dynamic?> body,String id_communication) async {
+  bool valuebutton=false;
+
+  Future<void> getCommunicationallrepeatpage(String country)async {
+    listCommunicationrepeat=[];
+    isload=true;
+    notifyListeners();
+    List<dynamic> data=[];
+    data= await Api()
+        .get(url:url+ 'care/getcomm_repeat.php?fk_country=$country');
+    print(data);
+    if(data.length.toString().isNotEmpty) {
+      for (int i = 0; i < data.length; i++) {
+        listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
+      }
+
+    }
+    // return listCommunication;
+    isload=false;
+    notifyListeners();
+  }
+  //addcommuncation
+  Future<CommunicationModel> addcommuncation(
+
+      Map<String, dynamic?> body,String id_communication) async {
     print(id_communication);
     isload=true;
     notifyListeners();
@@ -288,6 +331,13 @@ class communication_vm extends ChangeNotifier{
     element.idCommunication==id_communication);
 
     listCommunication[index]=data;
+    if(listCommunicationrepeat.isNotEmpty) {
+       index = listCommunicationrepeat.indexWhere((element) =>
+       element.idCommunication == id_communication);
+       listCommunicationrepeat.removeAt(index);
+
+      // listCommunicationrepeat[index] = data;
+    }
     String value=listCommunication[index].typeCommuncation.toString();
     switch(value){
       case 'تركيب':
@@ -297,10 +347,15 @@ class communication_vm extends ChangeNotifier{
         getCommunicationWelcome();
         break;
         case 'دوري':
-          index= listCommunicationClient.indexWhere((element) =>
-          element.idCommunication==id_communication);
-          listCommunicationClient[index]=data;
-          notifyListeners();
+        getCommunicationclientrepeat(data.fkClient);
+          // index= listCommunicationClient.indexWhere(
+          //         (element) =>
+          // element.idCommunication==id_communication);
+          // listCommunicationClient[index]=data;
+          // listCommunicationClient.insert(0, data);
+          //notifyListeners();
+        valuebutton=true;
+        notifyListeners();
         break;
     }
     isload=false;
@@ -317,7 +372,6 @@ class communication_vm extends ChangeNotifier{
     // listCommunicationClient[index]=data;
     // notifyListeners();
     // }
-
     return data;
   }
 

@@ -71,10 +71,11 @@ class client_vm extends ChangeNotifier {
 
     notifyListeners();
     List<ClientModel> _list=
-    await ClientService().getAllClient(usercurrent!.fkCountry.toString());
+    await ClientService().getAcceptClient(usercurrent!.fkCountry.toString());
     _list.forEach((element) {
-      if( element.typeClient==searchfilter
-          && element.isApprove!=null )
+      if(
+          element.typeClient==searchfilter &&
+          element.isApprove!=null )
         listClientAccept.add(element);
     });
      isloading=false;

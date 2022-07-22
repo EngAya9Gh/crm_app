@@ -83,7 +83,8 @@ class _installAddState extends State<installAdd> {
                     ),
                     TextButton(
                       onPressed: ()async{
-                        await FlutterPhoneDirectCaller.callNumber(widget.com.mobile.toString());
+                        await FlutterPhoneDirectCaller.callNumber(
+                            widget.com.mobile.toString());
                       },
                       child:
                       Text(widget.com.mobile.toString(),
@@ -164,7 +165,7 @@ class _installAddState extends State<installAdd> {
                         },
                         child: Text(' ملف العميل')) ,
 
-    ElevatedButton(
+                        ElevatedButton(
                           style: ButtonStyle(
 
                               backgroundColor: MaterialStateProperty.all(

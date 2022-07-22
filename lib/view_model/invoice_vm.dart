@@ -232,7 +232,7 @@ class invoice_vm extends ChangeNotifier{
 
       if(listforme.isNotEmpty){
 
-        if(filter=='الكل')
+        if(filter=='الكل'||filter==null)
         {
           if(regoin!='0'){
             listforme.forEach((element) {
@@ -303,38 +303,49 @@ class invoice_vm extends ChangeNotifier{
     isloading=true;
     notifyListeners();
     int idexist=-1;
-    if(listparam!.isEmpty) {
+    if(listparam!.isEmpty&&state=='الكل') {
+      print('allllllllllllllllllll');
       listInvoicesAccept = await Invoice_Service()
           .getinvoicemaincity(
           'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}'
           ,{'all':'all'});
     }
     else{
+
       String params='';
-
-     idexist= listparam.indexWhere((element) => element.id_maincity=='0');
-     if(idexist ==-1)
-       {
-         for(int i=0;i<listparam.length;i++)
-           params+='&maincity[]=${listparam[i]}';
-       }
-     print(idexist);
-     print(state);
-     print('idexist');
-    if(idexist!=-1 && state=='الكل')
-      type='all';
-    else{
-      if(idexist==-1 && state=='الكل')
-        type='allstate';
-      if(idexist==-1 && state!='الكل')
-        type='allmix';
-        if(idexist!=-1 && state!='الكل')
-          type='allmaincity';
-
+      if(listparam!.isNotEmpty)
+{
+  idexist= listparam.indexWhere((element) => element.id_maincity=='0');
+  if(idexist ==-1)
+  {
+     for(int i=0;i<listparam.length;i++)
+      listval.add(int.parse( listparam[i].id_maincity));
+    for(int i=0;i<listval.length;i++) {
+      params += '&maincity_fks[]=${listval[i]}';
+      print(params);
     }
-    if(state=='بالإنتظار')state=null;
-    else if(state=='تم التركيب')state='1';
-    print(type);
+  }
+  print(idexist);
+  print(state);
+  print('idexist');
+  if(idexist!=-1 && state=='الكل')
+    type='all';
+  else{
+    if(idexist==-1 && state=='الكل')
+      type='allstate';
+    if(idexist==-1 && state!='الكل')
+      type='allmix';
+    if(idexist!=-1 && state!='الكل')
+      type='allmaincity';
+
+  }
+
+}else{
+        type='allmaincity';
+      }
+      if(state=='بالإنتظار')state=null;
+      else if(state=='تم التركيب')state='1';
+      print('typpping '+type);
     switch(type) {
       case 'allmaincity':
         listInvoicesAccept = await Invoice_Service()
@@ -346,18 +357,18 @@ class invoice_vm extends ChangeNotifier{
 
       case 'allstate':
         print('21321321');
-        for(int i=0;i<listparam.length;i++)
-          listval.add(int.parse( listparam[i].id_maincity));
+        // for(int i=0;i<listparam.length;i++)
+        //   listval.add(int.parse( listparam[i].id_maincity));
         listInvoicesAccept = await Invoice_Service()
             .getinvoicemaincity('client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}$params'
         ,{'allstate':'allstate'}
         );
         break;
       case 'allmix':
-        for(int i=0;i<listparam.length;i++)
-          listval.add(int.parse( listparam[i].id_maincity));
+        // for(int i=0;i<listparam.length;i++)
+        //   listval.add(int.parse( listparam[i].id_maincity));
         listInvoicesAccept = await Invoice_Service()
-            .getinvoicemaincity('client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=$state$params'
+            .getinvoicemaincity('client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}$params'
         ,{'allmix':'allmix'});
         break;
       case 'all':
@@ -365,8 +376,6 @@ class invoice_vm extends ChangeNotifier{
             .getinvoicemaincity(
             'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}'
             ,{'all':'all'});
-        break;
-      case '':
         break;
     }}
     isloading=false;
@@ -558,9 +567,7 @@ Future<void> getinvoice_Localwithprev() async{
   isloading=true;
   notifyListeners();
   await getinvoiceswithprev();
-
   listInvoicesAccept.forEach((element) {
-
           if (element.stateclient == 'مشترك'
               && element.isApprove == "1")
             list.add(element);

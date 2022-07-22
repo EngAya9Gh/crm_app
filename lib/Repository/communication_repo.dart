@@ -11,7 +11,7 @@ class communication_repo {
 
  static List<CommunicationModel> listCommunication=[];
 
- static Future<List<CommunicationModel>> getCommunicationall(String country)async {
+ static Future<List<CommunicationModel>> getCommunicationallrepeatpage(String country)async {
     listCommunication=[];
     // if(listComments.isEmpty){
     List<dynamic> data=[];

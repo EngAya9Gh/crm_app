@@ -20,8 +20,9 @@ import 'card_comment.dart';
 import 'careAdd.dart';
 
 class careRepeat extends StatefulWidget {
-  careRepeat({required this.idclient, Key? key}) : super(key: key);
+  careRepeat({required this.comobj, required this.idclient, Key? key}) : super(key: key);
   ClientModel idclient;
+  CommunicationModel comobj;
 
   @override
   _careRepeatState createState() => _careRepeatState();
@@ -39,10 +40,8 @@ class _careRepeatState extends State<careRepeat> {
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.idclient.idClients.toString());
 
-
       Provider.of<communication_vm>(context, listen: false)
           .getCommunicationclientrepeat(widget.idclient.idClients.toString());
-
     });
     super.initState();
   }
@@ -78,6 +77,8 @@ class _careRepeatState extends State<careRepeat> {
                       },
                       child: Text(' ملف العميل')) ,
 
+                  Provider.of<communication_vm>(context, listen: true)
+                      .valuebutton==false?
                   ElevatedButton(
                       style: ButtonStyle(
 
@@ -87,18 +88,27 @@ class _careRepeatState extends State<careRepeat> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context)=>
                                 careAdd(
-                                  com:
-                                  listCommunication.firstWhere  (
-                                          (element) => element.fkUser==null
-                                         ,orElse: ()=>listCommunication[0]),                              )));
+                                  com:widget.comobj
+                                  // listCommunication.firstWhere  (
+                                  //         (element) => element.fkUser==null
+                                  //        ,orElse: ()=>listCommunication[0]
+                                  ),
+                            )
+                        );
                         },
-                      child: Text(' خدمة العميل ',)),
+                      child: Text(' خدمة العميل ',)):Container(),
                 ],
               ),
               SizedBox(height: 10,),
+              Provider.of<communication_vm>(context, listen: true)
+                  .isloading==true?
+              Center(
+                  child: CircularProgressIndicator()
+              ) :Container(),
               for(int i=0;i<listCommunication.length;i++)
                 if(listCommunication[i].typeCommuncation=='دوري'&&listCommunication[i].fkUser!=null)
-                  commview(listCommunication[i]) ,
+                  commview(listCommunication[i])
+                     ,
 
               SizedBox(height: 10,),
               Container(

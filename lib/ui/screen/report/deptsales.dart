@@ -455,7 +455,7 @@ class _deptsalesState extends State<deptsales> {
                                       ),
                                     ),    DataColumn(
                                       label: Text(
-                                        'عدد العملاء ',
+                                        'عدد الفواتير ',
                                         style: TextStyle(fontStyle: FontStyle.normal),
                                       ),
                                     ),
@@ -487,13 +487,26 @@ class _deptsalesState extends State<deptsales> {
                           ):labelxx=='user'||labelxx=='regoin'?
                       Column(
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0,right: 30,top: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('عدد الفواتير',style: TextStyle(
+                                    fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                                ),),
+                                Text(
+                                  listInvoicesAccept.length.toString(),style: TextStyle(
+                                    fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                                ),),
+                              ],),
+                          ),
                           Container(
-                             height: 500,
+                            height: MediaQuery.of(context).size.height*0.8,
                             child: ListView.builder(
                                 scrollDirection: Axis.vertical,
                                 itemCount: listInvoicesAccept.length,
                                 itemBuilder: (context, index) {
-
                                   return SingleChildScrollView(
                                       child: Padding(
                                           padding: const EdgeInsets.all(2),

@@ -56,8 +56,10 @@ class _care_page_viewState extends State<care_page_view> {
       // only
       fkcountry= Provider.of<user_vm_provider>
         (context,listen: false).currentUser.fkCountry.toString();
-      await  Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationall('');
+
+
+      //   Provider.of<communication_vm>(context, listen: false)
+      //  .getCommunicationall('');
       await Provider.of<privilge_vm>(context,listen: false)
           .getprivlg_usercurrent();
       List<PrivilgeModel> list=
@@ -65,36 +67,42 @@ class _care_page_viewState extends State<care_page_view> {
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
       //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-      //
+
       // Provider.of<client_vm>(context, listen: false)
       //   .getallclient();
-      Provider.of<client_vm>(context, listen: false)
+      Provider.of<communication_vm>(context, listen: false)
+          .getCommunicationallrepeatpage(Provider.of<user_vm_provider>
+        (context,listen: false).currentUser.fkCountry.toString());
+     await Provider.of<client_vm>(context, listen: false)
           . getclient_Local('مشترك');
+
       // care/getcomm_repeat.php
 
       // Provider.of<invoice_vm>(context)
     });
     super.initState();
-    getdata();
+    // getdata();
   }
-  List<CommunicationModel> listCommunication=[];
+
 
    getdata()async{
-    setState(() {
-      isloading=true;
-      listCommunication=[];
-    });
-    listCommunication=await
-        communication_repo.getCommunicationall(Provider.of<user_vm_provider>
-          (context,listen: false).currentUser.fkCountry.toString());
-
-     setState(() {
-       isloading=false;
-     });
+    // setState(() {
+    //   isloading=true;
+    //   listCommunication=[];
+    // });
+    // listCommunication=await
+    //     // communication_repo.getCommunicationall(Provider.of<user_vm_provider>
+    //     //   (context,listen: false).currentUser.fkCountry.toString());
+    //
+    //  setState(() {
+    //    isloading=false;
+    //  });
    }
+  List<CommunicationModel> listCommunication=[];
   @override
   Widget build(BuildContext context) {
-
+    listCommunication=Provider.of<communication_vm>(context,listen: true)
+    .listCommunicationrepeat;
     return Scaffold(
       appBar: AppBar(
         title: Text('العناية بالعملاء',style: TextStyle(color: kWhiteColor),),
@@ -109,71 +117,71 @@ class _care_page_viewState extends State<care_page_view> {
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: ListView(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                child: Consumer<regoin_vm>(
-                                  builder: (context, cart, child) {
-                                    return
-                                      DropdownButton(
-                                        isExpanded: true,
-                                        hint: Text("الفرع"),
-                                        items: cart.listregoinfilter.map((level_one) {
-                                          return DropdownMenuItem(
-
-                                            child: Text(level_one.name_regoin),
-                                            //label of item
-                                            value: level_one
-                                                .id_regoin, //value of item
-                                          );
-                                        }).toList(),
-                                        value: cart.selectedValueLevel,
-                                        onChanged: (value) {
-                                          //  setState(() {
-                                          cart.changeVal(value.toString());
-                                          regoin = value.toString();
-                                          filtershow();
-                                        },
-                                      );
-                                    //);
-                                  },
-                                ),
-                              ),
-                            ),//
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 20.0,right: 8),
-                                child: Consumer<typeclient>(
-                                    builder: (context, cart, child){
-                                      return DropdownButton(
-                                        isExpanded: true,
-                                        hint: Text('الحالة'),
-                                        //hint: Text("حدد حالة العميل"),
-                                        items: cart.listtype_care.map((level_one) {
-                                          return DropdownMenuItem(
-                                            child: Text(level_one), //label of item
-                                            value: level_one, //value of item
-                                          );
-                                        }).toList(),
-                                        value:cart.selectedlisttype_care,
-                                        onChanged:(value) {
-                                          //namemanage=value.toString();
-                                          cart.changelisttype_care(value.toString());
-                                          typeclientvalue=value.toString();
-                                          print('filter state'+value.toString());
-                                          print(typeclientvalue);
-
-                                          filtershow();
-                                        },
-                                      );}
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        //   children: [
+                        //     Expanded(
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.only(left: 8.0, right: 8),
+                        //         child: Consumer<regoin_vm>(
+                        //           builder: (context, cart, child) {
+                        //             return
+                        //               DropdownButton(
+                        //                 isExpanded: true,
+                        //                 hint: Text("الفرع"),
+                        //                 items: cart.listregoinfilter.map((level_one) {
+                        //                   return DropdownMenuItem(
+                        //
+                        //                     child: Text(level_one.name_regoin),
+                        //                     //label of item
+                        //                     value: level_one
+                        //                         .id_regoin, //value of item
+                        //                   );
+                        //                 }).toList(),
+                        //                 value: cart.selectedValueLevel,
+                        //                 onChanged: (value) {
+                        //                   //  setState(() {
+                        //                   cart.changeVal(value.toString());
+                        //                   regoin = value.toString();
+                        //                   filtershow();
+                        //                 },
+                        //               );
+                        //             //);
+                        //           },
+                        //         ),
+                        //       ),
+                        //     ),//
+                        //     Expanded(
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.only(left: 20.0,right: 8),
+                        //         child: Consumer<typeclient>(
+                        //             builder: (context, cart, child){
+                        //               return DropdownButton(
+                        //                 isExpanded: true,
+                        //                 hint: Text('الحالة'),
+                        //                 //hint: Text("حدد حالة العميل"),
+                        //                 items: cart.listtype_care.map((level_one) {
+                        //                   return DropdownMenuItem(
+                        //                     child: Text(level_one), //label of item
+                        //                     value: level_one, //value of item
+                        //                   );
+                        //                 }).toList(),
+                        //                 value:cart.selectedlisttype_care,
+                        //                 onChanged:(value) {
+                        //                   //namemanage=value.toString();
+                        //                   cart.changelisttype_care(value.toString());
+                        //                   typeclientvalue=value.toString();
+                        //                   print('filter state'+value.toString());
+                        //                   print(typeclientvalue);
+                        //
+                        //                   filtershow();
+                        //                 },
+                        //               );}
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                         search_widget(
                           'wait',
                           hintnamefilter,''
@@ -182,7 +190,6 @@ class _care_page_viewState extends State<care_page_view> {
                           //     .listInvoicesAccept,
                         ),
                         SizedBox(height: 5,),
-
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0,right: 30),
                           child: Row(
@@ -206,7 +213,8 @@ class _care_page_viewState extends State<care_page_view> {
 
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: isloading==true?
+                            child: Provider.of<communication_vm>(context, listen: true)
+                                .isload==true?
                                   Center(
                                       child: CircularProgressIndicator()
                                   ) :
@@ -248,6 +256,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
                                                                     careRepeat(
+                                                                        comobj:listCommunication[index],
                                                                       // tabindex:2, //move to tab support in profile client
                                                                         idclient:
                                                                        Provider.of<client_vm>(context,listen: true)
@@ -270,7 +279,8 @@ class _care_page_viewState extends State<care_page_view> {
                                                                   Column(
                                                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                     children: [
-                                                                      Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                         children: [
                                                                           Text(
                                                                             listCommunication[index].name_regoin.toString(),
@@ -295,6 +305,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                         ],
                                                                       ),
                                                                       Row(
+
                                                                         //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                         children: [
                                                                           Text(
@@ -309,6 +320,26 @@ class _care_page_viewState extends State<care_page_view> {
                                                                           //   itemapprove.nameUser.toString(),
                                                                           //   style: TextStyle(fontFamily: kfontfamily2),
                                                                           // ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                        children: [
+                                                                          Text(
+                                                                            'تاريخ التواصل القادم',
+                                                                            style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 12,
+                                                                              fontFamily: kfontfamily2,
+                                                                            ),
+                                                                          ), Text(
+                                                                            listCommunication[index].dateNext.toString(),
+                                                                            style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 12,
+                                                                              fontFamily: kfontfamily2,
+                                                                            ),
+                                                                          ),
                                                                         ],
                                                                       ),
                                                                     ],

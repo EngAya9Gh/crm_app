@@ -373,22 +373,22 @@ class _InvoiceViewState extends State<InvoiceView> {
                         title: 'سبب الإنسحاب',
                         value:
                          widget.invoice!.desc_reason_back.toString(),isExpanded: true,):Container(),
-                    widget.invoice!.numbarnch.toString().trim().isNotEmpty?
+                    widget.invoice!.numbarnch.toString().trim().isNotEmpty|| widget.invoice!.numbarnch!=null?
                     cardRow(
                         title: 'عدد الفروع',
                         value:   widget.invoice!.numbarnch.toString()
                            ):Container(),
                     //widget.invoice!.nummostda != null||
-                        widget.invoice!.nummostda.toString().trim().isNotEmpty?
+                        widget.invoice!.nummostda.toString().trim().isNotEmpty||widget.invoice!.nummostda!=null?
                     cardRow(
                         title: 'عدد المستودعات ',
                         value: widget.invoice!.nummostda.toString()):Container(),
-                    widget.invoice!.numusers.toString().trim().isNotEmpty?
+                    widget.invoice!.numusers.toString().trim().isNotEmpty||widget.invoice!.numusers!=null?
                     cardRow(
                         title: 'عدد المستخدمين',
                         value:  widget.invoice!.numusers.toString()
                              ):Container(),
-            widget.invoice!.address_invoice.toString()==''?
+                  widget.invoice!.address_invoice.toString()==''?
                     cardRow(
                         title: 'عنوان الفاتورة',
                         value:  widget.invoice!.address_invoice.toString()
