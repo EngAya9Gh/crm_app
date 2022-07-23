@@ -141,7 +141,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                 color: Colors.black,
                 fontSize: 25,
                 fontWeight: FontWeight.normal,
-                textstring: tempdata[i].y.toString(),
+                textstring: tempdata[i].y.toStringAsFixed(2),
                 underline: TextDecoration.none,
               )),
               DataCell( TextUtilis(
@@ -538,7 +538,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                                 children: [
                                   Text('إجمالي المبيعات'),
                                   Text(
-                                      totalval.toString()),
+                                      totalval.toStringAsFixed(2)),
                                 ],
                               ),
                               Container(

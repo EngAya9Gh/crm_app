@@ -393,6 +393,7 @@ class _ClientViewState extends State<ClientView> {
                                                 .setApproveclient_vm({
                                               "id_clients":widget.invoice!.fkIdClient,
                                               //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                              'date_approve':DateTime.now().toString(),
                                               "fk_user":widget.invoice!.fkIdUser,//صاحب العميل
                                               "fk_regoin":widget.invoice!.fk_regoin,
                                               "regoin":widget.invoice!.name_regoin,

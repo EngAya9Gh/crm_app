@@ -363,7 +363,7 @@ class _deptsalesState extends State<deptsales> {
                             children: [
                               Text('إجمالي الديون'),
                               Text(
-                                  totalval.toString()),
+                                  totalval.toStringAsFixed(2)),
                             ],
                           ),
                           // Container(

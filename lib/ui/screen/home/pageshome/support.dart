@@ -92,7 +92,6 @@ class _supportpageState extends State<supportpage> {
                        ClientWaiting(type_card: 'support',) // support_view(type: 'only',)
                ));
             }, title: 'فواتير العملاء'):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
-
            privilge.checkprivlge('18')==true?
            buildSelectCategory(
                colorbag: Colors.white,

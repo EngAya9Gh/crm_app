@@ -165,8 +165,8 @@ class _report_rateState extends State<report_rate> {
                           readOnly: true,
                           onTap: () {
                             _selectDatefrom(context, DateTime.now());
-                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                              getData();
+                            // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                            //   getData();
 
                             // _selectDate(context, DateTime.now());
                           },
@@ -206,8 +206,7 @@ class _report_rateState extends State<report_rate> {
                           readOnly: true,
                           onTap: () {
                             _selectDateto(context, DateTime.now());
-                            if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                              getData();
+
                           },
                         ),
                       ],
@@ -254,9 +253,7 @@ class _report_rateState extends State<report_rate> {
                                         break;
 
                                     }
-                                    if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1)
-                                        ||_selectedDate!=DateTime(1, 1, 1)||_selectedDatemonth!=DateTime(1, 1, 1)
-                                    )
+                                    if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
                                       getData();
                                     //setState(() {
                                     //typeinstallController=index.toString();
@@ -400,6 +397,8 @@ class _report_rateState extends State<report_rate> {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
         print(_selectedDatefrom.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
       });
   }
   Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
@@ -416,6 +415,8 @@ class _report_rateState extends State<report_rate> {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
         print(_selectedDateto.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
       });
   }
 }

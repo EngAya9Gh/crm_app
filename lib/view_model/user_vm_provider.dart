@@ -32,6 +32,8 @@ class user_vm_provider extends ChangeNotifier{
 
   Future<void> getuser_vm() async {
     isLoading=true;
+    notifyListeners();
+    if(userall.isEmpty)
     userall = await  UserService().usersServices();
     isLoading=false;
     listuserfilter=List.from(userall);
@@ -80,17 +82,22 @@ class user_vm_provider extends ChangeNotifier{
     listuserfilter=[];
     // code to convert the first character to uppercase
     String searchKey =productName;//
-    if(productName.isNotEmpty)
+    print(productName);
+    if(productName.isNotEmpty){
     if(userall.isNotEmpty ){
       userall.forEach((element) {
         if(element.nameUser!.contains(searchKey,0)
-
-            || element.mobile!.contains(searchKey,0) )
+            // || element.mobile!.contains(searchKey,0)
+        )
           listuserfilter.add(element);
       });
+    }}
+    else {
+      print('useeeeeeeeeeeeeeer');
+      listuserfilter=List.from(userall);
     }
-    else listuserfilter=userall;
-    notifyListeners();
+      notifyListeners();
+
   }
 
   bool getfilteruser(String filter){

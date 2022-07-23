@@ -347,17 +347,20 @@ class _InvoiceViewState extends State<InvoiceView> {
                     widget.invoice!.nameuserApprove!=null?  cardRow(
                         title: 'تاريخ اعتماد الفاتورة',
                         value: widget.invoice!.date_approve.toString()):Container(),
+                    widget.invoice!.date_lastuserupdate != null?
                     cardRow(
                         title: 'تاريخ آخر تعديل',
                         value: widget.invoice!.date_lastuserupdate != null
                             ? widget.invoice!.date_lastuserupdate.toString()
-                            : ''),
+                            : ''):Container(),
+                    widget.invoice!.date_lastuserupdate != null?
                     cardRow(
                         title: 'آخر تعديل من قبل',
                         value: widget.invoice!.date_lastuserupdate != null?
-                        getnameshort(  widget.invoice!.lastuserupdateName.toString()):''),
-                   widget.invoice!.date_change_back!=null?
-                   cardRow(
+                        getnameshort(  widget.invoice!.lastuserupdateName.toString()):''):Container(),
+
+                    widget.invoice!.date_change_back!=null?
+                    cardRow(
                         title: 'تاريخ الإنسحاب',
                         value: widget.invoice!.date_change_back.toString() ):Container(),
                     widget.invoice!.date_change_back!=null?
@@ -373,17 +376,17 @@ class _InvoiceViewState extends State<InvoiceView> {
                         title: 'سبب الإنسحاب',
                         value:
                          widget.invoice!.desc_reason_back.toString(),isExpanded: true,):Container(),
-                    widget.invoice!.numbarnch.toString().trim().isNotEmpty|| widget.invoice!.numbarnch!=null?
+                    widget.invoice!.numbarnch.toString().trim().isNotEmpty&& widget.invoice!.numbarnch!=null?
                     cardRow(
                         title: 'عدد الفروع',
                         value:   widget.invoice!.numbarnch.toString()
                            ):Container(),
                     //widget.invoice!.nummostda != null||
-                        widget.invoice!.nummostda.toString().trim().isNotEmpty||widget.invoice!.nummostda!=null?
+                        widget.invoice!.nummostda.toString().trim().isNotEmpty&&widget.invoice!.nummostda!=null?
                     cardRow(
                         title: 'عدد المستودعات ',
                         value: widget.invoice!.nummostda.toString()):Container(),
-                    widget.invoice!.numusers.toString().trim().isNotEmpty||widget.invoice!.numusers!=null?
+                    widget.invoice!.numusers.toString().trim().isNotEmpty&&widget.invoice!.numusers!=null?
                     cardRow(
                         title: 'عدد المستخدمين',
                         value:  widget.invoice!.numusers.toString()
@@ -396,10 +399,11 @@ class _InvoiceViewState extends State<InvoiceView> {
 
                     Provider.of<privilge_vm>(context,listen: true)
                         .checkprivlge('76')==true  ?
-                    cardRow( title:'يوزر العميل',
+                    widget.invoice!.clientusername!=null&&  widget.invoice!.clientusername.toString().isNotEmpty
+                    ?cardRow( title:'يوزر العميل',
                         value:
                         widget.invoice!.clientusername==null?'':
-                        widget.invoice!.clientusername.toString()):Container(),
+                        widget.invoice!.clientusername.toString()):Container():Container(),
 
                     widget.invoice!.imagelogo != null&& widget.invoice!.imagelogo.toString().isNotEmpty?
                     widgetlogo(

@@ -624,15 +624,13 @@ Future<void> getinvoice_Localwithprev() async{
           if (element.stateclient == searchfilter)
             list.add(element);
         });
-    }}else{
-      if(approvetype=='country')await getinvoices();
-      if(approvetype=='regoin')await get_invoicesbyRegoin([]);
-      listinvoices.forEach((element) {
-        if (element.stateclient == searchfilter &&
-            element.isApprove == null)
-          list.add(element);
-      });
-    }
+    }}
+    else{
+      if(approvetype=='country')
+        await get_invoicesbyRegoin_accept_requst('c');
+        if(approvetype=='regoin')  await get_invoicesbyRegoin_accept_requst('r');
+      }
+
     listInvoicesAccept=list;
     isloading=false;
     // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
@@ -799,6 +797,19 @@ Future<void> getinvoice_Localwithprev() async{
 
     //notifyListeners();
   }
+  //getinvoaicebyregoin_accept_requst
+  Future<void> get_invoicesbyRegoin_accept_requst(String type)async{
+    if(type=='r')
+    listinvoicebyregoin = await Invoice_Service()
+        .getinvoaicebyregoin_accept_requst({
+        'fk_regoin':usercurrent!.fkRegoin.toString()});
+    else listinvoicebyregoin = await Invoice_Service()
+         .getinvoaicebyregoin_accept_requst({
+         'fk_country':usercurrent!.fkCountry.toString()});
+
+    listInvoicesAccept=List.from(listinvoicebyregoin);
+    notifyListeners();
+  }
   Future<void> get_invoicesbyRegoin(List<InvoiceModel> list) async {
     listinvoicebyregoin=[];
     //cahe_data_source_invoice().clearCache();
@@ -814,7 +825,7 @@ Future<void> getinvoice_Localwithprev() async{
      listinvoices=listinvoicebyregoin;
    }
    // listinvoicesApproved=listinvoices;
-    listInvoicesAccept=listinvoices;
+    listInvoicesAccept=List.from(listinvoices);
     notifyListeners();
   }
   Future<String> add_invoiceclient_vm(

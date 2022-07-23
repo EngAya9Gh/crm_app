@@ -160,7 +160,7 @@ class _salesproductState extends State<salesproduct> {
                   color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.normal,
-                  textstring: tempdata[i].y.toString(),
+                  textstring: tempdata[i].y.toStringAsFixed(2),
                   underline: TextDecoration.none,
                 )),
                 DataCell( TextUtilis(
@@ -610,7 +610,7 @@ class _salesproductState extends State<salesproduct> {
                                 children: [
                                   Text('إجمالي المبيعات'),
                                   Text(
-                                      totalval.toString()),
+                                      totalval.toStringAsFixed(2)),
                                 ],
                               ),
                               Container(

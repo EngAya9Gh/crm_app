@@ -495,7 +495,7 @@ class _support_addState extends State<support_add> {
                           : 'تم التركيب'),
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('43')==true ?
-                  _invoice!.dateinstall_done == null
+                  _invoice!.dateinstall_done == null &&_invoice!.dateinstall_task!=null
                       ? ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor:

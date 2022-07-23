@@ -531,7 +531,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                 children: [
                                   Text('إجمالي المبيعات'),
                                   Text(
-                                      totalval.toString()),
+                                      totalval.toStringAsFixed(2)),
                                 ],
                               ),
                               Container(

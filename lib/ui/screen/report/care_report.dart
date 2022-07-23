@@ -61,8 +61,6 @@ class _care_reportState extends State<care_report> {
     UserModel usermodel=Provider.of<user_vm_provider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
-
-
     // String paramprivilge='';
     // if(Provider.of<privilge_vm>(context,listen: false)
     //     .checkprivlge('80')==true )
@@ -291,7 +289,7 @@ class _care_reportState extends State<care_report> {
                                       break;
 
                                   }
-                                  if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1)
+                                  if((_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
                                       ||_selectedDate!=DateTime(1, 1, 1)||_selectedDatemonth!=DateTime(1, 1, 1)
                                   )
                                     getData();
@@ -470,8 +468,7 @@ class _care_reportState extends State<care_report> {
                             readOnly: true,
                             onTap: () {
                               _selectDatefrom(context, DateTime.now());
-                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                getData();
+
 
                               // _selectDate(context, DateTime.now());
                             },
@@ -508,8 +505,8 @@ class _care_reportState extends State<care_report> {
                             readOnly: true,
                             onTap: () {
                               _selectDateto(context, DateTime.now());
-                              if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                                getData();
+                              // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                              //   getData();
                               // _selectDate(context, DateTime.now());
                             },
                           ),
@@ -679,6 +676,8 @@ class _care_reportState extends State<care_report> {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
         print(_selectedDatefrom.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
       });
   }
   Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
@@ -695,6 +694,8 @@ class _care_reportState extends State<care_report> {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
         print(_selectedDateto.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
       });
   }
 }

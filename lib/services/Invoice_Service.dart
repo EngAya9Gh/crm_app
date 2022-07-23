@@ -130,6 +130,22 @@ class Invoice_Service {
     print(prodlist);
     return prodlist;
   }
+  Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst( Map<String,dynamic> body) async {
+    var
+    data=await Api()
+        .post(
+        url:url+ 'client/accept_requsts.php',
+    body: body
+    );
+    print(data);
+    List<InvoiceModel> prodlist = [];
+    for (int i = 0; i < data.length; i++) {
+      print(i);
+      prodlist.add(InvoiceModel.fromJson(data[i]));
+    }
+    print(prodlist);
+    return prodlist;
+  }
   Future<InvoiceModel> addInvoice( Map<String,dynamic?> body,
       File? file,File? filelogo) async {
     try {
