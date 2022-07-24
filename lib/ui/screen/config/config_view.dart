@@ -6,6 +6,7 @@ import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +34,7 @@ class _config_viewState extends State<config_view> {
   late ConfigModel taxrate;
   final _globalKey = GlobalKey<FormState>();
  double h=0,w=0;
+ String value='';
   @override void initState() {
 
 
@@ -85,7 +87,7 @@ class _config_viewState extends State<config_view> {
               .firstWhere((element) =>
           element.name_config == 'period_commincation2')
               .value_config;
-      _controllerperiod_commincation3.text =
+      value= _controllerperiod_commincation3.text =
           _listconfg
               .firstWhere((element) =>
           element.name_config == 'period_commincation3')
@@ -133,10 +135,17 @@ class _config_viewState extends State<config_view> {
                               .listofconfig[i].id_config);
                       break;
                       case 'period_commincation3':
-                      Provider.of<config_vm>(context,listen: false)
-                          .updateConfig_vm({'value_config':_controllerperiod_commincation3.text},
+                        if(value!=_controllerperiod_commincation3.text) {
+                          Provider.of<config_vm>(context,listen: false)
+                          .updateConfig_vm({
+                            'value_config':_controllerperiod_commincation3.text,
+                            'fk_country':Provider.of<user_vm_provider>(context,listen: false)
+                            .currentUser.fkCountry.toString(),
+                             'comm3':value,//القيمة السابقة لكي اطرح من الوقت
+                          },
                           Provider.of<config_vm>(context,listen: false)
                               .listofconfig[i].id_config);
+                        }
                       break;
                       case 'period_commincation2':
                       Provider.of<config_vm>(context,listen: false)

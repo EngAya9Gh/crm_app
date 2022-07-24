@@ -38,14 +38,18 @@ class _report_rateState extends State<report_rate> {
   List<DataRow> rowsdata = [];
   String iduser='';
   bool loading = true;
-  String type = 'userSum';
+  String type = 'date';
   String typeproduct = '1';
   double totalval = 0;
 
+  DateTime _selectedDate = DateTime(1, 1, 1);
+  DateTime _selectedDatemonth = DateTime(1, 1, 1);
+  DateTime _selectedDatefrom = DateTime.now();
+  DateTime _selectedDateto = DateTime.now();
   @override
   void initState() {
     super.initState();
-    getData();
+    // getData();
   }
 
   Future<void> getData() async {
@@ -90,7 +94,7 @@ class _report_rateState extends State<report_rate> {
                 "reports/report_care_rate.php?fk_country=$fkcountry$params",
             body: {'type': type});
         break;
-      case "date":
+      case "datedays":
         data = await Api().post(
             url: url +
                 "reports/report_care_rate.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params",
@@ -100,6 +104,7 @@ class _report_rateState extends State<report_rate> {
 
     //userSum
     totalval = 0;
+    listInvoicesAccept=[];
     for (int i = 0; i < data.length; i++) {
       listInvoicesAccept.add(CommunicationModel.fromJson(data[i]));
 
@@ -116,10 +121,6 @@ class _report_rateState extends State<report_rate> {
   }
 
 
-  DateTime _selectedDate = DateTime(1, 1, 1);
-  DateTime _selectedDatemonth = DateTime(1, 1, 1);
-  DateTime _selectedDatefrom = DateTime(1, 1, 1);
-  DateTime _selectedDateto = DateTime(1, 1, 1);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -232,7 +233,7 @@ class _report_rateState extends State<report_rate> {
                                   options: GroupButtonOptions(
                                       buttonWidth: 40,
                                       borderRadius: BorderRadius.circular(10)),
-                                  buttons: ['1', '2', '3','4','5'],
+                                  buttons: ['1', '2', '3','4','5','-'],
                                   onSelected: (index, isselected) {
                                     print(index);
                                     switch(index){
@@ -251,13 +252,17 @@ class _report_rateState extends State<report_rate> {
                                         case 4:
                                         typeproduct = '5';
                                         break;
+                                        case 5:
+                                        typeproduct = '6';
+                                        break;
 
                                     }
+                                    selectedProvider.selectValuebarsalestype(index);
                                     if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
                                       getData();
                                     //setState(() {
                                     //typeinstallController=index.toString();
-                                    selectedProvider.selectValuebarsalestype(index);
+
                                     //  });
                                   });
                             }),
@@ -397,6 +402,7 @@ class _report_rateState extends State<report_rate> {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
         print(_selectedDatefrom.toString());
+        type='datedays';
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });
@@ -415,6 +421,7 @@ class _report_rateState extends State<report_rate> {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
         print(_selectedDateto.toString());
+        type='datedays';
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });

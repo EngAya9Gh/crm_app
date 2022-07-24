@@ -32,9 +32,13 @@ class _BarChartAPIState extends State<BarChartAPI> {
   List<DataRow> rowsdata=[];
 
   bool loading = true;
-  String type = 'userSum';
+  String type = 'dateyear';
   String typeproduct = 'الكل';
   double totalval=0;
+  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDatemonth = DateTime.now();
+  DateTime _selectedDatefrom = DateTime.now();
+  DateTime _selectedDateto = DateTime.now();
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_)async {
@@ -50,11 +54,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
   }
 
   Future<void> getData() async {
-    // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1)
-    // &&_selectedDate!=DateTime(1, 1, 1)&&_selectedDatemonth!=DateTime(1, 1, 1)
-    // )
 
-    // if(_se)
     setState(() {
       loading=true;
     });
@@ -201,10 +201,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
     ];
   }
 
-  DateTime _selectedDate = DateTime(1, 1, 1);
-  DateTime _selectedDatemonth = DateTime(1, 1, 1);
-  DateTime _selectedDatefrom = DateTime(1, 1, 1);
-  DateTime _selectedDateto = DateTime(1, 1, 1);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -374,7 +371,8 @@ class _BarChartAPIState extends State<BarChartAPI> {
                 )
                     : Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 1
-                    ? Row(
+                    ?
+                Row(
                       children: [
                         Flexible(
                   child: TextFormField(
@@ -445,7 +443,8 @@ class _BarChartAPIState extends State<BarChartAPI> {
                       ],
                     ): Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 2
-                    ? Row (
+                    ?
+                Row (
                   children: [
                     Flexible(
                       child: Column(

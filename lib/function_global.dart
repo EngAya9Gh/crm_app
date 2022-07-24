@@ -34,7 +34,7 @@ String get_title_care(String type ){
     case 'تركيب':
       return  'تفاصيل جودة التركيب والتدريب  ';
     case 'دوري':
-      return 'تفاصيل آخر تقييم للخدمة ';
+      return 'تفاصيل تقييم الخدمة ';
   }
 return '';
 }

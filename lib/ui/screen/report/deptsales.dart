@@ -40,6 +40,7 @@ class _deptsalesState extends State<deptsales> {
   String type = 'allregoin';
   String typeproduct = 'الكل';
   double totalval=0;
+
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_)async{
@@ -233,10 +234,7 @@ class _deptsalesState extends State<deptsales> {
     ];
   }
 
-  DateTime _selectedDate = DateTime(1, 1, 1);
-  DateTime _selectedDatemonth = DateTime(1, 1, 1);
-  DateTime _selectedDatefrom = DateTime(1, 1, 1);
-  DateTime _selectedDateto = DateTime(1, 1, 1);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -530,35 +528,5 @@ class _deptsalesState extends State<deptsales> {
     );
   }
 
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
-    DateTime? pickedDate = await showDatePicker(
 
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3010));
-    if (pickedDate != null)
-      setState(() {
-        // Navigator.pop(context);
-        _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
-      });
-  }
-  Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
-    DateTime? pickedDate = await showDatePicker(
-      // initialEntryMode: DatePickerEntryMode.calendarOnly,
-      // initialDatePickerMode: DatePickerMode.year,
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3010));
-    if (pickedDate != null)
-      setState(() {
-        // Navigator.pop(context);
-        _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
-      });
-  }
 }

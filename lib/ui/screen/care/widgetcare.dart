@@ -1,3 +1,5 @@
+
+
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
@@ -41,10 +43,12 @@ Widget commview(CommunicationModel element) {
               Row(children: [
                 Text('مستوى التقييم'),
                 RatingBar.builder(
-                  initialRating:double.parse(element.rate.toString()),
+                   initialRating:double.parse(element.rate.toString()),
                   minRating: 1,
                   direction: Axis.horizontal,
-                  allowHalfRating: true,
+                  allowHalfRating: false,
+                  // glow: true,
+                  ignoreGestures: true,
                   itemCount: 5,
                   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                   itemBuilder: (context, _) => Icon(

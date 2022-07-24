@@ -41,7 +41,10 @@ class _delayinstallState extends State<delayinstall> {
   String type = 'userSum';
   String typeproduct = 'الكل';
   double totalval = 0;
-
+  DateTime _selectedDate = DateTime(1, 1, 1);
+  DateTime _selectedDatemonth = DateTime(1, 1, 1);
+  DateTime _selectedDatefrom = DateTime.now();
+  DateTime _selectedDateto = DateTime.now();
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_)async{
@@ -122,10 +125,7 @@ class _delayinstallState extends State<delayinstall> {
 }
 
 
-  DateTime _selectedDate = DateTime(1, 1, 1);
-  DateTime _selectedDatemonth = DateTime(1, 1, 1);
-  DateTime _selectedDatefrom = DateTime(1, 1, 1);
-  DateTime _selectedDateto = DateTime(1, 1, 1);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

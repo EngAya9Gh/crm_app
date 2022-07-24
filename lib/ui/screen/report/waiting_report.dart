@@ -12,7 +12,6 @@ class waiting_report extends StatefulWidget {
   @override
   _waiting_reportState createState() => _waiting_reportState();
 }
-
 class _waiting_reportState extends State<waiting_report> {
   @override void initState() {
 
@@ -22,6 +21,7 @@ class _waiting_reportState extends State<waiting_report> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -128,7 +128,7 @@ class client_vm extends ChangeNotifier {
     else {
 
       int idexist = -1;
-      print('length'+listparam!.length.toString());
+      print('length'+listparam.toString().length.toString());
       // if(listparam!.isNotEmpty)
       idexist = listparam.indexWhere((element) => element.id_maincity == '0');
       print(idexist);

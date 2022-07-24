@@ -20,9 +20,10 @@ import 'card_comment.dart';
 import 'careAdd.dart';
 
 class careRepeat extends StatefulWidget {
-  careRepeat({required this.comobj, required this.idclient, Key? key}) : super(key: key);
+  careRepeat({required this.type, required this.comobj, required this.idclient, Key? key}) : super(key: key);
   ClientModel idclient;
   CommunicationModel comobj;
+  String type;
 
   @override
   _careRepeatState createState() => _careRepeatState();
@@ -77,8 +78,9 @@ class _careRepeatState extends State<careRepeat> {
                       },
                       child: Text(' ملف العميل')) ,
 
-                  Provider.of<communication_vm>(context, listen: true)
-                      .valuebutton==false?
+                  // Provider.of<communication_vm>(context, listen: true)
+                  //     .valuebutton==false
+                  widget.type=='wait'    ?
                   ElevatedButton(
                       style: ButtonStyle(
 

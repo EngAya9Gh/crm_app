@@ -34,9 +34,13 @@ class _sales_reportstateState extends State<sales_reportstate> {
   late String iduser ='0';
   late String idregoin='0';
   bool loading = true;
-  String type = 'userSum';
+  String type = 'dateyear';
   String typeproduct = 'الكل';
   double totalval=0;
+  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDatemonth = DateTime.now();
+  DateTime _selectedDatefrom = DateTime.now();
+  DateTime _selectedDateto = DateTime.now();
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((_)async{
@@ -204,10 +208,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
     ];
   }
 
-  DateTime _selectedDate = DateTime(1, 1, 1);
-  DateTime _selectedDatemonth = DateTime(1, 1, 1);
-  DateTime _selectedDatefrom = DateTime(1, 1, 1);
-  DateTime _selectedDateto = DateTime(1, 1, 1);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

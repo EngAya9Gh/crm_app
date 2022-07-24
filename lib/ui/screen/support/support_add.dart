@@ -555,7 +555,6 @@ class _support_addState extends State<support_add> {
                                               List<ConfigModel> _listconfg =
                                                   Provider.of<config_vm>(context, listen: false)
                                                       .listofconfig;
-
                                               ConfigModel   peroid =
                                               _listconfg.firstWhere((element) =>
                                               element.name_config == 'period_commincation3');//تواصل دوري
@@ -563,7 +562,7 @@ class _support_addState extends State<support_add> {
                                               int peroidtime= int.parse(peroid.value_config);
                                               datanext=Jiffy().add(days: peroidtime).dateTime;
                                               print(datanext.toString());
-                                             await Provider.of<invoice_vm>(context,
+                                              await Provider.of<invoice_vm>(context,
                                                   listen: false)
                                                   .setdatedone_vm({
                                                'clientusername':_textnameuserclient.text,

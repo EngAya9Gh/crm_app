@@ -30,13 +30,13 @@ class config_vm extends ChangeNotifier{
 
   }
   Future<bool> updateConfig_vm(Map<String, dynamic?> body,String idconfig) async {
-    bool res = await Api().post(
+    String res = await Api().post(
         url:url+ 'config/updateConfig.php?id_config=$idconfig',
         body:  body);
-    if (res) {
-
+    if (res=='done') {
+return true;
     }
-    return res;
+    return false;
   }
 
 

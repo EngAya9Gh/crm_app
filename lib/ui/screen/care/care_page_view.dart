@@ -2,35 +2,27 @@
 
 
 
-import 'dart:ffi';
-
-import 'package:crm_smart/Repository/communication_repo.dart';
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
+import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/screen/support/support_add.dart';
-import 'package:crm_smart/ui/widgets/client_widget/cardclientAccept.dart';
-import 'package:crm_smart/ui/widgets/client_widget/cardwaiting.dart';
-import 'package:crm_smart/ui/widgets/client_widget/clientAccept.dart';
-import 'package:crm_smart/ui/widgets/client_widget/clientCardNew.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/separatorLine.dart';
-import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
+
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'careclient_repeat.dart';
+import 'dart:ui' as myui;
+
 class care_page_view extends StatefulWidget {
   care_page_view({ Key? key}) : super(key: key);
 
@@ -43,10 +35,42 @@ class _care_page_viewState extends State<care_page_view> {
   String? typeclientvalue;
   String? fkcountry;
   bool isloading=false;
-  // late String typepayController;
+  String type = '';
+  String typeproduct = '-';
+  DateTime _selectedDatefrom = DateTime.now();
+  DateTime _selectedDateto = DateTime.now();
   @override void didChangeDependencies() async {
 
     super.didChangeDependencies();
+  }
+  Future<void> getData() async {
+
+    Provider.of<communication_vm>(context,listen: false)
+        . clear();
+    String params='';
+    if(typeproduct=='1') params='&product=1';
+    if(typeproduct=='2') params='&product=2';
+    if(typeproduct=='3') params='&product=3';
+    if(typeproduct=='4') params='&product=4';
+    if(typeproduct=='5') params='&product=5';
+
+    if(type=='wait'){
+      Provider.of<communication_vm>(context, listen: false)
+          .getCommunicationallrepeatpage(
+          Provider.of<user_vm_provider>
+            (context,listen: false).currentUser.fkCountry.toString());
+    }else{
+      if(type=='done'){
+        String parmater='$params&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}';
+        print(parmater);
+        Provider.of<communication_vm>(context, listen: false)
+            .getCommunicationallrepeatpage_done(
+            Provider.of<user_vm_provider>
+              (context,listen: false)
+                .currentUser.fkCountry.toString(),
+            parmater);
+      }
+    }
   }
   @override void initState() {
 
@@ -56,8 +80,6 @@ class _care_page_viewState extends State<care_page_view> {
       // only
       fkcountry= Provider.of<user_vm_provider>
         (context,listen: false).currentUser.fkCountry.toString();
-
-
       //   Provider.of<communication_vm>(context, listen: false)
       //  .getCommunicationall('');
       await Provider.of<privilge_vm>(context,listen: false)
@@ -67,37 +89,31 @@ class _care_page_viewState extends State<care_page_view> {
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
       //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-
+      // selectValuebarsalestype(index)
+      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(5);
       // Provider.of<client_vm>(context, listen: false)
       //   .getallclient();
-      Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationallrepeatpage(Provider.of<user_vm_provider>
-        (context,listen: false).currentUser.fkCountry.toString());
+
      await Provider.of<client_vm>(context, listen: false)
           . getclient_Local('مشترك');
 
+      if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 1 ) {
+        type='done';
+        getData();
+
+      }else if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 0) {
+        type='wait';
+        getData();
+
+      }
       // care/getcomm_repeat.php
 
       // Provider.of<invoice_vm>(context)
     });
     super.initState();
-    // getdata();
+
   }
 
-
-   getdata()async{
-    // setState(() {
-    //   isloading=true;
-    //   listCommunication=[];
-    // });
-    // listCommunication=await
-    //     // communication_repo.getCommunicationall(Provider.of<user_vm_provider>
-    //     //   (context,listen: false).currentUser.fkCountry.toString());
-    //
-    //  setState(() {
-    //    isloading=false;
-    //  });
-   }
   List<CommunicationModel> listCommunication=[];
   @override
   Widget build(BuildContext context) {
@@ -112,7 +128,7 @@ class _care_page_viewState extends State<care_page_view> {
           builder: (context, privilge, child) {
             return SafeArea(
               child: Directionality(
-                textDirection: TextDirection.rtl,
+                textDirection:myui.TextDirection.rtl,
                 child: Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: ListView(
@@ -183,12 +199,179 @@ class _care_page_viewState extends State<care_page_view> {
                         //   ],
                         // ),
                         search_widget(
-                          'wait',
+                          'waitcare',
                           hintnamefilter,''
                           // Provider
                           //     .of<invoice_vm>(context, listen: true)
                           //     .listInvoicesAccept,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0,bottom: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+
+                            children: [
+                              Consumer<selected_button_provider>(
+                                  builder: (context, selectedProvider, child) {
+                                    return GroupButton(
+                                        controller: GroupButtonController(
+                                          selectedIndex: selectedProvider.isbarsales,
+                                        ),
+                                        options: GroupButtonOptions(
+                                            buttonWidth: 135, borderRadius: BorderRadius.circular(10)),
+                                        buttons: ['بالإنتظار', 'تم التقييم' ],
+                                        onSelected: (index, isselected) {
+                                          print(index);
+                                          switch(index){
+                                            case 0:
+                                              type='wait';
+                                              break;
+
+                                            case 1:
+                                              type='done';
+                                              break;
+
+                                          }
+
+                                          // datedays
+                                          //setState(() {
+                                          //typeinstallController=index.toString();
+                                          selectedProvider.selectValuebarsales(index);
+                                          getData();
+
+                                          //  });
+                                        });
+                                  }),
+                            ],
+                          ),
+                        ),
+                        Provider.of<selected_button_provider>(context, listen: true)
+                            .isbarsales == 1 ?
+                        Row (
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('from'),
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                        return 'يرجى تعيين التاريخ ';
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.date_range,
+                                        color: kMainColor,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                          ? 'from' //_currentDate.toString()
+                                          : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                                      //_invoice!.dateinstall_task.toString(),
+                                      filled: true,
+                                      fillColor: Colors.grey.shade200,
+                                    ),
+                                    readOnly: true,
+                                    onTap: () {
+                                      _selectDatefrom(context, DateTime.now());
+                                      // _selectDate(context, DateTime.now());
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Flexible(
+                              child: Column(
+                                children: [
+                                  Text('to'),
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (_selectedDateto == DateTime(1, 1, 1)) {
+                                        return 'يرجى تعيين التاريخ ';
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.date_range,
+                                        color: kMainColor,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      hintText: _selectedDateto == DateTime(1, 1, 1)
+                                          ? 'to' //_currentDate.toString()
+                                          : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                                      //_invoice!.dateinstall_task.toString(),
+                                      filled: true,
+                                      fillColor: Colors.grey.shade200,
+                                    ),
+                                    readOnly: true,
+                                    onTap: () {
+                                      _selectDateto(context, DateTime.now());
+                                      // if(_selectedDateto!=DateTime(1, 1, 1)
+                                      //     &&_selectedDatefrom!=DateTime(1, 1, 1))
+                                      //   getData();
+                                      // _selectDate(context, DateTime.now());
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],): Container(),
+                        Provider.of<selected_button_provider>(context, listen: true)
+                            .isbarsales == 1 ?
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Consumer<selected_button_provider>(
+                                  builder: (context, selectedProvider, child) {
+                                    return GroupButton(
+                                        controller: GroupButtonController(
+                                          selectedIndex: selectedProvider.isbarsalestype,
+                                        ),
+                                        options: GroupButtonOptions(
+                                            buttonWidth: 40,
+                                            borderRadius: BorderRadius.circular(10)),
+                                        buttons: ['1', '2', '3','4','5','-'],
+                                        onSelected: (index, isselected) {
+                                          print(index);
+                                          switch(index){
+                                            case 0:
+                                              typeproduct = '1';
+                                              break;
+                                            case 1:
+                                              typeproduct = '2';
+                                              break;
+                                            case 2:
+                                              typeproduct = '3';
+                                              break;
+                                            case 3:
+                                              typeproduct = '4';
+                                              break;
+                                            case 4:
+                                              typeproduct = '5';
+                                              break;
+                                            case 5:
+                                              typeproduct = '6';
+                                              break;
+
+                                          }
+
+                                          selectedProvider.selectValuebarsalestype(index);
+                                          getData();
+
+                                        });
+                                  }),
+                            ],
+                          ),
+                        ):Container(),
                         SizedBox(height: 5,),
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0,right: 30),
@@ -256,6 +439,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                 MaterialPageRoute(
                                                                     builder: (context) =>
                                                                     careRepeat(
+                                                                        type:type,
                                                                         comobj:listCommunication[index],
                                                                       // tabindex:2, //move to tab support in profile client
                                                                         idclient:
@@ -290,7 +474,8 @@ class _care_page_viewState extends State<care_page_view> {
                                                                                 fontFamily: kfontfamily2,
                                                                                 color: kMainColor),
                                                                           ),
-                                                                          Text(
+                                                                         type=='wait'?
+                                                                         Text(
                                                                            int.parse(listCommunication[index].hoursdelaylabel.toString())<0?
                                                                              ' تأخر عن التواصل  '+ listCommunication[index] .hoursdelaylabel.toString()+ ' يوم '
                                                                                :
@@ -301,7 +486,15 @@ class _care_page_viewState extends State<care_page_view> {
                                                                                 // fontWeight: FontWeight.bold,
                                                                                 fontFamily: kfontfamily2,
                                                                                 color: kMainColor),
-                                                                          ),
+                                                                          ):
+                                                                         Text(
+                                                                           listCommunication[index].rate.toString(),
+                                                                           style: TextStyle(
+                                                                             //fontWeight: FontWeight.bold,
+                                                                               fontSize: 12,
+                                                                               fontFamily: kfontfamily2,
+                                                                               color: kMainColor),
+                                                                         ),
                                                                         ],
                                                                       ),
                                                                       Row(
@@ -322,7 +515,8 @@ class _care_page_viewState extends State<care_page_view> {
                                                                           // ),
                                                                         ],
                                                                       ),
-                                                                      Row(
+                                                                   type=='wait'?
+                                                                   Row(
                                                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                         children: [
                                                                           Text(
@@ -341,7 +535,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                             ),
                                                                           ),
                                                                         ],
-                                                                      ),
+                                                                      ):Container(),
                                                                     ],
                                                                   )
                                                                 ],
@@ -371,8 +565,41 @@ class _care_page_viewState extends State<care_page_view> {
     );
   }
 
-  void filtershow(){
-    Provider.of<client_vm>(context,listen: false)
-        .getfilterview(regoin);
+
+  Future<void>
+  _selectDatefrom(BuildContext context, DateTime currentDate) async {
+    DateTime? pickedDate = await showDatePicker(
+
+        context: context,
+        currentDate: currentDate,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(3010));
+    if (pickedDate != null)
+      setState(() {
+        // Navigator.pop(context);
+        _selectedDatefrom = pickedDate;
+        print(_selectedDatefrom.toString());
+        //if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
+      });
+  }
+  Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
+    DateTime? pickedDate = await showDatePicker(
+      // initialEntryMode: DatePickerEntryMode.calendarOnly,
+      // initialDatePickerMode: DatePickerMode.year,
+        context: context,
+        currentDate: currentDate,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(3010));
+    if (pickedDate != null)
+      setState(() {
+        // Navigator.pop(context);
+        _selectedDateto = pickedDate;
+        print(_selectedDateto.toString());
+        //if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          getData();
+      });
   }
 }

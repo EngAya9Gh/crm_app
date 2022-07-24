@@ -91,13 +91,15 @@ class _HomeState extends State<Home> {
      // Provider.of<notifyvm>(context, listen: false)
      //    .getNotification();
 
-    List<PrivilgeModel> list=
+     List<PrivilgeModel> list=
            Provider.of<privilge_vm>(context,listen: false).privilgelist;
-    Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
+     Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
 
      Provider.of<client_vm>(context, listen: false)
         .getallclient();//getclient_vm();
+
     });
+
   }
   @override
   void didChangeDependencies() {

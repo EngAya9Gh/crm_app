@@ -199,6 +199,25 @@ class communication_vm extends ChangeNotifier{
     isloading=false;
     notifyListeners();
   }
+  Future<void> searchwaitcare(String productName) async {
+    List<CommunicationModel> _listInvoicesAccept=[];
+    List<CommunicationModel> temp=List.from(listCommunicationrepeat);
+    // code to convert the first character to uppercase
+    String searchKey =productName;//
+    if(productName.isNotEmpty){
+      if(listCommunicationrepeat.isNotEmpty ){
+        listCommunicationrepeat.forEach((element) {
+          if(element.nameEnterprise.toString().contains(searchKey,0)
+              || element.mobile.toString().contains(searchKey,0)
+              || element.nameClient.toString().contains(searchKey,0)
+          )
+            _listInvoicesAccept.add(element);
+        });
+        listCommunicationrepeat=List.from(_listInvoicesAccept);
+      }}
+    else listCommunicationrepeat=List.from(temp);
+    notifyListeners();
+  }
   //searchwelcome
   Future<void> searchwelcome(String productName,String? type) async {
     List<CommunicationModel> _listInvoicesAccept=[];
@@ -210,8 +229,8 @@ class communication_vm extends ChangeNotifier{
       if(listCommunicationWelcome.isNotEmpty ){
         listCommunicationWelcome.forEach((element) {
           if(element.nameEnterprise.contains(searchKey,0)
-              || element.mobile!.contains(searchKey,0)
-              ||element.nameClient!.contains(searchKey,0)
+              || element.mobile.toString().contains(searchKey,0)
+              ||element.nameClient.toString().contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -225,8 +244,8 @@ class communication_vm extends ChangeNotifier{
           if(listCommunicationInstall.isNotEmpty ){
             listCommunicationInstall.forEach((element) {
               if(element.nameEnterprise.contains(searchKey,0)
-                  || element.mobile!.contains(searchKey,0)
-                  ||element.nameClient!.contains(searchKey,0)
+                  || element.mobile.toString().contains(searchKey,0)
+                  ||element.nameClient.toString().contains(searchKey,0)
               )
                 _listInvoicesAccept.add(element);
             });
@@ -313,6 +332,32 @@ class communication_vm extends ChangeNotifier{
     }
     // return listCommunication;
     isload=false;
+    notifyListeners();
+  }
+  Future<void> getCommunicationallrepeatpage_done(
+      String country,String param)async {
+    listCommunicationrepeat=[];
+    isload=true;
+    notifyListeners();
+    List<dynamic> data=[];
+    data= await Api()
+        .post(
+        url:url+ 'reports/report_care_rate.php?fk_country=$country$param'
+    ,body: {'type':'datedays'});
+    print(data);
+    if(data.length.toString().isNotEmpty) {
+      for (int i = 0; i < data.length; i++) {
+        listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
+      }
+
+    }
+    // return listCommunication;
+    isload=false;
+    notifyListeners();
+  }
+
+  clear(){
+    listCommunicationrepeat=[];
     notifyListeners();
   }
   //addcommuncation

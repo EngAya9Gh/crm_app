@@ -313,7 +313,7 @@ class invoice_vm extends ChangeNotifier{
     else{
 
       String params='';
-      if(listparam!.isNotEmpty)
+      if(listparam.toString().isNotEmpty)
 {
   idexist= listparam.indexWhere((element) => element.id_maincity=='0');
   if(idexist ==-1)
