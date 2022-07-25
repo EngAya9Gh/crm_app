@@ -10,6 +10,7 @@ import 'country_vm.dart';
 
 class product_vm extends ChangeNotifier {
   List<ProductModel> listProduct = [];
+  bool   isloading=false;
 
   UserModel? usercurrent;
 
@@ -18,12 +19,36 @@ class product_vm extends ChangeNotifier {
     usercurrent=user;
     notifyListeners();
   }
-
+  // searchProducts
+  Future<void> searchProducts(
+      String productName) async {
+    List<ProductModel> templistProduct = [];
+    // code to convert the first character to uppercase
+    String searchKey =productName;//
+    print(productName);
+    if(productName.isNotEmpty) {
+      if(listProduct.isNotEmpty ) {
+         listProduct.forEach((element) {
+          if(element.nameProduct.toString().contains(searchKey,0)
+           // || element.mobile!.contains(searchKey,0)
+          )
+            templistProduct.add(element);
+        });
+      }}
+    else {
+      listProduct=List.from(templistProduct);
+    }
+    notifyListeners();
+  }
   Future<void> getproduct_vm() async {
-    listProduct.clear();
+    isloading=true;
+    notifyListeners();
+    // listProduct.clear();
     print('after clear');
     print(listProduct.length);
-    listProduct = await ProductService().getAllProduct(usercurrent!.fkCountry.toString());
+    listProduct = await ProductService()
+        .getAllProduct(usercurrent!.fkCountry.toString());
+    isloading=false;
     notifyListeners();
   }
 

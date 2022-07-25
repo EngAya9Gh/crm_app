@@ -1,5 +1,6 @@
 import 'package:crm_smart/model/calendar/event.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/model/maincitymodel.dart';
 // import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -90,14 +91,22 @@ class EventProvider extends ChangeNotifier {
     // }
     notifyListeners();
   }
-  Future<void> getevents( String searchfilter,String type)async{
+  Future<void> getevents( String searchfilter,
+      List<MainCityModel> idmaincitysList,String type)async{
      late Event event;//
      _events.clear();
       if(type=='regoin'){
+        List<int> listval=[];
+        int idexist= idmaincitysList.indexWhere((element) => element.id_maincity=='0');
+        if(idexist ==-1) {
+          for (int i = 0; i < idmaincitysList.length; i++)
+            listval.add(int.parse(idmaincitysList[i].id_maincity));
+        }
          listinvoices.forEach((element) {
            if(element.dateinstall_task!=null && (element.isdoneinstall!=null ||
                        element.isdoneinstall!='0')){
-             if(element.id_maincity==searchfilter){
+             for(int i=0;i<listval.length;i++)
+             if(element.id_maincity==listval[i]) {
              DateTime temp= DateTime.parse(element.dateinstall_task.toString()).hour>=21
                  ? DateTime.parse(element.dateinstall_task.toString())
                  .subtract(Duration(hours: 3)): DateTime.parse(element.dateinstall_task.toString());

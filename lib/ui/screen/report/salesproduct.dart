@@ -106,30 +106,32 @@ class _salesproductState extends State<salesproduct> {
         .checkprivlge('89')==true ||
        Provider.of<privilge_vm>(context,listen: false)
         .checkprivlge('90')==true ) {
-
+      String params='';
+      if(typeproduct=='أجهزة') params='&product=0';
+      if(typeproduct=='برامج') params='&product=1';
       var data;
       switch (type) {
         case "userSum":
           data = await Api().post(
-              url: url + "reports/sales_product.php?fk_country=$fkcountry$paramprivilge",
+              url: url + "reports/sales_product.php?fk_country=$fkcountry$paramprivilge$params",
               body: {'type': type});
           break;
         case "dateyear":
           data = await Api().post(
               url: url +
-                  "reports/sales_product.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$paramprivilge",
+                  "reports/sales_product.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$paramprivilge$params",
               body: {'type': type});
           break;
         case "datemonth":
           data = await Api().post(
               url: url +
-                  "reports/sales_product.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$paramprivilge",
+                  "reports/sales_product.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$paramprivilge$params",
               body: {'type': type});
           break;
         case "datedays":
           data = await Api().post(
               url: url +
-                  "reports/sales_product.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramprivilge",
+                  "reports/sales_product.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramprivilge$params",
               body: {'type': type});
           break;
       }
@@ -281,6 +283,7 @@ class _salesproductState extends State<salesproduct> {
                     ],
                   ),
                 ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -594,7 +597,48 @@ class _salesproductState extends State<salesproduct> {
                       ),
                     ),
                   ],): Container(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Consumer<selected_button_provider>(
+                          builder: (context, selectedProvider, child) {
+                            return GroupButton(
+                                controller: GroupButtonController(
+                                  selectedIndex: selectedProvider.isbarsalestype,
+                                ),
+                                options: GroupButtonOptions(
+                                    buttonWidth: 110,
+                                    borderRadius: BorderRadius.circular(10)),
+                                buttons: ['الكل', 'أجهزة', 'برامج'],
+                                onSelected: (index, isselected) {
 
+                                  print(index);
+                                  switch(index){
+                                    case 0:
+                                      typeproduct = 'الكل';
+                                      break;
+                                    case 1:
+                                      typeproduct = 'أجهزة';
+                                      break;
+                                    case 2:
+                                      typeproduct = 'برامج';
+                                      break;
+
+                                  }
+                                  if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1)
+                                      ||_selectedDate!=DateTime(1, 1, 1)||_selectedDatemonth!=DateTime(1, 1, 1)
+                                  )
+                                    getData();
+                                  //setState(() {
+                                  //typeinstallController=index.toString();
+                                  selectedProvider.selectValuebarsalestype(index);
+                                  //  });
+                                });
+                          }),
+                    ],
+                  ),
+                ),
                 Expanded(
                   child: Center(
                     child: loading

@@ -3,6 +3,7 @@ import 'package:crm_smart/ui/screen/search/search_mv.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
+import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,10 @@ class search_widget extends StatelessWidget {
                 switch(serch){
                     case 'client':
                     Provider.of<client_vm>(context,listen: false)
+                        .searchProducts(pattern);
+                    break;
+                    case 'product':
+                    Provider.of<product_vm>(context,listen: false)
                         .searchProducts(pattern);
                     break;
 

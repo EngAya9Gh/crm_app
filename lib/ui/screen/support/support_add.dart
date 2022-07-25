@@ -551,6 +551,8 @@ class _support_addState extends State<support_add> {
                                                 MaterialStateProperty.all(
                                                     kMainColor)),
                                             onPressed: () async {
+                                              Provider.of<invoice_vm>(context,
+                                                  listen: false).setisload();
                                               await Provider.of<config_vm>(context, listen: false).getAllConfig();
                                               List<ConfigModel> _listconfg =
                                                   Provider.of<config_vm>(context, listen: false)

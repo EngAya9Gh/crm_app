@@ -3,6 +3,7 @@ import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/productmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/screen/invoice/invoiceView.dart';
 import 'package:crm_smart/ui/screen/product/editproduct.dart';
@@ -21,12 +22,13 @@ import '../../../constants.dart';
 class CardInvoiceClient extends StatefulWidget {
   CardInvoiceClient(
       {
-        //required this.itemClient,
+        required this.type,
         required this.itemProd,
         //required this.indexinvoice,
         Key? key})
       : super(key: key);
   InvoiceModel itemProd;
+  String type;
  // ClientModel itemClient;
   // int indexinvoice;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -64,9 +66,13 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
           onTap: () {
             Navigator.push(context, MaterialPageRoute(
                 builder: (context)=>
-                    InvoiceView(
-                  //clientmodel: widget.itemClient,
-                  invoice:widget.itemProd ,
+               widget.type=='profile'?
+                    ProfileClient(
+                      tabindex: 1,
+                        idclient:
+                        widget.itemProd.fkIdClient.toString()):
+                   InvoiceView(
+                   invoice:widget.itemProd ,
                 )));
           },
           child: Directionality(
@@ -100,7 +106,9 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               fontSize: 12),
                         ),
                         Text(
-                          widget.itemProd.date_approve.toString(),
+                          widget.itemProd.date_approve!=null?
+                          widget.itemProd.date_approve.toString():
+                          widget.itemProd.dateCreate.toString(),
                           style: TextStyle(
                               fontFamily: kfontfamily2,
                               color: kMainColor,

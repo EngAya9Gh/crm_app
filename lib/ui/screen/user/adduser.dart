@@ -252,7 +252,8 @@ class _addUserState extends State<addUser> {
                                   .currentUser.fkCountry;
                       if( level!=null &&
                           emailController.text.toString().trim().isNotEmpty
-                          &&nameController.text.toString().trim().isNotEmpty) {
+                          &&nameController.text.toString().trim().isNotEmpty
+                      &&mobileController.text.toString().trim().isNotEmpty) {
                         Provider.of<LoadProvider>(context, listen: false)
                             .changeboolValueUser(true);
                        Map<String,String?> body={

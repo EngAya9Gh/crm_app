@@ -246,14 +246,15 @@ class _careAddState extends State<careAdd> {
                                   )));
                         },
                         child: Text(' ملف العميل')) ,
-
                 ],
                 ),
                 SizedBox(height: 10,),
                 RowEdit(name: 'البيانات', des: ''),
+                (widget.com.typeCommuncation=='تركيب'&&widget.com.dateCommunication!=null)
+                    ||( widget.com.typeCommuncation=='ترحيب'&&widget.com.dateCommunication!=null)?
                 cardRow(
                     title: 'تاريخ عقد الإشتراك',
-                    value: widget.com.date_approve.toString()),
+                    value: widget.com.date_approve.toString()):Container(),
                 SizedBox(height: 10,),
                 widget.com.typeCommuncation=='تركيب'&&widget.com.dateCommunication!=null?
                 cardRow(

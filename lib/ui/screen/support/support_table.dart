@@ -1,5 +1,6 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/calendar/Event_editing_page.dart';
 import 'package:crm_smart/ui/screen/support/support_add.dart';
@@ -25,6 +26,9 @@ class support_table extends StatefulWidget {
 int isSelectedtypeinstall=0;
 late  String iduser;
 List<InvoiceModel> listfilter=[];
+
+List<int> listval=[];
+int idexist=-1;
 class _support_tableState extends State<support_table> {
   @override
   Future<void> didChangeDependencies() async {
@@ -111,29 +115,81 @@ class _support_tableState extends State<support_table> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: Consumer<maincity_vm>(
-                            builder: (context, cart, child) {
-                              return
-                                DropdownButton(
-                                  isExpanded: true,
-                                  hint: Text("المناطق"),
-                                  items: cart.listmaincity.map((level_one) {
-                                    return DropdownMenuItem(
-                                      child: Text(level_one.namemaincity),
-                                      //label of item
-                                      value: level_one
-                                          .id_maincity, //value of item
-                                    );
-                                  }).toList(),
-                                  value: cart.selectedValuemanag,
-                                  onChanged: (value) {
-                                    //  setState(() {
-                                  cart.changevalue(value.toString());
-                                        Provider.of<EventProvider>(context, listen: false)
-                                          .getevents(value.toString(),"regoin");
-                                  },
-                                );
-                              //);
+                          child:
+                          // Consumer<maincity_vm>(
+                          //   builder: (context, cart, child) {
+                          //     return
+                          //       DropdownButton(
+                          //         isExpanded: true,
+                          //         hint: Text("المناطق"),
+                          //         items: cart.listmaincity.map((level_one) {
+                          //           return DropdownMenuItem(
+                          //             child: Text(level_one.namemaincity),
+                          //             //label of item
+                          //             value: level_one
+                          //                 .id_maincity, //value of item
+                          //           );
+                          //         }).toList(),
+                          //         value: cart.selectedValuemanag,
+                          //         onChanged: (value) {
+                          //           //  setState(() {
+                          //         cart.changevalue(value.toString());
+                          //               Provider.of<EventProvider>(context, listen: false)
+                          //                 .getevents(value.toString(),"regoin");
+                          //         },
+                          //       );
+                          //     //);
+                          //   },
+                          // ),
+                          Consumer<maincity_vm>(
+                            builder: (context, cart, child){
+                              return  DropdownSearch<MainCityModel>.multiSelection(
+                                mode: Mode.DIALOG,
+                                filterFn: (user, filter) => user!.getfilteruser(filter!),
+                                compareFn: (item, selectedItem) => item?.id_maincity == selectedItem?.id_maincity,
+                                // itemAsString: (UserModel u) => u.userAsStringByName(),
+                                items: cart.listmaincityfilter,
+                                showSelectedItems: true,
+                                selectedItems: cart.selecteditemmaincity,
+                                itemAsString: (u) => u!.userAsString(),
+                                onChanged: (data) {
+                                  for(int i=0;i<data.length;i++)
+                                    print(data[i].id_maincity);
+                                  print(data);
+                                  // selecteditemmaincity=data;
+                                  cart.changeitemlist(data);
+
+
+                                  Provider.of<EventProvider>(context, listen: false)
+                                      .getevents('',data,"regoin");
+                                } ,
+                                //selectedItem: cart.selecteduser,
+                                showSearchBox: true,
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                  //filled: true,
+                                  isCollapsed: true,
+                                  hintText: 'المنطقة',
+                                  alignLabelWithHint: true,
+                                  fillColor:  Colors.grey.withOpacity(0.2),
+                                  //labelText: "choose a user",
+                                  contentPadding: EdgeInsets.all(0),
+                                  //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                  // focusedBorder: OutlineInputBorder(
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //     borderSide: const BorderSide(color: Colors.white)),
+                                  border:
+                                  UnderlineInputBorder(
+                                      borderSide: const BorderSide(  color: Colors.grey)
+                                  ),
+                                  // OutlineInputBorder(
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //     borderSide: const BorderSide( color: Colors.white)),
+                                ),
+                                // InputDecoration(border: InputBorder.none),
+
+                              );
+
                             },
                           ),
                         ),
@@ -202,7 +258,7 @@ class _support_tableState extends State<support_table> {
                                 onChanged: (data) {
                                   iduser=data!.idUser!;
                                                 Provider.of<EventProvider>(context, listen: false)
-                                                    .getevents(iduser,"user");
+                                                    .getevents(iduser,[],"user");
                                                 // Provider.of<client_vm>(context, listen: false)
                                                 //     .getclientfilter_Local(iduser!,"user");
 

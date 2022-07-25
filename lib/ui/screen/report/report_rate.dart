@@ -37,7 +37,7 @@ class _report_rateState extends State<report_rate> {
   List<BarModel> salestempdataclientresult = [];
   List<DataRow> rowsdata = [];
   String iduser='';
-  bool loading = true;
+  bool loading = false;
   String type = 'date';
   String typeproduct = '1';
   double totalval = 0;
@@ -268,6 +268,20 @@ class _report_rateState extends State<report_rate> {
                             }),
                       ],
                     ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0,right: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('عدد العملاء',style: TextStyle(
+                            fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                        ),),
+                        Text(
+                          listInvoicesAccept.length.toString(),style: TextStyle(
+                            fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                        ),),
+                      ],),
                   ),
                   Center(
                     child: loading

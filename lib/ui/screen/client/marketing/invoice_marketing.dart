@@ -187,6 +187,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                                                         2),
                                                     child:
                                                        CardInvoiceClient(
+                                                         type: 'profile',
                                                       itemProd: value.listinvoicesMarketing[index],
                                                       //itemClient :  itemClient,
                                                     )) ,

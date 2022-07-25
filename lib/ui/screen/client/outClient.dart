@@ -153,6 +153,7 @@ class _OutClientState extends State<OutClient> {
                                                         2),
                                                     child:
                                                       CardInvoiceClient(
+                                                        type: 'profile',
                                                       itemProd: value.listInvoicesAccept[index],
                                                       //itemClient :  itemClient,
                                                     )) ,

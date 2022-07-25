@@ -54,8 +54,8 @@ class invoice_vm extends ChangeNotifier{
       if(listInvoicesAccept.isNotEmpty ){
         listInvoicesAccept.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-              || element.mobile!.contains(searchKey,0)
-          ||element.nameClient!.contains(searchKey,0)
+              || element.mobile.toString()!.contains(searchKey,0)
+          ||element.nameClient.toString()!.contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -73,8 +73,8 @@ class invoice_vm extends ChangeNotifier{
       if(listInvoicesAccept.isNotEmpty ){
         listInvoicesAccept.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-          || element.mobile!.contains(searchKey,0)
-          || element.nameClient!.contains(searchKey,0)
+          || element.mobile.toString()!.contains(searchKey,0)
+          || element.nameClient.toString().contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -103,8 +103,8 @@ class invoice_vm extends ChangeNotifier{
       if(listInvoicesAccept.isNotEmpty ){
         listInvoicesAccept.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-          || element.mobile!.contains(searchKey,0)
-          || element.nameClient!.contains(searchKey,0)
+          || element.mobile.toString().contains(searchKey,0)
+          || element.nameClient.toString().contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -121,8 +121,8 @@ class invoice_vm extends ChangeNotifier{
       if(listInvoicesAccept.isNotEmpty ){
         listInvoicesAccept.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-          || element.mobile!.contains(searchKey,0)
-          || element.nameClient!.contains(searchKey,0)
+          || element.mobile.toString().contains(searchKey,0)
+          || element.nameClient.toString().contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -139,8 +139,8 @@ class invoice_vm extends ChangeNotifier{
       if(listInvoicesAccept.isNotEmpty ){
         listInvoicesAccept.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-          || element.mobile!.contains(searchKey,0)
-          || element.nameClient!.contains(searchKey,0)
+          || element.mobile.toString().contains(searchKey,0)
+          || element.nameClient.toString().contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -157,8 +157,8 @@ class invoice_vm extends ChangeNotifier{
       if(listinvoicesMarketing.isNotEmpty ){
         listinvoicesMarketing.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-              || element.mobile!.contains(searchKey,0)
-          ||element.nameClient!.contains(searchKey,0)
+              || element.mobile.toString()!.contains(searchKey,0)
+          ||element.nameClient.toString()!.contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -294,6 +294,10 @@ class invoice_vm extends ChangeNotifier{
         ,{'allmaincity':'allmaincity'}
     );
     isloading=false;
+    notifyListeners();
+  }
+  void setisload(){
+    isloadingdone=true;
     notifyListeners();
   }
   Future<void> getfilter_maincity(List<MainCityModel>? listparam, String? state)async{
@@ -541,7 +545,7 @@ class invoice_vm extends ChangeNotifier{
     notifyListeners();
     if(tyype=='only')await getinvoice_Local("مشترك",'approved only',null);
     if(tyype=='client')await getinvoice_Local("مشترك",'approved client',null);
-    if(tyype=='not')await getinvoice_Local("مشترك",'not approved',null);//طلبات الموافقة
+    if(tyype=='not')await getinvoice_Local("مشترك",'not approved',null);//طلبات الموافقة الفلتر
     List<InvoiceModel> _listInvoicesAccept=[];
     if(regoin!='0')
     listInvoicesAccept.forEach((element) {
@@ -624,6 +628,7 @@ Future<void> getinvoice_Localwithprev() async{
           if (element.stateclient == searchfilter)
             list.add(element);
         });
+      listInvoicesAccept=list;
     }}
     else{
       if(approvetype=='country')
@@ -631,7 +636,7 @@ Future<void> getinvoice_Localwithprev() async{
         if(approvetype=='regoin')  await get_invoicesbyRegoin_accept_requst('r');
       }
 
-    listInvoicesAccept=list;
+
     isloading=false;
     // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
     notifyListeners();

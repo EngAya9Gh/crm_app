@@ -56,6 +56,7 @@ class _ticketAddState extends State<ticketAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
         key: _scaffoldKey,
         body: ModalProgressHUD(
           inAsyncCall: Provider.of<ticket_vm>(context, listen: true).addvalue,

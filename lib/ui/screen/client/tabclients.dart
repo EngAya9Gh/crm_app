@@ -189,21 +189,15 @@ class _tabclientsState extends State<tabclients> {
                                           cart.changeVal(value.toString());
                                           regoin=value.toString();
                                           filtershow();
-                                          // Provider.of<client_vm>(context, listen: false)
-                                          //     .getclientfilter_Local(value.toString(),"regoin",
-                                          //     Provider.of<typeclient>(context,listen: false).selectedValuemanag);
-                                          // // });
+
                                         },
                                       );
-                                    //);
+
                                 },
                               ),
                             ),
                           )
                               :Container(),
-                          // (   privilge.checkprivlge('16')==true
-                          //     && privilge.checkprivlge('8')!=true
-                          //     && privilge.checkprivlge('15')!=true )?
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 20.0,right: 8),

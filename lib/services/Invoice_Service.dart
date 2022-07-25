@@ -45,11 +45,7 @@ class Invoice_Service {
         .post( url:url+"client/setApproveClient.php?idInvoice=$idInvoice",body:
     body
     );
-    // List<ClientModel> prodlist = [];
-    // for (int i = 0; i < data.length; i++) {
-    //   prodlist.add(ClientModel.fromJson(data[i]));
-    // }
-    // print(prodlist);
+
     if(data!=null)
     return InvoiceModel.fromJson(data[0]);
     return null;
