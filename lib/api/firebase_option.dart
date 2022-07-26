@@ -34,21 +34,21 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDPc1bZGUTKYilLcLMJbxd8I4RInrPo8AQ',
-    appId: '1:102540138446:android:bc175820eaf396efe5fd9f',
-    messagingSenderId: '102540138446',
-    projectId: 'crmapp-8f9de',
+    apiKey: 'AIzaSyBjUVlpV0bayJewO_xYitxo_V67eyyM5es',
+    appId: '1:1059711331727:android:06cae3d27ff4a60b1eeffa',
+    messagingSenderId: '1059711331727',
+    projectId: 'smart-crm-31e3c"',
     //databaseURL: 'https://react-native-firebase-testing.firebaseio.com',
-    storageBucket: 'crmapp-8f9de.appspot.com',
+    storageBucket: 'smart-crm-31e3c.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAHAsf51D0A407EklG1bs-5wA7EbyfNFg0',
+    apiKey: 'AIzaSyBjUVlpV0bayJewO_xYitxo_V67eyyM5es',
     appId: '1:448618578101:ios:0b11ed8263232715ac3efc',
-    messagingSenderId: '448618578101',
-    projectId: 'react-native-firebase-testing',
+    messagingSenderId: '1059711331727',
+    projectId: 'smart-crm-31e3c',
     databaseURL: 'https://react-native-firebase-testing.firebaseio.com',
-    storageBucket: 'react-native-firebase-testing.appspot.com',
+    storageBucket: 'smart-crm-31e3c.appspot.com',
     androidClientId:
     '448618578101-a9p7bj5jlakabp22fo3cbkj7nsmag24e.apps.googleusercontent.com',
     iosClientId:

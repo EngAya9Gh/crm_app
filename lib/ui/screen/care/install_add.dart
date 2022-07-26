@@ -48,7 +48,11 @@ class _installAddState extends State<installAdd> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      appBar: AppBar(),
+      appBar: AppBar(
+
+        centerTitle: true,
+        title: Text(widget.com.nameEnterprise.toString()),
+      ),
       body:  ModalProgressHUD(
         inAsyncCall: Provider.of<communication_vm>(context,listen: true).isload,
         child: Directionality(

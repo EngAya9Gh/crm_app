@@ -36,8 +36,9 @@ class product_vm extends ChangeNotifier {
         });
       }}
     else {
-      listProduct=List.from(templistProduct);
+      getproduct_vm();
     }
+    listProduct=List.from(templistProduct);
     notifyListeners();
   }
   Future<void> getproduct_vm() async {

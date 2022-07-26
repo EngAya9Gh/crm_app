@@ -52,7 +52,11 @@ class _careRepeatState extends State<careRepeat> {
         .listCommunicationClient;
     return Scaffold(
 
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(widget.comobj.nameEnterprise.toString()),
+        //comobj
+      ),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(

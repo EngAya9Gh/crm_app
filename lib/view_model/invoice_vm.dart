@@ -54,8 +54,8 @@ class invoice_vm extends ChangeNotifier{
       if(listInvoicesAccept.isNotEmpty ){
         listInvoicesAccept.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-              || element.mobile.toString()!.contains(searchKey,0)
-          ||element.nameClient.toString()!.contains(searchKey,0)
+              || element.mobile.toString().contains(searchKey,0)
+          ||element.nameClient.toString().contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -73,7 +73,7 @@ class invoice_vm extends ChangeNotifier{
       if(listInvoicesAccept.isNotEmpty ){
         listInvoicesAccept.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-          || element.mobile.toString()!.contains(searchKey,0)
+          || element.mobile.toString().contains(searchKey,0)
           || element.nameClient.toString().contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
@@ -157,8 +157,8 @@ class invoice_vm extends ChangeNotifier{
       if(listinvoicesMarketing.isNotEmpty ){
         listinvoicesMarketing.forEach((element) {
           if(element.name_enterprise!.contains(searchKey,0)
-              || element.mobile.toString()!.contains(searchKey,0)
-          ||element.nameClient.toString()!.contains(searchKey,0)
+              || element.mobile.toString().contains(searchKey,0)
+          ||element.nameClient.toString().contains(searchKey,0)
           )
             _listInvoicesAccept.add(element);
         });
@@ -933,7 +933,7 @@ Future<void> getinvoice_Localwithprev() async{
     return res;
   }
   Future<void> setdate_vm(Map<String, dynamic?> body,String? id_invoice) async {
-      isloading=true;
+      isloadingdone=true;
       notifyListeners();
       int index=listinvoices.indexWhere(
               (element) => element.idInvoice==id_invoice);
@@ -949,7 +949,7 @@ Future<void> getinvoice_Localwithprev() async{
       //     InvoiceModel.fromJson(listinvoices[index]));
       // listinvoices[index]= InvoiceModel.fromJson(body);
       // //listClient.removeAt(index);
-      isloading=false;
+      isloadingdone=false;
       notifyListeners();
 
   }

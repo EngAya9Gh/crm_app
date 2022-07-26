@@ -372,6 +372,8 @@ class _support_addState extends State<support_add> {
                               //     && _currentDate!= DateTime(1, 1, 1)) {
                                 if(_globalKey.currentState!.validate()){
                                   _globalKey.currentState!.save();
+                                  Provider.of<invoice_vm>(context,
+                                      listen: false).setisload();
                               DateTime datetask = DateTime(
                                     _currentDate.year, _currentDate.month,
                                     _currentDate.day,

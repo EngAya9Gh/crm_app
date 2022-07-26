@@ -376,13 +376,7 @@ class communication_vm extends ChangeNotifier{
     element.idCommunication==id_communication);
 
     listCommunication[index]=data;
-    if(listCommunicationrepeat.isNotEmpty) {
-       index = listCommunicationrepeat.indexWhere((element) =>
-       element.idCommunication == id_communication);
-       listCommunicationrepeat.removeAt(index);
 
-      // listCommunicationrepeat[index] = data;
-    }
     String value=listCommunication[index].typeCommuncation.toString();
     switch(value){
       case 'تركيب':
@@ -393,6 +387,13 @@ class communication_vm extends ChangeNotifier{
         break;
         case 'دوري':
         getCommunicationclientrepeat(data.fkClient);
+        if(listCommunicationrepeat.isNotEmpty) {
+          index = listCommunicationrepeat.indexWhere((element) =>
+          element.idCommunication == id_communication);
+          listCommunicationrepeat.removeAt(index);
+
+          // listCommunicationrepeat[index] = data;
+        }
           // index= listCommunicationClient.indexWhere(
           //         (element) =>
           // element.idCommunication==id_communication);

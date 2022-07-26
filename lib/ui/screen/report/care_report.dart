@@ -525,7 +525,7 @@ class _care_reportState extends State<care_report> {
                     child: loading
                         ? CircularProgressIndicator()
                         : Padding(
-                      padding: const EdgeInsets.only(top: 35.0),
+                      padding: const EdgeInsets.only(top: 20.0),
                       child: SingleChildScrollView(
                         child: Column(
                           // scrollDirection: Axis.horizontal,
@@ -539,7 +539,7 @@ class _care_reportState extends State<care_report> {
                                 ],
                               ),
                               Container(
-                                height: 300, //BarChart
+                                height: MediaQuery.of(context).size.height*0.8, //BarChart
                                 child: charts.PieChart(
                                   _createSampleData(),
                                   // barRendererDecorator: new charts.BarLabelDecorator<String>(),
@@ -601,7 +601,7 @@ class _care_reportState extends State<care_report> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.all(15.0),
+                                padding: const EdgeInsets.all(10.0),
                                 child: SingleChildScrollView(
                                     child:
                                     DataTable(

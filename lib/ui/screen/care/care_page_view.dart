@@ -477,7 +477,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                          type=='wait'?
                                                                          Text(
                                                                            int.parse(listCommunication[index].hoursdelaylabel.toString())<0?
-                                                                             ' تأخر عن التواصل  '+ listCommunication[index] .hoursdelaylabel.toString()+ ' يوم '
+                                                                             ' تأخر عن التواصل  '+(int.parse(listCommunication[index].hoursdelaylabel.toString())*-1).toString()+ ' يوم '
                                                                                :
                                                                             ' باقي '+ listCommunication[index].hoursdelaylabel.toString()+' يوم '
                                                                                 ,
