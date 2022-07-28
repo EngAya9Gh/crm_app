@@ -54,3 +54,7 @@ const String label_image='  صورة السجل التجاري';
 const String label_total='إجمالي الفاتورة';
 const String label_addinvoice='حفظ';
 
+const String label_not_use=' عملاء لا يستخدمون النظام ';
+const String label_repeat_comm='تقرير الاتصال الدوري ';
+const String label_wrong_number=' عملاء أرقامهم خاطئة ';
+

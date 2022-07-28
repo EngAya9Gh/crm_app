@@ -5,17 +5,20 @@ import 'package:crm_smart/ui/screen/care/view_welcome.dart';
 import 'package:crm_smart/ui/screen/client/client_accept.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketclientview.dart';
 import 'package:crm_smart/ui/screen/report/care_report.dart';
+import 'package:crm_smart/ui/screen/report/not_using_system.dart';
+import 'package:crm_smart/ui/screen/report/wrong_number.dart';
 import 'package:crm_smart/ui/screen/report/report_rate.dart';
 import 'package:crm_smart/ui/screen/report/support_intall_report.dart';
+import 'package:crm_smart/ui/screen/report/repeat_report.dart';
 import 'package:crm_smart/ui/screen/support/support_view.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
+import '../../../../labeltext.dart';
 import '../widgethomeitem.dart';
 
 class carepage extends StatefulWidget {
@@ -172,6 +175,39 @@ class _carepageState extends State<carepage> {
                       builder: (context)=>
                           report_rate()));
                 }, title: 'تقرير مستوى التقييم'):Container(),
+      Provider.of<privilge_vm>(context,listen: true)
+                .checkprivlge('104')==true?
+            buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context)=>
+                          repeat_report()));
+                }, title: label_repeat_comm):Container(),
+     Provider.of<privilge_vm>(context,listen: true)
+                .checkprivlge('105')==true?
+            buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context)=>
+                          not_using_system()));
+                }, title: label_not_use):Container(),
+     Provider.of<privilge_vm>(context,listen: true)
+                .checkprivlge('106')==true?
+            buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context)=>
+                          wrong_number()));
+                }, title: label_wrong_number):Container(),
 
 
           ],),

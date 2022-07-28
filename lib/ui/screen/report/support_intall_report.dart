@@ -53,11 +53,6 @@ class _support_install_reportState extends State<support_install_report> {
   }
 
   Future<void> getData() async {
-    // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1)
-    // &&_selectedDate!=DateTime(1, 1, 1)&&_selectedDatemonth!=DateTime(1, 1, 1)
-    // )
-
-    // if(_se)
     setState(() {
       loading=true;
     });
@@ -169,14 +164,6 @@ class _support_install_reportState extends State<support_install_report> {
       charts.Series<BarModel, String>(
         data: salesresult,
         id: 'المبيعات',
-
-        // colorFn: (_, __) =>
-        //
-        //     // charts.ColorUtil.fromDartColor(
-        //     // //    Colors.primaries[Random().nextInt(Colors.primaries.length)]
-        //     //     Colors.primaries[Random().nextInt(Colors.primaries.length)]
-        //     // ),
-        //     charts.MaterialPalette.teal.shadeDefault,
         colorFn: (BarModel bar,_) =>charts.ColorUtil.fromDartColor(bar.colorval),
         // charts.MaterialPalette.indigo.shadeDefault,
         domainFn: (BarModel genderModel, _) => genderModel.x,
@@ -184,21 +171,9 @@ class _support_install_reportState extends State<support_install_report> {
         // measureFormatterFn: (BarModel genderModel,_) => ,
         labelAccessorFn:  (BarModel row, __) => '${row.y}',
         fillPatternFn: (_,__)=>charts.FillPatternType.solid,
-        // insideLabelStyleAccessorFn:
-        // displayName: 'll',
+
       ),
-      //   charts.Series<BarModel, String>(
-      //     data: salesresult,
-      //     id: 'العملاء',
-      //     colorFn:   (_, __) =>
-      //         // charts.ColorUtil.fromDartColor(
-      //         //     Colors.primaries[Random().nextInt(Colors.primaries.length)]),
-      //     //Colors.primaries[Random().nextInt(Colors.primaries.length)],//
-      //      charts.MaterialPalette.blue.shadeDefault,//charts.MaterialPalette.indigo.shadeDefault,
-      //     domainFn:  (BarModel genderModel, _) => genderModel.x,
-      //     measureFn: (BarModel genderModel, _) => genderModel.y,
-      //     displayName: "Income",
-      // )..setAttribute(charts.measureAxisIdKey, secondaryMeasureAxisId),
+
     ];
   }
 

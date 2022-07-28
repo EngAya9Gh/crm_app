@@ -659,7 +659,7 @@ class _salesproductState extends State<salesproduct> {
                                 ],
                               ),
                               Container(
-                               height: 300, //BarChart
+                                height: MediaQuery.of(context).size.height*0.75, //BarChart
                                child: charts.PieChart(
                                  _createSampleData(),
                                  // barRendererDecorator: new charts.BarLabelDecorator<String>(),
@@ -747,7 +747,7 @@ class _salesproductState extends State<salesproduct> {
                                         ),    DataColumn(
                                           label: Expanded(
                                             child: Text(
-                                              'عدد مرات المبيع ',
+                                              'الكمية  ',
                                               style: TextStyle(fontStyle: FontStyle.normal),
                                             ),
                                           ),

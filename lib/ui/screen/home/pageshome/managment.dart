@@ -61,153 +61,155 @@ class _managmentpageState extends State<managmentpage> {
         child:
         Consumer<privilge_vm>(
     builder: (context, privilge, child){
-          return Column(children: [
-            privilge.checkprivlge('3')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context)=>
-                      AllUserScreen()));
-            }, title: 'إدارة المستخدمين'):Container(),
+          return SingleChildScrollView(
+            child: Column(children: [
+              privilge.checkprivlge('3')==true?
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context)=>
+                        AllUserScreen()));
+              }, title: 'إدارة المستخدمين'):Container(),
 
-            privilge.checkprivlge('17')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context)=>
-                      check_level()));
-            }, title: 'ادارة الصلاحيات'):Container(),
+              privilge.checkprivlge('17')==true?
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context)=>
+                        check_level()));
+              }, title: 'ادارة الصلاحيات'):Container(),
 
-            privilge.checkprivlge('4')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context)
-                  => ProductView(),
-                  fullscreenDialog: true,
-                ),
-              );
-            }, title: 'المنتجات '):Container(),
-            privilge.checkprivlge('20')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context)
-                  => config_view(),
+              privilge.checkprivlge('4')==true?
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context)
+                    => ProductView(),
+                    fullscreenDialog: true,
+                  ),
+                );
+              }, title: 'المنتجات '):Container(),
+              privilge.checkprivlge('20')==true?
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context)
+                    => config_view(),
 
-                ),
-              );
-            }, title: 'ملف الإعدادات '):Container(),
-            privilge.checkprivlge('52')==true?
-            buildSelectCategory(
-                subtitle:Provider.of<user_vm_provider>
-                  (context,listen:  false).currentUser.nameCountry,
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context)
-                      => change_country(),
+                  ),
+                );
+              }, title: 'ملف الإعدادات '):Container(),
+              privilge.checkprivlge('52')==true?
+              buildSelectCategory(
+                  subtitle:Provider.of<user_vm_provider>
+                    (context,listen:  false).currentUser.nameCountry,
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => change_country(),
 
-                    ),
-                  );
-                }, title: 'تغيير الدولة'):Container(),
-            privilge.checkprivlge('63')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context)
-                      => regoinview(),
+                      ),
+                    );
+                  }, title: 'تغيير الدولة'):Container(),
+              privilge.checkprivlge('63')==true?
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => regoinview(),
 
-                    ),
-                  );
-                }, title: 'إداراة الفروع'):Container(),
-            privilge.checkprivlge('64')==true?
+                      ),
+                    );
+                  }, title: 'إداراة الفروع'):Container(),
+              privilge.checkprivlge('64')==true?
         buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context)
-                      => managview(),
-                    ),
-                  );
-                }, title: 'إضافة الإدارات'):Container(),
-            privilge.checkprivlge('73')==true?
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => managview(),
+                      ),
+                    );
+                  }, title: 'إضافة الإدارات'):Container(),
+              privilge.checkprivlge('73')==true?
         buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context)
-                      => resoan_view(type:'client'),
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => resoan_view(type:'client'),
 
-                    ),
-                  );
-                }, title: 'أسباب الانسحاب'):Container(),
-           privilge.checkprivlge('77')==true?
+                      ),
+                    );
+                  }, title: 'أسباب الانسحاب'):Container(),
+             privilge.checkprivlge('77')==true?
         buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context)
-                      => maincityview(),
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => maincityview(),
 
-                    ),
-                  );
-                }, title: ' ادارة المناطق والمدن'):Container(),
+                      ),
+                    );
+                  }, title: ' ادارة المناطق والمدن'):Container(),
   privilge.checkprivlge('74')==true?
         buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context)
-                      => resoan_view(type:'ticket'),
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => resoan_view(type:'ticket'),
 
-                    ),
-                  );
-                }, title: 'أنواع التذاكر'):Container(),
+                      ),
+                    );
+                  }, title: 'أنواع التذاكر'):Container(),
 
-            //config_view
-          ],);}
+              //config_view
+            ],),
+          );}
         ),
 
       ),

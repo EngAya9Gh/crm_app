@@ -120,8 +120,8 @@ class _config_viewState extends State<config_view> {
                           .updateConfig_vm({'value_config':_controllertax.text},
                           Provider.of<config_vm>(context,listen: false)
                               .listofconfig[i].id_config);
-                      continue;
-                      //break;
+                     // continue;
+                      break;
                     case 'target':
                       Provider.of<config_vm>(context,listen: false)
                           .updateConfig_vm({'value_config':_controllertarget.text},
@@ -135,7 +135,10 @@ class _config_viewState extends State<config_view> {
                               .listofconfig[i].id_config);
                       break;
                       case 'period_commincation3':
+
                         if(value!=_controllerperiod_commincation3.text) {
+                          print('vvvvvvalue '+value);
+                          print('com   '+_controllerperiod_commincation3.text);
                           Provider.of<config_vm>(context,listen: false)
                           .updateConfig_vm({
                             'value_config':_controllerperiod_commincation3.text,
