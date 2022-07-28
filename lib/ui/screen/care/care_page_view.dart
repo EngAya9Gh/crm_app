@@ -97,15 +97,15 @@ class _care_page_viewState extends State<care_page_view> {
      await Provider.of<client_vm>(context, listen: false)
           . getclient_Local('مشترك');
 
-      if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 1 ) {
-        type='done';
-        getData();
-
-      }else if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 0) {
-        type='wait';
-        getData();
-
-      }
+      // if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 1 ) {
+      //   type='done';
+      //   getData();
+      //
+      // }else if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 0) {
+      //   type='wait';
+      //   getData();
+      //
+      // }
       // care/getcomm_repeat.php
 
       // Provider.of<invoice_vm>(context)

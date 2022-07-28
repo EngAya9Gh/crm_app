@@ -12,6 +12,8 @@ import '../constants.dart';
 class communication_vm extends ChangeNotifier{
 
   List<CommunicationModel> listCommunication=[];
+  List<CommunicationModel> list_wrong_number=[];
+  List<CommunicationModel> list_not_use=[];
   List<CommunicationModel> listCommunicationrepeat=[];
   List<CommunicationModel> listCommunicationInstall=[];
   List<CommunicationModel> listCommunicationWelcome=[];
@@ -46,13 +48,36 @@ class communication_vm extends ChangeNotifier{
     isload=val;
     notifyListeners();
   }
+  Future<void> get_wrong_using(String type) async {
+     List<CommunicationModel> _list=[];
+     // list_wrong_number=[];
+    isloading=true;
+    notifyListeners();
+    List<dynamic> data=[];
+    data= await Api()
+        .get(url:url+ 'reports/wrong_using.php?fk_country=${usercurrent!.fkCountry.toString()}&type=$type');
+
+    for (int i = 0; i < data.length; i++) {
+      _list
+          .add(CommunicationModel.fromJson(data[i]));
+    }
+    if(type=='use') {
+      list_not_use=[];
+      list_not_use=List.from(_list);
+    }else{
+      list_wrong_number=[];
+      list_wrong_number=List.from(_list);
+    }
+
+     isloading=false;
+     notifyListeners();
+  }
  Future<void> getCommunicationclientrepeat(String fk_client) async{
     listCommunicationClient=[];
     List<CommunicationModel> list=[];
     isloading=true;
     notifyListeners();
     List<dynamic> data=[];
-
     data= await Api()
         .get(url:url+ 'care/view_communcation.php?fk_client=${fk_client}');
     print(data);

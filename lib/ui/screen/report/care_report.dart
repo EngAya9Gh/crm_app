@@ -402,20 +402,20 @@ class _care_reportState extends State<care_report> {
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: Text("Select month"),
-                                content: Container(
+                                content:
+                                Container(
                                   // Need to use container to add size constraint.
                                   width: 300,
                                   height: 300,
-                                  child: MonthPicker(
-                                    firstDate: DateTime(DateTime.now().year-100, 1),
+                                  child: CalendarDatePicker(
+                                    initialDate: DateTime(DateTime.now().year, 1),
                                     lastDate:
                                     DateTime(DateTime.now().year+100,1),
-                                    // : DateTime.now(),
-                                    // save the selected date to _selectedDate DateTime variable.
-                                    // It's used to set the previous selected date when
-                                    // re-showing the dialog.
-                                    selectedDate:DateTime.now(), //_selectedDatemonth,
-                                    onChanged: (DateTime dateTime) {
+                                    firstDate: DateTime(DateTime.now().year-100, 1),
+
+                                    currentDate:DateTime.now(), //_selectedDatemonth,
+                                    // initialCalendarMode: DatePickerMode.
+                                    onDateChanged: (DateTime dateTime) {
                                       setState(() {
                                         _selectedDatemonth = dateTime;
                                       });
