@@ -138,7 +138,7 @@ class _installAddState extends State<installAdd> {
                                 buttonWidth: 120,
                                 borderRadius: BorderRadius.circular(10)),
                             buttons: ['غير راضي','راضي'],
-                            onSelected: (index,isselected){
+                            onSelected: (_,index,isselected){
                               print(index);
                               //setState(() {
                               typepayController=index.toString();

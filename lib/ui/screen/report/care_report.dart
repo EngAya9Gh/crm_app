@@ -231,7 +231,7 @@ class _care_reportState extends State<care_report> {
                                 options: GroupButtonOptions(
                                     buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['سنوي', 'شهري', 'يومي'],
-                                onSelected: (index, isselected) {
+                                onSelected: (_,index, isselected) {
                                   print(index);
                                   switch(index){
                                     case 0:
@@ -277,7 +277,7 @@ class _care_reportState extends State<care_report> {
                                     buttonWidth: 110,
                                     borderRadius: BorderRadius.circular(10)),
                                 buttons: ['ترحيب', 'جودة', 'العناية'],
-                                onSelected: (index, isselected) {
+                                onSelected: (_,index, isselected) {
                                   print(index);
                                   switch(index){
                                     case 0:
@@ -406,7 +406,8 @@ class _care_reportState extends State<care_report> {
                                   // Need to use container to add size constraint.
                                   width: 300,
                                   height: 300,
-                                  child: MonthPicker(
+                                  child: CalendarDatePicker(
+                                    initialDate: DateTime(DateTime.now().year ,1),
                                     firstDate: DateTime(DateTime.now().year-100, 1),
                                     lastDate:
                                     DateTime(DateTime.now().year+100,1),
@@ -414,8 +415,8 @@ class _care_reportState extends State<care_report> {
                                     // save the selected date to _selectedDate DateTime variable.
                                     // It's used to set the previous selected date when
                                     // re-showing the dialog.
-                                    selectedDate:DateTime.now(), //_selectedDatemonth,
-                                    onChanged: (DateTime dateTime) {
+                                    currentDate:DateTime.now(), //_selectedDatemonth,
+                                    onDateChanged: (DateTime dateTime) {
                                       setState(() {
                                         _selectedDatemonth = dateTime;
                                       });

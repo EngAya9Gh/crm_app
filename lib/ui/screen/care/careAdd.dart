@@ -139,7 +139,7 @@ class _careAddState extends State<careAdd> {
                               buttonWidth: 120,
                               borderRadius: BorderRadius.circular(10)),
                           buttons: ['لا يستخدم النظام','يستخدم النظام'],
-                          onSelected: (index,isselected){
+                          onSelected: (_,index,isselected){
                             print(index);
                             //setState(() {
                             typepayController=index.toString();

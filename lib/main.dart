@@ -58,9 +58,12 @@ void main() async {
   // android:value="high_importance_channel"
   // />
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+ // if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      name: "crm_smart",
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+ // }
 
   // Set the background messaging handler early on, as a named top-level function
 

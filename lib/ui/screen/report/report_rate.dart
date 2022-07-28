@@ -234,7 +234,7 @@ class _report_rateState extends State<report_rate> {
                                       buttonWidth: 40,
                                       borderRadius: BorderRadius.circular(10)),
                                   buttons: ['1', '2', '3','4','5','-'],
-                                  onSelected: (index, isselected) {
+                                  onSelected: (_,index, isselected) {
                                     print(index);
                                     switch(index){
                                        case 0:

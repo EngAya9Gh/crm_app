@@ -344,7 +344,7 @@ class _EditUserState extends State<EditUser> {
                                 selectedColor: kMainColor,
                                   borderRadius: BorderRadius.circular(10)),
                               buttons: ['غير نشط','نشط'],
-                              onSelected: (index,isselected) {
+                              onSelected: (_,index,isselected) {
                                 print(index);
                                 setState(() {
                                 isAcive=index.toString();

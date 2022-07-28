@@ -385,7 +385,7 @@ else{
                                       buttonWidth: 110,
                                         borderRadius: BorderRadius.circular(10)),
                                     buttons: ['نقدا','تحويل'],
-                                    onSelected: (index,isselected){
+                                    onSelected: (_,index,isselected){
                                       print(index);
                                       //setState(() {
                                       typepayController=index.toString();
@@ -430,7 +430,7 @@ else{
 
                                       borderRadius: BorderRadius.circular(10)),
                                   buttons: ['ميداني','اونلاين'],
-                                  onSelected: (index,isselected) {
+                                  onSelected: (_,index,isselected) {
                                     print(index);
                                     //setState(() {
                                       typeinstallController=index.toString();

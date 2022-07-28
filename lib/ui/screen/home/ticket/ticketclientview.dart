@@ -86,7 +86,7 @@ class _ticketclientviewState extends State<ticketclientview> {
                               buttonWidth: 110,
                               borderRadius: BorderRadius.circular(10)),
                           buttons: ['جديدة','مستلمة','مغلقة'],
-                          onSelected: (index,isselected){
+                          onSelected: (_,index,isselected){
                             print(index);
                             //setState(() {
                             typepayController=index.toString();

@@ -139,7 +139,7 @@ class _addProductState extends State<addProduct> {
                                       print('Button #$i is disabled'),
                                 ),
                                 buttons: ['أجهزة', 'برامج'],
-                                onSelected: (int index, bool isSelected) {
+                                onSelected: (_,int index, bool isSelected) {
                                   valtype_product = index;
                                   // valtype_product == 0 ? 1 : 0;
                                   selectedProvider.selectValue(index);

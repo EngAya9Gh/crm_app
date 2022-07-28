@@ -169,7 +169,7 @@ class _EditProductState extends State<EditProduct> {
                                     onDisablePressed: (i) =>
                                         print('Button #$i is disabled'),
                                   ),
-                                  onSelected: (selected, isselect) {
+                                  onSelected: (_,selected, isselect) {
                                     valtype_product = selected;
                                     // valtype_product == 0 ? 1 : 0;
                                     selectedProvider.selectValue(selected);

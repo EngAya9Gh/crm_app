@@ -220,7 +220,7 @@ class _care_page_viewState extends State<care_page_view> {
                                         options: GroupButtonOptions(
                                             buttonWidth: 135, borderRadius: BorderRadius.circular(10)),
                                         buttons: ['بالإنتظار', 'تم التقييم' ],
-                                        onSelected: (index, isselected) {
+                                        onSelected: (_,index, isselected) {
                                           print(index);
                                           switch(index){
                                             case 0:
@@ -340,7 +340,7 @@ class _care_page_viewState extends State<care_page_view> {
                                             buttonWidth: 40,
                                             borderRadius: BorderRadius.circular(10)),
                                         buttons: ['1', '2', '3','4','5','-'],
-                                        onSelected: (index, isselected) {
+                                        onSelected: (_,index, isselected) {
                                           print(index);
                                           switch(index){
                                             case 0:
