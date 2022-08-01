@@ -43,64 +43,69 @@ class usertest_view extends StatefulWidget {
          child: Icon(Icons.add),
        ),
        appBar: AppBar(title: Text('يوزرات تجريبية',style: TextStyle(color: kWhiteColor),),centerTitle: true,),
-       body: SafeArea(
-         child: ModalProgressHUD(
-           
-           inAsyncCall: Provider.of<usertest_vm>(context,listen: true)
-               .isloading,
-           child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child:
-                  Container(
-                    height: 90,
-                    child: ListView.builder(
-                    //  shrinkWrap: true,
-                      itemCount: list_ticket.length,
-                      itemBuilder: (BuildContext context, int index)=>
-                          Builder(
-                              builder: (context)=>
-                                  Container(
-                                    //height: 20,
-                                    decoration: BoxDecoration(
-                                      //borderRadius: BorderRadius.circular(),
-                                      color:Colors.white,
-                                    ),
-                                    child: Center(
-                                      child: InkWell(
-                                        onTap: (){
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context)=>
-                                                      testuser_show(
-                                                        userTestModel:list_ticket[index],
-                                                      )));
+       body: SingleChildScrollView(
+         child: SafeArea(
+           child: ModalProgressHUD(
+             
+             inAsyncCall: Provider.of<usertest_vm>(context,listen: true)
+                 .isloading,
+             child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child:
+                    Container(
+                      height: MediaQuery.of(context).size.height*0.9,
+                      child: ListView.builder(
+                      //  shrinkWrap: true,
+                        itemCount: list_ticket.length,
+                        itemBuilder: (BuildContext context, int index)=>
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Builder(
+                                  builder: (context)=>
+                                      Container(
+                                        //height: 20,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color:Colors.black12,
+                                        ),
+                                        child: Center(
+                                          child: InkWell(
+                                            onTap: (){
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (context)=>
+                                                          testuser_show(
+                                                            userTestModel:list_ticket[index],
+                                                          )));
 
-                                        },
-                                        child: Container(
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                    list_ticket[index].nameusertest.toString()
-                                                ,style: TextStyle(fontFamily: kfontfamily2
+                                            },
+                                            child: Container(
+                                              child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                        list_ticket[index].nameusertest.toString()
+                                                    ,style: TextStyle(fontFamily: kfontfamily2
 
-                                                ,fontSize: 16),
-                                                ),
+                                                    ,fontSize: 16),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                          ) ,
+                              ),
+                            ) ,
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+             ),
            ),
          ),
        ),

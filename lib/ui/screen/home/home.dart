@@ -71,7 +71,7 @@ class _HomeState extends State<Home> {
     // Provider.of<user_vm_provider>(context, listen: false)
     //     .getcurrentuser();
     print('in home...init');
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       // Add Your Code here.
       //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
       Provider.of<regoin_vm>(context,listen: false).getregoin();
