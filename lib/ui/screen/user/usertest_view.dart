@@ -20,7 +20,7 @@ class usertest_view extends StatefulWidget {
  class _usertest_viewState extends State<usertest_view> {
    List<UserTestModel> list_ticket=[];
    @override void initState() {
-     WidgetsBinding.instance!.addPostFrameCallback((_)async{
+     WidgetsBinding.instance.addPostFrameCallback((_)async{
       await Provider.of<usertest_vm>(context,listen: false).getusertest_vm();
      });
     super.initState();

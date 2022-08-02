@@ -26,7 +26,7 @@ class _ticketclientviewState extends State<ticketclientview> {
   late String typepayController;
 
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       await Provider.of<ticket_vm>(context, listen: false)
         .getticket();
       Provider.of<ticket_vm>(context,listen: false).changeticket(0);

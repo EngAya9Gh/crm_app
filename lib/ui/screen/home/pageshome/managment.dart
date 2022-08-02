@@ -36,7 +36,7 @@ class _managmentpageState extends State<managmentpage> {
     super.didChangeDependencies();
   }
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
       await Provider.of<privilge_vm>(context, listen: false)
           .getprivlg_usercurrent();
     });

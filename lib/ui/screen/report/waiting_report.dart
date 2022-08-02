@@ -15,7 +15,7 @@ class waiting_report extends StatefulWidget {
 class _waiting_reportState extends State<waiting_report> {
   @override void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
      await Provider.of<invoice_vm>(context, listen: false)
           .getinvoice_waiting();
     });

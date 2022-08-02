@@ -71,7 +71,7 @@ class _support_addState extends State<support_add> {
         // DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
         // [hh, ':', nn, " ", am]).toString();
 
-      WidgetsBinding.instance!.addPostFrameCallback((_)async {
+      WidgetsBinding.instance.addPostFrameCallback((_)async {
 
       //_ticketModel=_list.firstWhere((element) => element.fkClient)
         Provider.of<datetime_vm>(context,listen: false)

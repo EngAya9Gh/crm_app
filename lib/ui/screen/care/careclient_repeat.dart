@@ -36,7 +36,7 @@ class _careRepeatState extends State<careRepeat> {
   double rate=0;
   List<CommunicationModel> listCommunication=[];
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
       print(widget.idclient.idClients);
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.idclient.idClients.toString());

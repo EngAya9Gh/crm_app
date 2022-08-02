@@ -42,7 +42,7 @@ class _care_reportState extends State<care_report> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<selected_button_provider>(context,listen: false)
       .selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context,listen: false)

@@ -32,7 +32,7 @@ class _carepageState extends State<carepage> {
   int lengthInstall=0;
   int lengthWelcome=0;
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
 
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');

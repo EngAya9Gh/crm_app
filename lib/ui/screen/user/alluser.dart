@@ -23,7 +23,7 @@ class AllUserScreen extends StatefulWidget {
 class _AllUserScreenState extends State<AllUserScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
       // Add Your Code here.
       // only
       await Provider.of<privilge_vm>(context, listen: false)

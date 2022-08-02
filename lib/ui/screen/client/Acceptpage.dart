@@ -42,7 +42,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   }
   @override void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       List<PrivilgeModel> list=
       await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
       Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);

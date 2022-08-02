@@ -43,7 +43,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
   DateTime _selectedDateto = DateTime.now();
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context,listen: false)
@@ -52,7 +52,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
 
     });
     super.initState();
-    // WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    // WidgetsBinding.instance.addPostFrameCallback((_)async {
     // if(  Provider.of<privilge_vm>(context,listen: false)
     //       .checkprivlge('89')==true)
     //    type='userSum';

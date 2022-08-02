@@ -31,7 +31,7 @@ class cityview extends StatefulWidget {
  class _cityviewState extends State<cityview> {
 
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
      await Provider.of<maincity_vm>
         (context,listen: false)
           .getcity(widget.fkmain);

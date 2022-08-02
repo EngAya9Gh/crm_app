@@ -25,7 +25,7 @@
 //   @override
 //   void initState()  {
 //
-//    WidgetsBinding.instance?.addPostFrameCallback((_) {
+//     WidgetsBinding.instance.addPostFrameCallback((_) {
 //      //Provider.of<regoin_vm>(context,listen: false).clearvalues();
 //       //Provider.of<country_vm>(context,listen: false).ge
 //
@@ -66,7 +66,7 @@
 //   regoinllist= Provider.of<regoin_vm>(context,listen: true).listregoin;
 //   print("build regoin combox"+regoinllist.length.toString());
 //
-//   WidgetsBinding.instance?.addPostFrameCallback((_) {
+//    WidgetsBinding.instance.addPostFrameCallback((_) {
 //
 //  });
 //   print("build after regoin combox"+regoinllist.length.toString());

@@ -43,14 +43,14 @@ class _salesState extends State<sales> {
     Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
 
        //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
     // });
     super.initState();
   }
   @override
   Widget build(BuildContext context)  {
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   var privilge= Provider.of<privilge_vm>(context,listen: true);
     // });
 

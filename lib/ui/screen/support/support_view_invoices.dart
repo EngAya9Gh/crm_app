@@ -32,7 +32,7 @@ class support_view_invoicesState extends State<support_view_invoices> {
     // List<InvoiceModel> list= Provider.of<invoice_vm>(context,listen: false)
     //   .listinvoicebyregoin;
     //get info from list client_invoice فواتير العميل
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
       // Add Your Code here.
       // Provider.of<invoice_vm>(context,listen: false)
       //     .get_invoiceclientlocal(widget.itemClient.idClients,'مشترك');

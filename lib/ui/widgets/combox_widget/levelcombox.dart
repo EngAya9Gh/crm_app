@@ -23,7 +23,7 @@ class _levelComboxState extends State<levelCombox> {
 void initState()  {
 
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       // _list  =Provider.of<level_vm>(context,listen: true);
       // Provider.of<level_vm>(context,listen: false).changeVal(null);
       // Provider.of<level_vm>(context,listen: false).listoflevel=[];
@@ -71,7 +71,7 @@ void initState()  {
     print("build combox level");
     _list  =Provider.of<level_vm>(context,listen: true).listoflevel;
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+     WidgetsBinding.instance.addPostFrameCallback((_) {
 
     });
 

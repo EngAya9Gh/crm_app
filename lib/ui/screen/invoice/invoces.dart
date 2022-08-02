@@ -28,7 +28,7 @@ class _invoicesState extends State<invoices> {
    // List<InvoiceModel> list= Provider.of<invoice_vm>(context,listen: false)
    //   .listinvoicebyregoin;
      //get info from list client_invoice فواتير العميل
-     WidgetsBinding.instance!.addPostFrameCallback((_)async{
+     WidgetsBinding.instance.addPostFrameCallback((_)async{
        // Provider.of<client_vm>(context,listen: false)
        //     .getclientByIdUser_vm([]);
 

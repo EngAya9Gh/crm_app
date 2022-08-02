@@ -104,7 +104,7 @@ class _editclientState extends State<editclient> {
     // descresaonController.text=widget.itemClient.desc_reason==null||widget.itemClient.desc_reason==""
     //     ?"":widget.itemClient.desc_reason!.toString();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
      await Provider.of<maincity_vm>(context,listen: false).getcityAll();
       Provider.of<maincity_vm>(context,listen: false)
       .changevalue(widget.itemClient.city.toString());

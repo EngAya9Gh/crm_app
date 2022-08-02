@@ -12,7 +12,7 @@
 //   late final mangelist;
 //   @override
 //   Widget build(BuildContext context, ScopedReader watch) {
-//     WidgetsBinding.instance?.addPostFrameCallback((_) {
+//      WidgetsBinding.instance.addPostFrameCallback((_) {
 //
 //       mangelist=  context.read(dataprovider).listtext;
 //       //context.read<manage_provider>();

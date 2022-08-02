@@ -22,7 +22,7 @@ class _ApprovePageState extends State<ApprovePage> {
   String? regoin;
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
       // if( Provider.of<privilge_vm>(context,listen: false)
       //     .checkprivlge('7'))

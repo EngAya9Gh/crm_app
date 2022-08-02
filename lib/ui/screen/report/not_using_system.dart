@@ -16,7 +16,7 @@ class not_using_system extends StatefulWidget {
 
 class _not_using_systemState extends State<not_using_system> {
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
     Provider.of<communication_vm>(context,listen: false)
         .get_wrong_using('use');
     });

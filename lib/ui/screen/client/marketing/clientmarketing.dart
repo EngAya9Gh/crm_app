@@ -47,7 +47,7 @@ class _clientmarketingState extends State<clientmarketing> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<user_vm_provider>(context,listen: false)
           .getuser_vm();
       print(Provider.of<user_vm_provider>(context,listen: false)
@@ -65,7 +65,7 @@ class _clientmarketingState extends State<clientmarketing> {
           .getclientMarketing();
     });
 
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //  WidgetsBinding.instance.addPostFrameCallback((_) {
   }
   @override
   void didChangeDependencies() {

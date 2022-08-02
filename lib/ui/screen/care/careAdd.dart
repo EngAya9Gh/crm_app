@@ -36,7 +36,7 @@ class _careAddState extends State<careAdd> {
   double rate=1.0;
   late ConfigModel peroid;
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.com.fkClient);
       //period_commincation3

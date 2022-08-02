@@ -66,7 +66,7 @@ class _addClientState extends State<addClient> {
     super.dispose();
   }
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
 
     await  Provider.of<maincity_vm>(context,listen: false).getcityAll();
       Provider.of<maincity_vm>(context,listen: false).changevalue(null);

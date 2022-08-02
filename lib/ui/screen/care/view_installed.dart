@@ -28,7 +28,7 @@ class _View_installedClientState extends State<View_installedClient> {
   String? typeclientvalue;
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<typeclient>(context, listen: false)
           .changelisttype_install_iso('الكل');
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);

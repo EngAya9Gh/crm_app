@@ -42,7 +42,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
 
   @override
   void didChangeDependencies() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
 
     });
     super.didChangeDependencies();

@@ -31,7 +31,7 @@ class maincityview extends StatefulWidget {
 class _maincityviewState extends State<maincityview> {
 
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<maincity_vm>
         (context,listen: false).getmaincity();
           //.getcity('config/getcity.php?fk_maincity');

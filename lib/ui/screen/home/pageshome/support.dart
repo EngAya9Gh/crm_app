@@ -34,7 +34,7 @@ class _supportpageState extends State<supportpage> {
     super.didChangeDependencies();
   }
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
 
       await Provider.of <maincity_vm>
       (context,listen: false)

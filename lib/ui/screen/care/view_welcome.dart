@@ -27,7 +27,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
   String? regoin;
   String? typeclientvalue;
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<typeclient>(context,listen: false).changelisttype_welcome('الكل');
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
     await  Provider.of<communication_vm>(context, listen: false)

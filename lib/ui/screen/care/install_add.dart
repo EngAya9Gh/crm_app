@@ -38,7 +38,7 @@ class _installAddState extends State<installAdd> {
   String?  titleInstall='هذا العميل مشترك جديد , قم بالتواصل مع العميل والتأكد من جودة التركيب والتدريب له , ثم اكتب تعليق وانقر على زر تم التواصل';
 
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.com.fkClient);
     });

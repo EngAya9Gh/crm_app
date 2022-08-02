@@ -66,7 +66,7 @@ class _EditProductState extends State<EditProduct> {
     print(valtaxrate);
 
 
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
 
         Provider.of<config_vm>(context, listen: false).getAllConfig();
         print(Provider.of<config_vm>(context, listen: false).listofconfig);

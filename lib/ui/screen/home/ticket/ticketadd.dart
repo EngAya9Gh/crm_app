@@ -38,7 +38,7 @@ class _ticketAddState extends State<ticketAdd> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<client_vm>(context,listen: false).getclient_Local('مشترك');
       Provider.of<client_vm>(context,listen: false).changevalueclient(null);
     });

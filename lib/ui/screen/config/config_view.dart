@@ -38,7 +38,7 @@ class _config_viewState extends State<config_view> {
   @override void initState() {
 
 
-     WidgetsBinding.instance!.addPostFrameCallback((_){
+     WidgetsBinding.instance.addPostFrameCallback((_){
 
      });
 

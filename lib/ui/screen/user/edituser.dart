@@ -80,13 +80,13 @@ class _EditUserState extends State<EditUser> {
     // Provider.of<level_vm>(context,listen: false).getlevel();
     //
     // Provider.of<level_vm>(context,listen: false).listoflevel;
-    // WidgetsBinding.instance?.addPostFrameCallback((_) {
+    //  WidgetsBinding.instance.addPostFrameCallback((_) {
     //
     // });
     // Provider.of<regoin_vm>(context,listen: false).getregoin();
     //
     // Provider.of<level_vm>(context,listen: false).getlevel();
-    WidgetsBinding.instance!.addPostFrameCallback((_){
+    WidgetsBinding.instance.addPostFrameCallback((_){
 
       // Add Your Code here.
       namemanage =
@@ -138,7 +138,7 @@ class _EditUserState extends State<EditUser> {
   Widget build(BuildContext context) {
       //   controllerUsers= Provider.of<user_vm_provider>
       // (context,listen: true).userall;
-    //WidgetsBinding.instance?.addPostFrameCallback((_) {
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
 
 
     return Scaffold(

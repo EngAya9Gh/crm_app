@@ -43,7 +43,7 @@ class _deptsalesState extends State<deptsales> {
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context,listen: false)
@@ -51,7 +51,7 @@ class _deptsalesState extends State<deptsales> {
     Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
     });
     super.initState();
-    // WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    // WidgetsBinding.instance.addPostFrameCallback((_)async {
     // if(  Provider.of<privilge_vm>(context,listen: false)
     //       .checkprivlge('89')==true)
     //    type='userSum';

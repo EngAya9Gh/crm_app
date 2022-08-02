@@ -42,7 +42,7 @@ class _support_install_reportState extends State<support_install_report> {
   DateTime _selectedDateto = DateTime.now();
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context,listen: false)

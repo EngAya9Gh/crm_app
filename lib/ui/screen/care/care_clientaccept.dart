@@ -38,7 +38,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
   }
   @override void initState() {
 
-    WidgetsBinding.instance!.addPostFrameCallback((_)async{
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only

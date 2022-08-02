@@ -47,7 +47,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
   int indextab=0;
 @override void initState() {
     indextab= (widget.tabindex==null?0: widget.tabindex)!;
-  WidgetsBinding.instance!.addPostFrameCallback((_)async {
+  WidgetsBinding.instance.addPostFrameCallback((_)async {
     await Provider.of<invoice_vm>(context,listen: false)
         .get_invoiceclientlocal(widget.idclient,'مشترك');
 

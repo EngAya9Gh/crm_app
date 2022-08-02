@@ -16,7 +16,7 @@ class wrong_number extends StatefulWidget {
 
 class _wrong_numberState extends State<wrong_number> {
   @override void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((_)async {
+    WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<communication_vm>(context,listen: false)
           .get_wrong_using('wrong');
     });
