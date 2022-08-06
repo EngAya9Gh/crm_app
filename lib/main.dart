@@ -87,7 +87,6 @@ void main() async {
 
       MultiProvider(providers: [
         ChangeNotifierProvider<user_vm_provider>(create: (_) => user_vm_provider()),
-
         ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
         ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
         ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),

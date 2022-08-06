@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:http/retry.dart';
 import 'package:path/path.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
+ static final http.Client _client = http.Client();
+ // final client = RetryClient(http.Client());
   // headers: {
   // "Accept": "application/json",
   // "Access-Control-Allow-Origin": "*"}
@@ -21,11 +24,12 @@ class Api {
     //   Uri.parse(url),
     // );
     //http.Response response = await RetryClient(http.Client()).get( Uri.parse(url));
-
-    http.Response response = await http.get(
+//private, max-age=3600
+  // "Cache-Control": "no-cache"
+    http.Response response = await _client.get(
       Uri.parse(url),
       headers: {
-        "Cache-Control": "no-cache"
+         "Cache-Control": "no-cache"
       }
     );
     print(json.decode(response.body));
@@ -48,7 +52,7 @@ class Api {
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
-    http.Response response = await http.post(
+    http.Response response = await _client.post(
       Uri.parse(url),
       body: body,
       headers: headers,
@@ -149,7 +153,7 @@ class Api {
 
    // var response = await Dio().delete(
    //      url,queryParameters: {'fk_product':1,},
-    http.Response response = await http.delete(
+    http.Response response = await _client.delete(
       Uri.parse(url),
      //   headers:   {
      //    "Accept": "application/json",

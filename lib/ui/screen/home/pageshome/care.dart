@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../labeltext.dart';
+import '../../../../view_model/client_vm.dart';
 import '../widgethomeitem.dart';
 
 class carepage extends StatefulWidget {
@@ -43,6 +44,7 @@ class _carepageState extends State<carepage> {
           .getCommunicationInstall();
      await Provider.of<communication_vm>(context, listen: false)
           .getCommunicationWelcome();
+
 //////////////////////////////////////////////
 //       Provider.of<communication_vm>(
 //           context, listen: false)

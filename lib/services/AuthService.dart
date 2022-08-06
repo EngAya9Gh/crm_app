@@ -24,6 +24,7 @@ class  AuthServices{
   Future<String?> verfiy_otp(String email,String otp) async {
     String? result;
     try{
+      // print(await FirebaseMessaging.instance.getToken());
       result= await Api()
         .post( url:url+"Auth/check_otp.php",
           body: {

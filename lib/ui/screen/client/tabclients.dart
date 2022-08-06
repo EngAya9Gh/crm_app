@@ -61,7 +61,7 @@ class _tabclientsState extends State<tabclients> {
       List<PrivilgeModel> list=
           await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-      await Provider.of<client_vm>(context, listen: false)
+     await  Provider.of<client_vm>(context, listen: false)
           .getclient_vm();
     });
   }

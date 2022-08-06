@@ -34,9 +34,9 @@ class _ClientAcceptState extends State<ClientAccept> {
   late List<MainCityModel>? selecteditemmaincity=[];
   // late String typepayController;
   @override void didChangeDependencies() async {
-    Future.delayed(Duration(milliseconds: 30)).then((_) async {
-      Provider.of<client_vm>(context, listen: false).clear();
-    });
+    // Future.delayed(Duration(milliseconds: 30)).then((_) async {
+    //   Provider.of<client_vm>(context, listen: false).clear();
+    // });
     super.didChangeDependencies();
   }
   @override void initState() {
@@ -45,6 +45,7 @@ class _ClientAcceptState extends State<ClientAccept> {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
+      Provider.of<client_vm>(context, listen: false).clear();
       await Provider.of<privilge_vm>(context,listen: false)
           .getprivlg_usercurrent();
       List<PrivilgeModel> list=
@@ -59,9 +60,8 @@ class _ClientAcceptState extends State<ClientAccept> {
 
       // Provider.of<maincity_vm>
       //   (context,listen: false).changevalue(null);
-      await Provider.of<client_vm>(context,listen: false)
+       Provider.of<client_vm>(context,listen: false)
           .getallclientAccept();
-
       Provider.of<client_vm>(context,listen: false)
           .getfilterviewSupport(selecteditemmaincity);
     });

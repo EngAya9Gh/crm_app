@@ -109,8 +109,10 @@ class _loginState extends State<login> {
                       }
                       else {
                         print(valEmail);
+                        print(valueField);
                         Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
                         String? res=await AuthServices().verfiy_otp(valEmail,valueField!);
+                        print(res);
                         if (res!="false") {
                           SharedPreferences preferences  = await SharedPreferences.getInstance();
                           preferences.setBool(kKeepMeLoggedIn, true);

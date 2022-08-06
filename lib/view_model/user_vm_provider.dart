@@ -123,7 +123,8 @@ class user_vm_provider extends ChangeNotifier{
   Future<SharedPreferences> getcurrentuser() async {
     prefs = await SharedPreferences.getInstance();
     try {
-      if(userall.isEmpty)
+      print('user id neeeeeeeewwww  ');
+       if(userall.isEmpty)
       userall = await  UserService().usersServices();
       String? id = prefs.getString('id_user');
       print('user id sss  ');

@@ -31,9 +31,9 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
   String? typeclientvalue;
   // late String typepayController;
   @override void didChangeDependencies() async {
-    Future.delayed(Duration(milliseconds: 30)).then((_) async {
-      Provider.of<client_vm>(context, listen: false).clear();
-    });
+    // Future.delayed(Duration(milliseconds: 30)).then((_) async {
+    //   Provider.of<client_vm>(context, listen: false).clear();
+    // });
     super.didChangeDependencies();
   }
   @override void initState() {
@@ -42,6 +42,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
+      Provider.of<client_vm>(context, listen: false).clear();
       await Provider.of<privilge_vm>(context,listen: false)
           .getprivlg_usercurrent();
       List<PrivilgeModel> list=
@@ -54,7 +55,6 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
       //   .getallclient();
       Provider.of<client_vm>(context, listen: false)
           . getclient_Local('مشترك');
-
       // Provider.of<maincity_vm>
       //   (context,listen: false).changevalue(null);
     });

@@ -16,6 +16,7 @@ import '../../../constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../../labeltext.dart';
+import '../../../view_model/client_vm.dart';
 import 'card_comment.dart';
 import 'comment_view.dart';
 
@@ -41,6 +42,8 @@ class _installAddState extends State<installAdd> {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.com.fkClient);
+      await Provider.of<client_vm>(context,listen: false)
+          .get_byIdClient(widget.com.fkClient.toString());
     });
     super.initState();
   }

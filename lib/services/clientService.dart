@@ -57,6 +57,7 @@ class ClientService{
 
     for (int i = 0; i < data.length; i++) {
       prodlist.add(ClientModel.fromJson(data[i]));
+      print('nmnm');
     }
     print(prodlist);
     return prodlist;

@@ -66,7 +66,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
         (context,listen: false).changelisttype_install('الكل');
       typeclientvalue='الكل';
       //Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-      await Provider.of<client_vm>(context,listen: false)
+       Provider.of<client_vm>(context,listen: false)
           .getallclientAccept();
 
     //  await  Provider.of<invoice_vm>(context, listen: false)
