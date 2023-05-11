@@ -1,40 +1,40 @@
 {
   "project_info": {
-    "project_number": "1059711331727",
-    "project_id": "smart-crm-31e3c",
-    "storage_bucket": "smart-crm-31e3c.appspot.com"
+    "project_number": "102540138446",
+    "project_id": "crmapp-8f9de",
+    "storage_bucket": "crmapp-8f9de.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1059711331727:android:06cae3d27ff4a60b1eeffa",
+        "mobilesdk_app_id": "1:102540138446:android:bc175820eaf396efe5fd9f",
         "android_client_info": {
           "package_name": "com.mpluse.crmsmart"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1059711331727-65kff48t3beku3nndbietd787srf6sog.apps.googleusercontent.com",
+          "client_id": "102540138446-3t54rlpe28ablktbgsic8b2rkqjhkdtr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBjUVlpV0bayJewO_xYitxo_V67eyyM5es"
+          "current_key": "AIzaSyDPc1bZGUTKYilLcLMJbxd8I4RInrPo8AQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1059711331727-65kff48t3beku3nndbietd787srf6sog.apps.googleusercontent.com",
+              "client_id": "102540138446-3t54rlpe28ablktbgsic8b2rkqjhkdtr.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "1059711331727-c0co33h0j54ul66l33b75308c0bmgrk7.apps.googleusercontent.com",
+              "client_id": "102540138446-ttasu47lgst15l9eb1j6aqtnk1bvse6d.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.smartlife.crmSmart"
+                "bundle_id": "com.mpluse.crmsmart"
               }
             }
           ]

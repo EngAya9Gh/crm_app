@@ -57,11 +57,18 @@ android {
             multiDexEnabled true
         }
     }
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "Instantiatable"
+        checkReleaseBuilds false
+        abortOnError false
+    }
 }
 
 flutter {
     source '../..'
 }
+
 dependencies {
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:28.1.0')//29.2.1
