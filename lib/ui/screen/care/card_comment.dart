@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../function_global.dart';
-
+//uplode 2023
 class cardcomment extends StatelessWidget {
    cardcomment({ required this.commentmodel, Key? key}) : super(key: key);
    CommentModel commentmodel;

@@ -195,6 +195,7 @@ class _careAddState extends State<careAdd> {
                           peroid =
                               _listconfg.firstWhere((element) =>
                               element.name_config == 'period_commincation3');
+
                           DateTime datanext=DateTime.now();
 
                           int peroidtime= int.parse(peroid.value_config);
@@ -212,8 +213,8 @@ class _careAddState extends State<careAdd> {
                             // datanext.add(Duration(days: peroidtime));
                             // print(datanext);
 
-                            Provider.of<communication_vm>
-                              (context,listen: false).addcommuncation({
+                          await  Provider.of<communication_vm>
+                              (context,listen: false).updatecarecommuncation({
                                'type':'دوري',
                                'fk_user':Provider.of<user_vm_provider>
                                 (context,listen: false).
@@ -224,8 +225,8 @@ class _careAddState extends State<careAdd> {
                                'number_wrong':numberwrong.toString(),
                                'client_repeat':repeat.toString(),
                                'date_next':datanext.toString(),
-                            },widget.com.idCommunication).then((value) =>
-                                clear(value));
+                            },widget.com.idCommunication);
+                             clear();
                           }},
                         child: Text(' تم التواصل ',
 
@@ -310,7 +311,7 @@ class _careAddState extends State<careAdd> {
     );
   }
 
-  clear(value) {
+  clear() {
    //  setState(() {
    //    isdone=true;
    //    widget.com=value;

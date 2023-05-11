@@ -341,7 +341,7 @@ class communication_vm extends ChangeNotifier{
   bool isload=false;
   bool valuebutton=false;
 
-  Future<void> getCommunicationallrepeatpage(String country)async {
+  Future<void> getCommunicationallrepeatpage(String country) async {
     listCommunicationrepeat=[];
     isload=true;
     notifyListeners();
@@ -353,12 +353,11 @@ class communication_vm extends ChangeNotifier{
       for (int i = 0; i < data.length; i++) {
         listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
       }
-
     }
-    // return listCommunication;
     isload=false;
     notifyListeners();
   }
+
   Future<void> getCommunicationallrepeatpage_done(
       String country,String param)async {
     listCommunicationrepeat=[];
@@ -385,10 +384,27 @@ class communication_vm extends ChangeNotifier{
     listCommunicationrepeat=[];
     notifyListeners();
   }
-  //addcommuncation
-  Future<CommunicationModel> addcommuncation(
 
-      Map<String, dynamic?> body,String id_communication) async {
+  Future<void> updatecarecommuncation(Map<String, dynamic?> body,String id_communication) async {
+    isload=true;
+    notifyListeners();
+    var result=  await Api()
+        .post(url:url+ 'care/updateCommunication.php?id_communication=$id_communication',
+        body: body
+    );
+    //CommunicationModel data = CommunicationModel.fromJson(result[0]);
+    if(listCommunicationrepeat.isNotEmpty) {
+      int index = listCommunicationrepeat.indexWhere((element) =>
+      element.idCommunication == id_communication);
+      listCommunicationrepeat.removeAt(index);
+      // listCommunicationrepeat[index] = data;
+    }
+    isload=false;
+    notifyListeners();
+  }
+
+    //addcommuncation
+  Future<CommunicationModel> addcommuncation(Map<String, dynamic?> body,String id_communication) async {
     print(id_communication);
     isload=true;
     notifyListeners();

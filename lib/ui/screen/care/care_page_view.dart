@@ -226,20 +226,15 @@ class _care_page_viewState extends State<care_page_view> {
                                             case 0:
                                               type='wait';
                                               break;
-
                                             case 1:
                                               type='done';
                                               break;
 
                                           }
 
-                                          // datedays
-                                          //setState(() {
-                                          //typeinstallController=index.toString();
                                           selectedProvider.selectValuebarsales(index);
                                           getData();
 
-                                          //  });
                                         });
                                   }),
                             ],
@@ -483,7 +478,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                                 ,
                                                                             style: TextStyle(
                                                                                 fontSize: 12,
-                                                                                // fontWeight: FontWeight.bold,
+                                                                                //fontWeight: FontWeight.bold,
                                                                                 fontFamily: kfontfamily2,
                                                                                 color: kMainColor),
                                                                           ):
