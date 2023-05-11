@@ -26,7 +26,7 @@ class cardcomment extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          v      crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                   decoration: BoxDecoration(
