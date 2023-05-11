@@ -47,7 +47,7 @@ class Api {
     required String url,
     @required dynamic? body,
     @required String? token,
-  }) async {//xx
+  }) async {
     Map<String, String> headers = {};
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
