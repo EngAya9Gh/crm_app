@@ -75,6 +75,7 @@ class typeclient extends ChangeNotifier{
      type_of_out = await config_service().getreason(type);
   notifyListeners();
  }
+
  bool isloading=false;
   Future<String> addReson_vm(Map<String, dynamic?> body) async {
     isloading =true;
