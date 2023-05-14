@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 enum TypeNotify{
  ApproveRequest,Transfer,Late,ApproveDone,ApproveRefuse,InvoiceDeleted,Install
-}
+}//
 const kMainColor = Colors.lightBlue;//Color(0xfff2c131);
 const kWhiteColor = Colors.white;
 const kLogo = 'assest/images/logo.png';
