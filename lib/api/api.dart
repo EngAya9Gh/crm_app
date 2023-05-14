@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
+
  static final http.Client _client = http.Client();
  // final client = RetryClient(http.Client());
   // headers: {
