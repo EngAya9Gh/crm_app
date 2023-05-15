@@ -115,6 +115,7 @@ class _editclientState extends State<editclient> {
          id_city: widget.itemClient.city.toString(),
          name_city: widget.itemClient.name_city.toString(),
          fk_maincity: widget.itemClient.id_maincity.toString());
+
       // Add Your Code here.
       bool ism=widget.itemClient.ismarketing=='1'?true:false;
       Provider.of<switch_provider>(

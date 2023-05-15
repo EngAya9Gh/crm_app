@@ -10,6 +10,7 @@ import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
+import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
@@ -40,12 +41,13 @@ class _addClientState extends State<addClient> {
   final _globalKey = GlobalKey<FormState>();
 
   final TextEditingController nameclientController = TextEditingController();
+  final TextEditingController descActivController = TextEditingController();
 
   final TextEditingController nameEnterpriseController = TextEditingController();
 
   final TextEditingController mobileController = TextEditingController();
 
-  final TextEditingController typejobController = TextEditingController();
+  // final TextEditingController typejobController = TextEditingController();
   final TextEditingController address_client = TextEditingController();
 
   String? cityController ;
@@ -58,13 +60,15 @@ class _addClientState extends State<addClient> {
     nameclientController.dispose();
     nameEnterpriseController.dispose();
     mobileController.dispose();
-    typejobController.dispose();
+    // typejobController.dispose();
     locationController.dispose();
     regoinController.dispose();
     address_client.dispose();
+    descActivController.dispose();
 
     super.dispose();
   }
+
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
 
@@ -148,24 +152,72 @@ class _addClientState extends State<addClient> {
                       SizedBox(
                         height: 15,
                       ),
-                      RowEdit(name: label_client_typejob, des: 'Required'),
-                      SizedBox(
-                        height: 5,
-                      ),
+
                       EditTextFormField(
-                        hintText: label_client_typejob,
-                        obscureText: false,
                         vaild: (value) {
                           if (value!.toString().trim().isEmpty) {
                             return label_empty;
                           }
                         },
-                        controller: typejobController, //اسم المؤسسة
-                        label: label_client_typejob,
-                        onChanged: (val) {
-                          // nameprod = val;
+                        hintText: label_desc_activ,
+                        obscureText: false,
+                        controller: descActivController,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      RowEdit(name: label_client_typejob, des: 'Required'),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      //RowEdit(name: 'نوع النشاط', des: 'REQUIRED'),
+
+                      Consumer<activity_vm>(
+                        builder: (context, cart, child) {
+                          return SizedBox(
+                            //width: 240,
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.grey))),
+
+                              isExpanded: true,
+                              //hint: Text("حدد حالة العميل"),
+                              items: cart.list_activity.map((level_one) {
+                                return DropdownMenuItem(
+                                  child: Text(
+                                      level_one.name_activity_type), //label of item
+
+                                  value: level_one.id_activity_type, //value of item
+                                );
+                              }).toList(),
+                              value: cart.selectedValueOut,
+                              onChanged: (value) {
+                                //  setState(() {
+                                cart.changevalueOut(value.toString());
+                                // });
+                              },
+                            ),
+                          );
                         },
                       ),
+
+                      // EditTextFormField(
+                      //   hintText: label_client_typejob,
+                      //   obscureText: false,
+                      //   vaild: (value) {
+                      //     if (value!.toString().trim().isEmpty) {
+                      //       return label_empty;
+                      //     }
+                      //   },
+                      //   controller: typejobController, //اسم المؤسسة
+                      //   label: label_client_typejob,
+                      //   onChanged: (val) {
+                      //     // nameprod = val;
+                      //   },
+                      // ),
                       SizedBox(
                         height: 15,
                       ),
@@ -318,11 +370,17 @@ class _addClientState extends State<addClient> {
                                         .currentUser;
                                 Provider.of<client_vm>(context, listen: false)
                                     .addclient_vm({
+                                  'descActivController':descActivController.text,
                                   'name_client': nameclientController.text,
                                   'address_client':address_client.text,
                                   'name_enterprise': nameEnterpriseController
                                       .text,
-                                  'type_job': typejobController.text,
+                                  'type_job':Provider
+                                      .of<activity_vm>(
+                                      context,
+                                      listen: false)
+                                      .selectedValueOut
+                                      .toString(),  //typejobController.text,
                                   'city': cityController.toString(),
                                   'location':
                                   // locationController.text==null?"null":

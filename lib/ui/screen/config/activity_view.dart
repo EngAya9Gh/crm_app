@@ -16,15 +16,15 @@ import 'package:provider/provider.dart';
 import '../../../view_model/activity_vm.dart';
 import 'add_activity.dart';
 import 'addreson.dart';
-class resoan_view extends StatefulWidget {
-  resoan_view({required this.type, Key? key}) : super(key: key);
+class activity_view extends StatefulWidget {
+  activity_view({required this.type, Key? key}) : super(key: key);
   String type;
 
   @override
   _resoan_viewState createState() => _resoan_viewState();
 }
 
-class _resoan_viewState extends State<resoan_view> {
+class _resoan_viewState extends State<activity_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
 
@@ -85,8 +85,8 @@ class _resoan_viewState extends State<resoan_view> {
                                 Navigator.push(context,
                                     MaterialPageRoute(
                                         builder: (context)=>addractivity(
-                                          nameActv:_listlevel[index].nameReason,
-                                           idActivity: _listlevel[index].idReason,
+                                           nameActv:_listlevel[index].name_activity_type,
+                                           idActivity: _listlevel[index].id_activity_type,
                                           // type: widget.type,
                                         )));
                               },
@@ -117,7 +117,7 @@ class _resoan_viewState extends State<resoan_view> {
                                       padding: EdgeInsets.all(4),
                                       child: Center(
                                         child:
-                                        Text(_listlevel[index].nameReason,
+                                        Text(_listlevel[index].name_activity_type,
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontFamily: kfontfamily2),),),

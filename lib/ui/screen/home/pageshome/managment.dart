@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:crm_smart/provider/config_vm.dart';
+import 'package:crm_smart/ui/screen/config/activity_view.dart';
 import 'package:crm_smart/ui/screen/config/addreson.dart';
 import 'package:crm_smart/ui/screen/config/chang_country.dart';
 import 'package:crm_smart/ui/screen/config/config_view.dart';
@@ -206,6 +207,21 @@ class _managmentpageState extends State<managmentpage> {
                       ),
                     );
                   }, title: 'أنواع التذاكر'):Container(),
+
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => activity_view(type:'ticket'),
+
+                      ),
+                    );
+                  }, title: 'أنواع النشاط')
 
               //config_view
             ],),

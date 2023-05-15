@@ -44,6 +44,7 @@ class ClientModel extends CacheRepository{
     this.namemaincity,
     this.id_maincity,
     this.address_client,
+    this.descActivController
   });
   late final String? idClients;
   late final String? nameClient;
@@ -87,6 +88,7 @@ class ClientModel extends CacheRepository{
   late  String? total_paid;
   late  String? ismarketing;
   late  String? address_client;
+  late  String? descActivController;
   String?
       name_city,
       namemaincity,
@@ -137,6 +139,7 @@ class ClientModel extends CacheRepository{
     namemaincity = json['namemaincity'];
     id_maincity = json['id_maincity'];
     address_client = json['address_client'];
+    descActivController = json['descActivController'];
   }
 
   Map<String, dynamic> toJson() {
@@ -184,6 +187,7 @@ class ClientModel extends CacheRepository{
      _data['namemaincity'] = namemaincity;
      _data['id_maincity'] = id_maincity;
      _data['address_client'] = address_client;
+     _data['descActivController'] = descActivController;
     return _data;
   }
   String userAsString() {

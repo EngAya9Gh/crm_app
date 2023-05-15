@@ -27,6 +27,7 @@ const String label_Addeduser=" تمت إضافة البيانات بنجاح";
 const String label_Edituser=" تم تعديل البيانات بنجاح";
 /////////////////////////label client////////////////////
 const String label_clientname='اسم العميل';
+const String label_desc_activ='وصف النشاط';
 const String label_cliententerprise='اسم المؤسسة';
 const String label_clientmobile='رقم الجوال';
 const String label_client_typejob='نوع النشاط';
