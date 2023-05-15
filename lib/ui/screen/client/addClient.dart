@@ -24,6 +24,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:get/get.dart';
 
 import '../../../constants.dart';
+import '../../../constantsList.dart';
 import '../../../labeltext.dart';
 import 'dart:ui' as myui;
 import 'package:intl/intl.dart';
@@ -51,6 +52,8 @@ class _addClientState extends State<addClient> {
   final TextEditingController address_client = TextEditingController();
 
   String? cityController ;
+  String? presystem ;
+  String? presystemcomb ;
 
   final TextEditingController locationController = TextEditingController();
 
@@ -73,6 +76,7 @@ class _addClientState extends State<addClient> {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
 
     await  Provider.of<maincity_vm>(context,listen: false).getcityAll();
+    await  Provider.of<activity_vm>(context,listen: false).getactv();
       Provider.of<maincity_vm>(context,listen: false).changevalue(null);
     });
     super.initState();
@@ -152,6 +156,7 @@ class _addClientState extends State<addClient> {
                       SizedBox(
                         height: 15,
                       ),
+                      RowEdit(name: 'وصف النشاط', des: 'REQUIRED'),
 
                       EditTextFormField(
                         vaild: (value) {
@@ -170,13 +175,13 @@ class _addClientState extends State<addClient> {
                       SizedBox(
                         height: 5,
                       ),
-                      //RowEdit(name: 'نوع النشاط', des: 'REQUIRED'),
 
                       Consumer<activity_vm>(
                         builder: (context, cart, child) {
                           return SizedBox(
                             //width: 240,
-                            child: DropdownButtonFormField(
+                            child:
+                            DropdownButtonFormField(
                               decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -203,6 +208,7 @@ class _addClientState extends State<addClient> {
                           );
                         },
                       ),
+                      //presystem
 
                       // EditTextFormField(
                       //   hintText: label_client_typejob,
@@ -352,7 +358,38 @@ class _addClientState extends State<addClient> {
                       //   height: 15,
                       // ),
                       // RowEdit(name: label_clienttype, des: "تفاوض"),
+                      RowEdit(name: 'نظام سابق', des: 'REQUIRED'),
 
+                      DropdownButtonFormField(
+                        decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                    width: 2, color: Colors.grey))),
+
+                        isExpanded: true,
+                        //hint: Text("حدد حالة العميل"),
+                        items:  list_pre_system.map((level_one) {
+                          return DropdownMenuItem(
+                            child: Text(
+                                level_one ), //label of item
+
+                            value: level_one , //value of item
+                          );
+                        }).toList(),
+                        value: presystemcomb,
+                        onChanged: (value) {
+                          setState(() {
+                            presystem=value.toString();
+                          });
+                          //  setState(() {
+                          //cart.changevalueOut(value.toString());
+                          // });
+                        },
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Center(
                         child: custom_button_new(
                           text: label_clientadd,
@@ -371,16 +408,18 @@ class _addClientState extends State<addClient> {
                                 Provider.of<client_vm>(context, listen: false)
                                     .addclient_vm({
                                   'descActivController':descActivController.text,
+                                  'presystem':presystem ,
                                   'name_client': nameclientController.text,
                                   'address_client':address_client.text,
                                   'name_enterprise': nameEnterpriseController
                                       .text,
-                                  'type_job':Provider
-                                      .of<activity_vm>(
-                                      context,
-                                      listen: false)
-                                      .selectedValueOut
-                                      .toString(),  //typejobController.text,
+                                  'type_job':'type',
+                                  // Provider
+                                  //     .of<activity_vm>(
+                                  //     context,
+                                  //     listen: false)
+                                  //     .selectedValueOut
+                                  //     .toString(),  //typejobController.text,
                                   'city': cityController.toString(),
                                   'location':
                                   // locationController.text==null?"null":
@@ -395,6 +434,7 @@ class _addClientState extends State<addClient> {
                                   "type_client": "تفاوض",
                                   "fk_user": _user.idUser,
                                   // "date_transfer":,
+                                  'presystem':presystem,
                                   "mobile": mobileController.text,
                                   //"date_changetype":,
                                 }, _user.nameUser.toString(),

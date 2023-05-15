@@ -9,6 +9,7 @@ import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/provider/switch_provider.dart';
 import 'package:crm_smart/ui/screen/home/home.dart';
 import 'package:crm_smart/ui/screen/login.dart';
+import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/approve_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
@@ -175,6 +176,7 @@ void main() async {
         ),
 
          ChangeNotifierProvider<datetime_vm>(create: (_)=> datetime_vm()),
+         ChangeNotifierProvider<activity_vm>(create: (_)=> activity_vm()),
         //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
 
   ], child:MyApp()));

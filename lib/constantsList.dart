@@ -46,6 +46,7 @@ final List<Widget> listwidget=[
   managmentpage(),
   financepage()
 ];
+List<String> list_pre_system=['Erp','smart'];
 final List<dynamic> listHome = [
   [
     'كل العملاء',

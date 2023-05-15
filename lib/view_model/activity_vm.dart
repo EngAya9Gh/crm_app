@@ -10,10 +10,10 @@ import '../services/configService.dart';
 class activity_vm extends ChangeNotifier {
   List<ActivityModel> list_activity=[];
 
-  Future<void> getactv(String type) async {
+  Future<void> getactv( ) async {
 
-  notifyListeners();
-  //if(type_of_out.isEmpty)
+  // notifyListeners();
+  //  if(list_activity.isEmpty)
   list_activity = await config_service().getactv('type');
   notifyListeners();
 }
@@ -33,7 +33,7 @@ Future<String> addActv_vm(Map<String, dynamic?> body) async {
       body: body);
   if (res!="error") {
     body.addAll({
-      'name_activity_type':res,
+      'id_activity_type':res,
     });
     list_activity.insert(0,ActivityModel.fromJson(body));
     isloading=false;
@@ -48,10 +48,10 @@ Future<String> addActv_vm(Map<String, dynamic?> body) async {
     isloading=true;
     notifyListeners();
     String res = await Api().post(
-        url: url+'config/update_actv.php?id_activity_type =${id_activity_type }',//users/addmangemt.php
+        url: url+'config/update_actv.php?id_activity_type=${id_activity_type }',//users/addmangemt.php
         body: body);
     body.addAll({
-      'id_activity_type ':id_activity_type ,
+      'id_activity_type':id_activity_type ,
     });
     final index=list_activity.indexWhere((element)
     => element.id_activity_type==id_activity_type );

@@ -40,7 +40,7 @@ class _addActvState extends State<addractivity> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<typeclient>(context)
+          inAsyncCall: Provider.of<activity_vm>(context)
               .isloading,
           child : Form(
             key: _globalKey,

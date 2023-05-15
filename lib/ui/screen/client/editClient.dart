@@ -8,6 +8,7 @@ import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
+import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
@@ -41,8 +42,9 @@ class _editclientState extends State<editclient> {
   final TextEditingController nameEnterpriseController = TextEditingController();
 
   final TextEditingController mobileController = TextEditingController();
-  final TextEditingController typejobController = TextEditingController();
+  final TextEditingController desctypejobController = TextEditingController();
   String? cityController =null;
+  String? typejobController =null;
   late CityModel citymodel=
   CityModel(
       id_city: widget.itemClient.city.toString(),
@@ -64,7 +66,7 @@ class _editclientState extends State<editclient> {
     nameclientController.dispose();
     nameEnterpriseController.dispose();
     mobileController.dispose();
-    typejobController.dispose();
+    desctypejobController.dispose();
     locationController.dispose();
     regoinController.dispose();
     offerpriceController.dispose();
@@ -83,7 +85,7 @@ class _editclientState extends State<editclient> {
     nameclientController.text=widget.itemClient.nameClient!.toString();
     nameEnterpriseController.text=widget.itemClient.nameEnterprise!.toString();
     mobileController.text=widget.itemClient.mobile!.toString();
-    typejobController.text=widget.itemClient.typeJob!.toString();
+    // typejobController.text=widget.itemClient.typeJob!.toString();
     locationController.text=widget.itemClient.location!.toString();
     regoinController.text=widget.itemClient.name_regoin!.toString();
     usernameclientController.text=widget.itemClient.address_client==null?'':
@@ -108,14 +110,19 @@ class _editclientState extends State<editclient> {
      await Provider.of<maincity_vm>(context,listen: false).getcityAll();
       Provider.of<maincity_vm>(context,listen: false)
       .changevalue(widget.itemClient.city.toString());
+     await Provider.of<activity_vm>(context,listen: false).getactv();
+      Provider.of<activity_vm>(context,listen: false)
+      .changevalueOut(widget.itemClient.typeJob.toString());
+
       cityController=
           // Provider.of<maincity_vm>(context,listen: false).selectedValuemanag.toString();
       widget.itemClient.city!.toString();
+
+      typejobController=widget.itemClient.typeJob;
       citymodel=CityModel(
          id_city: widget.itemClient.city.toString(),
          name_city: widget.itemClient.name_city.toString(),
          fk_maincity: widget.itemClient.id_maincity.toString());
-
       // Add Your Code here.
       bool ism=widget.itemClient.ismarketing=='1'?true:false;
       Provider.of<switch_provider>(
@@ -206,7 +213,7 @@ void didChangeDependencies() {
         body.addAll({
           'name_client': nameclientController.text,
           'name_enterprise': nameEnterpriseController.text,
-          'type_job': typejobController.text,
+          'type_job': typejobController ,
           'city': cityController,
 
           'location': locationController.text.toString(),
@@ -230,6 +237,7 @@ void didChangeDependencies() {
               .currentUser
               .idUser
               .toString(),
+          'descActivController':desctypejobController.text,
           // "desc_reason":  typeclient_provider.selectedValuemanag == "منسحب"
           //     ?descresaonController.text:"",
           //
@@ -318,7 +326,7 @@ void didChangeDependencies() {
                             return label_empty;
                           }
                         },
-                        controller: typejobController, //اسم المؤسسة
+                        controller: desctypejobController, //اسم المؤسسة
                         label: label_client_typejob,
                         onChanged: (val) {
                           // nameprod = val;
@@ -327,6 +335,39 @@ void didChangeDependencies() {
                       SizedBox(
                         height: 5,
                       ),
+                      Consumer<activity_vm>(
+                        builder: (context, cart, child) {
+                          return SizedBox(
+                            //width: 240,
+                            child: DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.grey))),
+
+                              isExpanded: true,
+                              //hint: Text("حدد حالة العميل"),
+                              items: cart.list_activity.map((level_one) {
+                                return DropdownMenuItem(
+                                  child: Text(
+                                      level_one.name_activity_type), //label of item
+
+                                  value: level_one.id_activity_type, //value of item
+                                );
+                              }).toList(),
+                              value: cart.selectedValueOut,
+                              onChanged: (value) {
+                                //  setState(() {
+                                cart.changevalueOut(value.toString());
+                                typejobController=value.toString();
+                                // });
+                              },
+                            ),
+                          );
+                        },
+                      ),
+
                       RowEdit(name: label_usernameclient, des: 'Required') ,
                       EditTextFormField(
                         maxline: 3,

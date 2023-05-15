@@ -28,7 +28,7 @@ class _resoan_viewState extends State<activity_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
 
-      await Provider.of<activity_vm>(context,listen: false).getactv(widget.type);
+      await Provider.of<activity_vm>(context,listen: false).getactv( );
     });
     super.initState();
   }

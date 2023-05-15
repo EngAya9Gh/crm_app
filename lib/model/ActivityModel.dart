@@ -5,7 +5,7 @@ class ActivityModel {
     // required this.type,
   });
 
-  late final String id_activity_type;
+  late final String? id_activity_type;
   late final String name_activity_type;
   // late final String type;
 
