@@ -52,7 +52,8 @@ class _addClientState extends State<addClient> {
   final TextEditingController address_client = TextEditingController();
 
   String? cityController ;
-  String? presystem ;
+  String? presystem='' ;
+  String? sourclient ;
   String? presystemcomb ;
 
   final TextEditingController locationController = TextEditingController();
@@ -358,7 +359,8 @@ class _addClientState extends State<addClient> {
                       //   height: 15,
                       // ),
                       // RowEdit(name: label_clienttype, des: "تفاوض"),
-                      RowEdit(name: 'نظام سابق', des: 'REQUIRED'),
+                      //RowEdit(name: 'نظام سابق', des: 'اختياري'),
+                       RowEdit(name: 'مصدر العميل', des: 'اختياري'),
 
                       DropdownButtonFormField(
                         decoration: InputDecoration(
@@ -369,7 +371,7 @@ class _addClientState extends State<addClient> {
 
                         isExpanded: true,
                         //hint: Text("حدد حالة العميل"),
-                        items:  list_pre_system.map((level_one) {
+                        items:  list_sourcclient.map((level_one) {
                           return DropdownMenuItem(
                             child: Text(
                                 level_one ), //label of item
@@ -380,7 +382,7 @@ class _addClientState extends State<addClient> {
                         value: presystemcomb,
                         onChanged: (value) {
                           setState(() {
-                            presystem=value.toString();
+                            sourclient=value.toString();
                           });
                           //  setState(() {
                           //cart.changevalueOut(value.toString());
@@ -395,7 +397,11 @@ class _addClientState extends State<addClient> {
                           text: label_clientadd,
                           onpress: () async {
 
-                            if (_globalKey.currentState!.validate()) {
+                            if (_globalKey.currentState!.validate()&&Provider
+                                .of<activity_vm>(
+                                context,
+                                listen: false)
+                                .selectedValueOut!=null) {
                               _globalKey.currentState!.save();
                                 Provider.of<LoadProvider>(
                                     context, listen: false)
@@ -408,7 +414,7 @@ class _addClientState extends State<addClient> {
                                 Provider.of<client_vm>(context, listen: false)
                                     .addclient_vm({
                                   'descActivController':descActivController.text,
-                                  'presystem':presystem ,
+                                  // 'presystem':presystem ,
                                   'name_client': nameclientController.text,
                                   'address_client':address_client.text,
                                   'name_enterprise': nameEnterpriseController
@@ -435,7 +441,16 @@ class _addClientState extends State<addClient> {
                                   "fk_user": _user.idUser,
                                   // "date_transfer":,
                                   'presystem':presystem,
+                                  'sourcclient':sourclient,
+                                  'activity_type_fk':
+                                Provider
+                                    .of<activity_vm>(
+                                    context,
+                                    listen: false)
+                                    .selectedValueOut
+                                    .toString(),
                                   "mobile": mobileController.text,
+                                  "ismarketing": sourclient=='ميداني'?'0':'1'  ,
                                   //"date_changetype":,
                                 }, _user.nameUser.toString(),
                                     _user.nameRegoin.toString()

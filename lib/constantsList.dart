@@ -46,7 +46,7 @@ final List<Widget> listwidget=[
   managmentpage(),
   financepage()
 ];
-List<String> list_pre_system=['Erp','smart'];
+List<String> list_sourcclient=['ميداني','فيسبوك','غوغل','تويتر','الموقع','الرقم الموحد','واتس كنترول','انستغرام'];
 final List<dynamic> listHome = [
   [
     'كل العملاء',

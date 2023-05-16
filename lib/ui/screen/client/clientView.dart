@@ -144,7 +144,22 @@ class _ClientViewState extends State<ClientView> {
                 value:
                 clientModel.address_client==null?'':
                 clientModel.address_client.toString()) ,
+               clientModel.presystem==null?
+               Container():
+               cardRow(
+                   title:'نظام سابق',
+                   value:clientModel.presystemtitle.toString()) ,
 
+                cardRow(
+                    title:'مصدر العميل',
+                    value:clientModel.sourcclient.toString()) ,
+
+                cardRow(
+                    title:'وصف النشاط',
+                    value:clientModel.descActivController.toString()),
+                cardRow(
+                    title:'نوع النشاط',
+                    value:clientModel.activity_type_title.toString()),
                 Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

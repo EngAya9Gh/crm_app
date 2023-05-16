@@ -21,48 +21,59 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
+import '../../../constantsList.dart';
 import '../../../labeltext.dart';
 import 'dart:ui' as myui;
 import 'package:intl/intl.dart';
+
 class editclient extends StatefulWidget {
-   editclient({required this.itemClient, required this.fkclient,required this.fkuser, Key? key}) : super(key: key);
-   String fkclient,fkuser;
-   ClientModel itemClient;
+  editclient(
+      {required this.itemClient,
+      required this.fkclient,
+      required this.fkuser,
+      Key? key})
+      : super(key: key);
+  String fkclient, fkuser;
+  ClientModel itemClient;
   @override
   _editclientState createState() => _editclientState();
 }
 
 class _editclientState extends State<editclient> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _globalKey = GlobalKey<FormState>();
 
   final TextEditingController nameclientController = TextEditingController();
 
-  final TextEditingController nameEnterpriseController = TextEditingController();
+  final TextEditingController nameEnterpriseController =
+      TextEditingController();
 
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController desctypejobController = TextEditingController();
-  String? cityController =null;
-  String? typejobController =null;
-  late CityModel citymodel=
-  CityModel(
+  String? cityController = null;
+  String? typejobController = null;
+  late CityModel citymodel = CityModel(
       id_city: widget.itemClient.city.toString(),
       name_city: widget.itemClient.name_city.toString(),
       fk_maincity: widget.itemClient.id_maincity.toString());
-  final TextEditingController usernameclientController = TextEditingController();
+  final TextEditingController usernameclientController =
+      TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController regoinController = TextEditingController();
   final TextEditingController offerpriceController = TextEditingController();
   final TextEditingController resaonController = TextEditingController();
   final TextEditingController valueBackController = TextEditingController();
   final TextEditingController descresaonController = TextEditingController();
+  final TextEditingController descActivController = TextEditingController();
   // final TextEditingController address_client = TextEditingController();
 
   late typeclient typeclient_provider;
   late final UserModel currentUser;
-  late String? namemanage='';
-  @override void dispose() {
+  late String? namemanage = '';
+  String? sourclient;
+  String? presystemcomb;
+  @override
+  void dispose() {
     nameclientController.dispose();
     nameEnterpriseController.dispose();
     mobileController.dispose();
@@ -74,28 +85,34 @@ class _editclientState extends State<editclient> {
     valueBackController.dispose();
     descresaonController.dispose();
     usernameclientController.dispose();
+    descActivController.dispose();
     // address_client.dispose();
     super.dispose();
   }
-  @override
-  void initState()  {
 
-    currentUser=Provider.of<user_vm_provider>(context,listen: false)
-        .currentUser;
-    nameclientController.text=widget.itemClient.nameClient!.toString();
-    nameEnterpriseController.text=widget.itemClient.nameEnterprise!.toString();
-    mobileController.text=widget.itemClient.mobile!.toString();
+  @override
+  void initState() {
+    currentUser =
+        Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    nameclientController.text = widget.itemClient.nameClient!.toString();
+    nameEnterpriseController.text =
+        widget.itemClient.nameEnterprise!.toString();
+    mobileController.text = widget.itemClient.mobile!.toString();
+    descActivController.text =
+        widget.itemClient.descActivController!.toString();
     // typejobController.text=widget.itemClient.typeJob!.toString();
-    locationController.text=widget.itemClient.location!.toString();
-    regoinController.text=widget.itemClient.name_regoin!.toString();
-    usernameclientController.text=widget.itemClient.address_client==null?'':
-        widget.itemClient.address_client.toString();
+    locationController.text = widget.itemClient.location!.toString();
+    regoinController.text = widget.itemClient.name_regoin!.toString();
+    usernameclientController.text = widget.itemClient.address_client == null
+        ? ''
+        : widget.itemClient.address_client.toString();
     //////////////////////////////////////////////////////////
     ////////////////////////////////////////
     //print( typeclient_provider.selectedValuemanag);
-    offerpriceController.text=widget.itemClient.offer_price==null
-        ||widget.itemClient.offer_price==""
-        ?"":widget.itemClient.offer_price!;
+    offerpriceController.text = widget.itemClient.offer_price == null ||
+            widget.itemClient.offer_price == ""
+        ? ""
+        : widget.itemClient.offer_price!;
     print(offerpriceController.text);
     // resaonController.text=widget.itemClient.reasonChange==null||widget.itemClient.reasonChange==""
     //     ? null:widget.itemClient.reasonChange!.toString();//
@@ -105,36 +122,36 @@ class _editclientState extends State<editclient> {
 
     // descresaonController.text=widget.itemClient.desc_reason==null||widget.itemClient.desc_reason==""
     //     ?"":widget.itemClient.desc_reason!.toString();
+    presystemcomb = sourclient = widget.itemClient.sourcclient;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<maincity_vm>(context, listen: false).getcityAll();
+      Provider.of<maincity_vm>(context, listen: false)
+          .changevalue(widget.itemClient.city.toString());
+      await Provider.of<activity_vm>(context, listen: false).getactv();
+      Provider.of<activity_vm>(context, listen: false)
+          .changevalueOut(widget.itemClient.activity_type_fk.toString());
 
-    WidgetsBinding.instance.addPostFrameCallback((_)async{
-     await Provider.of<maincity_vm>(context,listen: false).getcityAll();
-      Provider.of<maincity_vm>(context,listen: false)
-      .changevalue(widget.itemClient.city.toString());
-     await Provider.of<activity_vm>(context,listen: false).getactv();
-      Provider.of<activity_vm>(context,listen: false)
-      .changevalueOut(widget.itemClient.typeJob.toString());
-
-      cityController=
+      cityController =
           // Provider.of<maincity_vm>(context,listen: false).selectedValuemanag.toString();
-      widget.itemClient.city!.toString();
+          widget.itemClient.city!.toString();
 
-      typejobController=widget.itemClient.typeJob;
-      citymodel=CityModel(
-         id_city: widget.itemClient.city.toString(),
-         name_city: widget.itemClient.name_city.toString(),
-         fk_maincity: widget.itemClient.id_maincity.toString());
+      typejobController = widget.itemClient.typeJob;
+      citymodel = CityModel(
+          id_city: widget.itemClient.city.toString(),
+          name_city: widget.itemClient.name_city.toString(),
+          fk_maincity: widget.itemClient.id_maincity.toString());
       // Add Your Code here.
-      bool ism=widget.itemClient.ismarketing=='1'?true:false;
-      Provider.of<switch_provider>(
-          context,
-          listen: false).changeboolValue(ism);
-      typeclient_provider=Provider.of<typeclient>(context,listen: false);
+      bool ism = widget.itemClient.ismarketing == '1' ? true : false;
+      Provider.of<switch_provider>(context, listen: false).changeboolValue(ism);
+      typeclient_provider = Provider.of<typeclient>(context, listen: false);
       typeclient_provider.type_of_client =
-      // widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
-      widget.itemClient.typeClient=="تفاوض"||widget.itemClient.typeClient=="عرض سعر"
-          || widget.itemClient.typeClient=="مستبعد" ?
-      ['تفاوض','عرض سعر','مستبعد'] :[];
-      print( widget.itemClient.typeClient);
+          // widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
+          widget.itemClient.typeClient == "تفاوض" ||
+                  widget.itemClient.typeClient == "عرض سعر" ||
+                  widget.itemClient.typeClient == "مستبعد"
+              ? ['تفاوض', 'عرض سعر', 'مستبعد']
+              : [];
+      print(widget.itemClient.typeClient);
       // widget.itemClient.typeClient=="مشترك"?
       // ['منسحب','مشترك']//'مستبعد'
       //     :
@@ -142,11 +159,12 @@ class _editclientState extends State<editclient> {
       // ['مشترك','منسحب']
       //     :['تفاوض','عرض سعر','مستبعد'];
       // widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
-      widget.itemClient.typeClient=="تفاوض"||widget.itemClient.typeClient=="عرض سعر"||
-      widget.itemClient.typeClient=="مستبعد"?
-
-      typeclient_provider.selectedValuemanag=
-          widget.itemClient.typeClient.toString():null;
+      widget.itemClient.typeClient == "تفاوض" ||
+              widget.itemClient.typeClient == "عرض سعر" ||
+              widget.itemClient.typeClient == "مستبعد"
+          ? typeclient_provider.selectedValuemanag =
+              widget.itemClient.typeClient.toString()
+          : null;
       typeclient_provider.changevalue(typeclient_provider.selectedValuemanag);
       //typeclient_provider.getreasons('client');
       // typeclient_provider.selectedValuemanag=
@@ -168,437 +186,521 @@ class _editclientState extends State<editclient> {
 
     super.initState();
   }
-@override
-void didChangeDependencies() {
-  // Future.delayed(Duration(milliseconds: 30)).then((_) async {
-  //
-  // });
+
+  @override
+  void didChangeDependencies() {
+    // Future.delayed(Duration(milliseconds: 30)).then((_) async {
+    //
+    // });
 
     super.didChangeDependencies();
   }
-    @override
+
+  @override
   Widget build(BuildContext context) {
-      typeclient_provider=Provider.of<typeclient>(context,listen: true);
-      return Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: kWhiteColor),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          actions: [
-        IconButton(
-        onPressed: () {
-        if (_globalKey.currentState!.validate()) {
-        _globalKey.currentState!.save();
-        if(Provider.of<maincity_vm>(context,listen: false)
-          .selectedValuemanag!=null) {
-        Provider.of<LoadProvider>(context, listen: false)
-            .changebooladdclient(true);
-        String ismarket= Provider.of<switch_provider>(
-            context,
-            listen: false).isSwitched==true?'1':'0';
-
-        print(ismarket);
-
-        Map<String,dynamic> body={};
-        if(typeclient_provider.selectedValuemanag == "عرض سعر")
-        body={"date_price": formatter.format(DateTime.now()), };
-       if( namemanage!=null)
-         body.addAll({
-           "date_changetype": //typeclient_provider.selectedValuemanag == "منسحب"?
-            formatter.format(_currentDate)
-         },//:"null",
-          );
-        body.addAll({
-          'name_client': nameclientController.text,
-          'name_enterprise': nameEnterpriseController.text,
-          'type_job': typejobController ,
-          'city': cityController,
-
-          'location': locationController.text.toString(),
-          //"fk_regoin":currentUser.fkRegoin==null?"null" :currentUser.fkRegoin,
-          //"date_create": ,
-          "type_client": widget.itemClient.typeClient!="مشترك"
-              &&widget.itemClient.typeClient!="منسحب"?
-          typeclient_provider.selectedValuemanag:widget.itemClient.typeClient!,
-          //"fk_user":widget.fkuser,
-          // "date_transfer":,
-          "mobile": mobileController.text,
-          "address_client":usernameclientController.text,
-          "offer_price": offerpriceController.text,
-          "reason_change":resaonController.text,
-          // typeclient_provider.selectedValuemanag == "منسحب"
-          //     ? typeclient_provider.selectedValueOut
-          //     :
-          "ismarketing":  ismarket,
-          "user_do": Provider
-              .of<user_vm_provider>(context, listen: false)
-              .currentUser
-              .idUser
-              .toString(),
-          'descActivController':desctypejobController.text,
-          // "desc_reason":  typeclient_provider.selectedValuemanag == "منسحب"
-          //     ?descresaonController.text:"",
-          //
-          // "value_back": typeclient_provider.selectedValuemanag == "منسحب"
-          //     ?valueBackController.text:"",
-        });
-        print('$body');
-        Provider.of<client_vm>(context, listen: false)
-            .updateclient_vm(body, widget.itemClient.idClients)
-            .then((value) =>
-            value != "false"
-            ? clear(context)
-            : error(context)
-        );
-      }}else{
-          _scaffoldKey.currentState!.showSnackBar(
-              SnackBar(content: Text('من فضلك حدد مدينة')));
-        }
-      }, icon: Icon(Icons.check,color: kWhiteColor)),
-          ],
+    typeclient_provider = Provider.of<typeclient>(context, listen: true);
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: kWhiteColor),
+          onPressed: () => Navigator.of(context).pop(),
         ),
-        body: ModalProgressHUD(
-          inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddclient,
-          child: SingleChildScrollView(
-            child: Form(
-              key: _globalKey,
-              child:  Padding(
-                padding: EdgeInsets.only(
-                    top: 20,
-                    right: 20,
-                    left: 20,
-                    bottom: 10), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
-                child: Directionality(//container shadow
-                  textDirection:myui.TextDirection.rtl ,
-                  child: Column(
-                    //textDirection: TextDirection.rtl,
+        actions: [
+          IconButton(
+              onPressed: () {
+                if (_globalKey.currentState!.validate()) {
+                  _globalKey.currentState!.save();
+                  if (Provider.of<maincity_vm>(context, listen: false)
+                          .selectedValuemanag !=
+                      null) {
+                    Provider.of<LoadProvider>(context, listen: false)
+                        .changebooladdclient(true);
+                    String ismarket =
+                        Provider.of<switch_provider>(context, listen: false)
+                                    .isSwitched ==
+                                true
+                            ? '1'
+                            : '0';
 
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    print(ismarket);
 
-                      RowEdit(name: label_cliententerprise, des: 'required'),
+                    Map<String, dynamic> body = {};
+                    if (typeclient_provider.selectedValuemanag == "عرض سعر")
+                      body = {
+                        "date_price": formatter.format(DateTime.now()),
+                      };
+                    if (namemanage != null)
+                      body.addAll(
+                        {
+                          "date_changetype": //typeclient_provider.selectedValuemanag == "منسحب"?
+                              formatter.format(_currentDate)
+                        }, //:"null",
+                      );
+                    body.addAll({
+                      'name_client': nameclientController.text,
+                      'name_enterprise': nameEnterpriseController.text,
+                      // 'type_job': typejobController ,
+                      'city': cityController,
 
-                      EditTextFormField(
-                        obscureText: false,
-                        hintText: label_cliententerprise,
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        controller: nameEnterpriseController, //اسم المؤسسة
-                        //label: label_client,
-                        onChanged: (val) {
-                          // nameprod = val;
-                        },
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
+                      'location': locationController.text.toString(),
+                      //"fk_regoin":currentUser.fkRegoin==null?"null" :currentUser.fkRegoin,
+                      //"date_create": ,
+                      "type_client": widget.itemClient.typeClient != "مشترك" &&
+                              widget.itemClient.typeClient != "منسحب"
+                          ? typeclient_provider.selectedValuemanag
+                          : widget.itemClient.typeClient!,
+                      //"fk_user":widget.fkuser,
+                      // "date_transfer":,
+                      "mobile": mobileController.text,
+                      "address_client": usernameclientController.text,
+                      "offer_price": offerpriceController.text,
+                      "reason_change": resaonController.text,
+                      // typeclient_provider.selectedValuemanag == "منسحب"
+                      //     ? typeclient_provider.selectedValueOut
+                      //     :
+                      'activity_type_fk':
+                          Provider.of<activity_vm>(context, listen: false)
+                              .selectedValueOut
+                              .toString(),
+                      // "mobile": mobileController.text,
+                      "ismarketing": sourclient == 'ميداني' ? '0' : '1',
+                      "user_do":
+                          Provider.of<user_vm_provider>(context, listen: false)
+                              .currentUser
+                              .idUser
+                              .toString(),
+                      'presystem':'presystem',
+                      'sourcclient':sourclient,
+                      'descActivController': desctypejobController.text,
+                      // "desc_reason":  typeclient_provider.selectedValuemanag == "منسحب"
+                      //     ?descresaonController.text:"",
+                      //
+                      // "value_back": typeclient_provider.selectedValuemanag == "منسحب"
+                      //     ?valueBackController.text:"",
+                    });
+                    print('$body');
+                    Provider.of<client_vm>(context, listen: false)
+                        .updateclient_vm(body, widget.itemClient.idClients)
+                        .then((value) =>
+                            value != "false" ? clear(context) : error(context));
+                  }
+                } else {
+                  _scaffoldKey.currentState!.showSnackBar(
+                      SnackBar(content: Text('من فضلك حدد مدينة')));
+                }
+              },
+              icon: Icon(Icons.check, color: kWhiteColor)),
+        ],
+      ),
+      body: ModalProgressHUD(
+        inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddclient,
+        child: SingleChildScrollView(
+          child: Form(
+            key: _globalKey,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 20,
+                  right: 20,
+                  left: 20,
+                  bottom:
+                      10), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+              child: Directionality(
+                //container shadow
+                textDirection: myui.TextDirection.rtl,
+                child: Column(
+                  //textDirection: TextDirection.rtl,
 
-                      RowEdit(name: label_clientname, des: 'required'),
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: label_clientname,
-                        obscureText: false,
-                        controller: nameclientController,
-                      ),
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RowEdit(name: label_cliententerprise, des: 'required'),
 
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('27')==true ?Container():
-                      RowEdit(name: label_client_typejob, des: 'Required') ,
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('27')==true ?Container():
-                      EditTextFormField(
-                        hintText: label_client_typejob,
-                        obscureText: false,
-                        vaild: (value) {
-                          if (value!.isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        controller: desctypejobController, //اسم المؤسسة
-                        label: label_client_typejob,
-                        onChanged: (val) {
-                          // nameprod = val;
-                        },
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Consumer<activity_vm>(
+                    EditTextFormField(
+                      obscureText: false,
+                      hintText: label_cliententerprise,
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      controller: nameEnterpriseController, //اسم المؤسسة
+                      //label: label_client,
+                      onChanged: (val) {
+                        // nameprod = val;
+                      },
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+
+                    RowEdit(name: label_clientname, des: 'required'),
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      hintText: label_clientname,
+                      obscureText: false,
+                      controller: nameclientController,
+                    ),
+
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Provider.of<privilge_vm>(context, listen: true)
+                                .checkprivlge('27') ==
+                            true
+                        ? Container()
+                        : RowEdit(name: label_client_typejob, des: 'Required'),
+                    Provider.of<privilge_vm>(context, listen: true)
+                                .checkprivlge('27') ==
+                            true
+                        ? Container()
+                        : EditTextFormField(
+                            hintText: label_client_typejob,
+                            obscureText: false,
+                            vaild: (value) {
+                              if (value!.isEmpty) {
+                                return label_empty;
+                              }
+                            },
+                            controller: desctypejobController, //اسم المؤسسة
+                            label: label_client_typejob,
+                            onChanged: (val) {
+                              // nameprod = val;
+                            },
+                          ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    RowEdit(name: 'وصف النشاط', des: 'REQUIRED'),
+
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      hintText: label_desc_activ,
+                      obscureText: false,
+                      controller: descActivController,
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    RowEdit(name: label_client_typejob, des: 'Required'),
+                    Consumer<activity_vm>(
+                      builder: (context, cart, child) {
+                        return SizedBox(
+                          //width: 240,
+                          child: DropdownButtonFormField(
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.grey))),
+
+                            isExpanded: true,
+                            //hint: Text("حدد حالة العميل"),
+                            items: cart.list_activity.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(level_one
+                                    .name_activity_type), //label of item
+
+                                value:
+                                    level_one.id_activity_type, //value of item
+                              );
+                            }).toList(),
+                            value: cart.selectedValueOut,
+                            onChanged: (value) {
+                              //  setState(() {
+                              cart.changevalueOut(value.toString());
+                              typejobController = value.toString();
+                              // });
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    RowEdit(name: 'مصدر العميل', des: 'اختياري'),
+
+                    DropdownButtonFormField(
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.grey))),
+
+                      isExpanded: true,
+                      //hint: Text("حدد حالة العميل"),
+                      items: list_sourcclient.map((level_one) {
+                        return DropdownMenuItem(
+                          child: Text(level_one), //label of item
+
+                          value: level_one, //value of item
+                        );
+                      }).toList(),
+                      value: presystemcomb,
+                      onChanged: (value) {
+                        setState(() {
+                          sourclient = value.toString();
+                          print("source   "+sourclient.toString());
+                        });
+                        //  setState(() {
+                        //cart.changevalueOut(value.toString());
+                        // });
+                      },
+                    ),
+                    RowEdit(name: label_usernameclient, des: 'Required'),
+                    EditTextFormField(
+                      maxline: 3,
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      hintText: label_usernameclient,
+                      obscureText: false,
+                      controller: usernameclientController,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    //admin
+
+                    RowEdit(name: label_clientcity, des: 'Required'),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(left: 20.0,right: 8),
+                    //   child: Consumer<maincity_vm>(
+                    //       builder: (context, cart, child){
+                    //         return DropdownButton(
+                    //           isExpanded: true,
+                    //           hint: Text(label_clientcity),
+                    //           items: cart.listcity.map((city) {
+                    //             return DropdownMenuItem(
+                    //               child: Text(city.name_city), //label of item
+                    //               value: city.id_city, //value of item
+                    //             );
+                    //           }).toList(),
+                    //           value:cart.selectedValuemanag,
+                    //           onChanged:(value) {
+                    //             cityController.text=value.toString();
+                    //             cart.changevalue(value.toString());
+                    //           },
+                    //         );}
+                    //   ),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Consumer<maincity_vm>(
                         builder: (context, cart, child) {
-                          return SizedBox(
-                            //width: 240,
-                            child: DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.grey))),
-
-                              isExpanded: true,
-                              //hint: Text("حدد حالة العميل"),
-                              items: cart.list_activity.map((level_one) {
-                                return DropdownMenuItem(
-                                  child: Text(
-                                      level_one.name_activity_type), //label of item
-
-                                  value: level_one.id_activity_type, //value of item
-                                );
-                              }).toList(),
-                              value: cart.selectedValueOut,
-                              onChanged: (value) {
-                                //  setState(() {
-                                cart.changevalueOut(value.toString());
-                                typejobController=value.toString();
-                                // });
-                              },
+                          return DropdownSearch<CityModel>(
+                            mode: Mode.DIALOG,
+                            label: "المدن",
+                            validator: (val) {
+                              if (val == null) return 'من فضلك حدد اسم مدينة';
+                            },
+                            selectedItem: citymodel,
+                            filterFn: (user, filter) =>
+                                user!.getfilteruser(filter!),
+                            items: cart.listcity,
+                            itemAsString: (u) => u!.userAsString(),
+                            onChanged: (data) => cityController =
+                                data!.id_city, //print(data!.nameUser),
+                            showSearchBox: true,
+                            dropdownSearchDecoration: InputDecoration(
+                              labelText: "حدد مدينة",
+                              contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
+                              border: OutlineInputBorder(),
                             ),
                           );
                         },
                       ),
-
-                      RowEdit(name: label_usernameclient, des: 'Required') ,
-                      EditTextFormField(
-                        maxline: 3,
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: label_usernameclient,
-                        obscureText: false,
-                        controller: usernameclientController,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      //admin
-
-                      RowEdit(name: label_clientcity, des: 'Required'),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 20.0,right: 8),
-                      //   child: Consumer<maincity_vm>(
-                      //       builder: (context, cart, child){
-                      //         return DropdownButton(
-                      //           isExpanded: true,
-                      //           hint: Text(label_clientcity),
-                      //           items: cart.listcity.map((city) {
-                      //             return DropdownMenuItem(
-                      //               child: Text(city.name_city), //label of item
-                      //               value: city.id_city, //value of item
-                      //             );
-                      //           }).toList(),
-                      //           value:cart.selectedValuemanag,
-                      //           onChanged:(value) {
-                      //             cityController.text=value.toString();
-                      //             cart.changevalue(value.toString());
-                      //           },
-                      //         );}
-                      //   ),
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Consumer<maincity_vm>(
-                          builder: (context, cart, child){
-                            return  DropdownSearch<CityModel>(
-                              mode: Mode.DIALOG,
-                              label: "المدن",
-                              validator: (val){
-
-                                if(val==null)
-                                  return 'من فضلك حدد اسم مدينة';
-                              },
-                              selectedItem: citymodel,
-                              filterFn: (user, filter) => user!.getfilteruser(filter!),
-                              items: cart.listcity,
-                              itemAsString:
-                                  ( u) => u!.userAsString(),
-                              onChanged: (data) =>
-                              cityController=data!.id_city,//print(data!.nameUser),
-                              showSearchBox: true,
-                              dropdownSearchDecoration: InputDecoration(
-                                labelText: "حدد مدينة",
-                                contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
-                                border: OutlineInputBorder(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      //manage
-                      SizedBox(
-                        height: 5,
-                      ),
-                      RowEdit(name: label_clientmobile, des: 'Required'),
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: '+966000000000',
-                        obscureText: false,
-                        controller: mobileController,
-                      ),
-                      //RowEdit(name: 'Image', des: ''),
-                      SizedBox(
-                        height: 15,
-                      ),
-
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('27')==true ?Container():
-                      RowEdit(name: label_clientlocation, des: ''),
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('27')==true ?
-                      Container():EditTextFormField(
-                        hintText: 'location',
-                        obscureText: false,
-                        controller: locationController,
-                      ),
-
-
-                      ////////////////////////////////////////////////
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('37')==true ?
-                      Center(
-                        child: Consumer<switch_provider>(
-                          builder: (context, isSwitched, child) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Switch(
-                                    activeTrackColor:
-                                    kMainColor.withAlpha(90),
-                                    activeColor: kMainColor,
-                                    value: isSwitched.isSwitched,
-                                    onChanged: (value) {
-                                      print(value);
-                                      print(value.toString());
-
-                                      //valtaxrate = value;
-                                      isSwitched.changeboolValue(value);
-                                    }),
-                                Text(marketlabel),
-
-                              ],
-                            );
-                          },
-                        ),
-                      ):Container(),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('27')==true ?Container():
-                      widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
-                      RowEdit(name: label_clienttype, des: ""):Container(),
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('27')==true ?Container():
-                      widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
-
-                      DropdownButton(
-                      isExpanded: true,
-                      //hint: Text("حدد حالة العميل"),
-                      items: typeclient_provider.type_of_client.map((level_one) {
-                            return DropdownMenuItem(
-
-                              child: Text(level_one), //label of item
-                              value: level_one, //value of item
-                            );
-                          }).toList(),
-                      value:typeclient_provider.selectedValuemanag,
-                      onChanged:(value) {
-                        namemanage=value.toString();
-                        typeclient_provider.changevalue(value.toString());
-                        // if(value=="منسحب") {
-                        //   showDialog<void>(
-                        //       context: context,
-                        //       builder: (context) => dialog);
-                        // }
+                    ),
+                    //manage
+                    SizedBox(
+                      height: 5,
+                    ),
+                    RowEdit(name: label_clientmobile, des: 'Required'),
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
                       },
-                    ):Container(),
-                      SizedBox(height: 2,),
+                      hintText: '+966000000000',
+                      obscureText: false,
+                      controller: mobileController,
+                    ),
+                    //RowEdit(name: 'Image', des: ''),
+                    SizedBox(
+                      height: 15,
+                    ),
 
-                      // Provider.of<privilge_vm>(context,listen: true)
-                      //     .checkprivlge('27')==true||  Provider.of<privilge_vm>(context,listen: true)
-                      //     .checkprivlge('28')==true ?
-                      // typeclient_provider.selectedValuemanag=="منسحب"?
-                      // ElevatedButton(
-                      //   style: ButtonStyle(
-                      //       backgroundColor: MaterialStateProperty.all(
-                      //           kMainColor)),
-                      //   onPressed: () {
-                      //     showDialog<void>(
-                      //         context: context,
-                      //         builder: (context) => dialog);
-                      //   },
-                      //   child: Text('خيارات الإنسحاب'),
-                      // ):
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('27')==true ?Container():
-                      typeclient_provider.selectedValuemanag=="عرض سعر"?
-                      EditTextFormField(
-                        hintText: 'عرض سعر',
-                        obscureText: false,
-                        controller: offerpriceController,
-                      ):
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('27')==true ?Container():
-                      typeclient_provider.selectedValuemanag=="مستبعد"?
-                      EditTextFormField(
-                        hintText: 'سبب الاستبعاد',
-                        obscureText: false,
-                        controller: resaonController,
-                      ):Container(),
-                          //:Container(),
-                      // Provider.of<privilge_vm>(context,listen: true)
-                      //     .checkprivlge('27')==true||  Provider.of<privilge_vm>(context,listen: true)
-                      //     .checkprivlge('28')==true ?
-                      // typeclient_provider.selectedValuemanag=="عرض سعر"
-                      //     || typeclient_provider.selectedValuemanag=="تفاوض"?
-                      // Padding(
-                      //   padding: const EdgeInsets.all(6.0),
-                      //   child: Center(
-                      //     child:   ElevatedButton(
-                      //       style: ButtonStyle(
-                      //           backgroundColor: MaterialStateProperty.all(
-                      //               kMainColor)),
-                      //       onPressed: () {
-                      //
-                      //         Navigator.push(context,MaterialPageRoute(
-                      //             builder: (context)=>transferClient(
-                      //            name_enterprise:  widget.itemClient.nameEnterprise.toString(),
-                      //              idclient:   widget.itemClient.idClients.toString(),
-                      //             type: "client",),fullscreenDialog: true
-                      //
-                      //         ));
-                      //       },
-                      //       child: Text('تحويل العميل'),
-                      //     ),
-                      //   ),
-                      // ):Text(""):Container(),
-                    ],
-                  ),
+                    Provider.of<privilge_vm>(context, listen: true)
+                                .checkprivlge('27') ==
+                            true
+                        ? Container()
+                        : RowEdit(name: label_clientlocation, des: ''),
+                    Provider.of<privilge_vm>(context, listen: true)
+                                .checkprivlge('27') ==
+                            true
+                        ? Container()
+                        : EditTextFormField(
+                            hintText: 'location',
+                            obscureText: false,
+                            controller: locationController,
+                          ),
+
+                    ////////////////////////////////////////////////
+                    SizedBox(
+                      height: 15,
+                    ),
+                    // Provider.of<privilge_vm>(context, listen: true)
+                    //             .checkprivlge('37') ==
+                    //         true
+                    //     ? Center(
+                    //         child: Consumer<switch_provider>(
+                    //           builder: (context, isSwitched, child) {
+                    //             return Row(
+                    //               mainAxisAlignment: MainAxisAlignment.center,
+                    //               children: [
+                    //                 Switch(
+                    //                     activeTrackColor:
+                    //                         kMainColor.withAlpha(90),
+                    //                     activeColor: kMainColor,
+                    //                     value: isSwitched.isSwitched,
+                    //                     onChanged: (value) {
+                    //                       print(value);
+                    //                       print(value.toString());
+                    //
+                    //                       //valtaxrate = value;
+                    //                       isSwitched.changeboolValue(value);
+                    //                     }),
+                    //                 Text(marketlabel),
+                    //               ],
+                    //             );
+                    //           },
+                    //         ),
+                    //       )
+                    //     : Container(),
+                    // SizedBox(
+                    //   height: 15,
+                    // ),
+                    Provider.of<privilge_vm>(context, listen: true)
+                                .checkprivlge('27') ==
+                            true
+                        ? Container()
+                        : widget.itemClient.typeClient != "مشترك" &&
+                                widget.itemClient.typeClient != "منسحب"
+                            ? RowEdit(name: label_clienttype, des: "")
+                            : Container(),
+                    Provider.of<privilge_vm>(context, listen: true)
+                                .checkprivlge('27') ==
+                            true
+                        ? Container()
+                        : widget.itemClient.typeClient != "مشترك" &&
+                                widget.itemClient.typeClient != "منسحب"
+                            ? DropdownButton(
+                                isExpanded: true,
+                                //hint: Text("حدد حالة العميل"),
+                                items: typeclient_provider.type_of_client
+                                    .map((level_one) {
+                                  return DropdownMenuItem(
+                                    child: Text(level_one), //label of item
+                                    value: level_one, //value of item
+                                  );
+                                }).toList(),
+                                value: typeclient_provider.selectedValuemanag,
+                                onChanged: (value) {
+                                  namemanage = value.toString();
+                                  typeclient_provider
+                                      .changevalue(value.toString());
+                                  // if(value=="منسحب") {
+                                  //   showDialog<void>(
+                                  //       context: context,
+                                  //       builder: (context) => dialog);
+                                  // }
+                                },
+                              )
+                            : Container(),
+                    SizedBox(
+                      height: 2,
+                    ),
+
+                    // Provider.of<privilge_vm>(context,listen: true)
+                    //     .checkprivlge('27')==true||  Provider.of<privilge_vm>(context,listen: true)
+                    //     .checkprivlge('28')==true ?
+                    // typeclient_provider.selectedValuemanag=="منسحب"?
+                    // ElevatedButton(
+                    //   style: ButtonStyle(
+                    //       backgroundColor: MaterialStateProperty.all(
+                    //           kMainColor)),
+                    //   onPressed: () {
+                    //     showDialog<void>(
+                    //         context: context,
+                    //         builder: (context) => dialog);
+                    //   },
+                    //   child: Text('خيارات الإنسحاب'),
+                    // ):
+                    Provider.of<privilge_vm>(context, listen: true)
+                                .checkprivlge('27') ==
+                            true
+                        ? Container()
+                        : typeclient_provider.selectedValuemanag == "عرض سعر"
+                            ? EditTextFormField(
+                                hintText: 'عرض سعر',
+                                obscureText: false,
+                                controller: offerpriceController,
+                              )
+                            : Provider.of<privilge_vm>(context, listen: true)
+                                        .checkprivlge('27') ==
+                                    true
+                                ? Container()
+                                : typeclient_provider.selectedValuemanag ==
+                                        "مستبعد"
+                                    ? EditTextFormField(
+                                        hintText: 'سبب الاستبعاد',
+                                        obscureText: false,
+                                        controller: resaonController,
+                                      )
+                                    : Container(),
+                    //:Container(),
+                    // Provider.of<privilge_vm>(context,listen: true)
+                    //     .checkprivlge('27')==true||  Provider.of<privilge_vm>(context,listen: true)
+                    //     .checkprivlge('28')==true ?
+                    // typeclient_provider.selectedValuemanag=="عرض سعر"
+                    //     || typeclient_provider.selectedValuemanag=="تفاوض"?
+                    // Padding(
+                    //   padding: const EdgeInsets.all(6.0),
+                    //   child: Center(
+                    //     child:   ElevatedButton(
+                    //       style: ButtonStyle(
+                    //           backgroundColor: MaterialStateProperty.all(
+                    //               kMainColor)),
+                    //       onPressed: () {
+                    //
+                    //         Navigator.push(context,MaterialPageRoute(
+                    //             builder: (context)=>transferClient(
+                    //            name_enterprise:  widget.itemClient.nameEnterprise.toString(),
+                    //              idclient:   widget.itemClient.idClients.toString(),
+                    //             type: "client",),fullscreenDialog: true
+                    //
+                    //         ));
+                    //       },
+                    //       child: Text('تحويل العميل'),
+                    //     ),
+                    //   ),
+                    // ):Text(""):Container(),
+                  ],
                 ),
               ),
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 
   clear(BuildContext context) {
@@ -613,11 +715,10 @@ void didChangeDependencies() {
   error(BuildContext context) {
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdclient(false);
-    _scaffoldKey.currentState!.showSnackBar(
-        SnackBar(content: Text("حدث خطأ ما"))
-    );
-
+    _scaffoldKey.currentState!
+        .showSnackBar(SnackBar(content: Text("حدث خطأ ما")));
   }
+
   DateTime _currentDate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
 
@@ -630,12 +731,9 @@ void didChangeDependencies() {
         initialDate: currentDate,
         firstDate: DateTime(2015),
         lastDate: DateTime(2080));
-    if (pickedDate != null )//&& pickedDate != currentDate)
+    if (pickedDate != null) //&& pickedDate != currentDate)
       setState(() {
         _currentDate = pickedDate;
-
       });
   }
-
-
 }
