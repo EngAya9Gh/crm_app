@@ -18,9 +18,9 @@ import '../../../constants.dart';
 import '../../../view_model/activity_vm.dart';
 import 'dart:io';
 class addcompany extends StatefulWidget {
-  addcompany({ required this.nameCompany  , Key? key}) : super(key: key);
+  addcompany({ Key? key}) : super(key: key);
   // String type;
-  String? nameCompany;
+  // String? nameCompany;
 
 
   @override
@@ -36,7 +36,7 @@ class _addcompanyState extends State<addcompany> {
 
   final _globalKey = GlobalKey<FormState>();
   @override void initState() {
-    nameractv.text=widget.nameCompany==null?'':widget.nameCompany.toString();
+    // nameractv.text=widget.nameCompany==null?'':widget.nameCompany.toString();
     super.initState();
   }
   @override
@@ -134,7 +134,7 @@ class _addcompanyState extends State<addcompany> {
                             _globalKey.currentState!.save();
                             // Provider.of<LoadProvider>(context, listen: false)
                             //     .changebooladdclient(true);
-                            if(widget.idCompany==null){
+
                               Provider.of<company_vm>(context,listen: false)
                                   .addCompany_vm({
                                 'name_company':nameractv.text,
@@ -144,19 +144,7 @@ class _addcompanyState extends State<addcompany> {
                                       ? clear(context)
                                       : error(context)
                               );
-                            }
-                            else{
-                              Provider.of<activity_vm>(context,listen: false)
-                                  .update_actv({
 
-                                'name_activity_type':nameractv.text,
-                                // 'type':widget.type,
-                              },widget.idCompany.toString()).then(
-                                      (value) =>  value!="error"
-                                      ? clear(context)
-                                      : error(context)
-                              );
-                            }
                           }else {
                             _scaffoldKey.currentState!.showSnackBar(
                                 SnackBar(content: Text('الحقل فارغ  '))

@@ -17,7 +17,7 @@ class company_vm extends ChangeNotifier {
 
     // notifyListeners();
     //  if(list_activity.isEmpty)
-    list_company = await await Api().get(url: url+'');
+    list_company = await await Api().get(url: url+'config/get_company.php');
     notifyListeners();
   }
 
@@ -28,16 +28,18 @@ class company_vm extends ChangeNotifier {
   }
 
   bool isloading=false;
+
+
   Future<String> addCompany_vm(Map<String, dynamic?> body,File? file) async {
     isloading =true;
     notifyListeners();
     String res = await Api().postRequestWithFile(
           "array",
-          url+'config/addactv.php',//users/addmangemt.php
+          url+'config/add_company.php',//users/addmangemt.php
           body,file,null);
     if (res!="error") {
       body.addAll({
-        'id_activity_type':res,
+        'id_company':res,
       });
       list_company.insert(0,CompanyModel.fromJson(body));
       isloading=false;
@@ -53,7 +55,7 @@ class company_vm extends ChangeNotifier {
     notifyListeners();
     String res = await Api().postRequestWithFile(
         "array",
-         url+'config/update_actv.php?id_activity_type=${idcompany }',//users/addmangemt.php
+         url+'config/update_company.php?id_company=${idcompany }',//users/addmangemt.php
          body,file,null
     );
     body.addAll({
