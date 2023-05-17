@@ -99,6 +99,7 @@ class ClientModel extends CacheRepository{
   late  String? sourcclient;
   late  String? activity_type_fk;
   late  String? activity_type_title;
+  late  String? phone;
   String?
       name_city,
       namemaincity,
@@ -155,6 +156,7 @@ class ClientModel extends CacheRepository{
     sourcclient = json['sourcclient'];
     activity_type_fk = json['activity_type_fk'];
     activity_type_title = json['activity_type_title'];
+    phone = json['phone'];
 
   }
 
@@ -209,6 +211,7 @@ class ClientModel extends CacheRepository{
      _data['sourcclient'] = sourcclient;
      _data['activity_type_fk'] = activity_type_fk;
      _data['activity_type_title'] = activity_type_title;
+     _data['phone'] = phone;
     return _data;
   }
   String userAsString() {

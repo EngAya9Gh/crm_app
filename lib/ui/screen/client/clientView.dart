@@ -108,7 +108,11 @@ class _ClientViewState extends State<ClientView> {
                 cardRow( title:' الفرع',value:clientModel.name_regoin.toString()),
                 cardRow( title:' مدينة العميل',value:clientModel.name_city.toString()),
                 cardRow( title:' المنطقة',value:clientModel.namemaincity.toString()),
-                cardRow( title:' النشاط',value:clientModel.typeJob.toString()),
+
+                clientModel.phone==''||clientModel.phone==null?
+                Container():
+                cardRow( title:' رقم آخر',value:clientModel.phone.toString()),
+
                 cardRow( title:'حالة العميل',value:clientModel.typeClient.toString()),
                 clientModel.typeClient=='مستبعد'?
                 cardRow(value: 'قام بتحويل حالة العميل', title: clientModel.nameuserdoning.toString()):Container(),
@@ -119,6 +123,7 @@ class _ClientViewState extends State<ClientView> {
 
                 clientModel.offer_price!=null&&clientModel.offer_price.toString().trim().isNotEmpty?
                 cardRow( title:'مبلغ عرض السعر',value:clientModel.offer_price.toString()):Container(),
+
                 clientModel.offer_price!=null&&clientModel.offer_price.toString().trim().isNotEmpty?
                 cardRow( title:'تاريخ عرض السعر',value:clientModel.date_price.toString()):Container(),
 
@@ -126,16 +131,22 @@ class _ClientViewState extends State<ClientView> {
                 cardRow( title:'الموظف الذي قام بتغيير حالة العميل',value:clientModel.nameuserdoning.toString()):Container(),
 
                 cardRow( title:'الموظف',value:getnameshort(clientModel.nameUser.toString())),
+
                 cardRow( title:'رقم الموظف',value:clientModel.mobileuser.toString()),
                 (clientModel.reasonTransfer==null||
-                    clientModel.reasonTransfer=="null")&&clientModel.fkusertrasfer!=null?
+                clientModel.reasonTransfer=="null") && clientModel.fkusertrasfer!=null?
+
                 cardRow( title:'قام بتحويل العميل',value:getnameshort(
-              clientModel.nameusertransfer.toString())):Container(),
+                clientModel.nameusertransfer.toString())):Container(),
                 (clientModel.reasonTransfer==null||
-                    clientModel.reasonTransfer=="null")&&clientModel.fkusertrasfer!=null?
+                clientModel.reasonTransfer=="null")&&clientModel.fkusertrasfer!=null?
+
                 cardRow( title:'تاريخ التحويل',value:clientModel.dateTransfer.toString()):Container(),
-                clientModel.location.toString()==''?Container():
+
+                clientModel.location.toString()==''?
+                Container():
                 cardRow( title:' الموقع',value:clientModel.location.toString()),
+
                 clientModel.ismarketing=='1' ?
                 cardRow( title:' عميل تسويق الكتروني',
                 value:clientModel.ismarketing=='1'?'نعم':''):Container(),

@@ -47,6 +47,7 @@ class _addClientState extends State<addClient> {
   final TextEditingController nameEnterpriseController = TextEditingController();
 
   final TextEditingController mobileController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
 
   // final TextEditingController typejobController = TextEditingController();
   final TextEditingController address_client = TextEditingController();
@@ -69,6 +70,7 @@ class _addClientState extends State<addClient> {
     regoinController.dispose();
     address_client.dispose();
     descActivController.dispose();
+    phoneController.dispose();
 
     super.dispose();
   }
@@ -331,6 +333,20 @@ class _addClientState extends State<addClient> {
                         controller: mobileController,
                       ),
                       //RowEdit(name: 'Image', des: ''),
+                      RowEdit(name: 'رقم آخر', des: 'اختياري'),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      EditTextFormField(
+                        vaild: (value) {
+                          if (value!.toString().trim().isEmpty) {
+                            return label_empty;
+                          }
+                        },
+                        hintText: '+0',
+                        obscureText: false,
+                        controller: phoneController,
+                      ),
                       SizedBox(
                         height: 15,
                       ),
@@ -450,6 +466,7 @@ class _addClientState extends State<addClient> {
                                     .selectedValueOut
                                     .toString(),
                                   "mobile": mobileController.text,
+                                  "phone": phoneController.text,
                                   "ismarketing": sourclient=='ميداني'?'0':'1'  ,
                                   //"date_changetype":,
                                 }, _user.nameUser.toString(),

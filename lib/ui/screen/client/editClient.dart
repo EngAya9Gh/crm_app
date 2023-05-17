@@ -49,6 +49,7 @@ class _editclientState extends State<editclient> {
       TextEditingController();
 
   final TextEditingController mobileController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController desctypejobController = TextEditingController();
   String? cityController = null;
   String? typejobController = null;
@@ -98,6 +99,7 @@ class _editclientState extends State<editclient> {
     nameEnterpriseController.text =
         widget.itemClient.nameEnterprise!.toString();
     mobileController.text = widget.itemClient.mobile!.toString();
+    phoneController.text = widget.itemClient.phone!.toString();
     descActivController.text =
         widget.itemClient.descActivController!.toString();
     // typejobController.text=widget.itemClient.typeJob!.toString();
@@ -107,8 +109,7 @@ class _editclientState extends State<editclient> {
         ? ''
         : widget.itemClient.address_client.toString();
     //////////////////////////////////////////////////////////
-    ////////////////////////////////////////
-    //print( typeclient_provider.selectedValuemanag);
+
     offerpriceController.text = widget.itemClient.offer_price == null ||
             widget.itemClient.offer_price == ""
         ? ""
@@ -253,6 +254,7 @@ class _editclientState extends State<editclient> {
                       //"fk_user":widget.fkuser,
                       // "date_transfer":,
                       "mobile": mobileController.text,
+                      "phone":  phoneController.text,
                       "address_client": usernameclientController.text,
                       "offer_price": offerpriceController.text,
                       "reason_change": resaonController.text,
@@ -532,6 +534,20 @@ class _editclientState extends State<editclient> {
                       hintText: '+966000000000',
                       obscureText: false,
                       controller: mobileController,
+                    ),
+                    RowEdit(name: 'رقم آخر', des: 'اختياري'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      hintText: '+0',
+                      obscureText: false,
+                      controller: phoneController,
                     ),
                     //RowEdit(name: 'Image', des: ''),
                     SizedBox(

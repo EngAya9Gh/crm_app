@@ -27,9 +27,11 @@ class Api {
     //http.Response response = await RetryClient(http.Client()).get( Uri.parse(url));
 //private, max-age=3600
   // "Cache-Control": "no-cache"
-    http.Response response = await _client.get(
+  //   http.Response response = await _client.get(
+    http.Response response = await http.get(
       Uri.parse(url),
       headers: {
+
          "Cache-Control": "no-cache"
       }
     );

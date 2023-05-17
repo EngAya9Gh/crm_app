@@ -176,6 +176,7 @@ class Invoice_Service {
   Future<InvoiceModel> updateInvoice( Map<String,dynamic> body,
       String idInvoice,File? file,File? filelogo) async {
     var result = await Api()
+
         .postRequestWithFile('array',
         url+"client/invoice/updateinvoice.php",
         body,file,filelogo
