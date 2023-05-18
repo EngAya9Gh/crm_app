@@ -14,6 +14,7 @@ import 'package:crm_smart/view_model/approve_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
+import 'package:crm_smart/view_model/company_vm.dart';
 import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
@@ -177,6 +178,7 @@ void main() async {
 
          ChangeNotifierProvider<datetime_vm>(create: (_)=> datetime_vm()),
          ChangeNotifierProvider<activity_vm>(create: (_)=> activity_vm()),
+         ChangeNotifierProvider<company_vm>(create: (_)=> company_vm()),
         //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
 
   ], child:MyApp()));

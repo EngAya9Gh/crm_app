@@ -206,7 +206,8 @@ class ClientModel extends CacheRepository{
      _data['id_maincity'] = id_maincity;
      _data['address_client'] = address_client;
      _data['descActivController'] = descActivController;
-     _data['presystem'] = presystem;
+     _data['presystem'] = presystem.toString().trim().isEmpty ?
+     null:presystem;
      _data['presystemtitle'] = presystemtitle;
      _data['sourcclient'] = sourcclient;
      _data['activity_type_fk'] = activity_type_fk;
@@ -214,6 +215,7 @@ class ClientModel extends CacheRepository{
      _data['phone'] = phone;
     return _data;
   }
+
   String userAsString() {
     return "${this.nameEnterprise}";
     // return '#${this.idUser} ${this.nameUser}';

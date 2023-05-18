@@ -17,12 +17,23 @@ class company_vm extends ChangeNotifier {
 
     // notifyListeners();
     //  if(list_activity.isEmpty)
-    list_company = await await Api().get(url: url+'config/get_company.php');
+    var
+    data= await   Api().get(url: url+'config/get_company.php');
+
+    List<CompanyModel> prodlist = [];
+    for (int i = 0; i < data.length; i++) {
+      print(i);
+      prodlist.add(CompanyModel.fromJson(data[i]));
+    }
+    list_company=prodlist.toList();
+    // list_company.insert(0, null);
+
     notifyListeners();
   }
 
   late String? selectedValueOut=null;
-  void changevalueOut(String s){
+
+  void changevalueOut(String? s) {
     selectedValueOut=s;
     notifyListeners();
   }

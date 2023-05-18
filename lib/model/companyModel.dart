@@ -11,7 +11,7 @@ class CompanyModel {
   });
 
   late   String? id_Company;
-  late     String name_company;
+  late     String? name_company;
   late    String? path_logo='';
   // late final String type;
 

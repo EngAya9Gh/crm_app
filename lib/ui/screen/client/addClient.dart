@@ -13,6 +13,7 @@ import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
+import 'package:crm_smart/view_model/company_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -408,6 +409,43 @@ class _addClientState extends State<addClient> {
                       SizedBox(
                         height: 15,
                       ),
+                      RowEdit(name: 'نظام سابق', des: 'اختياري'),
+
+                      Consumer<company_vm>(
+                        builder: (context, cart, child) {
+                          return SizedBox(
+                            //width: 240,
+                            child:
+                            DropdownButtonFormField(
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.grey))),
+
+                              isExpanded: true,
+                              //hint: Text("حدد حالة العميل"),
+                              items: cart.list_company.map((level_one) {
+                                return DropdownMenuItem(
+                                  child: Text(
+                                      level_one.name_company.toString()), //label of item
+
+                                  value: level_one.id_Company, //value of item
+                                );
+                              }).toList(),
+                              value: cart.selectedValueOut,
+                              onChanged: (value) {
+                                //  setState(() {
+                                cart.changevalueOut(value.toString());
+                                // });
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Center(
                         child: custom_button_new(
                           text: label_clientadd,
@@ -456,7 +494,12 @@ class _addClientState extends State<addClient> {
                                   "type_client": "تفاوض",
                                   "fk_user": _user.idUser,
                                   // "date_transfer":,
-                                  'presystem':presystem,
+                                  'presystem':Provider
+                                      .of<company_vm>(
+                                      context,
+                                      listen: false)
+                                      .selectedValueOut
+                                      .toString(),
                                   'sourcclient':sourclient,
                                   'activity_type_fk':
                                 Provider

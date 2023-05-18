@@ -10,6 +10,7 @@ import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
+import 'package:crm_smart/view_model/company_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
@@ -93,13 +94,14 @@ class _editclientState extends State<editclient> {
 
   @override
   void initState() {
+
     currentUser =
         Provider.of<user_vm_provider>(context, listen: false).currentUser;
     nameclientController.text = widget.itemClient.nameClient!.toString();
     nameEnterpriseController.text =
         widget.itemClient.nameEnterprise!.toString();
     mobileController.text = widget.itemClient.mobile!.toString();
-    phoneController.text = widget.itemClient.phone!.toString();
+    phoneController.text =widget.itemClient.phone==null?'': widget.itemClient.phone!.toString();
     descActivController.text =
         widget.itemClient.descActivController!.toString();
     // typejobController.text=widget.itemClient.typeJob!.toString();
@@ -126,11 +128,20 @@ class _editclientState extends State<editclient> {
     presystemcomb = sourclient = widget.itemClient.sourcclient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<maincity_vm>(context, listen: false).getcityAll();
+
       Provider.of<maincity_vm>(context, listen: false)
           .changevalue(widget.itemClient.city.toString());
       await Provider.of<activity_vm>(context, listen: false).getactv();
       Provider.of<activity_vm>(context, listen: false)
           .changevalueOut(widget.itemClient.activity_type_fk.toString());
+      await Provider.of<company_vm>(context, listen: false).getcompany();
+
+      Provider.of<company_vm>(context, listen: false)
+          .changevalueOut(
+          // widget.itemClient.presystem==null?
+          // null :
+          widget.itemClient.presystem.toString()
+      );
 
       cityController =
           // Provider.of<maincity_vm>(context,listen: false).selectedValuemanag.toString();
@@ -190,10 +201,10 @@ class _editclientState extends State<editclient> {
 
   @override
   void didChangeDependencies() {
-    // Future.delayed(Duration(milliseconds: 30)).then((_) async {
-    //
-    // });
+    Future.delayed(Duration(milliseconds: 30)).then((_) async {
 
+
+    });
     super.didChangeDependencies();
   }
 
@@ -272,7 +283,9 @@ class _editclientState extends State<editclient> {
                               .currentUser
                               .idUser
                               .toString(),
-                      'presystem':'presystem',
+                      'presystem':   Provider.of<company_vm>(context, listen: false)
+                          .selectedValueOut
+                          .toString(),
                       'sourcclient':sourclient,
                       'descActivController': desctypejobController.text,
                       // "desc_reason":  typeclient_provider.selectedValuemanag == "منسحب"
@@ -425,35 +438,7 @@ class _editclientState extends State<editclient> {
                         );
                       },
                     ),
-                    RowEdit(name: 'مصدر العميل', des: 'اختياري'),
 
-                    DropdownButtonFormField(
-                      decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide:
-                                  BorderSide(width: 2, color: Colors.grey))),
-
-                      isExpanded: true,
-                      //hint: Text("حدد حالة العميل"),
-                      items: list_sourcclient.map((level_one) {
-                        return DropdownMenuItem(
-                          child: Text(level_one), //label of item
-
-                          value: level_one, //value of item
-                        );
-                      }).toList(),
-                      value: presystemcomb,
-                      onChanged: (value) {
-                        setState(() {
-                          sourclient = value.toString();
-                          print("source   "+sourclient.toString());
-                        });
-                        //  setState(() {
-                        //cart.changevalueOut(value.toString());
-                        // });
-                      },
-                    ),
                     RowEdit(name: label_usernameclient, des: 'Required'),
                     EditTextFormField(
                       maxline: 3,
@@ -540,11 +525,11 @@ class _editclientState extends State<editclient> {
                       height: 5,
                     ),
                     EditTextFormField(
-                      vaild: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return label_empty;
-                        }
-                      },
+                      // vaild: (value) {
+                      //   if (value!.toString().trim().isEmpty) {
+                      //     return label_empty;
+                      //   }
+                      // },
                       hintText: '+0',
                       obscureText: false,
                       controller: phoneController,
@@ -573,6 +558,73 @@ class _editclientState extends State<editclient> {
                     SizedBox(
                       height: 15,
                     ),
+                    RowEdit(name: 'مصدر العميل', des: 'اختياري'),
+
+                    DropdownButtonFormField(
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                              BorderSide(width: 2, color: Colors.grey))),
+
+                      isExpanded: true,
+                      //hint: Text("حدد حالة العميل"),
+                      items: list_sourcclient.map((level_one) {
+                        return DropdownMenuItem(
+                          child: Text(level_one), //label of item
+
+                          value: level_one, //value of item
+                        );
+                      }).toList(),
+                      value: presystemcomb,
+                      onChanged: (value) {
+                        setState(() {
+                          sourclient = value.toString();
+                          print("source   "+sourclient.toString());
+                        });
+                        //  setState(() {
+                        //cart.changevalueOut(value.toString());
+                        // });
+                      },
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    RowEdit(name: 'نظام سابق', des: 'اختياري'),
+
+                    Consumer<company_vm>(
+                      builder: (context, cart, child) {
+                        return SizedBox(
+                          //width: 240,
+                          child:
+                          DropdownButtonFormField(
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.grey))),
+
+                            isExpanded: true,
+                            //hint: Text("حدد حالة العميل"),
+                            items: cart.list_company.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(
+                                    level_one.name_company.toString()), //label of item
+
+                                value: level_one.id_Company.toString(), //value of item
+                              );
+                            }).toList(),
+                            value:  cart.selectedValueOut.toString(),
+                            onChanged: (value) {
+                              //  setState(() {
+                              cart.changevalueOut(value.toString());
+                              // });
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 15,),
                     // Provider.of<privilge_vm>(context, listen: true)
                     //             .checkprivlge('37') ==
                     //         true

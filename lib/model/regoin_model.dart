@@ -2,8 +2,8 @@
 
 
 class RegoinModel{
-  late final String id_regoin,fk_country;//nameCountry,currency;
- late final String name_regoin;
+  late   String id_regoin,fk_country;//nameCountry,currency;
+ late   String name_regoin;
   RegoinModel({
     required this.id_regoin, required this.name_regoin,
      required this.fk_country,

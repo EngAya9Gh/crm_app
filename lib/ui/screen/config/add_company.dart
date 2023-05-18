@@ -46,118 +46,121 @@ class _addcompanyState extends State<addcompany> {
         body:ModalProgressHUD(
           inAsyncCall: Provider.of<company_vm>(context)
               .isloading,
-          child : Form(
-            key: _globalKey,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: 150,
-                  right: 20,
-                  left: 20,bottom: 150),
-              child: ContainerShadows(
-                width: double.infinity,
-                //height: 400,
-                margin: EdgeInsets.only(),
-                padding:EdgeInsets.only(top: 50,left: 20,right: 20,bottom:20) ,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 15,),
-                      RowEdit(name: 'المؤسسة', des: 'REQUIRED'),
-                      SizedBox(height: 15,),
+          child : Directionality(
+            textDirection: TextDirection.rtl,
+            child: Form(
+              key: _globalKey,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: 150,
+                    right: 20,
+                    left: 20,bottom: 150),
+                child: ContainerShadows(
+                  width: double.infinity,
+                  //height: 400,
+                  margin: EdgeInsets.only(),
+                  padding:EdgeInsets.only(top: 50,left: 20,right: 20,bottom:50) ,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 15,),
+                        RowEdit(name: 'المؤسسة', des: 'REQUIRED'),
+                        SizedBox(height: 15,),
 
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.isEmpty) {
-                            return 'الحقل فارغ';
-                          }
-                        },
-                        hintText: '',
-                        controller: nameractv,
-                      ),
-                      SizedBox(height: 5,),
-
-                      RowEdit(name: 'شعار المؤسسة', des: ''),
-                      TextFormField(
-                        controller: logoController,
-                        obscureText: false,
-                        cursorColor: Colors.black,
-                        onTap: () async{
-                          ImagePicker imagePicker = ImagePicker();
-                          final pickedImage =
-                          await imagePicker.pickImage(
-                            source: ImageSource.gallery,
-                            imageQuality: 100,);
-                          File?   pickedFile = File(pickedImage!.path);
-                          setState(() {
-                            print(pickedFile.path);
-                            _myfilelogo=pickedFile;
-                            logoController.text=pickedFile.path;
-                          });
-
-                          // _invoice!.path=pickedFile.path;
-                        },
-                        readOnly: true,
-                        decoration: InputDecoration(
-
-                          contentPadding:
-                          EdgeInsets.all(2) ,
-                          prefixIcon: Icon(
-                            Icons.add_photo_alternate,
-                            color: kMainColor,
-                          ),
-                          hintStyle: const TextStyle(
-                              color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                        EditTextFormField(
+                          vaild: (value) {
+                            if (value!.isEmpty) {
+                              return 'الحقل فارغ';
+                            }
+                          },
                           hintText: '',
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white)),
+                          controller: nameractv,
                         ),
-                      ),
-                      SizedBox(height: 15,),
-                      CustomButton(
-                        width:double.infinity,
-                        //MediaQuery.of(context).size.width * 0.2,
-                        text: 'حفظ',
-                        onTap: () async {
-                          if (_globalKey.currentState!.validate()) {
-                            _globalKey.currentState!.save();
-                            // Provider.of<LoadProvider>(context, listen: false)
-                            //     .changebooladdclient(true);
+                        SizedBox(height: 5,),
 
-                              Provider.of<company_vm>(context,listen: false)
-                                  .addCompany_vm({
-                                'name_company':nameractv.text,
-                                // 'type':widget.type,
-                              },_myfilelogo).then(
-                                      (value) =>  value!="error"
-                                      ? clear(context)
-                                      : error(context)
+                        RowEdit(name: 'شعار المؤسسة', des: ''),
+                        TextFormField(
+                          controller: logoController,
+                          obscureText: false,
+                          cursorColor: Colors.black,
+                          onTap: () async{
+                            ImagePicker imagePicker = ImagePicker();
+                            final pickedImage =
+                            await imagePicker.pickImage(
+                              source: ImageSource.gallery,
+                              imageQuality: 100,);
+                            File?   pickedFile = File(pickedImage!.path);
+                            setState(() {
+                              print(pickedFile.path);
+                              _myfilelogo=pickedFile;
+                              logoController.text=pickedFile.path;
+                            });
+
+                            // _invoice!.path=pickedFile.path;
+                          },
+                          readOnly: true,
+                          decoration: InputDecoration(
+
+                            contentPadding:
+                            EdgeInsets.all(2) ,
+                            prefixIcon: Icon(
+                              Icons.add_photo_alternate,
+                              color: kMainColor,
+                            ),
+                            hintStyle: const TextStyle(
+                                color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                            hintText: '',
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.white)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.white)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.white)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                borderSide: const BorderSide(color: Colors.white)),
+                          ),
+                        ),
+                        SizedBox(height: 15,),
+                        CustomButton(
+                          width:double.infinity,
+                          //MediaQuery.of(context).size.width * 0.2,
+                          text: 'حفظ',
+                          onTap: () async {
+                            if (_globalKey.currentState!.validate()) {
+                              _globalKey.currentState!.save();
+                              // Provider.of<LoadProvider>(context, listen: false)
+                              //     .changebooladdclient(true);
+
+                                Provider.of<company_vm>(context,listen: false)
+                                    .addCompany_vm({
+                                  'name_company':nameractv.text,
+                                  // 'type':widget.type,
+                                },_myfilelogo).then(
+                                        (value) =>  value!="error"
+                                        ? clear(context)
+                                        : error(context)
+                                );
+
+                            }else {
+                              _scaffoldKey.currentState!.showSnackBar(
+                                  SnackBar(content: Text('الحقل فارغ  '))
                               );
-
-                          }else {
-                            _scaffoldKey.currentState!.showSnackBar(
-                                SnackBar(content: Text('الحقل فارغ  '))
-                            );
-                          }
-                        },
-                        //child: Text(" حفظ"),
-                      ),
-                    ],
+                            }
+                          },
+                          //child: Text(" حفظ"),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
+              ),
             ),
           ),
         ));

@@ -155,7 +155,9 @@ class _ClientViewState extends State<ClientView> {
                 value:
                 clientModel.address_client==null?'':
                 clientModel.address_client.toString()) ,
-               clientModel.presystem==null?
+
+                clientModel.presystem ==null
+                   ||clientModel.presystem.toString().trim().isEmpty ?
                Container():
                cardRow(
                    title:'نظام سابق',

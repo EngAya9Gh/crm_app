@@ -4,6 +4,7 @@ import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/config/activity_view.dart';
 import 'package:crm_smart/ui/screen/config/addreson.dart';
 import 'package:crm_smart/ui/screen/config/chang_country.dart';
+import 'package:crm_smart/ui/screen/config/company_view.dart';
 import 'package:crm_smart/ui/screen/config/config_view.dart';
 import 'package:crm_smart/ui/screen/config/maincityview.dart';
 import 'package:crm_smart/ui/screen/config/manageview.dart';
@@ -221,8 +222,21 @@ class _managmentpageState extends State<managmentpage> {
 
                       ),
                     );
-                  }, title: 'أنواع النشاط')
+                  }, title: 'أنواع النشاط'),
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => company_view(type:'ticket'),
 
+                      ),
+                    );
+                  }, title: 'الشركات المنافسة')
               //config_view
             ],),
           );}

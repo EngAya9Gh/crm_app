@@ -3,8 +3,8 @@ class LevelModel {
     required this.idLevel,
     required this.nameLevel,
   });
-  late final String idLevel;
-  late final String nameLevel;
+  late   String idLevel;
+  late   String nameLevel;
 
   LevelModel.fromJson(Map<String, dynamic> json){
     idLevel = json['id_level'];

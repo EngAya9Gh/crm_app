@@ -89,7 +89,7 @@ class _resoan_viewState extends State<company_view> {
                                     MaterialPageRoute(
                                         builder: (context)=>updatecompany(
                                            idCompany: _listlevel[index].id_Company.toString(),
-                                          nameCompany: _listlevel[index].name_company,
+                                          nameCompany: _listlevel[index].name_company.toString(),
                                           path_logo: _listlevel[index].path_logo,
                                           // type: widget.type,
                                         )));
@@ -121,7 +121,7 @@ class _resoan_viewState extends State<company_view> {
                                       padding: EdgeInsets.all(4),
                                       child: Center(
                                         child:
-                                        Text(_listlevel[index].name_company,
+                                        Text(_listlevel[index].name_company.toString(),
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontFamily: kfontfamily2),),),

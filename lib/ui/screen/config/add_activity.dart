@@ -42,80 +42,83 @@ class _addActvState extends State<addractivity> {
         body:ModalProgressHUD(
           inAsyncCall: Provider.of<activity_vm>(context)
               .isloading,
-          child : Form(
-            key: _globalKey,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: 150,
-                  right: 20,
-                  left: 20,bottom: 150),
-              child: ContainerShadows(
-                width: double.infinity,
-                //height: 400,
-                margin: EdgeInsets.only(),
-                padding:EdgeInsets.only(top: 50,left: 20,right: 20,bottom:20) ,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 15,),
-                      RowEdit(name: 'النشاط', des: 'REQUIRED'),
-                      SizedBox(height: 15,),
+          child : Directionality(
+            textDirection: TextDirection.rtl,
+            child: Form(
+              key: _globalKey,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: 150,
+                    right: 20,
+                    left: 20,bottom: 150),
+                child: ContainerShadows(
+                  width: double.infinity,
+                  //height: 400,
+                  margin: EdgeInsets.only(),
+                  padding:EdgeInsets.only(top: 50,left: 20,right: 20,bottom:20) ,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 15,),
+                        RowEdit(name: 'النشاط', des: 'REQUIRED'),
+                        SizedBox(height: 15,),
 
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.isEmpty) {
-                            return 'الحقل فارغ';
-                          }
-                        },
-                        hintText: '',
-                        controller: nameractv,
-                      ),
-                      SizedBox(height: 15,),
-                      CustomButton(
-                        width:double.infinity,
-                        //MediaQuery.of(context).size.width * 0.2,
-                        text: 'حفظ',
-                        onTap: () async {
-                          if (_globalKey.currentState!.validate()) {
-                            _globalKey.currentState!.save();
-                            // Provider.of<LoadProvider>(context, listen: false)
-                            //     .changebooladdclient(true);
-                            if(widget.idActivity==null){
-                              Provider.of<activity_vm>(context,listen: false)
-                                  .addActv_vm({
-                                'name_activity_type':nameractv.text,
-                               // 'type':widget.type,
-                              }).then(
-                                      (value) =>  value!="error"
-                                      ? clear(context)
-                                      : error(context)
+                        EditTextFormField(
+                          vaild: (value) {
+                            if (value!.isEmpty) {
+                              return 'الحقل فارغ';
+                            }
+                          },
+                          hintText: '',
+                          controller: nameractv,
+                        ),
+                        SizedBox(height: 15,),
+                        CustomButton(
+                          width:double.infinity,
+                          //MediaQuery.of(context).size.width * 0.2,
+                          text: 'حفظ',
+                          onTap: () async {
+                            if (_globalKey.currentState!.validate()) {
+                              _globalKey.currentState!.save();
+                              // Provider.of<LoadProvider>(context, listen: false)
+                              //     .changebooladdclient(true);
+                              if(widget.idActivity==null){
+                                Provider.of<activity_vm>(context,listen: false)
+                                    .addActv_vm({
+                                  'name_activity_type':nameractv.text,
+                                 // 'type':widget.type,
+                                }).then(
+                                        (value) =>  value!="error"
+                                        ? clear(context)
+                                        : error(context)
+                                );
+                              }
+                              else{
+                                Provider.of<activity_vm>(context,listen: false)
+                                    .update_actv({
+
+                                  'name_activity_type':nameractv.text,
+                                  // 'type':widget.type,
+                                },widget.idActivity.toString()).then(
+                                        (value) =>  value!="error"
+                                        ? clear(context)
+                                        : error(context)
+                                );
+                              }
+                            }else {
+                              _scaffoldKey.currentState!.showSnackBar(
+                                  SnackBar(content: Text('الحقل فارغ  '))
                               );
                             }
-                            else{
-                              Provider.of<activity_vm>(context,listen: false)
-                                  .update_actv({
-
-                                'name_activity_type':nameractv.text,
-                                // 'type':widget.type,
-                              },widget.idActivity.toString()).then(
-                                      (value) =>  value!="error"
-                                      ? clear(context)
-                                      : error(context)
-                              );
-                            }
-                          }else {
-                            _scaffoldKey.currentState!.showSnackBar(
-                                SnackBar(content: Text('الحقل فارغ  '))
-                            );
-                          }
-                        },
-                        //child: Text(" حفظ"),
-                      ),
-                    ],
+                          },
+                          //child: Text(" حفظ"),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
+              ),
             ),
           ),
         ));
