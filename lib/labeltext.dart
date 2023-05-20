@@ -49,6 +49,7 @@ const String label_renew='التجديد السنوي';
 
 const String label_typepay='طريقة الدفع';
 const String label_typeinstall='طريقة التركيب للعميل';
+const String label_readyinstall='حالة العميل';
 
 const String label_note='ملاحظات المبيعات';
 const String label_image='  صورة السجل التجاري';

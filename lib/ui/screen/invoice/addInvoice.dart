@@ -69,6 +69,7 @@ class _addinvoiceState extends State<addinvoice> {
    late  String typepayController='0' ;
 
    late String typeinstallController='0';
+   late String readyinstallController='0';
 
    final TextEditingController noteController = TextEditingController();
    final TextEditingController numbranchController = TextEditingController();
@@ -443,6 +444,51 @@ else{
                           ),
                         ),
                         //RowEdit(name: 'Image', des: ''),
+
+                        SizedBox(
+                          height: 15,
+                        ),
+                        RowEdit(name: label_readyinstall, des: 'Required'),
+                        Container(
+                          padding: EdgeInsets.only(left: 2,right: 2),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                            boxShadow: <BoxShadow>[
+                              BoxShadow(
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 8.0,
+                                color: Colors.black87.withOpacity(0.2),
+                              ),
+                            ],
+                            color: Colors.white,
+                          ),
+                          child:
+                          Consumer<selected_button_provider>(
+                              builder: (context, selectedProvider, child) {
+                                return  GroupButton(
+                                    controller: GroupButtonController(
+                                      selectedIndex:selectedProvider.isSelectedreadyinstall,
+                                      // typeinstallController==null
+                                      //     ? 0 :
+                                      // int.tryParse( typeinstallController!)
+                                    ),
+                                    options: GroupButtonOptions(
+                                        buttonWidth: 110,
+
+                                        borderRadius: BorderRadius.circular(10)),
+                                    buttons: ['غير جاهز للتركيب','جاهز للتركيب'],
+                                    onSelected: (_,index,isselected) {
+                                      print(index);
+                                      //setState(() {
+                                      readyinstallController=index.toString();
+                                      selectedProvider.selectValuereadyinstall(index);
+                                      //  });
+                                    }
+                                );
+                              }
+
+                          ),
+                        ),
                         SizedBox(
                           height: 15,
                         ),
@@ -757,6 +803,8 @@ else{
                                           "type_pay": typepayController.toString(),
                                           "date_create": DateTime.now().toString(),
                                           "type_installation": typeinstallController.toString(),
+                                          "ready_install": readyinstallController.toString(),
+                                          /////////////////////////////////////////////////////////////////////
                                           "amount_paid": amount_paidController.text.toString(),
                                           'fk_regoin':widget.invoice!.fk_regoin.toString(),
                                           'fkcountry':widget.invoice!.fk_country.toString(),
@@ -808,6 +856,8 @@ else{
                                           "type_pay": typepayController,
                                           "date_create": DateTime.now().toString(), //formatter.format(_currentDate),
                                           "type_installation": typeinstallController.toString(),
+                                          "ready_install": readyinstallController.toString(),
+                                           ///////////////////////////////////////////
                                           "amount_paid": amount_paidController.text.toString(),
                                           "image_record":imageController.text.toString(),
                                           "fk_idClient": widget.itemClient.idClients.toString(),

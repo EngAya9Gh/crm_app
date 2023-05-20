@@ -23,6 +23,11 @@ class selected_button_provider extends ChangeNotifier{
     isSelectedtypeinstall=val;
     notifyListeners();
   }
+  int isSelectedreadyinstall= 0;
+  void selectValuereadyinstall(val){
+    isSelectedreadyinstall=val;
+    notifyListeners();
+  }
 
   int isbarsales= 0;
   void selectValuebarsales(val){

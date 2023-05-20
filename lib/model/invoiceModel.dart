@@ -70,6 +70,8 @@ class InvoiceModel extends CacheRepository{
     this.hoursdelayinstall,
     this.clientusername,
     this.address_invoice,
+    this.ready_install,
+    this.not_ready_install,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -133,10 +135,12 @@ class InvoiceModel extends CacheRepository{
     String? hoursdelayinstall;
     String? clientusername;
     String? address_invoice;
-    String?  city,
-  name_city,
-  namemaincity,
-  id_maincity;
+
+    String?  ready_install;
+    String?  not_ready_install;
+    String?  city, name_city,
+    namemaincity,
+    id_maincity;
 
   //Map<String, dynamic> products;
    List<ProductsInvoice>? products;
@@ -215,6 +219,8 @@ class InvoiceModel extends CacheRepository{
     hoursdelayinstall = jsondata['hoursdelayinstall'];
     clientusername = jsondata['clientusername'];
     address_invoice = jsondata['address_invoice'];
+    ready_install = jsondata['ready_install'];
+    not_ready_install = jsondata['not_ready_install'];
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']
@@ -310,6 +316,8 @@ class InvoiceModel extends CacheRepository{
     _data['hoursdelayinstall'] = hoursdelayinstall;
     _data['clientusername'] = clientusername;
     _data['address_invoice'] = address_invoice;
+    _data['ready_install'] = ready_install;
+    _data['not_ready_install'] = not_ready_install;
     _data['products'] =
         products!.map((e)=>e.toJson()).toList();
     return _data;

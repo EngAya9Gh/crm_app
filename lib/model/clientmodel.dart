@@ -50,6 +50,8 @@ class ClientModel extends CacheRepository{
     this.sourcclient,
     this.activity_type_fk,
     this.activity_type_title,
+    this.user_add,
+    this.nameAdduser,
   });
   late final String? idClients;
   late final String? nameClient;
@@ -100,6 +102,8 @@ class ClientModel extends CacheRepository{
   late  String? activity_type_fk;
   late  String? activity_type_title;
   late  String? phone;
+  late  String?  user_add;
+  late  String? nameAdduser;
   String?
       name_city,
       namemaincity,
@@ -157,6 +161,8 @@ class ClientModel extends CacheRepository{
     activity_type_fk = json['activity_type_fk'];
     activity_type_title = json['activity_type_title'];
     phone = json['phone'];
+    user_add = json['user_add'];
+    nameAdduser = json['nameAdduser'];
 
   }
 
@@ -213,6 +219,8 @@ class ClientModel extends CacheRepository{
      _data['activity_type_fk'] = activity_type_fk;
      _data['activity_type_title'] = activity_type_title;
      _data['phone'] = phone;
+     _data['user_add'] = user_add;
+     _data['nameAdduser'] = nameAdduser;
     return _data;
   }
 

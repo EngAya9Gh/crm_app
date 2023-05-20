@@ -128,8 +128,11 @@ class _ClientViewState extends State<ClientView> {
                 cardRow( title:'تاريخ عرض السعر',value:clientModel.date_price.toString()):Container(),
 
                 clientModel.offer_price!=null&&clientModel.offer_price.toString().trim().isNotEmpty?
-                cardRow( title:'الموظف الذي قام بتغيير حالة العميل',value:clientModel.nameuserdoning.toString()):Container(),
+                cardRow( title:'الموظف الذي قام بتغيير حالة العميل',
+                    value:clientModel.nameuserdoning.toString()):Container(),
 
+                cardRow( title:'الموظف الذي أضاف العميل',
+                    value:getnameshort(clientModel.nameAdduser.toString() )),
                 cardRow( title:'الموظف',value:getnameshort(clientModel.nameUser.toString())),
 
                 cardRow( title:'رقم الموظف',value:clientModel.mobileuser.toString()),
@@ -268,6 +271,8 @@ class _ClientViewState extends State<ClientView> {
                                                  // Provider.of<user_vm_provider>(context,listen: false)
                                                  //     .currentUser.nameUser.toString(),//الموظف الذي حول العميل
                                                  'name_enterprise':clientModel.nameEnterprise,
+                                                 'fk_regoin':Provider.of<user_vm_provider>(context,listen:
+                                                 false).currentUser.fkRegoin.toString(),
                                                  //'idclient':
                                                },widget.idclient
                                            ).then((value) =>

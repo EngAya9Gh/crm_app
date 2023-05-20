@@ -493,6 +493,7 @@ class _addClientState extends State<addClient> {
                                   //,  //formatter.format(_currentDate),
                                   "type_client": "تفاوض",
                                   "fk_user": _user.idUser,
+                                  "user_add": _user.idUser,
                                   // "date_transfer":,
                                   'presystem':Provider
                                       .of<company_vm>(

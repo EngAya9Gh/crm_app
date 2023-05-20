@@ -582,15 +582,15 @@ Future<void> getinvoice_Localwithprev() async{
   // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
   notifyListeners();
 }
-  Future<void> getClientWaiting()async{
-    // element.stateclient == searchfilter
-    //     && element.isApprove == "1"
-    listInvoicesAccept = await Invoice_Service()
-        .getinvoicemaincity(
-        'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}'
-        ,{'all':'all'});
-    notifyListeners();
-  }
+  // Future<void> getClientWaiting()async{
+  //   // element.stateclient == searchfilter
+  //   //     && element.isApprove == "1"
+  //   listInvoicesAccept = await Invoice_Service()
+  //       .getinvoicemaincity(
+  //       'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}'
+  //       ,{'all':'all'});
+  //   notifyListeners();
+  // }
   Future<void> getinvoice_Local(String searchfilter,String type
       ,String? approvetype
       // , List<ClientModel> list
