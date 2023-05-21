@@ -88,6 +88,16 @@ class Invoice_Service {
     //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]);//=="done"? true:false;
   }
+  Future<InvoiceModel> set_ready_install(
+      Map<String,dynamic> body,String id_invoice) async {
+    var result = await Api()
+        .post( url:url+
+        "client/invoice/set_ready_install.php?id_invoice=$id_invoice",body:
+    body
+    );
+    //client/setApproveClient.php
+    return InvoiceModel.fromJson(result[0]);//=="done"? true:false;
+  }
   Future<InvoiceModel> setstate(
       Map<String,dynamic> body,String id_invoice) async {
     var result = await Api()

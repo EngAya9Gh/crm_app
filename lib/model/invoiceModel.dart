@@ -71,7 +71,12 @@ class InvoiceModel extends CacheRepository{
     this.clientusername,
     this.address_invoice,
     this.ready_install,
-    this.not_ready_install,
+    this.date_readyinstall,
+    this.user_ready_install,
+    this.date_not_readyinstall,
+    this.user_not_ready_install,
+    this.nameuser_ready_install,
+    this.nameuser_notready_install,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -137,7 +142,12 @@ class InvoiceModel extends CacheRepository{
     String? address_invoice;
 
     String?  ready_install;
-    String?  not_ready_install;
+    String?  date_readyinstall;
+    String?  user_ready_install;
+    String?  date_not_readyinstall;
+    String?  user_not_ready_install;
+    String?  nameuser_ready_install;
+    String?  nameuser_notready_install;
     String?  city, name_city,
     namemaincity,
     id_maincity;
@@ -220,7 +230,12 @@ class InvoiceModel extends CacheRepository{
     clientusername = jsondata['clientusername'];
     address_invoice = jsondata['address_invoice'];
     ready_install = jsondata['ready_install'];
-    not_ready_install = jsondata['not_ready_install'];
+    date_readyinstall = jsondata['date_readyinstall'];
+    user_ready_install = jsondata['user_ready_install'];
+    date_not_readyinstall = jsondata['date_not_readyinstall'];
+    user_not_ready_install = jsondata['user_not_ready_install'];
+    nameuser_ready_install = jsondata['nameuser_ready_install'];
+    nameuser_notready_install = jsondata['nameuser_notready_install'];
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']
@@ -317,7 +332,12 @@ class InvoiceModel extends CacheRepository{
     _data['clientusername'] = clientusername;
     _data['address_invoice'] = address_invoice;
     _data['ready_install'] = ready_install;
-    _data['not_ready_install'] = not_ready_install;
+    _data['date_readyinstall'] = date_readyinstall;
+    _data['user_ready_install'] = user_ready_install;
+    _data['user_not_ready_install'] = user_not_ready_install;
+    _data['date_not_readyinstall'] = date_not_readyinstall;
+    _data['nameuser_ready_install'] = nameuser_ready_install;
+    _data['nameuser_notready_install'] = nameuser_notready_install;
     _data['products'] =
         products!.map((e)=>e.toJson()).toList();
     return _data;

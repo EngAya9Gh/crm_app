@@ -104,7 +104,7 @@ class _support_addState extends State<support_add> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _invoice = Provider.of<invoice_vm>(context, listen: true)
-        .listinvoices
+        .listinvoiceClientSupport//.listinvoices
         .firstWhere((element) => element.idInvoice == widget.idinvoice);
 
     final _globalKey = GlobalKey<FormState>();
@@ -495,6 +495,31 @@ class _support_addState extends State<support_add> {
                       value: _invoice!.dateinstall_done == null
                           ? 'بالانتظار'
                           : 'تم التركيب'),
+
+                _invoice!.date_readyinstall != null
+                    ? cardRow(
+                    title: ' تاريخ الغاء تعليق العميل ',
+                    value: DateFormat('yyyy-MM-dd HH:mm').format(
+                        DateTime.parse(_invoice!.date_readyinstall.toString())))
+                    : Container(),
+                _invoice!.date_readyinstall != null
+                    ? cardRow(
+                    title: ' قام بالغاء تعليق العميل ',
+                    value: _invoice!.nameuser_ready_install.toString())
+                    : Container(),
+////////////////////////////////////////////////////////////////
+                _invoice!.date_not_readyinstall != null
+                    ? cardRow(
+                    title: ' تاريخ تعليق العميل ',
+                    value: DateFormat('yyyy-MM-dd HH:mm').format(
+                        DateTime.parse(_invoice!.date_not_readyinstall.toString())))
+                    : Container(),
+                _invoice!.date_not_readyinstall != null
+                    ? cardRow(
+                    title: ' قام بتعليق العميل ',
+                    value: _invoice!.nameuser_notready_install.toString())
+                    : Container(),
+
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('43')==true ?
                   _invoice!.dateinstall_done == null &&_invoice!.dateinstall_task!=null
@@ -609,6 +634,176 @@ class _support_addState extends State<support_add> {
                       },
                       child: Text('تم التركيب للعميل'))
                       : Container():Container(),
+
+                _invoice!.dateinstall_done != null?
+                Container():
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+
+                    ElevatedButton(
+
+                        style: ButtonStyle(
+                            backgroundColor:
+                            MaterialStateProperty.all(kMainColor)),
+                        onPressed:    _invoice!.ready_install=='1'?null: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ModalProgressHUD(
+                                inAsyncCall: Provider.of<invoice_vm>(context,listen: true)
+                                    .isloadingdone,
+                                child: Directionality(
+                                  textDirection: myui. TextDirection.rtl,
+                                  child: AlertDialog(
+                                    title: Text('التأكيد'),
+                                    content: Text('هل تريد تحويل العميل إلى جاهز للتركيب '),
+                                    actions: <Widget>[
+                                      Column(
+                                        children: [
+
+                                          SizedBox(height: 10,),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        kMainColor)),
+                                                onPressed: () {
+                                                  Navigator.of(context,
+                                                      rootNavigator: true)
+                                                      .pop(
+                                                      false); // dismisses only the dialog and returns false
+                                                },
+                                                child: Text('لا'),
+                                              ),
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        kMainColor)),
+                                                onPressed: () async {
+                                                  Provider.of<invoice_vm>(context,
+                                                      listen: false).setisload();
+
+                                                  await Provider.of<invoice_vm>(context,
+                                                      listen: false)
+                                                      .set_ready_install({
+
+                                                    'date_readyinstall':
+                                                    DateTime.now().toString(),
+                                                    'user_ready_install':
+                                                    Provider.of<user_vm_provider>(
+                                                        context,
+                                                        listen: false).currentUser.idUser.toString(),
+                                                    'ready_install': '1',
+
+                                                  }, _invoice!.idInvoice).then(
+                                                          (value) => clear());
+                                                  Navigator.of(context,
+                                                      rootNavigator: true)
+                                                      .pop(true);
+                                                },
+                                                child: Text('نعم'),
+                                              ),
+                                            ],)
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                          //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
+                        },
+                        child: Text('جاهز للتركيب')),
+                    ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                            MaterialStateProperty.all(kMainColor)),
+                        onPressed:   _invoice!.ready_install=='0'?null: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ModalProgressHUD(
+                                inAsyncCall: Provider.of<invoice_vm>(context,listen: true)
+                                    .isloadingdone,
+                                child: Directionality(
+                                  textDirection: myui. TextDirection.rtl,
+                                  child: AlertDialog(
+                                    title: Text('التأكيد'),
+                                    content: Text('هل تريد تحويل العميل إلى غير جاهز للتركيب '),
+                                    actions: <Widget>[
+                                      Column(
+                                        children: [
+
+                                          SizedBox(height: 10,),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        kMainColor)),
+                                                onPressed: () {
+                                                  Navigator.of(context,
+                                                      rootNavigator: true)
+                                                      .pop(
+                                                      false); // dismisses only the dialog and returns false
+                                                },
+                                                child: Text('لا'),
+                                              ),
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        kMainColor)),
+                                                onPressed: () async {
+                                                  Provider.of<invoice_vm>(context,
+                                                      listen: false).setisload();
+
+                                                  await Provider.of<invoice_vm>(context,
+                                                      listen: false)
+                                                      .set_ready_install({
+
+                                                    'date_not_readyinstall':
+                                                    DateTime.now().toString(),
+                                                    'user_not_ready_install':
+                                                    Provider.of<user_vm_provider>(
+                                                        context,
+                                                        listen: false).currentUser.idUser.toString(),
+                                                    'ready_install': '0',
+
+                                                  }, _invoice!.idInvoice).then(
+                                                          (value) => clear());
+                                                  Navigator.of(context,
+                                                      rootNavigator: true)
+                                                      .pop(true);
+                                                },
+                                                child: Text('نعم'),
+                                              ),
+                                            ],)
+                                        ],
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                          //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
+                        },
+                        child: Text('غير جاهز للتركيب')),
+
+                  ],
+                ),
+
               ],
             ),
                 )),

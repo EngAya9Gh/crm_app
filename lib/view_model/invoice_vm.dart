@@ -709,13 +709,13 @@ Future<void> getinvoice_Localwithprev() async{
     if(list.isNotEmpty) {
     //await getinvoices();
     //seacrh for invoice in list
-    if(type=='مشترك'){
+    if(type=='مشترك') {
       listinvoiceClientSupport=[];
       list.forEach((element) {
       if( element.fkIdClient ==fk_client && element.isApprove!=null)
         listinvoiceClientSupport.add(element);
     });
-    } else{
+    } else {
       listinvoiceClient=[];
       list.forEach((element) {
         if(element.fkIdClient==fk_client)
@@ -837,7 +837,8 @@ Future<void> getinvoice_Localwithprev() async{
       Map<String, dynamic?> body,File? file, File? myfilelogo) async {
 
        String res='done';
-      InvoiceModel data = await Invoice_Service().addInvoice(body,file,myfilelogo);
+      InvoiceModel data = await Invoice_Service()
+          .addInvoice(body,file,myfilelogo);
    //  if(data !=null){
        print('resssssssssssssss');
     listinvoices.insert(0,data);
@@ -982,9 +983,20 @@ bool isloadingdone=false;
       // listClient.removeAt(index);
       notifyListeners();
 
-
   }
 
+  Future<void> set_ready_install(Map<String, dynamic?> body,String? id_invoice) async {
+    isloadingdone=true;
+    notifyListeners();
+    int index=listinvoices.indexWhere(
+            (element) => element.idInvoice==id_invoice);
+
+    listinvoices[index]= await Invoice_Service().set_ready_install(body,id_invoice!);
+    isloadingdone=false;
+    // listClient.removeAt(index);
+    notifyListeners();
+
+  }
   Future<void> get_invoice_deleted() async {
     if(listdeletedinvoice.isEmpty)
     listdeletedinvoice = await Invoice_Service().getinvoice_deleted(
