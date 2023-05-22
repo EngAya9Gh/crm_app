@@ -448,7 +448,9 @@ else{
                         SizedBox(
                           height: 15,
                         ),
-                        RowEdit(name: label_readyinstall, des: 'Required'),
+                        _invoice!.idInvoice == null?
+                      RowEdit(name: label_readyinstall, des: 'Required'):Container(),
+                        _invoice!.idInvoice == null?
                         Container(
                           padding: EdgeInsets.only(left: 2,right: 2),
                           decoration: BoxDecoration(
@@ -488,7 +490,7 @@ else{
                               }
 
                           ),
-                        ),
+                        ):Container(),
                         SizedBox(
                           height: 15,
                         ),
@@ -870,7 +872,7 @@ else{
                                           'nummostda':nummostawdaController.text.toString(),
                                           'numusers':numuserController.text.toString(),
                                           'address_invoice':addressController.text.toString(),
-                                          //'date_lastuserupdate':DateTime.now().toString(),
+                                           //'date_lastuserupdate':DateTime.now().toString(),
                                           //"date_changetype":,
                                           //'message':"",
                                         },_invoice!.path!.isNotEmpty?_myfile:null

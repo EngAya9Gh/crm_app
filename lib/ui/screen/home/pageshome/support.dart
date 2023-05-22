@@ -132,6 +132,7 @@ class _supportpageState extends State<supportpage> {
                   builder: (context)=>
                       delayinstall()));
             }, title: 'تقرير التأخير عن الجدولة للعملاء'):Container(),
+
                privilge.checkprivlge('101')==true?
            buildSelectCategory(
                colorbag: Colors.white,

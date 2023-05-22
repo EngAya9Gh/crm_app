@@ -77,6 +77,7 @@ class InvoiceModel extends CacheRepository{
     this.user_not_ready_install,
     this.nameuser_ready_install,
     this.nameuser_notready_install,
+    this.count_delay_ready,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -148,6 +149,7 @@ class InvoiceModel extends CacheRepository{
     String?  user_not_ready_install;
     String?  nameuser_ready_install;
     String?  nameuser_notready_install;
+    String? count_delay_ready;
     String?  city, name_city,
     namemaincity,
     id_maincity;
@@ -236,6 +238,7 @@ class InvoiceModel extends CacheRepository{
     user_not_ready_install = jsondata['user_not_ready_install'];
     nameuser_ready_install = jsondata['nameuser_ready_install'];
     nameuser_notready_install = jsondata['nameuser_notready_install'];
+    count_delay_ready = jsondata['count_delay_ready'];
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']
@@ -338,6 +341,7 @@ class InvoiceModel extends CacheRepository{
     _data['date_not_readyinstall'] = date_not_readyinstall;
     _data['nameuser_ready_install'] = nameuser_ready_install;
     _data['nameuser_notready_install'] = nameuser_notready_install;
+    _data['count_delay_ready'] = count_delay_ready;
     _data['products'] =
         products!.map((e)=>e.toJson()).toList();
     return _data;

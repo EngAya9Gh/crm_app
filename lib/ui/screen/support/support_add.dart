@@ -641,7 +641,8 @@ class _support_addState extends State<support_add> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
 
-                    ElevatedButton(
+                    Provider.of<privilge_vm>(context,listen: true)
+                        .checkprivlge('110')==true?  ElevatedButton(
 
                         style: ButtonStyle(
                             backgroundColor:
@@ -720,7 +721,10 @@ class _support_addState extends State<support_add> {
                           );
                           //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
                         },
-                        child: Text('جاهز للتركيب')),
+                        child: Text('جاهز للتركيب')):Container(),
+
+                    Provider.of<privilge_vm>(context,listen: true)
+                        .checkprivlge('109')==true?
                     ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor:
@@ -767,19 +771,28 @@ class _support_addState extends State<support_add> {
                                                   Provider.of<invoice_vm>(context,
                                                       listen: false).setisload();
 
-                                                  await Provider.of<invoice_vm>(context,
-                                                      listen: false)
-                                                      .set_ready_install({
+                                                  var body={
 
+                                                    // _invoice.date_not_readyinstall-
+                                                    'date_temp': _invoice!.date_not_readyinstall.toString(),
                                                     'date_not_readyinstall':
                                                     DateTime.now().toString(),
                                                     'user_not_ready_install':
                                                     Provider.of<user_vm_provider>(
                                                         context,
                                                         listen: false).currentUser.idUser.toString(),
-                                                    'ready_install': '0',
+                                                    'ready_install': '0',//suspend client
 
-                                                  }, _invoice!.idInvoice).then(
+                                                  };
+                                                 if( _invoice!.count_delay_ready!=null)
+                                                  body.addAll({
+                                                  'count_delay_ready':
+                                                  _invoice!.count_delay_ready.toString(),
+                                                  });
+
+                                                  await Provider.of<invoice_vm>(context,
+                                                      listen: false)
+                                                      .set_ready_install(body, _invoice!.idInvoice).then(
                                                           (value) => clear());
                                                   Navigator.of(context,
                                                       rootNavigator: true)
@@ -799,7 +812,7 @@ class _support_addState extends State<support_add> {
                           );
                           //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
                         },
-                        child: Text('غير جاهز للتركيب')),
+                        child: Text('غير جاهز للتركيب')):Container(),
 
                   ],
                 ),

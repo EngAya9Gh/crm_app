@@ -300,7 +300,7 @@ class invoice_vm extends ChangeNotifier{
     isloadingdone=true;
     notifyListeners();
   }
-  Future<void> getfilter_maincity(List<MainCityModel>? listparam, String? state)async{
+  Future<void>  getfilter_maincity(List<MainCityModel>? listparam, String? state)async{
     print(state);
     String type='';
     List<int> listval=[];
@@ -349,6 +349,7 @@ class invoice_vm extends ChangeNotifier{
       }
       if(state=='بالإنتظار')state=null;
       else if(state=='تم التركيب')state='1';
+      if(state=='معلق')state='suspend';
       print('typpping '+type);
     switch(type) {
       case 'allmaincity':
