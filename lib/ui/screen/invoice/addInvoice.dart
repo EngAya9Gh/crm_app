@@ -806,6 +806,8 @@ else{
                                           "date_create": DateTime.now().toString(),
                                           "type_installation": typeinstallController.toString(),
                                           "ready_install": readyinstallController.toString(),
+
+
                                           /////////////////////////////////////////////////////////////////////
                                           "amount_paid": amount_paidController.text.toString(),
                                           'fk_regoin':widget.invoice!.fk_regoin.toString(),
@@ -847,9 +849,7 @@ else{
                                         //     .removeAt(widget.indexinvoice);
                                         // widget.indexinvoice=widget.indexinvoice-1;
                                         print("******");
-                                        Provider.of<invoice_vm>(
-                                            context, listen: false)
-                                            .add_invoiceclient_vm( {
+                                        var body={
                                           "name_enterprise":widget.itemClient.nameEnterprise,
                                           "name_client":widget.itemClient.nameClient.toString(),
                                           "nameUser":Provider.of<user_vm_provider>
@@ -859,7 +859,6 @@ else{
                                           "date_create": DateTime.now().toString(), //formatter.format(_currentDate),
                                           "type_installation": typeinstallController.toString(),
                                           "ready_install": readyinstallController.toString(),
-                                           ///////////////////////////////////////////
                                           "amount_paid": amount_paidController.text.toString(),
                                           "image_record":imageController.text.toString(),
                                           "fk_idClient": widget.itemClient.idClients.toString(),
@@ -872,10 +871,31 @@ else{
                                           'nummostda':nummostawdaController.text.toString(),
                                           'numusers':numuserController.text.toString(),
                                           'address_invoice':addressController.text.toString(),
-                                           //'date_lastuserupdate':DateTime.now().toString(),
+
+                                          //'date_lastuserupdate':DateTime.now().toString(),
                                           //"date_changetype":,
                                           //'message':"",
-                                        },_invoice!.path!.isNotEmpty?_myfile:null
+                                        };
+                                        if(readyinstallController =='0')
+                                          body.addAll({
+                                            'date_not_readyinstall':
+                                            DateTime.now().toString(),
+                                            'user_not_ready_install':
+                                            Provider.of<user_vm_provider>(
+                                                context,
+                                                listen: false).currentUser.idUser.toString(),
+                                          });
+                                        else body.addAll({
+                                          'date_readyinstall':
+                                          DateTime.now().toString(),
+                                          'user_ready_install':
+                                          Provider.of<user_vm_provider>(
+                                              context,
+                                              listen: false).currentUser.idUser.toString(),
+                                        });
+                                        Provider.of<invoice_vm>(
+                                            context, listen: false)
+                                            .add_invoiceclient_vm( body,_invoice!.path!.isNotEmpty?_myfile:null
                                         ,_myfilelogo
                                         ).then((value) =>
                                         value != "false"

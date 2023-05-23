@@ -133,7 +133,7 @@ class _ClientViewState extends State<ClientView> {
 
                 cardRow( title:'الموظف الذي أضاف العميل',
                     value:getnameshort(clientModel.nameAdduser.toString() )),
-                cardRow( title:'الموظف',value:getnameshort(clientModel.nameUser.toString())),
+                cardRow( title:'الموظف',value:getnameshort(clientModel.nameAdduser.toString())),
 
                 cardRow( title:'رقم الموظف',value:clientModel.mobileuser.toString()),
                 (clientModel.reasonTransfer==null||

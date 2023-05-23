@@ -81,7 +81,9 @@ class _addClientState extends State<addClient> {
 
     await  Provider.of<maincity_vm>(context,listen: false).getcityAll();
     await  Provider.of<activity_vm>(context,listen: false).getactv();
-      Provider.of<maincity_vm>(context,listen: false).changevalue(null);
+    await Provider.of<company_vm>(context, listen: false).getcompany();
+
+    Provider.of<maincity_vm>(context,listen: false).changevalue(null);
     });
     super.initState();
   }
@@ -339,11 +341,11 @@ class _addClientState extends State<addClient> {
                         height: 5,
                       ),
                       EditTextFormField(
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
+                        // vaild: (value) {
+                        //   if (value!.toString().trim().isEmpty) {
+                        //     return label_empty;
+                        //   }
+                        // },
                         hintText: '+0',
                         obscureText: false,
                         controller: phoneController,
