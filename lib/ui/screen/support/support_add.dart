@@ -287,7 +287,7 @@ class _support_addState extends State<support_add> {
                   child: Column(
               children: [
                   _invoice!.dateinstall_done == null&&_invoice!.dateinstall_task==null
-                ?RowEdit(name: 'تحديد موعد التركيب والتدريب ', des: ''):Container(),
+                ? RowEdit(name: 'تحديد موعد التركيب والتدريب ', des: ''):Container(),
                   SizedBox(
                     height: 10,
                   ),

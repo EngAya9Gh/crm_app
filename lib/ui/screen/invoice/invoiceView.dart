@@ -90,7 +90,7 @@ class _InvoiceViewState extends State<InvoiceView> {
           : formatter.format(DateTime.now());
       _currentDate=DateTime.parse(val);
        Provider.of<datetime_vm>(context,listen: false)
-           .setdatetimevalue(_currentDate,null);
+           .setdatetimevalue1(_currentDate );
     });
     super.initState();
   }
@@ -115,7 +115,7 @@ class _InvoiceViewState extends State<InvoiceView> {
     if (pickedDate != null )//&& pickedDate != currentDate)
       setState(() {
         _currentDate = pickedDate;});
-    Provider.of<datetime_vm>(context,listen: false).setdatetimevalue(_currentDate,null);
+    Provider.of<datetime_vm>(context,listen: false).setdatetimevalue1(_currentDate );
   }
 
   @override
