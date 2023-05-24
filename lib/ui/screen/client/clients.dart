@@ -29,9 +29,9 @@ import 'addClient.dart';
 import 'package:get/get.dart';
 
 class client_dashboard extends StatefulWidget {
-   client_dashboard({required this.invoiceModel, Key? key}) : super(key: key);
+   client_dashboard({required this.invoiceModel,required this.typeinvoice,  Key? key}) : super(key: key);
    InvoiceModel invoiceModel;
-
+   String typeinvoice;
 
   @override
   State<StatefulWidget> createState() => _client_dashboard();
@@ -184,13 +184,17 @@ class client_dashboard extends StatefulWidget {
         ),
         body: Container(
           margin: EdgeInsets.only(bottom: 5),
-          padding: const EdgeInsets.only(top:10,left: 15,right: 15),
+          padding: const EdgeInsets.only(top:10,left: 10,right: 10),
            height: MediaQuery.of(context).size.height*0.9,
           child: TabBarView(
             controller: _tabcontroller,
             children: <Widget>[
-              ClientView(idclient:widget.invoiceModel.fkIdClient.toString(),
-                invoice: widget.invoiceModel,),
+              ClientView(
+                idclient:widget.invoiceModel.fkIdClient.toString(),
+                invoice: widget.invoiceModel,
+                typeinvoice:widget.typeinvoice
+              ),
+
               InvoiceView(
                 type:'approved',
                 invoice:

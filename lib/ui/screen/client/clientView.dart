@@ -25,10 +25,11 @@ import '../../../constants.dart';
 import '../../../function_global.dart';
 
 class ClientView extends StatefulWidget {
-  ClientView( {this.clienttransfer, required this.invoice, required this.idclient, Key? key}) : super(key: key);
+  ClientView( {this.clienttransfer, required this.invoice,this.typeinvoice, required this.idclient, Key? key}) : super(key: key);
   String idclient;
   InvoiceModel? invoice;
   String? clienttransfer;
+  String?  typeinvoice;
   //bool? itemapprove;
   @override
   _ClientViewState createState() => _ClientViewState();
@@ -41,7 +42,8 @@ class _ClientViewState extends State<ClientView> {
   @override
   Widget build(BuildContext context) {
     clientModel=Provider.of<client_vm>(context,listen: true).listClient
-        .firstWhere((element) => element.idClients==widget.idclient);
+        .firstWhere((element) => element.idClients==
+        widget.idclient);
 
     return Directionality(
       textDirection: TextDirection.rtl,
@@ -560,6 +562,189 @@ class _ClientViewState extends State<ClientView> {
                     ],
                   ),
                 ):Container():Container(),//:Container(),
+
+                //approve finance
+                widget.invoice!=null?
+                widget.invoice!.isApprove!=null&&
+                    widget.invoice!.isApproveFinance==null&&
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('111')==true
+                     && widget.typeinvoice=='f'
+                    ?
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStateProperty.all(kMainColor)),
+                          onPressed: () async{
+
+                            await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return ModalProgressHUD(
+                                  inAsyncCall: Provider.of<invoice_vm>(context)
+                                      .isapproved,
+                                  child: Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: AlertDialog(
+
+                                      titlePadding:const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 15.0) ,
+                                      insetPadding:  EdgeInsets.only(left: 10,right: 10,bottom: 10),
+                                      contentPadding: EdgeInsets.only(left: 24,right: 24,bottom: 10),
+                                      title: Center(child: Text('Confirmation')),
+                                      content: Text(' هل تريد تأكيد العملية؟  '),
+                                      actions: <Widget>[
+
+                                        ElevatedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all(
+                                                  kMainColor)),
+                                          onPressed: () async {
+                                            // Navigator.of(context,
+                                            //     rootNavigator: true)
+                                            //     .pop(true);
+                                            // update client to approved client
+                                            Provider.of<invoice_vm>(context, listen: false)
+                                                .setApproveFclient_vm({
+                                              "id_clients":widget.invoice!.fkIdClient,
+                                              //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                              'Date_FApprove':DateTime.now().toString(),
+                                              "fk_user":widget.invoice!.fkIdUser,//صاحب العميل
+                                              "fk_regoin":widget.invoice!.fk_regoin,
+                                              "regoin":widget.invoice!.name_regoin,
+                                              "fk_country":widget.invoice!.fk_country,
+                                              "isApproveFinance": "1",
+                                              "name_enterprise":widget.invoice!.name_enterprise,
+                                              "fkusername":widget.invoice!.nameUser, //موظف المبيعات
+                                              //"message":"",//
+                                              "nameuserApproved":
+                                              Provider.of<user_vm_provider>(context,listen: false)
+                                                  .currentUser.nameUser,
+                                              "iduser_FApprove":  Provider.of<user_vm_provider>(context,listen: false)
+                                                  .currentUser.idUser//معتمد الاشتراك
+                                            }, widget.invoice!.idInvoice).then((value) => value!=false?
+                                            clear() : error()// clear()
+                                              // _scaffoldKey.currentState!.showSnackBar(
+                                              //     SnackBar(content: Text('هناك مشكلة ما')))
+                                            );
+
+                                          },
+                                          child: Text('نعم'),
+                                        ),
+                                        new ElevatedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor: MaterialStateProperty.all(
+                                                  kMainColor)),
+                                          onPressed: () {
+                                            Navigator.of(context,
+                                                rootNavigator: true)
+                                                .pop(
+                                                false); // dismisses only the dialog and returns false
+                                          },
+                                          child: Text('لا'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+
+                            //Navigator.pop(context);
+                          },
+                          child: Text('Approve')),
+                      // SizedBox(
+                      //   width: 4,
+                      // ),
+                      // ElevatedButton(
+                      //     style: ButtonStyle(
+                      //         backgroundColor: MaterialStateProperty.all(
+                      //             Colors.redAccent)),
+                      //     onPressed: ()  async{
+                      //
+                      //       // Navigator.pushAndRemoveUntil(context,
+                      //       //     MaterialPageRoute(builder: (context)=>Home()),
+                      //       //         (route) => true
+                      //       // );
+                      //       await showDialog(
+                      //         context: context,
+                      //         builder: (context) {
+                      //           return ModalProgressHUD(
+                      //             inAsyncCall: Provider.of<invoice_vm>(context)
+                      //                 .isapproved,
+                      //             child: Directionality(
+                      //               textDirection: TextDirection.rtl,
+                      //               child: AlertDialog(
+                      //                 titlePadding:const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 15.0) ,
+                      //                 insetPadding:  EdgeInsets.only(left: 10,right: 10,bottom: 10),
+                      //                 contentPadding: EdgeInsets.only(left: 24,right: 24,bottom: 10),
+                      //                 title: Center(child: Text('Confirmation')),
+                      //                 content: Text(' هل تريد تأكيد العملية؟  '),
+                      //                 actions: <Widget>[
+                      //                   new
+                      //
+                      //                   ElevatedButton(
+                      //                     style: ButtonStyle(
+                      //                         backgroundColor: MaterialStateProperty.all(
+                      //                             kMainColor)),
+                      //                     onPressed: () async {
+                      //                       Provider.of<invoice_vm>(context, listen: false)
+                      //                           .setApproveclient_vm({
+                      //                         "id_clients":widget.invoice!.fkIdClient,
+                      //                         //'idApproveClient':widget.itemapprove!.idApproveClient,
+                      //                         "fk_user":widget.invoice!.fkIdUser,
+                      //                         "fk_regoin":widget.invoice!.fk_regoin,
+                      //                         "regoin":widget.invoice!.name_regoin,
+                      //                         "fk_country":widget.invoice!.fk_country,
+                      //                         "isApprove": "0",
+                      //                         "name_enterprise":widget.invoice!.name_enterprise,
+                      //                         "fkusername":widget.invoice!.nameUser, //موظف المبيعات
+                      //                         //"message":"",//
+                      //                         "nameuserApproved":Provider.of<user_vm_provider>(context,listen: false)
+                      //                             .currentUser.nameUser,
+                      //                         "iduser_approve": Provider.of<user_vm_provider>(context,listen: false)
+                      //                             .currentUser.idUser//معتمد الاشتراك
+                      //                       }, widget.invoice!.idInvoice)
+                      //                           .then((value) =>
+                      //                       value!=false?
+                      //                       clear()
+                      //                           : error()// clear()
+                      //                         // _scaffoldKey.currentState!.showSnackBar(
+                      //                         //     SnackBar(content: Text('هناك مشكلة ما'))
+                      //                         // )
+                      //                       );
+                      //                     },
+                      //                     child: Text('نعم'),
+                      //                   ),
+                      //                   ElevatedButton(
+                      //                     style: ButtonStyle(
+                      //                         backgroundColor: MaterialStateProperty.all(
+                      //                             kMainColor)),
+                      //                     onPressed: () {
+                      //                       Navigator.of(context,
+                      //                           rootNavigator: true)
+                      //                           .pop(
+                      //                           false); // dismisses only the dialog and returns false
+                      //                     },
+                      //                     child: Text('لا'),
+                      //                   ),
+                      //                 ],
+                      //               ),
+                      //             ),
+                      //           );
+                      //         },
+                      //       );
+                      //       //send notification
+                      //       //Navigator.pop(context);
+                      //     },
+                      //     child: Text('Refuse')),
+
+                    ],
+                  ),
+                ):Container():Container(),
         ]),
           ),
       ),

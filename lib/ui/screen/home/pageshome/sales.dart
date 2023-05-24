@@ -1,5 +1,6 @@
 import 'package:crm_smart/ui/screen/client/Acceptpage.dart';
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
+import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
 import 'package:crm_smart/ui/screen/client/client_wating.dart';
 import 'package:crm_smart/ui/screen/client/myclient.dart';
 import 'package:crm_smart/ui/screen/client/outClient.dart';
@@ -122,6 +123,18 @@ class _salesState extends State<sales> {
                     builder: (context)=>
                         ApprovePage()));
               }, title:  ' طلبات الموافقة '):Container(),
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('111')==true?
+                buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>
+                              ApproveFinancePage()));
+                    }, title:  ' طلبات اعتماد المالية '):Container(),
+
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('85')==true?
                 buildSelectCategory(

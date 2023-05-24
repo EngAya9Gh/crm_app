@@ -76,7 +76,7 @@ class _InvoiceViewState extends State<InvoiceView> {
              (element) => element.idClients==widget.invoice!.fkIdClient);
 
 
-     print('nameEEnter'+clientmodel.nameEnterprise.toString());
+     print('nameEEnter'+clientmodel.idClients.toString());
      // await Provider.of<invoice_vm>(context, listen: false)
      //      .get_invoiceclientlocal(widget.invoice!.fkIdClient,'');
 

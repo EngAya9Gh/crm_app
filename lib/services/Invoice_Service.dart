@@ -52,6 +52,18 @@ class Invoice_Service {
     //client/setApproveClient.php
     // return result[0];//=="done"? true:false;
   }
+  Future<InvoiceModel?> setApproveFClient( Map<String,dynamic> body,String idInvoice) async {
+    var data = await Api()
+        .post( url:url+"client/setAprroveFinanc.php?idInvoice=$idInvoice",body:
+    body
+    );
+
+    if(data!=null)
+    return InvoiceModel.fromJson(data[0]);
+    return null;
+    //client/setApproveClient.php
+    // return result[0];//=="done"? true:false;
+  }
   Future<List<InvoiceModel>> getinvoicebyclient(String fk_idClient) async {
     //not called because get local
     var

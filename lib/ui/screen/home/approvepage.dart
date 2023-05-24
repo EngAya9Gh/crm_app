@@ -155,6 +155,7 @@ class _ApprovePageState extends State<ApprovePage> {
                                           child: cardapprove1(
                                             itemapprove :
                                             value.listInvoicesAccept[index],
+                                            type: '',
                                             //data: widget.data,
                                           ),
                                         ));

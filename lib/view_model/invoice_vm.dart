@@ -632,9 +632,14 @@ Future<void> getinvoice_Localwithprev() async{
       listInvoicesAccept=list;
     }}
     else{
+
       if(approvetype=='country')
         await get_invoicesbyRegoin_accept_requst('c');
-        if(approvetype=='regoin')  await get_invoicesbyRegoin_accept_requst('r');
+
+      if(approvetype=='regoin')
+          await get_invoicesbyRegoin_accept_requst('r');
+      if(approvetype=='finance')
+          await get_invoicesbyRegoin_accept_requst('f');
       }
 
 
@@ -686,6 +691,32 @@ Future<void> getinvoice_Localwithprev() async{
     if(iindex!=-1)
     listInvoicesAccept.removeAt(iindex);
      isapproved=false;
+    notifyListeners();
+
+    return true;
+  }
+
+  Future<bool> setApproveFclient_vm(
+      Map<String, dynamic?> body,String? idInvoice) async {
+    isapproved=true;
+    notifyListeners();
+    InvoiceModel? data = await Invoice_Service()
+        .setApproveFClient(body,idInvoice!);
+    int index = listinvoices.indexWhere((element) =>
+    element.idInvoice == idInvoice);
+    int iindex=listInvoicesAccept.indexWhere((element) =>
+    element.idInvoice==idInvoice);
+    if(index!=-1){
+      if(data!=null) {
+
+        listinvoices[index] = data;
+
+      }else{
+        listinvoices.removeAt(index);
+      }}
+    if(iindex!=-1)
+      listInvoicesAccept.removeAt(iindex);
+    isapproved=false;
     notifyListeners();
 
     return true;
@@ -805,17 +836,29 @@ Future<void> getinvoice_Localwithprev() async{
   }
   //getinvoaicebyregoin_accept_requst
   Future<void> get_invoicesbyRegoin_accept_requst(String type)async{
-    if(type=='r')
+    // if(type=='r')
+      switch(type){
+        case 'r':
     listinvoicebyregoin = await Invoice_Service()
         .getinvoaicebyregoin_accept_requst({
         'fk_regoin':usercurrent!.fkRegoin.toString()});
-    else listinvoicebyregoin = await Invoice_Service()
+    break;
+
+    // else
+        case 'c': listinvoicebyregoin = await Invoice_Service()
          .getinvoaicebyregoin_accept_requst({
          'fk_country':usercurrent!.fkCountry.toString()});
+        break;
+        case 'f':
+         listinvoicebyregoin = await Invoice_Service()
+            .getinvoaicebyregoin_accept_requst({
+          'FApprove':'f'});
+    }
 
     listInvoicesAccept=List.from(listinvoicebyregoin);
     notifyListeners();
   }
+
   Future<void> get_invoicesbyRegoin(List<InvoiceModel> list) async {
     listinvoicebyregoin=[];
     //cahe_data_source_invoice().clearCache();

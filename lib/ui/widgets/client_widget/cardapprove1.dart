@@ -14,9 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class cardapprove1 extends StatelessWidget {
-  cardapprove1({Key? key, required this.itemapprove}) : super(key: key);
+  cardapprove1({Key? key, required this.itemapprove,required this.type}) : super(key: key);
   late InvoiceModel itemapprove;
-
+   String type;
   late UserModel current ;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -43,7 +43,10 @@ class cardapprove1 extends StatelessWidget {
                 MaterialPageRoute(builder:
                     (context) =>
                         client_dashboard(
-                           invoiceModel: itemapprove,)));
+                          typeinvoice: type,
+                           invoiceModel: itemapprove,
+
+                        )));
           },
           child: Container(
             decoration: BoxDecoration(

@@ -78,6 +78,9 @@ class InvoiceModel extends CacheRepository{
     this.nameuser_ready_install,
     this.nameuser_notready_install,
     this.count_delay_ready,
+    this.isApproveFinance,
+    this.iduser_FApprove,
+    this.Date_FApprove,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -150,6 +153,9 @@ class InvoiceModel extends CacheRepository{
     String?  nameuser_ready_install;
     String?  nameuser_notready_install;
     String? count_delay_ready;
+    String? isApproveFinance;
+    String? iduser_FApprove;
+    String? Date_FApprove;
     String?  city, name_city,
     namemaincity,
     id_maincity;
@@ -239,6 +245,9 @@ class InvoiceModel extends CacheRepository{
     nameuser_ready_install = jsondata['nameuser_ready_install'];
     nameuser_notready_install = jsondata['nameuser_notready_install'];
     count_delay_ready = jsondata['count_delay_ready'];
+    isApproveFinance = jsondata['isApproveFinance'];
+    iduser_FApprove = jsondata['iduser_FApprove'];
+    Date_FApprove = jsondata['Date_FApprove'];
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']
@@ -342,6 +351,9 @@ class InvoiceModel extends CacheRepository{
     _data['nameuser_ready_install'] = nameuser_ready_install;
     _data['nameuser_notready_install'] = nameuser_notready_install;
     _data['count_delay_ready'] = count_delay_ready;
+    _data['isApproveFinance'] = isApproveFinance;
+    _data['iduser_FApprove'] = iduser_FApprove;
+    _data['Date_FApprove'] = Date_FApprove;
     _data['products'] =
         products!.map((e)=>e.toJson()).toList();
     return _data;

@@ -1,6 +1,7 @@
 
 
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
+import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
 import 'package:crm_smart/ui/screen/client/clientView.dart';
 import 'package:crm_smart/ui/screen/client/detail_client.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
@@ -43,6 +44,8 @@ String showtext(String typeNotify){
   switch (typeNotify){
     case "ApproveRequest":
       return "طلب موافقة";
+      case "ApproveFRequest":
+      return "طلب موافقة";
     case "Transfer" :
       return "تحويل العميل";
     case "ApproveDone":
@@ -80,6 +83,11 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           MaterialPageRoute(
               builder: (context) => ApprovePage()));
+      break;
+      case "ApproveFRequest":
+      Navigator.push(context,
+          MaterialPageRoute(
+              builder: (context) => ApproveFinancePage()));
       break;
     case "Transfer" :
       Navigator.push(context,
