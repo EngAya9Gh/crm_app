@@ -41,7 +41,7 @@ class _carepageState extends State<carepage> {
       Provider.of<ticket_vm>(context,listen: false)
           .getclientticket_filter('جديدة');
      await Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationInstall();
+          .getCommunicationInstall(1);
      await Provider.of<communication_vm>(context, listen: false)
           .getCommunicationWelcome();
 
@@ -187,7 +187,7 @@ class _carepageState extends State<carepage> {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context)=>
                           repeat_report()));
-                }, title: label_repeat_comm):Container(),
+                }, title: label_repeat_comm):Container(),//'تقرير الاتصال الدوري '
      Provider.of<privilge_vm>(context,listen: true)
                 .checkprivlge('105')==true?
             buildSelectCategory(
@@ -198,7 +198,7 @@ class _carepageState extends State<carepage> {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context)=>
                           not_using_system()));
-                }, title: label_not_use):Container(),
+                }, title: label_not_use):Container(),//' عملاء لا يستخدمون النظام '
      Provider.of<privilge_vm>(context,listen: true)
                 .checkprivlge('106')==true?
             buildSelectCategory(
@@ -209,7 +209,7 @@ class _carepageState extends State<carepage> {
                   Navigator.push(context, MaterialPageRoute(
                       builder: (context)=>
                           wrong_number()));
-                }, title: label_wrong_number):Container(),
+                }, title: label_wrong_number):Container(),//' عملاء أرقامهم خاطئة '
 
 
           ],),

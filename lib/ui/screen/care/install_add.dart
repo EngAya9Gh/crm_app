@@ -65,7 +65,7 @@ class _installAddState extends State<installAdd> {
             child: ListView(
               children: [
                 widget.com.dateCommunication==null?
-                Text(widget.com.typeCommuncation=='تركيب'?
+                Text(widget.com.typeCommuncation=='تركيب'&&widget.com.type_install=='1'?
                      titleInstall.toString()
                     :titleWelcom.toString() ):Container(),
                 Divider(thickness: 1,color: Colors.grey,),
@@ -176,23 +176,26 @@ class _installAddState extends State<installAdd> {
                           style: ButtonStyle(
 
                               backgroundColor: MaterialStateProperty.all(
-                               widget.com.dateCommunication==null?kMainColor:kWhiteColor
+                               widget.com.dateCommunication==null?
+                               kMainColor:kWhiteColor
                               )),
-                          onPressed: () async{
+                          onPressed: () async {
                             if(widget.com.dateCommunication==null) {
                               Provider.of<communication_vm>
-                            (context,listen: false).addcommuncation({
+                            (context,listen: false).addcommmuncation({
                             'fk_user':Provider.of<user_vm_provider>
                                (context,listen: false).currentUser.idUser.toString(),
                             'date_communication':DateTime.now().toString(),
                             'result':typepayController,//
-                                'nameUser':Provider.of<user_vm_provider>
+                            'nameUser':Provider.of<user_vm_provider>
                                   (context,listen: false).currentUser.nameUser.toString(),
-                            // 'rate':widget.com.rate.toString(),
+                             'type_install':widget.com.type_install.toString(),
+                            'id_invoice':widget.com.id_invoice.toString(),
+                                // 'rate':widget.com.rate.toString(),
                             // 'number_wrong':widget.com.number_wrong.toString(),
                             // 'client_repeat':widget.com.clientRepeat.toString(),
                             // 'date_next':widget.com.dateNext.toString(),
-                          },widget.com.idCommunication).then((value) =>
+                          },widget.com.idCommunication,1).then((value) =>
 
                            clear(value)
                           );

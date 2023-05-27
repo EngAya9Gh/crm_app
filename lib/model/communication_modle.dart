@@ -16,6 +16,7 @@ class CommunicationModel {
     required this.id_invoice,
     required this.date_create,
     this.hoursdelaylabel,
+    this.type_install,
     required this.dateinstall_done,
      this.mobile,
      this.name_regoin,
@@ -43,6 +44,7 @@ class CommunicationModel {
   late final String? name_regoin;
   late final String? fk_regoin;
   late final String? nameClient;
+  late   String? type_install;
   late  String? hoursdelaylabel;
 
   CommunicationModel.fromJson(Map<String, dynamic> json){
@@ -68,6 +70,7 @@ class CommunicationModel {
     name_regoin = json['name_regoin'];
     fk_regoin = json['fk_regoin'];
     nameClient = json['nameClient'];
+    type_install = json['type_install'];
   }
 
   Map<String, dynamic> toJson() {
@@ -94,6 +97,7 @@ class CommunicationModel {
     _data['fk_regoin'] = fk_regoin;
     _data['name_regoin'] = name_regoin;
     _data['nameClient'] = nameClient;
+    _data['type_install'] = type_install;
     return _data;
   }
 }

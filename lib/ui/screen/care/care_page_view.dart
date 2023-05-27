@@ -60,7 +60,7 @@ class _care_page_viewState extends State<care_page_view> {
           Provider.of<user_vm_provider>
             (context,listen: false).currentUser.fkCountry.toString());
     }else{
-      if(type=='done'){
+      if(type=='done') {
         String parmater='$params&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}';
         print(parmater);
         Provider.of<communication_vm>(context, listen: false)

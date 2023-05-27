@@ -161,9 +161,9 @@ class communication_vm extends ChangeNotifier{
     listCommunicationWelcome= _listInvoicesAccept;
     notifyListeners();
   }
-  void getinstalltype_filter(String? filter,String? regoin,String tyype)async{
+  void getinstalltype_filter(String? filter,String? regoin,String tyype,int typefilter)async{
     // listInvoicesAccept=[];
-    await getCommunicationInstall();
+    await getCommunicationInstall(typefilter);
     List<CommunicationModel> _listInvoicesAccept=[];
     if(regoin==null){
       print(filter);
@@ -220,6 +220,7 @@ class communication_vm extends ChangeNotifier{
           });
       }
     }
+
     listCommunicationInstall= _listInvoicesAccept;
     isloading=false;
     notifyListeners();
@@ -276,7 +277,7 @@ class communication_vm extends ChangeNotifier{
             });
             listCommunicationInstall=_listInvoicesAccept;
           }}
-        else getCommunicationInstall();
+        else getCommunicationInstall(0);//;
         break;
     }
     //getinvoice_Local("مشترك",'approved client',null);
@@ -307,18 +308,24 @@ class communication_vm extends ChangeNotifier{
     });}
      notifyListeners();
   }
- Future <void> getCommunicationInstall() async{
+ Future <void> getCommunicationInstall(int type) async{
     listCommunicationInstall=[];
     isloading=true;
     notifyListeners();
+
     await getCommunicationall('dateinvoice');
-    if(listCommunication.isNotEmpty){
+    if(listCommunication.isNotEmpty) {
+      if(type!=0)//0 is mean all install 1 or 2
       listCommunication.forEach((element) {
-        if(element.typeCommuncation=='تركيب')//&&element.fkUser==null)
+        if(element.typeCommuncation=='تركيب'  && element.type_install==type.toString())//&&element.fkUser==null)
+          listCommunicationInstall.add(element);
+      });
+      else  listCommunication.forEach((element) {
+        if(element.typeCommuncation=='تركيب'  )//&&element.fkUser==null)
           listCommunicationInstall.add(element);
       });
     }
-    getCommunicationInstallednumber();
+    // getCommunicationInstallednumber();
     isloading=false;
     notifyListeners();
   }
@@ -404,7 +411,9 @@ class communication_vm extends ChangeNotifier{
   }
 
     //addcommuncation
-  Future<CommunicationModel> addcommuncation(Map<String, dynamic?> body,String id_communication) async {
+  Future<CommunicationModel> addcommmuncation(
+      Map<String, dynamic?> body,
+      String id_communication,int type) async {
     print(id_communication);
     isload=true;
     notifyListeners();
@@ -421,7 +430,7 @@ class communication_vm extends ChangeNotifier{
     String value=listCommunication[index].typeCommuncation.toString();
     switch(value){
       case 'تركيب':
-        getCommunicationInstall();
+        getCommunicationInstall(type);
         break;
       case 'ترحيب':
         getCommunicationWelcome();

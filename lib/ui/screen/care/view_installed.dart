@@ -7,10 +7,12 @@ import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:group_button/group_button.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../function_global.dart';
+import '../../../provider/selected_button_provider.dart';
 import 'cardcommAlltype.dart';
 import 'install_add.dart';
 
@@ -26,6 +28,7 @@ class _View_installedClientState extends State<View_installedClient> {
   bool isload = false;
   String? regoin;
   String? typeclientvalue;
+  int type=1;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -33,7 +36,7 @@ class _View_installedClientState extends State<View_installedClient> {
           .changelisttype_install_iso('الكل');
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);
      await Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationInstall();
+          .getCommunicationInstall(1);
     });
     super.initState();
   }
@@ -158,10 +161,38 @@ class _View_installedClientState extends State<View_installedClient> {
                             ),
                           ],
                         ),
-                        search_widget('welcome', hintnamefilter, 'install'),
+                        //search_widget('welcome', hintnamefilter, 'install'),
                         SizedBox(
                           height: 5,
                         ),
+                        Consumer<selected_button_provider>(
+                            builder: (context, selectedProvider, child) {
+                              return GroupButton(
+                                  controller: GroupButtonController(
+                                    selectedIndex: selectedProvider.isbarsales,
+                                  ),
+                                  options: GroupButtonOptions(
+                                      buttonWidth: 90, borderRadius: BorderRadius.circular(10)),
+                                  buttons: [' التواصل الأول ', 'التواصل الثاني' ],
+                                  onSelected: (_,index, isselected) {
+                                    print(index);
+                                    switch(index){
+                                      case 0:
+                                        type=1;//1
+                                        break;
+                                      case 1:
+                                        type=2;//2
+                                        break;
+
+                                    }
+
+                                    selectedProvider.selectValuebarsales(index);
+                                    filtershow();
+
+                                  });
+                            }),
+                        SizedBox(height: 5,),
+
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0,right: 30),
                           child: Row(
@@ -175,7 +206,9 @@ class _View_installedClientState extends State<View_installedClient> {
                               ),),
                             ],),
                         ),
+
                         SizedBox(height: 5,),
+
                         Container(
                           height: MediaQuery.of(context).size.height * 0.73,
                           child: Padding(
@@ -225,7 +258,7 @@ class _View_installedClientState extends State<View_installedClient> {
     print(typeclientvalue);
 
     Provider.of<communication_vm>(context, listen: false)
-        .getinstalltype_filter(typeclientvalue, regoin, 'only');
+        .getinstalltype_filter(typeclientvalue, regoin, 'only',type);
 
 
     // }

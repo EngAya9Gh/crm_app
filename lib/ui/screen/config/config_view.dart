@@ -28,6 +28,7 @@ class _config_viewState extends State<config_view> {
   TextEditingController _controllerperiod_commincation3=TextEditingController();
   TextEditingController _controllerperiod_commincation1=TextEditingController();
   TextEditingController _controllerperiod_commincation2=TextEditingController();
+  TextEditingController _controllerperiod_install_second=TextEditingController();
   TextEditingController _controllerinstall=TextEditingController();
   TextEditingController _controllercomplete_install=TextEditingController();
   TextEditingController _controller_counter=TextEditingController();
@@ -35,6 +36,7 @@ class _config_viewState extends State<config_view> {
   final _globalKey = GlobalKey<FormState>();
  double h=0,w=0;
  String value='';
+ String valueinstall_second='';
   @override void initState() {
 
 
@@ -87,11 +89,19 @@ class _config_viewState extends State<config_view> {
               .firstWhere((element) =>
           element.name_config == 'period_commincation2')
               .value_config;
+
       value= _controllerperiod_commincation3.text =
           _listconfg
               .firstWhere((element) =>
           element.name_config == 'period_commincation3')
               .value_config;
+
+      valueinstall_second= _controllerperiod_install_second.text =
+          _listconfg
+              .firstWhere((element) =>
+          element.name_config == 'install_second')
+              .value_config;
+
       _controller_counter.text =
           _listconfg
               .firstWhere((element) => element.name_config == 'counter')
@@ -155,6 +165,20 @@ class _config_viewState extends State<config_view> {
                           .updateConfig_vm({'value_config':_controllerperiod_commincation2.text},
                           Provider.of<config_vm>(context,listen: false)
                               .listofconfig[i].id_config);
+                      break;
+                      case 'install_second':
+                        if(valueinstall_second!=_controllerperiod_install_second.text) {
+                      Provider.of<config_vm>(context,listen: false)
+                          .updateConfig_vm({
+                        'value_config':_controllerperiod_install_second.text,
+                        'fk_country':Provider.of<user_vm_provider>(context,listen: false)
+                            .currentUser.fkCountry.toString(),
+                        'comminstall_second':valueinstall_second,//القيمة السابقة لكي اطرح من الوقت
+
+                      },
+                          Provider.of<config_vm>(context,listen: false)
+                              .listofconfig[i].id_config);
+                        }
                       break;
                       case 'period_commincation1':
                       Provider.of<config_vm>(context,listen: false)
@@ -320,6 +344,20 @@ class _config_viewState extends State<config_view> {
                         con: _controllerperiod_commincation2,
                         label: "ساعة ",
                         hintText: 'ساعة',
+                      ),
+                      Text('فترة السماح الثاني لجودة التركيب والتدريب'),
+                      CustomFormField(
+                        read: false,
+                        radius: 10,
+                        // maxline: 3,
+                        vaild: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter a value ';
+                          }
+                        },
+                        con: _controllerperiod_install_second,
+                        label: "يوم ",
+                        hintText: 'يوم',
                       ),
                       Text('فترة السماح للاتصال الدوري للعميل'),
                       CustomFormField(
