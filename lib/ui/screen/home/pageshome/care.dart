@@ -138,6 +138,8 @@ class _carepageState extends State<carepage> {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context)=>
                         View_installedClient()));
+
+                //الاتصال الثاني للجودة جديد
 //View_installedClient
           }, title: ' جودة التركيب والتدريب'):Container(),
 
