@@ -223,6 +223,7 @@ class ticketdetail extends StatelessWidget {
                         },
                         child: Text('ملف العميل'),
                       ),
+                      SizedBox(width: 5,),
                       ticketModel.dateClose!=null&&ticketModel.date_rate==null?
                       ElevatedButton(
                         style: ButtonStyle(
@@ -277,6 +278,7 @@ class ticketdetail extends StatelessWidget {
                 SizedBox(height: 10,),
                 Divider(thickness: 1,color: Colors.grey,),
                 //cardRowDivided( title: 'تقييم بعد الإغلاق',value:  ticketModel.rate.toString()),
+                ticketModel.date_rate!=null?
                 Row(
                   children: [
                     Text('تقييم بعد الإغلاق'),
@@ -294,10 +296,15 @@ class ticketdetail extends StatelessWidget {
                         color: Colors.amber,
                       ), onRatingUpdate: (double value) {  },
                     ),
-                  ],),
-                cardRowDivided( title: 'قام بالتقييم',value:  ticketModel.nameuserrate.toString()),
+                  ],):Container(),
 
-                cardRowDivided( title: 'تاريخ التقييم',value:  ticketModel.date_rate.toString()),
+                ticketModel.date_rate!=null?
+                cardRowDivided( title: 'قام بالتقييم',
+                    value:  ticketModel.nameuserrate.toString()):Container(),
+
+                ticketModel.date_rate!=null?
+                cardRowDivided( title: 'تاريخ التقييم',
+                    value:  ticketModel.date_rate.toString()):Container(),
 
               ],
             ),

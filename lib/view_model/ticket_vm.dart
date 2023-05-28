@@ -86,7 +86,8 @@ class ticket_vm extends ChangeNotifier{
     int index=listticket.indexWhere(
             (element) => element.idTicket==id_ticket);
 
-    listticket[index]=TicketModel.fromJson(data[0]);
+    listticket[index]=
+        TicketModel.fromJson(data[0]);
     index=tickesearchlist.indexWhere(
             (element) => element.idTicket==id_ticket);
     tickesearchlist[index]=TicketModel.fromJson(data[0]);
