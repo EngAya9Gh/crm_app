@@ -15,6 +15,7 @@ import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -74,8 +75,20 @@ class cardcommalltype extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      itemcom.type_install=='2' ?
                       Text(
-                        itemcom.date_approve.toString(),
+            itemcom.dateCommunication==null?
+              itemcom.date_last_com_install.toString()
+                  :itemcom.dateCommunication.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: kfontfamily2,color: kMainColor),):
+                      Text(
+                        itemcom.typeCommuncation=='ترحيب'?
+                        itemcom.date_approve.toString():
+                        itemcom.type_install=='1'&&itemcom.dateCommunication==null?
+                        itemcom.dateinstall_done.toString()
+                            :itemcom.dateCommunication.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2,color: kMainColor),),
@@ -91,6 +104,26 @@ class cardcommalltype extends StatelessWidget {
                                 fontFamily: kfontfamily2),),
                         ),
                       ]),
+                  itemcom.typeCommuncation=='تركيب'&&  itemcom.dateCommunication!=null?
+                  Row(
+                    children: [
+
+                      RatingBar.builder(
+                        initialRating:double.parse(itemcom.rate.toString()),
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: false,
+                        // glow: true,
+                        ignoreGestures: true,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ), onRatingUpdate: (double value) {  },
+                      ),
+                    ],
+                  ):Container()
                   //Row(),
                 ],
               ),

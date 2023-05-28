@@ -9,6 +9,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -38,6 +39,7 @@ class _installAddState extends State<installAdd> {
 
   String?  titleInstall='هذا العميل مشترك جديد , قم بالتواصل مع العميل والتأكد من جودة التركيب والتدريب له , ثم اكتب تعليق وانقر على زر تم التواصل';
 
+  double rate=1.0;
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<comment_vm>(context, listen: false)
@@ -115,6 +117,30 @@ class _installAddState extends State<installAdd> {
                 RowEdit(name: 'هل العميل راضي عن خدمة التركيب والتدريب', des: 'required'):Container(),
 
                 widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
+                Row(
+                  children: [
+                    Text('التقييم 1/5'),
+                    RatingBar.builder(
+                      initialRating: 1,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                        setState(() {
+                          rate=rating;
+                          print(rate);
+                        });
+                      },
+                    ),
+                  ],):Container(),
+                widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
                 // Container(
                 //   padding: EdgeInsets.only(left: 2,right: 2),
                 //   decoration: BoxDecoration(
@@ -191,11 +217,14 @@ class _installAddState extends State<installAdd> {
                                   (context,listen: false).currentUser.nameUser.toString(),
                              'type_install':widget.com.type_install.toString(),
                             'id_invoice':widget.com.id_invoice.toString(),
+                                'rate':rate.toString(),
+
                                 // 'rate':widget.com.rate.toString(),
                             // 'number_wrong':widget.com.number_wrong.toString(),
                             // 'client_repeat':widget.com.clientRepeat.toString(),
                             // 'date_next':widget.com.dateNext.toString(),
-                          },widget.com.idCommunication,1).then((value) =>
+                          },widget.com.idCommunication,
+                              int.parse(widget.com.type_install.toString())).then((value) =>
 
                            clear(value)
                           );
