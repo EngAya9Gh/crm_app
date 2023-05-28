@@ -110,7 +110,14 @@ class _TicketViewState extends State<TicketView> {
                             'fk_user_close':Provider.of<user_vm_provider>
                               (context,listen: false).currentUser.idUser.toString(),
                             'date_close':DateTime.now().toString(),
-                            'type_ticket':'مغلقة'
+                            'type_ticket':'مغلقة',
+                            // 'fk_regoin':widget.ticketModel.,
+                            'fk_client':widget.ticketModel.fkClient.toString(),
+
+                            'fkcountry': widget.ticketModel.fk_country.toString(),
+                            'name_enterprise': widget.ticketModel.nameEnterprise.toString(),
+                            'nameUser':Provider.of<user_vm_provider>
+                              (context,listen: false).currentUser.nameUser.toString(),
                           },  widget.ticketModel.idTicket);
                         },
                         child: Text('اغلاق التذكرة')),
