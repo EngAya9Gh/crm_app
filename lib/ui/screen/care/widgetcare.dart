@@ -40,7 +40,8 @@ Widget commview(CommunicationModel element) {
               element.typeCommuncation=='دوري'?
               cardRow(title:'تاريخ التقييم' ,value: element.dateCommunication.toString(),):Container(),
               element.typeCommuncation=='دوري'?
-              Row(children: [
+              Row(
+                children: [
                 Text('مستوى التقييم'),
                 RatingBar.builder(
                    initialRating:double.parse(element.rate.toString()),

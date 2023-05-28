@@ -85,7 +85,7 @@ class _ticketclientviewState extends State<ticketclientview> {
                             selectedColor: kMainColor,
                               buttonWidth: 110,
                               borderRadius: BorderRadius.circular(10)),
-                          buttons: ['جديدة','مستلمة','مغلقة'],
+                          buttons: ['جديدة','مستلمة','مغلقة','تم التقييم'],
                           onSelected: (_,index,isselected){
                             print(index);
                             //setState(() {

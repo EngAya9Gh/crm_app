@@ -49,6 +49,12 @@ class TicketModel {
   late final String? fk_country;
 
   late final String? mobile;
+  late final String? rate;
+  late final String? fkuser_rate;
+  late final String? date_rate;
+  late final String? nameuserrate;
+  late final String? notes_rate;
+
   late List<TransferTicket?>? transferticket=[];
 
   TicketModel.fromJson(Map<String, dynamic> json){
@@ -74,6 +80,11 @@ class TicketModel {
     fk_country = json['fk_country'];
 
     mobile = json['mobile'];
+    rate = json['rate'];
+    fkuser_rate = json['fkuser_rate'];
+    date_rate = json['date_rate'];
+    nameuserrate = json['nameuserrate'];
+    notes_rate = json['notes_rate'];
     transferticket=getproud(json['transferticket']);
   }
 
@@ -102,6 +113,11 @@ class TicketModel {
     _data['fk_country'] = fk_country;
 
     _data['mobile'] = mobile;
+    _data['rate'] = rate;
+    _data['fkuser_rate'] = fkuser_rate;
+    _data['date_rate'] = date_rate;
+    _data['nameuserrate'] = nameuserrate;
+    _data['notes_rate'] = notes_rate;
     _data['transferticket'] =
         transferticket!.map((e)=>e!.toJson()).toList();
     return _data;

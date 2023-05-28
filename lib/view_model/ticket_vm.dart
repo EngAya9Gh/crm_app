@@ -189,6 +189,13 @@ class ticket_vm extends ChangeNotifier{
             }
           });
           break;
+        case '3':
+          listticket.forEach((element) {
+            if( element.typeTicket=='تم التقييم') {
+              tickesearchlist.add(element);
+            }
+          });
+          break;
       }
 
     }

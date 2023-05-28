@@ -1,6 +1,7 @@
 import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
+import 'package:crm_smart/ui/screen/home/ticket/ticket_rate.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/rowdivided.dart';
@@ -10,6 +11,7 @@ import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -221,6 +223,22 @@ class ticketdetail extends StatelessWidget {
                         },
                         child: Text('ملف العميل'),
                       ),
+                      ticketModel.dateClose!=null&&ticketModel.date_rate==null?
+                      ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                kMainColor)),
+                        onPressed: () {
+
+                          Navigator.push(context,MaterialPageRoute(
+                              builder: (context)=>ticket_rate(
+                                ticket_model: ticketModel,
+                              )
+
+                          ));
+                        },
+                        child: Text('تقييم بعد الإغلاق'),
+                      ):Container(),
 
                     ],
                   ),
@@ -257,6 +275,30 @@ class ticketdetail extends StatelessWidget {
                 cardRowDivided(title: 'تفاصيل التذكرة',
                   value: ticketModel.detailsProblem.toString(),isExpanded: true,),
                 SizedBox(height: 10,),
+                Divider(thickness: 1,color: Colors.grey,),
+                //cardRowDivided( title: 'تقييم بعد الإغلاق',value:  ticketModel.rate.toString()),
+                Row(
+                  children: [
+                    Text('تقييم بعد الإغلاق'),
+                    RatingBar.builder(
+                      initialRating:double.parse(ticketModel.rate.toString()),
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      // glow: true,
+                      ignoreGestures: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ), onRatingUpdate: (double value) {  },
+                    ),
+                  ],),
+                cardRowDivided( title: 'قام بالتقييم',value:  ticketModel.nameuserrate.toString()),
+
+                cardRowDivided( title: 'تاريخ التقييم',value:  ticketModel.date_rate.toString()),
+
               ],
             ),
           ),
