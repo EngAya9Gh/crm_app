@@ -448,6 +448,11 @@ class _addClientState extends State<addClient> {
                       SizedBox(
                         height: 15,
                       ),
+
+
+                      SizedBox(
+                        height: 15,
+                      ),
                       Center(
                         child: custom_button_new(
                           text: label_clientadd,

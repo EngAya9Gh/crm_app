@@ -82,6 +82,7 @@ class _addinvoiceState extends State<addinvoice> {
    final TextEditingController imageController = TextEditingController();
    final TextEditingController logoController = TextEditingController();
    final TextEditingController addressController = TextEditingController();
+   final TextEditingController renew2Controller = TextEditingController();
    final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
    String? _fileName;
    String? _saveAsFileName;
@@ -142,6 +143,7 @@ void dispose() async {
 
     amount_paidController.text=_invoice!.amountPaid.toString();
     renewController.text=_invoice!.renewYear.toString();
+    renew2Controller.text=_invoice!.renew2year.toString();
 
     typepayController=_invoice!.typePay.toString();
     print(typepayController.toString());
@@ -347,6 +349,33 @@ else{
                           // ],
                           controller: renewController, //اسم المؤسسة
                           label: label_renew,
+                          onChanged: (val) {
+                            // nameprod = val;
+                          },
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        RowEdit(name: label_renew2year, des: 'اختياري'),
+                        EditTextFormField(
+                          hintText: label_renew2year,
+                          obscureText: false,
+                          vaild: (value) {
+                            if (value.toString().trim().isEmpty) {
+                              return label_empty;
+                            }
+                            if(double.tryParse(value.toString()) == null)
+                              return 'من فضلك ادخل عدد';
+                            // else if(value.characters){
+                            //   return ;
+                            // }
+                          },
+                          inputType: TextInputType.number,
+                          // inputformate: <TextInputFormatter>[
+                          //   FilteringTextInputFormatter.digitsOnly
+                          // ],
+                          controller: renew2Controller, //اسم المؤسسة
+                          label: label_renew2year,
                           onChanged: (val) {
                             // nameprod = val;
                           },
@@ -802,6 +831,7 @@ else{
                                           "name_client":widget.itemClient.nameClient.toString(),
                                           "nameUser":widget.itemClient.nameUser.toString(),
                                           "renew_year": renewController.text.toString(),
+                                          "renew2year": renew2Controller.text.toString(),
                                           "type_pay": typepayController.toString(),
                                           "date_create": DateTime.now().toString(),
                                           "type_installation": typeinstallController.toString(),
@@ -855,6 +885,7 @@ else{
                                           "nameUser":Provider.of<user_vm_provider>
                                             (context,listen: false).currentUser.nameUser.toString(),//widget.itemClient.nameUser,
                                           "renew_year": renewController.text.toString(),
+                                          "renew2year": renew2Controller.text.toString(),
                                           "type_pay": typepayController,
                                           "date_create": DateTime.now().toString(), //formatter.format(_currentDate),
                                           "type_installation": typeinstallController.toString(),

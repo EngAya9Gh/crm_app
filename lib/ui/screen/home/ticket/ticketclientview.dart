@@ -10,6 +10,7 @@ import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
@@ -178,6 +179,25 @@ class _ticketclientviewState extends State<ticketclientview> {
                                                           fontWeight: FontWeight.bold
                                                           ),
                                                         ),
+                                                        value.tickesearchlist[index].rate!=null?
+                                                        Row(
+                                                          children: [
+                                                            //Text('تقييم بعد الإغلاق'),
+                                                            RatingBar.builder(
+                                                              initialRating:double.parse(value.tickesearchlist[index].rate.toString()),
+                                                              minRating: 1,
+                                                              direction: Axis.horizontal,
+                                                              allowHalfRating: false,
+                                                              // glow: true,
+                                                              ignoreGestures: true,
+                                                              itemCount: 5,
+                                                              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                                              itemBuilder: (context, _) => Icon(
+                                                                Icons.star,
+                                                                color: Colors.amber,
+                                                              ), onRatingUpdate: (double value) {  },
+                                                            ),
+                                                          ],):Container(),
                                                       ],
                                                     ),
                                                   ),

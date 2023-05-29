@@ -21,6 +21,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
+import '../../partic_agent/participateView.dart';
 import '../widgethomeitem.dart';
 
 class managmentpage extends StatefulWidget {
@@ -236,7 +237,22 @@ class _managmentpageState extends State<managmentpage> {
 
                       ),
                     );
-                  }, title: 'الشركات المنافسة')
+                  }, title: 'الشركات المنافسة')   ,
+
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context)
+                        => participate_view( ),
+
+                      ),
+                    );
+                  }, title: 'المتعاونين')
               //config_view
             ],),
           );}

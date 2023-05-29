@@ -22,6 +22,7 @@ import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
+import 'package:crm_smart/view_model/participate_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
@@ -179,6 +180,7 @@ void main() async {
          ChangeNotifierProvider<datetime_vm>(create: (_)=> datetime_vm()),
          ChangeNotifierProvider<activity_vm>(create: (_)=> activity_vm()),
          ChangeNotifierProvider<company_vm>(create: (_)=> company_vm()),
+         ChangeNotifierProvider<participate_vm>(create: (_)=> participate_vm()),
         //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
 
   ], child:MyApp()));

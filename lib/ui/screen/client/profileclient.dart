@@ -112,7 +112,8 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
         title:Text(getnamelong(_clientModel.nameEnterprise.toString()),
         style: TextStyle(color: kWhiteColor,fontFamily: kfontfamily2),) ,
         centerTitle: true,
-        bottom: TabBar(
+        bottom:
+        TabBar(
           // indicatorPadding: EdgeInsets.only(top: 20),
           labelPadding: const EdgeInsets.only(left: 2,right: 2,),
           indicatorSize: TabBarIndicatorSize.label,
@@ -193,7 +194,6 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
         ),
       ),
       body:
-
           Container(
             margin: EdgeInsets.only(bottom: 1),
             padding: const EdgeInsets.only(top:25,left: 5,right: 5),

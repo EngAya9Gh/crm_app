@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crm_smart/Repository/cache_repo.dart';
+import 'package:crm_smart/model/participatModel.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
 
 import '../constants.dart';
@@ -81,6 +82,7 @@ class InvoiceModel extends CacheRepository{
     this.isApproveFinance,
     this.iduser_FApprove,
     this.Date_FApprove,
+    this.rate_participate,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -156,12 +158,15 @@ class InvoiceModel extends CacheRepository{
     String? isApproveFinance;
     String? iduser_FApprove;
     String? Date_FApprove;
+    String? renew2year;
+    String? rate_participate;
     String?  city, name_city,
     namemaincity,
     id_maincity;
 
   //Map<String, dynamic> products;
    List<ProductsInvoice>? products;
+   ParticipateModel? participal;
   // var products;
   InvoiceModel.fromJson(Map<String, dynamic> jsondata){
     print(jsondata);
@@ -248,6 +253,9 @@ class InvoiceModel extends CacheRepository{
     isApproveFinance = jsondata['isApproveFinance'];
     iduser_FApprove = jsondata['iduser_FApprove'];
     Date_FApprove = jsondata['Date_FApprove'];
+    renew2year = jsondata['renew2year'];
+    rate_participate=jsondata['rate_participate'];
+    participal=ParticipateModel.fromJson(jsondata['participal_info']);
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']
@@ -354,6 +362,9 @@ class InvoiceModel extends CacheRepository{
     _data['isApproveFinance'] = isApproveFinance;
     _data['iduser_FApprove'] = iduser_FApprove;
     _data['Date_FApprove'] = Date_FApprove;
+    _data['renew2year'] = renew2year;
+    _data['rate_participate'] = rate_participate;
+
     _data['products'] =
         products!.map((e)=>e.toJson()).toList();
     return _data;

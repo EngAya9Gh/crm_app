@@ -404,7 +404,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                     Provider.of<privilge_vm>(context,listen: true)
                         .checkprivlge('76')==true  ?
                     widget.invoice!.clientusername!=null&&  widget.invoice!.clientusername.toString().isNotEmpty
-                    ?cardRow( title:'يوزر العميل',
+                    ?cardRow(
+                        title:'يوزر العميل',
                         value:
                         widget.invoice!.clientusername==null?'':
                         widget.invoice!.clientusername.toString()):Container():Container(),
@@ -414,6 +415,24 @@ class _InvoiceViewState extends State<InvoiceView> {
                         title: 'شعار المؤسسة',
                         value: widget.invoice!.imagelogo.toString()
                     ):Container(),
+
+                    widget.invoice!.participal==null?
+                        Column(
+                          children: [
+                            cardRow(
+                                value: widget.invoice!.participal!.name_participate.toString(),
+                                title: 'اسم المتعاون'),
+                            cardRow(
+                                value: widget.invoice!.rate_participate.toString(),
+                                title: 'نسبة المتعاون'),
+                            cardRow(
+                                value: widget.invoice!.participal!.numberbank_participate.toString(),
+                                title: 'رقم بنك المتعاون'),
+                            cardRow(
+                                value: widget.invoice!.participal!.mobile_participate.toString(),
+                                title: 'رقم موبايل المتعاون'),
+                          ],
+                        ):Container(),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
