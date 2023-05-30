@@ -919,30 +919,32 @@ Future<void> getinvoice_Localwithprev() async{
       Map<String, dynamic?> body,String? idInvoice,File? file, File? myfilelogo) async {
     InvoiceModel data=  await Invoice_Service()
         .updateInvoice(body,idInvoice!,file,myfilelogo);
-      final index=listinvoiceClient.indexWhere(
-              (element) => element.idInvoice==idInvoice);
-      // body.addAll({
-      //   "id_invoice":idInvoice,
-      //   "date_create":listinvoiceClient[index].dateCreate.toString(),
-      //
-      //   "products":listproductinvoic.map((e)=>e.toJson()).toList()
-      // });
-       if(index!=-1)
+    final index=listinvoiceClient.indexWhere(
+            (element) => element.idInvoice==idInvoice);
+    // body.addAll({
+    //   "id_invoice":idInvoice,
+    //   "date_create":listinvoiceClient[index].dateCreate.toString(),
+    //
+    //   "products":listproductinvoic.map((e)=>e.toJson()).toList()
+    // });
+    if(index!=-1)
       listinvoiceClient[index]=data;//InvoiceModel.fromJson(body);
-      final index1=listinvoices.indexWhere((element) => element.idInvoice==idInvoice);
+    final index1=listinvoices.indexWhere((element) => element.idInvoice==idInvoice);
     if(index1!=-1)
       listinvoices[index1]= data;
 
     int index2=listInvoicesAccept.indexWhere((element) => element.idInvoice==idInvoice);
     if(index2!=-1)
-    listInvoicesAccept[index2]= data;
+      listInvoicesAccept[index2]= data;
 
     //InvoiceModel.fromJson(body);
-      //listProduct.insert(0, ProductModel.fromJson(body));
-      notifyListeners();
+    //listProduct.insert(0, ProductModel.fromJson(body));
+    notifyListeners();
 
     return true;
   }
+
+
 
   Future<String> delete_invoice(Map<String,String>body, String? id_invoice) async {
 

@@ -22,6 +22,7 @@ import 'dart:ui' as myui;
 import '../../../constants.dart';
 import '../../../function_global.dart';
 import '../../../labeltext.dart';
+import 'add_payement.dart';
 
 class InvoiceView extends StatefulWidget {
   InvoiceView({this.type, required this.invoice,
@@ -238,7 +239,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     SizedBox(height: 6,),
                     Center(
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
 
                           ElevatedButton(
@@ -246,7 +247,6 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 backgroundColor: MaterialStateProperty.all(
                                     kMainColor)),
                             onPressed: () async {
-                              print('2121211111111111111111');
                               print(typeclient_provider.selectedValueOut);
                               // dismisses only the dialog and returns false
                               if (_globalKey.currentState!.validate()) {
@@ -254,6 +254,7 @@ class _InvoiceViewState extends State<InvoiceView> {
 
                                 await Provider.of<invoice_vm>(context, listen: false)
                                     .set_state_back({
+                                  'type_back': 'back',//انسحاب
                                   'fk_regoin':widget.invoice!.fk_regoin.toString(),
                                   'fkcountry':widget.invoice!.fk_country.toString(),
                                   "fkUserdo":
@@ -276,7 +277,45 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 Navigator.of(context, rootNavigator: true)
                                     .pop(false);
                               }},
-                            child: Text('حفظ'),
+                            child: Text('انسحاب'),
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    kMainColor)),
+                            onPressed: () async {
+                              print('2121211111111111111111');
+                              print(typeclient_provider.selectedValueOut);
+                              // dismisses only the dialog and returns false
+                              if (_globalKey.currentState!.validate()) {
+                                _globalKey.currentState!.save();
+
+                                await Provider.of<invoice_vm>(context, listen: false)
+                                    .set_state_back({
+                                  'type_back': 'return',//ارحاع
+                                  'fk_regoin':widget.invoice!.fk_regoin.toString(),
+                                  'fkcountry':widget.invoice!.fk_country.toString(),
+                                  "fkUserdo":
+                                  Provider.of<user_vm_provider>(context, listen: false)
+                                      .currentUser
+                                      .idUser.toString(),
+                                  "name_enterprise": clientmodel.nameEnterprise
+                                      .toString(),
+                                  "nameUserdo":
+                                  Provider.of<user_vm_provider>(context, listen: false).currentUser
+                                      .nameUser.toString(),
+                                  "fk_client":widget.invoice!.fkIdClient.toString(),
+                                  "reason_back": typeclient_provider.selectedValueOut,
+                                  "fkuser_back": Provider
+                                      .of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                  "desc_reason_back": descresaonController.text,
+                                  "date_change_back": _currentDate.toString(),//DateTime.now().toString(),
+                                  "value_back": valueBackController.text,
+                                }, widget.invoice!.idInvoice.toString());
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop(false);
+                              }},
+                            child: Text('ارجاع'),
                           ),
                         ],
                       ),
@@ -458,7 +497,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                           widget.invoice!.isApprove!=null ?
                           CustomButton(
                             //width: MediaQuery.of(context).size.width * 0.2,
-                            text: 'خيارات إضافية',
+                            text: 'الاجراءات',
                             onTap: () async {
                               showDialog<void>(
                                   context: context,
@@ -556,6 +595,22 @@ class _InvoiceViewState extends State<InvoiceView> {
                         ],
                       ),),
 
+                    Row(
+                      children: [
+                        CustomButton(
+                          //width: MediaQuery.of(context).size.width * 0.2,
+                          text: 'اضافة دفعة للفاتورة',
+                          onTap: () async {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context)=>
+                                    add_payement(
+                                      invoiceModel: widget.invoice!,
+                                       ) // support_view(type: 'only',)
+                            ));
+                          },
+                        )
+                      ],
+                    ),
                     widget.type=='approved'?
                     widget.invoice!.isApprove==null?
                     Center(
