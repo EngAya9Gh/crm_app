@@ -255,7 +255,7 @@ class InvoiceModel extends CacheRepository{
     Date_FApprove = jsondata['Date_FApprove'];
     renew2year = jsondata['renew2year'];
     rate_participate=jsondata['rate_participate'];
-    participal=ParticipateModel.fromJson(jsondata['participal_info']);
+    participal=jsondata['participal_info']==null?null:ParticipateModel.fromJson(jsondata['participal_info']);
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']

@@ -455,7 +455,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                         value: widget.invoice!.imagelogo.toString()
                     ):Container(),
 
-                    widget.invoice!.participal==null?
+                    widget.invoice!.participal!=null?
                         Column(
                           children: [
                             cardRow(

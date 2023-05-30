@@ -917,6 +917,8 @@ Future<void> getinvoice_Localwithprev() async{
 
   Future<bool> update_invoiceclient_vm(
       Map<String, dynamic?> body,String? idInvoice,File? file, File? myfilelogo) async {
+    isloadingdone=true;
+    notifyListeners();
     InvoiceModel data=  await Invoice_Service()
         .updateInvoice(body,idInvoice!,file,myfilelogo);
     final index=listinvoiceClient.indexWhere(
@@ -939,6 +941,7 @@ Future<void> getinvoice_Localwithprev() async{
 
     //InvoiceModel.fromJson(body);
     //listProduct.insert(0, ProductModel.fromJson(body));
+    isloadingdone=false;
     notifyListeners();
 
     return true;
