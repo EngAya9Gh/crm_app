@@ -13,7 +13,8 @@ class participate_vm extends ChangeNotifier {
 
    var data
       =await Api()
-        .get(url:url+ 'config/getactv.php');
+        .get(url:url+ 'agent/get_participate.php');
+
     print(data);
     List<ParticipateModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
@@ -35,11 +36,12 @@ class participate_vm extends ChangeNotifier {
     isloading =true;
     notifyListeners();
     String res = await Api().post(
-        url: url+'config/addactv.php',//users/addmangemt.php
+        url: url+'agent/addparticipate.php',//users/addmangemt.php
+
         body: body);
     if (res!="error") {
       body.addAll({
-        'id_activity_type':res,
+        'id_participate':res,
       });
       list_paricipate.insert(0,ParticipateModel.fromJson(body));
       isloading=false;
@@ -54,7 +56,8 @@ class participate_vm extends ChangeNotifier {
     isloading=true;
     notifyListeners();
     String res = await Api().post(
-        url: url+'config/update_actv.php?id_activity_type=${id_participate }',//users/addmangemt.php
+        url: url+'agent/update_participate.php?id_participate=${id_participate }',//users/addmangemt.php
+
         body: body);
     body.addAll({
       'id_participate':id_participate ,

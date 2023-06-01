@@ -160,6 +160,7 @@ void main() async {
         ),
         //ChangeNotifierProvider<invoice_vm>(create: (_) => invoice_vm()),
         ChangeNotifierProvider<typeclient>(create: (_)=> typeclient()),
+
         ChangeNotifierProxyProvider<invoice_vm,EventProvider>(
           create: (_)=> EventProvider(),
           update: (ctx,value,prev)=>prev!..setvalue(value.listinvoices),
