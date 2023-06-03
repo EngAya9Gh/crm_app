@@ -8,6 +8,7 @@ import 'package:crm_smart/ui/widgets/client_widget/cardAllclient.dart';
 import 'package:crm_smart/ui/widgets/client_widget/cardClient.dart';
 import 'package:crm_smart/ui/widgets/client_widget/cardclientAccept.dart';
 import 'package:crm_smart/ui/widgets/client_widget/clientCardNew.dart';
+import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
@@ -39,6 +40,8 @@ class _clientmarketingState extends State<clientmarketing> {
   List<ClientModel> _list = [];
   String? iduser;
   String? regoin;
+  String? activity='';
+
   String? typeclientvalue;
   UserModel? user;
   bool _isLoading = false;
@@ -61,8 +64,9 @@ class _clientmarketingState extends State<clientmarketing> {
       List<PrivilgeModel> list=
       await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-      await Provider.of<client_vm>(context, listen: false)
-          .getclientMarketing();
+      await Provider.of<client_vm>(context, listen: false);
+      await Provider.of<activity_vm>(context, listen: false)
+          .getactv();
     });
 
     //  WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -276,6 +280,38 @@ class _clientmarketingState extends State<clientmarketing> {
                             ),
                           ):Container(),
                           SizedBox(height: 2,),
+
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0,right: 8,),
+                            child:
+                            Consumer<activity_vm>(
+                              builder: (context, cart, child){
+                                return   DropdownButton(
+
+                                  isExpanded: true,
+                                  hint: Text("النشاط"),
+                                  items: cart.list_activity.map((level_one) {
+                                    return DropdownMenuItem(
+
+                                      child: Text(level_one.name_activity_type), //label of item
+                                      value: level_one.id_activity_type, //value of item
+                                    );
+                                  }).toList(),
+                                  value:cart.selectedValueOut,
+                                  onChanged:(value) {
+                                    //  setState(() {
+                                    cart.changevalueOut(value.toString());
+                                    activity=value.toString();
+                                    filtershow();
+
+                                  },
+                                );
+
+                              },
+                            ),
+                          ),
+                          SizedBox(height: 2,),
+
                           search_widget(
                             'clientmarketing',
                             hintnamefilter,''
@@ -356,23 +392,23 @@ class _clientmarketingState extends State<clientmarketing> {
       if( Provider.of<regoin_vm>(context,listen: false).selectedValueLevel!=null&&
           iduser!=null){
         Provider.of<client_vm>(context, listen: false)
-            .getclientfilter_Local(iduser ,"3", typeclientvalue, regoin,);
+            .getclientfilter_Local(iduser ,"3", typeclientvalue, regoin,activity);
       }else{
         if(Provider.of<regoin_vm>(context,listen: false).selectedValueLevel==null&&
             iduser==null){
           Provider.of<client_vm>(context, listen: false)
-              .getclientfilter_Local(typeclientvalue,"type",null,null);
+              .getclientfilter_Local(typeclientvalue,"type",null,null,activity );
         }
         else{
           if(iduser==null) {
             Provider.of<client_vm>(context, listen: false)
                 .getclientfilter_Local(
                 regoin, "regoin",
-                typeclientvalue,null);
+                typeclientvalue,null,activity);
           }else{
 
             Provider.of<client_vm>(context, listen: false)
-                .getclientfilter_Local(iduser,"user",typeclientvalue,null);
+                .getclientfilter_Local(iduser,"user",typeclientvalue,null,activity);
           }
         }}
     }
