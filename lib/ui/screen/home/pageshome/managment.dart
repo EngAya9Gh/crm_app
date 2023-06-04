@@ -254,6 +254,8 @@ class _managmentpageState extends State<managmentpage> {
                     },
                     title: 'الشركات المنافسة'),
 
+                privilge.checkprivlge('113') == true
+                    ?
                 buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -266,8 +268,10 @@ class _managmentpageState extends State<managmentpage> {
                         ),
                       );
                     },
-                    title: 'المتعاونين'),
-                buildSelectCategory(
+                    title: 'المتعاونين'):Container(),
+
+                privilge.checkprivlge('114') == true
+                    ?  buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -280,7 +284,7 @@ class _managmentpageState extends State<managmentpage> {
                         ),
                       );
                     },
-                    title: "الوكلاء والموزعين",)
+                    title: "الوكلاء والموزعين",):Container()
                 //config_view
               ],
             ),

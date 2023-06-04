@@ -841,6 +841,7 @@ else{
                                           /////////////////////////////////////////////////////////////////////
                                           "amount_paid": amount_paidController.text.toString(),
                                           'fk_regoin':widget.invoice!.fk_regoin.toString(),
+                                          'fk_regoin_invoice':widget.invoice!.fk_regoin.toString(),
                                           'fkcountry':widget.invoice!.fk_country.toString(),
                                           "fk_idClient": widget.itemClient.idClients.toString(),
                                           "fk_idUser": widget.itemClient.fkUser.toString(),
@@ -862,7 +863,14 @@ else{
                                           'address_invoice':addressController.text.toString(),
                                           'clientusername':userclientController.text.toString(),
                                           'date_lastuserupdate':DateTime.now().toString(),
-                                           //"date_changetype":,
+
+
+                                          // 'type_seller':
+                                          // 'rate_participate':
+
+                                          // 'fk_agent':
+                                          // 'participate_fk':
+
                                         },invoiceID,
                                             _invoice!.path.toString().isNotEmpty?_myfile:null,
                                             _myfilelogo
@@ -873,12 +881,7 @@ else{
                                         );
                                       }
                                       else {
-                                        // Provider
-                                        //     .of<invoice_vm>(context, listen: false)
-                                        //     .listinvoiceClient
-                                        //     .removeAt(widget.indexinvoice);
-                                        // widget.indexinvoice=widget.indexinvoice-1;
-                                        print("******");
+
                                         var body={
                                           "name_enterprise":widget.itemClient.nameEnterprise,
                                           "name_client":widget.itemClient.nameClient.toString(),
@@ -897,15 +900,18 @@ else{
                                           "total": totalController.toString(),
                                           "notes": noteController.text.toString(),
                                           'fk_regoin':widget.itemClient.fkRegoin.toString(),
+                                          'fk_regoin_invoice':widget.itemClient.fkRegoin.toString(),
                                           'fkcountry':widget.itemClient.fkcountry.toString(),
                                           'numbarnch':numbranchController.text.toString(),
                                           'nummostda':nummostawdaController.text.toString(),
                                           'numusers':numuserController.text.toString(),
                                           'address_invoice':addressController.text.toString(),
 
-                                          //'date_lastuserupdate':DateTime.now().toString(),
-                                          //"date_changetype":,
-                                          //'message':"",
+                                          // 'type_seller':
+                                          // 'rate_participate':
+
+                                          // 'fk_agent':
+                                          // 'participate_fk':
                                         };
                                         if(readyinstallController =='0')
                                           body.addAll({

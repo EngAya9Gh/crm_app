@@ -46,7 +46,6 @@ dependencies:
   cached_network_image: ^3.2.1
   grouped_list: ^5.1.2
   file_picker: ^4.6.1
-  flutter_pdfview: ^1.2.2
   url_launcher: ^6.1.5
   jiffy: ^5.0.0
   flutter_phone_direct_caller: ^2.1.1

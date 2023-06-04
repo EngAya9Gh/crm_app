@@ -5,6 +5,7 @@ import 'package:crm_smart/model/participatModel.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
 
 import '../constants.dart';
+import 'agent_distributor_model.dart';
 
 class InvoiceModel extends CacheRepository{
   InvoiceModel({
@@ -83,6 +84,9 @@ class InvoiceModel extends CacheRepository{
     this.iduser_FApprove,
     this.Date_FApprove,
     this.rate_participate,
+    this.participate_fk,
+    this.fk_agent,
+    this.type_seller,
     this.fk_regoin_invoice,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
@@ -160,7 +164,10 @@ class InvoiceModel extends CacheRepository{
     String? iduser_FApprove;
     String? Date_FApprove;
     String? renew2year;
+    String? participate_fk;
     String? rate_participate;
+    String? type_seller;
+    String? fk_agent;
     String? fk_regoin_invoice;
     String?  city, name_city,
     namemaincity,
@@ -169,6 +176,7 @@ class InvoiceModel extends CacheRepository{
   //Map<String, dynamic> products;
    List<ProductsInvoice>? products;
    ParticipateModel? participal;
+   AgentDistributorModel? agent_distibutor;
   // var products;
   InvoiceModel.fromJson(Map<String, dynamic> jsondata){
     print(jsondata);
@@ -257,8 +265,13 @@ class InvoiceModel extends CacheRepository{
     Date_FApprove = jsondata['Date_FApprove'];
     renew2year = jsondata['renew2year'];
     rate_participate=jsondata['rate_participate'];
+    participate_fk=jsondata['participate_fk'];
+    fk_agent=jsondata['fk_agent'];
+    type_seller=jsondata['type_seller'];
     fk_regoin_invoice=jsondata['fk_regoin_invoice'];
+
     participal=jsondata['participal_info']==null?null:ParticipateModel.fromJson(jsondata['participal_info']);
+    agent_distibutor=jsondata['agent_distibutor_info']==null?null:AgentDistributorModel.fromJson(jsondata['agent_distibutor_info']);
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']

@@ -474,6 +474,29 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 title: 'رقم موبايل المتعاون'),
                           ],
                         ):Container(),
+                    widget.invoice!.agent_distibutor!=null?
+                        Column(
+                          children: [
+                            cardRow(
+                                value: widget.invoice!.agent_distibutor!.nameAgent.toString(),
+                                title:widget.invoice!.agent_distibutor!.typeAgent=='1'?
+                                'اسم الوكيل':
+                                    'اسم الموزع'
+                            ),
+                            cardRow(
+                                value: widget.invoice!.rate_participate.toString(),
+                                title:widget.invoice!.agent_distibutor!.typeAgent=='1'?
+                                'نسبة الوكيل':
+                                'نسبة الموزع'
+                            ),
+                            cardRow(
+                                value: widget.invoice!.agent_distibutor!.mobileAgent.toString(),
+                                title:widget.invoice!.agent_distibutor!.typeAgent=='1'?
+                                'رقم موبايل الوكيل':
+                                'رقم موبايل الموزع'),
+
+                          ],
+                        ):Container(),
 
                     Padding(
                       padding: const EdgeInsets.all(8.0),

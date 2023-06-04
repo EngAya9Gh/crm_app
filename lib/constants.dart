@@ -15,6 +15,7 @@ const url='http://smartcrm.ws/aya/api/';
 const urlimage='http://smartcrm.ws/aya/api/imagesApp/profile/';
 const urlfile='http://smartcrm.ws/aya/api/imagesApp/filesinvoice/';
 const urlfilelogo='http://smartcrm.ws/aya/api/imagesApp/logoclient/';
+const urlfileAgent='http://smartcrm.ws/aya/api/imagesApp/agent/';
 const kKeepMeLoggedIn="loginstate";
 const String hintnamefilter=   "المؤسسة ,العميل , رقم الهاتف....";
 const Ktoast=Color(0xfff2c131);

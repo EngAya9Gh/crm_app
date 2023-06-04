@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import '../constants.dart';
+
 AgentDistributorResponse agentDistributorResponseFromJson(String str) => AgentDistributorResponse.fromJson(json.decode(str));
 
 String agentDistributorResponseToJson(AgentDistributorResponse data) => json.encode(data.toJson());
@@ -61,7 +63,10 @@ class AgentDistributorModel {
     mobileAgent: json["mobile_agent"],
     fkCountry: json["fk_country"],
     description: json["description"],
-    imageAgent: json["image_agent"],
+    imageAgent: json["image_agent"].toString().trim().isEmpty
+      ||json["image_agent"]==null
+      ? json["image_agent"]
+      : urlfileAgent+ json['image_agent'] ,
   );
 
   Map<String, dynamic> toJson() => {
