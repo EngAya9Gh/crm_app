@@ -83,6 +83,7 @@ class InvoiceModel extends CacheRepository{
     this.iduser_FApprove,
     this.Date_FApprove,
     this.rate_participate,
+    this.fk_regoin_invoice,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -160,6 +161,7 @@ class InvoiceModel extends CacheRepository{
     String? Date_FApprove;
     String? renew2year;
     String? rate_participate;
+    String? fk_regoin_invoice;
     String?  city, name_city,
     namemaincity,
     id_maincity;
@@ -255,6 +257,7 @@ class InvoiceModel extends CacheRepository{
     Date_FApprove = jsondata['Date_FApprove'];
     renew2year = jsondata['renew2year'];
     rate_participate=jsondata['rate_participate'];
+    fk_regoin_invoice=jsondata['fk_regoin_invoice'];
     participal=jsondata['participal_info']==null?null:ParticipateModel.fromJson(jsondata['participal_info']);
     products=getproud(jsondata['products']);
       //  json.decode(
@@ -363,6 +366,7 @@ class InvoiceModel extends CacheRepository{
     _data['iduser_FApprove'] = iduser_FApprove;
     _data['Date_FApprove'] = Date_FApprove;
     _data['renew2year'] = renew2year;
+    _data['fk_regoin_invoice'] = fk_regoin_invoice;
     _data['rate_participate'] = rate_participate;
 
     _data['products'] =
