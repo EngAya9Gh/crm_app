@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:http/retry.dart';
 import 'package:path/path.dart';
@@ -35,7 +36,7 @@ class Api {
          "Cache-Control": "no-cache"
       }
     );
-    print(json.decode(response.body));
+    log(json.decode(response.body).toString());
     if (json.decode(response.body)["code"] == "200") {
       print(jsonDecode(response.body)["message"]);
       return jsonDecode(response.body)["message"];
@@ -52,6 +53,8 @@ class Api {
     @required String? token,
   }) async {
     Map<String, String> headers = {};
+
+    print("url $url");
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
@@ -62,7 +65,7 @@ class Api {
     );
     String result= response.body;
     print('before');
-    print(result);
+    log(result.toString());
     int idx = result.indexOf("{");
     int length=result.length;
     result=result.substring(idx,length);//run for login and update client and set date task

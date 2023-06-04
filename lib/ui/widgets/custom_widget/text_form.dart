@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,7 +5,7 @@ import '../../../constants.dart';
 
 class EditTextFormField extends StatelessWidget {
   final TextEditingController controller;
-   bool? obscureText=false;
+  bool? obscureText = false;
   final String hintText;
   Function(String)? onChanged;
   Function()? ontap;
@@ -16,34 +14,33 @@ class EditTextFormField extends StatelessWidget {
   String? label;
   IconData? icon;
   TextInputType? inputType;
-   bool? read=null;
-   EdgeInsetsGeometry? paddcustom;
+  bool? read = null;
+  EdgeInsetsGeometry? paddcustom;
   List<TextInputFormatter>? inputformate;
-  EditTextFormField(
-       {
-         this.ontap,
-         required this.hintText,
-         this.obscureText,
-        required this.controller,
-        this.onChanged,
-        this.vaild,
-         this.label,
-         this.icon,
-         this.maxline,
-         this.inputType,
-         this.read,
-         this.paddcustom,
+  FormFieldSetter<String>? onSaved;
 
-         this.inputformate,
-        Key? key
-       })
+  EditTextFormField(
+      {this.ontap,
+      required this.hintText,
+      this.obscureText,
+      required this.controller,
+      this.onChanged,
+      this.vaild,
+      this.label,
+      this.icon,
+      this.maxline,
+      this.inputType,
+      this.read,
+      this.paddcustom,
+      this.onSaved,
+      this.inputformate,
+      Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return
-      TextFormField(
-      maxLines:maxline ,
+    return TextFormField(
+      maxLines: maxline,
       onChanged: onChanged,
       validator: vaild,
       obscureText: false,
@@ -51,13 +48,12 @@ class EditTextFormField extends StatelessWidget {
       cursorColor: Colors.black,
       onTap: ontap,
       keyboardType: inputType,
-      readOnly: read==null?false:true,
+      readOnly: read == null ? false : true,
       inputFormatters: inputformate,
+      onSaved: onSaved,
       decoration: InputDecoration(
-      //icon: ,
-        contentPadding:
-        paddcustom==null?
-         EdgeInsets.all(2):paddcustom,
+        //icon: ,
+        contentPadding: paddcustom == null ? EdgeInsets.all(2) : paddcustom,
         prefixIcon: Icon(
           icon,
           color: kMainColor,
