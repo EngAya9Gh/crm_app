@@ -21,6 +21,22 @@ class user_vm_provider extends ChangeNotifier{
     selecteduser=s;
     notifyListeners();
   }
+
+  late String? selectedValueUser=null;
+
+  void changeValUserID(String?  val){
+    print('inside regoin vm');
+    print(val);
+    if(val==null||val=="null")
+    {
+      selectedValueUser=null;
+      print('regoin vm');
+    }
+    else
+    {selectedValueUser=val;print('regoin in vm');}
+    changevalueuser(userall.firstWhere((element) => element.idUser==val));
+    notifyListeners();
+  }
   late SharedPreferences prefs;
 
   late UserModel currentUser;

@@ -53,10 +53,11 @@ class _support_addState extends State<support_add> {
     _timeController.dispose();
     super.dispose();
   }
- late TimeOfDay timinit;
+
+  late TimeOfDay timinit;
   @override
   void initState() {
-    timinit=TimeOfDay.now();
+    timinit = TimeOfDay.now();
     // if (widget.idinvoice != '') {
     //   // _invoice = Provider
     //   //     .of<invoice_vm>(context, listen: false)
@@ -67,19 +68,17 @@ class _support_addState extends State<support_add> {
     //   // _textsupport.text = _invoice!.reason_date.toString();
     // _timeController.text = DateTime.now().hour.toString()+':'
     // + DateTime.now().minute.toString();
-        // formatDate(
-        // DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
-        // [hh, ':', nn, " ", am]).toString();
+    // formatDate(
+    // DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
+    // [hh, ':', nn, " ", am]).toString();
 
-      WidgetsBinding.instance.addPostFrameCallback((_)async {
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       //_ticketModel=_list.firstWhere((element) => element.fkClient)
-        Provider.of<datetime_vm>(context,listen: false)
-            .setdatetimevalue(DateTime(1, 1, 1),TimeOfDay(hour: -1, minute: 00));
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
 
       //  Provider.of<typeclient>(context,listen: false).getreasons('ticket');
-      });
-
+    });
 
     print('init support');
     super.initState();
@@ -104,174 +103,195 @@ class _support_addState extends State<support_add> {
     _height = MediaQuery.of(context).size.height;
     _width = MediaQuery.of(context).size.width;
     _invoice = Provider.of<invoice_vm>(context, listen: true)
-        .listinvoiceClientSupport//.listinvoices
+        .listinvoiceClientSupport //.listinvoices
         .firstWhere((element) => element.idInvoice == widget.idinvoice);
 
     final _globalKey = GlobalKey<FormState>();
 
-    Widget dialog =
-    SimpleDialog(
-        titlePadding:const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0) ,
-        insetPadding:  EdgeInsets.only(left: 10,right: 10,bottom: 10),
-        contentPadding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
-        title: Center(child: Text('إعادة جدولة',style:TextStyle(fontFamily: kfontfamily2))),
-        children:[
+    Widget dialog = SimpleDialog(
+        titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
+        insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        title: Center(
+            child: Text('إعادة جدولة',
+                style: TextStyle(fontFamily: kfontfamily2))),
+        children: [
           ModalProgressHUD(
-            inAsyncCall:   Provider.of<invoice_vm>(context,listen: true)
-                .isloading,
+            inAsyncCall:
+                Provider.of<invoice_vm>(context, listen: true).isloading,
             child: StatefulBuilder(
               builder: (BuildContext context,
                   void Function(void Function()) setState) {
                 selectedTime == TimeOfDay(hour: -1, minute: 00);
-              return
-                 Directionality(
-                 textDirection: myui.TextDirection.rtl,
-                 child:   Form(
-                   key: _globalKey,
-                   child:Column(
-                     children: [
-                       Row(children: [
-                         Flexible(
-                           child: TextFormField(
-                             decoration: InputDecoration(
-                               prefixIcon: Icon(
-                                 Icons.date_range,
-                                 color: kMainColor,
-                               ),
-                               hintStyle:
-                               const TextStyle(
-                                   color: Colors.black45,
-                                   fontSize: 16,
-                                   fontWeight: FontWeight.w500),
-                               hintText:
-                               // _invoice!.daterepaly == null
-                               //     &&
-                               Provider.of<datetime_vm>(context,listen: true).valuedateTime
-                                   == DateTime(1, 1, 1)
-                                   ? 'تعيين التاريخ' //_currentDate.toString()
-                                   :
-                               //_currentDate.toString(),
-                               DateFormat('yyyy-MM-dd').format(
-                                   Provider.of<datetime_vm>(context,listen: true)
-                                       .valuedateTime),
+                return Directionality(
+                  textDirection: myui.TextDirection.rtl,
+                  child: Form(
+                    key: _globalKey,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.date_range,
+                                    color: kMainColor,
+                                  ),
+                                  hintStyle: const TextStyle(
+                                      color: Colors.black45,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  hintText:
+                                      // _invoice!.daterepaly == null
+                                      //     &&
+                                      Provider.of<datetime_vm>(context,
+                                                      listen: true)
+                                                  .valuedateTime ==
+                                              DateTime(1, 1, 1)
+                                          ? 'تعيين التاريخ' //_currentDate.toString()
+                                          :
+                                          //_currentDate.toString(),
+                                          DateFormat('yyyy-MM-dd').format(
+                                              Provider.of<datetime_vm>(context,
+                                                      listen: true)
+                                                  .valuedateTime),
 
-                               //_invoice!.daterepaly.toString(),
-                               filled: true,
-                               fillColor: Colors.grey.shade200,
-                             ),
-                             readOnly:  true,
-                             onTap: () {
-                               setState((){
-                                 _selectDate(context,
-                                     DateTime.now());
-                                 print('before on tap '+_currentDate.toString());
-                               });
-                             },
-                           ),
-                         ),
-                         SizedBox(width: 10,),
-                         Flexible(
-                           child: TextFormField(
-                             validator: (value) {
-                               if (selectedTime
-                                   == TimeOfDay(hour: -1, minute: 00)) {
-                                 return 'يرجى تعيين الوقت ';
-                               }},
-                             decoration: InputDecoration(
-                               prefixIcon: Icon(
-                                 Icons.date_range,
-                                 color: kMainColor,
-                               ),
-                               hintStyle: const TextStyle(
-                                   color: Colors.black45,
-                                   fontSize: 16,
-                                   fontWeight: FontWeight.w500),
-                               hintText: _invoice!.daterepaly ==null
-                                   &&     Provider.of<datetime_vm>(context,listen: true)
-                .selectedTime == TimeOfDay(hour: -1, minute: 00)
-                                   ?   'الوقت ' //_currentDate.toString()
-                                   :
-                  Provider.of<datetime_vm>(context,listen: true).
-                  selectedTime.minute.toString()
-                                   +' : '+ Provider.of<datetime_vm>(context,listen: true)
-                  .selectedTime.hour.toInt().toString(),
-                               //_invoice!.dateinstall_task.toString(),
-                               filled: true,
-                               fillColor: Colors.grey.shade200,
-
-                             ),
-                             // / controller: _timeController,
-                             readOnly: true,
-                             onTap: () {
-                                setState((){
-                               _selectTime(context,timinit);
-                                });
-                             },
-                           ),
-                         ),
-                       ],),
-
-                       SizedBox(height: 5,),
-                       EditTextFormField(
-                         maxline: 4,
-                         paddcustom: EdgeInsets.all(10),
-                         hintText:
-                         'أسباب إعادة الجدولة',
-                         obscureText: false,
-                         controller: _textsupport,
-                         vaild: (value) {
-                           if (value.toString().trim().isEmpty) {
-                             return 'الحقل فارغ';
-                           }
-                         },
-                       ),
-                       SizedBox(height: 10,),
-                       CustomButton(
-                         text: "تثبيت",
-                         onTap:() async {
-                   DateTime datetask = DateTime(
-                   _currentDate.year, _currentDate.month,
-                   _currentDate.day,
-                   selectedTime.hour, selectedTime.minute);
-                   if (_globalKey.currentState!
-                               .validate()) {
-                     Navigator.of(context, rootNavigator: true)
-                         .pop(false);
-                             _globalKey.currentState!.save();
-                             Provider.of<invoice_vm>(context, listen: false)
-                                 .setdate_vm({
-                               // 'fk_invoice':,
-                               // 'fk_idClient':,
-                               // 'fk_idUser':,
-                               // 'type_date':,
-                               // 'date_install':,
-                               'fk_client':_invoice!.fkIdClient.toString(),
-                               'fk_regoin':_invoice!.fk_regoin.toString(),
-                               'fkcountry':_invoice!.fk_country.toString(),
-                               "namedatareplay":
-                               Provider.of<user_vm_provider>(context, listen: false)
-                                   .currentUser
-                                   .nameUser.toString(),
-                               "name_enterprise": _invoice!.name_enterprise.toString()
-                                   .toString(),
-                               'daterepaly': datetask.toString(),
-                               'fkuserdatareplay':Provider.of<user_vm_provider>
-                                 (context,listen: false)
-                                   .currentUser.idUser,
-                               'reason_date': _textsupport.text.toString()
-                             }, _invoice!.idInvoice).then((value) => clear());
-                           }
-
-                         },
-                       ),
-
-                     ],
-                   ),
-                 ),
-               );
-              },),
+                                  //_invoice!.daterepaly.toString(),
+                                  filled: true,
+                                  fillColor: Colors.grey.shade200,
+                                ),
+                                readOnly: true,
+                                onTap: () {
+                                  setState(() {
+                                    _selectDate(context, DateTime.now());
+                                    print('before on tap ' +
+                                        _currentDate.toString());
+                                  });
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Flexible(
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (selectedTime ==
+                                      TimeOfDay(hour: -1, minute: 00)) {
+                                    return 'يرجى تعيين الوقت ';
+                                  }
+                                },
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.date_range,
+                                    color: kMainColor,
+                                  ),
+                                  hintStyle: const TextStyle(
+                                      color: Colors.black45,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  hintText: _invoice!.daterepaly == null &&
+                                          Provider.of<datetime_vm>(context,
+                                                      listen: true)
+                                                  .selectedTime ==
+                                              TimeOfDay(hour: -1, minute: 00)
+                                      ? 'الوقت ' //_currentDate.toString()
+                                      : Provider.of<datetime_vm>(context,
+                                                  listen: true)
+                                              .selectedTime
+                                              .minute
+                                              .toString() +
+                                          ' : ' +
+                                          Provider.of<datetime_vm>(context,
+                                                  listen: true)
+                                              .selectedTime
+                                              .hour
+                                              .toInt()
+                                              .toString(),
+                                  //_invoice!.dateinstall_task.toString(),
+                                  filled: true,
+                                  fillColor: Colors.grey.shade200,
+                                ),
+                                // / controller: _timeController,
+                                readOnly: true,
+                                onTap: () {
+                                  setState(() {
+                                    _selectTime(context, timinit);
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        EditTextFormField(
+                          maxline: 4,
+                          paddcustom: EdgeInsets.all(10),
+                          hintText: 'أسباب إعادة الجدولة',
+                          obscureText: false,
+                          controller: _textsupport,
+                          vaild: (value) {
+                            if (value.toString().trim().isEmpty) {
+                              return 'الحقل فارغ';
+                            }
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomButton(
+                          text: "تثبيت",
+                          onTap: () async {
+                            DateTime datetask = DateTime(
+                                _currentDate.year,
+                                _currentDate.month,
+                                _currentDate.day,
+                                selectedTime.hour,
+                                selectedTime.minute);
+                            if (_globalKey.currentState!.validate()) {
+                              Navigator.of(context, rootNavigator: true)
+                                  .pop(false);
+                              _globalKey.currentState!.save();
+                              Provider.of<invoice_vm>(context, listen: false)
+                                  .setdate_vm({
+                                // 'fk_invoice':,
+                                // 'fk_idClient':,
+                                // 'fk_idUser':,
+                                // 'type_date':,
+                                // 'date_install':,
+                                'fk_client': _invoice!.fkIdClient.toString(),
+                                'fk_regoin': _invoice!.fk_regoin.toString(),
+                                'fkcountry': _invoice!.fk_country.toString(),
+                                "namedatareplay": Provider.of<user_vm_provider>(
+                                        context,
+                                        listen: false)
+                                    .currentUser
+                                    .nameUser
+                                    .toString(),
+                                "name_enterprise": _invoice!.name_enterprise
+                                    .toString()
+                                    .toString(),
+                                'daterepaly': datetask.toString(),
+                                'fkuserdatareplay':
+                                    Provider.of<user_vm_provider>(context,
+                                            listen: false)
+                                        .currentUser
+                                        .idUser,
+                                'reason_date': _textsupport.text.toString()
+                              }, _invoice!.idInvoice).then((value) => clear());
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
-
         ]);
     print('builld');
     return SafeArea(
@@ -280,545 +300,655 @@ class _support_addState extends State<support_add> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child:
-            buildcardExpansion('فاتورة  '+_invoice!.date_approve.toString(),'',
+            child: buildcardExpansion(
+                'فاتورة  ' + _invoice!.date_approve.toString(),
+                '',
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0,right: 8.0,bottom: 5),
+                  padding:
+                      const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
                   child: Column(
-              children: [
-                  _invoice!.dateinstall_done == null&&_invoice!.dateinstall_task==null
-                ? RowEdit(name: 'تحديد موعد التركيب والتدريب ', des: ''):Container(),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  _invoice!.dateinstall_done == null &&
-                      _invoice!.dateinstall_task==null
-                      ? //تم التركيب
-                  Form(
-                    key: _globalKey,
-                    child: Row(
-                      children: [
-                        //  SizedBox(width: 3,),
-                        Flexible(
-                          child: TextFormField(
-                            validator:  (value) {
-                  if (_currentDate == DateTime(1, 1, 1)) {
-                       return 'يرجى تعيين التاريخ ';
-                  }},
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                                color: kMainColor,
-                              ),
-                              hintStyle: const TextStyle(
-                                  color: Colors.black45,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              hintText: _invoice!.dateinstall_task ==null
-                                  &&  _currentDate == DateTime(1, 1, 1)
-                                  ? 'التاريخ' //_currentDate.toString()
-                                  :DateFormat('yyyy-MM-dd').format(_currentDate),
-                              //_invoice!.dateinstall_task.toString(),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-                            ),
-                            readOnly: true,
-                            onTap: () {
-                              _selectDate(context, DateTime.now());
-                            },
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        Flexible(
-                          child: TextFormField(
-                            validator: (value) {
-                                      if (selectedTime == TimeOfDay(hour: -1, minute: 00))
-                                      {
-                                        return 'يرجى تعيين الوقت ';
-                                      }},
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                                color: kMainColor,
-                              ),
-                              hintStyle: const TextStyle(
-                                  color: Colors.black45,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              hintText: _invoice!.dateinstall_task ==null
-                                  &&  selectedTime == TimeOfDay(hour: -1, minute: 00)
-                                  ?   'الوقت ' //_currentDate.toString()
-                                  :
-                              selectedTime.minute.toString()
-                                  +' : '+ selectedTime.hour.toInt().toString(),
-                              //_invoice!.dateinstall_task.toString(),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-
-                            ),
-                           // / controller: _timeController,
-                            readOnly: true,
-                            onTap: () {
-                               _selectTime(context,timinit);
-                            },
-                          ),
-                        ),
-
-                        _invoice!.dateinstall_task == null//first time for set date for client
-                            ? IconButton(
-                            onPressed: () {
-
-                              // if( selectedTime != TimeOfDay(hour: -10, minute: 00)
-                              //     && _currentDate!= DateTime(1, 1, 1)) {
-                                if(_globalKey.currentState!.validate()){
-                                  _globalKey.currentState!.save();
-                                  Provider.of<invoice_vm>(context,
-                                      listen: false).setisload();
-                              DateTime datetask = DateTime(
-                                    _currentDate.year, _currentDate.month,
-                                    _currentDate.day,
-                                    selectedTime.hour, selectedTime.minute);
-
-                                Provider.of<invoice_vm>(context,
-                                    listen: false)
-                                    .setdate_vm({
-                                  'dateinstall_task': datetask.toString(),
-                                  //_invoice.dateinstall_task.toString()
-                                  'fkusertask':Provider.of<user_vm_provider>(context,listen: false)
-                                      .currentUser.idUser,
-                                  // 'nameusertask':Provider.of<user_vm_provider>(context,listen: false)
-                                  //     .currentUser!.nameUser,
-                                }, _invoice!.idInvoice).then(
-                                        (value) => clear()  );
-                                // _invoice!.dateinstall_task =
-                                //     _currentDate.toString();
-                                 _currentDate = DateTime(1, 1, 1);
-                                  selectedTime = TimeOfDay(hour: -1, minute: 00);
-                              } else {
-
-                                }},
-                            icon: Icon(Icons.check,
-                                size: 50, color: kMainColor))
-                            : Container(),
-                        SizedBox(
-                          height: 6,
-                        ),
-                      ],
-                    ),
-                  ) :  Container(),
-
-                Provider.of<privilge_vm>(context,listen: true)
-                    .checkprivlge('42')==true ?
-                  _invoice!.dateinstall_task != null &&
-                      _invoice!.dateinstall_done == null
-                      ? ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all(kMainColor)),
-                    onPressed: () async {
-                      await showDialog<void>(
-                          context: context,
-                          builder: (context) => dialog
-                      );
-                      // setState(() {
-                      //   valueresoan=true;
-                      //
-                      // });
-                    },
-                    child: Text('إعادة تعيين تاريخ التركيب'),
-                  )
-                      : Container():Container(),
-
-                  SizedBox(
-                    height: 20,
-                  ),
-                _invoice!.dateinstall_done == null
-                      ? Container()
-                      : cardRow(
-                      title: ' تاريخ التركيب ',
-                      value: DateFormat('yyyy-MM-dd HH:mm').format(
-                          DateTime.parse( _invoice!.dateinstall_done.toString()))
-                  ),
-
-                  _invoice!.dateinstall_done == null
-                      ? Container()
-                      : cardRow(
-                      title: ' تم التركيب من قبل ',
-                      value: getnameshort(
-                          _invoice!.nameuserinstall.toString())),
-                _invoice!.clientusername == null
-                    ? Container()
-                    : cardRow(
-                    title: 'يوزر العميل ',
-                    value: getnameshort(
-                        _invoice!.clientusername.toString())),
-//////////////////////////////////////////////////////////////////////////////////////////
-                  _invoice!.daterepaly != null
-                      ? cardRow(
-                      title: ' تاريخ إعادة الجدولة',
-                      value:DateFormat('yyyy-MM-dd HH:mm').format(
-                          DateTime.parse( _invoice!.daterepaly.toString())))
-                      : Container(),
-                  _invoice!.daterepaly != null
-                      ? cardRow(
-                      title: ' قام بإعادة الجدولة',
-                      value: _invoice!.nameuserreplay.toString())
-                      : Container(),
-                  _invoice!.daterepaly != null
-                      ? cardRow(
-                      title: ' سبب إعادة الجدولة',
-                      value: _invoice!.reason_date.toString(),isExpanded: true,)
-                      : Container(),
-                  ///////////////////////////////////////////////
-                  _invoice!.dateinstall_task != null
-                      ? cardRow(
-                      title: ' تاريخ جدولة التركيب ',
-                      value: DateFormat('yyyy-MM-dd HH:mm').format(
-                          DateTime.parse(
-                              _invoice!.dateinstall_task.toString()))
-                      // DateFormat.yMMMd().
-                      // format(DateTime.parse(_invoice!.dateinstall_task.toString()))
-                      )
-                      : Container(),
-                  _invoice!.dateinstall_task != null
-                      ? cardRow(
-                      title: ' قام بجدولة التركيب ',
-                      value: _invoice!.nameusertask.toString())
-                      : Container(),
-                  cardRow(
-                      title: 'طريقة التركيب ',
-                      value: _invoice!.typeInstallation.toString() == '0'
-                          ? 'ميداني'
-                          : 'اونلاين'),
-                  cardRow(
-                      title: 'هل تم التركيب للعميل ',
-                      value: _invoice!.dateinstall_done == null
-                          ? 'بالانتظار'
-                          : 'تم التركيب'),
-
-                _invoice!.date_readyinstall != null
-                    ? cardRow(
-                    title: ' تاريخ الغاء تعليق العميل ',
-                    value: DateFormat('yyyy-MM-dd HH:mm').format(
-                        DateTime.parse(_invoice!.date_readyinstall.toString())))
-                    : Container(),
-                _invoice!.date_readyinstall != null
-                    ? cardRow(
-                    title: ' قام بالغاء تعليق العميل ',
-                    value: _invoice!.nameuser_ready_install.toString())
-                    : Container(),
-////////////////////////////////////////////////////////////////
-                _invoice!.date_not_readyinstall != null
-                    ? cardRow(
-                    title: ' تاريخ تعليق العميل ',
-                    value: DateFormat('yyyy-MM-dd HH:mm').format(
-                        DateTime.parse(_invoice!.date_not_readyinstall.toString())))
-                    : Container(),
-                _invoice!.date_not_readyinstall != null
-                    ? cardRow(
-                    title: ' قام بتعليق العميل ',
-                    value: _invoice!.nameuser_notready_install.toString())
-                    : Container(),
-
-                Provider.of<privilge_vm>(context,listen: true)
-                    .checkprivlge('43')==true ?
-                  _invoice!.dateinstall_done == null &&_invoice!.dateinstall_task!=null
-                      ? ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.all(kMainColor)),
-                      onPressed: () async {
-                        await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return ModalProgressHUD(
-                                inAsyncCall: Provider.of<invoice_vm>(context,listen: true)
-                                .isloadingdone,
-                                child: Directionality(
-                                  textDirection: myui. TextDirection.rtl,
-                                  child: AlertDialog(
-                                  title: Text('التأكيد'),
-                                  content: Text('هل تريد تأكيد عملية التركيب'),
-                                  actions: <Widget>[
-                                    Column(
-                                      children: [
-                                        EditTextFormField(
-                                          maxline: 4,
-                                          paddcustom: EdgeInsets.all(10),
-                                          hintText:
-                                          ' يوزر العميل',
-                                          obscureText: false,
-                                          controller: _textnameuserclient,
-                                          vaild: (value) {
-                                            if (value.toString().trim().isEmpty) {
-                                              return 'الحقل فارغ';
-                                            }
-                                          },
+                    children: [
+                      _invoice!.dateinstall_done == null &&
+                              _invoice!.dateinstall_task == null
+                          ? RowEdit(
+                              name: 'تحديد موعد التركيب والتدريب ', des: '')
+                          : Container(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      _invoice!.dateinstall_done == null &&
+                              _invoice!.dateinstall_task == null
+                          ? //تم التركيب
+                          Form(
+                              key: _globalKey,
+                              child: Row(
+                                children: [
+                                  //  SizedBox(width: 3,),
+                                  Flexible(
+                                    child: TextFormField(
+                                      validator: (value) {
+                                        if (_currentDate == DateTime(1, 1, 1)) {
+                                          return 'يرجى تعيين التاريخ ';
+                                        }
+                                      },
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.date_range,
+                                          color: kMainColor,
                                         ),
-                                        SizedBox(height: 10,),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                          ElevatedButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    kMainColor)),
-                                            onPressed: () {
-                                              Navigator.of(context,
-                                                  rootNavigator: true)
-                                                  .pop(
-                                                  false); // dismisses only the dialog and returns false
-                                            },
-                                            child: Text('لا'),
-                                          ),
-                                          ElevatedButton(
-                                            style: ButtonStyle(
-                                                backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    kMainColor)),
-                                            onPressed: () async {
+                                        hintStyle: const TextStyle(
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText: _invoice!.dateinstall_task ==
+                                                    null &&
+                                                _currentDate ==
+                                                    DateTime(1, 1, 1)
+                                            ? 'التاريخ' //_currentDate.toString()
+                                            : DateFormat('yyyy-MM-dd')
+                                                .format(_currentDate),
+                                        //_invoice!.dateinstall_task.toString(),
+                                        filled: true,
+                                        fillColor: Colors.grey.shade200,
+                                      ),
+                                      readOnly: true,
+                                      onTap: () {
+                                        _selectDate(context, DateTime.now());
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Flexible(
+                                    child: TextFormField(
+                                      validator: (value) {
+                                        if (selectedTime ==
+                                            TimeOfDay(hour: -1, minute: 00)) {
+                                          return 'يرجى تعيين الوقت ';
+                                        }
+                                      },
+                                      decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.date_range,
+                                          color: kMainColor,
+                                        ),
+                                        hintStyle: const TextStyle(
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText: _invoice!.dateinstall_task ==
+                                                    null &&
+                                                selectedTime ==
+                                                    TimeOfDay(
+                                                        hour: -1, minute: 00)
+                                            ? 'الوقت ' //_currentDate.toString()
+                                            : selectedTime.minute.toString() +
+                                                ' : ' +
+                                                selectedTime.hour
+                                                    .toInt()
+                                                    .toString(),
+                                        //_invoice!.dateinstall_task.toString(),
+                                        filled: true,
+                                        fillColor: Colors.grey.shade200,
+                                      ),
+                                      // / controller: _timeController,
+                                      readOnly: true,
+                                      onTap: () {
+                                        _selectTime(context, timinit);
+                                      },
+                                    ),
+                                  ),
+
+                                  _invoice!.dateinstall_task ==
+                                          null //first time for set date for client
+                                      ? IconButton(
+                                          onPressed: () {
+                                            // if( selectedTime != TimeOfDay(hour: -10, minute: 00)
+                                            //     && _currentDate!= DateTime(1, 1, 1)) {
+                                            if (_globalKey.currentState!
+                                                .validate()) {
+                                              _globalKey.currentState!.save();
                                               Provider.of<invoice_vm>(context,
-                                                  listen: false).setisload();
-                                              await Provider.of<config_vm>(context, listen: false).getAllConfig();
-                                              List<ConfigModel> _listconfg =
-                                                  Provider.of<config_vm>(context, listen: false)
-                                                      .listofconfig;
-                                              ConfigModel   peroid =
-                                              _listconfg.firstWhere((element) =>
-                                              element.name_config == 'period_commincation3');//تواصل دوري
-                                              DateTime datanext=DateTime.now();
-                                              int peroidtime= int.parse(peroid.value_config);
-                                              datanext=Jiffy().add(days: peroidtime).dateTime;
-                                              print(datanext.toString());
-                                              await Provider.of<invoice_vm>(context,
-                                                  listen: false)
-                                                  .setdatedone_vm({
-                                               'clientusername':_textnameuserclient.text,
-                                               'datanext':datanext.toString(),
-                                                'dateinstall_done':
-                                                DateTime.now().toString(),
-                                                'userinstall':
-                                                Provider.of<user_vm_provider>(
-                                                    context,
-                                                    listen: false).currentUser.idUser.toString(),
-                                                'isdoneinstall': '1',
-                                                'fkIdClient': _invoice!.fkIdClient,
-                                                'nameuserinstall':
-                                                Provider.of<user_vm_provider>(
-                                                    context,
-                                                    listen: false).currentUser.nameUser.toString(),
-                                                'name_enterprise':
-                                                _invoice!.name_enterprise,
-                                                'fkcountry': _invoice!.fk_country,
-                                                'fk_regoin': _invoice!.fk_regoin
+                                                      listen: false)
+                                                  .setisload();
+                                              DateTime datetask = DateTime(
+                                                  _currentDate.year,
+                                                  _currentDate.month,
+                                                  _currentDate.day,
+                                                  selectedTime.hour,
+                                                  selectedTime.minute);
+
+                                              Provider.of<invoice_vm>(context,
+                                                      listen: false)
+                                                  .setdate_vm({
+                                                'dateinstall_task':
+                                                    datetask.toString(),
+                                                //_invoice.dateinstall_task.toString()
+                                                'fkusertask': Provider.of<
+                                                            user_vm_provider>(
+                                                        context,
+                                                        listen: false)
+                                                    .currentUser
+                                                    .idUser,
+                                                // 'nameusertask':Provider.of<user_vm_provider>(context,listen: false)
+                                                //     .currentUser!.nameUser,
                                               }, _invoice!.idInvoice).then(
                                                       (value) => clear());
-                                              Navigator.of(context,
-                                                  rootNavigator: true)
-                                                  .pop(true);
-                                            },
-                                            child: Text('نعم'),
-                                          ),
-                                        ],)
-                                      ],
-                                    ),
-
-                                  ],
+                                              // _invoice!.dateinstall_task =
+                                              //     _currentDate.toString();
+                                              _currentDate = DateTime(1, 1, 1);
+                                              selectedTime = TimeOfDay(
+                                                  hour: -1, minute: 00);
+                                            } else {}
+                                          },
+                                          icon: Icon(Icons.check,
+                                              size: 50, color: kMainColor))
+                                      : Container(),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                ],
                               ),
-                                ),
-                            );
-                          },
-                        );
-                        //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
-                      },
-                      child: Text('تم التركيب للعميل'))
-                      : Container():Container(),
+                            )
+                          : Container(),
 
-                _invoice!.dateinstall_done != null?
-                Container():
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
+                      Provider.of<privilge_vm>(context, listen: true)
+                                  .checkprivlge('42') ==
+                              true
+                          ? _invoice!.dateinstall_task != null &&
+                                  _invoice!.dateinstall_done == null
+                              ? ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              kMainColor)),
+                                  onPressed: () async {
+                                    await showDialog<void>(
+                                        context: context,
+                                        builder: (context) => dialog);
+                                    // setState(() {
+                                    //   valueresoan=true;
+                                    //
+                                    // });
+                                  },
+                                  child: Text('إعادة تعيين تاريخ التركيب'),
+                                )
+                              : Container()
+                          : Container(),
 
-                    Provider.of<privilge_vm>(context,listen: true)
-                        .checkprivlge('110')==true?  ElevatedButton(
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _invoice!.dateinstall_done == null
+                          ? Container()
+                          : cardRow(
+                              title: ' تاريخ التركيب ',
+                              value: DateFormat('yyyy-MM-dd HH:mm').format(
+                                  DateTime.parse(
+                                      _invoice!.dateinstall_done.toString()))),
 
-                        style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStateProperty.all(kMainColor)),
-                        onPressed:    _invoice!.ready_install=='1'?null: () async {
-                          await showDialog(
-                            context: context,
-                            builder: (context) {
-                              return ModalProgressHUD(
-                                inAsyncCall: Provider.of<invoice_vm>(context,listen: true)
-                                    .isloadingdone,
-                                child: Directionality(
-                                  textDirection: myui. TextDirection.rtl,
-                                  child: AlertDialog(
-                                    title: Text('التأكيد'),
-                                    content: Text('هل تريد تحويل العميل إلى جاهز للتركيب '),
-                                    actions: <Widget>[
-                                      Column(
-                                        children: [
+                      _invoice!.dateinstall_done == null
+                          ? Container()
+                          : cardRow(
+                              title: ' تم التركيب من قبل ',
+                              value: getnameshort(
+                                  _invoice!.nameuserinstall.toString())),
+                      _invoice!.clientusername == null
+                          ? Container()
+                          : cardRow(
+                              title: 'يوزر العميل ',
+                              value: getnameshort(
+                                  _invoice!.clientusername.toString())),
+//////////////////////////////////////////////////////////////////////////////////////////
+                      _invoice!.daterepaly != null
+                          ? cardRow(
+                              title: ' تاريخ إعادة الجدولة',
+                              value: DateFormat('yyyy-MM-dd HH:mm').format(
+                                  DateTime.parse(
+                                      _invoice!.daterepaly.toString())))
+                          : Container(),
+                      _invoice!.daterepaly != null
+                          ? cardRow(
+                              title: ' قام بإعادة الجدولة',
+                              value: _invoice!.nameuserreplay.toString())
+                          : Container(),
+                      _invoice!.daterepaly != null
+                          ? cardRow(
+                              title: ' سبب إعادة الجدولة',
+                              value: _invoice!.reason_date.toString(),
+                              isExpanded: true,
+                            )
+                          : Container(),
+                      ///////////////////////////////////////////////
+                      _invoice!.dateinstall_task != null
+                          ? cardRow(
+                              title: ' تاريخ جدولة التركيب ',
+                              value: DateFormat('yyyy-MM-dd HH:mm').format(
+                                  DateTime.parse(
+                                      _invoice!.dateinstall_task.toString()))
+                              // DateFormat.yMMMd().
+                              // format(DateTime.parse(_invoice!.dateinstall_task.toString()))
+                              )
+                          : Container(),
+                      _invoice!.dateinstall_task != null
+                          ? cardRow(
+                              title: ' قام بجدولة التركيب ',
+                              value: _invoice!.nameusertask.toString())
+                          : Container(),
+                      cardRow(
+                          title: 'طريقة التركيب ',
+                          value: _invoice!.typeInstallation.toString() == '0'
+                              ? 'ميداني'
+                              : 'اونلاين'),
+                      cardRow(
+                          title: 'هل تم التركيب للعميل ',
+                          value: _invoice!.dateinstall_done == null
+                              ? 'بالانتظار'
+                              : 'تم التركيب'),
 
-                                          SizedBox(height: 10,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              ElevatedButton(
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        kMainColor)),
-                                                onPressed: () {
-                                                  Navigator.of(context,
-                                                      rootNavigator: true)
-                                                      .pop(
-                                                      false); // dismisses only the dialog and returns false
-                                                },
-                                                child: Text('لا'),
-                                              ),
-                                              ElevatedButton(
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        kMainColor)),
-                                                onPressed: () async {
-                                                  Provider.of<invoice_vm>(context,
-                                                      listen: false).setisload();
+                      _invoice!.date_readyinstall != null
+                          ? cardRow(
+                              title: ' تاريخ الغاء تعليق العميل ',
+                              value: DateFormat('yyyy-MM-dd HH:mm').format(
+                                  DateTime.parse(
+                                      _invoice!.date_readyinstall.toString())))
+                          : Container(),
+                      _invoice!.date_readyinstall != null
+                          ? cardRow(
+                              title: ' قام بالغاء تعليق العميل ',
+                              value:
+                                  _invoice!.nameuser_ready_install.toString())
+                          : Container(),
+////////////////////////////////////////////////////////////////
+                      _invoice!.date_not_readyinstall != null
+                          ? cardRow(
+                              title: ' تاريخ تعليق العميل ',
+                              value: DateFormat('yyyy-MM-dd HH:mm').format(
+                                  DateTime.parse(_invoice!.date_not_readyinstall
+                                      .toString())))
+                          : Container(),
+                      _invoice!.date_not_readyinstall != null
+                          ? cardRow(
+                              title: ' قام بتعليق العميل ',
+                              value: _invoice!.nameuser_notready_install
+                                  .toString())
+                          : Container(),
 
-                                                  await Provider.of<invoice_vm>(context,
-                                                      listen: false)
-                                                      .set_ready_install({
+                      Provider.of<privilge_vm>(context, listen: true)
+                                  .checkprivlge('43') ==
+                              true
+                          ? _invoice!.dateinstall_done == null &&
+                                  _invoice!.dateinstall_task != null
+                              ? ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              kMainColor)),
+                                  onPressed: () async {
+                                    await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return ModalProgressHUD(
+                                          inAsyncCall: Provider.of<invoice_vm>(
+                                                  context,
+                                                  listen: true)
+                                              .isloadingdone,
+                                          child: Directionality(
+                                            textDirection:
+                                                myui.TextDirection.rtl,
+                                            child: AlertDialog(
+                                              title: Text('التأكيد'),
+                                              content: Text(
+                                                  'هل تريد تأكيد عملية التركيب'),
+                                              actions: <Widget>[
+                                                Column(
+                                                  children: [
+                                                    EditTextFormField(
+                                                      maxline: 4,
+                                                      paddcustom:
+                                                          EdgeInsets.all(10),
+                                                      hintText: ' يوزر العميل',
+                                                      obscureText: false,
+                                                      controller:
+                                                          _textnameuserclient,
+                                                      vaild: (value) {
+                                                        if (value
+                                                            .toString()
+                                                            .trim()
+                                                            .isEmpty) {
+                                                          return 'الحقل فارغ';
+                                                        }
+                                                      },
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        ElevatedButton(
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                                  MaterialStateProperty
+                                                                      .all(
+                                                                          kMainColor)),
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context,
+                                                                    rootNavigator:
+                                                                        true)
+                                                                .pop(
+                                                                    false); // dismisses only the dialog and returns false
+                                                          },
+                                                          child: Text('لا'),
+                                                        ),
+                                                        ElevatedButton(
+                                                          style: ButtonStyle(
+                                                              backgroundColor:
+                                                                  MaterialStateProperty
+                                                                      .all(
+                                                                          kMainColor)),
+                                                          onPressed: () async {
+                                                            Provider.of<invoice_vm>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .setisload();
+                                                            await Provider.of<
+                                                                        config_vm>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .getAllConfig();
+                                                            List<ConfigModel>
+                                                                _listconfg =
+                                                                Provider.of<config_vm>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .listofconfig;
+                                                            ConfigModel peroid =
+                                                                _listconfg.firstWhere(
+                                                                    (element) =>
+                                                                        element
+                                                                            .name_config ==
+                                                                        'period_commincation3'); //تواصل دوري
+                                                            DateTime datanext =
+                                                                DateTime.now();
+                                                            int peroidtime =
+                                                                int.parse(peroid
+                                                                    .value_config);
+                                                            datanext = Jiffy()
+                                                                .add(
+                                                                    days:
+                                                                        peroidtime)
+                                                                .dateTime;
+                                                            print(datanext
+                                                                .toString());
+                                                            await Provider.of<
+                                                                        invoice_vm>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .setdatedone_vm(
+                                                                    {
+                                                                  'clientusername':
+                                                                      _textnameuserclient
+                                                                          .text,
+                                                                  'datanext':
+                                                                      datanext
+                                                                          .toString(),
+                                                                  'dateinstall_done':
+                                                                      DateTime.now()
+                                                                          .toString(),
+                                                                  'userinstall': Provider.of<
+                                                                              user_vm_provider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .currentUser
+                                                                      .idUser
+                                                                      .toString(),
+                                                                  'isdoneinstall':
+                                                                      '1',
+                                                                  'fkIdClient':
+                                                                      _invoice!
+                                                                          .fkIdClient,
+                                                                  'nameuserinstall': Provider.of<
+                                                                              user_vm_provider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .currentUser
+                                                                      .nameUser
+                                                                      .toString(),
+                                                                  'name_enterprise':
+                                                                      _invoice!
+                                                                          .name_enterprise,
+                                                                  'fkcountry':
+                                                                      _invoice!
+                                                                          .fk_country,
+                                                                  'fk_regoin':
+                                                                      _invoice!
+                                                                          .fk_regoin
+                                                                },
+                                                                    _invoice!
+                                                                        .idInvoice).then(
+                                                                    (value) =>
+                                                                        clear());
+                                                            Navigator.of(
+                                                                    context,
+                                                                    rootNavigator:
+                                                                        true)
+                                                                .pop(true);
+                                                          },
+                                                          child: Text('نعم'),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                    //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
+                                  },
+                                  child: Text('تم التركيب للعميل'))
+                              : Container()
+                          : Container(),
 
-                                                    'date_readyinstall':
-                                                    DateTime.now().toString(),
-                                                    'user_ready_install':
-                                                    Provider.of<user_vm_provider>(
-                                                        context,
-                                                        listen: false).currentUser.idUser.toString(),
-                                                    'ready_install': '1',
+                      _invoice!.dateinstall_done != null
+                          ? Container()
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Provider.of<privilge_vm>(context, listen: true)
+                                            .checkprivlge('110') ==
+                                        true
+                                    ? ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    kMainColor)),
+                                        onPressed:
+                                            _invoice!.ready_install == '1'
+                                                ? null
+                                                : () async {
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return ModalProgressHUD(
+                                                          inAsyncCall: Provider.of<
+                                                                      invoice_vm>(
+                                                                  context,
+                                                                  listen: true)
+                                                              .isloadingdone,
+                                                          child: Directionality(
+                                                            textDirection: myui
+                                                                .TextDirection
+                                                                .rtl,
+                                                            child: AlertDialog(
+                                                              title: Text(
+                                                                  'التأكيد'),
+                                                              content: Text(
+                                                                  'هل تريد تحويل العميل إلى جاهز للتركيب '),
+                                                              actions: <Widget>[
+                                                                Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceEvenly,
+                                                                      children: [
+                                                                        ElevatedButton(
+                                                                          style:
+                                                                              ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context, rootNavigator: true).pop(false); // dismisses only the dialog and returns false
+                                                                          },
+                                                                          child:
+                                                                              Text('لا'),
+                                                                        ),
+                                                                        ElevatedButton(
+                                                                          style:
+                                                                              ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                                          onPressed:
+                                                                              () async {
+                                                                            Provider.of<invoice_vm>(context, listen: false).setisload();
 
-                                                  }, _invoice!.idInvoice).then(
-                                                          (value) => clear());
-                                                  Navigator.of(context,
-                                                      rootNavigator: true)
-                                                      .pop(true);
-                                                },
-                                                child: Text('نعم'),
-                                              ),
-                                            ],)
-                                        ],
-                                      ),
+                                                                            await Provider.of<invoice_vm>(context, listen: false).set_ready_install({
+                                                                              'date_readyinstall': DateTime.now().toString(),
+                                                                              'user_ready_install': Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                                                              'ready_install': '1',
+                                                                            }, _invoice!.idInvoice).then((value) => clear());
+                                                                            Navigator.of(context, rootNavigator: true).pop(true);
+                                                                          },
+                                                                          child:
+                                                                              Text('نعم'),
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                    //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
+                                                  },
+                                        child: Text('جاهز للتركيب'))
+                                    : Container(),
+                                Provider.of<privilge_vm>(context, listen: true)
+                                            .checkprivlge('109') ==
+                                        true
+                                    ? ElevatedButton(
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    kMainColor)),
+                                        onPressed:
+                                            _invoice!.ready_install == '0'
+                                                ? null
+                                                : () async {
+                                                    await showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return ModalProgressHUD(
+                                                          inAsyncCall: Provider.of<
+                                                                      invoice_vm>(
+                                                                  context,
+                                                                  listen: true)
+                                                              .isloadingdone,
+                                                          child: Directionality(
+                                                            textDirection: myui
+                                                                .TextDirection
+                                                                .rtl,
+                                                            child: AlertDialog(
+                                                              title: Text(
+                                                                  'التأكيد'),
+                                                              content: Text(
+                                                                  'هل تريد تحويل العميل إلى غير جاهز للتركيب '),
+                                                              actions: <Widget>[
+                                                                Column(
+                                                                  children: [
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10,
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceEvenly,
+                                                                      children: [
+                                                                        ElevatedButton(
+                                                                          style:
+                                                                              ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context, rootNavigator: true).pop(false); // dismisses only the dialog and returns false
+                                                                          },
+                                                                          child:
+                                                                              Text('لا'),
+                                                                        ),
+                                                                        ElevatedButton(
+                                                                          style:
+                                                                              ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                                          onPressed:
+                                                                              () async {
+                                                                            Provider.of<invoice_vm>(context, listen: false).setisload();
 
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                          //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
-                        },
-                        child: Text('جاهز للتركيب')):Container(),
+                                                                            var body =
+                                                                                {
+                                                                              // _invoice.date_not_readyinstall-
+                                                                              'date_temp': _invoice!.date_not_readyinstall.toString(),
+                                                                              'date_not_readyinstall': DateTime.now().toString(),
+                                                                              'user_not_ready_install': Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                                                              'ready_install': '0', //suspend client
+                                                                            };
+                                                                            if (_invoice!.count_delay_ready !=
+                                                                                null)
+                                                                              body.addAll({
+                                                                                'count_delay_ready': _invoice!.count_delay_ready.toString(),
+                                                                              });
 
-                    Provider.of<privilge_vm>(context,listen: true)
-                        .checkprivlge('109')==true?
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor:
-                            MaterialStateProperty.all(kMainColor)),
-                        onPressed:   _invoice!.ready_install=='0'?null: () async {
-                          await showDialog(
-                            context: context,
-                            builder: (context) {
-                              return ModalProgressHUD(
-                                inAsyncCall: Provider.of<invoice_vm>(context,listen: true)
-                                    .isloadingdone,
-                                child: Directionality(
-                                  textDirection: myui. TextDirection.rtl,
-                                  child: AlertDialog(
-                                    title: Text('التأكيد'),
-                                    content: Text('هل تريد تحويل العميل إلى غير جاهز للتركيب '),
-                                    actions: <Widget>[
-                                      Column(
-                                        children: [
-
-                                          SizedBox(height: 10,),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              ElevatedButton(
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        kMainColor)),
-                                                onPressed: () {
-                                                  Navigator.of(context,
-                                                      rootNavigator: true)
-                                                      .pop(
-                                                      false); // dismisses only the dialog and returns false
-                                                },
-                                                child: Text('لا'),
-                                              ),
-                                              ElevatedButton(
-                                                style: ButtonStyle(
-                                                    backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        kMainColor)),
-                                                onPressed: () async {
-                                                  Provider.of<invoice_vm>(context,
-                                                      listen: false).setisload();
-
-                                                  var body={
-
-                                                    // _invoice.date_not_readyinstall-
-                                                    'date_temp': _invoice!.date_not_readyinstall.toString(),
-                                                    'date_not_readyinstall':
-                                                    DateTime.now().toString(),
-                                                    'user_not_ready_install':
-                                                    Provider.of<user_vm_provider>(
-                                                        context,
-                                                        listen: false).currentUser.idUser.toString(),
-                                                    'ready_install': '0',//suspend client
-
-                                                  };
-                                                 if( _invoice!.count_delay_ready!=null)
-                                                  body.addAll({
-                                                  'count_delay_ready':
-                                                  _invoice!.count_delay_ready.toString(),
-                                                  });
-
-                                                  await Provider.of<invoice_vm>(context,
-                                                      listen: false)
-                                                      .set_ready_install(body, _invoice!.idInvoice).then(
-                                                          (value) => clear());
-                                                  Navigator.of(context,
-                                                      rootNavigator: true)
-                                                      .pop(true);
-                                                },
-                                                child: Text('نعم'),
-                                              ),
-                                            ],)
-                                        ],
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                          //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
-                        },
-                        child: Text('غير جاهز للتركيب')):Container(),
-
-                  ],
-                ),
-
-              ],
-            ),
+                                                                            await Provider.of<invoice_vm>(context, listen: false).set_ready_install(body, _invoice!.idInvoice).then((value) =>
+                                                                                clear());
+                                                                            Navigator.of(context, rootNavigator: true).pop(true);
+                                                                          },
+                                                                          child:
+                                                                              Text('نعم'),
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                    //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
+                                                  },
+                                        child: Text('غير جاهز للتركيب'))
+                                    : Container(),
+                              ],
+                            ),
+                    ],
+                  ),
                 )),
           ),
         ),
@@ -835,7 +965,7 @@ class _support_addState extends State<support_add> {
   late String _setTime, _setDate;
 
   late String _hour, _minute, _time;
-  Future<Null> _selectTime(BuildContext context,TimeOfDay stime) async {
+  Future<Null> _selectTime(BuildContext context, TimeOfDay stime) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: stime,
@@ -847,23 +977,23 @@ class _support_addState extends State<support_add> {
         _minute = selectedTime.minute.toString();
         _time = _hour + ' : ' + _minute;
         _timeController.text = _time;
-        _timeController.text =selectedTime.toString();
+        _timeController.text = selectedTime.toString();
         print('ssdsds');
         print(TimeOfDay.now());
         print(selectedTime.toString());
-            // Utils.toTime(selectedTime)
-            // formatDate(
-            // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-            // [hh, ':', nn, " ", am]).toString();
+        // Utils.toTime(selectedTime)
+        // formatDate(
+        // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+        // [hh, ':', nn, " ", am]).toString();
       });
-    Provider.of<datetime_vm>(context,listen: false)
-        .setdatetimevalue(_currentDate,selectedTime);
+    Provider.of<datetime_vm>(context, listen: false)
+        .setdatetimevalue(_currentDate, selectedTime);
+  }
 
-  }   
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
     //String output = formatter.format(currentDate);
     // DateFormat('yyyy-MM-dd – kk:mm').format(now);
-     DateTime? pickedDate = await showDatePicker(
+    DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
         initialDate: currentDate,
@@ -874,41 +1004,40 @@ class _support_addState extends State<support_add> {
         // _invoice.dateinstall_task=pickedDate.toString() ;
         _currentDate = pickedDate;
         print(_currentDate.toString());
-        
-        final time = Duration(hours: DateTime.now().hour,
-            minutes: DateTime.now().minute,seconds: DateTime.now().second);
-       print('timme');
-       print(DateFormat.Hms().format(_currentDate));
-       _currentDate.add(Duration(hours: DateTime.now().hour));
+
+        final time = Duration(
+            hours: DateTime.now().hour,
+            minutes: DateTime.now().minute,
+            seconds: DateTime.now().second);
+        print('timme');
+        print(DateFormat.Hms().format(_currentDate));
+        _currentDate.add(Duration(hours: DateTime.now().hour));
         print(time.toString());
         print(_currentDate.toString());
-       // _currentDate.add(Duration(hours: selectedTime.hour));
+        // _currentDate.add(Duration(hours: selectedTime.hour));
 
         // _invoice!.dateinstall_task = _currentDate.toString();
         //_invoice!.daterepaly = _currentDate.toString();
         //_currentDate.hour=DateTime.now().hour;
       });
-    Provider.of<datetime_vm>(context,listen: false).setdatetimevalue(
-        _currentDate,selectedTime);
+    Provider.of<datetime_vm>(context, listen: false)
+        .setdatetimevalue(_currentDate, selectedTime);
   }
 
   clear() {
-
     _currentDate = DateTime(1, 1, 1);
     selectedTime = TimeOfDay(hour: -1, minute: 00);
-    Provider.of<datetime_vm>(context,listen: false).setdatetimevalue(
-        DateTime(1, 1, 1),TimeOfDay(hour: -1, minute: 00)
-    );
+    Provider.of<datetime_vm>(context, listen: false)
+        .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
     // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('تم التثبيت بنجاح')));
   }
+
   clear2() {
-    Navigator.of(context, rootNavigator: true)
-        .pop(false);
+    Navigator.of(context, rootNavigator: true).pop(false);
     _currentDate = DateTime(1, 1, 1);
     selectedTime = TimeOfDay(hour: -1, minute: 00);
-    Provider.of<datetime_vm>(context,listen: false).setdatetimevalue(
-        DateTime(1, 1, 1),TimeOfDay(hour: -1, minute: 00)
-    );
+    Provider.of<datetime_vm>(context, listen: false)
+        .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
     // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('تم التثبيت بنجاح')));
   }
 

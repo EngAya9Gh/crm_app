@@ -23,6 +23,7 @@ import '../../../constants.dart';
 import '../../../function_global.dart';
 import '../../../labeltext.dart';
 import 'add_payement.dart';
+import 'edit_invoice.dart';
 
 class InvoiceView extends StatefulWidget {
   InvoiceView({this.type, required this.invoice,
@@ -387,7 +388,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                         title: 'معتمد الفاتورة',
                         value: getnameshort(widget.invoice!.nameuserApprove.toString())):Container(),
 
-                    widget.invoice!.nameuserApprove!=null?  cardRow(
+                    widget.invoice!.nameuserApprove!=null?
+                    cardRow(
                         title: 'تاريخ اعتماد الفاتورة',
                         value: widget.invoice!.date_approve.toString()):Container(),
                     widget.invoice!.date_lastuserupdate != null?
@@ -596,6 +598,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                       ),),
 
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomButton(
                           //width: MediaQuery.of(context).size.width * 0.2,
@@ -608,7 +611,20 @@ class _InvoiceViewState extends State<InvoiceView> {
                                        ) // support_view(type: 'only',)
                             ));
                           },
-                        )
+                        ),
+                        SizedBox(width: 5),
+                        CustomButton(
+                          //width: MediaQuery.of(context).size.width * 0.2,
+                          text: 'تغيير بيانات الفاتورة',
+                          onTap: () async {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (context)=>
+                                    edit_invoice(
+                                      invoiceModel: widget.invoice!,
+                                       ) // support_view(type: 'only',)
+                            ));
+                          },
+                        ),
                       ],
                     ),
                     widget.type=='approved'?

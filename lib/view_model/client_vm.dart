@@ -172,12 +172,10 @@ class client_vm extends ChangeNotifier {
   }
   Future<void> getclientfilter_Local(
       String? searchfilter,String type,
-      String? filter2,String? filter3
+      String? filter2,String? filter3,String? filteractivity
       // , List<ClientModel> list
       )
   async {
-    // if(listClient.isEmpty)
-    // List<ClientModel> lists=[];
 
     listClientfilter=[];
     if(type=="3"){
@@ -259,7 +257,13 @@ class client_vm extends ChangeNotifier {
         }
       }
     }
-
+    if(filteractivity!='')
+    {
+      listClient.forEach((element) {
+        if( element.activity_type_fk==filteractivity)
+          listClientfilter.add(element);
+      });
+    }
     notifyListeners();
   }
   void resetlist(){

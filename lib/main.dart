@@ -1,4 +1,3 @@
-
 import 'package:crm_smart/api/fcm.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
@@ -10,6 +9,7 @@ import 'package:crm_smart/provider/switch_provider.dart';
 import 'package:crm_smart/ui/screen/home/home.dart';
 import 'package:crm_smart/ui/screen/login.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
+import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/approve_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
@@ -40,19 +40,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crm_smart/api/firebase_option.dart';
 import 'binding/binding.dart';
 import 'constants.dart';
+
 //import 'package:firebase_core/firebase_core.dart';
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
 
   //DefaultFirebaseOptions .currentPlatform );
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   print("Handling a background message: ${message.messageId}");
   print("Handling a background message: ${message.data['idclient']}");
   print("Handling a background message: ${message.data['Typenotify']}");
-
-
 }
 
 void main() async {
@@ -61,23 +59,23 @@ void main() async {
   // android:value="high_importance_channel"
   // />
   WidgetsFlutterBinding.ensureInitialized();
- // if (Firebase.apps.isEmpty) {
-    await Firebase.initializeApp(
-      name: "crm_smart",
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
- // }
+  // if (Firebase.apps.isEmpty) {
+  await Firebase.initializeApp(
+    name: "crm_smart",
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // }
 
   // Set the background messaging handler early on, as a named top-level function
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   print('in main ');
- //   print(await FirebaseMessaging.instance.getToken(
- //     //vapidKey: "BLHC6fhpHX_VBbufktusXDMRhLtLI764Ic_ZcCc9Lh2puYzPEvwOpvxDfBmHKtRQu38OU_hUoalT42PxzHc8JPg")
- // ));
+  //   print(await FirebaseMessaging.instance.getToken(
+  //     //vapidKey: "BLHC6fhpHX_VBbufktusXDMRhLtLI764Ic_ZcCc9Lh2puYzPEvwOpvxDfBmHKtRQu38OU_hUoalT42PxzHc8JPg")
+  // ));
 
- // FCM().getmessge();
+  // FCM().getmessge();
   //Provider.debugCheckInvalidValueType = null;
 
   // void main() async {
@@ -86,116 +84,112 @@ void main() async {
   //   runApp(MyApp());
   // }
   //await Firebase.initializeApp();
-  runApp(
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider<user_vm_provider>(create: (_) => user_vm_provider()),
+    ChangeNotifierProvider<navigatorProvider>(
+        create: (_) => navigatorProvider()),
+    ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+    ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
+    ChangeNotifierProvider<selected_button_provider>(
+        create: (_) => selected_button_provider()),
+    ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
+    // ChangeNotifierProvider<config_vm>(create: (_) => config_vm()),
+    ChangeNotifierProxyProvider<user_vm_provider, config_vm>(
+      create: (_) => config_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
+    ChangeNotifierProvider<level_vm>(create: (_) => level_vm()),
+    //ChangeNotifierProvider<regoin_vm>(create: (_) => regoin_vm()),
+    ChangeNotifierProvider<LoadProvider>(create: (_) => LoadProvider()),
+    //ChangeNotifierProvider<product_vm>(create: (_) => product_vm()),
+    ChangeNotifierProxyProvider<user_vm_provider, product_vm>(
+      create: (_) => product_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
+    ChangeNotifierProvider<manage_provider>(create: (_) => manage_provider()),
+    // ChangeNotifierProvider<privilge_vm>(create: (_) => privilge_vm()),
+    ChangeNotifierProxyProvider<user_vm_provider, privilge_vm>(
+      create: (_) => privilge_vm(),
+      //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      //  client_vm(value.currentUser)
+    ),
+    ChangeNotifierProxyProvider<user_vm_provider, regoin_vm>(
+      create: (_) => regoin_vm(),
+      //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      //  client_vm(value.currentUser)
+    ),
 
-      MultiProvider(providers: [
-        ChangeNotifierProvider<user_vm_provider>(create: (_) => user_vm_provider()),
-        ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
-        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-        ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
-        ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
-        ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
-        // ChangeNotifierProvider<config_vm>(create: (_) => config_vm()),
-        ChangeNotifierProxyProvider<user_vm_provider,config_vm>(
-          create: (_)=> config_vm(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-        ),
-         ChangeNotifierProvider<level_vm>(create: (_) => level_vm()),
-        //ChangeNotifierProvider<regoin_vm>(create: (_) => regoin_vm()),
-        ChangeNotifierProvider<LoadProvider>(create: (_) => LoadProvider()),
-        //ChangeNotifierProvider<product_vm>(create: (_) => product_vm()),
-        ChangeNotifierProxyProvider<user_vm_provider,product_vm>(
-          create: (_)=> product_vm(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-        ),
-        ChangeNotifierProvider<manage_provider>(create: (_) => manage_provider()),
-       // ChangeNotifierProvider<privilge_vm>(create: (_) => privilge_vm()),
-        ChangeNotifierProxyProvider<user_vm_provider,privilge_vm>(
-          create: (_)=> privilge_vm(),
-          //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-          //  client_vm(value.currentUser)
-        ),
-        ChangeNotifierProxyProvider<user_vm_provider,regoin_vm>(
-          create: (_)=> regoin_vm(),
-          //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-          //  client_vm(value.currentUser)
-        ),
+    ChangeNotifierProxyProvider<user_vm_provider, client_vm>(
+      create: (_) => client_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
+    ChangeNotifierProxyProvider<user_vm_provider, usertest_vm>(
+      create: (_) => usertest_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
 
-        ChangeNotifierProxyProvider<user_vm_provider,client_vm>(
-             create: (_)=> client_vm(),
-            update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-        ),
-        ChangeNotifierProxyProvider<user_vm_provider,usertest_vm>(
-             create: (_)=> usertest_vm(),
-            update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-        ),
+    // ChangeNotifierProxyProvider<privilge_vm,client_vm>(
+    //   create: (_)=> client_vm(),
+    //   update: (ctx,value,prev)=>prev!..setvaluepriv( value.privilgelist),
+    //
+    // ),
 
-        // ChangeNotifierProxyProvider<privilge_vm,client_vm>(
-        //   create: (_)=> client_vm(),
-        //   update: (ctx,value,prev)=>prev!..setvaluepriv( value.privilgelist),
-        //
-        // ),
+    ChangeNotifierProxyProvider<user_vm_provider, notifyvm>(
+      create: (_) => notifyvm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
 
-        ChangeNotifierProxyProvider<user_vm_provider,notifyvm>(
-          create: (_)=> notifyvm(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-        ),
+    ChangeNotifierProxyProvider<user_vm_provider, approve_vm>(
+      create: (_) => approve_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
+    ChangeNotifierProxyProvider<user_vm_provider, invoice_vm>(
+      create: (_) => invoice_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
+    ChangeNotifierProxyProvider<user_vm_provider, maincity_vm>(
+      create: (_) => maincity_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
+    //ChangeNotifierProvider<invoice_vm>(create: (_) => invoice_vm()),
+    ChangeNotifierProvider<typeclient>(create: (_) => typeclient()),
 
-        ChangeNotifierProxyProvider<user_vm_provider,approve_vm>(
-          create: (_)=> approve_vm(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
+    ChangeNotifierProxyProvider<invoice_vm, EventProvider>(
+      create: (_) => EventProvider(),
+      update: (ctx, value, prev) => prev!..setvalue(value.listinvoices),
+    ),
+    ChangeNotifierProxyProvider<user_vm_provider, ticket_vm>(
+      create: (_) => ticket_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
+    ChangeNotifierProvider<comment_vm>(create: (_) => comment_vm()),
+    ChangeNotifierProxyProvider<user_vm_provider, communication_vm>(
+      create: (_) => communication_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
 
-        ),
-        ChangeNotifierProxyProvider<user_vm_provider,invoice_vm>(
-          create: (_)=> invoice_vm(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-
-        ),
-        ChangeNotifierProxyProvider<user_vm_provider,maincity_vm>(
-          create: (_)=> maincity_vm(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-
-        ),
-        //ChangeNotifierProvider<invoice_vm>(create: (_) => invoice_vm()),
-        ChangeNotifierProvider<typeclient>(create: (_)=> typeclient()),
-
-        ChangeNotifierProxyProvider<invoice_vm,EventProvider>(
-          create: (_)=> EventProvider(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.listinvoices),
-
-        ),
-        ChangeNotifierProxyProvider<user_vm_provider,ticket_vm>(
-          create: (_)=> ticket_vm(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-
-        ),
-         ChangeNotifierProvider<comment_vm>(create: (_)=> comment_vm()),
-        ChangeNotifierProxyProvider<user_vm_provider,communication_vm>(
-          create: (_)=> communication_vm(),
-          update: (ctx,value,prev)=>prev!..setvalue(value.currentUser),
-
-        ),
-
-         ChangeNotifierProvider<datetime_vm>(create: (_)=> datetime_vm()),
-         ChangeNotifierProvider<activity_vm>(create: (_)=> activity_vm()),
-         ChangeNotifierProvider<company_vm>(create: (_)=> company_vm()),
-         ChangeNotifierProvider<participate_vm>(create: (_)=> participate_vm()),
-        //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
-
-  ], child:MyApp()));
+    ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
+    ChangeNotifierProvider<activity_vm>(create: (_) => activity_vm()),
+    ChangeNotifierProvider<company_vm>(create: (_) => company_vm()),
+    ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
+    ChangeNotifierProvider<AgentDistributorViewModel>(
+        create: (_) => AgentDistributorViewModel()),
+    //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   bool isUserLoggedIn = false;
-@override
-Widget build(BuildContext context) {
-  return  FutureBuilder<SharedPreferences>(
-          future: Provider.of<user_vm_provider>(context,listen: false)
-              .getcurrentuser() ,
-          builder:(context, snapshot) {
-            print('in main builder');
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<SharedPreferences>(
+        future: Provider.of<user_vm_provider>(context, listen: false)
+            .getcurrentuser(),
+        builder: (context, snapshot) {
+          print('in main builder');
           if (!snapshot.hasData) {
             //Center(child: CircularProgressIndicator(),)
             return MaterialApp(
@@ -205,11 +199,9 @@ Widget build(BuildContext context) {
                 ),
               ),
             );
-          }
-          else {
-            isUserLoggedIn =
-                snapshot.data!.getBool(kKeepMeLoggedIn) ?? false;
-            if(snapshot.data!.getString('id_user1')=='0')
+          } else {
+            isUserLoggedIn = snapshot.data!.getBool(kKeepMeLoggedIn) ?? false;
+            if (snapshot.data!.getString('id_user1') == '0')
               return MaterialApp(
                 home: Scaffold(
                   body: Center(
@@ -218,32 +210,31 @@ Widget build(BuildContext context) {
                 ),
               );
             // String idcurrentuser= snapshot.data!.getString("id_user").toString();
-          else {
-
-            return
-              MaterialApp(
+            else {
+              return MaterialApp(
                 // localizationsDelegates: [
                 //   GlobalWidgetsLocalizations.delegate,
                 //   GlobalMaterialLocalizations.delegate,
                 //   // MonthYearPickerLocalizations.delegate,
                 // ],
-                  debugShowCheckedModeBanner: false,
-                  title: 'Flutter Demo',
-                  theme: ThemeData(
-                    primaryColor: kMainColor,
-                    backgroundColor: Colors.white,
-                    brightness: Brightness.light,
-                  ),
-                  home: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: isUserLoggedIn ? Home() : login(),
-                  ),
-             );}
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                theme: ThemeData(
+                  primaryColor: kMainColor,
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.light,
+                ),
+                home: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: isUserLoggedIn ? Home() : login(),
+                ),
+              );
+            }
           }
         });
   }
 }
-  // This widget is the root of your application.
+// This widget is the root of your application.
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -254,13 +245,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
-
   @override
   Widget build(BuildContext context) {
-
     return login();
- // This trailing comma makes auto-formatting nicer for build methods.
-
+    // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
