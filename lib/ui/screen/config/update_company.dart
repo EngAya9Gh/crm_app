@@ -80,7 +80,7 @@ class _updatecompanyState extends State<updatecompany> {
                         SizedBox(height: 5,),
 
                         RowEdit(name: 'شعار المؤسسة', des: ''),
-                       widget. path_logo!=null&&widget.path_logo.toString().isNotEmpty ?
+                        widget. path_logo!=null && widget.path_logo.toString().isNotEmpty ?
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child:
@@ -91,12 +91,6 @@ class _updatecompanyState extends State<updatecompany> {
                               alignment: Alignment.center,
                               children: [
                                 Image.network(widget.path_logo.toString()),
-                                // Positioned(
-                                //     bottom: 0,
-                                //     child: Text(
-                                //       'smart life',
-                                //       style: TextStyle(fontSize: 15,color: Colors.black,fontFamily: 'Pacifico'),)
-                                // )
                               ],
                             ),
                           ),

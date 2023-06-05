@@ -19,6 +19,7 @@ import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
+import 'package:crm_smart/view_model/lastcommentclient_vm.dart';
 import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
@@ -176,6 +177,8 @@ void main() async {
     ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
     ChangeNotifierProvider<AgentDistributorViewModel>(
         create: (_) => AgentDistributorViewModel()),
+    ChangeNotifierProvider<lastcommentclient_vm>(
+        create: (_) => lastcommentclient_vm()),
     //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
   ], child: MyApp()));
 }

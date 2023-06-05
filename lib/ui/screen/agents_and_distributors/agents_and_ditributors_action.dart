@@ -1,13 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_distributors_view.dart';
 import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
+import '../../../constants.dart';
 import '../../../model/countrymodel.dart';
 import '../../widgets/container_boxShadows.dart';
 import '../../widgets/custom_widget/custombutton.dart';
@@ -34,6 +37,8 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController logoController = TextEditingController();
+  late File? _myfilelogo=null;
 
   AgentDistributorModel? get agentDistributorModel =>
       widget.agentDistributorModel;
@@ -249,6 +254,73 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                       }
                                       viewmodel.onSaveDescription(description);
                                     },
+                                  ),
+                                  SizedBox(height: 5,),
+
+                                  RowEdit(name: 'صورة ', des: ''),
+                                agentDistributorModel!.imageAgent!=null && agentDistributorModel!.imageAgent.toString().isNotEmpty ?
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child:
+                                    Container(
+                                      height:40,
+                                      width: 50,
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Image.network(agentDistributorModel!.imageAgent.toString()),
+                                        ],
+                                      ),
+                                    ),
+                                  ):Container(),
+                                  TextFormField(
+                                    controller: logoController,
+                                    obscureText: false,
+                                    cursorColor: Colors.black,
+                                    onTap: () async{
+                                      ImagePicker imagePicker = ImagePicker();
+                                      final pickedImage =
+                                      await imagePicker.pickImage(
+                                        source: ImageSource.gallery,
+                                        imageQuality: 100,);
+                                      File?   pickedFile = File(pickedImage!.path);
+                                      setState(() {
+                                        print(pickedFile.path);
+                                        _myfilelogo=pickedFile;
+                                        logoController.text=pickedFile.path;
+                                        viewmodel.onSaveimagefile(_myfilelogo);
+
+                                      });
+
+                                      // _invoice!.path=pickedFile.path;
+                                    },
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+
+                                      contentPadding:
+                                      EdgeInsets.all(2) ,
+                                      prefixIcon: Icon(
+                                        Icons.add_photo_alternate,
+                                        color: kMainColor,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                      hintText: '',
+                                      filled: true,
+                                      fillColor: Colors.grey.shade200,
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.white)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.white)),
+                                      errorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.white)),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.white)),
+                                    ),
                                   ),
                                   SizedBox(height: 15),
                                   CustomButton(
