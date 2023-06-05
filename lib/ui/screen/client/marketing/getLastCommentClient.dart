@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../view_model/lastcommentclient_vm.dart';
+import 'LastcommentPage.dart';
 
 class getLastCommentClient extends StatefulWidget {
   const getLastCommentClient({Key? key}) : super(key: key);
@@ -58,12 +59,15 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                             child: Center(
                               child: InkWell(
                                 onTap: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //
-                                  //     ));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                          lastcomment_page(
+                                            LastcommentClient:
+                                              Provider.of<lastcommentclient_vm>(context,listen: false)
+                                              .list_LastcommentClientModel[index])
+                                      ));
                                 },
                                 child:
                                 Container(
