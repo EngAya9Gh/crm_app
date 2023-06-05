@@ -14,13 +14,10 @@ class LastcommentClientModel {
   String? hoursLastComment;
 
   LastcommentClientModel.fromJson(Map<String, dynamic> jsondata) {
-    client_obj =
-        jsondata['client_obj'] = ClientModel.fromJson(jsondata['client_obj']);
-    allComment = jsondata['allComment'] = jsondata['allComment'].map((e) {
+    client_obj =  ClientModel.fromJson(jsondata['client_obj']);
+    allComment    = jsondata['allComment'].map((e) {
       CommentModel.fromJson(e);
     }).toList();
-    CommentModel.fromJson(jsondata['allComment']);
-
     dateCommentClient = jsondata['dateCommentClient'];
     hoursLastComment = jsondata['hoursLastComment'];
     // type = json['type'];
