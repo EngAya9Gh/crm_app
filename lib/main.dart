@@ -115,7 +115,7 @@ void main() async {
       //  client_vm(value.currentUser)
     ),
     ChangeNotifierProxyProvider<user_vm_provider, regoin_vm>(
-      cgit : (_) => regoin_vm(),
+      create: (_) => regoin_vm(),
       //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
       update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       //  client_vm(value.currentUser)
