@@ -62,7 +62,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                           selectedIndex: selectedProvider.isbarsales,
                         ),
                         options: GroupButtonOptions(
-                            buttonWidth: 135, borderRadius: BorderRadius.circular(10)),
+                            buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                         buttons: ['تفاوض', 'مشترك','منسحب','عرض سعر' ],
                         onSelected: (_,index, isselected) {
                           print(index);
