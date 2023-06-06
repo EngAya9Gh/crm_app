@@ -269,8 +269,8 @@ class InvoiceModel extends CacheRepository{
     type_seller=jsondata['type_seller'];
     fk_regoin_invoice=jsondata['fk_regoin_invoice'];
 
-    participal=jsondata['participal_info']==null?null:ParticipateModel.fromJson(jsondata['participal_info']);
-    agent_distibutor=jsondata['agent_distibutor_info']==null?null:AgentDistributorModel.fromJson(jsondata['agent_distibutor_info']);
+    participal=jsondata['participal_info']==null?null:getParticipateModel(jsondata['participal_info']);
+    agent_distibutor=jsondata['agent_distibutor_info']==null?null: getAgentDistributorModel(jsondata['agent_distibutor_info']);
     products=getproud(jsondata['products']);
       //  json.decode(
        // jsondata['products']
@@ -397,6 +397,32 @@ class InvoiceModel extends CacheRepository{
     }
     return prodlist;
 
+  }
+  ParticipateModel  getParticipateModel(data){
+
+    print('data');
+    print( data.length.toString()+'data');
+    List<ParticipateModel> prodlist = [];
+    if(data!=null) {
+      for (int i = 0; i < data.length; i++) {
+        print('i'+i.toString());//+data[i]);
+        prodlist.add(ParticipateModel.fromJson(data[i]));
+      }
+    }
+    return prodlist[0];
+  }
+  AgentDistributorModel  getAgentDistributorModel(data){
+
+    print('data');
+    print( data.length.toString()+'data');
+    List<AgentDistributorModel> prodlist = [];
+    if(data!=null) {
+      for (int i = 0; i < data.length; i++) {
+        print('i'+i.toString());//+data[i]);
+        prodlist.add(AgentDistributorModel.fromJson(data[i]));
+      }
+    }
+    return prodlist[0];
   }
 }
 
