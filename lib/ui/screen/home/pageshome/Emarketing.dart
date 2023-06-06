@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../client/marketing/getLastCommentClient.dart';
 import '../widgethomeitem.dart';
 
 class marketingpage extends StatelessWidget {
@@ -53,7 +54,8 @@ class marketingpage extends StatelessWidget {
               },
               title: 'فواتير عملاء التسويق الإلكتروني'):Container(),
           Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('55')==true ? buildSelectCategory(
+              .checkprivlge('55')==true ?
+          buildSelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,
               colorarrow: Colors.black,
@@ -64,7 +66,17 @@ class marketingpage extends StatelessWidget {
                 // ));
               },
               title: 'تقرير التسويق الإلكتروني'):Container(),
-
+          buildSelectCategory(
+              colorbag: Colors.white,
+              colortitle: Colors.black,
+              colorarrow: Colors.black,
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context)=>
+                        getLastCommentClient()
+                ));
+              },
+              title: 'آخر تحديثات العملاء')
         ],),
 
       ),

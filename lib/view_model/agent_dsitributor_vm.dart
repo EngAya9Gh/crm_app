@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/countrymodel.dart';
 import 'package:crm_smart/view_model/page_state.dart';
@@ -82,16 +84,17 @@ class AgentDistributorViewModel extends ChangeNotifier {
           "agentId: $agentId");
       dynamic response;
       if (agentId == null) {
-        response = await Api().post(
-          url: url + 'agent/add_agent.php',
-          body: agentDistributorActionParams.toMap(),
-          token: '',
+        response = await Api().postRequestWithFile("array",
+           url + 'agent/add_agent.php',
+            agentDistributorActionParams.toMap(),
+            agentDistributorActionParams.filelogo,null
         );
       } else {
-        response = await Api().post(
-          url: url + 'agent/update_agent.php?id_agent=$agentId',
-          body: agentDistributorActionParams.toMap(),
-          token: '',
+        response = await Api().postRequestWithFile("array",
+            url + 'agent/update_agent.php?id_agent=$agentId',
+            agentDistributorActionParams.toMap(),
+            agentDistributorActionParams.filelogo,null
+
         );
       }
 
@@ -136,6 +139,10 @@ class AgentDistributorViewModel extends ChangeNotifier {
     agentDistributorActionParams =
         agentDistributorActionParams.copyWith(description: description);
   }
+  onSaveimagefile(File? filelogo) {
+    agentDistributorActionParams =
+        agentDistributorActionParams.copyWith(filelogo: filelogo);
+  }
 
   onSavePhoneNumber(String phoneNumber) {
     agentDistributorActionParams =
@@ -150,6 +157,7 @@ class AgentDistributorActionParams {
   String? email;
   String? phoneNumber;
   String? description;
+  File? filelogo;
 
   AgentDistributorActionParams.init();
 
@@ -160,6 +168,7 @@ class AgentDistributorActionParams {
         phoneNumber = null,
         description = null,
         countryId = null;
+        // filelogo = null;
 
   AgentDistributorActionParams({
     required this.name,
@@ -168,6 +177,7 @@ class AgentDistributorActionParams {
     this.email,
     this.phoneNumber,
     this.description,
+    required filelogo,
   });
 
   AgentDistributorActionParams copyWith({
@@ -177,6 +187,7 @@ class AgentDistributorActionParams {
     String? email,
     String? phoneNumber,
     String? description,
+    File? filelogo,
   }) {
     return AgentDistributorActionParams(
       name: name ?? this.name,
@@ -185,6 +196,7 @@ class AgentDistributorActionParams {
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       description: description ?? this.description,
+      filelogo: filelogo ?? this.filelogo,
     );
   }
 
@@ -195,7 +207,7 @@ class AgentDistributorActionParams {
       countryId: countryId,
       phoneNumber: phoneNumber,
       description: description,
-      email: email,
+      email: email, filelogo: null,
     );
   }
 

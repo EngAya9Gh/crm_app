@@ -185,7 +185,6 @@ class InvoiceModel extends CacheRepository{
     typePay = jsondata['type_pay'];
     renewYear = jsondata['renew_year'];
     typeInstallation = jsondata['type_installation'];
-    //json['img_image'].toString().trim().isEmpty?json['img_image']: urlimage+ json['img_image'];
 
     imageRecord = jsondata['image_record'].toString().trim().isEmpty
     ||jsondata['image_record']==null
