@@ -125,22 +125,25 @@ class _editclientState extends State<editclient> {
 
     // descresaonController.text=widget.itemClient.desc_reason==null||widget.itemClient.desc_reason==""
     //     ?"":widget.itemClient.desc_reason!.toString();
-    presystemcomb = sourclient = widget.itemClient.sourcclient;
+    presystemcomb = sourclient = widget.itemClient.sourcclient==null?'ميداني':widget.itemClient.sourcclient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<maincity_vm>(context, listen: false).getcityAll();
 
       Provider.of<maincity_vm>(context, listen: false)
           .changevalue(widget.itemClient.city.toString());
+
+
       await Provider.of<activity_vm>(context, listen: false).getactv();
       Provider.of<activity_vm>(context, listen: false)
-          .changevalueOut(widget.itemClient.activity_type_fk.toString());
+          .changevalueOut(widget.itemClient.activity_type_fk);
+
       await Provider.of<company_vm>(context, listen: false).getcompany();
 
       Provider.of<company_vm>(context, listen: false)
           .changevalueOut(
           // widget.itemClient.presystem==null?
           // null :
-          widget.itemClient.presystem.toString()
+          widget.itemClient.presystem
       );
 
       cityController =
@@ -614,7 +617,7 @@ class _editclientState extends State<editclient> {
                                 value: level_one.id_Company.toString(), //value of item
                               );
                             }).toList(),
-                            value:  cart.selectedValueOut.toString(),
+                            value:  cart.selectedValueOut,
                             onChanged: (value) {
                               //  setState(() {
                               cart.changevalueOut(value.toString());
@@ -659,16 +662,15 @@ class _editclientState extends State<editclient> {
                     Provider.of<privilge_vm>(context, listen: true)
                                 .checkprivlge('27') ==
                             true
-                        ? Container()
-                        : widget.itemClient.typeClient != "مشترك" &&
+                        ?
+                         widget.itemClient.typeClient != "مشترك" &&
                                 widget.itemClient.typeClient != "منسحب"
                             ? RowEdit(name: label_clienttype, des: "")
-                            : Container(),
+                            : Container()  : Container(),
                     Provider.of<privilge_vm>(context, listen: true)
-                                .checkprivlge('27') ==
-                            true
-                        ? Container()
-                        : widget.itemClient.typeClient != "مشترك" &&
+                                .checkprivlge('27') ==true ?
+
+                    widget.itemClient.typeClient != "مشترك" &&
                                 widget.itemClient.typeClient != "منسحب"
                             ? DropdownButton(
                                 isExpanded: true,
@@ -692,7 +694,7 @@ class _editclientState extends State<editclient> {
                                   // }
                                 },
                               )
-                            : Container(),
+                            : Container()  : Container(),
                     SizedBox(
                       height: 2,
                     ),
@@ -714,9 +716,10 @@ class _editclientState extends State<editclient> {
                     // ):
                     Provider.of<privilge_vm>(context, listen: true)
                                 .checkprivlge('27') ==
-                            true
+                            false
                         ? Container()
-                        : typeclient_provider.selectedValuemanag == "عرض سعر"
+                        :
+                    typeclient_provider.selectedValuemanag == "عرض سعر"
                             ? EditTextFormField(
                                 hintText: 'عرض سعر',
                                 obscureText: false,

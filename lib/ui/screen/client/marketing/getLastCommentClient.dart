@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../provider/selected_button_provider.dart';
 import '../../../../view_model/lastcommentclient_vm.dart';
 import 'LastcommentPage.dart';
 
@@ -18,6 +20,8 @@ class getLastCommentClient extends StatefulWidget {
 
 class _getLastCommentClientState extends State<getLastCommentClient> {
 
+  String type='تفاوض';
+  String? idUser='';
   @override  initState() {
     super.initState();
     Provider.of<lastcommentclient_vm>(context,listen: false).getLastcommentClientModel();
@@ -51,6 +55,42 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                     ),),
                   ],),
               ),
+              Consumer<selected_button_provider>(
+                  builder: (context, selectedProvider, child) {
+                    return GroupButton(
+                        controller: GroupButtonController(
+                          selectedIndex: selectedProvider.isbarsales,
+                        ),
+                        options: GroupButtonOptions(
+                            buttonWidth: 135, borderRadius: BorderRadius.circular(10)),
+                        buttons: ['تفاوض', 'مشترك','منسحب','عرض سعر' ],
+                        onSelected: (_,index, isselected) {
+                          print(index);
+                          switch(index){
+                            case 0:
+                              type='تفاوض';
+                              break;
+
+                            case 1:
+                              type='مشترك';
+                              break;
+
+                              case 2:
+                              type='منسحب';
+                              break;
+
+                              case 3:
+                              type='عرض سعر';
+                              break;
+
+                          }
+
+                          selectedProvider.selectValuebarsales(index);
+                          Provider.of<lastcommentclient_vm>(context,listen: false)
+                              .getData(type, idUser);
+
+                        });
+                  }),
               Expanded(
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,

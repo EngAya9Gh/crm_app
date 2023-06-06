@@ -5,8 +5,8 @@ class ActivityModel {
     // required this.type,
   });
 
-  late final String? id_activity_type;
-  late final String name_activity_type;
+  late  String id_activity_type;
+  late  String name_activity_type;
   // late final String type;
 
   ActivityModel.fromJson(Map<String, dynamic> json){

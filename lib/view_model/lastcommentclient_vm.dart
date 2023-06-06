@@ -10,6 +10,7 @@ import '../services/configService.dart';
 
 class lastcommentclient_vm extends ChangeNotifier {
   List<LastcommentClientModel> list_LastcommentClientModel=[];
+  List<LastcommentClientModel> list_LastcommentClientModel_temp=[];
   bool isload=false;
   Future<void> getLastcommentClientModel( ) async {
     isload=true;
@@ -17,11 +18,27 @@ class lastcommentclient_vm extends ChangeNotifier {
     final response = await Api().get(url: url + 'reports/get_lastcomment.php');
     final list = List<LastcommentClientModel>.from(
         (response ?? []).map((x) => LastcommentClientModel.fromJson(x)));
-    list_LastcommentClientModel=list;
+    list_LastcommentClientModel=List.from(list);
+    list_LastcommentClientModel_temp=List.from(list);
+    isload=false;
+    notifyListeners();
+  }
+  Future<void> getData(String filterType,String? idUser) async {
+    isload=true;
+    notifyListeners();
+    List<LastcommentClientModel> list_temp=[];
+
+    list_LastcommentClientModel=List.from(list_LastcommentClientModel_temp);
+
+    list_LastcommentClientModel.forEach((element) {
+      if( element.client_obj.typeClient==filterType)
+        list_temp.add(element);
+    });
+    list_LastcommentClientModel=List.from(list_temp);
     isload=false;
     notifyListeners();
   }
 
 
 
-}
+  }
