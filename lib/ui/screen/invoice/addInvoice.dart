@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
@@ -829,6 +830,12 @@ class _addinvoiceState extends State<addinvoice> {
                                 obscureText: false,
                                 cursorColor: Colors.black,
                                 readOnly: false,
+                                validator: (text){
+                                  if(text?.trim().isEmpty ?? true){
+                                    return 'هذا الحقل مطلوب';
+                                  }
+                                  return null;
+                                },
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                 decoration: InputDecoration(
@@ -876,6 +883,7 @@ class _addinvoiceState extends State<addinvoice> {
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () async {
+
                                 if (_globalKey.currentState!.validate()) {
                                   typepayController = Provider.of<selected_button_provider>(context, listen: false)
                                       .isSelectedtypepay
@@ -884,12 +892,18 @@ class _addinvoiceState extends State<addinvoice> {
                                   typeinstallController = Provider.of<selected_button_provider>(context, listen: false)
                                       .isSelectedtypeinstall
                                       .toString();
+                                  if(invoiceViewmodel.selectedSellerType == null){
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('من فضلك اختر نوع البائع')));
+                                    return;
+                                  }
+
                                   if ((_invoice!.products != null) && (_invoice!.products!.isNotEmpty)) {
                                     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(true);
                                     totalController = _invoice!.total.toString();
                                     _globalKey.currentState!.save();
                                     List<ProductsInvoice>? _products = [];
                                     _products = _invoice!.products;
+
                                     if (_invoice!.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
                                       Provider.of<invoice_vm>(context, listen: false).update_invoiceclient_vm({
@@ -941,7 +955,8 @@ class _addinvoiceState extends State<addinvoice> {
                                               false
                                           ? clear(context, invoiceID.toString(), _products)
                                           : error(context));
-                                    } else {
+                                    }
+                                    else {
                                       var body = {
                                         "name_enterprise": widget.itemClient.nameEnterprise,
                                         "name_client": widget.itemClient.nameClient.toString(),
@@ -972,11 +987,14 @@ class _addinvoiceState extends State<addinvoice> {
                                         'numusers': numuserController.text.toString(),
                                         'address_invoice': addressController.text.toString(),
 
-                                        // 'type_seller':
-                                        // 'rate_participate':
+                                        'type_seller': invoiceViewmodel.selectedSellerType?.index,
+                                        'rate_participate': sellerCommissionRate.text,
 
-                                        // 'fk_agent':
-                                        // 'participate_fk':
+                                        if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
+                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent,
+
+                                        if(invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+                                        'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate,
                                       };
                                       if (readyinstallController == '0')
                                         body.addAll({
@@ -995,6 +1013,7 @@ class _addinvoiceState extends State<addinvoice> {
                                               .idUser
                                               .toString(),
                                         });
+                                      log(body.toString());
                                       Provider.of<invoice_vm>(context, listen: false)
                                           .add_invoiceclient_vm(
                                               body, _invoice!.path!.isNotEmpty ? _myfile : null, _myfilelogo)
@@ -1253,10 +1272,11 @@ class _addinvoiceState extends State<addinvoice> {
           borderRadius: BorderRadius.circular(10),
           child: DropdownButtonFormField<T>(
             isExpanded: true,
-            validator: (value) {
-              if (value == null) {
-                return "هذا الحقل مطلوب";
+            validator: (text){
+              if(text == null){
+                return 'هذا الحقل مطلوب';
               }
+              return null;
             },
             icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
             decoration: InputDecoration(

@@ -173,8 +173,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               width: 4,
                             ),
                             Text(
-                              (double.parse(widget.itemProd.total.toString()) -
-                                  double.parse(widget.itemProd.amountPaid
+                              (num.parse(widget.itemProd.total.toString()) -
+                                  num.parse(widget.itemProd.amountPaid
                                       .toString()))
                                   .toStringAsFixed(2).toString(),
                               style: TextStyle(
