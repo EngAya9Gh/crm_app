@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
@@ -7,8 +8,10 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../model/usermodel.dart';
 import '../../../../provider/selected_button_provider.dart';
 import '../../../../view_model/lastcommentclient_vm.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import 'LastcommentPage.dart';
 
 class getLastCommentClient extends StatefulWidget {
@@ -32,7 +35,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:Text( 'آخر التعليقات')),
+      appBar: AppBar(title:Center(child: Text( 'آخر التعليقات'))),
       body:
       Padding(
         padding: const EdgeInsets.only(top: 16.0),
@@ -91,6 +94,58 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
 
                         });
                   }),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0,right: 8,),
+                child: Consumer<user_vm_provider>(
+                  builder: (context, cart, child){
+                    return  DropdownSearch<UserModel>(
+                      mode: Mode.DIALOG,
+                      // label: " الموظف ",
+                      //hint: 'الموظف',
+                      //onFind: (String filter) => cart.getfilteruser(filter),
+                      filterFn: (user, filter) => user!.getfilteruser(filter!),
+                      //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+                      // itemAsString: (UserModel u) => u.userAsStringByName(),
+                      items: cart.userall,
+                      itemAsString: (u) => u!.userAsString(),
+                      onChanged: (data) {
+                        idUser=data!.idUser;
+                        cart.changevalueuser(data);
+                        Provider.of<lastcommentclient_vm>(context,listen: false)
+                            .getData(type, idUser);
+                      } ,
+                      selectedItem: cart.selecteduser,
+                      showSearchBox: true,
+                      dropdownSearchDecoration:
+                      InputDecoration(
+                        //filled: true,
+                        isCollapsed: true,
+                        hintText: 'الموظف',
+                        alignLabelWithHint: true,
+                        fillColor:  Colors.grey.withOpacity(0.2),
+                        //labelText: "choose a user",
+                        contentPadding: EdgeInsets.all(0),
+                        //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        // focusedBorder: OutlineInputBorder(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     borderSide: const BorderSide(color: Colors.white)),
+                        border:
+                        UnderlineInputBorder(
+                            borderSide: const BorderSide(  color: Colors.grey)
+                        ),
+                        // OutlineInputBorder(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     borderSide: const BorderSide( color: Colors.white)),
+                      ),
+                      // InputDecoration(border: InputBorder.none),
+
+                    );
+
+                  },
+                ),
+              ),
+
               Expanded(
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,

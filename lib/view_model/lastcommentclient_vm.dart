@@ -30,10 +30,23 @@ class lastcommentclient_vm extends ChangeNotifier {
 
     list_LastcommentClientModel=List.from(list_LastcommentClientModel_temp);
 
+    print('idUser'+idUser.toString());
+    if(idUser=='')
     list_LastcommentClientModel.forEach((element) {
       print(element.client_obj.typeClient.toString());
       if( element.client_obj.typeClient==filterType){
+
         list_temp.add(element);
+
+      }
+    });
+    else
+      list_LastcommentClientModel.forEach((element) {
+      print(element.client_obj.typeClient.toString());
+      if( element.client_obj.typeClient==filterType && element.client_obj.fkUser==idUser){
+
+        list_temp.add(element);
+
       }
     });
     list_LastcommentClientModel=List.from(list_temp);

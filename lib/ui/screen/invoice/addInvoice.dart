@@ -783,7 +783,7 @@ class _addinvoiceState extends State<addinvoice> {
                                   buttonWidth: (MediaQuery.of(context).size.width - 130) / 3,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                buttons: ['موزع', 'وكيل', 'متعاونون'],
+                                buttons: ['موزع', 'وكيل', 'موظف'],
                                 onSelected: (_, index, isselected) {
                                   print(index);
                                   invoiceViewmodel.onChangeSellerType(
@@ -945,6 +945,15 @@ class _addinvoiceState extends State<addinvoice> {
                                         'clientusername': userclientController.text.toString(),
                                         'date_lastuserupdate': DateTime.now().toString(),
 
+                                        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString(),
+                                        'rate_participate': sellerCommissionRate.text,
+
+                                        if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
+                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent,
+
+                                        if(invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+                                          'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate,
+
                                         // 'type_seller':
                                         // 'rate_participate':
 
@@ -987,7 +996,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         'numusers': numuserController.text.toString(),
                                         'address_invoice': addressController.text.toString(),
 
-                                        'type_seller': invoiceViewmodel.selectedSellerType?.index,
+                                        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString(),
                                         'rate_participate': sellerCommissionRate.text,
 
                                         if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
