@@ -75,7 +75,7 @@ class _TaskWidgetState extends State<TaskWidget> {
     print( details.bounds.width);
     final event = details.appointments.first;
     return Container(
-        width: details.bounds.width,
+        width:  details.bounds.width,
         height: details.bounds.height,
         decoration: BoxDecoration(
             color: Colors.amberAccent, borderRadius: BorderRadius.circular(12)),

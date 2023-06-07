@@ -51,6 +51,7 @@ class _support_tableState extends State<support_table> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: kMainColor,
       //   onPressed: () {
@@ -62,6 +63,7 @@ class _support_tableState extends State<support_table> {
       //   tooltip: 'إضافة تقويم',
       //   child: Icon(Icons.add),
       // ),
+
       appBar: AppBar(
         title: Text(' جدول التركيب للعملاء ',style: TextStyle(color: kWhiteColor),),
         centerTitle: true,

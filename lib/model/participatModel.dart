@@ -8,7 +8,7 @@ class ParticipateModel {
 
   });
 
-  late final String? id_participate;
+  late  String? id_participate=null;
   late final String name_participate;
   late final String mobile_participate;
   late final String namebank_participate;

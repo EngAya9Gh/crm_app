@@ -48,11 +48,14 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
       Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);
       Provider.of<invoice_vm>(context, listen: false)
           .getinvoice_Localwithprev();
+
       Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
     Provider.of<invoice_vm>(context,listen: false).listInvoicesAccept=[];
+
      await Provider.of<client_vm>(context,listen: false)
            .getallclientAccept();
+
        Provider.of<client_vm>(context,listen: false)
           .getallclientAcceptwithprev();
 

@@ -23,6 +23,7 @@ class lastcommentclient_vm extends ChangeNotifier {
     isload=false;
     notifyListeners();
   }
+
   Future<void> getData(String filterType,String? idUser) async {
     isload=true;
     notifyListeners();
