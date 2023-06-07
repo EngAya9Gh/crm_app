@@ -25,6 +25,7 @@ class calender_client extends StatefulWidget {
   @override
   _calender_clientState createState() => _calender_clientState();
 }
+late ClientModel clientModel;
 int isSelectedtypeinstall=0;
 late  String idclient;
 List<InvoiceModel> listfilter=[];
@@ -101,6 +102,7 @@ class _calender_clientState extends State<calender_client> {
                                   items: cart.listClient,
                                   itemAsString: (u) => u!.userAsString(),
                                   onChanged: (data) {
+                                    clientModel=data!;
                                     idclient=data!.idClients!;
                                     Provider.of<EventProvider>(context, listen: false)
                                         .getevent_Client(idclient);
@@ -199,7 +201,7 @@ class _calender_clientState extends State<calender_client> {
                   ],
                 ),
                 SizedBox(height: 25,),
-                CalendarWidget(),
+                CalendarWidget(type: 'client',clientModel: clientModel),
               ],
             ),
           ),

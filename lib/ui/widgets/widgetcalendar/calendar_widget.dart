@@ -1,4 +1,5 @@
 import 'package:crm_smart/model/calendar/event_data_source.dart';
+import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/task_widget.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,9 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:crm_smart/model/calendar/event.dart';
 
 class CalendarWidget extends StatefulWidget {
-  const CalendarWidget({Key? key}) : super(key: key);
-
+   CalendarWidget({required this.type,this.clientModel, Key? key}) : super(key: key);
+   String type;
+   ClientModel? clientModel;
   @override
   _CalendarWidgetState createState() => _CalendarWidgetState();
 }
@@ -35,16 +37,15 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       cellBorderColor: Colors.transparent,
       onLongPress: (longDetail) {
         final providerlong = Provider.of<EventProvider>(context, listen: false);
-
         providerlong.setDate(longDetail.date!);
         providerlong.addEvents(
         Event(
-        fkIdClient: element.fkIdClient,
-        title: element.name_enterprise.toString(),
+        fkIdClient: widget.clientModel?.idClients,
+        title:  widget.clientModel!.nameEnterprise.toString(),
         description: 'description',
-        from:  temp,
-        to:    temp.add(Duration(hours: 2)),
-        idinvoice: element.idInvoice);
+        from:  longDetail.date!,
+        to:    longDetail.date!.add(Duration(hours: 2)),
+        idinvoice: null)
         );
 
       },

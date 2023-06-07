@@ -299,7 +299,7 @@ class _support_tableState extends State<support_table> {
                     ],
                   ),
                   SizedBox(height: 25,),
-                  CalendarWidget(),
+                  CalendarWidget(type: 'invoice'),
                 ],
             ),
           ),
