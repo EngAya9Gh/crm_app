@@ -4,6 +4,7 @@ import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:crm_smart/model/calendar/event.dart';
 
 class CalendarWidget extends StatefulWidget {
   const CalendarWidget({Key? key}) : super(key: key);
@@ -32,7 +33,23 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       dataSource: EventDataSource(events),
       initialSelectedDate: DateTime.now(),
       cellBorderColor: Colors.transparent,
+      onLongPress: (longDetail) {
+        final providerlong = Provider.of<EventProvider>(context, listen: false);
+
+        providerlong.setDate(longDetail.date!);
+        providerlong.addEvents(
+        Event(
+        fkIdClient: element.fkIdClient,
+        title: element.name_enterprise.toString(),
+        description: 'description',
+        from:  temp,
+        to:    temp.add(Duration(hours: 2)),
+        idinvoice: element.idInvoice);
+        );
+
+      },
       onTap: (details) {
+
         final provider = Provider.of<EventProvider>(context, listen: false);
         print(details.date!);
         provider.setDate(details.date!);

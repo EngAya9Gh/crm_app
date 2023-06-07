@@ -104,6 +104,7 @@ class ClientModel extends CacheRepository{
   late  String? phone;
   late  String?  user_add;
   late  String? nameAdduser;
+  String? date_visit_Client;
   String?
       name_city,
       namemaincity,
@@ -163,6 +164,7 @@ class ClientModel extends CacheRepository{
     phone = json['phone'];
     user_add = json['user_add'];
     nameAdduser = json['nameAdduser'];
+    date_visit_Client = json['date_visit_Client'];
 
   }
 

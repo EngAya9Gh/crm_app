@@ -4,6 +4,8 @@ import 'package:crm_smart/model/maincitymodel.dart';
 // import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../model/clientmodel.dart';
+
 class EventProvider extends ChangeNotifier {
   final List<Event> _events = [];
 
@@ -14,6 +16,7 @@ class EventProvider extends ChangeNotifier {
 //when click this date show events المرتبيط for this date just
   List<Event> get eventsOfSelectedDate => _events;
   List<InvoiceModel> listinvoices=[];
+  List<ClientModel> listclient=[];
 
   void setvalue(List<InvoiceModel> list){
     listinvoices=list;
@@ -149,6 +152,35 @@ class EventProvider extends ChangeNotifier {
      }
 
 notifyListeners();
+  }
+
+  Future<void> getevent_Client( String searchfilter)async{
+    late Event event;//
+    _events.clear();
+
+      listclient.forEach((element) {
+
+          if(element.idClients==searchfilter) {
+            DateTime temp = DateTime
+                .parse(element.date_visit_Client.toString())
+                .hour >= 21
+                ? DateTime.parse(element.date_visit_Client.toString())
+                .subtract(Duration(hours: 3)) : DateTime.parse(
+                element.date_visit_Client.toString());
+            print(element.date_visit_Client);
+            event = Event(
+                fkIdClient: element.idClients,
+                title: element.nameEnterprise.toString(),
+                description: 'description',
+                from: temp,
+                to: temp.add(Duration(hours: 2)),
+                idinvoice: null);
+            addEvents(event);
+          }
+      });
+
+
+    notifyListeners();
   }
   void deleteEvent(Event event) {
     _events.remove(event);
