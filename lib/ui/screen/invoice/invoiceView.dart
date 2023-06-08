@@ -620,7 +620,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CustomButton(
+                        Provider.of<privilge_vm>(context,listen: true)
+                            .checkprivlge('116')==true ? CustomButton(
                           //width: MediaQuery.of(context).size.width * 0.2,
                           text: 'اضافة دفعة للفاتورة',
                           onTap: () async {
@@ -631,9 +632,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                                        ) // support_view(type: 'only',)
                             ));
                           },
-                        ),
+                        ):Container(),
                         SizedBox(width: 5),
-                        CustomButton(
+                        Provider.of<privilge_vm>(context,listen: true)
+                            .checkprivlge('115')==true ? CustomButton(
                           //width: MediaQuery.of(context).size.width * 0.2,
                           text: 'تغيير بيانات الفاتورة',
                           onTap: () async {
@@ -644,7 +646,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                        ) // support_view(type: 'only',)
                             ));
                           },
-                        ),
+                        ):Container(),
                       ],
                     ),
                     widget.type=='approved'?

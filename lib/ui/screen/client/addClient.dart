@@ -55,7 +55,7 @@ class _addClientState extends State<addClient> {
 
   String? cityController ;
   String? presystem='' ;
-  String? sourclient ;
+  String? sourclient='' ;
   String? presystemcomb ;
 
   final TextEditingController locationController = TextEditingController();
@@ -462,7 +462,7 @@ class _addClientState extends State<addClient> {
                                 .of<activity_vm>(
                                 context,
                                 listen: false)
-                                .selectedValueOut!=null) {
+                                .selectedValueOut!=null && sourclient!='' ) {
                               _globalKey.currentState!.save();
                                 Provider.of<LoadProvider>(
                                     context, listen: false)
@@ -506,8 +506,7 @@ class _addClientState extends State<addClient> {
                                       .of<company_vm>(
                                       context,
                                       listen: false)
-                                      .selectedValueOut
-                                      .toString(),
+                                      .selectedValueOut.toString(),
                                   'sourcclient':sourclient,
                                   'activity_type_fk':
                                 Provider
