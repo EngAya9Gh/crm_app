@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../client/agents_distributors_invoices_view.dart';
 
 class sales extends StatefulWidget {
   const sales({Key? key}) : super(key: key);
@@ -62,7 +63,7 @@ class _salesState extends State<sales> {
         backgroundColor: kMainColor,
         elevation: 0,
       ),
-      body: 
+      body:
       // Consumer<privilge_vm>(
       // builder: (context, privilge, child){
        Padding(
@@ -94,6 +95,19 @@ class _salesState extends State<sales> {
                               invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
                       ));
                     }, title:'فواتير العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('39')==true?
+                buildSelectCategory(
+                    colorbag:   Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>  AgentsDistributorsInvoicesView()
+                      ));
+                    }, title:'فواتير العملاء والموزعين' ):Container(),
+
 
                 buildSelectCategory(
                     colorbag:   Colors.white,

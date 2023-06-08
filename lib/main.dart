@@ -9,6 +9,7 @@ import 'package:crm_smart/provider/switch_provider.dart';
 import 'package:crm_smart/ui/screen/home/home.dart';
 import 'package:crm_smart/ui/screen/login.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
+import 'package:crm_smart/view_model/agent_collaborators_invoices_vm.dart';
 import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/approve_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
@@ -177,6 +178,8 @@ void main() async {
     ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
     ChangeNotifierProvider<AgentDistributorViewModel>(
         create: (_) => AgentDistributorViewModel()),
+    ChangeNotifierProvider<AgentsCollaboratorsInvoicesViewmodel>(
+        create: (_) => AgentsCollaboratorsInvoicesViewmodel()),
     ChangeNotifierProvider<lastcommentclient_vm>(
         create: (_) => lastcommentclient_vm()),
     //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),

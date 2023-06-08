@@ -1,29 +1,27 @@
 
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
-
+import 'package:flutter/foundation.dart';
 import '../constants.dart';
 import 'dart:io';
+
+import '../model/participatModel.dart';
 class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoice(String fk_country) async {
-    var
-    data=await Api()
-        .get(url:url+ 'client/invoice/getinvoice.php?fk_country=$fk_country');
-    print(data);
-    List<InvoiceModel> prodlist = [];
-    // final json = "[" + data[i] + "]";
-    for (int i = 0; i < data.length; i++) {
-      print(i);
+    var data = await Api().get(url: url + 'client/invoice/getinvoice.php?fk_country=$fk_country');
 
-      //print("data "+ "[" + data[i] + "]");
-      prodlist.add(InvoiceModel.fromJson(data[i]));
-    }
-    print(prodlist);
-    return prodlist;
+    List<InvoiceModel> invoices = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
+    return invoices;
   }
+
+  List<InvoiceModel> convertToInvoices(List<dynamic> list) {
+    return List<Map<String, dynamic>>.from(list).map<InvoiceModel>((e) => InvoiceModel.fromJson(e)).toList();
+  }
+
   Future<List<InvoiceModel>> getinvoicemaincity(
       String urlstring,Map<String,dynamic> body) async {
     var data=await Api()
@@ -40,6 +38,21 @@ class Invoice_Service {
     print(prodlist);
     return prodlist;
   }
+
+ static  Future<List<AgentDistributorModel>> getAgentsAndDistributors() async{
+    final response = await Api().get(url: url + 'agent/get_agent.php');
+    final list = List<AgentDistributorModel>.from((response ?? []).map((x) => AgentDistributorModel.fromJson(x)));
+
+    return list;
+  }
+
+  static Future<List<ParticipateModel>> getCollaborators() async {
+      var response = await Api().get(url: url + 'agent/get_participate.php');
+      final list = List<ParticipateModel>.from((response ?? []).map((x) => ParticipateModel.fromJson(x)));
+
+      return list;
+  }
+
   Future<InvoiceModel?> setApproveClient( Map<String,dynamic> body,String idInvoice) async {
     var data = await Api()
         .post( url:url+"client/setApproveClient.php?idInvoice=$idInvoice",body:
