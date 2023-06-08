@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../client/calender_client.dart';
 
 class sales extends StatefulWidget {
   const sales({Key? key}) : super(key: key);
@@ -94,7 +95,15 @@ class _salesState extends State<sales> {
                               invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
                       ));
                     }, title:'فواتير العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
-
+                buildSelectCategory(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context)=>
+                            calender_client()));
+                  }, title:  'جدول زيارات العميل ',
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,),
                 buildSelectCategory(
                     colorbag:   Colors.white,
                     colortitle: Colors.black,
@@ -185,17 +194,8 @@ class _salesState extends State<sales> {
                   colorbag: Colors.white,
                   colortitle: Colors.black,
                   colorarrow: Colors.black,):Container(),
-                // Provider.of<privilge_vm>(context,listen: true)
-                //     .checkprivlge('5')==true?
-                // buildSelectCategory(
-                //   onTap: () {
-                //   Navigator.push(context, MaterialPageRoute(
-                //       builder: (context)=>
-                //           TargetPage()));
-                // }, title:  'تاركيت الموظف ',
-                //   colorbag: Colors.white,
-                //   colortitle: Colors.black,
-                //   colorarrow: Colors.black,):Container(),
+
+
 
                 Provider.of<privilge_vm>(context,listen: true)
                   .checkprivlge('14')==true?

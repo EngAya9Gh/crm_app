@@ -25,7 +25,7 @@ class calender_client extends StatefulWidget {
   @override
   _calender_clientState createState() => _calender_clientState();
 }
-late ClientModel clientModel;
+late ClientModel? clientModel=null;
 int isSelectedtypeinstall=0;
 late  String idclient;
 List<InvoiceModel> listfilter=[];
@@ -42,7 +42,10 @@ class _calender_clientState extends State<calender_client> {
           .userall.length);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
 
-      Provider.of<EventProvider>(context,listen: false). getevent_vm();
+
+      Provider.of<EventProvider>(context,listen: false).setvalueClient(
+          Provider.of<client_vm>(context,listen: false).listClient);
+      Provider.of<EventProvider>(context,listen: false). getevent_AllClient();
     }
     );
 
@@ -102,8 +105,13 @@ class _calender_clientState extends State<calender_client> {
                                   items: cart.listClient,
                                   itemAsString: (u) => u!.userAsString(),
                                   onChanged: (data) {
-                                    clientModel=data!;
-                                    idclient=data!.idClients!;
+                                   setState(() {
+                                     clientModel=data!;
+                                     idclient=data!.idClients!;
+                                     print('idclient');
+                                     print(idclient.toString());
+                                   });
+
                                     Provider.of<EventProvider>(context, listen: false)
                                         .getevent_Client(idclient);
                                     // Provider.of<client_vm>(context, listen: false)
@@ -201,7 +209,9 @@ class _calender_clientState extends State<calender_client> {
                   ],
                 ),
                 SizedBox(height: 25,),
-                CalendarWidget(type: 'client',clientModel: clientModel),
+                CalendarWidget(
+                    type: 'client',
+                    clientModel: clientModel),
               ],
             ),
           ),

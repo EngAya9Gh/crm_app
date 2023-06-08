@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import '../model/clientmodel.dart';
 
 class EventProvider extends ChangeNotifier {
+  bool is_save=false;
   final List<Event> _events = [];
 
   List<Event> get events => _events;
@@ -18,8 +19,16 @@ class EventProvider extends ChangeNotifier {
   List<InvoiceModel> listinvoices=[];
   List<ClientModel> listclient=[];
 
+  void setvalue_save(){
+    is_save=!is_save;
+    notifyListeners();
+  }
   void setvalue(List<InvoiceModel> list){
     listinvoices=list;
+    notifyListeners();
+  }
+  void setvalueClient(List<ClientModel> list){
+    listclient=list;
     notifyListeners();
   }
 
@@ -154,13 +163,43 @@ class EventProvider extends ChangeNotifier {
 notifyListeners();
   }
 
-  Future<void> getevent_Client( String searchfilter)async{
+  Future<void> getevent_Client( String? searchfilter)async{
     late Event event;//
     _events.clear();
 
       listclient.forEach((element) {
 
           if(element.idClients==searchfilter) {
+            if(element.date_visit_Client!=null){
+            DateTime temp = DateTime
+                .parse(element.date_visit_Client.toString())
+                .hour >= 21
+                ? DateTime.parse(element.date_visit_Client.toString())
+                .subtract(Duration(hours: 3)) : DateTime.parse(
+                element.date_visit_Client.toString());
+            print(element.date_visit_Client);
+            event = Event(
+                fkIdClient: element.idClients,
+                title: element.nameEnterprise.toString(),
+                description: 'description',
+                from: temp,
+                to: temp.add(Duration(hours: 2)),
+                idinvoice: null);
+            addEvents(event);
+          }}
+      });
+
+
+    notifyListeners();
+  }
+  Future<void> getevent_AllClient(  )async{
+    late Event event;//
+    _events.clear();
+
+      listclient.forEach((element) {
+
+
+            if(element.date_visit_Client!=null){
             DateTime temp = DateTime
                 .parse(element.date_visit_Client.toString())
                 .hour >= 21

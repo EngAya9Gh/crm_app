@@ -932,6 +932,8 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> set_state_back(Map<String, dynamic?> body, String? id_invoice) async {
+    isloading=true;
+    notifyListeners();
     InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!);
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
     listinvoices[index] = data;
@@ -942,6 +944,7 @@ class invoice_vm extends ChangeNotifier {
     //     InvoiceModel.fromJson(listinvoices[index]));
     // listinvoices[index]= InvoiceModel.fromJson(body);
     // //listClient.removeAt(index);
+    isloading=false;
     notifyListeners();
   }
 
