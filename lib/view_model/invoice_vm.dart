@@ -550,8 +550,6 @@ class invoice_vm extends ChangeNotifier {
       if (element.stateclient == 'مشترك' && element.isApprove == "1") list.add(element);
     });
     listInvoicesAccept = list;
-    print("uhdasuiiusadiiadsuisadisaihdiasidashsahiiadssahd");
-    debugPrint(listInvoicesAccept[0].toString(),wrapWidth: 2000);
     listforme = List.from(list);
     isloading = false;
     // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;

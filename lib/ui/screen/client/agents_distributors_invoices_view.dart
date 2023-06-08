@@ -9,6 +9,7 @@ import '../../../model/participatModel.dart';
 import '../../../view_model/agent_collaborators_invoices_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
+import '../../../view_model/typeclient.dart';
 import '../../../view_model/vm.dart';
 import '../../widgets/invoice_widget/Card_invoice_client.dart';
 
@@ -50,6 +51,9 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     privilegeVm = context.read<privilge_vm>();
     final privilegeList = privilegeVm.privilgelist;
     scheduleMicrotask(() {
+      viewmodel.init();
+      context.read<regoin_vm>().changeVal(null);
+      context.read<typeclient>().changelisttype_install(null);
       context.read<invoice_vm>()
         ..setvaluepriv(privilegeList)
         ..getinvoice_Localwithprev();
@@ -112,21 +116,22 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                 padding: const EdgeInsets.only(left: 15.0, right: 15),
                 child: Consumer<regoin_vm>(
                   builder: (context, cart, child) {
-                    return DropdownButton(
+                    return DropdownButton<String?>(
                       isExpanded: true,
                       hint: Text("الفرع"),
                       items: cart.listregoinfilter.map((level_one) {
                         return DropdownMenuItem(
                           child: Text(level_one.name_regoin),
-                          //label of item
-                          value: level_one.id_regoin, //value of item
+                          value: level_one.id_regoin,
                         );
                       }).toList(),
                       value: cart.selectedValueLevel,
                       onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
                         cart.changeVal(value.toString());
-                        // regoin = value.toString();
-                        // filtershow();
+                        viewmodel.onChangeRegion(value);
                       },
                     );
                   },
@@ -142,34 +147,45 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                     'عدد الفواتير',
                     style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                   ),
-                  Selector<invoice_vm, int>(
-                    selector: (_, vm) => vm.listInvoicesAccept.length,
-                    builder: (_, length, __) => Text(
-                      length.toString(),
+                  Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
+                      builder: (context, value, agentCollaboratorsVm, child) {
+
+                    final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                            (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
+                        ? value.listInvoicesAccept
+                        : agentCollaboratorsVm.invoicesFiltered;
+
+                    return Text(
+                      list.length.toString(),
                       style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                    );
+                  }),
                 ],
               ),
             ),
             SizedBox(height: 10),
-            Consumer<invoice_vm>(
-              builder: (context, value, child) {
+            Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
+              builder: (context, value, agentCollaboratorsVm, child) {
+                final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                    (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
+                    ? value.listInvoicesAccept
+                    : agentCollaboratorsVm.invoicesFiltered;
+
                 if (value.isloading) {
                   return loadingWidget;
-                } else if (value.listInvoicesAccept.length == 0) {
+                } else if (list.length == 0) {
                   return Center(child: Text(messageNoData));
                 }
 
                 return Expanded(
                   child: ListView.separated(
-                    itemCount: value.listInvoicesAccept.length,
+                    itemCount: list.length,
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     separatorBuilder: (_, __) => const SizedBox.shrink(),
                     itemBuilder: (context, index) {
                       return CardInvoiceClient(
                         type: 'profile',
-                        itemProd: value.listInvoicesAccept[index],
+                        itemProd: list[index],
                       );
                     },
                   ),

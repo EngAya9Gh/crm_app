@@ -79,4 +79,9 @@ class AgentDistributorModel {
     "description": description,
     "image_agent": imageAgent,
   };
+
+  @override
+  String toString() {
+    return 'AgentDistributorModel{idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailEgent: $emailEgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry, description: $description, imageAgent: $imageAgent}';
+  }
 }
