@@ -993,8 +993,7 @@ class invoice_vm extends ChangeNotifier {
         notifyListeners();
       }
 
-      final response = await Api().get(url: url + 'agent/get_agent.php');
-      final list = List<AgentDistributorModel>.from((response ?? []).map((x) => AgentDistributorModel.fromJson(x)));
+      final list  = await Invoice_Service.getAgentsAndDistributors();
       agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       notifyListeners();
       return;
@@ -1017,8 +1016,7 @@ class invoice_vm extends ChangeNotifier {
         notifyListeners();
       }
 
-      var response = await Api().get(url: url + 'agent/get_participate.php');
-      final list = List<ParticipateModel>.from((response ?? []).map((x) => ParticipateModel.fromJson(x)));
+      final list  = await Invoice_Service.getCollaborators();
       collaboratorsState = collaboratorsState.changeToLoaded(list);
       notifyListeners();
       return;
@@ -1071,12 +1069,12 @@ class invoice_vm extends ChangeNotifier {
     return;
   }
 
-  onChangeSelectedCollaborator(ParticipateModel collaborator){
+  onChangeSelectedCollaborator(ParticipateModel collaborator) {
     selectedCollaborator = collaborator;
     notifyListeners();
   }
 
-  onChangeSelectedAgent(AgentDistributorModel agentDistributorModel){
+  onChangeSelectedAgent(AgentDistributorModel agentDistributorModel) {
     selectedAgent = agentDistributorModel;
     notifyListeners();
   }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/countrymodel.dart';
+import 'package:crm_smart/services/Invoice_Service.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,10 +35,8 @@ class AgentDistributorViewModel extends ChangeNotifier {
         agentDistributorsState = agentDistributorsState.changeToLoading;
         notifyListeners();
       }
+      final list  = await Invoice_Service.getAgentsAndDistributors();
 
-      final response = await Api().get(url: url + 'agent/get_agent.php');
-      final list = List<AgentDistributorModel>.from(
-          (response ?? []).map((x) => AgentDistributorModel.fromJson(x)));
       agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       notifyListeners();
     } catch (e) {

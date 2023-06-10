@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:crm_smart/model/agent_distributor_model.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_distributors_view.dart';
 import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +9,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
+
 import '../../../constants.dart';
 import '../../../model/countrymodel.dart';
+import '../../../view_model/vm.dart';
 import '../../widgets/container_boxShadows.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
@@ -43,7 +44,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
     super.initState();
     if (agentDistributorModel != null) {
       nameController.text = agentDistributorModel!.nameAgent;
-      emailController.text = agentDistributorModel!.emailEgent;
+      emailController.text = agentDistributorModel!.emailAgent;
       phoneNumberController.text = agentDistributorModel!.mobileAgent;
       descriptionController.text = agentDistributorModel!.description;
     }
