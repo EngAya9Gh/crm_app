@@ -20,8 +20,9 @@ class Calendar extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: ListView(
             children: [
-
-            CalendarWidget(),
+            CalendarWidget(
+                type: 'inovice',
+                clientModel: null),
           ],
           ),
         ),

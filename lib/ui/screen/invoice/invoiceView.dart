@@ -16,6 +16,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart' as rt;
 import 'dart:ui' as myui;
@@ -117,28 +118,20 @@ class _InvoiceViewState extends State<InvoiceView> {
     if (pickedDate != null )//&& pickedDate != currentDate)
       setState(() {
         _currentDate = pickedDate;});
-    Provider.of<datetime_vm>(context,listen: false).setdatetimevalue1(_currentDate );
+    Provider.of<datetime_vm>(context,listen: false)
+        .setdatetimevalue1(_currentDate );
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.invoice!.path.toString());
-    print(widget.invoice!.imageRecord.toString());
-    print(widget.invoice!.imagelogo.toString());
-    // widget.invoice=Provider.of<invoice_vm>(context,listen: true)
-    //     .listinvoiceClient
-    //     .firstWhere((element) => element.idInvoice==widget.invoice!.idInvoice
-    // ,orElse: null);
-    //
-    // if( widget.invoice==null)
+
          widget.invoice=Provider.of<invoice_vm>(context,listen: true)
         .listInvoicesAccept
         .firstWhere((element) => element.idInvoice==widget.invoice!.idInvoice
         ,orElse: null);
 
     final _globalKey = GlobalKey<FormState>();
-    Widget dialog =
-    SimpleDialog(
+    Widget dialog = SimpleDialog(
       elevation: 0,
       //backgroundColor: Colors.yellowAccent,
       // shape: StadiumBorder(
@@ -152,181 +145,185 @@ class _InvoiceViewState extends State<InvoiceView> {
       children: [
         Directionality(
           textDirection: myui.TextDirection.rtl,
-          child: StatefulBuilder(
+          child:  ModalProgressHUD(
+              inAsyncCall:
+              Provider.of<invoice_vm>(context, listen: true).isloading,
+                  child: StatefulBuilder(
 
-            builder: (BuildContext context, void Function(void Function()) setState) {
-              return   Form(
-                key: _globalKey,
-                child: Column(
-                  children: [
-                    RowEdit(name: "اسباب الإنسحاب", des: 'required'),
-                    Consumer<typeclient>(
-                      builder: (context, cart, child){
-                        return DropdownButton(
-                          isExpanded: true,
-                          //hint: Text("حدد حالة العميل"),
-                          items: cart.type_of_out.map((level_one) {
-                            return DropdownMenuItem(
-                              child: Text(level_one.nameReason), //label of item
-                              value: level_one.idReason, //value of item
-                            );
-                          }).toList(),
-                          value:cart.selectedValueOut,
-                          onChanged:(value) {
-                            //  setState(() {
-                            print('vvvvvvvvvvvvvvvvvvvvvv');
-                            print(value);
-                            cart.changevalueOut(value.toString());
+              builder: (BuildContext context, void Function(void Function()) setState) {
+                return   Form(
+                  key: _globalKey,
+                  child: Column(
+                    children: [
+                      RowEdit(name: "اسباب الإنسحاب", des: 'required'),
+                      Consumer<typeclient>(
+                        builder: (context, cart, child){
+                          return DropdownButton(
+                            isExpanded: true,
+                            //hint: Text("حدد حالة العميل"),
+                            items: cart.type_of_out.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(level_one.nameReason), //label of item
+                                value: level_one.idReason, //value of item
+                              );
+                            }).toList(),
+                            value:cart.selectedValueOut,
+                            onChanged:(value) {
+                              //  setState(() {
+                              print('vvvvvvvvvvvvvvvvvvvvvv');
+                              print(value);
+                              cart.changevalueOut(value.toString());
 
-                            // });
-                          },
-                        );},
-                    ),
-                    SizedBox(height: 3,),
-                    EditTextFormField(
-                      vaild: (value) {
-                        if (value!.isEmpty) {
-                          return label_empty;
-                        }
-                      },
-                      hintText: "وصف سبب الإنسحاب",
-                      //obscureText: false,
-                      //  con: descresaonController, read: false,
-                      //radius: 5,
-                      paddcustom: EdgeInsets.all(8),
-                      maxline: 5,
-                      controller: descresaonController,
-                    ),
-                    SizedBox(height: 3,),
-                    EditTextFormField(
-                      //read: false,
-                      vaild: (value) {
-                        if (value!.isEmpty) {
-                          return label_empty;
-                        }
-                      },
-                      hintText: 'المبلغ المسترجع',
-                      //obscureText: false,
-                      controller: valueBackController,
-                      //radius: 5,
-                    ),
-                    SizedBox(height: 3,),
-                    RowEdit(name: "تاريخ الإنسحاب", des: 'required'),
-                    TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.date_range,
-                          color: kMainColor,
+                              // });
+                            },
+                          );},
+                      ),
+                      SizedBox(height: 3,),
+                      EditTextFormField(
+                        vaild: (value) {
+                          if (value!.isEmpty) {
+                            return label_empty;
+                          }
+                        },
+                        hintText: "وصف سبب الإنسحاب",
+                        //obscureText: false,
+                        //  con: descresaonController, read: false,
+                        //radius: 5,
+                        paddcustom: EdgeInsets.all(8),
+                        maxline: 5,
+                        controller: descresaonController,
+                      ),
+                      SizedBox(height: 3,),
+                      EditTextFormField(
+                        //read: false,
+                        vaild: (value) {
+                          if (value!.isEmpty) {
+                            return label_empty;
+                          }
+                        },
+                        hintText: 'المبلغ المسترجع',
+                        //obscureText: false,
+                        controller: valueBackController,
+                        //radius: 5,
+                      ),
+                      SizedBox(height: 3,),
+                      RowEdit(name: "تاريخ الإنسحاب", des: 'required'),
+                      TextField(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: kMainColor,
+                          ),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16, fontWeight: FontWeight.w500),
+                          hintText://_currentDate.toString(),
+                          Provider.of<datetime_vm>(context,listen: true).valuedateTime.toString(),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
                         ),
-                        hintStyle: const TextStyle(
-                            color: Colors.black45,
-                            fontSize: 16, fontWeight: FontWeight.w500),
-                        hintText://_currentDate.toString(),
-                        Provider.of<datetime_vm>(context,listen: true).valuedateTime.toString(),
-                        filled: true,
-                        fillColor: Colors.grey.shade200,
+                        readOnly: true,
+                        onTap: () {
+                          setState((){
+                            _selectDate(context,_currentDate);
+                          });
+                        },
                       ),
-                      readOnly: true,
-                      onTap: () {
-                        setState((){
-                          _selectDate(context,_currentDate);
-                        });
-                      },
-                    ),
-                    // RaisedButton(
-                    //   onPressed: () => _selectDate(context,_currentDate),
-                    //   child: Text('Select date'),
-                    // ),
-                    SizedBox(height: 6,),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
+                      // RaisedButton(
+                      //   onPressed: () => _selectDate(context,_currentDate),
+                      //   child: Text('Select date'),
+                      // ),
+                      SizedBox(height: 6,),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
 
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    kMainColor)),
-                            onPressed: () async {
-                              print(typeclient_provider.selectedValueOut);
-                              // dismisses only the dialog and returns false
-                              if (_globalKey.currentState!.validate()) {
-                                _globalKey.currentState!.save();
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      kMainColor)),
+                              onPressed: () async {
+                                print(typeclient_provider.selectedValueOut);
+                                // dismisses only the dialog and returns false
+                                if (_globalKey.currentState!.validate()) {
+                                  _globalKey.currentState!.save();
 
-                                await Provider.of<invoice_vm>(context, listen: false)
-                                    .set_state_back({
-                                  'type_back': 'back',//انسحاب
-                                  'fk_regoin':widget.invoice!.fk_regoin.toString(),
-                                  'fkcountry':widget.invoice!.fk_country.toString(),
-                                  "fkUserdo":
-                                  Provider.of<user_vm_provider>(context, listen: false)
-                                      .currentUser
-                                      .idUser.toString(),
-                                  "name_enterprise": clientmodel.nameEnterprise
-                                      .toString(),
-                                  "nameUserdo":
-                                  Provider.of<user_vm_provider>(context, listen: false).currentUser
-                                      .nameUser.toString(),
-                                  "fk_client":widget.invoice!.fkIdClient.toString(),
-                                  "reason_back": typeclient_provider.selectedValueOut,
-                                  "fkuser_back": Provider
-                                      .of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
-                                  "desc_reason_back": descresaonController.text,
-                                  "date_change_back": _currentDate.toString(),//DateTime.now().toString(),
-                                  "value_back": valueBackController.text,
-                                }, widget.invoice!.idInvoice.toString());
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop(false);
-                              }},
-                            child: Text('انسحاب'),
-                          ),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    kMainColor)),
-                            onPressed: () async {
-                              print('2121211111111111111111');
-                              print(typeclient_provider.selectedValueOut);
-                              // dismisses only the dialog and returns false
-                              if (_globalKey.currentState!.validate()) {
-                                _globalKey.currentState!.save();
+                                  await Provider.of<invoice_vm>(context, listen: false)
+                                      .set_state_back({
+                                    'type_back': 'back',//انسحاب
+                                    'fk_regoin':widget.invoice!.fk_regoin.toString(),
+                                    'fkcountry':widget.invoice!.fk_country.toString(),
+                                    "fkUserdo":
+                                    Provider.of<user_vm_provider>(context, listen: false)
+                                        .currentUser
+                                        .idUser.toString(),
+                                    "name_enterprise": clientmodel.nameEnterprise
+                                        .toString(),
+                                    "nameUserdo":
+                                    Provider.of<user_vm_provider>(context, listen: false).currentUser
+                                        .nameUser.toString(),
+                                    "fk_client":widget.invoice!.fkIdClient.toString(),
+                                    "reason_back": typeclient_provider.selectedValueOut,
+                                    "fkuser_back": Provider
+                                        .of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                    "desc_reason_back": descresaonController.text,
+                                    "date_change_back": _currentDate.toString(),//DateTime.now().toString(),
+                                    "value_back": valueBackController.text,
+                                  }, widget.invoice!.idInvoice.toString());
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop(false);
+                                }},
+                              child: Text('انسحاب'),
+                            ),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      kMainColor)),
+                              onPressed: () async {
+                                print('2121211111111111111111');
+                                print(typeclient_provider.selectedValueOut);
+                                // dismisses only the dialog and returns false
+                                if (_globalKey.currentState!.validate()) {
+                                  _globalKey.currentState!.save();
 
-                                await Provider.of<invoice_vm>(context, listen: false)
-                                    .set_state_back({
-                                  'type_back': 'return',//ارحاع
-                                  'fk_regoin':widget.invoice!.fk_regoin.toString(),
-                                  'fkcountry':widget.invoice!.fk_country.toString(),
-                                  "fkUserdo":
-                                  Provider.of<user_vm_provider>(context, listen: false)
-                                      .currentUser
-                                      .idUser.toString(),
-                                  "name_enterprise": clientmodel.nameEnterprise
-                                      .toString(),
-                                  "nameUserdo":
-                                  Provider.of<user_vm_provider>(context, listen: false).currentUser
-                                      .nameUser.toString(),
-                                  "fk_client":widget.invoice!.fkIdClient.toString(),
-                                  "reason_back": typeclient_provider.selectedValueOut,
-                                  "fkuser_back": Provider
-                                      .of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
-                                  "desc_reason_back": descresaonController.text,
-                                  "date_change_back": _currentDate.toString(),//DateTime.now().toString(),
-                                  "value_back": valueBackController.text,
-                                }, widget.invoice!.idInvoice.toString());
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop(false);
-                              }},
-                            child: Text('ارجاع'),
-                          ),
-                        ],
+                                  await Provider.of<invoice_vm>(context, listen: false)
+                                      .set_state_back({
+                                    'type_back': 'return',//ارحاع
+                                    'fk_regoin':widget.invoice!.fk_regoin.toString(),
+                                    'fkcountry':widget.invoice!.fk_country.toString(),
+                                    "fkUserdo":
+                                    Provider.of<user_vm_provider>(context, listen: false)
+                                        .currentUser
+                                        .idUser.toString(),
+                                    "name_enterprise": clientmodel.nameEnterprise
+                                        .toString(),
+                                    "nameUserdo":
+                                    Provider.of<user_vm_provider>(context, listen: false).currentUser
+                                        .nameUser.toString(),
+                                    "fk_client":widget.invoice!.fkIdClient.toString(),
+                                    "reason_back": typeclient_provider.selectedValueOut,
+                                    "fkuser_back": Provider
+                                        .of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                    "desc_reason_back": descresaonController.text,
+                                    "date_change_back": _currentDate.toString(),//DateTime.now().toString(),
+                                    "value_back": valueBackController.text,
+                                  }, widget.invoice!.idInvoice.toString());
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop(false);
+                                }},
+                              child: Text('ارجاع'),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
+                    ],
+                  ),
+                );
 
-            },
+              },
 
+            ),
           ),
         )
 
@@ -623,7 +620,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CustomButton(
+                        Provider.of<privilge_vm>(context,listen: true)
+                            .checkprivlge('116')==true ? CustomButton(
                           //width: MediaQuery.of(context).size.width * 0.2,
                           text: 'اضافة دفعة للفاتورة',
                           onTap: () async {
@@ -634,9 +632,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                                        ) // support_view(type: 'only',)
                             ));
                           },
-                        ),
+                        ):Container(),
                         SizedBox(width: 5),
-                        CustomButton(
+                        Provider.of<privilge_vm>(context,listen: true)
+                            .checkprivlge('115')==true ? CustomButton(
                           //width: MediaQuery.of(context).size.width * 0.2,
                           text: 'تغيير بيانات الفاتورة',
                           onTap: () async {
@@ -647,7 +646,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                        ) // support_view(type: 'only',)
                             ));
                           },
-                        ),
+                        ):Container(),
                       ],
                     ),
                     widget.type=='approved'?
@@ -829,15 +828,6 @@ class _InvoiceViewState extends State<InvoiceView> {
         ),),
     );
   }
-
-  // clear() {
-  //   // Provider.of<approve_vm>(context,listen: false)
-  //   //     .removeApproveClient(widget.itemapprove!.idApproveClient);
-  //   // setState(() {
-  //   //   widget.itemapprove=null;
-  //   // });
-  // }
-
 
   clear() {
 

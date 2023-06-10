@@ -166,11 +166,11 @@ class _ClientViewState extends State<ClientView> {
                Container():
                cardRow(
                    title:'نظام سابق',
-                   value:clientModel.presystemtitle.toString()) ,
+                   value:clientModel.presystemtitle==null?'':clientModel.presystemtitle.toString()) ,
 
                 cardRow(
                     title:'مصدر العميل',
-                    value:clientModel.sourcclient.toString()) ,
+                    value:clientModel.sourcclient==null?'':clientModel.sourcclient.toString()) ,
 
 
                 clientModel.activity_type_fk ==null?

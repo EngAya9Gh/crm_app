@@ -468,7 +468,8 @@ else{
   Future<bool> updateclient_vm(Map<String, dynamic?> body,String? id_client) async {
     ClientModel data = await ClientService().updateClient(
         body,id_client!);
-
+    isloading=true;
+    notifyListeners();
     int index= listClient.indexWhere((element) =>
     element.idClients==id_client);
 
@@ -483,6 +484,7 @@ else{
     element.idClients==id_client);
    if(index !=-1)
      listClientAccept[index]=data;
+   isloading=false;
       notifyListeners();
     return true;
   }

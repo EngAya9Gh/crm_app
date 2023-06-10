@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../client/calender_client.dart';
 import '../../client/agents_distributors_invoices_view.dart';
 
 class sales extends StatefulWidget {
@@ -63,7 +64,7 @@ class _salesState extends State<sales> {
         backgroundColor: kMainColor,
         elevation: 0,
       ),
-      body:
+      body: 
       // Consumer<privilge_vm>(
       // builder: (context, privilge, child){
        Padding(
@@ -95,6 +96,15 @@ class _salesState extends State<sales> {
                               invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
                       ));
                     }, title:'فواتير العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+                buildSelectCategory(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context)=>
+                            calender_client()));
+                  }, title:  'جدول زيارات العميل ',
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,),
 
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('39')==true?
@@ -199,17 +209,8 @@ class _salesState extends State<sales> {
                   colorbag: Colors.white,
                   colortitle: Colors.black,
                   colorarrow: Colors.black,):Container(),
-                // Provider.of<privilge_vm>(context,listen: true)
-                //     .checkprivlge('5')==true?
-                // buildSelectCategory(
-                //   onTap: () {
-                //   Navigator.push(context, MaterialPageRoute(
-                //       builder: (context)=>
-                //           TargetPage()));
-                // }, title:  'تاركيت الموظف ',
-                //   colorbag: Colors.white,
-                //   colortitle: Colors.black,
-                //   colorarrow: Colors.black,):Container(),
+
+
 
                 Provider.of<privilge_vm>(context,listen: true)
                   .checkprivlge('14')==true?

@@ -892,8 +892,12 @@ class _addinvoiceState extends State<addinvoice> {
                                   typeinstallController = Provider.of<selected_button_provider>(context, listen: false)
                                       .isSelectedtypeinstall
                                       .toString();
-                                  if(invoiceViewmodel.selectedSellerType == null){
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('من فضلك اختر نوع البائع')));
+                                  if(
+                                      invoiceViewmodel.selectedSellerType == null){
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(
+                                        SnackBar(
+                                        content: Text('من فضلك اختر نوع البائع')));
                                     return;
                                   }
 
@@ -945,7 +949,16 @@ class _addinvoiceState extends State<addinvoice> {
                                         'clientusername': userclientController.text.toString(),
                                         'date_lastuserupdate': DateTime.now().toString(),
 
-                                        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString(),
+
+                                        if(invoiceViewmodel.selectedSellerType == SellerType.collaborator
+                                            && invoiceViewmodel.selectedCollaborator?.id_participate!=null )
+                                          'type_seller':  invoiceViewmodel.selectedSellerType?.index.toString()
+                                        else
+                                          if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
+                                            'type_seller':  invoiceViewmodel.selectedSellerType?.index.toString()
+                                        else
+                                          'type_seller':'3',// type seller is employee,
+
                                         'rate_participate': sellerCommissionRate.text,
 
                                         if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
@@ -996,7 +1009,15 @@ class _addinvoiceState extends State<addinvoice> {
                                         'numusers': numuserController.text.toString(),
                                         'address_invoice': addressController.text.toString(),
 
-                                        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString(),
+                                        if(invoiceViewmodel.selectedSellerType == SellerType.collaborator
+                                            && invoiceViewmodel.selectedCollaborator?.id_participate!=null )
+                                          'type_seller':  invoiceViewmodel.selectedSellerType?.index.toString()
+                                        else
+                                          if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
+                                            'type_seller':  invoiceViewmodel.selectedSellerType?.index.toString()
+                                          else
+                                            'type_seller':'3',// type seller is employee,
+
                                         'rate_participate': sellerCommissionRate.text,
 
                                         if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
