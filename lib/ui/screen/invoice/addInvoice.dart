@@ -157,7 +157,7 @@ class _addinvoiceState extends State<addinvoice> {
         renew2Controller.text = _invoice!.renew2year.toString();
 
         typepayController = _invoice!.typePay.toString();
-        currencyController = _invoice!.currency_name.toString();
+        currencyController = _invoice!.currency_name==null? '1':_invoice!.currency_name.toString();
         print(typepayController.toString());
         typeinstallController = _invoice!.typeInstallation.toString();
         print(typeinstallController);
