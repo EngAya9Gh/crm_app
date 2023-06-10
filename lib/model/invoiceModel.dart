@@ -1,36 +1,119 @@
-import 'dart:convert';
-
 import 'package:crm_smart/Repository/cache_repo.dart';
 import 'package:crm_smart/model/participatModel.dart';
-import 'package:crm_smart/view_model/notify_vm.dart';
 
 import '../constants.dart';
 import 'agent_distributor_model.dart';
 
-class InvoiceModel extends CacheRepository{
+class InvoiceModel extends CacheRepository {
+  //region Variables
+  String? idInvoice;
+  String? dateCreate;
+  String? typePay;
+  String? renewYear;
+  String? typeInstallation;
+  String? imageRecord = '';
+  String? imagelogo = '';
+  String? imagelogopath = '';
+  String? fkIdClient;
+  String? fkIdUser;
+  String? amountPaid;
+  String? notes;
+  String? nameUser;
+  String? nameClient;
+  String? total;
+  String? name_enterprise;
+  String? fk_regoin;
+  String? name_regoin;
+  String? type_client;
+  String? lastuserupdate;
+  String? lastuserupdateName;
+
+  String? nameuserinstall;
+  String? dateinstall_done;
+  String? isdoneinstall;
+  String? userinstall;
+  String? dateinstall_task;
+  String? fkusertask;
+  String? date_lastuserupdate;
+  String? path = '';
+  String? fk_country;
+  String? reason_date;
+  String? stateclient;
+  String? value_back;
+  String? desc_reason_back;
+  String? reason_back;
+  String? fkuser_back;
+  String? date_change_back;
+  String? nameuserback;
+  String? nameuserreplay;
+  String? nameusertask;
+  String? daterepaly;
+  String? fkuserdatareplay;
+
+  String? iduser_approve;
+  String? isApprove;
+  String? nameuserApprove;
+  String? date_approve;
+  String? mobile; //mobile client
+  String? ismarketing;
+  String? numbarnch;
+  String? numusers;
+  String? nummostda;
+  String? numTax;
+  String? hoursdelaytabel;
+  String? hoursdelayinstall;
+  String? clientusername;
+  String? address_invoice;
+
+  String? ready_install;
+  String? date_readyinstall;
+  String? user_ready_install;
+  String? date_not_readyinstall;
+  String? user_not_ready_install;
+  String? nameuser_ready_install;
+  String? nameuser_notready_install;
+  String? count_delay_ready;
+  String? isApproveFinance;
+  String? iduser_FApprove;
+  String? Date_FApprove;
+  String? renew2year;
+  String? participate_fk;
+  String? rate_participate;
+  String? type_seller;
+  String? fk_agent;
+  String? fk_regoin_invoice;
+  String? city, name_city, namemaincity, id_maincity;
+
+  //Map<String, dynamic> products;
+  List<ProductsInvoice>? products;
+  ParticipateModel? participal;
+  AgentDistributorModel? agent_distibutor;
+
+  //endregion
+
+  //region Constructor
   InvoiceModel({
-     this.idInvoice,
-     this.dateCreate,
-     this.typePay,
-     this.renewYear,
-     this.typeInstallation,
-     this.imageRecord,
-     this.imagelogo,
-     this.fkIdClient,
-     this.fkIdUser,
-     this.amountPaid,
-     this.notes,
-     this.nameUser,
-     this.nameClient,
-     required this.products,
-     this.total,
+    this.idInvoice,
+    this.dateCreate,
+    this.typePay,
+    this.renewYear,
+    this.typeInstallation,
+    this.imageRecord,
+    this.imagelogo,
+    this.fkIdClient,
+    this.fkIdUser,
+    this.amountPaid,
+    this.notes,
+    this.nameUser,
+    this.nameClient,
+    required this.products,
+    this.total,
     this.name_enterprise,
     this.fk_regoin,
     this.name_regoin,
     this.type_client,
     this.lastuserupdate,
     this.lastuserupdateName,
-
     this.nameuserinstall,
     this.dateinstall_done,
     this.isdoneinstall,
@@ -52,7 +135,6 @@ class InvoiceModel extends CacheRepository{
     this.nameuserback,
     this.nameuserreplay,
     this.nameusertask,
-
     this.daterepaly,
     this.fkuserdatareplay,
     this.iduser_approve,
@@ -91,94 +173,13 @@ class InvoiceModel extends CacheRepository{
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
-
   });
-    String? idInvoice;
-    String? dateCreate;
-    String? typePay;
-    String? renewYear;
-    String? typeInstallation;
-    String? imageRecord='';
-    String? imagelogo='';
-    String? imagelogopath='';
-    String? fkIdClient;
-    String? fkIdUser;
-    String? amountPaid;
-    String? notes;
-    String? nameUser;
-    String? nameClient;
-    String? total;
-    String? name_enterprise;
-    String? fk_regoin;
-    String? name_regoin;
-    String? type_client;
-    String? lastuserupdate;
-    String? lastuserupdateName;
 
-    String? nameuserinstall;
-    String? dateinstall_done;
-    String? isdoneinstall;
-    String? userinstall;
-    String? dateinstall_task;
-    String? fkusertask;
-    String? date_lastuserupdate;
-    String? path = '';
-    String? fk_country;
-    String? reason_date;
-    String? stateclient;
-    String? value_back;
-    String? desc_reason_back;
-    String? reason_back;
-    String? fkuser_back;
-    String? date_change_back;
-    String? nameuserback;
-    String? nameuserreplay;
-    String? nameusertask;
-    String? daterepaly;
-    String? fkuserdatareplay;
+  //endregion
 
-    String? iduser_approve;
-    String? isApprove;
-    String? nameuserApprove;
-    String? date_approve;
-    String? mobile;//mobile client
-    String? ismarketing;
-    String? numbarnch;
-    String? numusers;
-    String? nummostda;
-    String? numTax;
-    String? hoursdelaytabel;
-    String? hoursdelayinstall;
-    String? clientusername;
-    String? address_invoice;
-
-    String?  ready_install;
-    String?  date_readyinstall;
-    String?  user_ready_install;
-    String?  date_not_readyinstall;
-    String?  user_not_ready_install;
-    String?  nameuser_ready_install;
-    String?  nameuser_notready_install;
-    String? count_delay_ready;
-    String? isApproveFinance;
-    String? iduser_FApprove;
-    String? Date_FApprove;
-    String? renew2year;
-    String? participate_fk;
-    String? rate_participate;
-    String? type_seller;
-    String? fk_agent;
-    String? fk_regoin_invoice;
-    String?  city, name_city,
-    namemaincity,
-    id_maincity;
-
-  //Map<String, dynamic> products;
-   List<ProductsInvoice>? products;
-   ParticipateModel? participal;
-   AgentDistributorModel? agent_distibutor;
+  //region Json converters
   // var products;
-  InvoiceModel.fromJson(Map<String, dynamic> jsondata){
+  InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     print(jsondata);
     idInvoice = jsondata['id_invoice'];
     dateCreate = jsondata['date_create'];
@@ -186,15 +187,14 @@ class InvoiceModel extends CacheRepository{
     renewYear = jsondata['renew_year'];
     typeInstallation = jsondata['type_installation'];
 
-    imageRecord = jsondata['image_record'].toString().trim().isEmpty
-    ||jsondata['image_record']==null
-    ? jsondata['image_record']
-    : urlfile+ jsondata['image_record'];
+    imageRecord =
+        jsondata['image_record'].toString().trim().isEmpty || jsondata['image_record'] == null
+            ? jsondata['image_record']
+            : urlfile + jsondata['image_record'];
 
-    imagelogo = jsondata['imagelogo'].toString().trim().isEmpty
-    ||jsondata['imagelogo']==null
-    ? jsondata['imagelogo']
-    : urlfilelogo+ jsondata['imagelogo'];
+    imagelogo = jsondata['imagelogo'].toString().trim().isEmpty || jsondata['imagelogo'] == null
+        ? jsondata['imagelogo']
+        : urlfilelogo + jsondata['imagelogo'];
 
     fkIdClient = jsondata['fk_idClient'];
     fkIdUser = jsondata['fk_idUser'];
@@ -203,42 +203,42 @@ class InvoiceModel extends CacheRepository{
     nameUser = jsondata['nameUser'];
     nameClient = jsondata['name_client'];
     total = jsondata['total'];
-    name_enterprise=jsondata['name_enterprise'];
-    fk_regoin=jsondata['fk_regoin'];
-    name_regoin=jsondata['name_regoin'];
-    type_client=jsondata['type_client'];
-    lastuserupdate=jsondata['lastuserupdate'];
-    lastuserupdateName=jsondata['lastuserupdateName'];
+    name_enterprise = jsondata['name_enterprise'];
+    fk_regoin = jsondata['fk_regoin'];
+    name_regoin = jsondata['name_regoin'];
+    type_client = jsondata['type_client'];
+    lastuserupdate = jsondata['lastuserupdate'];
+    lastuserupdateName = jsondata['lastuserupdateName'];
 
-    nameuserinstall=jsondata['nameuserinstall'];
-    dateinstall_done=jsondata['dateinstall_done'];
-    isdoneinstall=jsondata['isdoneinstall'];
-    userinstall=jsondata['userinstall'];
-    dateinstall_task=jsondata['dateinstall_task'];
-    fkusertask=jsondata['fkusertask'];
-    date_lastuserupdate=jsondata['date_lastuserupdate'];
-    path=jsondata['path'];
-    fk_country=jsondata['fk_country'];
-    reason_date=jsondata['reason_date'];
-    stateclient=jsondata['stateclient'];
-    value_back=jsondata['value_back'];
-    desc_reason_back=jsondata['desc_reason_back'];
-    reason_back=jsondata['reason_back'];
-    fkuser_back=jsondata['fkuser_back'];
-    date_change_back=jsondata['date_change_back'];
-    nameuserback=jsondata['nameuserback'];
-    nameuserreplay=jsondata['nameuserreplay'];
-    nameusertask=jsondata['nameusertask'];
+    nameuserinstall = jsondata['nameuserinstall'];
+    dateinstall_done = jsondata['dateinstall_done'];
+    isdoneinstall = jsondata['isdoneinstall'];
+    userinstall = jsondata['userinstall'];
+    dateinstall_task = jsondata['dateinstall_task'];
+    fkusertask = jsondata['fkusertask'];
+    date_lastuserupdate = jsondata['date_lastuserupdate'];
+    path = jsondata['path'];
+    fk_country = jsondata['fk_country'];
+    reason_date = jsondata['reason_date'];
+    stateclient = jsondata['stateclient'];
+    value_back = jsondata['value_back'];
+    desc_reason_back = jsondata['desc_reason_back'];
+    reason_back = jsondata['reason_back'];
+    fkuser_back = jsondata['fkuser_back'];
+    date_change_back = jsondata['date_change_back'];
+    nameuserback = jsondata['nameuserback'];
+    nameuserreplay = jsondata['nameuserreplay'];
+    nameusertask = jsondata['nameusertask'];
 
-    daterepaly=jsondata['daterepaly'];
-    fkuserdatareplay=jsondata['fkuserdatareplay'];
+    daterepaly = jsondata['daterepaly'];
+    fkuserdatareplay = jsondata['fkuserdatareplay'];
 
-    iduser_approve=jsondata['iduser_approve'];
-    isApprove=jsondata['isApprove'];
-    nameuserApprove=jsondata['nameuserApprove'];
-    date_approve=jsondata['date_approve'];
-    mobile=jsondata['mobile'];
-    ismarketing=jsondata['ismarketing'];
+    iduser_approve = jsondata['iduser_approve'];
+    isApprove = jsondata['isApprove'];
+    nameuserApprove = jsondata['nameuserApprove'];
+    date_approve = jsondata['date_approve'];
+    mobile = jsondata['mobile'];
+    ismarketing = jsondata['ismarketing'];
     city = jsondata['city'];
     name_city = jsondata['name_city'];
     namemaincity = jsondata['namemaincity'];
@@ -263,24 +263,28 @@ class InvoiceModel extends CacheRepository{
     iduser_FApprove = jsondata['iduser_FApprove'];
     Date_FApprove = jsondata['Date_FApprove'];
     renew2year = jsondata['renew2year'];
-    rate_participate=jsondata['rate_participate'];
-    participate_fk=jsondata['participate_fk'];
-    fk_agent=jsondata['fk_agent'];
-    type_seller=jsondata['type_seller'];
-    fk_regoin_invoice=jsondata['fk_regoin_invoice'];
+    rate_participate = jsondata['rate_participate'];
+    participate_fk = jsondata['participate_fk'];
+    fk_agent = jsondata['fk_agent'];
+    type_seller = jsondata['type_seller'];
+    fk_regoin_invoice = jsondata['fk_regoin_invoice'];
 
-    participal=jsondata['participal_info']==null?null:getParticipateModel(jsondata['participal_info']);
-    agent_distibutor=jsondata['agent_distibutor_info']==null?null: getAgentDistributorModel(jsondata['agent_distibutor_info']);
-    products=getproud(jsondata['products']);
-      //  json.decode(
-       // jsondata['products']
-   // )//  jsondata['products']
-   // .map(
-       //     (e) {
-              //print('eee'+json.decode(e));
-        //      ProductsInvoice.fromJson(e);
-              //print('eee'+e);
-       // }).toList();
+    participal = jsondata['participal_info'] == null
+        ? null
+        : getParticipateModel(jsondata['participal_info']);
+    agent_distibutor = jsondata['agent_distibutor_info'] == null
+        ? null
+        : getAgentDistributorModel(jsondata['agent_distibutor_info']);
+    products = getproud(jsondata['products']);
+    //  json.decode(
+    // jsondata['products']
+    // )//  jsondata['products']
+    // .map(
+    //     (e) {
+    //print('eee'+json.decode(e));
+    //      ProductsInvoice.fromJson(e);
+    //print('eee'+e);
+    // }).toList();
     //     .add(
     //     ProductsInvoice.fromJson(
     //         json.decode(jsondata['products'])
@@ -288,9 +292,9 @@ class InvoiceModel extends CacheRepository{
     // );
     //     (json.decode(jsondata['products']) as List)
     // .map((e) => ProductsInvoice.fromJson(e)).toList();
-       //List.from(
+    //List.from(
 
-        //);
+    //);
     // (){
     //   for (int i = 0; i < jsondata['products'].length; i++) {
     //   products!.add(
@@ -327,7 +331,7 @@ class InvoiceModel extends CacheRepository{
     _data['nameuserinstall'] = nameuserinstall;
     _data['dateinstall_done'] = dateinstall_done;
     _data['isdoneinstall'] = isdoneinstall;
-    _data['userinstall'] = userinstall;//id user
+    _data['userinstall'] = userinstall; //id user
     _data['dateinstall_task'] = dateinstall_task;
     _data['fkusertask'] = fkusertask;
     _data['date_lastuserupdate'] = date_lastuserupdate;
@@ -348,7 +352,7 @@ class InvoiceModel extends CacheRepository{
     _data['fkuserdatareplay'] = fkuserdatareplay;
 
     _data['iduser_approve'] = iduser_approve;
-    _data['isApprove'] = 	isApprove;
+    _data['isApprove'] = isApprove;
 
     _data['date_approve'] = date_approve;
     _data['nameuserApprove'] = nameuserApprove;
@@ -381,92 +385,100 @@ class InvoiceModel extends CacheRepository{
     _data['fk_regoin_invoice'] = fk_regoin_invoice;
     _data['rate_participate'] = rate_participate;
 
-    _data['products'] =
-        products!.map((e)=>e.toJson()).toList();
+    _data['products'] = products!.map((e) => e.toJson()).toList();
     return _data;
   }
-  List<ProductsInvoice> getproud(data){
-    List<ProductsInvoice> prodlist = [];
-    if(data!=null){
-    for (int i = 0; i < data.length; i++) {
-      print(i);
 
-      //print("data "+ "[" + data[i] + "]");
-      prodlist.add(ProductsInvoice.fromJson(data[i]));
-    }
+  //endregion
+
+  //region Methods
+  List<ProductsInvoice> getproud(data) {
+    List<ProductsInvoice> prodlist = [];
+    if (data != null) {
+      for (int i = 0; i < data.length; i++) {
+        print(i);
+
+        //print("data "+ "[" + data[i] + "]");
+        prodlist.add(ProductsInvoice.fromJson(data[i]));
+      }
     }
     return prodlist;
-
   }
-  ParticipateModel  getParticipateModel(data){
 
+  ParticipateModel getParticipateModel(data) {
     print('data');
-    print( data.length.toString()+'data');
+    print(data.length.toString() + 'data');
     List<ParticipateModel> prodlist = [];
-    if(data!=null) {
+    if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        print('i'+i.toString());//+data[i]);
+        print('i' + i.toString()); //+data[i]);
         prodlist.add(ParticipateModel.fromJson(data[i]));
       }
     }
     return prodlist[0];
   }
-  AgentDistributorModel  getAgentDistributorModel(data){
 
+  AgentDistributorModel getAgentDistributorModel(data) {
     print('data');
-    print( data.length.toString()+'data');
+    print(data.length.toString() + 'data');
     List<AgentDistributorModel> prodlist = [];
-    if(data!=null) {
+    if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        print('i'+i.toString());//+data[i]);
+        print('i' + i.toString()); //+data[i]);
         prodlist.add(AgentDistributorModel.fromJson(data[i]));
       }
     }
     return prodlist[0];
   }
+//endregion
 }
 
-class ProductsInvoice extends CacheRepository{
-  ProductsInvoice({
-     this.idInvoiceProduct,
-     this.fkIdInvoice,
-     this.fkProduct,
-     this.amount,
-     this.price,
-     this.taxtotal,
-     this.rateAdmin,
-     this.rateUser,
-     this.idProduct,
-     this.nameProduct,
-     this.priceProduct,
-     this.type,
-     this.fkCountry,
-     this.fkConfig,
-     this.isdeleted,
-    this.fkclient,
-    this.fkuser
-
-  });
-  late  String? idInvoiceProduct;
-  late  String? fkIdInvoice;
-  late  String? fkProduct;
-  late  String? amount;
-  late  String? price;
-  late  String? taxtotal;
-  late  String? rateAdmin;
-  late  String? rateUser;
+class ProductsInvoice extends CacheRepository {
+  //region Variables
+  late String? idInvoiceProduct;
+  late String? fkIdInvoice;
+  late String? fkProduct;
+  late String? amount;
+  late String? price;
+  late String? taxtotal;
+  late String? rateAdmin;
+  late String? rateUser;
   String? idProduct;
   String? nameProduct;
   late final String? priceProduct;
   String? type;
   late final String? fkCountry;
   String? fkConfig;
-  bool? isdeleted =false;
+  bool? isdeleted = false;
   String? fkuser;
   String? fkclient;
 
+  //endregion
 
-  ProductsInvoice.fromJson(Map<String, dynamic> json){
+  //region Constructor
+  ProductsInvoice(
+      {this.idInvoiceProduct,
+      this.fkIdInvoice,
+      this.fkProduct,
+      this.amount,
+      this.price,
+      this.taxtotal,
+      this.rateAdmin,
+      this.rateUser,
+      this.idProduct,
+      this.nameProduct,
+      this.priceProduct,
+      this.type,
+      this.fkCountry,
+      this.fkConfig,
+      this.isdeleted,
+      this.fkclient,
+      this.fkuser});
+
+  //endregion
+
+  //region Json converters
+  ProductsInvoice.fromJson(Map<String, dynamic> json) {
     print('in product from json ');
     print(json);
     idInvoiceProduct = json['id_invoice_product'];
@@ -474,7 +486,8 @@ class ProductsInvoice extends CacheRepository{
     fkProduct = json['fk_product'];
     amount = json['amount'];
     price = json['price'];
-    taxtotal = json['taxtotal'];;
+    taxtotal = json['taxtotal'];
+    ;
     rateAdmin = json['rate_admin'];
     rateUser = json['rateUser'];
     idProduct = json['id_product'];
@@ -500,7 +513,8 @@ class ProductsInvoice extends CacheRepository{
     _data['priceProduct'] = priceProduct;
     _data['type'] = type;
     _data['fk_country'] = fkCountry;
-    _data['fk_config'] = fkConfig==null?"null":fkConfig;
+    _data['fk_config'] = fkConfig == null ? "null" : fkConfig;
     return _data;
   }
+//endregion
 }

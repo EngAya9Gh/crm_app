@@ -9,6 +9,7 @@ import 'package:crm_smart/provider/switch_provider.dart';
 import 'package:crm_smart/ui/screen/home/home.dart';
 import 'package:crm_smart/ui/screen/login.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
+import 'package:crm_smart/view_model/agent_collaborators_invoices_vm.dart';
 import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/approve_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
@@ -87,12 +88,10 @@ void main() async {
   //await Firebase.initializeApp();
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<user_vm_provider>(create: (_) => user_vm_provider()),
-    ChangeNotifierProvider<navigatorProvider>(
-        create: (_) => navigatorProvider()),
+    ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
     ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
     ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
-    ChangeNotifierProvider<selected_button_provider>(
-        create: (_) => selected_button_provider()),
+    ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
     ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
     // ChangeNotifierProvider<config_vm>(create: (_) => config_vm()),
     ChangeNotifierProxyProvider<user_vm_provider, config_vm>(
@@ -175,10 +174,15 @@ void main() async {
     ChangeNotifierProvider<activity_vm>(create: (_) => activity_vm()),
     ChangeNotifierProvider<company_vm>(create: (_) => company_vm()),
     ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
-    ChangeNotifierProvider<AgentDistributorViewModel>(
-        create: (_) => AgentDistributorViewModel()),
-    ChangeNotifierProvider<lastcommentclient_vm>(
-        create: (_) => lastcommentclient_vm()),
+    ChangeNotifierProvider<AgentDistributorViewModel>(create: (_) => AgentDistributorViewModel()),
+    ChangeNotifierProxyProvider<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
+      update: (context, invoiceVm, agentCollaborateVm) {
+        agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
+        return agentCollaborateVm!;
+      },
+      create: (_) => AgentsCollaboratorsInvoicesViewmodel(),
+    ),
+    ChangeNotifierProvider<lastcommentclient_vm>(create: (_) => lastcommentclient_vm()),
     //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
   ], child: MyApp()));
 }
@@ -189,8 +193,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SharedPreferences>(
-        future: Provider.of<user_vm_provider>(context, listen: false)
-            .getcurrentuser(),
+        future: Provider.of<user_vm_provider>(context, listen: false).getcurrentuser(),
         builder: (context, snapshot) {
           print('in main builder');
           if (!snapshot.hasData) {

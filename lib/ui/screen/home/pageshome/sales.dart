@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../client/calender_client.dart';
+import '../../client/agents_distributors_invoices_view.dart';
 
 class sales extends StatefulWidget {
   const sales({Key? key}) : super(key: key);
@@ -104,6 +105,20 @@ class _salesState extends State<sales> {
                   colorbag: Colors.white,
                   colortitle: Colors.black,
                   colorarrow: Colors.black,),
+
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('39')==true?
+                buildSelectCategory(
+                    colorbag:   Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>  AgentsDistributorsInvoicesView()
+                      ));
+                    }, title:'فواتير العملاء والموزعين' ):Container(),
+
+
                 buildSelectCategory(
                     colorbag:   Colors.white,
                     colortitle: Colors.black,
