@@ -13,7 +13,7 @@ import '../../../view_model/typeclient.dart';
 import '../../../view_model/vm.dart';
 import '../../widgets/invoice_widget/Card_invoice_client.dart';
 
-enum SellerTypeFilter { all, distributor, agent, collaborator, employee }
+enum SellerTypeFilter { distributor, agent, collaborator, employee, all }
 
 extension SellerExt on SellerTypeFilter {
   String get text {
@@ -149,7 +149,6 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   ),
                   Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
                       builder: (context, value, agentCollaboratorsVm, child) {
-
                     final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
                             (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
                         ? value.listInvoicesAccept
@@ -167,7 +166,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
               builder: (context, value, agentCollaboratorsVm, child) {
                 final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
-                    (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
+                        (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
                     ? value.listInvoicesAccept
                     : agentCollaboratorsVm.invoicesFiltered;
 

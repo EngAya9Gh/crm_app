@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../agents_and_distributors/agents_and_distributors_view.dart';
+import '../../barnch_race/pages/branch_race_mangement_view.dart';
 import '../../partic_agent/participateView.dart';
 import '../widgethomeitem.dart';
 
@@ -43,8 +44,7 @@ class _managmentpageState extends State<managmentpage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<privilge_vm>(context, listen: false)
-          .getprivlg_usercurrent();
+      await Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
     });
     super.initState();
   }
@@ -74,28 +74,20 @@ class _managmentpageState extends State<managmentpage> {
                         colortitle: Colors.black,
                         colorarrow: Colors.black,
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AllUserScreen()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => AllUserScreen()));
                         },
                         title: 'إدارة المستخدمين')
                     : Container(),
-
                 privilge.checkprivlge('17') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
                         colorarrow: Colors.black,
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => check_level()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => check_level()));
                         },
                         title: 'ادارة الصلاحيات')
                     : Container(),
-
                 privilge.checkprivlge('4') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
@@ -129,10 +121,7 @@ class _managmentpageState extends State<managmentpage> {
                     : Container(),
                 privilge.checkprivlge('52') == true
                     ? buildSelectCategory(
-                        subtitle: Provider.of<user_vm_provider>(context,
-                                listen: false)
-                            .currentUser
-                            .nameCountry,
+                        subtitle: Provider.of<user_vm_provider>(context, listen: false).currentUser.nameCountry,
                         colorbag: Colors.white,
                         colortitle: Colors.black,
                         colorarrow: Colors.black,
@@ -140,8 +129,7 @@ class _managmentpageState extends State<managmentpage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  change_country(),
+                              builder: (BuildContext context) => change_country(),
                             ),
                           );
                         },
@@ -186,8 +174,7 @@ class _managmentpageState extends State<managmentpage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  resoan_view(type: 'client'),
+                              builder: (BuildContext context) => resoan_view(type: 'client'),
                             ),
                           );
                         },
@@ -217,14 +204,12 @@ class _managmentpageState extends State<managmentpage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  resoan_view(type: 'ticket'),
+                              builder: (BuildContext context) => resoan_view(type: 'ticket'),
                             ),
                           );
                         },
                         title: 'أنواع التذاكر')
                     : Container(),
-
                 buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -233,8 +218,7 @@ class _managmentpageState extends State<managmentpage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              activity_view(type: 'ticket'),
+                          builder: (BuildContext context) => activity_view(type: 'ticket'),
                         ),
                       );
                     },
@@ -247,45 +231,56 @@ class _managmentpageState extends State<managmentpage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              company_view(type: 'ticket'),
+                          builder: (BuildContext context) => company_view(type: 'ticket'),
                         ),
                       );
                     },
                     title: 'الشركات المنافسة'),
-
                 privilge.checkprivlge('113') == true
-                    ?
-                buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) => participate_view(),
-                        ),
-                      );
-                    },
-                    title: 'المتعاونين'):Container(),
-
+                    ? buildSelectCategory(
+                        colorbag: Colors.white,
+                        colortitle: Colors.black,
+                        colorarrow: Colors.black,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) => participate_view(),
+                            ),
+                          );
+                        },
+                        title: 'المتعاونين')
+                    : Container(),
                 privilge.checkprivlge('114') == true
-                    ?  buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              AgentsAndDistributorsView(),
-                        ),
-                      );
-                    },
-                    title: "الوكلاء والموزعين",):Container()
-                //config_view
+                    ? buildSelectCategory(
+                        colorbag: Colors.white,
+                        colortitle: Colors.black,
+                        colorarrow: Colors.black,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) => AgentsAndDistributorsView(),
+                            ),
+                          );
+                        },
+                        title: "الوكلاء والموزعين",
+                      )
+                    : Container(),
+                buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => BranchRaceManagementView(),
+                      ),
+                    );
+                  },
+                  title: "سباق الفروع",
+                )
               ],
             ),
           );

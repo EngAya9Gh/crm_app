@@ -12,6 +12,7 @@ import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/agent_collaborators_invoices_vm.dart';
 import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/approve_vm.dart';
+import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
@@ -183,6 +184,7 @@ void main() async {
       create: (_) => AgentsCollaboratorsInvoicesViewmodel(),
     ),
     ChangeNotifierProvider<lastcommentclient_vm>(create: (_) => lastcommentclient_vm()),
+    ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
     //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
   ], child: MyApp()));
 }

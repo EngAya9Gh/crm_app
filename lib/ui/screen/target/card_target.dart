@@ -129,7 +129,7 @@ class _CardTagetState extends State<CardTaget> {
         backgroundColor: MaterialStateProperty.all(
             kMainColor)),
           onPressed: () async{
-            list_target=await targetdata.gettarget({
+            list_target=await TargetData.gettarget({
               'date':'date',
               'datefrom':'2020/2/1',
               'dateto':'2023/9/9'
@@ -153,7 +153,7 @@ class _CardTagetState extends State<CardTaget> {
             DateTime d4=DateTime(_currentDate.year,10,1);//4
             DateTime d44=DateTime(_currentDate.year,12,31);//4
 
-            list_target=await targetdata.gettarget({
+            list_target=await TargetData.gettarget({
               'Q':'Q',
               'd1':d1.toString(),
               'd11':d11.toString(),
