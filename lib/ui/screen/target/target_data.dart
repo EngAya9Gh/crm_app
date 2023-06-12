@@ -1,7 +1,9 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/targetmodel.dart';
+import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../model/branch_race_model.dart';
 
 class TargetData {
   List<TargetModel> list_target = [];
@@ -19,9 +21,15 @@ class TargetData {
     return prodlist;
   }
 
-  static Future<List<TargetModel>> getTarget() async {
+  static Future<List<BranchRaceModel>> getTarget() async {
     var data = await Api().get(url: url + 'target/target_get.php');
-    List<TargetModel> list = List.from(data).map<TargetModel>((e) => TargetModel.fromJson(e)).toList();
+    List<BranchRaceModel> list = convertListFromJson(data, (json) => BranchRaceModel.fromJson(json));
     return list;
   }
+}
+
+typedef FromJson<T> = T Function(dynamic json);
+
+List<T> convertListFromJson<T>(List<dynamic> list, FromJson<T> fromJson) {
+  return List<dynamic>.from(list).map<T>(fromJson).toList();
 }

@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
+import 'package:crm_smart/view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
-
+import 'package:provider/provider.dart';
 import '../../../../constants.dart';
-import '../widgets/branch_management_card.dart';
+import '../../../../model/branch_race_model.dart';
+import '../../../../model/targetmodel.dart';
+import '../../../../view_model/page_state.dart';
 import '../widgets/branch_management_list.dart';
 import 'add_target_page.dart';
 
@@ -13,7 +18,8 @@ class BranchRaceManagementView extends StatefulWidget {
   State<BranchRaceManagementView> createState() => _BranchRaceManagementViewState();
 }
 
-class _BranchRaceManagementViewState extends State<BranchRaceManagementView> {
+class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
+    with StateViewModelMixin<BranchRaceManagementView, BranchRaceViewmodel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,34 +81,46 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView> {
               ],
               color: Colors.white,
             ),
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: GroupButton(
-                controller: GroupButtonController(selectedIndex: 0),
-                options: GroupButtonOptions(
-                    selectedColor: kMainColor,
-                    buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
-                    borderRadius: BorderRadius.circular(10)),
-                buttons: [
-                  'سنوي',
-                  "ربعي",
-                  "شهري",
-                ],
-                onSelected: (_, index, isselected) {},
-              ),
+            child: Selector<BranchRaceViewmodel, DateFilterType>(
+              selector: (_, vm) => vm.selectedDateFilter,
+              builder: (_, selectedDateFilter, __) {
+                return GroupButton(
+                  controller: GroupButtonController(selectedIndex: selectedDateFilter.index),
+                  options: GroupButtonOptions(
+                      selectedColor: kMainColor,
+                      buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
+                      borderRadius: BorderRadius.circular(10)),
+                  buttons: ["شهري", "ربعي", 'سنوي'],
+                  onSelected: (_, index, isselected) => viewmodel.onChangeSelectedFilterType(index),
+                );
+              },
             ),
           ),
           SizedBox(height: 15),
-          Padding(
-            padding: EdgeInsets.only(left: 15.0),
-            child: Text(
-              "يونيو-2023",
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, fontFamily: kfontfamily),
-            ),
-          ),
-          Expanded(child: BranchManagementList()),
+          Selector<BranchRaceViewmodel, PageState<List<BranchRaceModel>>>(
+              selector: (_, vm) => vm.targetsState,
+              builder: (context, targetsState, _) {
+                if (targetsState.isLoading) {
+                  return Center(child: CircularProgressIndicator.adaptive());
+                } else if (targetsState.isFailure) {
+                  return Center(
+                    child: IconButton(onPressed: viewmodel.getTargets, icon: Icon(Icons.refresh)),
+                  );
+                }
+                final list = targetsState.data ?? [];
+                return Expanded(child: BranchManagementList(targetList: list));
+              }),
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    scheduleMicrotask(() => viewmodel
+      ..init()
+      ..getTargets());
   }
 }
