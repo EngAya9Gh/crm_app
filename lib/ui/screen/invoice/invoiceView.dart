@@ -381,6 +381,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                         title: ' طريقة الدفع',
                         value: widget.invoice!.typePay.toString()=='0'?'نقدا':'تحويل'),
                     //nameuserApprove
+
+                    cardRow(
+                        title: ' العملة',
+                        value: widget.invoice!.currency_name.toString()=='0'?'USD':'SAR'),
+
                     widget.invoice!.nameuserApprove!=null? cardRow(
                         title: 'معتمد الفاتورة',
                         value: getnameshort(widget.invoice!.nameuserApprove.toString())):Container(),

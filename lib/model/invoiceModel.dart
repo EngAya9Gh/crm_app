@@ -9,6 +9,7 @@ class InvoiceModel extends CacheRepository {
   String? idInvoice;
   String? dateCreate;
   String? typePay;
+  String? currency_name;
   String? renewYear;
   String? typeInstallation;
   String? imageRecord = '';
@@ -169,6 +170,7 @@ class InvoiceModel extends CacheRepository {
     this.participate_fk,
     this.fk_agent,
     this.type_seller,
+    this.currency_name,
     this.fk_regoin_invoice,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
@@ -186,6 +188,7 @@ class InvoiceModel extends CacheRepository {
     typePay = jsondata['type_pay'];
     renewYear = jsondata['renew_year'];
     typeInstallation = jsondata['type_installation'];
+    currency_name = jsondata['currency_name'];
 
     imageRecord =
         jsondata['image_record'].toString().trim().isEmpty || jsondata['image_record'] == null
@@ -312,6 +315,7 @@ class InvoiceModel extends CacheRepository {
     _data['type_pay'] = typePay;
     _data['renew_year'] = renewYear;
     _data['type_installation'] = typeInstallation;
+    _data['currency_name'] = currency_name;
     _data['image_record'] = imageRecord;
     _data['imagelogo'] = imagelogo;
     _data['fk_idClient'] = fkIdClient;
