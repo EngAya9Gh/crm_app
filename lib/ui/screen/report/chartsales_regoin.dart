@@ -111,7 +111,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
         break;
     }
 
-    totalval=0;rowsdata=[];
+    totalval=0; rowsdata=[];
     for (int i = 0; i < data.length; i++) {
       tempdata.add(BarModel.fromJson(data[i]));
       print(tempdata[i].y);

@@ -1002,10 +1002,10 @@ class _addinvoiceState extends State<addinvoice> {
                                         'rate_participate': sellerCommissionRate.text,
 
                                         if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
-                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent,
+                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString(),
 
                                         if(invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                          'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate,
+                                          'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
 
                                         // 'type_seller':
                                         // 'rate_participate':
@@ -1063,10 +1063,10 @@ class _addinvoiceState extends State<addinvoice> {
                                         'rate_participate': sellerCommissionRate.text,
 
                                         if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
-                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent,
+                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString(),
 
                                         if(invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                        'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate,
+                                        'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
                                       };
                                       if (readyinstallController == '0')
                                         body.addAll({
