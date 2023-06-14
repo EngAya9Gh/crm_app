@@ -11,6 +11,8 @@ class BranchRaceModel {
   String? yearTarget;
   String? valueTarget;
   String? fkRegion;
+  String? x;
+  String? y;
 
   BranchRaceModel({
     this.idTarget,
@@ -19,6 +21,8 @@ class BranchRaceModel {
     this.yearTarget,
     this.valueTarget,
     this.fkRegion,
+    this.x,
+    this.y,
   });
 
   factory BranchRaceModel.fromJson(Map<String, dynamic> json) => BranchRaceModel(
@@ -28,6 +32,11 @@ class BranchRaceModel {
     yearTarget: json["year_target"],
     valueTarget: json["value_target"],
     fkRegion: json["fk_region"],
+
+    x: json["x"],
+    y: json["y"],
+
+
   );
 
   Map<String, dynamic> toJson() => {

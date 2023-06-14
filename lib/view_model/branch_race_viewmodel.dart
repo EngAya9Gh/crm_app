@@ -26,7 +26,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
   List<BranchRaceModel> _allTargetsList = [];
   DateFilterType selectedDateFilter = DateFilterType.yearly;
   DateFilterType selectedDateFilterAddTarget = DateFilterType.yearly;
-
+  List<BranchRaceModel> targetList= [];
   List<String> monthsFilter = [];
   List<String> quartersFilter = [];
   List<String> quarterYearsFilter = [];
@@ -126,56 +126,79 @@ class BranchRaceViewmodel extends ChangeNotifier {
         .toList();
   }
 
-  onChangeMonth(String month) {
+  onChangeMonth(DateTime monthdate,String month,String fkcountry) async{
     selectedMonthFilter = month;
 
-    List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
-        .where((element) => element.typeTarget == selectedDateFilter.index.toString())
-        .toList();
+    // List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
+    //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+    //     .toList();
+    //
+    // list = list.where((element) => element.nameTarget == getMonthIndex(selectedMonthFilter!).toString()).toList();
 
-    list = list.where((element) => element.nameTarget == getMonthIndex(selectedMonthFilter!).toString()).toList();
+    var data  = await Api().post(
+        url: url +
+            "target/get_sales_target.php?fk_country=$fkcountry&month=${monthdate.toString()}",
+        body: {'type': 'datemonth'});
+    List<BranchRaceModel> list=[];
+    for (int i = 0; i < data.length; i++)
+      list.add(BranchRaceModel.fromJson(data[i]));
 
     targetsState = targetsState.copyWith(data: list);
 
     notifyListeners();
   }
 
-  onChangeYear(String year) {
+  onChangeYear(String year,String fkcountry) async {
     selectedYearFilter = year;
 
-    List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
-        .where((element) => element.typeTarget == selectedDateFilter.index.toString())
-        .toList();
-
-    list = list.where((element) => element.yearTarget == selectedYearFilter).toList();
+    // List<BranchRaceModel> list = List<>.from(_allTargetsList)
+    //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+    //     .toList();
+    //
+    // list = list.where((element) => element.yearTarget == selectedYearFilter).toList();
+    var data  = await Api().post(
+        url: url +
+            "target/get_sales_target.php?fk_country=$fkcountry&year=${year}",
+        body: {'type': 'dateyear'});
+    List<BranchRaceModel> list=[];
+    for (int i = 0; i < data.length; i++)
+      list.add(BranchRaceModel.fromJson(data[i]));
 
     targetsState = targetsState.copyWith(data: list);
 
     notifyListeners();
   }
 
-  onChangeQuarter(String quarter) {
+  onChangeQuarter(String quarter,String fkcountry,DateTime Datefrom,DateTime Dateto) async {
     selectedQuarterFilter = quarter;
 
     if (selectedQuarterYearFilter == null) {
       return;
     }
+    //
+    // List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
+    //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+    //     .toList();
+    //
+    // list = list
+    //     .where(
+    //         (element) => element.yearTarget == selectedQuarterYearFilter && element.nameTarget == selectedQuarterFilter)
+    //     .toList();
 
-    List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
-        .where((element) => element.typeTarget == selectedDateFilter.index.toString())
-        .toList();
-
-    list = list
-        .where(
-            (element) => element.yearTarget == selectedQuarterYearFilter && element.nameTarget == selectedQuarterFilter)
-        .toList();
+    var data  = await Api().post(
+        url: url +
+            "target/get_sales_target.php?fk_country=$fkcountry&from=${Datefrom.toString()}&to=${Dateto.toString()}&Q=$quarter",
+        body: {'type': 'datedays'});
+    List<BranchRaceModel> list=[];
+    for (int i = 0; i < data.length; i++)
+      list.add(BranchRaceModel.fromJson(data[i]));
 
     targetsState = targetsState.copyWith(data: list);
 
     notifyListeners();
   }
 
-  onChangeQuarterYear(String quarterYear) {
+  onChangeQuarterYear(String quarterYear) async{
     selectedQuarterYearFilter = quarterYear;
     List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
         .where((element) => element.typeTarget == selectedDateFilter.index.toString())
@@ -188,8 +211,13 @@ class BranchRaceViewmodel extends ChangeNotifier {
         .map((e) => e.nameTarget!)
         .toSet()
         .toList();
-
-    targetsState = targetsState.copyWith(data: list);
+    // var data  = await Api().post(
+    //     url: url +
+    //         "target/get_sales_target.php?fk_country=$fkcountry&year=${year}",
+    //     body: {'type': 'dateyear'});
+    // List<BranchRaceModel> list=[];
+    // for (int i = 0; i < data.length; i++)
+    //   list.add(BranchRaceModel.fromJson(data[i]));
 
     selectedQuarterFilter = null;
     notifyListeners();

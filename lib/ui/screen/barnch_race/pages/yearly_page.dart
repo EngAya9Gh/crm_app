@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 
@@ -30,7 +31,8 @@ class YearlyPage extends StatelessWidget {
                 final years = vm.yearsFilter;
                 final selectedYear = vm.selectedYearFilter;
 
-                return DropdownButtonFormField<String>(
+                return
+                  DropdownButtonFormField<String>(
                   isExpanded: true,
                   validator: (value) {
                     if (value == null) {
@@ -60,7 +62,8 @@ class YearlyPage extends StatelessWidget {
                     if (year == null) {
                       return;
                     }
-                    vm.onChangeYear(year);
+                    vm.onChangeYear(year, Provider.of<user_vm_provider>
+                      (context,listen: false).currentUser.fkCountry.toString());
                   },
                   onSaved: (country) {
                     if (country == null) {
@@ -73,7 +76,9 @@ class YearlyPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 5),
-        Expanded(child: BranchList(targetList: targetList)),
+        Expanded(child: BranchList(
+            targetList: Provider.of<BranchRaceViewmodel>
+            (context,listen: false).targetsState.data!)),
       ],
     );
   }

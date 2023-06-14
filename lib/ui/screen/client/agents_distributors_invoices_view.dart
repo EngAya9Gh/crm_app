@@ -78,7 +78,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             Row(
               children: [
                 SizedBox(width: 15),
-                Selector<AgentsCollaboratorsInvoicesViewmodel, SellerTypeFilter>(
+                Selector<AgentsCollaboratorsInvoicesViewmodel,
+                    SellerTypeFilter>(
                     selector: (_, vm) => vm.selectedSellerTypeFilter,
                     builder: (context, selectedSellerTypeFilter, _) {
                       return Expanded(
@@ -281,7 +282,13 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
           selectedValue: selectedCollaboratorEmployee,
         ),
       );
-    else if (selectedSellerTypeFilter != SellerTypeFilter.all)
+    else if (selectedSellerTypeFilter != SellerTypeFilter.all){
+      List<AgentDistributorModel> agentsListtemp= [];
+
+      agentsDistributorsList.forEach((element) {
+      if( element.typeAgent==viewmodel.selectedSellerTypeFilter!.index.toString())
+        agentsListtemp.add(element);
+    });
       // return Container(color: Colors.blue);
       return Expanded(
         flex: 5,
@@ -289,7 +296,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
           agentsDistributorsList,
           selectedValue: selectedAgentDistributor,
         ),
-      );
+      );}
     else
       return SizedBox.shrink();
   }
