@@ -169,12 +169,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                             }).toList(),
                             value:cart.selectedValueOut,
                             onChanged:(value) {
-                              //  setState(() {
-                              print('vvvvvvvvvvvvvvvvvvvvvv');
-                              print(value);
                               cart.changevalueOut(value.toString());
 
-                              // });
                             },
                           );},
                       ),

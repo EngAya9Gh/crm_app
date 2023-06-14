@@ -165,6 +165,7 @@ class _salesState extends State<sales> {
                   colorbag: Colors.white,
                   colortitle: Colors.black,
                   colorarrow: Colors.black,):Container(),
+
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('86')==true?
                 buildSelectCategory(

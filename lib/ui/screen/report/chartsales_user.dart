@@ -161,6 +161,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
       // salestempdataclientresult = tempdataclient;
       loading = false;
     });
+
   }
 
   List<charts.Series<BarModel, String>> _createSampleData() {

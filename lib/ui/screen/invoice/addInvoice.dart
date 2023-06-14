@@ -163,6 +163,31 @@ class _addinvoiceState extends State<addinvoice> {
         noteController.text = _invoice!.notes.toString();
         imageController.text = _invoice!.imageRecord.toString();
         Provider.of<invoice_vm>(context, listen: false).listproductinvoic = _invoice!.products!;
+
+           switch(_invoice?.type_seller.toString()){
+             case '0':
+               invoiceViewmodel.onChangeSellerType(SellerType.distributor);
+               invoiceViewmodel.selectedSellerType  = SellerType.distributor;
+               invoiceViewmodel.selectedAgent?.idAgent=_invoice!.fk_agent!;
+
+               break;
+             case '1':
+               invoiceViewmodel.onChangeSellerType(SellerType.agent);
+
+               invoiceViewmodel.selectedSellerType  = SellerType.agent;
+               invoiceViewmodel.selectedAgent?.idAgent=_invoice!.fk_agent!;
+               break;
+             case '2':
+               invoiceViewmodel.onChangeSellerType(SellerType.collaborator);
+
+               invoiceViewmodel.selectedSellerType  = SellerType.collaborator;
+               invoiceViewmodel.selectedCollaborator?.id_participate=_invoice!.participate_fk;
+               break;
+           }
+
+        sellerCommissionRate.text=_invoice!.rate_participate.toString();
+
+        // invoiceViewmodel.onChangeSelectedIndex(_invoice!.participate_fk);
       } else {
         /// add invoice
         // Provider.of<invoice_vm>(context,listen: false)
@@ -799,8 +824,13 @@ class _addinvoiceState extends State<addinvoice> {
                         final bool isCollaborate = selectedSellerType == SellerType.collaborator;
 
                         final collaboratesList = invoice.collaboratorsState.data ?? [];
-                        final agentsList = invoice.agentDistributorsState.data ?? [];
+                        final agentsList = invoice.agentDistributorsState.data  ?? [];
+                        List<AgentDistributorModel> agentsListtemp= [];
 
+                        agentsList.forEach((element) {
+                         if( element.typeAgent==invoice.selectedSellerType!.index.toString())
+                           agentsListtemp.add(element);
+                        });
                         final selectedAgent = invoice.selectedAgent;
                         final selectedCollaborate = invoice.selectedCollaborator;
                         if (selectedSellerType != null)
@@ -819,7 +849,7 @@ class _addinvoiceState extends State<addinvoice> {
                                 )
                               else
                                 sellerDropdown<AgentDistributorModel>(
-                                  agentsList,
+                                  agentsListtemp,// agentsList,
                                   selectedValue: selectedAgent,
                                 ),
                               SizedBox(height: 10),
@@ -1334,6 +1364,7 @@ class _addinvoiceState extends State<addinvoice> {
               }
             }).toList(),
             value: selectedValue,
+
             onChanged: (seller) {
               if (seller == null) {
                 return;

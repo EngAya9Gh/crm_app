@@ -700,7 +700,8 @@ class invoice_vm extends ChangeNotifier {
       if (type == 'مشترك') {
         listinvoiceClientSupport = [];
         list.forEach((element) {
-          if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
+          if (element.fkIdClient == fk_client && element.isApprove != null)
+            listinvoiceClientSupport.add(element);
         });
       } else {
         listinvoiceClient = [];
@@ -1079,6 +1080,11 @@ class invoice_vm extends ChangeNotifier {
 
   onChangeSelectedAgent(AgentDistributorModel agentDistributorModel) {
     selectedAgent = agentDistributorModel;
+    notifyListeners();
+  }
+  String? selectIndex=null;
+  onChangeSelectedIndex( String? select) {
+    selectIndex = select;
     notifyListeners();
   }
 }

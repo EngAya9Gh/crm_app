@@ -1,9 +1,5 @@
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/services/AuthService.dart';
-import 'package:crm_smart/ui/screen/home/test_home.dart';
-import 'package:crm_smart/ui/screen/product/addproduct.dart';
-import 'package:crm_smart/ui/screen/product/productView.dart';
-import 'package:crm_smart/ui/screen/selectCountryScreen.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
