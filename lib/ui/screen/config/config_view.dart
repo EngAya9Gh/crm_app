@@ -32,6 +32,7 @@ class _config_viewState extends State<config_view> {
   TextEditingController _controllerinstall=TextEditingController();
   TextEditingController _controllercomplete_install=TextEditingController();
   TextEditingController _controller_counter=TextEditingController();
+  TextEditingController _controller_currency=TextEditingController();
   late ConfigModel taxrate;
   final _globalKey = GlobalKey<FormState>();
  double h=0,w=0;
@@ -105,6 +106,10 @@ class _config_viewState extends State<config_view> {
       _controller_counter.text =
           _listconfg
               .firstWhere((element) => element.name_config == 'counter')
+              .value_config;
+      _controller_currency.text =
+          _listconfg
+              .firstWhere((element) => element.name_config == 'currency')
               .value_config;
     });
     super.didChangeDependencies();
@@ -201,6 +206,12 @@ class _config_viewState extends State<config_view> {
                       case 'counter':
                       Provider.of<config_vm>(context,listen: false)
                           .updateConfig_vm({'value_config':_controller_counter.text},
+                          Provider.of<config_vm>(context,listen: false)
+                              .listofconfig[i].id_config);
+                      break;
+                      case 'currency':
+                      Provider.of<config_vm>(context,listen: false)
+                          .updateConfig_vm({'value_config':_controller_currency.text},
                           Provider.of<config_vm>(context,listen: false)
                               .listofconfig[i].id_config);
                       break;
@@ -400,6 +411,20 @@ class _config_viewState extends State<config_view> {
                         con: _controller_counter,
                         label: "يوم ",
                         hintText: 'يوم',
+                      ),
+                      Text('قيمة سعر الصرف'),
+                      CustomFormField(
+                        read: false,
+                        radius: 10,
+                        // maxline: 3,
+                        vaild: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter a value ';
+                          }
+                        },
+                        con: _controller_currency,
+                        label: "قيمة العملة ",
+                        hintText: 'قيمة العملة',
                       ),
 //فترة السماح للتواصل الثالث "الاتصال الدوري" للعميل
                     ],

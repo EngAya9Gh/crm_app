@@ -77,6 +77,7 @@ class _addinvoiceState extends State<addinvoice> {
 
   late String typeinstallController = '0';
   late String readyinstallController = '0';
+  late String currencyController = '0';
 
   final TextEditingController noteController = TextEditingController();
   final TextEditingController numbranchController = TextEditingController();
@@ -156,6 +157,7 @@ class _addinvoiceState extends State<addinvoice> {
         renew2Controller.text = _invoice!.renew2year.toString();
 
         typepayController = _invoice!.typePay.toString();
+        currencyController = _invoice!.currency_name==null? '1':_invoice!.currency_name.toString();
         print(typepayController.toString());
         typeinstallController = _invoice!.typeInstallation.toString();
         print(typeinstallController);
@@ -519,6 +521,43 @@ class _addinvoiceState extends State<addinvoice> {
                               }),
                             )
                           : Container(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 2, right: 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              offset: Offset(1.0, 1.0),
+                              blurRadius: 8.0,
+                              color: Colors.black87.withOpacity(0.2),
+                            ),
+                          ],
+                          color: Colors.white,
+                        ),
+                        child: Consumer<selected_button_provider>(
+                            builder: (context, selectedProvider, child) {
+                          return GroupButton(
+                              controller: GroupButtonController(
+                                selectedIndex: selectedProvider.isSelectCurrency,
+                                // typeinstallController==null
+                                //     ? 0 :
+                                // int.tryParse( typeinstallController!)
+                              ),
+                              options:
+                              GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                              buttons: [' USD دولار', '  SAR ريال'],
+                              onSelected: (_, index, isselected) {
+                                print(index);
+                                //setState(() {
+                                currencyController = index.toString();
+                                selectedProvider.selectValueCurrency(index);
+                                //  });
+                              });
+                        }),
+                      ),
                       SizedBox(
                         height: 15,
                       ),
@@ -950,6 +989,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         "date_create": DateTime.now().toString(),
                                         "type_installation": typeinstallController.toString(),
                                         "ready_install": readyinstallController.toString(),
+                                        "currency_name": currencyController.toString(),
 
                                         /////////////////////////////////////////////////////////////////////
                                         "amount_paid": amount_paidController.text.toString(),
@@ -992,10 +1032,10 @@ class _addinvoiceState extends State<addinvoice> {
                                         'rate_participate': sellerCommissionRate.text,
 
                                         if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
-                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent,
+                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString(),
 
                                         if(invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                          'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate,
+                                          'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
 
                                         // 'type_seller':
                                         // 'rate_participate':
@@ -1024,6 +1064,8 @@ class _addinvoiceState extends State<addinvoice> {
                                         //formatter.format(_currentDate),
                                         "type_installation": typeinstallController.toString(),
                                         "ready_install": readyinstallController.toString(),
+                                        "currency_name": currencyController.toString(),
+
                                         "amount_paid": amount_paidController.text.toString(),
                                         "image_record": imageController.text.toString(),
                                         "fk_idClient": widget.itemClient.idClients.toString(),
@@ -1051,10 +1093,10 @@ class _addinvoiceState extends State<addinvoice> {
                                         'rate_participate': sellerCommissionRate.text,
 
                                         if(invoiceViewmodel.selectedSellerType != SellerType.collaborator)
-                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent,
+                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString(),
 
                                         if(invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                        'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate,
+                                        'participate_fk':invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
                                       };
                                       if (readyinstallController == '0')
                                         body.addAll({
