@@ -62,13 +62,13 @@ class BranchCard extends StatelessWidget {
                             .bodyMedium
                             ?.copyWith(color: Colors.black, fontWeight: FontWeight.w600),
                       ),
-                      Text(
-                        "92.65%",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Colors.grey.shade500, fontWeight: FontWeight.w500),
-                      ),
+                      // Text(
+                      //   "92.65%",
+                      //   style: Theme.of(context)
+                      //       .textTheme
+                      //       .bodyMedium
+                      //       ?.copyWith(color: Colors.grey.shade500, fontWeight: FontWeight.w500),
+                      // ),
                     ],
                   ),
                 ),

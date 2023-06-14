@@ -18,7 +18,7 @@ class BranchList extends StatelessWidget {
         crossAxisCount: 2,
         mainAxisSpacing: 10,
         crossAxisSpacing: 10,
-        childAspectRatio: 1 / 1.45,
+        childAspectRatio: 1 / 1.3,
       ),
       itemCount: targetList.length,
       itemBuilder: (_, index) => BranchCard(branchRaceModel: targetList[index]),

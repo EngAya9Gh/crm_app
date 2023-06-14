@@ -53,14 +53,14 @@ class BranchManagementCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(branchRaceModel.valueTarget ?? ''),
-                  SizedBox(height: 5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("6.47%"),
-                      Text("8415"),
-                    ],
-                  )
+                  // SizedBox(height: 5),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text("6.47%"),
+                  //     Text("8415"),
+                  //   ],
+                  // )
                 ],
               ),
             ),

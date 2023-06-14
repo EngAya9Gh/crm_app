@@ -59,9 +59,9 @@ class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPag
                 return infoWidget("الهدف الشهري", updateBranchTarget ?? branchRaceModel.valueTarget ?? '');
               },
             ),
-            infoWidget("المجموع الشهري للفرع", "8415"),
-            infoWidget("نسبة التحقيق الشهري", "6.47%"),
-            SizedBox(height: 10),
+            // infoWidget("المجموع الشهري للفرع", "8415"),
+            // infoWidget("نسبة التحقيق الشهري", "6.47%"),
+            // SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
               child: RowEdit(name: 'تعديل الهدف الشهري', des: 'Required'),
