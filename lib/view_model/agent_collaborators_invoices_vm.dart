@@ -23,7 +23,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   AgentDistributorModel? selectedAgentDistributor;
   String? selectedRegion;
 
-  init(){
+  init() {
     invoicesList = [];
     invoicesFiltered = [];
     agentDistributorsState = PageState();
@@ -88,6 +88,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
     if (![SellerTypeFilter.collaborator, SellerTypeFilter.employee].contains(selectedSellerTypeFilter)) {
       if (agentDistributorsState.data != null) {
+        selectedAgentDistributor = null;
+        notifyListeners();
         onFilter();
         return;
       }
@@ -98,6 +100,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
       await getAgentsAndDistributors();
       if (agentDistributorsState.isSuccess) {
         sellerStatus = SellerStatus.loaded;
+        onFilter();
       } else {
         sellerStatus = SellerStatus.failed;
       }
@@ -106,6 +109,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     }
 
     if (collaboratorsEmployeeState.data != null) {
+      selectedCollaboratorEmployee = null;
+      notifyListeners();
       onFilter();
       return;
     }
@@ -116,6 +121,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     await getCollaborators();
     if (collaboratorsEmployeeState.isSuccess) {
       sellerStatus = SellerStatus.loaded;
+      onFilter();
     } else {
       sellerStatus = SellerStatus.failed;
     }
@@ -126,21 +132,18 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
   onChangeSelectedCollaboratorEmployee(ParticipateModel collaborator) {
     selectedCollaboratorEmployee = collaborator;
-
     onFilter();
     notifyListeners();
   }
 
   onChangeSelectedAgentDistributor(AgentDistributorModel agentDistributorModel) {
     selectedAgentDistributor = agentDistributorModel;
-
     onFilter();
     notifyListeners();
   }
 
   onChangeRegion(String region) {
     selectedRegion = region;
-
     onFilter();
   }
 
@@ -148,43 +151,78 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     final list = List<InvoiceModel>.from(invoicesList);
 
     invoicesFiltered = list.where((element) {
-      if (selectedSellerTypeFilter == SellerTypeFilter.all) {
-        if (selectedRegion == null || selectedRegion == "0") {
+      if (isSelectedSellerTypeFilterEqualAll) {
+        if (isSelectedRegionEqualAll) {
           return true;
         }
-        return element.fk_regoin == selectedRegion;
-      } else if ([SellerTypeFilter.distributor, SellerTypeFilter.agent].contains(selectedSellerTypeFilter)) {
-        if (selectedAgentDistributor == null && selectedRegion != null) {
-          return selectedRegion == element.fk_regoin;
-        } else if (selectedAgentDistributor != null && (selectedRegion == null || selectedRegion == "0")) {
-          return selectedAgentDistributor?.idAgent == element.fk_agent;
-        } else if (selectedAgentDistributor != null && selectedRegion != null) {
-          return selectedAgentDistributor?.idAgent == element.fk_agent && selectedRegion == element.fk_regoin;
+        return isSelectedRegionEqualInvoice(element);
+      } else if (isSelectedSellerTypeFilterEqualAgentOrDistributor) {
+        if (isSelectedAgentDistributorEqualNull && isSelectedRegionNotEqualAll) {
+          return isSelectedRegionEqualInvoice(element) && isSelectedSellerTypeFilterEqualInvoice(element);
+        } else if (!isSelectedAgentDistributorEqualNull && isSelectedRegionEqualAll) {
+          return isSelectedAgentDistributorEqualInvoice(element);
+        } else if (!isSelectedAgentDistributorEqualNull && isSelectedRegionNotEqualAll) {
+          return isSelectedAgentDistributorEqualInvoice(element) && isSelectedRegionEqualInvoice(element);
         }
-        return true;
-      } else if (selectedSellerTypeFilter == SellerTypeFilter.collaborator) {
-        if (selectedCollaboratorEmployee == null && selectedRegion != null) {
-          return selectedRegion == element.fk_regoin;
-        } else if (selectedCollaboratorEmployee != null && (selectedRegion == null || selectedRegion == "0")) {
-          return selectedCollaboratorEmployee?.id_participate == element.participate_fk;
-        } else if (selectedCollaboratorEmployee != null && selectedRegion != null) {
-          return selectedCollaboratorEmployee?.id_participate == element.participate_fk &&
-              selectedRegion == element.fk_regoin;
+
+        return isSelectedSellerTypeFilterEqualInvoice(element);
+      } else if (isSelectedTypeEqualCollaborator) {
+        if (isSelectedCollaboratorEmployeeEqualNull && isSelectedRegionNotEqualAll) {
+          return isSelectedRegionEqualInvoice(element) && isSelectedSellerTypeFilterEqualInvoice(element);
+        } else if (!isSelectedCollaboratorEmployeeEqualNull && isSelectedRegionEqualAll) {
+          return isSelectedCollaborateEqualInvoice(element);
+        } else if (!isSelectedCollaboratorEmployeeEqualNull && isSelectedRegionNotEqualAll) {
+          return isSelectedCollaborateEqualInvoice(element) && isSelectedRegionEqualInvoice(element);
         }
-        return true;
+
+        return isSelectedSellerTypeFilterEqualInvoice(element);
       } else {
-        if (selectedCollaboratorEmployee == null && selectedRegion != null) {
-          return selectedRegion == element.fk_regoin;
-        } else if (selectedCollaboratorEmployee != null && (selectedRegion == null || selectedRegion == "0")) {
-          return selectedCollaboratorEmployee?.id_participate == element.fkIdUser;
-        } else if (selectedCollaboratorEmployee != null && selectedRegion != null) {
-          return selectedCollaboratorEmployee?.id_participate == element.fkIdUser &&
-              selectedRegion == element.fk_regoin;
+        if (isSelectedCollaboratorEmployeeEqualNull && isSelectedRegionNotEqualAll) {
+          return isSelectedRegionEqualInvoice(element) &&
+              (isSelectedSellerTypeFilterEqualInvoice(element) || element.type_seller == null);
+        } else if (!isSelectedCollaboratorEmployeeEqualNull && isSelectedRegionEqualAll) {
+          return isSelectedEmployeeEqualInvoice(element);
+        } else if (!isSelectedCollaboratorEmployeeEqualNull && isSelectedRegionNotEqualAll) {
+          return isSelectedEmployeeEqualInvoice(element) && isSelectedRegionEqualInvoice(element);
         }
-        return true;
+
+        return isSelectedSellerTypeFilterEqualInvoice(element) || element.type_seller == null;
       }
     }).toList();
 
     notifyListeners();
   }
+
+  bool get isSelectedRegionNotEqualAll => selectedRegion != "0" && selectedRegion != null;
+
+  bool get isSelectedRegionEqualAll => selectedRegion == "0" || selectedRegion == null;
+
+  bool get isSelectedRegionEqualNull => selectedRegion == null;
+
+  bool isSelectedRegionEqualInvoice(InvoiceModel element) => element.fk_regoin == selectedRegion;
+
+  bool isSelectedSellerTypeFilterEqualInvoice(InvoiceModel element) =>
+      element.type_seller == selectedSellerTypeFilter.index.toString();
+
+  bool isSelectedAgentDistributorEqualInvoice(InvoiceModel element) =>
+      selectedAgentDistributor?.idAgent == element.fk_agent;
+
+  bool isSelectedCollaborateEqualInvoice(InvoiceModel element) =>
+      selectedCollaboratorEmployee?.id_participate == element.participate_fk;
+
+  bool isSelectedEmployeeEqualInvoice(InvoiceModel element) =>
+      selectedCollaboratorEmployee?.id_participate == element.fkIdUser;
+
+  bool get isSelectedSellerTypeFilterEqualAgentOrDistributor =>
+      [SellerTypeFilter.distributor, SellerTypeFilter.agent].contains(selectedSellerTypeFilter);
+
+  bool get isSelectedSellerTypeFilterEqualAll => selectedSellerTypeFilter == SellerTypeFilter.all;
+
+  bool get isSelectedTypeEqualCollaborator => selectedSellerTypeFilter == SellerTypeFilter.collaborator;
+
+  bool get isSelectedTypeFilterEqualNull => selectedAgentDistributor == null;
+
+  bool get isSelectedAgentDistributorEqualNull => selectedAgentDistributor == null;
+
+  bool get isSelectedCollaboratorEmployeeEqualNull => selectedCollaboratorEmployee == null;
 }
