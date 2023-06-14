@@ -50,7 +50,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
         ),
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 50.0),
+        padding: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
           child: Icon(Icons.add_outlined, size: 35),
           backgroundColor: kMainColor,

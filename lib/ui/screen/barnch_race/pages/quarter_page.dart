@@ -27,8 +27,8 @@ class QuarterPage extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
-                final years = vm.quarterYears;
-                final selectedYear = vm.selectedQuarterYear;
+                final years = vm.quarterYearsFilter;
+                final selectedYear = vm.selectedQuarterYearFilter;
 
                 return DropdownButtonFormField<String>(
                   isExpanded: true,
@@ -85,8 +85,8 @@ class QuarterPage extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
-                final quarters = vm.quarters;
-                final selectedQuarter = vm.selectedQuarter;
+                final quarters = vm.quartersFilter;
+                final selectedQuarter = vm.selectedQuarterFilter;
 
                 return DropdownButtonFormField<String>(
                   isExpanded: true,

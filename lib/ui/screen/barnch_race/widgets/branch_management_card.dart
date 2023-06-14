@@ -17,7 +17,7 @@ class BranchManagementCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => BranchManagementDetailsPage(),
+            builder: (context) => BranchManagementDetailsPage(branchRaceModel: branchRaceModel),
           ),
         );
       },

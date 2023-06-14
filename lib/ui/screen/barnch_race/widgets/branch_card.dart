@@ -31,7 +31,10 @@ class BranchCard extends StatelessWidget {
                 Container(
                   height: 150,
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    image: DecorationImage(
+                      image: AssetImage("assest/images/default_branch.jpg"),
+                      fit: BoxFit.fill
+                    ),
                     borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
                   ),
                 ),

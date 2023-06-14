@@ -27,8 +27,8 @@ class YearlyPage extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
-                final years = vm.years;
-                final selectedYear = vm.selectedYear;
+                final years = vm.yearsFilter;
+                final selectedYear = vm.selectedYearFilter;
 
                 return DropdownButtonFormField<String>(
                   isExpanded: true,

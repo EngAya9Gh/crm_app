@@ -32,8 +32,8 @@ class _MonthlyPageState extends State<MonthlyPage> {
               borderRadius: BorderRadius.circular(10),
               child: Consumer<BranchRaceViewmodel>(
                 builder: (context, vm, _) {
-                  final months = vm.months;
-                  final selectedMonth = vm.selectedMonth;
+                  final months = vm.monthsFilter;
+                  final selectedMonth = vm.selectedMonthFilter;
 
                   return DropdownButtonFormField<String>(
                     isExpanded: true,
