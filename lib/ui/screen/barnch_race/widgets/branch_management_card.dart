@@ -38,7 +38,7 @@ class BranchManagementCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "فرع المدينة",
+                        branchRaceModel.x.toString(),
                         style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, fontFamily: kfontfamily),
                       ),
                       Text(
