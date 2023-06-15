@@ -124,24 +124,23 @@ class QuarterPage extends StatelessWidget {
 
                     switch(quarter){
                       case 'Q1':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),1,1);
-                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),3,31);
+                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),01,01);
+                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),03,31);
 
                         break;
                         case 'Q2':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),4,1);
-                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),7,31);
+                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),04,01);
+                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),07,31);
 
                         break;
                         case 'Q3':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),6,1);
-                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),9,31);
+                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),06,01);
+                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),09,31);
 
                         break;
                         case 'Q4':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),10,1);
+                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),10,01);
                           dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),12,31);
-
                         break;
                     }
                     vm.onChangeQuarter(quarter,
@@ -159,7 +158,7 @@ class QuarterPage extends StatelessWidget {
         ),
         SizedBox(height: 5),
         Expanded(child: BranchList(targetList:  Provider.of<BranchRaceViewmodel>
-          (context,listen: false).targetList)),
+          (context,listen: true).targetsState.data!)),
       ],
     );
   }

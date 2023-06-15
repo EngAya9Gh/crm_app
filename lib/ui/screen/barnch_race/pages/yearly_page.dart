@@ -78,7 +78,7 @@ class YearlyPage extends StatelessWidget {
         SizedBox(height: 5),
         Expanded(child: BranchList(
             targetList: Provider.of<BranchRaceViewmodel>
-            (context,listen: false).targetsState.data!)),
+            (context,listen: true).targetsState.data!)),
       ],
     );
   }

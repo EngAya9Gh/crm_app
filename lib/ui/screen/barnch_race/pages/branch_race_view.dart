@@ -69,7 +69,9 @@ class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixi
                 return Center(child: CircularProgressIndicator.adaptive());
               } else if (targetsState.isFailure) {
                 return Center(
-                  child: IconButton(onPressed: viewmodel.getTargets, icon: Icon(Icons.refresh)),
+                  child: IconButton(
+                      onPressed:() {},// viewmodel.getTargets,
+                      icon: Icon(Icons.refresh)),
                 );
               }
 
@@ -93,9 +95,11 @@ class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixi
     super.initState();
 
     scheduleMicrotask(() {
-      viewmodel
+       viewmodel
         ..init()
+        // ..
         ..getTargets();
+       viewmodel.onChangeSelectedFilterType(2);
     });
   }
 }

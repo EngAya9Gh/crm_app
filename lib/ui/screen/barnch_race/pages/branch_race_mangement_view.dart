@@ -91,7 +91,8 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي'],
-                  onSelected: (_, index, isselected) => viewmodel.onChangeSelectedFilterType(index),
+                  onSelected: (_, index, isselected) =>
+                      viewmodel.onChangeSelectedFilterType(index),
                 );
               },
             ),
