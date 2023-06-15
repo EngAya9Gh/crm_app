@@ -265,7 +265,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     final isCollaborateEmployee =
         [SellerTypeFilter.collaborator, SellerTypeFilter.employee].contains(selectedSellerTypeFilter);
 
-    final agentsDistributorsList = vm.agentDistributorsState.data ?? [];
+    var agentsDistributorsList = vm.agentDistributorsState.data ?? [];
     final collaboratorsEmployeeStateList = vm.collaboratorsEmployeeState.data ?? [];
     //endregion
 
@@ -289,6 +289,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       if( element.typeAgent==viewmodel.selectedSellerTypeFilter!.index.toString())
         agentsListtemp.add(element);
     });
+      agentsDistributorsList=List.from(agentsListtemp);
       // return Container(color: Colors.blue);
       return Expanded(
         flex: 5,
