@@ -133,7 +133,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
         .where((element) => element.typeTarget == selectedDateFilter.index.toString())
         .toList();
 
-    list = list.where((element) => element.nameTarget == getMonthIndex(selectedMonthFilter!).toString()).toList();
+    list = list.where((element) => element.nameTarget == getMonthNumber(selectedMonthFilter!).toString()).toList();
 
     targetsState = targetsState.copyWith(data: list);
 
