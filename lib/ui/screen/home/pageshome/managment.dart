@@ -74,7 +74,9 @@ class _managmentpageState extends State<managmentpage> {
                         colortitle: Colors.black,
                         colorarrow: Colors.black,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => AllUserScreen()));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) =>
+                                  AllUserScreen()));
                         },
                         title: 'إدارة المستخدمين')
                     : Container(),

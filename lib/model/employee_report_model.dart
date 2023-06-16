@@ -1,9 +1,13 @@
+import '../constants.dart';
+
 class EmployeeReportModel {
   String? sales;
   String? countClient;
   String? name;
   String? salary;
   String? percentage;
+  String? img_image = '';
+
 
   EmployeeReportModel({
     this.sales,
@@ -11,6 +15,8 @@ class EmployeeReportModel {
     this.name,
     this.salary,
     this.percentage,
+    this.img_image,
+
   });
 
   factory EmployeeReportModel.fromJson(Map<String, dynamic> json) => EmployeeReportModel(
@@ -18,6 +24,8 @@ class EmployeeReportModel {
         countClient: json["countclient"],
         name: json["x"],
         salary: json["salary"],
+    img_image:json['img_image'].toString().trim().isEmpty?
+    json['img_image']: urlimage+ json['img_image'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,6 +48,7 @@ class EmployeeReportModel {
       name: name ?? this.name,
       salary: salary ?? this.salary,
       percentage: percentage ?? this.percentage,
+      img_image: img_image ?? this.img_image,
     );
   }
 }
