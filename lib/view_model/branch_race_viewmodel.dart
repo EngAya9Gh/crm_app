@@ -135,6 +135,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
     //
     // list = list.where((element) => element.nameTarget == getMonthIndex(selectedMonthFilter!).toString()).toList();
 
+   // list = list.where((element) => element.nameTarget == getMonthNumber(selectedMonthFilter!).toString()).toList();
     var data  = await Api().post(
         url: url +
             "target/get_sales_target.php?fk_country=$fkcountry&month=${monthdate.toString()}",

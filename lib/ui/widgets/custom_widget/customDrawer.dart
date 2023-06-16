@@ -19,6 +19,7 @@ import 'package:get/get.dart';
 import 'dart:io';
 
 import '../../screen/barnch_race/pages/branch_race_view.dart';
+import '../../screen/employee_race/pages/employee_race_page.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
@@ -156,8 +157,24 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute<void>(
-                      builder: (BuildContext context) => BranchRaceView()),
+                  MaterialPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
+                );
+                // ProductView();
+              },
+            ),
+            ListTile(
+              title: Text(
+                'سباق الموظفين',
+                style: TextStyle(fontFamily: kfontfamily2),
+              ),
+              leading: Icon(
+                Icons.bar_chart,
+                color: kMainColor,
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
                 );
                 // ProductView();
               },

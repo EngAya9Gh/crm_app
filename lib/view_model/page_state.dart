@@ -1,8 +1,13 @@
-enum Status { loading, loaded, failed }
+enum Status {init, loading, loaded, failed }
 
 class PageState<T> {
   PageState({
     this.status = Status.loading,
+    this.data,
+  });
+
+  PageState.init({
+    this.status = Status.init,
     this.data,
   });
 
@@ -49,4 +54,6 @@ extension PageStateExtension<T> on PageState<T> {
   bool get isSuccess => status == Status.loaded;
 
   bool get isFailure => status == Status.failed;
+
+  bool get isInit => status == Status.init;
 }
