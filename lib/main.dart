@@ -19,6 +19,7 @@ import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/company_vm.dart';
 import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
+import 'package:crm_smart/view_model/employee_race_viewmodel.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/lastcommentclient_vm.dart';
@@ -185,6 +186,7 @@ void main() async {
     ),
     ChangeNotifierProvider<lastcommentclient_vm>(create: (_) => lastcommentclient_vm()),
     ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
+    ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
     //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
   ], child: MyApp()));
 }

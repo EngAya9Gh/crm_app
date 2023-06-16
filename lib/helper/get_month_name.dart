@@ -1,6 +1,11 @@
-final List yearList = List.generate(DateTime.now().year - 2022 + 1, (index) => (2022 + index).toString());
+List<String> getYearList({int fromYear = 2022}) {
+  if (fromYear > DateTime.now().year) {
+    fromYear = DateTime.now().year;
+  }
+  return List.generate(DateTime.now().year - fromYear + 1, (index) => (fromYear + index).toString());
+}
 
-final List quarterList = List.generate(4, (index) => "Q${index + 1}");
+final List<String> quarterList = List.generate(4, (index) => "Q${index + 1}");
 
 const List<String> monthList = [
   "يناير",
@@ -25,10 +30,23 @@ String getMonthName(int monthNumber) {
   return monthList[index];
 }
 
-int getMonthIndex(String month) {
+int getMonthNumber(String month) {
   final monthNumber = monthList.indexOf(month) + 1;
   if (monthNumber == -1) {
     return 1;
   }
   return monthNumber;
+}
+
+String getQuarterName(int quarter) {
+  final index = quarter - 1;
+  return quarterList[index];
+}
+
+int getQuarterNumber(String quarter) {
+  final quarterNumber = quarterList.indexOf(quarter) + 1;
+  if (quarterNumber == -1) {
+    return 1;
+  }
+  return quarterNumber;
 }

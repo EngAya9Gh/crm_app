@@ -14,7 +14,7 @@ class BranchList extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return
-      targetList==null?
+      targetList==null||targetList!.isEmpty?
       Container():
 
       GridView.builder(
@@ -27,8 +27,8 @@ class BranchList extends StatelessWidget {
       ),
       itemCount: targetList?.length,
       itemBuilder: (_, index) =>
-      targetList![index]==null?
-      Container():
+      // targetList![index]==null?
+      // Container():
           BranchCard(branchRaceModel: targetList![index]),
     );
   }

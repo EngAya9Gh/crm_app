@@ -27,7 +27,7 @@ class _View_installedClientState extends State<View_installedClient> {
   List<CommunicationModel> listCommunicationinstall = [];
   bool isload = false;
   String? regoin;
-  String? typeclientvalue;
+  String? typeclientvalue='الكل';
   int type=1;
   @override
   void initState() {
@@ -35,6 +35,8 @@ class _View_installedClientState extends State<View_installedClient> {
       Provider.of<typeclient>(context, listen: false)
           .changelisttype_install_iso('الكل');
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);
+      // Provider.of<typeclient>(context, listen: false).changelisttype_install_iso('الكل');
+      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
      await Provider.of<communication_vm>(context, listen: false)
           .getCommunicationInstall(1);
     });
@@ -217,9 +219,11 @@ class _View_installedClientState extends State<View_installedClient> {
                                 builder: (context, value, child) {
                               return value.isloading == true
                                   ? Center(child: CircularProgressIndicator())
-                                  : value.listCommunicationInstall.length == 0
+                                  :
+                              value.listCommunicationInstall.length == 0
                                       ? Center(child: Text(messageNoData))
-                                      : Column(
+                                      :
+                              Column(
                                           children: [
                                             Expanded(
                                               child: ListView.builder(
@@ -255,12 +259,11 @@ class _View_installedClientState extends State<View_installedClient> {
 
   void filtershow() {
     print(regoin);
+    print('typeclientvalue');
     print(typeclientvalue);
 
     Provider.of<communication_vm>(context, listen: false)
         .getinstalltype_filter(typeclientvalue, regoin, 'only',type);
 
-
-    // }
   }
 }

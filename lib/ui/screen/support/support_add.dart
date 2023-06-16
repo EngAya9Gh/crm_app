@@ -541,6 +541,10 @@ class _support_addState extends State<support_add> {
                           value: _invoice!.typeInstallation.toString() == '0'
                               ? 'ميداني'
                               : 'اونلاين'),
+                      _invoice!.ready_install == '0'?
+                      cardRow(
+                          title: 'هل تم التركيب للعميل ',
+                          value: 'معلق'):
                       cardRow(
                           title: 'هل تم التركيب للعميل ',
                           value: _invoice!.dateinstall_done == null
@@ -829,10 +833,11 @@ class _support_addState extends State<support_add> {
 
                                                                             await Provider.of<invoice_vm>(context, listen: false).set_ready_install({
                                                                               'date_readyinstall': DateTime.now().toString(),
-                                                                              'user_ready_install': Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                                                              'user_ready_install': Provider.of<user_vm_provider>
+                                                                                (context, listen: false).currentUser.idUser.toString(),
                                                                               'ready_install': '1',
                                                                             }, _invoice!.idInvoice).then((value) => clear());
-                                                                            Navigator.of(context, rootNavigator: true).pop(true);
+                                                                             Navigator.of(context, rootNavigator: true).pop(true);
                                                                           },
                                                                           child:
                                                                               Text('نعم'),
@@ -915,16 +920,18 @@ class _support_addState extends State<support_add> {
                                                                               // _invoice.date_not_readyinstall-
                                                                               'date_temp': _invoice!.date_not_readyinstall.toString(),
                                                                               'date_not_readyinstall': DateTime.now().toString(),
-                                                                              'user_not_ready_install': Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                                                              'user_not_ready_install': Provider.of<user_vm_provider>
+                                                                                (context, listen: false)
+                                                                                  .currentUser.idUser.toString(),
                                                                               'ready_install': '0', //suspend client
                                                                             };
-                                                                            if (_invoice!.count_delay_ready !=
-                                                                                null)
+                                                                            if (_invoice!.count_delay_ready != null)
                                                                               body.addAll({
                                                                                 'count_delay_ready': _invoice!.count_delay_ready.toString(),
                                                                               });
 
-                                                                            await Provider.of<invoice_vm>(context, listen: false).set_ready_install(body, _invoice!.idInvoice).then((value) =>
+                                                                            await Provider.of<invoice_vm>(context, listen: false)
+                                                                                .set_ready_install(body, _invoice!.idInvoice).then((value) =>
                                                                                 clear());
                                                                             Navigator.of(context, rootNavigator: true).pop(true);
                                                                           },
@@ -1029,7 +1036,10 @@ class _support_addState extends State<support_add> {
     selectedTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-    // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('تم التثبيت بنجاح')));
+
+    // setState(() {
+    //
+    //  });
   }
 
   clear2() {

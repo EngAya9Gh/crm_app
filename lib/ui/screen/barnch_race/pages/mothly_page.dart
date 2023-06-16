@@ -27,45 +27,48 @@ class _MonthlyPageState extends State<MonthlyPage> {
           child: RowEdit(name: 'اختر الشهر', des: 'Required'),
         ),
         SizedBox(height: 5),
-        DropdownButtonFormField<String>(
-          isExpanded: true,
-          validator: (value) {
-            if (value == null) {
-              return "هذا الحقل مطلوب";
-            }
-          },
-          icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Colors.grey.shade300,
-            border: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            focusedErrorBorder: InputBorder.none,
+        Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: DropdownButtonFormField<String>(
+            isExpanded: true,
+            validator: (value) {
+              if (value == null) {
+                return "هذا الحقل مطلوب";
+              }
+            },
+            icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.grey.shade300,
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              focusedErrorBorder: InputBorder.none,
+            ),
+            hint: Text("حدد السنة"),
+            items: [2020,2021,2022,2023,2024,2025,2026,2027].map((int str) {
+              return DropdownMenuItem<String>(
+                child: Text(str.toString(), textDirection: TextDirection.rtl),
+                value: str.toString(),
+              );
+            }).toList(),
+            value: selectedYear,
+            onChanged: (year) {
+              if (year == null) {
+                return;
+              }
+              setState(() {
+                selectedYear=year;
+              });
+            },
+            onSaved: (country) {
+              if (country == null) {
+                return;
+              }
+            },
           ),
-          hint: Text("حدد السنة"),
-          items: [2020,2021,2022,2023,2024,2025,2026,2027].map((int str) {
-            return DropdownMenuItem<String>(
-              child: Text(str.toString(), textDirection: TextDirection.rtl),
-              value: str.toString(),
-            );
-          }).toList(),
-          value: selectedYear,
-          onChanged: (year) {
-            if (year == null) {
-              return;
-            }
-            setState(() {
-              selectedYear=year;
-            });
-          },
-          onSaved: (country) {
-            if (country == null) {
-              return;
-            }
-          },
         ),
         SizedBox(height: 5),
         Container(
@@ -112,7 +115,7 @@ class _MonthlyPageState extends State<MonthlyPage> {
 
                       DateTime datemonth=
                       DateTime(int.parse(selectedYear),
-                          int.parse(getMonthIndex(month!).toString()),1);
+                          int.parse(getMonthNumber(month!).toString()),01);
                       vm.onChangeMonth(datemonth,month, Provider.of<user_vm_provider>
                         (context,listen: false).currentUser.fkCountry.toString());
                     },
@@ -128,8 +131,9 @@ class _MonthlyPageState extends State<MonthlyPage> {
           ),
         ),
         SizedBox(height: 5),
-        Expanded(child: BranchList(targetList: Provider.of<BranchRaceViewmodel>
-          (context,listen: false).targetList)),
+        Expanded(
+            child: BranchList(targetList: Provider.of<BranchRaceViewmodel>
+            (context,listen: true).targetsState.data!)),
       ],
     );
   }

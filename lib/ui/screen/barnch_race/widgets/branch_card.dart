@@ -18,7 +18,9 @@ class BranchCard extends StatelessWidget {
     return Selector<BranchRaceViewmodel, DateFilterType>(
         selector: (_, vm) => vm.selectedDateFilter,
         builder: (context, selectedDateFilter, _) {
-          return Card(
+          return
+            branchRaceModel.y==null?
+            Container(): Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -64,7 +66,8 @@ class BranchCard extends StatelessWidget {
                             ?.copyWith(color: Colors.black, fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        (double.parse(branchRaceModel.y.toString())-double.parse(branchRaceModel.valueTarget.toString())).toString(),
+                        branchRaceModel.y==null?'':
+                        (double.parse(branchRaceModel.y.toString())-double.parse(branchRaceModel.valueTarget.toString())).toStringAsFixed(2),
                         // "92.65%",
                         style: Theme.of(context)
                             .textTheme

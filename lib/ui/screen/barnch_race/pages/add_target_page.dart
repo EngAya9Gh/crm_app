@@ -124,7 +124,7 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                           focusedErrorBorder: InputBorder.none,
                         ),
                         hint: Text("اختر السنة"),
-                        items: yearList.map((year) {
+                        items: getYearList().map((year) {
                           return DropdownMenuItem<String>(
                             child: Text(year, textDirection: TextDirection.rtl),
                             value: year,
@@ -304,7 +304,7 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                     items: monthList.map((month) {
                       return DropdownMenuItem<String>(
                         child: Text(month, textDirection: TextDirection.rtl),
-                        value: getMonthIndex(month).toString(),
+                        value: getMonthNumber(month).toString(),
                       );
                     }).toList(),
                     value: selectedMonthAddTarget,

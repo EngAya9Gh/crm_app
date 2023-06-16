@@ -1,29 +1,37 @@
 import 'dart:async';
 
-import 'package:crm_smart/ui/screen/barnch_race/pages/quarter_page.dart';
-import 'package:crm_smart/ui/screen/barnch_race/pages/yearly_page.dart';
-import 'package:crm_smart/view_model/page_state.dart';
+import 'package:crm_smart/ui/screen/employee_race/pages/quarterly_employee_pgae.dart';
+import 'package:crm_smart/ui/screen/employee_race/pages/yearly_employee_page.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:crm_smart/view_model/vm.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
-import 'mothly_page.dart';
+import '../../../../view_model/employee_race_viewmodel.dart';
+import 'monthly_employee_page.dart';
 
-class BranchRaceView extends StatefulWidget {
-  const BranchRaceView({Key? key}) : super(key: key);
+class EmployeeRacePage extends StatefulWidget {
+  const EmployeeRacePage({Key? key}) : super(key: key);
 
   @override
-  State<BranchRaceView> createState() => _BranchRaceViewState();
+  State<EmployeeRacePage> createState() => _EmployeeRacePageState();
 }
 
-class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixin<BranchRaceView, BranchRaceViewmodel> {
+class _EmployeeRacePageState extends State<EmployeeRacePage>
+    with StateViewModelMixin<EmployeeRacePage, EmployeeRaceViewmodel> {
+  @override
+  initState() {
+    super.initState();
+    scheduleMicrotask(() => viewmodel..init()..setFkCountry(context.read<user_vm_provider>().currentUser.fkCountry!));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("سباق الفروع"),
+        title: Text("الأكثر مبيعاً"),
         centerTitle: true,
       ),
       body: Column(
@@ -43,8 +51,8 @@ class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixi
               ],
               color: Colors.white,
             ),
-            child: Selector<BranchRaceViewmodel, DateFilterType>(
-              selector: (_, vm) => vm.selectedDateFilter,
+            child: Selector<EmployeeRaceViewmodel, DateFilterType>(
+              selector: (_, vm) => vm.selectedDateFilterType,
               builder: (_, selectedDateFilter, __) {
                 return GroupButton(
                   controller: GroupButtonController(selectedIndex: selectedDateFilter.index),
@@ -53,53 +61,25 @@ class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixi
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي'],
-                  onSelected: (_, index, isselected) =>
-                      viewmodel.onChangeSelectedFilterType(index),
+                  onSelected: (_, index, isselected) => viewmodel.onChangeSelectedDateFilterType(index),
                 );
               },
             ),
           ),
           SizedBox(height: 15),
-          Consumer<BranchRaceViewmodel>(
+          Consumer<EmployeeRaceViewmodel>(
             builder: (_, vm, __) {
-              final selectedDateFilter = vm.selectedDateFilter;
-              final targetsState = vm.targetsState;
-
-              if (targetsState.isLoading) {
-                return Center(child: CircularProgressIndicator.adaptive());
-              } else if (targetsState.isFailure) {
-                return Center(
-                  child: IconButton(
-                      onPressed:() {},// viewmodel.getTargets,
-                      icon: Icon(Icons.refresh)),
-                );
-              }
-
-              final list = targetsState.data ?? [];
-
+              final selectedDateFilter = vm.selectedDateFilterType;
               if (selectedDateFilter == DateFilterType.yearly) {
-                return Expanded(child: YearlyPage(targetList: list));
+                return Expanded(child: YearlyEmployeePage());
               } else if (selectedDateFilter == DateFilterType.quarterly) {
-                return Expanded(child: QuarterPage(targetList: list));
+                return Expanded(child: QuarterlyEmployeePage());
               }
-              return Expanded(child: MonthlyPage(targetList: list));
+              return Expanded(child: MonthlyEmployeePage());
             },
           )
         ],
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    scheduleMicrotask(() {
-       viewmodel
-        ..init()
-        // ..
-        ..getTargets();
-       viewmodel.onChangeSelectedFilterType(2);
-    });
   }
 }

@@ -109,7 +109,7 @@ class cardcommalltype extends StatelessWidget {
                     children: [
 
                       RatingBar.builder(
-                        initialRating:double.parse(itemcom.rate.toString()),
+                        initialRating:itemcom.rate==null?0.0:double.parse(itemcom.rate.toString()),
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: false,
