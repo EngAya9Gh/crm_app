@@ -31,7 +31,7 @@ class CommunicationModel {
   late final String? date_last_com_install;
   late final String? result;
   late final String? notes;
-  late final String? rate;
+   String? rate='0.0';
   late final String? typeCommuncation;
   late final String? number_wrong;
   late final String? clientRepeat;

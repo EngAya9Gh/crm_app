@@ -165,14 +165,14 @@ class communication_vm extends ChangeNotifier{
     // listInvoicesAccept=[];
     await getCommunicationInstall(typefilter);
     List<CommunicationModel> _listInvoicesAccept=[];
-    if(regoin==null){
+    if(regoin==null) {
       print(filter);
       if(listCommunicationInstall.isNotEmpty){
         if(filter=='الكل') {
-          _listInvoicesAccept = listCommunicationInstall;
+          _listInvoicesAccept =List.from(listCommunicationInstall) ;
           print('serch الكل');
         }
-        if(filter=='تم التأكد من جودة التركيب')
+        if(filter=='تم التأكد من الجودة')
           listCommunicationInstall.forEach((element) {
 
             if( element.dateCommunication!=null) {
@@ -181,7 +181,7 @@ class communication_vm extends ChangeNotifier{
 
             }
           });
-        if(filter=='لم يتم التأكد من جودة التركيب')
+        if(filter=='انتظار الجودة')
           listCommunicationInstall.forEach((element) {
             if( element.dateCommunication==null) {
               _listInvoicesAccept.add(element);
@@ -201,7 +201,7 @@ class communication_vm extends ChangeNotifier{
             }
           });
 
-        if(filter=='تم التأكد من جودة التركيب')
+        if(filter=='تم التأكد من الجودة')
           listCommunicationInstall.forEach((element) {
             if( element.dateCommunication!=null
                 && element.fk_regoin==regoin) {
@@ -209,7 +209,7 @@ class communication_vm extends ChangeNotifier{
               print('regoin بالإنتظار');
             }
           });
-        if(filter=='لم يتم التأكد من جودة التركيب')
+        if(filter=='انتظار الجودة')
           listCommunicationInstall.forEach((element) {
             if( element.dateCommunication==null
                 &&element.fk_regoin==regoin) {
@@ -221,7 +221,7 @@ class communication_vm extends ChangeNotifier{
       }
     }
 
-    listCommunicationInstall= _listInvoicesAccept;
+    listCommunicationInstall=List.from(_listInvoicesAccept) ;
     isloading=false;
     notifyListeners();
   }

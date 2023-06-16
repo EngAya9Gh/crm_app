@@ -67,7 +67,7 @@ class BranchCard extends StatelessWidget {
                       ),
                       Text(
                         branchRaceModel.y==null?'':
-                        (double.parse(branchRaceModel.y.toString())-double.parse(branchRaceModel.valueTarget.toString())).toString(),
+                        (double.parse(branchRaceModel.y.toString())-double.parse(branchRaceModel.valueTarget.toString())).toStringAsFixed(2),
                         // "92.65%",
                         style: Theme.of(context)
                             .textTheme

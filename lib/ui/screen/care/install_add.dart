@@ -219,12 +219,8 @@ class _installAddState extends State<installAdd> {
                             'id_invoice':widget.com.id_invoice.toString(),
                                 'rate':rate.toString(),
 
-                                // 'rate':widget.com.rate.toString(),
-                            // 'number_wrong':widget.com.number_wrong.toString(),
-                            // 'client_repeat':widget.com.clientRepeat.toString(),
-                            // 'date_next':widget.com.dateNext.toString(),
                           },widget.com.idCommunication,
-                              int.parse(widget.com.type_install.toString())).then((value) =>
+                                  widget.com.type_install==null?1: int.parse(widget.com.type_install.toString())).then((value) =>
 
                            clear(value)
                           );

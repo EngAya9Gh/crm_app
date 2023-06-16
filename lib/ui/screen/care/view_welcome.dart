@@ -16,7 +16,6 @@ import 'install_add.dart';
 
 class View_welcomeClient extends StatefulWidget {
   const View_welcomeClient({Key? key}) : super(key: key);
-
   @override
   _View_welcomeClientState createState() => _View_welcomeClientState();
 }
