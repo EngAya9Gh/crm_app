@@ -259,10 +259,14 @@ class client_vm extends ChangeNotifier {
     }
     if(filteractivity!='')
     {
-      listClient.forEach((element) {
+      List<ClientModel> listClientfilter_temp = [];
+
+      listClientfilter.forEach((element) {
         if( element.activity_type_fk==filteractivity)
-          listClientfilter.add(element);
+          listClientfilter_temp.add(element);
       });
+      //
+        listClientfilter=List.from(listClientfilter_temp);
     }
     notifyListeners();
   }

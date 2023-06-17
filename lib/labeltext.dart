@@ -46,7 +46,7 @@ const String label_empty='Value is Empty';
 
 const String label_amount_paid='المبلغ المدفوع';
 const String label_renew='التجديد السنوي';
-const String label_renew2year=' تجديد خاص ';
+const String label_renew2year=' تجديد الموارد البشرية ';
 
 const String label_typepay='طريقة الدفع';
 const String label_typeinstall='طريقة التركيب للعميل';

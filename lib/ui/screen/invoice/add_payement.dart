@@ -106,7 +106,7 @@ class add_payement extends StatelessWidget {
                         'date_lastuserupdate': DateTime.now().toString(),
                         //"date_changetype":,
                       }, invoiceModel.idInvoice, null, null).then(
-                              (value) => value != false ? clear() : error());
+                              (value) => value != false ? clear(context ) : error());
                     }
                     ;
                   },
@@ -119,6 +119,9 @@ class add_payement extends StatelessWidget {
     );
   }
 
-  void clear() {}
+  void clear(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop(true);
+
+  }
   void error() {}
 }

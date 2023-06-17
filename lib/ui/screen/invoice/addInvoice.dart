@@ -383,15 +383,15 @@ class _addinvoiceState extends State<addinvoice> {
                       EditTextFormField(
                         hintText: label_renew2year,
                         obscureText: false,
-                        vaild: (value) {
-                          if (value.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                          if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
-                          // else if(value.characters){
-                          //   return ;
-                          // }
-                        },
+                        // vaild: (value) {
+                        //   if (value.toString().trim().isEmpty) {
+                        //     return label_empty;
+                        //   }
+                        //   if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
+                        //   // else if(value.characters){
+                        //   //   return ;
+                        //   // }
+                        // },
                         inputType: TextInputType.number,
                         // inputformate: <TextInputFormatter>[
                         //   FilteringTextInputFormatter.digitsOnly

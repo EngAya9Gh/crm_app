@@ -228,6 +228,13 @@ class invoice_vm extends ChangeNotifier {
               print('serch تم التركيب');
             }
           });
+        if (filter == 'معلق')
+          listforme.forEach((element) {
+            if (element.isdoneinstall != '1' && element.ready_install=='0') {
+              _listInvoicesAccept.add(element);
+              print('serch lمعلق');
+            }
+          });
       }
     } else {
       if (listforme.isNotEmpty) {
@@ -273,6 +280,23 @@ class invoice_vm extends ChangeNotifier {
               if (element.isdoneinstall == '1') {
                 _listInvoicesAccept.add(element);
                 print('regoin تم التركيب');
+              }
+            });
+          }
+        }
+        if (filter == 'معلق') {
+          if (regoin != '0') {
+            listforme.forEach((element) {
+              if (element.isdoneinstall != '1' && element.ready_install=='0' &&element.fk_regoin == regoin) {
+                _listInvoicesAccept.add(element);
+                print('regoin معلق');
+              }
+            });
+          } else {
+            listforme.forEach((element) {
+              if (element.isdoneinstall != '1'&& element.ready_install=='0') {
+                _listInvoicesAccept.add(element);
+                print('معلق  ');
               }
             });
           }
@@ -483,6 +507,13 @@ class invoice_vm extends ChangeNotifier {
               print('serch تم التركيب');
             }
           });
+        if (filter == 'معلق')
+          listinvoicesMarketing.forEach((element) {
+            if (element.isdoneinstall != '1' && element.ready_install=='0') {
+              _listInvoicesAccept.add(element);
+              print('serch lمعلق');
+            }
+          });
       }
     } else {
       if (listinvoicesMarketing.isNotEmpty) {
@@ -508,6 +539,23 @@ class invoice_vm extends ChangeNotifier {
               print('regoin تم التركيب');
             }
           });
+        if (filter == 'معلق') {
+          if (regoin != '0') {
+            listinvoicesMarketing.forEach((element) {
+              if (element.isdoneinstall != '1' && element.ready_install=='0' &&element.fk_regoin == regoin) {
+                _listInvoicesAccept.add(element);
+                print('regoin معلق');
+              }
+            });
+          } else {
+            listinvoicesMarketing.forEach((element) {
+              if (element.isdoneinstall != '1'&& element.ready_install=='0') {
+                _listInvoicesAccept.add(element);
+                print('معلق  ');
+              }
+            });
+          }
+        }
       }
     }
     listinvoicesMarketing = _listInvoicesAccept;
@@ -920,7 +968,9 @@ class invoice_vm extends ChangeNotifier {
 
     int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
     InvoiceModel te = await Invoice_Service().setdate(body, id_invoice!);
+    if(index!=-1)
     listinvoices[index] = te;
+    // print(index);
     listinvoiceClientSupport[index1] = te;
 
     // listinvoiceClientSupport
@@ -955,10 +1005,13 @@ class invoice_vm extends ChangeNotifier {
     isloadingdone = true;
     notifyListeners();
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-
-    listinvoices[index] = await Invoice_Service().setdatedone(body, id_invoice!);
+    int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
+    InvoiceModel inv=await Invoice_Service().setdatedone(body, id_invoice!);
+    if(index!=-1)
+    listinvoices[index] = inv;
+    if(index1!=-1)
+      listinvoiceClientSupport[index1] = inv;
     isloadingdone = false;
-    // listClient.removeAt(index);
     notifyListeners();
   }
 
@@ -966,10 +1019,13 @@ class invoice_vm extends ChangeNotifier {
     isloadingdone = true;
     notifyListeners();
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-
-    listinvoices[index] = await Invoice_Service().set_ready_install(body, id_invoice!);
+    int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
+    InvoiceModel inv=await Invoice_Service().set_ready_install(body, id_invoice!);
+    if(index!=-1)
+    listinvoices[index] = inv;
+    if(index1!=-1)
+      listinvoiceClientSupport[index1] =inv;
     isloadingdone = false;
-    // listClient.removeAt(index);
     notifyListeners();
   }
 

@@ -118,14 +118,14 @@ class _tabclientsState extends State<tabclients> {
           return RefreshIndicator(
             onRefresh: ()async{
               ///setstat
-               Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-               Provider.of<typeclient>(context,listen: false).changevaluefilter(null);
-               Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
-              await    Provider.of<client_vm>(context, listen: false)
-                  .getclient_vm(
-                // Provider.of<privilge_vm>(context,listen: false)
-                //     .privilgelist
-              );
+              //  Provider.of<regoin_vm>(context,listen: false).changeVal(null);
+              //  Provider.of<typeclient>(context,listen: false).changevaluefilter(null);
+              //  Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+              // await    Provider.of<client_vm>(context, listen: false)
+              //     .getclient_vm(
+              //   // Provider.of<privilge_vm>(context,listen: false)
+              //   //     .privilgelist
+              // );
                // setState(() {
                //   Provider.of<user_vm_provider>(context,listen: false).changevalueuser();
                // });
