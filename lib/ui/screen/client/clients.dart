@@ -79,9 +79,11 @@ class client_dashboard extends StatefulWidget {
     }
     return _selectedView;
   }
+   late TabController _tabcontroller;
 
     @override
     void initState()  {
+      _tabcontroller = TabController(length: 3, vsync: this);
       WidgetsBinding.instance.addPostFrameCallback((_)async {
         Provider.of<comment_vm>(context, listen: false)
             .getComment(widget.invoiceModel.fkIdClient.toString());
@@ -116,7 +118,7 @@ class client_dashboard extends StatefulWidget {
 
       current = Provider.of<user_vm_provider>(context).currentUser;
       int _tabBarIndex = 0;
-     TabController _tabcontroller=TabController(length: 3, vsync: this);
+
       return DefaultTabController(
       length: 3,
       child:Scaffold(

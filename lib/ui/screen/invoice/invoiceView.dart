@@ -15,6 +15,7 @@ import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -125,10 +126,10 @@ class _InvoiceViewState extends State<InvoiceView> {
   @override
   Widget build(BuildContext context) {
 
-         widget.invoice=Provider.of<invoice_vm>(context,listen: true)
-        .listInvoicesAccept
-        .firstWhere((element) => element.idInvoice==widget.invoice!.idInvoice
-        ,orElse: null);
+        final list = Provider.of<invoice_vm>(context,listen: true).listInvoicesAccept;
+
+        if(list.any((element) => element.idInvoice==widget.invoice!.idInvoice))
+         widget.invoice= list.firstWhereOrNull((element) => element.idInvoice==widget.invoice!.idInvoice) ?? widget.invoice;
 
     final _globalKey = GlobalKey<FormState>();
     Widget dialog = SimpleDialog(
