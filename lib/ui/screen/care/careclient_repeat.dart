@@ -113,8 +113,7 @@ class _careRepeatState extends State<careRepeat> {
               ) :Container(),
               for(int i=0;i<listCommunication.length;i++)
                 if(listCommunication[i].typeCommuncation=='دوري'&&listCommunication[i].fkUser!=null)
-                  commview(listCommunication[i])
-                     ,
+                  commview(listCommunication[i]) ,
 
               SizedBox(height: 10,),
               Container(

@@ -748,7 +748,7 @@ class invoice_vm extends ChangeNotifier {
       if (type == 'مشترك') {
         listinvoiceClientSupport = [];
         list.forEach((element) {
-          if (element.fkIdClient == fk_client && element.isApprove != null)
+          if (element.fkIdClient == fk_client && element.isApprove != null && element.isApprove != '0')
             listinvoiceClientSupport.add(element);
         });
       } else {

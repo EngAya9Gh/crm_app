@@ -312,8 +312,10 @@ class communication_vm extends ChangeNotifier{
     listCommunicationInstall=[];
     isloading=true;
     notifyListeners();
-
-    await getCommunicationall('dateinvoice');
+    if(type=='2')
+     await getInstall2();
+   else{
+     await getCommunicationall('dateinvoice');
     if(listCommunication.isNotEmpty) {
       if(type!=0)//0 is mean all install 1 or 2
       listCommunication.forEach((element) {
@@ -324,7 +326,7 @@ class communication_vm extends ChangeNotifier{
         if(element.typeCommuncation=='تركيب'  )//&&element.fkUser==null)
           listCommunicationInstall.add(element);
       });
-    }
+    } }
     // getCommunicationInstallednumber();
     isloading=false;
     notifyListeners();
@@ -482,6 +484,21 @@ class communication_vm extends ChangeNotifier{
     if(data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunication.add(CommunicationModel.fromJson(data[i]));
+      }
+      notifyListeners();
+    }
+  }
+  Future<void> getInstall2( )async {
+    listCommunicationInstall=[];
+    // if(listComments.isEmpty){
+    List<dynamic> data=[];
+
+    data= await Api()
+        .get(url:url+ 'care/get_install2.php?fkcountry=${usercurrent!.fkCountry}');
+    print(data);
+    if(data.length.toString().isNotEmpty) {
+      for (int i = 0; i < data.length; i++) {
+        listCommunicationInstall.add(CommunicationModel.fromJson(data[i]));
       }
       notifyListeners();
     }

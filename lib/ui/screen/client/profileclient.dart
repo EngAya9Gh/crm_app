@@ -210,22 +210,13 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
                   fkclient: _clientModel.idClients.toString(),
                   fkuser: '',
                 ),
-                // InvoiceView(
-                // idinvoice:
-                // _invoiceModel==null?'':
-                // _invoiceModel!.idInvoice.toString(),
-                // clientmodel: _clientModel,
-                // ),
+
                 commentView(
                     client:_clientModel ,),
                 support_view_invoices(
                   itemClient: _clientModel,
                 ),
-                // support_add(
-                //
-                //   idinvoice:_invoiceModel==null?'': _invoiceModel!.idInvoice,
-                //
-                // ),
+
                 care_client_view(
                   fk_client:_clientModel.idClients.toString(),),
 

@@ -225,15 +225,7 @@ bool isepmty=false;
                   widget.itemProd.amount=_amount.text;
                   Navigator.of(context, rootNavigator: true)
                       .pop(false);}
-                // }
-                // else{
-                //   setState(() {
-                //     isepmty=true;
-                //   });
-                // _scaffoldKey.currentState!.showSnackBar(
-                //     SnackBar(content: Text('من فضلك ادخل السعر')));
-                // }
-                // });
+
                 // dismisses only the dialog and returns false
               },
               child: Text('تم'),
@@ -246,8 +238,10 @@ SizedBox(width: 15,),
                         kMainColor)),
                 child: Text('حذف'),
                 onPressed: ()   async {
-                  if(widget.itemProd.idInvoiceProduct!=null)
+                  if(widget.itemProd.idInvoiceProduct!='null')
                   {
+                    print(widget.itemProd.idInvoiceProduct);
+                    print('widget.itemProd.idInvoiceProduct');
                     // Provider.of<invoice_vm>(context,listen: false)
                     //     .listproductinvoic[index].isdeleted=true,
                     // Provider.of<invoice_vm>(context,listen: false)

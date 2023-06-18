@@ -104,31 +104,7 @@ class _View_installedClientState extends State<View_installedClient> {
                                 ),
                               ),
                             ), // : Container(),
-                            // Consumer<typeclient>(
-                            //     builder: (context, selectedProvider, child){
-                            //       return  GroupButton(
-                            //           controller: GroupButtonController(
-                            //             selectedIndex:selectedProvider.selectedinstall,
-                            //
-                            //           ),
-                            //           options: GroupButtonOptions(
-                            //               selectedColor: kMainColor,
-                            //
-                            //               buttonWidth: 110,
-                            //               borderRadius: BorderRadius.circular(10)),
-                            //           buttons: ['الكل','بالإنتظار','تم التركيب'],
-                            //           onSelected: (index,isselected){
-                            //             print(index);
-                            //             //setState(() {
-                            //             typepayController=index.toString();
-                            //             selectedProvider.changeinstall(index);
-                            //             filtershow();
-                            //             //});
-                            //           }
-                            //       );
-                            //     }
-                            //
-                            // ),
+
                             Expanded(
                               child: Padding(
                                 padding:
@@ -223,8 +199,9 @@ class _View_installedClientState extends State<View_installedClient> {
                               value.listCommunicationInstall.length == 0
                                       ? Center(child: Text(messageNoData))
                                       :
+
                               Column(
-                                          children: [
+                                children: [
                                             Expanded(
                                               child: ListView.builder(
                                                   scrollDirection:

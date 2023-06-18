@@ -303,10 +303,11 @@ class _editclientState extends State<editclient> {
                         .then((value) =>
                             value != "false" ? clear(context) : error(context));
                   }
-                } else {
-                  _scaffoldKey.currentState!.showSnackBar(
-                      SnackBar(content: Text('من فضلك حدد مدينة')));
                 }
+                // else {
+                //   _scaffoldKey.currentState!.showSnackBar(
+                //       SnackBar(content: Text('من فضلك حدد مدينة')));
+                // }
               },
               icon: Icon(Icons.check, color: kWhiteColor)),
         ],

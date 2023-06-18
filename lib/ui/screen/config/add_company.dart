@@ -134,8 +134,6 @@ class _addcompanyState extends State<addcompany> {
                           onTap: () async {
                             if (_globalKey.currentState!.validate()) {
                               _globalKey.currentState!.save();
-                              // Provider.of<LoadProvider>(context, listen: false)
-                              //     .changebooladdclient(true);
 
                                 Provider.of<company_vm>(context,listen: false)
                                     .addCompany_vm({

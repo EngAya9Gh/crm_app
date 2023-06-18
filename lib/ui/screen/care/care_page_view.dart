@@ -133,71 +133,7 @@ class _care_page_viewState extends State<care_page_view> {
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: ListView(
                       children: [
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //   children: [
-                        //     Expanded(
-                        //       child: Padding(
-                        //         padding: const EdgeInsets.only(left: 8.0, right: 8),
-                        //         child: Consumer<regoin_vm>(
-                        //           builder: (context, cart, child) {
-                        //             return
-                        //               DropdownButton(
-                        //                 isExpanded: true,
-                        //                 hint: Text("الفرع"),
-                        //                 items: cart.listregoinfilter.map((level_one) {
-                        //                   return DropdownMenuItem(
-                        //
-                        //                     child: Text(level_one.name_regoin),
-                        //                     //label of item
-                        //                     value: level_one
-                        //                         .id_regoin, //value of item
-                        //                   );
-                        //                 }).toList(),
-                        //                 value: cart.selectedValueLevel,
-                        //                 onChanged: (value) {
-                        //                   //  setState(() {
-                        //                   cart.changeVal(value.toString());
-                        //                   regoin = value.toString();
-                        //                   filtershow();
-                        //                 },
-                        //               );
-                        //             //);
-                        //           },
-                        //         ),
-                        //       ),
-                        //     ),//
-                        //     Expanded(
-                        //       child: Padding(
-                        //         padding: const EdgeInsets.only(left: 20.0,right: 8),
-                        //         child: Consumer<typeclient>(
-                        //             builder: (context, cart, child){
-                        //               return DropdownButton(
-                        //                 isExpanded: true,
-                        //                 hint: Text('الحالة'),
-                        //                 //hint: Text("حدد حالة العميل"),
-                        //                 items: cart.listtype_care.map((level_one) {
-                        //                   return DropdownMenuItem(
-                        //                     child: Text(level_one), //label of item
-                        //                     value: level_one, //value of item
-                        //                   );
-                        //                 }).toList(),
-                        //                 value:cart.selectedlisttype_care,
-                        //                 onChanged:(value) {
-                        //                   //namemanage=value.toString();
-                        //                   cart.changelisttype_care(value.toString());
-                        //                   typeclientvalue=value.toString();
-                        //                   print('filter state'+value.toString());
-                        //                   print(typeclientvalue);
-                        //
-                        //                   filtershow();
-                        //                 },
-                        //               );}
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
+
                         search_widget(
                           'waitcare',
                           hintnamefilter,''
@@ -231,10 +167,8 @@ class _care_page_viewState extends State<care_page_view> {
                                               break;
 
                                           }
-
                                           selectedProvider.selectValuebarsales(index);
                                           getData();
-
                                         });
                                   }),
                             ],

@@ -179,12 +179,13 @@ class _ticketclientviewState extends State<ticketclientview> {
                                                           fontWeight: FontWeight.bold
                                                           ),
                                                         ),
-                                                        value.tickesearchlist[index].rate!=null?
+                                                        value.tickesearchlist[index].rate!=null&&value.tickesearchlist[index].rate.toString()!=''?
                                                         Row(
                                                           children: [
                                                             //Text('تقييم بعد الإغلاق'),
                                                             RatingBar.builder(
-                                                              initialRating:double.parse(value.tickesearchlist[index].rate.toString()),
+                                                              initialRating:value.tickesearchlist[index].rate.toString()==null?
+                                                              0.0:double.parse(value.tickesearchlist[index].rate.toString()),
                                                               minRating: 1,
                                                               direction: Axis.horizontal,
                                                               allowHalfRating: false,

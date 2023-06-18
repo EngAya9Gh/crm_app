@@ -847,7 +847,7 @@ class _addinvoiceState extends State<addinvoice> {
                                   buttonWidth: (MediaQuery.of(context).size.width - 130) / 3,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                buttons: ['موزع', 'وكيل', 'موظف'],
+                                buttons: ['موزع', 'وكيل', 'متعاون'],
                                 onSelected: (_, index, isselected) {
                                   print(index);
                                   invoiceViewmodel.onChangeSellerType(
