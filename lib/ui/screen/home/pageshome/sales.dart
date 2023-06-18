@@ -141,7 +141,7 @@ class _salesState extends State<sales> {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context)=>
                         ApprovePage()));
-              }, title:  ' طلبات الموافقة '):Container(),
+              }, title:  ' طلبات موافقة المشرفين '):Container(),
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('111')==true?
                 buildSelectCategory(

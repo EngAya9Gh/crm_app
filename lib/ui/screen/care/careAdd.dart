@@ -29,7 +29,7 @@ class careAdd extends StatefulWidget {
 }
 
 class _careAddState extends State<careAdd> {
-  String? typepayController='0';
+   bool typepayController=false;
   bool numberwrong=false;
   bool repeat=false;
   bool isdone=false;
@@ -127,30 +127,41 @@ class _careAddState extends State<careAdd> {
             ),
                 ],),
                 widget.com.typeCommuncation=='دوري'&& widget.com.dateCommunication==null?
-                Consumer<communication_vm>(
-                    builder: (context, selectedProvider, child){
-                      return  GroupButton(
-                          controller: GroupButtonController(
-                            selectedIndex:selectedProvider.selectedtypeinstall,
-
-                          ),
-                          options: GroupButtonOptions(
-                              selectedColor: kMainColor,
-                              buttonWidth: 120,
-                              borderRadius: BorderRadius.circular(10)),
-                          buttons: ['لا يستخدم النظام','يستخدم النظام'],
-                          onSelected: (_,index,isselected){
-                            print(index);
-                            //setState(() {
-                            typepayController=index.toString();
-                            selectedProvider.changeinstall(index);
-                            //});
-                          }
-                      );
-                    }
-
-                )
-                    :Container(),
+                // Consumer<communication_vm>(
+                //     builder: (context, selectedProvider, child){
+                //       return  GroupButton(
+                //           controller: GroupButtonController(
+                //             selectedIndex:selectedProvider.selectedtypeinstall,
+                //
+                //           ),
+                //           options: GroupButtonOptions(
+                //               selectedColor: kMainColor,
+                //               buttonWidth: 120,
+                //               borderRadius: BorderRadius.circular(10)),
+                //           buttons: ['لا يستخدم النظام','يستخدم النظام'],
+                //           onSelected: (_,index,isselected){
+                //             print(index);
+                //             //setState(() {
+                //             typepayController=index.toString();
+                //             selectedProvider.changeinstall(index);
+                //             //});
+                //           }
+                //       );
+                //     }
+                //
+                // )
+                //     :Container(),
+                CheckboxListTile(
+                  title: new Text('لا يستخدم النظام'),
+                  value:   typepayController,// as bool,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      print(value);
+                      typepayController=value!;
+                      //values[key] = value;
+                    });
+                  },
+                ):Container(),
                 SizedBox(height: 20,),
                 CheckboxListTile(
                   title: new Text('لايوجد رقم هاتف-أو الرقم خاطئ'),
@@ -163,6 +174,7 @@ class _careAddState extends State<careAdd> {
                     });
                   },
                 ),
+
                 CheckboxListTile(
                   title: new Text('العميل متكرر'),
                   value:   repeat,// as bool,
@@ -220,7 +232,7 @@ class _careAddState extends State<careAdd> {
                                 (context,listen: false).
                                  currentUser.idUser.toString(),
                                'date_communication':DateTime.now().toString(),
-                               'result':typepayController,//
+                               'result':typepayController.toString(),//
                                'rate':rate.toString(),
                                'number_wrong':numberwrong.toString(),
                                'client_repeat':repeat.toString(),

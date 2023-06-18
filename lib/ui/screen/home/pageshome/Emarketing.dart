@@ -66,6 +66,7 @@ class marketingpage extends StatelessWidget {
                 // ));
               },
               title: 'تقرير التسويق الإلكتروني'):Container(),
+          Provider.of<privilge_vm>(context,listen: true).checkprivlge('119') == true?
           buildSelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,
@@ -76,7 +77,7 @@ class marketingpage extends StatelessWidget {
                         getLastCommentClient()
                 ));
               },
-              title: 'آخر تحديثات العملاء')
+              title: 'آخر تحديثات العملاء'):Container()
         ],),
 
       ),
