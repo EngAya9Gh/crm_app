@@ -36,6 +36,11 @@ Widget commview(CommunicationModel element) {
 
 
               element.typeCommuncation=='دوري'?
+              cardRow(title:' نتيجة التواصل' ,value:
+              element.result.toString()=='0'?'لايستخدم النظام':'يستخدم النظام',):Container(),
+
+
+              element.typeCommuncation=='دوري'?
               cardRow(title:'موظف التقييم' ,value:getnameshort(element.nameUser.toString()) ,):Container(),
               element.typeCommuncation=='دوري'?
               cardRow(title:'تاريخ التقييم' ,value: element.dateCommunication.toString(),):Container(),
