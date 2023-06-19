@@ -184,6 +184,7 @@ class invoice_vm extends ChangeNotifier {
     //     //&& element.isApprove == "1")
     //     listinvoicesMarketing.add(element);
     // });
+     listinvoicesMarketing=List.from(list_temp);
     isloading = false;
     notifyListeners();
   }
