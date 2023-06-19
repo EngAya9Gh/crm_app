@@ -35,7 +35,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController logoController = TextEditingController();
-  late File? _myfilelogo=null;
+  late File? _myfilelogo = null;
 
   AgentDistributorModel? get agentDistributorModel => widget.agentDistributorModel;
 
@@ -225,50 +225,49 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                       viewmodel.onSaveDescription(description);
                                     },
                                   ),
-                                  SizedBox(height: 5,),
-
+                                  SizedBox(
+                                    height: 5,
+                                  ),
                                   RowEdit(name: 'صورة ', des: ''),
-                                agentDistributorModel!.imageAgent!=null && agentDistributorModel!.imageAgent.toString().isNotEmpty ?
-                                  Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child:
-                                    Container(
-                                      height:40,
-                                      width: 50,
-                                      child: Stack(
-                                        alignment: Alignment.center,
-                                        children: [
-                                          Image.network(agentDistributorModel!.imageAgent.toString()),
-                                        ],
-                                      ),
-                                    ),
-                                  ):Container(),
+                                  agentDistributorModel?.imageAgent != null &&
+                                          (agentDistributorModel?.imageAgent.toString().isNotEmpty ?? false)
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: Container(
+                                            height: 40,
+                                            width: 50,
+                                            child: Stack(
+                                              alignment: Alignment.center,
+                                              children: [
+                                                Image.network(agentDistributorModel!.imageAgent.toString()),
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
                                   TextFormField(
                                     controller: logoController,
                                     obscureText: false,
                                     cursorColor: Colors.black,
-                                    onTap: () async{
+                                    onTap: () async {
                                       ImagePicker imagePicker = ImagePicker();
-                                      final pickedImage =
-                                      await imagePicker.pickImage(
+                                      final pickedImage = await imagePicker.pickImage(
                                         source: ImageSource.gallery,
-                                        imageQuality: 100,);
-                                      File?   pickedFile = File(pickedImage!.path);
+                                        imageQuality: 100,
+                                      );
+                                      File? pickedFile = File(pickedImage!.path);
                                       setState(() {
                                         print(pickedFile.path);
-                                        _myfilelogo=pickedFile;
-                                        logoController.text=pickedFile.path;
+                                        _myfilelogo = pickedFile;
+                                        logoController.text = pickedFile.path;
                                         viewmodel.onSaveimagefile(_myfilelogo);
-
                                       });
 
                                       // _invoice!.path=pickedFile.path;
                                     },
                                     readOnly: true,
                                     decoration: InputDecoration(
-
-                                      contentPadding:
-                                      EdgeInsets.all(2) ,
+                                      contentPadding: EdgeInsets.all(2),
                                       prefixIcon: Icon(
                                         Icons.add_photo_alternate,
                                         color: kMainColor,
