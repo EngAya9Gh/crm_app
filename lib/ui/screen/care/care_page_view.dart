@@ -35,7 +35,7 @@ class _care_page_viewState extends State<care_page_view> {
   String? typeclientvalue;
   String? fkcountry;
   bool isloading=false;
-  String type = '';
+  String type = 'wait';
   String typeproduct = '-';
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
@@ -290,9 +290,7 @@ class _care_page_viewState extends State<care_page_view> {
                                             case 5:
                                               typeproduct = '6';
                                               break;
-
                                           }
-
                                           selectedProvider.selectValuebarsalestype(index);
                                           getData();
 
@@ -346,7 +344,6 @@ class _care_page_viewState extends State<care_page_view> {
                                                         2),
                                                     child:
                                                     Container(
-
                                                       decoration: BoxDecoration(
                                                         borderRadius: BorderRadius.only(
                                                             bottomRight: Radius.circular(0)
@@ -427,8 +424,6 @@ class _care_page_viewState extends State<care_page_view> {
                                                                         ],
                                                                       ),
                                                                       Row(
-
-                                                                        //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                         children: [
                                                                           Text(
                                                                             listCommunication[index].nameEnterprise.toString(),
@@ -438,10 +433,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                               fontFamily: kfontfamily2,
                                                                             ),
                                                                           ),
-                                                                          // Text(
-                                                                          //   itemapprove.nameUser.toString(),
-                                                                          //   style: TextStyle(fontFamily: kfontfamily2),
-                                                                          // ),
+
                                                                         ],
                                                                       ),
                                                                    type=='wait'?

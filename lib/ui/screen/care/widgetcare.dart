@@ -63,8 +63,6 @@ Widget commview(CommunicationModel element) {
                   ), onRatingUpdate: (double value) {  },
                 ),
               ],):Container(),
-
-
             ],
           ),
         )

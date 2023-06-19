@@ -86,7 +86,7 @@ class cardcommalltype extends StatelessWidget {
                       Text(
                         itemcom.typeCommuncation=='ترحيب'?
                         itemcom.date_approve.toString():
-                        itemcom.type_install=='1'&&itemcom.dateCommunication==null?
+                        itemcom.type_install=='1' && itemcom.dateCommunication==null?
                         itemcom.dateinstall_done.toString()
                             :itemcom.dateCommunication.toString(),
                         style: TextStyle(
@@ -94,6 +94,34 @@ class cardcommalltype extends StatelessWidget {
                             fontFamily: kfontfamily2,color: kMainColor),),
                     ],
                   ),
+                  itemcom.type_install=='2' && itemcom.dateCommunication==null?
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        itemcom.name_regoin.toString(),
+                        style: TextStyle(
+                          //fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            fontFamily: kfontfamily2,
+                            color: kMainColor),
+                      ),
+
+                      Text(
+                        int.parse(itemcom.hoursdelaylabel.toString())<0?
+                        ' تأخر عن التواصل  '+(int.parse(itemcom.hoursdelaylabel.toString())*-1).toString()+ ' يوم '
+                            :
+                        ' باقي '+ itemcom.hoursdelaylabel.toString()+' يوم '
+                        ,
+                        style: TextStyle(
+                            fontSize: 12,
+                            //fontWeight: FontWeight.bold,
+                            fontFamily: kfontfamily2,
+                            color: kMainColor),
+                      )
+
+                    ],
+                  ):Container(),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

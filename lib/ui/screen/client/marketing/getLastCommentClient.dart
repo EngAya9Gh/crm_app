@@ -79,7 +79,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                               break;
 
                               case 2:
-                              type='منسحب';
+                              type='مستبعد';
                               break;
 
                               case 3:

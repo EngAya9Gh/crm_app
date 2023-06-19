@@ -95,7 +95,7 @@ class _salesState extends State<sales> {
                           builder: (context)=>
                               invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
                       ));
-                    }, title:'فواتير العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+                    }, title:'ديون العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
                 buildSelectCategory(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
