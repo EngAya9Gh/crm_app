@@ -610,7 +610,8 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
     await getinvoiceswithprev();
     listInvoicesAccept.forEach((element) {
-      if (element.stateclient == 'مشترك' && element.isApprove == "1"&& (double.parse(element.total.toString()) -
+      if (element.stateclient == 'مشترك' && element.isApprove == "1"&&
+          (double.parse(element.total.toString()) -
           double.parse(element.amountPaid.toString()))>0) list.add(element);
     });
     listInvoicesAccept = list;

@@ -92,6 +92,18 @@ class _salesState extends State<sales> {
                     colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>  AgentsDistributorsInvoicesView()
+                      ));
+                    }, title:'فواتير العملاء' ):Container(),
+
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('39')==true?
+                buildSelectCategory(
+                    colorbag:   Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
                           builder: (context)=>
                               invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
                       ));
@@ -106,17 +118,7 @@ class _salesState extends State<sales> {
                   colortitle: Colors.black,
                   colorarrow: Colors.black,),
 
-                Provider.of<privilge_vm>(context,listen: true)
-                    .checkprivlge('39')==true?
-                buildSelectCategory(
-                    colorbag:   Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context)=>  AgentsDistributorsInvoicesView()
-                      ));
-                    }, title:'فواتير العملاء والموزعين' ):Container(),
+
 
 
                 buildSelectCategory(
