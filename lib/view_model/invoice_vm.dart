@@ -608,7 +608,22 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept = [];
     isloading = true;
     notifyListeners();
-    await getinvoiceswithprev();
+    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '1').isCheck == '1' ? true : false;
+    if (res) {
+      listinvoices = await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
+      print('indddddd');
+    } else {
+      res = privilgelist.firstWhere((element) => element.fkPrivileg == '38').isCheck == '1' ? true : false;
+      if (res) {
+        listinvoices = await Invoice_Service().getinvoicebyregoin(usercurrent!.fkRegoin!);
+      } else {
+        res = privilgelist.firstWhere((element) => element.fkPrivileg == '6').isCheck == '1' ? true : false;
+        if (res) {
+          listinvoices = await Invoice_Service().getinvoicebyiduser(usercurrent!.idUser.toString());
+        }
+      }
+    }
+    listInvoicesAccept = List.from(listinvoices);
     listInvoicesAccept.forEach((element) {
       if (element.stateclient == 'مشترك' && element.isApprove == "1"&&
           (double.parse(element.total.toString()) -
