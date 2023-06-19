@@ -603,6 +603,22 @@ class invoice_vm extends ChangeNotifier {
     // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
     notifyListeners();
   }
+  Future<void> getinvoice_Debt() async {
+    List<InvoiceModel> list = [];
+    listInvoicesAccept = [];
+    isloading = true;
+    notifyListeners();
+    await getinvoiceswithprev();
+    listInvoicesAccept.forEach((element) {
+      if (element.stateclient == 'مشترك' && element.isApprove == "1"&& (double.parse(element.total.toString()) -
+          double.parse(element.amountPaid.toString()))>0) list.add(element);
+    });
+    listInvoicesAccept = list;
+    listforme = List.from(list);
+    isloading = false;
+    // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
+    notifyListeners();
+  }
 
   // Future<void> getClientWaiting()async{
   //   // element.stateclient == searchfilter

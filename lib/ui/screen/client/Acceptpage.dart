@@ -46,8 +46,8 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
       List<PrivilgeModel> list=
       await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
       Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);
-      Provider.of<invoice_vm>(context, listen: false)
-          .getinvoice_Localwithprev();
+      Provider.of<invoice_vm>(context, listen: false).getinvoice_Debt();
+          // .getinvoice_Localwithprev();
 
       Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
