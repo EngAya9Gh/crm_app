@@ -27,11 +27,13 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import 'clientView.dart';
 class ProfileClient extends StatefulWidget {
-  ProfileClient({ this.clienttransfer, this.invoiceModel, this.tabindex, required this.idclient, Key? key}) : super(key: key);
-   String? idclient;
-  int? tabindex=0;
-  InvoiceModel? invoiceModel=null;
+  ProfileClient({ this.clienttransfer, this.invoiceModel, this.tabindex, required this.idclient,this.client, Key? key})
+      : super(key: key);
+  String? idclient;
+  int? tabindex = 0;
+  InvoiceModel? invoiceModel = null;
   String? clienttransfer;
+  ClientModel? client;
 
   @override
   _ProfileClientState createState() => _ProfileClientState();
@@ -81,7 +83,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
   }
   @override
   Widget build(BuildContext context) {
-    _clientModel=Provider.of<client_vm>
+    _clientModel= widget.client ?? Provider.of<client_vm>
       (context,listen: true).listClient
         .firstWhere((element)//error
     => element.idClients==widget.idclient);
@@ -200,7 +202,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
               controller: _tabcontroller,
               children: <Widget>[
                 ClientView(
-
+                  client: _clientModel,
                   clienttransfer:widget.clienttransfer,
                   idclient: _clientModel.idClients.toString(),
                   invoice:null,//widget.invoiceModel,

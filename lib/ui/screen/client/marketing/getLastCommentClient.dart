@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
@@ -176,10 +177,14 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                 child: Center(
                                   child: InkWell(
                                     onTap: () {
+                                      log("sdaassadaskjkj: ${Provider.of<lastcommentclient_vm>(context,listen: false)
+                                          .list_LastcommentClientModel[index].client_obj}");
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) =>
                                           ProfileClient(
                                             tabindex: 2,
+                                              client: Provider.of<lastcommentclient_vm>(context,listen: false)
+                                                  .list_LastcommentClientModel[index].client_obj,
                                               idclient: Provider.of<lastcommentclient_vm>(context,listen: false)
                                                   .list_LastcommentClientModel[index].client_obj.idClients)));
                                       // Navigator.push(
