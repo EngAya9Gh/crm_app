@@ -83,7 +83,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            privilge.checkprivlge('1') == true ? //regoin
+                            privilge.checkprivlge('94') == true ? //regoin
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -202,7 +202,6 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                                                     CardInvoiceClient(
                                                       type:'profile',
                                                       itemProd: value.listInvoicesAccept[index],
-                                                      //itemClient :  itemClient,
 
                                                     )) ,
                                               );
