@@ -107,6 +107,7 @@ class cardcommalltype extends StatelessWidget {
                             color: kMainColor),
                       ),
 
+                      itemcom.hoursdelaylabel!=null?
                       Text(
                         int.parse(itemcom.hoursdelaylabel.toString())<0?
                         ' تأخر عن التواصل  '+(int.parse(itemcom.hoursdelaylabel.toString())*-1).toString()+ ' يوم '
@@ -119,6 +120,7 @@ class cardcommalltype extends StatelessWidget {
                             fontFamily: kfontfamily2,
                             color: kMainColor),
                       )
+                          :Container()
 
                     ],
                   ):Container(),

@@ -7,6 +7,7 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/Invoice_Service.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 
@@ -173,15 +174,16 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getinvoice_marketing() {
+  void getinvoice_marketing() async {
     listinvoicesMarketing = [];
     isloading = true;
     notifyListeners();
-    listinvoices.forEach((element) {
-      if (element.ismarketing == '1')
-        //&& element.isApprove == "1")
-        listinvoicesMarketing.add(element);
-    });
+    list_temp=  await  Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
+    // listinvoices.forEach((element) {
+    //   // if (element.ismarketing == '1')
+    //     //&& element.isApprove == "1")
+    //     listinvoicesMarketing.add(element);
+    // });
     isloading = false;
     notifyListeners();
   }
@@ -481,15 +483,17 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept = _listInvoicesAccept;
     notifyListeners();
   }
-
+  List<InvoiceModel> list_temp= [];
   Future<void> getclienttype_marketing(String? filter, String? regoin, String tyype) async {
-    getinvoice_marketing();
+    // getinvoice_marketing();
+    listinvoicesMarketing =List.from( list_temp);
+
     List<InvoiceModel> _listInvoicesAccept = [];
     if (regoin == null) {
       print(filter);
       if (listinvoicesMarketing.isNotEmpty) {
         if (filter == 'الكل') {
-          _listInvoicesAccept = listinvoicesMarketing;
+          _listInvoicesAccept =List.from( listinvoicesMarketing);
           print('serch الكل');
         }
         if (filter == 'بالإنتظار')
@@ -558,7 +562,7 @@ class invoice_vm extends ChangeNotifier {
         }
       }
     }
-    listinvoicesMarketing = _listInvoicesAccept;
+    listinvoicesMarketing =List.from(_listInvoicesAccept) ;
     notifyListeners();
   }
 
@@ -603,6 +607,7 @@ class invoice_vm extends ChangeNotifier {
     // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
     notifyListeners();
   }
+
   Future<void> getinvoice_Debt() async {
     List<InvoiceModel> list = [];
     listInvoicesAccept = [];
