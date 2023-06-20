@@ -684,7 +684,8 @@ class invoice_vm extends ChangeNotifier {
       }
     } else {
       if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
-      if (approvetype == 'regoin')  await get_invoicesbyRegoin_accept_requst('r');
+
+      if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
       if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
     }
 
@@ -775,20 +776,17 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
   Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
-    // List<InvoiceModel> list = [];
-    // listinvoiceClientSupport=[];
-    if (type == 'مشترك') {
-      listinvoiceClientSupport = [];
-      notifyListeners();
-    }
+    bool isParticipate = type == 'مشترك';
 
-    if (type == '') {
-      listinvoiceClient = [];
-      notifyListeners();
-    }
-    // listinvoiceClient = [];
-    // print('sdsjnhksjhdushdijksljflsdjlfkjljlj');
-    // notifyListeners();
+      if(isParticipate){
+        listinvoiceClientSupport = [];
+        isLoadingInvoicesClientParticipateLocal = true;
+        notifyListeners();
+
+      }else{
+        listinvoiceClient = [];
+        isLoadingInvoicesClientLocal = true;
+        notifyListeners();
 
     if (list.isNotEmpty) {
       //await getinvoices();
@@ -809,50 +807,9 @@ class invoice_vm extends ChangeNotifier {
     print('length list invoice client ' + listinvoiceClient.length.toString());
     print('length list invoice client ' + listinvoiceClientSupport.length.toString());
     notifyListeners();
-
-  Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
-    bool isParticipate = type == 'مشترك';
-    try {
-      if(isParticipate){
-        isLoadingInvoicesClientParticipateLocal = true;
-      }else{
-        isLoadingInvoicesClientLocal = true;
-      }
-      List<InvoiceModel> list = [];
-      listinvoiceClient = [];
-      notifyListeners();
-      list = await Invoice_Service().getinvoicebyclient(fk_client!);
-      if (list.isNotEmpty) {
-        if (isParticipate) {
-          listinvoiceClientSupport = [];
-          list.forEach((element) {
-            if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
-          });
-        } else {
-          listinvoiceClient = [];
-          list.forEach((element) {
-            if (element.fkIdClient == fk_client) listinvoiceClient.add(element);
-          });
-        }
       }
 
-      print('length list invoice client ' + listinvoiceClient.length.toString());
-      print('length list invoice client ' + listinvoiceClientSupport.length.toString());
-      if(isParticipate){
-        isLoadingInvoicesClientParticipateLocal = false;
-      }else{
-        isLoadingInvoicesClientLocal = false;
-      }
-      notifyListeners();
-    } catch (e) {
-      if(isParticipate){
-        isLoadingInvoicesClientParticipateLocal = false;
-      }else{
-        isLoadingInvoicesClientLocal = false;
-      }
-      notifyListeners();
-    }
-  }
+}
 
   void setvaluepriv(privilgelistparam) {
     print('in set privilge client vm');
