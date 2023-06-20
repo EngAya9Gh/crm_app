@@ -68,7 +68,9 @@ class _installAddState extends State<installAdd> {
               children: [
                 widget.com.dateCommunication==null?
                 Text(widget.com.typeCommuncation=='تركيب'&&widget.com.type_install=='1'?
-                     titleInstall.toString()
+                titleInstall.toString():
+                widget.com.type_install=='2'?
+                     ''
                     :titleWelcom.toString() ):Container(),
                 Divider(thickness: 1,color: Colors.grey,),
                 SizedBox(height: 10,),
@@ -193,7 +195,7 @@ class _installAddState extends State<installAdd> {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context)=>
                                   ProfileClient(
-                                    idclient: widget.com.fkClient ,
+                                    idClient: widget.com.fkClient ,
                                   )));
                         },
                         child: Text(' ملف العميل')) ,
@@ -220,7 +222,9 @@ class _installAddState extends State<installAdd> {
                                 'rate':rate.toString(),
 
                           },widget.com.idCommunication,
-                                  widget.com.type_install==null?1: int.parse(widget.com.type_install.toString())).then((value) =>
+                         widget.com.type_install==null?
+                         1:
+                         int.parse(widget.com.type_install.toString())).then((value) =>
 
                            clear(value)
                           );

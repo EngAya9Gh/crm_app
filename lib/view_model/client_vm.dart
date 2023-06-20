@@ -206,6 +206,8 @@ class client_vm extends ChangeNotifier {
           });
         }
       }
+      listClientMarketing  =List.from(listClientfilter);
+
     }
     if(type=="type"){
 
@@ -213,6 +215,8 @@ class client_vm extends ChangeNotifier {
         if( element.typeClient==searchfilter)
           listClientfilter.add(element);
       });
+      listClientMarketing  =List.from(listClientfilter);
+
     }
     if(type=="user"){
       print('in user search');
@@ -227,6 +231,8 @@ class client_vm extends ChangeNotifier {
             listClientfilter.add(element);
         });
       }
+      listClientMarketing  =List.from(listClientfilter);
+
     }
     else {
       if(type=="regoin"){
@@ -240,33 +246,51 @@ class client_vm extends ChangeNotifier {
             listClient.forEach((element) {
               if (element.fkcountry == usercurrent!.fkCountry)
                 listClientfilter.add(element);
+
             });
           }
+
         }else{
           if(searchfilter!='0')
           listClient.forEach((element) {
             if (element.fkRegoin == searchfilter&&element.typeClient==filter2)
               listClientfilter.add(element);
+
           });
           else{
             listClient.forEach((element) {
               if (element.fkcountry == usercurrent!.fkCountry &&element.typeClient==filter2)
                 listClientfilter.add(element);
+
+
             });
           }
+
         }
       }
+      listClientMarketing  =List.from(listClientfilter);
+
     }
     if(filteractivity!='')
     {
       List<ClientModel> listClientfilter_temp = [];
 
-      listClientfilter.forEach((element) {
-        if( element.activity_type_fk==filteractivity)
-          listClientfilter_temp.add(element);
-      });
-      //
+      if(listClientfilter.isNotEmpty) {
+
+        listClientfilter.forEach((element) {
+          if (element.activity_type_fk == filteractivity)
+            listClientfilter_temp.add(element);
+        });
+        //
+      }else{
+        listClient.forEach((element) {
+          if (element.activity_type_fk == filteractivity)
+            listClientfilter_temp.add(element);
+
+        });
+      }
         listClientfilter=List.from(listClientfilter_temp);
+      listClientMarketing=List.from(listClientfilter_temp);
     }
     notifyListeners();
   }

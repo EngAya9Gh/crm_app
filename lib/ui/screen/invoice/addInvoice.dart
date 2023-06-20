@@ -807,7 +807,7 @@ class _addinvoiceState extends State<addinvoice> {
                         "تفاصيل إضافية",
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                      RowEdit(name: "نوع البائع", des: 'Required'),
+                      RowEdit(name: "نوع البائع"),
                       SizedBox(height: 5),
                       Selector<invoice_vm, SellerType?>(
                           selector: (_, vm) => vm.selectedSellerType,
@@ -862,7 +862,7 @@ class _addinvoiceState extends State<addinvoice> {
                         if (selectedSellerType != null)
                           return Column(
                             children: [
-                              RowEdit(name: "اسم البائع", des: 'Required'),
+                              RowEdit(name: "اسم البائع"),
                               SizedBox(height: 5),
                               if (sellerStatus == SellerStatus.loading)
                                 loadingWidget
@@ -879,7 +879,7 @@ class _addinvoiceState extends State<addinvoice> {
                                   selectedValue: selectedAgent,
                                 ),
                               SizedBox(height: 10),
-                              RowEdit(name: "نسبة عمولة البائع", des: 'Required'),
+                              RowEdit(name: "نسبة عمولة البائع"),
                               SizedBox(height: 5),
                               TextFormField(
                                 controller: sellerCommissionRate,
@@ -887,10 +887,10 @@ class _addinvoiceState extends State<addinvoice> {
                                 cursorColor: Colors.black,
                                 readOnly: false,
                                 validator: (text) {
-                                  if (text?.trim().isEmpty ?? true) {
-                                    return 'هذا الحقل مطلوب';
-                                  }
-                                  return null;
+                                  // if (text?.trim().isEmpty ?? true) {
+                                  //   return 'هذا الحقل مطلوب';
+                                  // }
+                                  // return null;
                                 },
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -947,11 +947,11 @@ class _addinvoiceState extends State<addinvoice> {
                                   typeinstallController = Provider.of<selected_button_provider>(context, listen: false)
                                       .isSelectedtypeinstall
                                       .toString();
-                                  if (invoiceViewmodel.selectedSellerType == null) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(content: Text('من فضلك اختر نوع البائع')));
-                                    return;
-                                  }
+                                  // if (invoiceViewmodel.selectedSellerType == null) {
+                                  //   ScaffoldMessenger.of(context)
+                                  //       .showSnackBar(SnackBar(content: Text('من فضلك اختر نوع البائع')));
+                                  //   return;
+                                  // }
 
                                   if ((_invoice!.products != null) && (_invoice!.products!.isNotEmpty)) {
                                     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(true);
@@ -1005,17 +1005,19 @@ class _addinvoiceState extends State<addinvoice> {
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
                                             invoiceViewmodel.selectedCollaborator?.id_participate != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType != SellerType.collaborator)
+                                        else if (invoiceViewmodel.selectedSellerType != SellerType.collaborator &&
+                                            invoiceViewmodel.selectedAgent != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
                                           'type_seller': '3', // type seller is employee,
 
-                                        'rate_participate': sellerCommissionRate.text,
+                                        if (sellerCommissionRate.text.isNotEmpty)
+                                          'rate_participate': sellerCommissionRate.text,
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-                                          'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.agent)
+                                            'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
+                                          else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
+                                            'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
                                           'participate_fk':
@@ -1067,7 +1069,8 @@ class _addinvoiceState extends State<addinvoice> {
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
                                             invoiceViewmodel.selectedCollaborator?.id_participate != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType != SellerType.collaborator)
+                                        else if (invoiceViewmodel.selectedSellerType != SellerType.collaborator &&
+                                            invoiceViewmodel.selectedAgent != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
                                           'type_seller': '3', // type seller is employee,

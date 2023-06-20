@@ -88,7 +88,7 @@ class _waiting_reportState extends State<waiting_report> {
                                                 MaterialPageRoute(builder:
                                                     (context) =>
                                                     ProfileClient(
-                                                      idclient: value.
+                                                      idClient: value.
                                                       listInvoicesAccept[index].fkIdClient,)));
                                           },
                                           child: Container(

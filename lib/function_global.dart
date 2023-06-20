@@ -101,7 +101,7 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
-                idclient: data==null?datanotify:data['idclient'],
+                idClient: data==null?datanotify:data['idclient'],
                // idclient:data==null?datanotify: data['idclient'],
               )
           ));
@@ -110,7 +110,7 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
-                idclient: data==null?datanotify:data['idclient'],
+                idClient: data==null?datanotify:data['idclient'],
               )
           ));
       break;
@@ -118,7 +118,7 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
-                idclient: data==null?datanotify: data['idclient'],
+                idClient: data==null?datanotify: data['idclient'],
               )
           ));
       break;
@@ -134,7 +134,7 @@ void route_notifyto(typeNotify,context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
-                idclient: data==null?datanotify: data['idclient'],
+                idClient: data==null?datanotify: data['idclient'],
               )
           ));
       break;
@@ -143,7 +143,7 @@ void route_notifyto(typeNotify,context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
-                idclient: data==null?datanotify: data['idclient'],
+                idClient: data==null?datanotify: data['idclient'],
               )
           ));
       break;
@@ -151,9 +151,9 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
-                tabindex: 5,
+                tabIndex: 5,
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
-                idclient: data==null?datanotify: data['idclient'],
+                idClient: data==null?datanotify: data['idclient'],
               )
           ));
       break;
@@ -161,9 +161,9 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
-                tabindex: 1,
+                tabIndex: 1,
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
-                idclient: data==null?datanotify: data['idclient'],
+                idClient: data==null?datanotify: data['idclient'],
               )
           ));
       break;
@@ -172,7 +172,7 @@ void route_notifyto(typeNotify,context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
-                idclient: data==null?datanotify: data['idclient'],
+                idClient: data==null?datanotify: data['idclient'],
               )
           ));
       break;
@@ -181,8 +181,8 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
-                tabindex: 3,
-                idclient: data==null?datanotify: data['idclient'],
+                tabIndex: 3,
+                idClient: data==null?datanotify: data['idclient'],
               )
           ));
       break;
@@ -190,8 +190,8 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           MaterialPageRoute(
               builder: (context) => ProfileClient(
-                tabindex: 5,
-                idclient: data==null?datanotify: data['idclient'],
+                tabIndex: 5,
+                idClient: data==null?datanotify: data['idclient'],
               )
           ));
       break;

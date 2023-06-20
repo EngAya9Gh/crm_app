@@ -25,11 +25,12 @@ import '../../../constants.dart';
 import '../../../function_global.dart';
 
 class ClientView extends StatefulWidget {
-  ClientView( {this.clienttransfer, required this.invoice,this.typeinvoice, required this.idclient, Key? key}) : super(key: key);
+  ClientView( {this.clienttransfer, required this.invoice,this.typeinvoice, required this.idclient,this.client, Key? key}) : super(key: key);
   String idclient;
   InvoiceModel? invoice;
   String? clienttransfer;
   String?  typeinvoice;
+  ClientModel? client;
   //bool? itemapprove;
   @override
   _ClientViewState createState() => _ClientViewState();
@@ -41,7 +42,7 @@ class _ClientViewState extends State<ClientView> {
   late ClientModel clientModel;
   @override
   Widget build(BuildContext context) {
-    clientModel=Provider.of<client_vm>(context,listen: true).listClient
+    clientModel= widget.client ?? Provider.of<client_vm>(context,listen: true).listClient
         .firstWhere((element) => element.idClients==
         widget.idclient);
 

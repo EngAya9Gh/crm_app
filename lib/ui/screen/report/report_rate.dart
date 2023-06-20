@@ -323,7 +323,7 @@ class _report_rateState extends State<report_rate> {
                                                       MaterialPageRoute(builder:
                                                           (context) =>
                                                           ProfileClient(
-                                                            idclient: listInvoicesAccept[index].fkClient,)));
+                                                            idClient: listInvoicesAccept[index].fkClient,)));
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(

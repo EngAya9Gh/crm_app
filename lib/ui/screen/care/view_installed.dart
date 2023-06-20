@@ -58,136 +58,137 @@ class _View_installedClientState extends State<View_installedClient> {
           style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
         ),
       ),
-      body: isload == true
-          ? Center(child: CircularProgressIndicator())
-          : listCommunicationinstall.length == 0
-              ? Center(child: Text(messageNoData))
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Directionality(
-                    textDirection: TextDirection.rtl,
+      body:
+      Directionality(
+        textDirection: TextDirection.rtl,
+        child: ListView(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // privilge.checkprivlge('1') == true ? //regoin
+                Expanded(
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.only(left: 8.0, right: 8),
+                    child: Consumer<regoin_vm>(
+                      builder: (context, cart, child) {
+                        return DropdownButton(
+                          isExpanded: true,
+                          hint: Text("الفرع"),
+                          items: cart.listregoinfilter
+                              .map((level_one) {
+                            return DropdownMenuItem(
+                              child: Text(level_one.name_regoin),
+                              //label of item
+                              value: level_one
+                                  .id_regoin, //value of item
+                            );
+                          }).toList(),
+                          value: cart.selectedValueLevel,
+                          onChanged: (value) {
+                            //  setState(() {
+                            cart.changeVal(value.toString());
+                            regoin = value.toString();
+                            filtershow();
+                          },
+                        );
+                        //);
+                      },
+                    ),
+                  ),
+                ), // : Container(),
+
+                Expanded(
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.only(left: 20.0, right: 8),
+                    child: Consumer<typeclient>(
+                        builder: (context, cart, child) {
+                          return DropdownButton(
+                            isExpanded: true,
+                            hint: Text('الحالة'),
+                            //hint: Text("حدد حالة العميل"),
+                            items:
+                            cart.type_of_install_iso.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(level_one), //label of item
+                                value: level_one, //value of item
+                              );
+                            }).toList(),
+                            value: cart.selectedinstall_iso,
+                            onChanged: (value) {
+                              //namemanage=value.toString();
+                              cart.changelisttype_install_iso(
+                                  value.toString());
+                              typeclientvalue = value.toString();
+                              print('filter state' + value.toString());
+                              print(typeclientvalue);
+
+                              filtershow();
+                            },
+                          );
+                        }),
+                  ),
+                ),
+              ],
+            ),
+            //search_widget('welcome', hintnamefilter, 'install'),
+            SizedBox(
+              height: 5,
+            ),
+            Consumer<selected_button_provider>(
+                builder: (context, selectedProvider, child) {
+                  return GroupButton(
+                      controller: GroupButtonController(
+                        selectedIndex: selectedProvider.isbarsales,
+                      ),
+                      options: GroupButtonOptions(
+                          buttonWidth: 90, borderRadius: BorderRadius.circular(10)),
+                      buttons: [' التواصل الأول ', 'التواصل الثاني' ],
+                      onSelected: (_,index, isselected) {
+                        print(index);
+                        switch(index){
+                          case 0:
+                            type=1;//1
+                            break;
+                          case 1:
+                            type=2;//2
+                            break;
+
+                        }
+
+                        selectedProvider.selectValuebarsales(index);
+                        filtershow();
+
+                      });
+                }),
+            SizedBox(height: 5,),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 30.0,right: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('عدد العملاء',style: TextStyle(
+                      fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                  ),),
+                  Text(listCommunicationinstall.length.toString(),style: TextStyle(
+                      fontFamily: kfontfamily2,fontWeight: FontWeight.bold
+                  ),),
+                ],),
+            ),
+
+            SizedBox(height: 5,),
+
+        isload == true
+            ? Center(child: CircularProgressIndicator())
+            : listCommunicationinstall.length == 0
+                ? Center(child: Text(messageNoData))
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Container(
-                        child: ListView(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            // privilge.checkprivlge('1') == true ? //regoin
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 8.0, right: 8),
-                                child: Consumer<regoin_vm>(
-                                  builder: (context, cart, child) {
-                                    return DropdownButton(
-                                      isExpanded: true,
-                                      hint: Text("الفرع"),
-                                      items: cart.listregoinfilter
-                                          .map((level_one) {
-                                        return DropdownMenuItem(
-                                          child: Text(level_one.name_regoin),
-                                          //label of item
-                                          value: level_one
-                                              .id_regoin, //value of item
-                                        );
-                                      }).toList(),
-                                      value: cart.selectedValueLevel,
-                                      onChanged: (value) {
-                                        //  setState(() {
-                                        cart.changeVal(value.toString());
-                                        regoin = value.toString();
-                                        filtershow();
-                                      },
-                                    );
-                                    //);
-                                  },
-                                ),
-                              ),
-                            ), // : Container(),
-
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20.0, right: 8),
-                                child: Consumer<typeclient>(
-                                    builder: (context, cart, child) {
-                                  return DropdownButton(
-                                    isExpanded: true,
-                                    hint: Text('الحالة'),
-                                    //hint: Text("حدد حالة العميل"),
-                                    items:
-                                        cart.type_of_install_iso.map((level_one) {
-                                      return DropdownMenuItem(
-                                        child: Text(level_one), //label of item
-                                        value: level_one, //value of item
-                                      );
-                                    }).toList(),
-                                    value: cart.selectedinstall_iso,
-                                    onChanged: (value) {
-                                      //namemanage=value.toString();
-                                      cart.changelisttype_install_iso(
-                                          value.toString());
-                                      typeclientvalue = value.toString();
-                                      print('filter state' + value.toString());
-                                      print(typeclientvalue);
-
-                                      filtershow();
-                                    },
-                                  );
-                                }),
-                              ),
-                            ),
-                          ],
-                        ),
-                        //search_widget('welcome', hintnamefilter, 'install'),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Consumer<selected_button_provider>(
-                            builder: (context, selectedProvider, child) {
-                              return GroupButton(
-                                  controller: GroupButtonController(
-                                    selectedIndex: selectedProvider.isbarsales,
-                                  ),
-                                  options: GroupButtonOptions(
-                                      buttonWidth: 90, borderRadius: BorderRadius.circular(10)),
-                                  buttons: [' التواصل الأول ', 'التواصل الثاني' ],
-                                  onSelected: (_,index, isselected) {
-                                    print(index);
-                                    switch(index){
-                                      case 0:
-                                        type=1;//1
-                                        break;
-                                      case 1:
-                                        type=2;//2
-                                        break;
-
-                                    }
-
-                                    selectedProvider.selectValuebarsales(index);
-                                    filtershow();
-
-                                  });
-                            }),
-                        SizedBox(height: 5,),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30.0,right: 30),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('عدد العملاء',style: TextStyle(
-                                  fontFamily: kfontfamily2,fontWeight: FontWeight.bold
-                              ),),
-                              Text(listCommunicationinstall.length.toString(),style: TextStyle(
-                                  fontFamily: kfontfamily2,fontWeight: FontWeight.bold
-                              ),),
-                            ],),
-                        ),
-
-                        SizedBox(height: 5,),
-
-                        Container(
+                        child: Container(
                           height: MediaQuery.of(context).size.height * 0.73,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -226,12 +227,12 @@ class _View_installedClientState extends State<View_installedClient> {
                                         );
                             }),
                           ),
-                        ),
-                      ],
-                    )),
+                        )),
                   ),
-                ),
-    );
+
+          ],
+        ),
+      ) );
   }
 
   void filtershow() {
@@ -240,7 +241,7 @@ class _View_installedClientState extends State<View_installedClient> {
     print(typeclientvalue);
 
     Provider.of<communication_vm>(context, listen: false)
-        .getinstalltype_filter(typeclientvalue, regoin, 'only',type);
+        .getinstalltype_filter(typeclientvalue, regoin ,type);
 
   }
 }

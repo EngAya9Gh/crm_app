@@ -20,6 +20,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 // import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'install_add.dart';
 
@@ -133,6 +134,19 @@ class cardcommalltype extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: kfontfamily2),),
                         ),
+                        itemcom.dateNext!=null?
+                        Text(
+                            DateFormat('yyyy-MM-dd').format(
+                                DateTime.parse(
+                                    itemcom.dateNext.toString()))
+                         ,
+                          style: TextStyle(
+                            //fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              fontFamily: kfontfamily2,
+                              color: kMainColor),
+                        ):Container(),
+
                       ]),
                   itemcom.typeCommuncation=='تركيب'&&  itemcom.dateCommunication!=null?
                   Row(

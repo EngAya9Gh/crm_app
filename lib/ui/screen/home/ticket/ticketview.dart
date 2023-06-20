@@ -155,7 +155,7 @@ class _TicketViewState extends State<TicketView> {
 
                       Navigator.push(context,MaterialPageRoute(
                           builder: (context)=>ProfileClient(
-                         idclient:    widget.ticketModel.fkClient.toString(),
+                         idClient:    widget.ticketModel.fkClient.toString(),
                           )
 
                       ));

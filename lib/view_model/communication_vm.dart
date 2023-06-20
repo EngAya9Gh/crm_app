@@ -100,15 +100,20 @@ class communication_vm extends ChangeNotifier{
       isloading=false;
       notifyListeners();
   }}
-  void getcommtype_filter(String? filter,String? regoin,String tyype)async{
-    // listInvoicesAccept=[];
-    await getCommunicationWelcome();
+  List<CommunicationModel> listCommunicationWelcome_temp=[];
+  void getcommtype_filter(String? filter,String? regoin)async{
+    listCommunicationWelcome=[];
+    isloading=true;
+    notifyListeners();
+   if(listCommunicationWelcome_temp.isEmpty) await getCommunicationWelcome();
+    listCommunicationWelcome =List.from(listCommunicationWelcome_temp) ;
+
     List<CommunicationModel> _listInvoicesAccept=[];
-    if(regoin==null){
+    if(regoin==null||regoin=='0') {
       print(filter);
       if(listCommunicationWelcome.isNotEmpty){
         if(filter=='الكل') {
-          _listInvoicesAccept = listCommunicationWelcome;
+          _listInvoicesAccept =List.from(listCommunicationWelcome) ;
           print('serch الكل');
         }
         if(filter=='تم الترحيب')
@@ -158,15 +163,32 @@ class communication_vm extends ChangeNotifier{
           });
       }
     }
-    listCommunicationWelcome= _listInvoicesAccept;
+    listCommunicationWelcome=List.from(_listInvoicesAccept) ;
+    isloading=false;
     notifyListeners();
   }
-  void getinstalltype_filter(String? filter,String? regoin,String tyype,int typefilter)async{
-    // listInvoicesAccept=[];
-    await getCommunicationInstall(typefilter);
+
+  List<CommunicationModel> listCommunicationInstall_temp=[];
+  List<CommunicationModel> listCommunicationInstall2_temp=[];
+   void getinstalltype_filter(String? filter,String? regoin ,int typefilter)async{
+     listCommunicationInstall=[];
+     isloading=true;
+     notifyListeners();
+
+    if(listCommunicationInstall_temp.isEmpty&&typefilter==1)
+      await getCommunicationInstall(typefilter);
+    if(listCommunicationInstall2_temp.isEmpty&&typefilter==2)
+      await getCommunicationInstall(typefilter);
+    if(typefilter==1)
+    listCommunicationInstall =List.from(listCommunicationInstall_temp) ;
+     if(typefilter==2)
+       listCommunicationInstall =List.from(listCommunicationInstall2_temp) ;
+
     List<CommunicationModel> _listInvoicesAccept=[];
-    if(regoin==null) {
-      print(filter);
+    print('regoin');
+    print(regoin);
+    if(regoin=='0'||regoin==null) {
+
       if(listCommunicationInstall.isNotEmpty){
         if(filter=='الكل') {
           _listInvoicesAccept =List.from(listCommunicationInstall) ;
@@ -309,41 +331,53 @@ class communication_vm extends ChangeNotifier{
      notifyListeners();
   }
  Future <void> getCommunicationInstall(int type) async{
-    listCommunicationInstall=[];
+   listCommunicationInstall_temp=[];
+   listCommunicationInstall2_temp=[];
     isloading=true;
     notifyListeners();
-    if(type=='2')
-     await getInstall2();
-   else{
-     await getCommunicationall('dateinvoice');
-    if(listCommunication.isNotEmpty) {
-      if(type!=0)//0 is mean all install 1 or 2
-      listCommunication.forEach((element) {
-        if(element.typeCommuncation=='تركيب'  && element.type_install==type.toString())//&&element.fkUser==null)
-          listCommunicationInstall.add(element);
-      });
-      else  listCommunication.forEach((element) {
-        if(element.typeCommuncation=='تركيب'  )//&&element.fkUser==null)
-          listCommunicationInstall.add(element);
-      });
-    } }
+    print(type.toString());
+    if(type==2)
+    {
+      await getInstall2();
+      listCommunicationInstall=List.from(listCommunicationInstall2_temp);
+
+    }
+   else {
+     await getCommunicationall('تركيب');
+     listCommunicationInstall=List.from(listCommunicationInstall_temp);
+
+      // if(listCommunication.isNotEmpty) {
+    //   if(type!=0)//0 is mean all install 1 or 2
+    //   listCommunication.forEach((element) {
+    //     if(element.typeCommuncation=='تركيب'  && element.type_install==type.toString())//&&element.fkUser==null)
+    //       listCommunicationInstall.add(element);
+    //   });
+    //   else  listCommunication.forEach((element) {
+    //     if(element.typeCommuncation=='تركيب'  )//&&element.fkUser==null)
+    //       listCommunicationInstall.add(element);
+    //   });
+    // }
+   }
+   listCommunication=List.from(listCommunicationInstall_temp);
     // getCommunicationInstallednumber();
     isloading=false;
     notifyListeners();
   }
   Future<void> getCommunicationWelcome()async {
-    listCommunicationWelcome=[];
+    listCommunicationWelcome_temp=[];
     isloading=true;
     notifyListeners();
-     await getCommunicationall('dateinvoice');
-    if(listCommunication.isNotEmpty) {
-      listCommunicationWelcome=[];
-      listCommunication.forEach((element) {
-        if(element.typeCommuncation=='ترحيب')//&&element.fkUser==null)
-          listCommunicationWelcome.add(element);
-      });
-    }
-    getCommunicationwelcomenumber();
+     await getCommunicationall('ترحيب');
+    // if(listCommunication.isNotEmpty) {
+    //   listCommunicationWelcome=[];
+    //   listCommunication.forEach((element) {
+    //     if(element.typeCommuncation=='ترحيب')//&&element.fkUser==null)
+    //       listCommunicationWelcome.add(element);
+    //   });
+    // }
+    // getCommunicationwelcomenumber();
+    listCommunicationWelcome=List.from(listCommunicationWelcome_temp);
+    listCommunication=List.from(listCommunicationWelcome_temp);
     isloading=false;
     notifyListeners();
   }
@@ -432,10 +466,40 @@ class communication_vm extends ChangeNotifier{
     String value=listCommunication[index].typeCommuncation.toString();
     switch(value){
       case 'تركيب':
-        getCommunicationInstall(type);
+        if(type==1) {
+        index = listCommunicationInstall_temp.indexWhere((element) =>
+        element.idCommunication == id_communication);
+        listCommunicationInstall_temp[index] = data;
+        index = listCommunicationInstall.indexWhere((element) =>
+        element.idCommunication == id_communication);
+        listCommunicationInstall.removeAt(index);
+        }
+        if(type==2) {
+        index = listCommunicationInstall2_temp.indexWhere((element) =>
+        element.idCommunication == id_communication);
+        listCommunicationInstall2_temp[index] = data;
+        // listCommunicationInstall[index]= data;
+        index = listCommunicationInstall.indexWhere((element) =>
+        element.idCommunication == id_communication);
+        listCommunicationInstall.removeAt(index);
+
+        }
+        // getCommunicationInstall(type);
         break;
       case 'ترحيب':
-        getCommunicationWelcome();
+        index = listCommunicationWelcome_temp
+            .indexWhere((element) =>
+         element.idCommunication == id_communication);
+        listCommunicationWelcome_temp[index] = data;
+
+
+        index = listCommunicationWelcome
+            .indexWhere((element) =>
+         element.idCommunication == id_communication);
+
+        listCommunicationWelcome.removeAt(index);
+        // listCommunicationWelcome[index] = data;
+        // getCommunicationWelcome();
         break;
         case 'دوري':
         getCommunicationclientrepeat(data.fkClient);
@@ -474,33 +538,58 @@ class communication_vm extends ChangeNotifier{
   }
 
   Future<void> getCommunicationall(String? type)async {
-    listCommunication=[];
-    // if(listComments.isEmpty){
-    List<dynamic> data=[];
 
+    List<dynamic> data=[];
     data= await Api()
-        .get(url:url+ 'care/viewcommunicationAll.php?fkcountry=${usercurrent!.fkCountry}&&type=$type');
+        .get(url:url+ 'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&&type=$type');
     print(data);
-    if(data.length.toString().isNotEmpty) {
+   if(type=='تركيب')   {
+     listCommunicationInstall_temp=[];
+
+     if(data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
-        listCommunication.add(CommunicationModel.fromJson(data[i]));
+        listCommunicationInstall_temp.add(CommunicationModel.fromJson(data[i]));
       }
       notifyListeners();
     }
+    }else{
+      listCommunicationWelcome_temp=[];
+
+    if(data.length.toString().isNotEmpty) {
+        for (int i = 0; i < data.length; i++) {
+          listCommunicationWelcome_temp.add(CommunicationModel.fromJson(data[i]));
+        }
+        notifyListeners();
+      }}
   }
+  // Future<void> getCommunicationWelccom(String? type)async {
+  //   listCommunication=[];
+  //   // if(listComments.isEmpty){
+  //   List<dynamic> data=[];
+  //   data= await Api()
+  //       .get(url:url+ 'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&&type=$type');
+  //   print(data);
+  //   if(data.length.toString().isNotEmpty) {
+  //     for (int i = 0; i < data.length; i++) {
+  //       listCommunication.add(CommunicationModel.fromJson(data[i]));
+  //     }
+  //     notifyListeners();
+  //   }
+  // }
+
   Future<void> getInstall2( )async {
-    listCommunicationInstall=[];
-    // if(listComments.isEmpty){
+    listCommunicationInstall2_temp=[];
     List<dynamic> data=[];
 
     data= await Api()
-        .get(url:url+ 'care/get_install2.php?fkcountry=${usercurrent!.fkCountry}');
-    print(data);
+        .get(url:url+ 'care/get_install2.php?fk_country=${usercurrent!.fkCountry}');
+    print('data.length');
+    print(data.length);
     if(data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
-        listCommunicationInstall.add(CommunicationModel.fromJson(data[i]));
+        listCommunicationInstall2_temp.add(CommunicationModel.fromJson(data[i]));
       }
-      notifyListeners();
+      // notifyListeners();
     }
   }
 

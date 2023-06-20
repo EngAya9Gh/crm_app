@@ -12,11 +12,15 @@ import '../constants.dart';
 class comment_vm extends ChangeNotifier{
 List<CommentModel> listComments=[];
 bool isloadadd=false;
+bool isLoading = false ;
+
   Future<void> getComment(String fk_client)async {
-    listComments=[];
-    //isloadadd=true;
-    notifyListeners();
-   // if(listComments.isEmpty){
+    try{
+      isLoading = true;
+      listComments=[];
+      //isloadadd=true;
+      notifyListeners();
+      // if(listComments.isEmpty){
       List<dynamic> data=[];
       data= await Api()
           .get(url:url+ 'care/viewcomment.php?fk_client=$fk_client');
@@ -26,9 +30,14 @@ bool isloadadd=false;
           listComments.add(CommentModel.fromJson(data[i]));
         }
 
+      }
+      isLoading = false;
+      //isloadadd=false;
+      notifyListeners();
+    }catch(e){
+      isLoading = false;
+      notifyListeners();
     }
-    //isloadadd=false;
-    notifyListeners();
   }
   Future<String> addComment_vm(Map<String, dynamic?> body,String? imageurl) async {
     isloadadd=true;
