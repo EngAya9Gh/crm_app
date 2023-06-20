@@ -1,4 +1,3 @@
-import 'package:crm_smart/Repository/invoice_repo/cach_data_source.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -10,11 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
-
-import '../api/api.dart';
-import '../constants.dart';
 import '../model/agent_distributor_model.dart';
 import '../model/participatModel.dart';
+import 'package:collection/collection.dart';
 
 const CACHE_InvoiceClient_KEY = "CACHE_InvoiceClient_KEY";
 const CACHE_InvoiceClient_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
@@ -233,7 +230,7 @@ class invoice_vm extends ChangeNotifier {
           });
         if (filter == 'معلق')
           listforme.forEach((element) {
-            if (element.isdoneinstall != '1' && element.ready_install=='0') {
+            if (element.isdoneinstall != '1' && element.ready_install == '0') {
               _listInvoicesAccept.add(element);
               print('serch lمعلق');
             }
@@ -290,14 +287,14 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'معلق') {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install=='0' &&element.fk_regoin == regoin) {
+              if (element.isdoneinstall != '1' && element.ready_install == '0' && element.fk_regoin == regoin) {
                 _listInvoicesAccept.add(element);
                 print('regoin معلق');
               }
             });
           } else {
             listforme.forEach((element) {
-              if (element.isdoneinstall != '1'&& element.ready_install=='0') {
+              if (element.isdoneinstall != '1' && element.ready_install == '0') {
                 _listInvoicesAccept.add(element);
                 print('معلق  ');
               }
@@ -514,7 +511,7 @@ class invoice_vm extends ChangeNotifier {
           });
         if (filter == 'معلق')
           listinvoicesMarketing.forEach((element) {
-            if (element.isdoneinstall != '1' && element.ready_install=='0') {
+            if (element.isdoneinstall != '1' && element.ready_install == '0') {
               _listInvoicesAccept.add(element);
               print('serch lمعلق');
             }
@@ -547,14 +544,14 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'معلق') {
           if (regoin != '0') {
             listinvoicesMarketing.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install=='0' &&element.fk_regoin == regoin) {
+              if (element.isdoneinstall != '1' && element.ready_install == '0' && element.fk_regoin == regoin) {
                 _listInvoicesAccept.add(element);
                 print('regoin معلق');
               }
             });
           } else {
             listinvoicesMarketing.forEach((element) {
-              if (element.isdoneinstall != '1'&& element.ready_install=='0') {
+              if (element.isdoneinstall != '1' && element.ready_install == '0') {
                 _listInvoicesAccept.add(element);
                 print('معلق  ');
               }
@@ -1044,11 +1041,9 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
     int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
-    InvoiceModel inv=await Invoice_Service().setdatedone(body, id_invoice!);
-    if(index!=-1)
-    listinvoices[index] = inv;
-    if(index1!=-1)
-      listinvoiceClientSupport[index1] = inv;
+    InvoiceModel inv = await Invoice_Service().setdatedone(body, id_invoice!);
+    if (index != -1) listinvoices[index] = inv;
+    if (index1 != -1) listinvoiceClientSupport[index1] = inv;
     isloadingdone = false;
     notifyListeners();
   }
@@ -1058,11 +1053,9 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
     int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
-    InvoiceModel inv=await Invoice_Service().set_ready_install(body, id_invoice!);
-    if(index!=-1)
-    listinvoices[index] = inv;
-    if(index1!=-1)
-      listinvoiceClientSupport[index1] =inv;
+    InvoiceModel inv = await Invoice_Service().set_ready_install(body, id_invoice!);
+    if (index != -1) listinvoices[index] = inv;
+    if (index1 != -1) listinvoiceClientSupport[index1] = inv;
     isloadingdone = false;
     notifyListeners();
   }
@@ -1091,7 +1084,7 @@ class invoice_vm extends ChangeNotifier {
         notifyListeners();
       }
 
-      final list  = await Invoice_Service.getAgentsAndDistributors();
+      final list = await Invoice_Service.getAgentsAndDistributors();
       agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       notifyListeners();
       return;
@@ -1106,6 +1099,7 @@ class invoice_vm extends ChangeNotifier {
 
   ParticipateModel? selectedCollaborator;
   AgentDistributorModel? selectedAgent;
+  AgentDistributorModel? selectedDistributor;
 
   Future<void> getCollaborators() async {
     try {
@@ -1114,7 +1108,7 @@ class invoice_vm extends ChangeNotifier {
         notifyListeners();
       }
 
-      final list  = await Invoice_Service.getCollaborators();
+      final list = await Invoice_Service.getCollaborators();
       collaboratorsState = collaboratorsState.changeToLoaded(list);
       notifyListeners();
       return;
@@ -1128,11 +1122,21 @@ class invoice_vm extends ChangeNotifier {
   SellerType? selectedSellerType;
   SellerStatus sellerStatus = SellerStatus.init;
 
-  Future<void> onChangeSellerType(SellerType sellerType) async {
+  Future<void> onChangeSellerType(SellerType sellerType, {InvoiceModel? invoice}) async {
     selectedSellerType = sellerType;
     notifyListeners();
     if (selectedSellerType != SellerType.collaborator) {
       if (agentDistributorsState.data != null) {
+        if (invoice != null) {
+          if(selectedSellerType == SellerType.agent) {
+            selectedAgent =
+                agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
+          }else {
+            selectedDistributor =
+                agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
+          }
+          notifyListeners();
+        }
         return;
       }
 
@@ -1142,6 +1146,17 @@ class invoice_vm extends ChangeNotifier {
       final result = await getAgentsAndDistributors();
       if (agentDistributorsState.isSuccess) {
         sellerStatus = SellerStatus.loaded;
+
+        if (invoice != null) {
+          if(selectedSellerType == SellerType.agent) {
+            selectedAgent =
+                agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
+          }else {
+            selectedDistributor =
+                agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
+          }
+          notifyListeners();
+        }
       } else {
         sellerStatus = SellerStatus.failed;
       }
@@ -1173,12 +1188,25 @@ class invoice_vm extends ChangeNotifier {
   }
 
   onChangeSelectedAgent(AgentDistributorModel agentDistributorModel) {
-    selectedAgent = agentDistributorModel;
+    if (selectedSellerType == SellerType.agent) {
+      selectedAgent = agentDistributorModel;
+    } else {
+      selectedDistributor = agentDistributorModel;
+    }
     notifyListeners();
   }
-  String? selectIndex=null;
-  onChangeSelectedIndex( String? select) {
-    selectIndex = select;
-    notifyListeners();
+
+  initAdditionalInformation(InvoiceModel invoiceModel) {
+    final sellerType = SellerType.values[int.parse(invoiceModel.type_seller ?? '0')];
+    onChangeSellerType(sellerType, invoice: invoiceModel);
+  }
+
+  resetAdditionalInformation() {
+    selectedCollaborator = null;
+    selectedAgent = null;
+    selectedDistributor = null;
+    selectedSellerType = null;
+    agentDistributorsState = PageState();
+    collaboratorsState = PageState();
   }
 }

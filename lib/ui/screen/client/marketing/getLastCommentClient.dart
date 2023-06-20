@@ -12,6 +12,7 @@ import '../../../../model/usermodel.dart';
 import '../../../../provider/selected_button_provider.dart';
 import '../../../../view_model/lastcommentclient_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../profileclient.dart';
 import 'LastcommentPage.dart';
 
 class getLastCommentClient extends StatefulWidget {
@@ -175,15 +176,21 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                 child: Center(
                                   child: InkWell(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                              lastcomment_page(
-                                                LastcommentClient:
-                                                  Provider.of<lastcommentclient_vm>(context,listen: false)
-                                                  .list_LastcommentClientModel[index])
-                                          ));
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) =>
+                                          ProfileClient(
+                                            tabindex: 2,
+                                              idclient: Provider.of<lastcommentclient_vm>(context,listen: false)
+                                                  .list_LastcommentClientModel[index].client_obj.idClients)));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //         lastcomment_page(
+                                      //           LastcommentClient:
+                                      //             Provider.of<lastcommentclient_vm>(context,listen: false)
+                                      //             .list_LastcommentClientModel[index])
+                                      //     ));
                                     },
                                     child:
                                     Container(

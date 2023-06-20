@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +11,7 @@ import '../../../view_model/agent_collaborators_invoices_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/typeclient.dart';
+import '../../../view_model/user_vm_provider.dart';
 import '../../../view_model/vm.dart';
 import '../../widgets/invoice_widget/Card_invoice_client.dart';
 
@@ -232,9 +234,14 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   child: Text((item as ParticipateModel).name_participate, textDirection: TextDirection.rtl),
                   value: item,
                 );
-              } else {
+              } else if(T == AgentDistributorModel){
                 return DropdownMenuItem(
                   child: Text((item as AgentDistributorModel).nameAgent, textDirection: TextDirection.rtl),
+                  value: item,
+                );
+              }else {
+                return DropdownMenuItem(
+                  child: Text((item as UserModel).nameUser!, textDirection: TextDirection.rtl),
                   value: item,
                 );
               }
@@ -246,9 +253,11 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
               }
 
               if (T == ParticipateModel) {
-                viewmodel.onChangeSelectedCollaboratorEmployee(seller as ParticipateModel);
-              } else {
+                viewmodel.onChangeSelectedCollaborator(seller as ParticipateModel);
+              } else if(T == AgentDistributorModel) {
                 viewmodel.onChangeSelectedAgentDistributor(seller as AgentDistributorModel);
+              }else{
+                viewmodel.onChangeEmployee(seller as UserModel);
               }
             },
           ),
@@ -261,10 +270,11 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     //region Variables
     final selectedSellerTypeFilter = vm.selectedSellerTypeFilter;
     final selectedAgentDistributor = vm.selectedAgentDistributor;
-    final selectedCollaboratorEmployee = vm.selectedCollaboratorEmployee;
+    final selectedCollaborator = vm.selectedCollaborator;
+    final selectedEmployee = vm.selectedEmployee;
     final sellerStatus = vm.sellerStatus;
-    final isCollaborateEmployee =
-        [SellerTypeFilter.collaborator, SellerTypeFilter.employee].contains(selectedSellerTypeFilter);
+    final isCollaborate = selectedSellerTypeFilter == SellerTypeFilter.collaborator;
+    final isEmp = selectedSellerTypeFilter == SellerTypeFilter.employee;
 
     var agentsDistributorsList = vm.agentDistributorsState.data ?? [];
     final collaboratorsEmployeeStateList = vm.collaboratorsEmployeeState.data ?? [];
@@ -274,13 +284,23 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       return loadingWidget;
     else if (sellerStatus == SellerStatus.failed)
       return refreshIcon(() {});
-    else if (isCollaborateEmployee)
-      // return Container(color: Colors.red);
+    else if (isCollaborate)
       return Expanded(
         flex: 5,
         child: sellerDropdown<ParticipateModel>(
           collaboratorsEmployeeStateList,
-          selectedValue: selectedCollaboratorEmployee,
+          selectedValue: selectedCollaborator,
+        ),
+      );
+
+    else if (isEmp)
+      return  Consumer<user_vm_provider>(
+        builder: (context, value, child) => Expanded(
+          flex: 5,
+          child: sellerDropdown<UserModel>(
+            value.userall,
+            selectedValue: selectedEmployee,
+          ),
         ),
       );
     else if (selectedSellerTypeFilter != SellerTypeFilter.all){
