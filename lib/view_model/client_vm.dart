@@ -267,7 +267,9 @@ class client_vm extends ChangeNotifier {
       });
       //
         listClientfilter=List.from(listClientfilter_temp);
+      listClientMarketing=List.from(listClientfilter_temp);
     }
+    listClientMarketing  =List.from(listClientfilter);
     notifyListeners();
   }
   void resetlist(){
