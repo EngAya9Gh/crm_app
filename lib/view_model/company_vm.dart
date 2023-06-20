@@ -50,7 +50,7 @@ class company_vm extends ChangeNotifier {
           body,file,null);
     if (res!="error") {
       body.addAll({
-        'id_company':res,
+        'id_Company':res,
       });
       list_company.insert(0,CompanyModel.fromJson(body));
       isloading=false;
@@ -66,11 +66,11 @@ class company_vm extends ChangeNotifier {
     notifyListeners();
     String res = await Api().postRequestWithFile(
         "array",
-         url+'config/update_company.php?id_company=${idcompany }',//users/addmangemt.php
+         url+'config/update_company.php?id_Company=${idcompany}',//users/addmangemt.php
          body,file,null
     );
     body.addAll({
-      'id_company':idcompany ,
+      'id_Company':idcompany ,
     });
     final index=list_company.indexWhere((element)
     => element.id_Company==idcompany );

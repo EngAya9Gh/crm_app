@@ -269,6 +269,7 @@ class _managmentpageState extends State<managmentpage> {
                         title: "الوكلاء والموزعين",
                       )
                     : Container(),
+                privilge.checkprivlge('117') == true?
                 buildSelectCategory(
                   colorbag: Colors.white,
                   colortitle: Colors.black,
@@ -282,7 +283,7 @@ class _managmentpageState extends State<managmentpage> {
                     );
                   },
                   title: "سباق الفروع",
-                )
+                ):Container()
               ],
             ),
           );

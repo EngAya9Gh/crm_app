@@ -161,6 +161,19 @@ class Invoice_Service {
     print(prodlist);
     return prodlist;
   }
+  Future<List<InvoiceModel>> getinvoiceMarketing(String fk_country) async {
+    var
+    data=await Api()
+        .get(url:url+ 'client/invoice/getMarketingInvoice.php?fk_country=$fk_country');
+    print(data);
+    List<InvoiceModel> prodlist = [];
+    for (int i = 0; i < data.length; i++) {
+      print(i);
+      prodlist.add(InvoiceModel.fromJson(data[i]));
+    }
+    print(prodlist);
+    return prodlist;
+  }
   Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst( Map<String,dynamic> body) async {
     var
     data=await Api()

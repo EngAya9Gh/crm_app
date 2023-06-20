@@ -140,7 +140,7 @@ class _installAddState extends State<installAdd> {
                       },
                     ),
                   ],):Container(),
-                widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
+                //widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
                 // Container(
                 //   padding: EdgeInsets.only(left: 2,right: 2),
                 //   decoration: BoxDecoration(
@@ -155,31 +155,31 @@ class _installAddState extends State<installAdd> {
                 //     color: Colors.white38,
                 //   ),
                 //   child:
-                  Consumer<communication_vm>(
-                      builder: (context, selectedProvider, child){
-                        return  GroupButton(
-                            controller: GroupButtonController(
-                              selectedIndex:selectedProvider.selectedtypeinstall,
-
-                            ),
-                            options: GroupButtonOptions(
-                                selectedColor: kMainColor,
-                                buttonWidth: 120,
-                                borderRadius: BorderRadius.circular(10)),
-                            buttons: ['غير راضي','راضي'],
-                            onSelected: (_,index,isselected){
-                              print(index);
-                              //setState(() {
-                              typepayController=index.toString();
-                              selectedProvider.changeinstall(index);
-                              //});
-                            }
-                        );
-                      }
-
-                  )
+                //   Consumer<communication_vm>(
+                //       builder: (context, selectedProvider, child){
+                //         return  GroupButton(
+                //             controller: GroupButtonController(
+                //               selectedIndex:selectedProvider.selectedtypeinstall,
+                //
+                //             ),
+                //             options: GroupButtonOptions(
+                //                 selectedColor: kMainColor,
+                //                 buttonWidth: 120,
+                //                 borderRadius: BorderRadius.circular(10)),
+                //             buttons: ['غير راضي','راضي'],
+                //             onSelected: (_,index,isselected){
+                //               print(index);
+                //               //setState(() {
+                //               typepayController=index.toString();
+                //               selectedProvider.changeinstall(index);
+                //               //});
+                //             }
+                //         );
+                //       }
+                //
+                //   )
                // )
-                    :Container(),
+               //     :Container(),
                 SizedBox(height: 20,),
 
                 Row(

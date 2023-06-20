@@ -92,10 +92,22 @@ class _salesState extends State<sales> {
                     colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(
+                          builder: (context)=>  AgentsDistributorsInvoicesView()
+                      ));
+                    }, title:'فواتير العملاء' ):Container(),
+
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('39')==true?
+                buildSelectCategory(
+                    colorbag:   Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(
                           builder: (context)=>
                               invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
                       ));
-                    }, title:'فواتير العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+                    }, title:'ديون العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
                 buildSelectCategory(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
@@ -106,17 +118,7 @@ class _salesState extends State<sales> {
                   colortitle: Colors.black,
                   colorarrow: Colors.black,),
 
-                Provider.of<privilge_vm>(context,listen: true)
-                    .checkprivlge('39')==true?
-                buildSelectCategory(
-                    colorbag:   Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context)=>  AgentsDistributorsInvoicesView()
-                      ));
-                    }, title:'فواتير العملاء والموزعين' ):Container(),
+
 
 
                 buildSelectCategory(
@@ -141,7 +143,7 @@ class _salesState extends State<sales> {
                 Navigator.push(context, MaterialPageRoute(
                     builder: (context)=>
                         ApprovePage()));
-              }, title:  ' طلبات الموافقة '):Container(),
+              }, title:  ' طلبات موافقة المشرفين '):Container(),
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('111')==true?
                 buildSelectCategory(

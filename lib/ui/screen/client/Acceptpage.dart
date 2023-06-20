@@ -46,8 +46,8 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
       List<PrivilgeModel> list=
       await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
       Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);
-      Provider.of<invoice_vm>(context, listen: false)
-          .getinvoice_Localwithprev();
+      Provider.of<invoice_vm>(context, listen: false).getinvoice_Debt();
+          // .getinvoice_Localwithprev();
 
       Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
@@ -83,7 +83,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            privilge.checkprivlge('1') == true ? //regoin
+                            privilge.checkprivlge('94') == true ? //regoin
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -202,7 +202,6 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                                                     CardInvoiceClient(
                                                       type:'profile',
                                                       itemProd: value.listInvoicesAccept[index],
-                                                      //itemClient :  itemClient,
 
                                                     )) ,
                                               );

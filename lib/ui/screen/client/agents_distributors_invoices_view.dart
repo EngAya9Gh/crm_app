@@ -67,12 +67,13 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'فواتير العملاء والموزعين',
+          'فواتير العملاء',
           style: TextStyle(color: kWhiteColor),
         ),
         centerTitle: true,
       ),
-      body: Directionality(
+      body:
+      Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
           children: [

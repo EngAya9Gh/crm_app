@@ -152,7 +152,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   fontSize: 12),
                             ),
                             Text(
-                              ' ' + _currentUser.currency.toString(),
+                              ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   color: kMainColor,
@@ -183,7 +183,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   fontSize: 12),
                             ),
                             Text(
-                              ' ' + _currentUser.currency.toString(),
+                              ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   color: kMainColor,
@@ -217,7 +217,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   fontSize: 12),
                             ),
                             Text(
-                              ' ' + _currentUser.currency.toString(),
+                              ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   color: kMainColor,
@@ -246,7 +246,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                   fontSize: 12),
                             ),
                             Text(
-                              ' ' + _currentUser.currency.toString(),
+                              ' ' +widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   color: kMainColor,

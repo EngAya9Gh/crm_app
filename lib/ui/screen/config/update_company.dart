@@ -152,7 +152,7 @@ class _updatecompanyState extends State<updatecompany> {
                               _globalKey.currentState!.save();
                               // Provider.of<LoadProvider>(context, listen: false)
                               //     .changebooladdclient(true);
-                              if(widget.idCompany==null){
+                              if(widget.idCompany!=null){
                                 Provider.of<company_vm>(context,listen: false)
                                     .update_company({
                                   'name_company':nameractv.text,
@@ -163,18 +163,18 @@ class _updatecompanyState extends State<updatecompany> {
                                         : error(context)
                                 );
                               }
-                              else{
-                                Provider.of<activity_vm>(context,listen: false)
-                                    .update_actv({
-
-                                  'name_activity_type':nameractv.text,
-                                  // 'type':widget.type,
-                                },widget.idCompany.toString()).then(
-                                        (value) =>  value!="error"
-                                        ? clear(context)
-                                        : error(context)
-                                );
-                              }
+                              // else{
+                              //   Provider.of<activity_vm>(context,listen: false)
+                              //       .update_actv({
+                              //
+                              //     'name_activity_type':nameractv.text,
+                              //     // 'type':widget.type,
+                              //   },widget.idCompany.toString()).then(
+                              //           (value) =>  value!="error"
+                              //           ? clear(context)
+                              //           : error(context)
+                              //   );
+                              // }
                             }else {
                               _scaffoldKey.currentState!.showSnackBar(
                                   SnackBar(content: Text('الحقل فارغ  '))

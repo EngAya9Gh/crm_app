@@ -30,16 +30,21 @@ Widget commview(CommunicationModel element) {
                 value:getnameshort(element.nameUser.toString()) ,):Container(),
               element.typeCommuncation=='تركيب'?
               cardRow(title:'تاريخ التأكد من التركيب للعميل' ,value: element.dateCommunication.toString(),):Container(),
-              element.typeCommuncation=='تركيب'?
+             // element.typeCommuncation=='تركيب'?
+              // cardRow(title:' نتيجة التواصل' ,value:
+              // element.result.toString()=='1'?'راضي':'غير راضي',): Container(),
+
+              element.typeCommuncation=='دوري'|| element.typeCommuncation=='تركيب'?
+              cardRow(title:'موظف التقييم' ,value:getnameshort(element.nameUser.toString()) ,): Container(),
+
+              element.typeCommuncation=='دوري' || element.typeCommuncation=='تركيب'?
+              cardRow(title:'تاريخ التقييم' ,value: element.dateCommunication.toString(),): Container(),
+
+              element.typeCommuncation=='دوري'?
               cardRow(title:' نتيجة التواصل' ,value:
-              element.result.toString()=='1'?'راضي':'غير راضي',):Container(),
+              element.result.toString()=='0'?'لايستخدم النظام':'يستخدم النظام',): Container(),
 
-
-              element.typeCommuncation=='دوري'?
-              cardRow(title:'موظف التقييم' ,value:getnameshort(element.nameUser.toString()) ,):Container(),
-              element.typeCommuncation=='دوري'?
-              cardRow(title:'تاريخ التقييم' ,value: element.dateCommunication.toString(),):Container(),
-              element.typeCommuncation=='دوري'?
+              element.typeCommuncation=='دوري'|| element.typeCommuncation=='تركيب'?
               Row(
                 children: [
                 Text('مستوى التقييم'),
@@ -58,8 +63,6 @@ Widget commview(CommunicationModel element) {
                   ), onRatingUpdate: (double value) {  },
                 ),
               ],):Container(),
-
-
             ],
           ),
         )

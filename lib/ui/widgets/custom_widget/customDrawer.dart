@@ -9,6 +9,7 @@ import 'package:crm_smart/ui/screen/user/editprofile.dart';
 import 'package:crm_smart/ui/screen/user/usertest_view.dart';
 import 'package:crm_smart/ui/screen/user/userview.dart';
 import 'package:crm_smart/view_model/all_user_vm.dart';
+import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -162,6 +163,7 @@ class CustomDrawer extends StatelessWidget {
                 // ProductView();
               },
             ),
+            Provider.of<privilge_vm>(context,listen: true).checkprivlge('118') == true?
             ListTile(
               title: Text(
                 'سباق الموظفين',
@@ -178,7 +180,7 @@ class CustomDrawer extends StatelessWidget {
                 );
                 // ProductView();
               },
-            ),
+            ):Container(),
             ListTile(
               title: Text(
                 'تسجيل خروج',

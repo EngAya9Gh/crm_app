@@ -6,6 +6,8 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/Invoice_Service.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import '../model/agent_distributor_model.dart';
 import '../model/participatModel.dart';
@@ -169,15 +171,17 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getinvoice_marketing() {
+  void getinvoice_marketing() async {
     listinvoicesMarketing = [];
     isloading = true;
     notifyListeners();
-    listinvoices.forEach((element) {
-      if (element.ismarketing == '1')
-        //&& element.isApprove == "1")
-        listinvoicesMarketing.add(element);
-    });
+    list_temp=  await  Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
+    // listinvoices.forEach((element) {
+    //   // if (element.ismarketing == '1')
+    //     //&& element.isApprove == "1")
+    //     listinvoicesMarketing.add(element);
+    // });
+     listinvoicesMarketing=List.from(list_temp);
     isloading = false;
     notifyListeners();
   }
@@ -477,15 +481,17 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept = _listInvoicesAccept;
     notifyListeners();
   }
-
+  List<InvoiceModel> list_temp= [];
   Future<void> getclienttype_marketing(String? filter, String? regoin, String tyype) async {
-    getinvoice_marketing();
+    // getinvoice_marketing();
+    listinvoicesMarketing =List.from( list_temp);
+
     List<InvoiceModel> _listInvoicesAccept = [];
     if (regoin == null) {
       print(filter);
       if (listinvoicesMarketing.isNotEmpty) {
         if (filter == 'الكل') {
-          _listInvoicesAccept = listinvoicesMarketing;
+          _listInvoicesAccept =List.from( listinvoicesMarketing);
           print('serch الكل');
         }
         if (filter == 'بالإنتظار')
@@ -554,7 +560,7 @@ class invoice_vm extends ChangeNotifier {
         }
       }
     }
-    listinvoicesMarketing = _listInvoicesAccept;
+    listinvoicesMarketing =List.from(_listInvoicesAccept) ;
     notifyListeners();
   }
 
@@ -592,6 +598,39 @@ class invoice_vm extends ChangeNotifier {
     await getinvoiceswithprev();
     listInvoicesAccept.forEach((element) {
       if (element.stateclient == 'مشترك' && element.isApprove == "1") list.add(element);
+    });
+    listInvoicesAccept = list;
+    listforme = List.from(list);
+    isloading = false;
+    // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
+    notifyListeners();
+  }
+
+  Future<void> getinvoice_Debt() async {
+    List<InvoiceModel> list = [];
+    listInvoicesAccept = [];
+    isloading = true;
+    notifyListeners();
+    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '94').isCheck == '1' ? true : false;
+    if (res) {
+      listinvoices = await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
+      print('indddddd');
+    } else {
+      res = privilgelist.firstWhere((element) => element.fkPrivileg == '93').isCheck == '1' ? true : false;
+      if (res) {
+        listinvoices = await Invoice_Service().getinvoicebyregoin(usercurrent!.fkRegoin!);
+      } else {
+        res = privilgelist.firstWhere((element) => element.fkPrivileg == '92').isCheck == '1' ? true : false;
+        if (res) {
+          listinvoices = await Invoice_Service().getinvoicebyiduser(usercurrent!.idUser.toString());
+        }
+      }
+    }
+    listInvoicesAccept = List.from(listinvoices);
+    listInvoicesAccept.forEach((element) {
+      if (element.stateclient == 'مشترك' && element.isApprove == "1"&&
+          (double.parse(element.total.toString()) -
+          double.parse(element.amountPaid.toString()))>0) list.add(element);
     });
     listInvoicesAccept = list;
     listforme = List.from(list);
@@ -744,7 +783,8 @@ class invoice_vm extends ChangeNotifier {
       if (type == 'مشترك') {
         listinvoiceClientSupport = [];
         list.forEach((element) {
-          if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
+          if (element.fkIdClient == fk_client && element.isApprove != null && element.isApprove != '0')
+            listinvoiceClientSupport.add(element);
         });
       } else {
         listinvoiceClient = [];
@@ -963,7 +1003,8 @@ class invoice_vm extends ChangeNotifier {
 
     int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
     InvoiceModel te = await Invoice_Service().setdate(body, id_invoice!);
-    if (index != -1) listinvoices[index] = te;
+    if(index!=-1)
+    listinvoices[index] = te;
     // print(index);
     listinvoiceClientSupport[index1] = te;
 
@@ -977,7 +1018,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> set_state_back(Map<String, dynamic?> body, String? id_invoice) async {
-    isloading = true;
+    isloading=true;
     notifyListeners();
     InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!);
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
@@ -989,7 +1030,7 @@ class invoice_vm extends ChangeNotifier {
     //     InvoiceModel.fromJson(listinvoices[index]));
     // listinvoices[index]= InvoiceModel.fromJson(body);
     // //listClient.removeAt(index);
-    isloading = false;
+    isloading=false;
     notifyListeners();
   }
 

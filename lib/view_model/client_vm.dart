@@ -285,7 +285,7 @@ class client_vm extends ChangeNotifier {
     listClient =
         await ClientService()
             .getAcceptClient(usercurrent!.fkCountry.toString());
-    listClientAccept = listClient;
+    listClientAccept =List.from(listClient);
     notifyListeners();
   }
   Future<void> getallclientTransfer()async{
@@ -299,7 +299,7 @@ class client_vm extends ChangeNotifier {
     bool res= privilgelist.firstWhere(
             (element) => element.fkPrivileg=='1').isCheck=='1'?true:false;
     if(res) {
-      listClient = listClientAccept;
+      listClient =List.from( listClientAccept);
     }
     else{
       res= privilgelist.firstWhere(
@@ -319,7 +319,7 @@ class client_vm extends ChangeNotifier {
           });
         }}}
 
-    listClientAccept = listClient;
+    listClientAccept = List.from(listClient);
     notifyListeners();
   }
 
