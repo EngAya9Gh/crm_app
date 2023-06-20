@@ -59,7 +59,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           print(event.idinvoice);
           Navigator.push(context, MaterialPageRoute(
               builder: (context)=>
-                  ProfileClient( idclient: event.fkIdClient,)
+                  ProfileClient( idClient: event.fkIdClient,)
                   // EventViewingPage(
                   //   event: event,)
           ));

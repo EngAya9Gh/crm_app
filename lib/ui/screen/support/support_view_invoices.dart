@@ -13,65 +13,50 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
 class support_view_invoices extends StatefulWidget {
-  support_view_invoices({required this.itemClient,
-     Key? key}) : super(key: key);
+  support_view_invoices({required this.itemClient, Key? key}) : super(key: key);
 
   ClientModel itemClient;
+
   @override
   support_view_invoicesState createState() => support_view_invoicesState();
 }
 
 class support_view_invoicesState extends State<support_view_invoices> {
-  bool _isLoading=true;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  List<InvoiceModel> listinvoice=[];
-
-  @override
-  void initState() {
-    // List<InvoiceModel> list= Provider.of<invoice_vm>(context,listen: false)
-    //   .listinvoicebyregoin;
-    //get info from list client_invoice فواتير العميل
-    WidgetsBinding.instance.addPostFrameCallback((_){
-      // Add Your Code here.
-      // Provider.of<invoice_vm>(context,listen: false)
-      //     .get_invoiceclientlocal(widget.itemClient.idClients,'مشترك');
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    listinvoice=Provider.of<invoice_vm>(context,listen: true)
-        .listinvoiceClientSupport;
-
     return Scaffold(
-      key: _scaffoldKey,
       body: Padding(
-        padding: const EdgeInsets.only(left:2,right: 2,top: 10,bottom: 10),
-        child: listinvoice.isNotEmpty?
-        Container(
-          //height: MediaQuery.of(context).size.height * 1,
-          child: ListView.builder(
-            itemCount: listinvoice.length,
+        padding: const EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
+        child: Consumer<invoice_vm>(builder: (context, invoiceVm, _) {
+          final listInvoice = invoiceVm.listinvoiceClientSupport;
+          final isLoading = invoiceVm.isLoadingInvoicesClientParticipateLocal;
 
-            itemBuilder: (BuildContext context, int index)=>
-                Builder(builder:
-                    (context)=>
-                    support_add(
-                      idinvoice: listinvoice[index].idInvoice,
-                    )) ,
-          ),): Padding(
-          padding: EdgeInsets.only(top: 10,bottom: 50,right: 10,left: 10),
+          if (isLoading) {
+            return Center(child: CircularProgressIndicator.adaptive());
+          }
 
-          child: Container(
-            height: MediaQuery.of(context).size.height*0.06,
-            child: ContainerShadows(
-              margin: EdgeInsets.only(),
-              child: Center(child: Text('العميل غير مشترك')),
-            ),
-          ),
-        ),
+          return listInvoice.isNotEmpty
+              ? Container(
+                  child: ListView.builder(
+                    itemCount: listInvoice.length,
+                    itemBuilder: (BuildContext context, int index) => Builder(
+                        builder: (context) => support_add(
+                              idinvoice: listInvoice[index].idInvoice,
+                            )),
+                  ),
+                )
+              : Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 50, right: 10, left: 10),
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.06,
+                    child: ContainerShadows(
+                      margin: EdgeInsets.only(),
+                      child: Center(child: Text('العميل غير مشترك')),
+                    ),
+                  ),
+                );
+        }),
       ),
-    );}
+    );
+  }
 }

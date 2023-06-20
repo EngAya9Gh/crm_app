@@ -358,7 +358,7 @@ print(type);
                                                       MaterialPageRoute(builder:
                                                           (context) =>
                                                           ProfileClient(
-                                                            idclient: listInvoicesAccept[index].fkIdClient,)));
+                                                            idClient: listInvoicesAccept[index].fkIdClient,)));
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(

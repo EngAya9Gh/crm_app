@@ -4,6 +4,7 @@ import 'package:crm_smart/ui/screen/care/card_comment.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/comment.dart';
+import 'package:crm_smart/view_model/page_state.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +120,11 @@ print('init in comment');
                   padding: const EdgeInsets.only(
                       left: 8, right: 8, top: 10.0, bottom: 5),
                   child: Consumer<comment_vm>(builder: (context, value, child) {
-                    return value.listComments.length == 0
+                    return value.isLoading
+                        ? Center(child: CircularProgressIndicator.adaptive())
+                        : value.listComments.isNotEmpty && value.isLoading
+                        ? Center(child: CircularProgressIndicator.adaptive())
+                        : value.listComments.length == 0
                         ? Text('')
                         : Column(
                             children: [

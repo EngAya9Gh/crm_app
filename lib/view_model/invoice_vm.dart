@@ -44,7 +44,8 @@ class invoice_vm extends ChangeNotifier {
   }
 
   PageState<List<AgentDistributorModel>> agentDistributorsState = PageState();
-
+  bool isLoadingInvoicesClientParticipateLocal = false;
+  bool isLoadingInvoicesClientLocal = false;
   List<InvoiceModel> listinvoiceClient = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listforme = [];
@@ -808,6 +809,49 @@ class invoice_vm extends ChangeNotifier {
     print('length list invoice client ' + listinvoiceClient.length.toString());
     print('length list invoice client ' + listinvoiceClientSupport.length.toString());
     notifyListeners();
+
+  Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
+    bool isParticipate = type == 'مشترك';
+    try {
+      if(isParticipate){
+        isLoadingInvoicesClientParticipateLocal = true;
+      }else{
+        isLoadingInvoicesClientLocal = true;
+      }
+      List<InvoiceModel> list = [];
+      listinvoiceClient = [];
+      notifyListeners();
+      list = await Invoice_Service().getinvoicebyclient(fk_client!);
+      if (list.isNotEmpty) {
+        if (isParticipate) {
+          listinvoiceClientSupport = [];
+          list.forEach((element) {
+            if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
+          });
+        } else {
+          listinvoiceClient = [];
+          list.forEach((element) {
+            if (element.fkIdClient == fk_client) listinvoiceClient.add(element);
+          });
+        }
+      }
+
+      print('length list invoice client ' + listinvoiceClient.length.toString());
+      print('length list invoice client ' + listinvoiceClientSupport.length.toString());
+      if(isParticipate){
+        isLoadingInvoicesClientParticipateLocal = false;
+      }else{
+        isLoadingInvoicesClientLocal = false;
+      }
+      notifyListeners();
+    } catch (e) {
+      if(isParticipate){
+        isLoadingInvoicesClientParticipateLocal = false;
+      }else{
+        isLoadingInvoicesClientLocal = false;
+      }
+      notifyListeners();
+    }
   }
 
   void setvaluepriv(privilgelistparam) {
@@ -1015,8 +1059,7 @@ class invoice_vm extends ChangeNotifier {
 
     int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
     InvoiceModel te = await Invoice_Service().setdate(body, id_invoice!);
-    if(index!=-1)
-    listinvoices[index] = te;
+    if (index != -1) listinvoices[index] = te;
     // print(index);
     listinvoiceClientSupport[index1] = te;
 
@@ -1030,7 +1073,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> set_state_back(Map<String, dynamic?> body, String? id_invoice) async {
-    isloading=true;
+    isloading = true;
     notifyListeners();
     InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!);
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
@@ -1042,7 +1085,7 @@ class invoice_vm extends ChangeNotifier {
     //     InvoiceModel.fromJson(listinvoices[index]));
     // listinvoices[index]= InvoiceModel.fromJson(body);
     // //listClient.removeAt(index);
-    isloading=false;
+    isloading = false;
     notifyListeners();
   }
 
@@ -1140,10 +1183,10 @@ class invoice_vm extends ChangeNotifier {
     if (selectedSellerType != SellerType.collaborator) {
       if (agentDistributorsState.data != null) {
         if (invoice != null) {
-          if(selectedSellerType == SellerType.agent) {
+          if (selectedSellerType == SellerType.agent) {
             selectedAgent =
                 agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
-          }else {
+          } else {
             selectedDistributor =
                 agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
           }
@@ -1160,10 +1203,10 @@ class invoice_vm extends ChangeNotifier {
         sellerStatus = SellerStatus.loaded;
 
         if (invoice != null) {
-          if(selectedSellerType == SellerType.agent) {
+          if (selectedSellerType == SellerType.agent) {
             selectedAgent =
                 agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
-          }else {
+          } else {
             selectedDistributor =
                 agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
           }

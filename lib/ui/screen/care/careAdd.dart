@@ -258,7 +258,7 @@ class _careAddState extends State<careAdd> {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context)=>
                                   ProfileClient(
-                                    idclient: widget.com.fkClient ,
+                                    idClient: widget.com.fkClient ,
                                   )));
                         },
                         child: Text(' ملف العميل')) ,

@@ -1,37 +1,21 @@
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/productmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/screen/invoice/invoiceView.dart';
-import 'package:crm_smart/ui/screen/product/editproduct.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/product_vm.dart';
-import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
-//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
-
 import '../../../constants.dart';
 
 class CardInvoiceClient extends StatefulWidget {
-  CardInvoiceClient(
-      {
-        required this.type,
-        required this.itemProd,
-        //required this.indexinvoice,
-        Key? key})
-      : super(key: key);
-  InvoiceModel itemProd;
-  String type;
- // ClientModel itemClient;
-  // int indexinvoice;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  CardInvoiceClient({
+    required this.type,
+    required this.itemProd,
+    Key? key,
+  }) : super(key: key);
+  final InvoiceModel itemProd;
+  final String type;
 
   @override
   _CardInvoiceClientState createState() => _CardInvoiceClientState();
@@ -41,39 +25,21 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
   late UserModel _currentUser;
 
   @override
-  void didChangeDependencies() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-
-    });
-    super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    _currentUser =
-    Provider.of<user_vm_provider>(context, listen: true)
-        .currentUser;
+    _currentUser = Provider.of<user_vm_provider>(context, listen: true).currentUser;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: InkWell(
-          //splashColor: Colors.blue.withAlpha(30),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context)=>
-               widget.type=='profile'?
-                    ProfileClient(
-                      tabindex: 1,
-                        idclient:
-                        widget.itemProd.fkIdClient.toString()):
-                   InvoiceView(
-                   invoice:widget.itemProd ,
-                )));
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => widget.type == 'profile'
+                    ? ProfileClient(tabIndex: 1, idClient: widget.itemProd.fkIdClient.toString())
+                    : InvoiceView(invoice: widget.itemProd),
+              ),
+            );
           },
           child: Directionality(
             textDirection: TextDirection.rtl,
@@ -100,29 +66,22 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                       children: [
                         Text(
                           widget.itemProd.name_regoin.toString(),
-                          style: TextStyle(
-                              fontFamily: kfontfamily2,
-                              color: kMainColor,
-                              fontSize: 12),
+                          style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                         ),
                         Text(
-                          widget.itemProd.date_approve!=null?
-                          widget.itemProd.date_approve.toString():
-                          widget.itemProd.dateCreate.toString(),
-                          style: TextStyle(
-                              fontFamily: kfontfamily2,
-                              color: kMainColor,
-                              fontSize: 12),
+                          widget.itemProd.date_approve != null
+                              ? widget.itemProd.date_approve.toString()
+                              : widget.itemProd.dateCreate.toString(),
+                          style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                         ),
                       ],
                     ),
-                    widget.itemProd.address_invoice!=null?
-                    Text(
-                      widget.itemProd.address_invoice.toString(),
-                      style: TextStyle(
-                          fontFamily: kfontfamily2,
-                          fontWeight: FontWeight.bold),
-                    ):Container(),
+                    widget.itemProd.address_invoice != null
+                        ? Text(
+                            widget.itemProd.address_invoice.toString(),
+                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          )
+                        : Container(),
                     // Text(
                     //   widget.itemProd.name_enterprise.toString(),
                     //   style: TextStyle(
@@ -136,20 +95,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           children: [
                             Text(
                               'الإجمالي',
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
-                            SizedBox(
-                              width: 4,
-                            ),
+                            SizedBox(width: 4),
                             Text(
                               widget.itemProd.total.toString(),
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
                               ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
@@ -164,24 +115,17 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           children: [
                             Text(
                               'المتبقي',
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Text(
-                              (num.parse(widget.itemProd.total.toString()) -
-                                  num.parse(widget.itemProd.amountPaid
-                                      .toString()))
-                                  .toStringAsFixed(2).toString(),
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
-                            ),
+                            SizedBox(width: 4),
+                            if (widget.itemProd.total != null && widget.itemProd.amountPaid != null)
+                              Text(
+                                (num.parse(widget.itemProd.total.toString()) -
+                                        num.parse(widget.itemProd.amountPaid.toString()))
+                                    .toStringAsFixed(2)
+                                    .toString(),
+                                style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
+                              ),
                             Text(
                               ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
                               style: TextStyle(
@@ -200,21 +144,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           children: [
                             Text(
                               'المدفوع',
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
-                            SizedBox(
-                              width: 4,
-                            ),
+                            SizedBox(width: 4),
                             Text(
-                                (widget.itemProd.amountPaid
-                                      .toString()),
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              (widget.itemProd.amountPaid.toString()),
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
                               ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
@@ -230,20 +165,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           children: [
                             Text(
                               'التجديد السنوي',
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
-                            SizedBox(
-                              width: 4,
-                            ),
+                            SizedBox(width: 4),
                             Text(
                               widget.itemProd.renewYear.toString(),
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
                               ' ' +widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
