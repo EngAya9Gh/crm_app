@@ -470,6 +470,9 @@ class communication_vm extends ChangeNotifier{
         index = listCommunicationInstall_temp.indexWhere((element) =>
         element.idCommunication == id_communication);
         listCommunicationInstall_temp[index] = data;
+        index = listCommunicationInstall.indexWhere((element) =>
+        element.idCommunication == id_communication);
+        listCommunicationInstall.removeAt(index);
         }
         if(type==2) {
         index = listCommunicationInstall2_temp.indexWhere((element) =>

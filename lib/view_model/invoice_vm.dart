@@ -778,37 +778,50 @@ class invoice_vm extends ChangeNotifier {
   Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
     bool isParticipate = type == 'مشترك';
 
+    try {
       if(isParticipate){
-        listinvoiceClientSupport = [];
-        isLoadingInvoicesClientParticipateLocal = true;
-        notifyListeners();
-
+          listinvoiceClientSupport = [];
+          isLoadingInvoicesClientParticipateLocal = true;
+          notifyListeners();
       }else{
-        listinvoiceClient = [];
-        isLoadingInvoicesClientLocal = true;
-        notifyListeners();
-
-    if (list.isNotEmpty) {
-      //await getinvoices();
-      //seacrh for invoice in list
-      if (type == 'مشترك') {
-        // listinvoiceClientSupport = [];
-        list.forEach((element) {
-          if (element.fkIdClient == fk_client && element.isApprove != null && element.isApprove != '0')
-            listinvoiceClientSupport.add(element);
-        });
-      } else {
-        // listinvoiceClient = [];
-        list.forEach((element) {
-          if (element.fkIdClient == fk_client) listinvoiceClient.add(element);
-        });
+          listinvoiceClient = [];
+          isLoadingInvoicesClientLocal = true;
+          notifyListeners();
       }
+      List<InvoiceModel> list = [];
+      listinvoiceClient = [];
+      notifyListeners();
+      list = await Invoice_Service().getinvoicebyclient(fk_client!);
+      if (list.isNotEmpty) {
+        if (isParticipate) {
+          listinvoiceClientSupport = [];
+          list.forEach((element) {
+            if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
+          });
+        } else {
+          listinvoiceClient = [];
+          list.forEach((element) {
+            if (element.fkIdClient == fk_client) listinvoiceClient.add(element);
+          });
+        }
+      }
+
+      print('length list invoice client ' + listinvoiceClient.length.toString());
+      print('length list invoice client ' + listinvoiceClientSupport.length.toString());
+      if(isParticipate){
+        isLoadingInvoicesClientParticipateLocal = false;
+      }else{
+        isLoadingInvoicesClientLocal = false;
+      }
+      notifyListeners();
+    } catch (e) {
+      if(isParticipate){
+        isLoadingInvoicesClientParticipateLocal = false;
+      }else{
+        isLoadingInvoicesClientLocal = false;
+      }
+      notifyListeners();
     }
-    print('length list invoice client ' + listinvoiceClient.length.toString());
-    print('length list invoice client ' + listinvoiceClientSupport.length.toString());
-    notifyListeners();
-      }
-
 }
 
   void setvaluepriv(privilgelistparam) {
