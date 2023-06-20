@@ -769,25 +769,38 @@ class invoice_vm extends ChangeNotifier {
     // listinvoices.add(inv!);
     // notifyListeners();
   }
-
-  Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
-    List<InvoiceModel> list = [];
-    // listinvoiceClientSupport=[];
-    listinvoiceClient = [];
-    print('sdsjnhksjhdushdijksljflsdjlfkjljlj');
-    notifyListeners();
+  List<InvoiceModel> list = [];
+  Future<void> get_invoiceclientlocal2(String? fk_client ) async {
     list = await Invoice_Service().getinvoicebyclient(fk_client!);
+    notifyListeners();
+  }
+  Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
+    // List<InvoiceModel> list = [];
+    // listinvoiceClientSupport=[];
+    if (type == 'مشترك') {
+      listinvoiceClientSupport = [];
+      notifyListeners();
+    }
+
+    if (type == '') {
+      listinvoiceClient = [];
+      notifyListeners();
+    }
+    // listinvoiceClient = [];
+    // print('sdsjnhksjhdushdijksljflsdjlfkjljlj');
+    // notifyListeners();
+
     if (list.isNotEmpty) {
       //await getinvoices();
       //seacrh for invoice in list
       if (type == 'مشترك') {
-        listinvoiceClientSupport = [];
+        // listinvoiceClientSupport = [];
         list.forEach((element) {
           if (element.fkIdClient == fk_client && element.isApprove != null && element.isApprove != '0')
             listinvoiceClientSupport.add(element);
         });
       } else {
-        listinvoiceClient = [];
+        // listinvoiceClient = [];
         list.forEach((element) {
           if (element.fkIdClient == fk_client) listinvoiceClient.add(element);
         });

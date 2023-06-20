@@ -49,7 +49,12 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
     indextab= (widget.tabindex==null?0: widget.tabindex)!;
   WidgetsBinding.instance.addPostFrameCallback((_)async {
     await Provider.of<invoice_vm>(context,listen: false)
+        .get_invoiceclientlocal2(widget.idclient);
+     Provider.of<invoice_vm>(context,listen: false)
         .get_invoiceclientlocal(widget.idclient,'مشترك');
+
+      Provider.of<invoice_vm>(context, listen: false)
+        .get_invoiceclientlocal(widget.idclient,'');
 
     await  Provider.of<communication_vm>(context, listen: false)
         .getCommunicationall('');
@@ -57,8 +62,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
       await Provider.of<client_vm>(context,listen: false)
           .get_byIdClient(widget.idclient.toString());
 
-   await  Provider.of<invoice_vm>(context, listen: false)
-        .get_invoiceclientlocal(widget.idclient,'');
+
 
       Provider.of<communication_vm>(context, listen: false)
         .getCommunicationclient(widget.idclient.toString());
