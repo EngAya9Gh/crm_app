@@ -51,13 +51,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
         ),
       ),
       body:
-      isload==true?
-      Center(
-          child: CircularProgressIndicator()):
-      listCommunicationwelcome.length==0?
-      Center(
-          child: Text(messageNoData)
-      ):  Padding(
+       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Directionality(
           textDirection: TextDirection.rtl,
@@ -174,7 +168,13 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   ],),
                 ),
                 SizedBox(height: 5,),
-                Container(
+                isload==true?
+                Center(
+                    child: CircularProgressIndicator()):
+                listCommunicationwelcome.length==0?
+                Center(
+                    child: Text(messageNoData)
+                ):Container(
                   height: MediaQuery
                       .of(context)
                       .size
@@ -328,7 +328,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
     print(typeclientvalue);
 
     Provider.of<communication_vm>(context,listen: false)
-        .getcommtype_filter(typeclientvalue,regoin,'only');
+        .getcommtype_filter(typeclientvalue,regoin );
 
     // }
   }

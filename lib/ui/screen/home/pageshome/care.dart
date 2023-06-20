@@ -38,12 +38,12 @@ class _carepageState extends State<carepage> {
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
       Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
-      Provider.of<ticket_vm>(context,listen: false)
-          .getclientticket_filter('جديدة');
-     await Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationInstall(1);
-     await Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationWelcome();
+     //  Provider.of<ticket_vm>(context,listen: false)
+     //      .getclientticket_filter('جديدة');
+     // await Provider.of<communication_vm>(context, listen: false)
+     //      .getCommunicationInstall(1);
+     // await Provider.of<communication_vm>(context, listen: false)
+     //      .getCommunicationWelcome();
 
 //////////////////////////////////////////////
 //       Provider.of<communication_vm>(
@@ -115,8 +115,8 @@ class _carepageState extends State<carepage> {
           Provider.of<privilge_vm>(context,listen: true)
               .checkprivlge('29')==true?
           buildSelectCategory(
-            subtitle:   Provider.of<communication_vm>(
-                context, listen: true).listwelcomenumber.length.toString(),
+            // subtitle:   Provider.of<communication_vm>(
+            //     context, listen: true).listwelcomenumber.length.toString(),
               colorbag: Colors.white,
               colortitle: Colors.black,
               colorarrow: Colors.black,
@@ -129,8 +129,9 @@ class _carepageState extends State<carepage> {
           Provider.of<privilge_vm>(context,listen: true)
               .checkprivlge('30')==true?
           buildSelectCategory(
-            subtitle:    Provider.of<communication_vm>(
-                context, listen: true).listinstallnumber.length.toString(),
+            // subtitle:
+            // Provider.of<communication_vm>(
+            //     context, listen: true).listinstallnumber.length.toString(),
               colorbag: Colors.white,
               colortitle: Colors.black,
               colorarrow: Colors.black,
@@ -146,8 +147,8 @@ class _carepageState extends State<carepage> {
           Provider.of<privilge_vm>(context,listen: true)
               .checkprivlge('33')==true?
           buildSelectCategory(
-            subtitle: Provider.of<ticket_vm>(context,listen: true)
-                .listticket_clientfilter.length.toString(),
+            // subtitle: Provider.of<ticket_vm>(context,listen: true)
+            //     .listticket_clientfilter.length.toString(),
               colorbag: Colors.white,
               colortitle: Colors.black,
               colorarrow: Colors.black,

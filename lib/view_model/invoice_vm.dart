@@ -683,8 +683,7 @@ class invoice_vm extends ChangeNotifier {
       }
     } else {
       if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
-
-      if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
+      if (approvetype == 'regoin')  await get_invoicesbyRegoin_accept_requst('r');
       if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
     }
 
