@@ -77,7 +77,7 @@ class _careRepeatState extends State<careRepeat> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context)=>
                                 ProfileClient(
-                                  idclient: widget.idclient.idClients ,
+                                  idClient: widget.idclient.idClients ,
                                 )));
                       },
                       child: Text(' ملف العميل')) ,

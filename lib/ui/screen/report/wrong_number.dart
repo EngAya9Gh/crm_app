@@ -90,7 +90,7 @@ class _wrong_numberState extends State<wrong_number> {
                                                     MaterialPageRoute(builder:
                                                         (context) =>
                                                         ProfileClient(
-                                                          idclient: value.
+                                                          idClient: value.
                                                           list_wrong_number[index].fkClient,)));
                                               },
                                               child: Container(

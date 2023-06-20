@@ -102,8 +102,8 @@ class _TransferPageState extends State<TransferPage> {
                                             MaterialPageRoute(builder:
                                             (context) =>
                                                 ProfileClient(
-                                                  clienttransfer: 'transfer',
-                                                  idclient:
+                                                  clientTransfer: 'transfer',
+                                                  idClient:
                                                   value.listClientAprroveTransfer[index]
                                                   .idClients,
                                                 )));

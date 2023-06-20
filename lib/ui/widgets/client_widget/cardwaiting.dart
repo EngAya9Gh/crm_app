@@ -50,8 +50,8 @@ class cardWaiting extends StatelessWidget {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) =>
                     ProfileClient(
-                        tabindex:3, //move to tab support in profile client
-                        idclient:
+                        tabIndex:3, //move to tab support in profile client
+                        idClient:
                         iteminvoice.fkIdClient.toString())
                 ));
           },

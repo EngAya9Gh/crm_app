@@ -88,7 +88,7 @@ class _not_using_systemState extends State<not_using_system> {
                                                     MaterialPageRoute(builder:
                                                         (context) =>
                                                         ProfileClient(
-                                                          idclient: value.
+                                                          idClient: value.
                                                           list_not_use[index].fkClient,)));
                                               },
                                               child: Container(

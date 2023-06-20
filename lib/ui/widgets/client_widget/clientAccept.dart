@@ -53,7 +53,7 @@ class cardAccept extends StatelessWidget {
                 MaterialPageRoute(builder: (context) =>
                     ProfileClient(
                        // tabindex:2, //move to tab support in profile client
-                        idclient:
+                        idClient:
                         itemClient.idClients.toString())
                   //   editclient(
                   // itemClient: itemClient,

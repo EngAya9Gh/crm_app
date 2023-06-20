@@ -49,7 +49,7 @@ class cardClientnew extends StatelessWidget {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) =>
                     ProfileClient(
-                        idclient:
+                        idClient:
                         itemClient.idClients.toString())
                   //   editclient(
                   // itemClient: itemClient,

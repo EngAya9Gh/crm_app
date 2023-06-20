@@ -42,7 +42,8 @@ class invoice_vm extends ChangeNotifier {
   }
 
   PageState<List<AgentDistributorModel>> agentDistributorsState = PageState();
-
+  bool isLoadingInvoicesClientParticipateLocal = false;
+  bool isLoadingInvoicesClientLocal = false;
   List<InvoiceModel> listinvoiceClient = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listforme = [];
@@ -732,30 +733,47 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
-    List<InvoiceModel> list = [];
-    // listinvoiceClientSupport=[];
-    listinvoiceClient = [];
-    print('sdsjnhksjhdushdijksljflsdjlfkjljlj');
-    notifyListeners();
-    list = await Invoice_Service().getinvoicebyclient(fk_client!);
-    if (list.isNotEmpty) {
-      //await getinvoices();
-      //seacrh for invoice in list
-      if (type == 'مشترك') {
-        listinvoiceClientSupport = [];
-        list.forEach((element) {
-          if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
-        });
-      } else {
-        listinvoiceClient = [];
-        list.forEach((element) {
-          if (element.fkIdClient == fk_client) listinvoiceClient.add(element);
-        });
+    bool isParticipate = type == 'مشترك';
+    try {
+      if(isParticipate){
+        isLoadingInvoicesClientParticipateLocal = true;
+      }else{
+        isLoadingInvoicesClientLocal = true;
       }
+      List<InvoiceModel> list = [];
+      listinvoiceClient = [];
+      notifyListeners();
+      list = await Invoice_Service().getinvoicebyclient(fk_client!);
+      if (list.isNotEmpty) {
+        if (isParticipate) {
+          listinvoiceClientSupport = [];
+          list.forEach((element) {
+            if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
+          });
+        } else {
+          listinvoiceClient = [];
+          list.forEach((element) {
+            if (element.fkIdClient == fk_client) listinvoiceClient.add(element);
+          });
+        }
+      }
+
+      print('length list invoice client ' + listinvoiceClient.length.toString());
+      print('length list invoice client ' + listinvoiceClientSupport.length.toString());
+      if(isParticipate){
+        isLoadingInvoicesClientParticipateLocal = false;
+      }else{
+        isLoadingInvoicesClientLocal = false;
+      }
+      notifyListeners();
+    } catch (e) {
+      if(isParticipate){
+        isLoadingInvoicesClientParticipateLocal = false;
+      }else{
+        isLoadingInvoicesClientLocal = false;
+      }
+      notifyListeners();
     }
-    print('length list invoice client ' + listinvoiceClient.length.toString());
-    print('length list invoice client ' + listinvoiceClientSupport.length.toString());
-    notifyListeners();
   }
 
   void setvaluepriv(privilgelistparam) {
@@ -1087,10 +1105,10 @@ class invoice_vm extends ChangeNotifier {
     if (selectedSellerType != SellerType.collaborator) {
       if (agentDistributorsState.data != null) {
         if (invoice != null) {
-          if(selectedSellerType == SellerType.agent) {
+          if (selectedSellerType == SellerType.agent) {
             selectedAgent =
                 agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
-          }else {
+          } else {
             selectedDistributor =
                 agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
           }
@@ -1107,10 +1125,10 @@ class invoice_vm extends ChangeNotifier {
         sellerStatus = SellerStatus.loaded;
 
         if (invoice != null) {
-          if(selectedSellerType == SellerType.agent) {
+          if (selectedSellerType == SellerType.agent) {
             selectedAgent =
                 agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
-          }else {
+          } else {
             selectedDistributor =
                 agentDistributorsState.data?.firstWhereOrNull((element) => element.idAgent == invoice.fk_agent);
           }
