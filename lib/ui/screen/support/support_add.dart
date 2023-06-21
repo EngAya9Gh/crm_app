@@ -295,6 +295,7 @@ class _support_addState extends State<support_add> {
         ]);
     print('builld');
     return SafeArea(
+
       child: Directionality(
         textDirection: myui.TextDirection.rtl,
         child: SingleChildScrollView(
@@ -590,9 +591,15 @@ class _support_addState extends State<support_add> {
                                           MaterialStateProperty.all(
                                               kMainColor)),
                                   onPressed: () async {
+                                    if(  _invoice!.ready_install == '0')
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(content: Text('العميل غير جاهز للتركيب ')));
+                                      // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('العميل غير جاهز للتركيب ')));
+                                    else{
                                     await showDialog(
                                       context: context,
                                       builder: (context) {
+
                                         return ModalProgressHUD(
                                           inAsyncCall: Provider.of<invoice_vm>(
                                                   context,
@@ -656,99 +663,109 @@ class _support_addState extends State<support_add> {
                                                                       .all(
                                                                           kMainColor)),
                                                           onPressed: () async {
-                                                            Provider.of<invoice_vm>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .setisload();
-                                                            await Provider.of<
-                                                                        config_vm>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                                .getAllConfig();
-                                                            List<ConfigModel>
-                                                                _listconfg =
-                                                                Provider.of<config_vm>(
+
+                                                              Provider.of<
+                                                                  invoice_vm>(
+                                                                  context,
+                                                                  listen:
+                                                                  false)
+                                                                  .setisload();
+                                                              await Provider.of<
+                                                                  config_vm>(
+                                                                  context,
+                                                                  listen:
+                                                                  false)
+                                                                  .getAllConfig();
+                                                              List<ConfigModel>
+                                                              _listconfg =
+                                                                  Provider
+                                                                      .of<
+                                                                      config_vm>(
+                                                                      context,
+                                                                      listen:
+                                                                      false)
+                                                                      .listofconfig;
+                                                              ConfigModel peroid =
+                                                              _listconfg
+                                                                  .firstWhere(
+                                                                      (
+                                                                      element) =>
+                                                                  element
+                                                                      .name_config ==
+                                                                      'period_commincation3'); //تواصل دوري
+                                                              DateTime datanext =
+                                                              DateTime.now();
+                                                              int peroidtime =
+                                                              int.parse(peroid
+                                                                  .value_config);
+                                                              datanext = Jiffy()
+                                                                  .add(
+                                                                  days:
+                                                                  peroidtime)
+                                                                  .dateTime;
+                                                              print(datanext
+                                                                  .toString());
+                                                              await Provider.of<
+                                                                  invoice_vm>(
+                                                                  context,
+                                                                  listen:
+                                                                  false)
+                                                                  .setdatedone_vm(
+                                                                  {
+                                                                    'clientusername':
+                                                                    _textnameuserclient
+                                                                        .text,
+                                                                    'datanext':
+                                                                    datanext
+                                                                        .toString(),
+                                                                    'dateinstall_done':
+                                                                    DateTime
+                                                                        .now()
+                                                                        .toString(),
+                                                                    'userinstall': Provider
+                                                                        .of<
+                                                                        user_vm_provider>(
                                                                         context,
                                                                         listen:
-                                                                            false)
-                                                                    .listofconfig;
-                                                            ConfigModel peroid =
-                                                                _listconfg.firstWhere(
-                                                                    (element) =>
-                                                                        element
-                                                                            .name_config ==
-                                                                        'period_commincation3'); //تواصل دوري
-                                                            DateTime datanext =
-                                                                DateTime.now();
-                                                            int peroidtime =
-                                                                int.parse(peroid
-                                                                    .value_config);
-                                                            datanext = Jiffy()
-                                                                .add(
-                                                                    days:
-                                                                        peroidtime)
-                                                                .dateTime;
-                                                            print(datanext
-                                                                .toString());
-                                                            await Provider.of<
-                                                                        invoice_vm>(
-                                                                    context,
-                                                                    listen:
                                                                         false)
-                                                                .setdatedone_vm(
-                                                                    {
-                                                                  'clientusername':
-                                                                      _textnameuserclient
-                                                                          .text,
-                                                                  'datanext':
-                                                                      datanext
-                                                                          .toString(),
-                                                                  'dateinstall_done':
-                                                                      DateTime.now()
-                                                                          .toString(),
-                                                                  'userinstall': Provider.of<
-                                                                              user_vm_provider>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .currentUser
-                                                                      .idUser
-                                                                      .toString(),
-                                                                  'isdoneinstall':
-                                                                      '1',
-                                                                  'fkIdClient':
-                                                                      _invoice!
-                                                                          .fkIdClient,
-                                                                  'nameuserinstall': Provider.of<
-                                                                              user_vm_provider>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .currentUser
-                                                                      .nameUser
-                                                                      .toString(),
-                                                                  'name_enterprise':
-                                                                      _invoice!
-                                                                          .name_enterprise,
-                                                                  'fkcountry':
-                                                                      _invoice!
-                                                                          .fk_country,
-                                                                  'fk_regoin':
-                                                                      _invoice!
-                                                                          .fk_regoin
-                                                                },
+                                                                        .currentUser
+                                                                        .idUser
+                                                                        .toString(),
+                                                                    'isdoneinstall':
+                                                                    '1',
+                                                                    'fkIdClient':
                                                                     _invoice!
-                                                                        .idInvoice).then(
-                                                                    (value) =>
-                                                                        clear());
-                                                            Navigator.of(
-                                                                    context,
-                                                                    rootNavigator:
-                                                                        true)
-                                                                .pop(true);
-                                                          },
+                                                                        .fkIdClient,
+                                                                    'nameuserinstall': Provider
+                                                                        .of<
+                                                                        user_vm_provider>(
+                                                                        context,
+                                                                        listen:
+                                                                        false)
+                                                                        .currentUser
+                                                                        .nameUser
+                                                                        .toString(),
+                                                                    'name_enterprise':
+                                                                    _invoice!
+                                                                        .name_enterprise,
+                                                                    'fkcountry':
+                                                                    _invoice!
+                                                                        .fk_country,
+                                                                    'fk_regoin':
+                                                                    _invoice!
+                                                                        .fk_regoin
+                                                                  },
+                                                                  _invoice!
+                                                                      .idInvoice)
+                                                                  .then(
+                                                                      (value) =>
+                                                                      clear());
+                                                              Navigator.of(
+                                                                  context,
+                                                                  rootNavigator:
+                                                                  true)
+                                                                  .pop(true);
+                                                               },
                                                           child: Text('نعم'),
                                                         ),
                                                       ],
@@ -759,8 +776,9 @@ class _support_addState extends State<support_add> {
                                             ),
                                           ),
                                         );
-                                      },
-                                    );
+                                      }
+
+                                    );}
                                     //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
                                   },
                                   child: Text('تم التركيب للعميل'))

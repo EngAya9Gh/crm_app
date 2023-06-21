@@ -57,7 +57,8 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
       Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
 
-      Provider.of<client_vm>(context, listen: false).get_byIdClient(widget.idClient.toString());
+      Provider.of<client_vm>(context, listen: false)
+          .get_byIdClient(widget.idClient.toString());
 
       Provider.of<communication_vm>(context, listen: false).getCommunicationclient(widget.idClient.toString());
 
@@ -71,7 +72,8 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     _clientModel = widget.client ??
-        Provider.of<client_vm>(context, listen: true).listClient.firstWhere((element) //error
+        Provider.of<client_vm>(context, listen: true)
+            .listClient.firstWhere((element) //error
             =>
             element.idClients == widget.idClient);
 

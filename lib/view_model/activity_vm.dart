@@ -13,7 +13,7 @@ class activity_vm extends ChangeNotifier {
   Future<void> getactv( ) async {
 
   // notifyListeners();
-  //  if(list_activity.isEmpty)
+    if(list_activity.isEmpty)
   list_activity = await config_service().getactv('type');
   notifyListeners();
 }

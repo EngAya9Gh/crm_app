@@ -331,16 +331,22 @@ class invoice_vm extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     int idexist = -1;
+    print('allllllllllllllllllll');
+    print(listparam?.length.toString());
+
     if (listparam!.isEmpty && state == 'الكل') {
-      print('allllllllllllllllllll');
       listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
           'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'});
     } else {
       String params = '';
-      if (listparam.toString().isNotEmpty) {
+      // if (listparam.toString().isNotEmpty)
+      if (listparam.length!=0)
+      {
         idexist = listparam.indexWhere((element) => element.id_maincity == '0');
         if (idexist == -1) {
-          for (int i = 0; i < listparam.length; i++) listval.add(int.parse(listparam[i].id_maincity));
+          for (int i = 0; i < listparam.length; i++)
+            listval.add(int.parse(listparam[i].id_maincity));
+
           for (int i = 0; i < listval.length; i++) {
             params += '&maincity_fks[]=${listval[i]}';
             print(params);
@@ -349,6 +355,7 @@ class invoice_vm extends ChangeNotifier {
         print(idexist);
         print(state);
         print('idexist');
+
         if (idexist != -1 && state == 'الكل')
           type = 'all';
         else {
@@ -364,7 +371,9 @@ class invoice_vm extends ChangeNotifier {
       else if (state == 'تم التركيب') state = '1';
       if (state == 'معلق') state = 'suspend';
       print('typpping ' + type);
+
       switch (type) {
+
         case 'allmaincity':
           listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
               'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}',
@@ -386,9 +395,11 @@ class invoice_vm extends ChangeNotifier {
               'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}$params',
               {'allmix': 'allmix'});
           break;
+
         case 'all':
           listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
-              'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'});
+              'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
+              {'all': 'all'});
           break;
       }
     }

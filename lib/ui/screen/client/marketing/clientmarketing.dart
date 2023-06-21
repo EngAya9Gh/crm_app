@@ -76,10 +76,10 @@ class _clientmarketingState extends State<clientmarketing> {
 
     // List<ClientModel> list= Provider.of<client_vm>(context, listen: false)
     // .listClientbyRegoin;
-    Future.delayed(Duration(milliseconds: 30)).then((_) async {
-
-    }
-    );
+    // Future.delayed(Duration(milliseconds: 30)).then((_) async {
+    //
+    // }
+    // );
 
     super.didChangeDependencies();
   }
