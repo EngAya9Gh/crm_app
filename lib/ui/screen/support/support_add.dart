@@ -592,7 +592,9 @@ class _support_addState extends State<support_add> {
                                               kMainColor)),
                                   onPressed: () async {
                                     if(  _invoice!.ready_install == '0')
-                                      _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('العميل غير جاهز للتركيب ')));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(content: Text('العميل غير جاهز للتركيب ')));
+                                      // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('العميل غير جاهز للتركيب ')));
                                     else{
                                     await showDialog(
                                       context: context,
