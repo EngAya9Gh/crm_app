@@ -158,7 +158,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                   key: _globalKey,
                   child: Column(
                     children: [
-                      RowEdit(name: "اسباب الإنسحاب", des: 'required'),
+                      RowEdit(name: "اسباب الإنسحاب", des: '*'),
                       Consumer<typeclient>(
                         builder: (context, cart, child){
                           return DropdownButton(
@@ -206,7 +206,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                         //radius: 5,
                       ),
                       SizedBox(height: 3,),
-                      RowEdit(name: "تاريخ الإنسحاب", des: 'required'),
+                      RowEdit(name: "تاريخ الإنسحاب", des: '*'),
                       TextField(
                         decoration: InputDecoration(
                           prefixIcon: Icon(

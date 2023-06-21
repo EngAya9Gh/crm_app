@@ -61,7 +61,7 @@ class _addregoinState extends State<addregoin> {
                 child: Column(
                   children: [
                     SizedBox(height: 15,),
-                    RowEdit(name: 'الفروع', des: 'REQUIRED'),
+                    RowEdit(name: 'الفروع', des: '*'),
                     SizedBox(height: 15,),
 
                     EditTextFormField(

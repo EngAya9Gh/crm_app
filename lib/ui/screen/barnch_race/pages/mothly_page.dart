@@ -24,7 +24,7 @@ class _MonthlyPageState extends State<MonthlyPage> {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.0),
-          child: RowEdit(name: 'اختر الشهر', des: 'Required'),
+          child: RowEdit(name: 'اختر الشهر', des: '*'),
         ),
         SizedBox(height: 5),
         Padding(

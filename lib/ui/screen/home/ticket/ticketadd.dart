@@ -79,7 +79,7 @@ class _ticketAddState extends State<ticketAdd> {
                         SizedBox(
                           height: 15,
                         ),
-                        RowEdit(name: 'اسم العميل', des: 'REQUIRED'),
+                        RowEdit(name: 'اسم العميل', des: '*'),
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 8.0,
@@ -132,7 +132,7 @@ class _ticketAddState extends State<ticketAdd> {
                             },
                           ),
                         ),
-                        RowEdit(name: 'نوع المشكلة', des: 'REQUIRED'),
+                        RowEdit(name: 'نوع المشكلة', des: '*'),
 
                         Consumer<typeclient>(
                           builder: (context, cart, child) {

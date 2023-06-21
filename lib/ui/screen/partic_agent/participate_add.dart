@@ -78,7 +78,7 @@ class _addParticipateState extends State<addParticipate> {
                     child: Column(
                       children: [
                         SizedBox(height: 15,),
-                        RowEdit(name: 'اسم المتعاون', des: 'REQUIRED'),
+                        RowEdit(name: 'اسم المتعاون', des: '*'),
                         SizedBox(height: 15,),
 
                         EditTextFormField(
@@ -91,7 +91,7 @@ class _addParticipateState extends State<addParticipate> {
                           controller: name_participate,
                         ),
                         SizedBox(height: 15,),
-                        RowEdit(name: 'رقم المتعاون', des: 'REQUIRED'),
+                        RowEdit(name: 'رقم المتعاون', des: '*'),
                         SizedBox(height: 15,),
 
                         EditTextFormField(
@@ -104,7 +104,7 @@ class _addParticipateState extends State<addParticipate> {
                           controller: mobile_participate,
                         ),
                         SizedBox(height: 15,),
-                        RowEdit(name: 'بنك المتعاون', des: 'REQUIRED'),
+                        RowEdit(name: 'بنك المتعاون', des: '*'),
                         SizedBox(height: 15,),
 
                         EditTextFormField(
@@ -117,7 +117,7 @@ class _addParticipateState extends State<addParticipate> {
                           controller: namebank_participate,
                         ),
                         SizedBox(height: 15,),
-                        RowEdit(name: 'رقم بنك المتعاون', des: 'REQUIRED'),
+                        RowEdit(name: 'رقم بنك المتعاون', des: '*'),
                         SizedBox(height: 15,),
 
                         EditTextFormField(

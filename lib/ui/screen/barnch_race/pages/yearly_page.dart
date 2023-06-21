@@ -18,7 +18,7 @@ class YearlyPage extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.0),
-          child: RowEdit(name: 'اختر السنة', des: 'Required'),
+          child: RowEdit(name: 'اختر السنة', des: '*'),
         ),
         SizedBox(height: 5),
         Container(

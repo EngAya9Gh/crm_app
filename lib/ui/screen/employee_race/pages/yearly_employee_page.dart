@@ -27,7 +27,7 @@ class _YearlyEmployeePageState extends State<YearlyEmployeePage> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'السنة', des: 'Required'),
+              child: RowEdit(name: 'السنة', des: '*'),
             ),
             SizedBox(height: 5),
             Container(

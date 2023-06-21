@@ -89,7 +89,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                               child: Column(
                                 children: [
                                   SizedBox(height: 15),
-                                  RowEdit(name: 'الاسم', des: 'REQUIRED'),
+                                  RowEdit(name: 'الاسم', des: '*'),
                                   SizedBox(height: 15),
                                   EditTextFormField(
                                     vaild: (value) {
@@ -107,10 +107,10 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                     controller: nameController,
                                   ),
                                   SizedBox(height: 15),
-                                  RowEdit(name: 'النوع', des: 'REQUIRED'),
+                                  RowEdit(name: 'النوع', des: '*'),
                                   agentTypeSelector(),
                                   SizedBox(height: 15),
-                                  RowEdit(name: 'البلد', des: 'REQUIRED'),
+                                  RowEdit(name: 'البلد', des: '*'),
                                   Selector<AgentDistributorViewModel,
                                       Tuple2<PageState<List<CountryModel>>, CountryModel?>>(
                                     selector: (_, vm) => Tuple2(vm.countriesState, vm.selectedCountry),

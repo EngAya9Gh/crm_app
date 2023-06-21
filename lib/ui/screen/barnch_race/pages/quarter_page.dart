@@ -20,7 +20,7 @@ class QuarterPage extends StatelessWidget {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.0),
-          child: RowEdit(name: 'اختر السنة', des: 'Required'),
+          child: RowEdit(name: 'اختر السنة', des: '*'),
         ),
         SizedBox(height: 5),
         Container(
@@ -78,7 +78,7 @@ class QuarterPage extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.0),
-          child: RowEdit(name: 'اختر الربع', des: 'Required'),
+          child: RowEdit(name: 'اختر الربع', des: '*'),
         ),
         SizedBox(height: 5),
         Container(

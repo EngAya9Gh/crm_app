@@ -70,7 +70,7 @@ class _addusertestState extends State<addusertest> {
                     child: Column(
                       children: [
                         SizedBox(height: 15,),
-                        RowEdit(name: 'العنوان', des: 'REQUIRED'),
+                        RowEdit(name: 'العنوان', des: '*'),
                         SizedBox(height: 15,),
                         EditTextFormField(
                           vaild: (value) {
@@ -82,7 +82,7 @@ class _addusertestState extends State<addusertest> {
                           controller: nameusertest,
                         ),
                         SizedBox(height: 15,),
-                        RowEdit(name: 'الوصف', des: 'REQUIRED'),
+                        RowEdit(name: 'الوصف', des: '*'),
                         EditTextFormField(
                           maxline: 6,
                           vaild: (value) {
