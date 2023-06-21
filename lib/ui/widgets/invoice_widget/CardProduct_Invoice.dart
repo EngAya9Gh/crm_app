@@ -131,7 +131,7 @@ bool isepmty=false;
 
               children: [
 
-                RowEdit(name: 'الكمية', des: 'اجباري'),
+                RowEdit(name: 'الكمية', des: '*'),
                 EditTextFormField(
                   vaild: (value) {
                     if (value!.isEmpty) {
@@ -154,7 +154,7 @@ bool isepmty=false;
                   controller:_amount, hintText: 'الكمية',),
                 //SizedBox(width: 10,),
 
-                RowEdit(name: 'السعر', des: 'اجباري'),
+                RowEdit(name: 'السعر', des: '*'),
                 EditTextFormField(
                   vaild: (value) {
                     if (value!.isEmpty) {

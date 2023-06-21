@@ -29,7 +29,7 @@ class _QuarterlyEmployeePageState extends State<QuarterlyEmployeePage> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'السنة', des: 'Required'),
+              child: RowEdit(name: 'السنة', des: '*'),
             ),
             SizedBox(height: 5),
             Container(
@@ -72,7 +72,7 @@ class _QuarterlyEmployeePageState extends State<QuarterlyEmployeePage> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'الربع', des: 'Required'),
+              child: RowEdit(name: 'الربع', des: '*'),
             ),
             SizedBox(height: 5),
             Container(

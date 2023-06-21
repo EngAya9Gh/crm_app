@@ -56,7 +56,7 @@ class _addcityState extends State<addcity> {
                 child: Column(
                   children: [
                     SizedBox(height: 15,),
-                    RowEdit(name: 'المدينة', des: 'REQUIRED'),
+                    RowEdit(name: 'المدينة', des: '*'),
                     SizedBox(height: 15,),
 
                     EditTextFormField(

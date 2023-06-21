@@ -107,7 +107,7 @@ class _addUserState extends State<addUser> {
 
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RowEdit(name:'Name', des: 'Required'),
+                  RowEdit(name:'Name', des: '*'),
                   SizedBox(height: 2,),
                   EditTextFormField(
                     hintText: 'Name',
@@ -116,7 +116,7 @@ class _addUserState extends State<addUser> {
                   ),
                   SizedBox(height: 2,),
 
-                  RowEdit(name:'Email', des: 'Required'),
+                  RowEdit(name:'Email', des: '*'),
                   SizedBox(height: 2,),
                   EditTextFormField(
 
@@ -126,7 +126,7 @@ class _addUserState extends State<addUser> {
                     controller: emailController,
                   ),
                   SizedBox(height: 15,),
-                  RowEdit(name: label_manage, des: 'Required'),
+                  RowEdit(name: label_manage, des: '*'),
                   Consumer<manage_provider>(builder: (context, mangelist, child) {
                     return DropdownButton(
                       isExpanded: true,
@@ -168,7 +168,7 @@ class _addUserState extends State<addUser> {
                   //   controller: descriptionController,
                   // ),
                   SizedBox(height: 15,),
-                  RowEdit(name: label_level, des: 'Required'),
+                  RowEdit(name: label_level, des: '*'),
 
                   Consumer<level_vm>(
                     builder: (context, cart, child){
@@ -192,7 +192,7 @@ class _addUserState extends State<addUser> {
                   SizedBox(height: 15,),
 
                   //admin
-                  RowEdit(name:'الفرع', des: 'Required'),
+                  RowEdit(name:'الفرع', des: '*'),
                   //RegoinCombox(
                   //   selected: _selectedregoin,
                   //   onChanged:
@@ -222,7 +222,7 @@ class _addUserState extends State<addUser> {
                   ),
                   //manage
                   SizedBox(height: 15,),
-                  RowEdit(name: label_mobile, des: 'Required'),
+                  RowEdit(name: label_mobile, des: '*'),
                   EditTextFormField(
                     hintText: '+966000000000',
                     obscureText: false,

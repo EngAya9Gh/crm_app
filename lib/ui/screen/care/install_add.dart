@@ -114,7 +114,7 @@ class _installAddState extends State<installAdd> {
                 ),
                 SizedBox(height: 10,),
                 widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
-                RowEdit(name: 'هل العميل راضي عن خدمة التركيب والتدريب', des: 'required'):Container(),
+                RowEdit(name: 'هل العميل راضي عن خدمة التركيب والتدريب', des: '*'):Container(),
 
                 widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
                 Row(

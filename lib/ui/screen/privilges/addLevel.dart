@@ -42,7 +42,7 @@ class addLevel extends StatelessWidget {
     child: Column(
     children: [
       SizedBox(height: 15,),
-      RowEdit(name: 'LEVEL', des: 'REQUIRED'),
+      RowEdit(name: 'LEVEL', des: '*'),
       SizedBox(height: 15,),
 
       EditTextFormField(

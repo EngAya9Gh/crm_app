@@ -46,7 +46,7 @@ class _change_countryState extends State<change_country> {
               child: Column(
                 children: [
                   SizedBox(height: 15,),
-                  RowEdit(name: 'البلد', des: 'REQUIRED'),
+                  RowEdit(name: 'البلد', des: '*'),
                   SizedBox(height: 15,),
                   Consumer<country_vm>(
                     builder: (context, cart, child){

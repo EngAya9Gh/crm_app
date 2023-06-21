@@ -64,7 +64,7 @@ class _addcompanyState extends State<addcompany> {
                     child: Column(
                       children: [
                         SizedBox(height: 15,),
-                        RowEdit(name: 'المؤسسة', des: 'REQUIRED'),
+                        RowEdit(name: 'المؤسسة', des: '*'),
                         SizedBox(height: 15,),
 
                         EditTextFormField(

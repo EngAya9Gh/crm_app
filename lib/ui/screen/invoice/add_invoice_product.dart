@@ -54,20 +54,45 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
     _taxadmin.text='';_taxadmin_value='';
     _textprice.text='';
     _amount.text='';_amount_value='1';
-    // String? id_country =
-    //     Provider.of<user_vm_provider>(context, listen: false).currentUser!.fkCountry;
-    // Provider.of<product_vm>(context, listen: false)
-    //     .getproduct_vm(id_country!);
-    // taxCountry=listProduct[index].value_config;
-    //.then((value) => _isLoading=false);
-    // String? id_country =
-    //     Provider
-    //         .of<user_vm_provider>(context, listen: false)
-    //         .currentUser!
-    //         .fkCountry;
+    _taxuser.addListener(() {
+      if(_taxuser.text.trim().isNotEmpty && _taxadmin.text.trim().isNotEmpty){
+        final userTax = num.tryParse(_taxuser.text.trim()) ?? 0;
+        final adminTax = num.tryParse(_taxadmin.text.trim()) ?? 0;
 
-    WidgetsBinding.instance.addPostFrameCallback((_){
+        if(userTax + adminTax > 100){
+          _taxuser.text = (100 - adminTax).toString();
+          _taxuser.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
+        }
+      }
 
+      if(_taxuser.text.trim().isNotEmpty){
+        final userTax = num.tryParse(_taxuser.text.trim()) ?? 0;
+
+        if(userTax > 100){
+          _taxuser.text = 100.toString();
+          _taxuser.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
+        }
+      }
+    });
+    _taxadmin.addListener(() {
+      if(_taxuser.text.trim().isNotEmpty && _taxadmin.text.trim().isNotEmpty){
+        final userTax = num.tryParse(_taxuser.text.trim()) ?? 0;
+        final adminTax = num.tryParse(_taxadmin.text.trim()) ?? 0;
+
+        if(userTax + adminTax > 100){
+          _taxadmin.text = (100 - userTax).toString();
+          _taxadmin.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
+        }
+      }
+
+      if(_taxadmin.text.trim().isNotEmpty){
+        final adminTax = num.tryParse(_taxadmin.text.trim()) ?? 0;
+
+        if(adminTax > 100){
+          _taxadmin.text = 100.toString();
+          _taxadmin.selection = TextSelection.fromPosition(TextPosition(offset: _taxadmin.text.length));
+        }
+      }
     });
     super.initState();
   }
@@ -268,26 +293,16 @@ void calculate(){
                               children: [
                                 RowEdit(name: ' الخصم للموظف', des: 'اختياري'),
                                 EditTextFormField(
-
-                                  //read: false,
                                   onChanged: (val) {
                                     _taxuser_value=val;
                                     calculate();
                                   },
                                   inputType: TextInputType.number,
-
                                   controller: _taxuser,
-                                  // label: 'نسبة الخصم المتاحة للموظف',
                                   hintText: '%',
-                                  //radius: 10
+                                  maxLength: 3,
+                                  inputformate: [FilteringTextInputFormatter.digitsOnly],
                                 ),
-                                // Row(
-                                //   children: [
-                                //
-                                //     SizedBox(width: 10,),
-                                //     Text('%'),
-                                //   ],
-                                // ),
 
                               ],
                             ),
@@ -303,20 +318,11 @@ void calculate(){
                                     calculate();
                                   },
                                   inputType: TextInputType.number,
-
-                                  //read: false,
                                   controller: _taxadmin,
-                                  // label: 'نسبة الخصم المتاحة للمشرف',
                                   hintText: '%',
-                                  //radius: 10
+                                  maxLength: 3,
+                                  inputformate: [FilteringTextInputFormatter.digitsOnly],
                                 ),
-                                // Row(
-                                //   children: [
-                                //
-                                //     SizedBox(width: 10,),
-                                //     Text('%'),
-                                //   ],
-                                // ),
                               ],
                             ),
                           ),

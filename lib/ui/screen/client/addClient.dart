@@ -1,5 +1,3 @@
-
-
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
@@ -19,6 +17,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -53,16 +52,20 @@ class _addClientState extends State<addClient> {
   // final TextEditingController typejobController = TextEditingController();
   final TextEditingController address_client = TextEditingController();
 
-  String? cityController ;
-  String? presystem='' ;
-  String? sourclient='' ;
-  String? presystemcomb ;
+  String? cityController;
+
+  String? presystem = '';
+
+  String? sourclient = '';
+
+  String? presystemcomb;
 
   final TextEditingController locationController = TextEditingController();
 
   final TextEditingController regoinController = TextEditingController();
 
-  @override void dispose() {
+  @override
+  void dispose() {
     nameclientController.dispose();
     nameEnterpriseController.dispose();
     mobileController.dispose();
@@ -76,23 +79,20 @@ class _addClientState extends State<addClient> {
     super.dispose();
   }
 
-  @override void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_)async{
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<maincity_vm>(context, listen: false).getcityAll();
+      await Provider.of<activity_vm>(context, listen: false).getactv();
+      await Provider.of<company_vm>(context, listen: false).getcompany();
 
-    await  Provider.of<maincity_vm>(context,listen: false).getcityAll();
-    await  Provider.of<activity_vm>(context,listen: false).getactv();
-    await Provider.of<company_vm>(context, listen: false).getcompany();
-
-    Provider.of<maincity_vm>(context,listen: false).changevalue(null);
+      Provider.of<maincity_vm>(context, listen: false).changevalue(null);
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-     //final controllerUsers = Get.find<AllUserVMController>();
-    //_user=Provider.of<user_vm_provider>(context,listen: true).currentUser!;
-    // controllerUsers.getcurrentUser();
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -107,444 +107,258 @@ class _addClientState extends State<addClient> {
           child: Form(
             key: _globalKey,
             child: Directionality(
-              textDirection: myui.TextDirection.rtl ,
+              textDirection: myui.TextDirection.rtl,
               child: Padding(
-                padding: EdgeInsets.only(
-                    top: 20,
-                    right: 20,
-                    left: 20,
-                    bottom: 10), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
-                // child: ContainerShadows(
-                //   width: double.infinity,
-                //   //height: 400,
-                //   margin: EdgeInsets.only(),
-                  child: Column(
-                    //textDirection: TextDirection.rtl,
+                padding: EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 10),
+                child: Column(
+                  children: [
+                    RowEdit(name: label_cliententerprise, des: '*'),
+                    SizedBox(height: 5),
+                    EditTextFormField(
+                      obscureText: false,
+                      hintText: label_cliententerprise,
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      inputformate: [FilteringTextInputFormatter.allow(RegExp(r'''/^[a-zA-Z]+$/'''))],
+                      controller: nameEnterpriseController,
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: label_clientname, des: '*'),
+                    SizedBox(height: 5),
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      hintText: label_clientname,
+                      obscureText: false,
+                      controller: nameclientController,
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: label_clientmobile, des: '*'),
+                    SizedBox(height: 5),
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      hintText: '00966000000000',
+                      obscureText: false,
+                      controller: mobileController,
+                      inputType: TextInputType.phone,
+                      maxLength: 15,
+                      inputformate: [FilteringTextInputFormatter.digitsOnly],
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: label_client_typejob, des: '*'),
+                    SizedBox(height: 5),
+                    Consumer<activity_vm>(
+                      builder: (context, cart, child) {
+                        return SizedBox(
+                          //width: 240,
+                          child: DropdownButtonFormField(
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
 
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                            isExpanded: true,
+                            //hint: Text("حدد حالة العميل"),
+                            items: cart.list_activity.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(level_one.name_activity_type), //label of item
 
-                      RowEdit(name: label_cliententerprise, des: 'required'),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      EditTextFormField(
-                        obscureText: false,
-                        hintText: label_cliententerprise,
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        controller: nameEnterpriseController, //اسم المؤسسة
-                        //label: label_client,
-                        onChanged: (val) {
-                          // nameprod = val;
-                        },
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      RowEdit(name: label_clientname, des: 'required'),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: label_clientname,
-                        obscureText: false,
-                        controller: nameclientController,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      RowEdit(name: 'وصف النشاط', des: 'REQUIRED'),
-
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: label_desc_activ,
-                        obscureText: false,
-                        controller: descActivController,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      RowEdit(name: label_client_typejob, des: 'Required'),
-                      SizedBox(
-                        height: 5,
-                      ),
-
-                      Consumer<activity_vm>(
+                                value: level_one.id_activity_type, //value of item
+                              );
+                            }).toList(),
+                            value: cart.selectedValueOut,
+                            onChanged: (value) {
+                              //  setState(() {
+                              cart.changevalueOut(value.toString());
+                              // });
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: 'وصف النشاط', des: '*'),
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      hintText: label_desc_activ,
+                      obscureText: false,
+                      controller: descActivController,
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: label_clientcity, des: '*'),
+                    SizedBox(height: 5),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Consumer<maincity_vm>(
                         builder: (context, cart, child) {
-                          return SizedBox(
-                            //width: 240,
-                            child:
-                            DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.grey))),
-
-                              isExpanded: true,
-                              //hint: Text("حدد حالة العميل"),
-                              items: cart.list_activity.map((level_one) {
-                                return DropdownMenuItem(
-                                  child: Text(
-                                      level_one.name_activity_type), //label of item
-
-                                  value: level_one.id_activity_type, //value of item
-                                );
-                              }).toList(),
-                              value: cart.selectedValueOut,
-                              onChanged: (value) {
-                                //  setState(() {
-                                cart.changevalueOut(value.toString());
-                                // });
-                              },
+                          return DropdownSearch<CityModel>(
+                            mode: Mode.DIALOG,
+                            label: "المدن",
+                            validator: (val) {
+                              if (val == null) return 'من فضلك حدد اسم مدينة';
+                            },
+                            filterFn: (user, filter) => user!.getfilteruser(filter!),
+                            items: cart.listcity,
+                            itemAsString: (u) => u!.userAsString(),
+                            onChanged: (data) => cityController = data!.id_city,
+                            //print(data!.nameUser),
+                            showSearchBox: true,
+                            dropdownSearchDecoration: InputDecoration(
+                              labelText: "حدد مدينة",
+                              contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
+                              border: OutlineInputBorder(),
                             ),
                           );
                         },
                       ),
-                      //presystem
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: label_usernameclient, des: '*'),
+                    EditTextFormField(
+                      hintText: label_usernameclient,
+                      obscureText: false,
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      controller: address_client,
+                      //اسم المؤسسة
+                      label: label_usernameclient,
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: label_clientlocation, des: ''),
+                    EditTextFormField(
+                      hintText: 'location',
+                      obscureText: false,
+                      controller: locationController,
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: 'رقم آخر', des: 'اختياري'),
+                    SizedBox(height: 5),
+                    EditTextFormField(
+                      hintText: '+0',
+                      obscureText: false,
+                      controller: phoneController,
+                      inputType: TextInputType.phone,
+                      maxLength: 15,
+                      inputformate: [FilteringTextInputFormatter.digitsOnly],
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: 'مصدر العميل', des: '*'),
+                    DropdownButtonFormField<String?>(
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(width: 2, color: Colors.grey))),
+                      isExpanded: true,
+                      items: list_sourcclient.map((level_one) {
+                        return DropdownMenuItem(
+                          child: Text(level_one), //label of item
 
-                      // EditTextFormField(
-                      //   hintText: label_client_typejob,
-                      //   obscureText: false,
-                      //   vaild: (value) {
-                      //     if (value!.toString().trim().isEmpty) {
-                      //       return label_empty;
-                      //     }
-                      //   },
-                      //   controller: typejobController, //اسم المؤسسة
-                      //   label: label_client_typejob,
-                      //   onChanged: (val) {
-                      //     // nameprod = val;
-                      //   },
-                      // ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      RowEdit(name: label_usernameclient, des: 'Required') ,
+                          value: level_one, //value of item
+                        );
+                      }).toList(),
+                      value: presystemcomb,
+                      onChanged: (value) {
+                        setState(() {
+                          sourclient = value.toString();
+                        });
+                      },
+                      validator: (value) {
+                        if (value?.trim().isEmpty ?? true) {
+                          return "هذا الحقل مطلوب";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: 'نظام سابق', des: 'اختياري'),
+                    Consumer<company_vm>(
+                      builder: (context, cart, child) {
+                        return SizedBox(
+                          child: DropdownButtonFormField(
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
+                            isExpanded: true,
+                            items: cart.list_company.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(level_one.name_company.toString()), //label of item
 
-                      EditTextFormField(
-                        hintText: label_usernameclient,
-                        obscureText: false,
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
+                                value: level_one.id_Company, //value of item
+                              );
+                            }).toList(),
+                            value: cart.selectedValueOut,
+                            onChanged: (value) {
+                              //  setState(() {
+                              cart.changevalueOut(value.toString());
+                              // });
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 15),
+
+                    Center(
+                      child: custom_button_new(
+                        text: label_clientadd,
+                        onpress: () async {
+                          if (_globalKey.currentState!.validate() &&
+                              Provider.of<activity_vm>(context, listen: false).selectedValueOut != null &&
+                              sourclient != '') {
+                            _globalKey.currentState!.save();
+                            Provider.of<LoadProvider>(context, listen: false).changebooladdclient(true);
+                            UserModel _user = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+                            Provider.of<client_vm>(context, listen: false).addclient_vm({
+                              'descActivController': descActivController.text,
+                              'name_client': nameclientController.text,
+                              'address_client': address_client.text,
+                              'name_enterprise': nameEnterpriseController.text,
+                              'type_job': 'type',
+                              'city': cityController.toString(),
+                              'location': locationController.text.toString(),
+                              "fk_regoin": _user.fkRegoin == null ? "null" : _user.fkRegoin,
+                              "date_create": DateTime.now().toString(),
+
+                              "type_client": "تفاوض",
+                              "fk_user": _user.idUser,
+                              "user_add": _user.idUser,
+                              // "date_transfer":,
+                              'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
+                              'sourcclient': sourclient,
+                              'activity_type_fk':
+                                  Provider.of<activity_vm>(context, listen: false).selectedValueOut.toString(),
+                              "mobile": mobileController.text,
+                              "phone": phoneController.text,
+                              "ismarketing": sourclient == 'ميداني' ? '0' : '1',
+                              //"date_changetype":,
+                            }, _user.nameUser.toString(), _user.nameRegoin.toString()).then(
+                                (value) => value != "false" ? clear(context) : error(context));
                           }
                         },
-                        controller: address_client, //اسم المؤسسة
-                        label:label_usernameclient,
-                        onChanged: (val) {
-                          // nameprod = val;
-                        },
                       ),
-                      SizedBox(
-                        height: 15,
-                      ),
-
-                      //admin
-                      RowEdit(name: label_clientcity, des: 'Required'),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 20.0,right: 8),
-                      //   child: Consumer<maincity_vm>(
-                      //       builder: (context, cart, child){
-                      //         return DropdownButton(
-                      //           isExpanded: true,
-                      //           hint: Text(label_clientcity),
-                      //           items: cart.listcity.map((city) {
-                      //             return DropdownMenuItem(
-                      //               child: Text(city.name_city), //label of item
-                      //               value: city.id_city, //value of item
-                      //             );
-                      //           }).toList(),
-                      //           value:cart.selectedValuemanag,
-                      //           onChanged:(value) {
-                      //             cityController=value.toString();
-                      //           cart.changevalue(value.toString());
-                      //           },
-                      //         );}
-                      //   ),
-                      // ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Consumer<maincity_vm>(
-                          builder: (context, cart, child){
-                            return  DropdownSearch<CityModel>(
-                              mode: Mode.DIALOG,
-                              label: "المدن",
-                              validator: (val){
-
-                                if(val==null)
-                                  return 'من فضلك حدد اسم مدينة';
-                              },
-                              filterFn: (user, filter) => user!.getfilteruser(filter!),
-                              items: cart.listcity,
-                              itemAsString:
-                                  ( u) => u!.userAsString(),
-                              onChanged: (data) =>
-                              cityController=data!.id_city,//print(data!.nameUser),
-                              showSearchBox: true,
-                              dropdownSearchDecoration: InputDecoration(
-                                labelText: "حدد مدينة",
-                                contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
-                                border: OutlineInputBorder(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      // EditTextFormField(
-                      //   vaild: (value) {
-                      //     if (value!.isEmpty) {
-                      //       return label_empty;
-                      //     }
-                      //   },
-                      //   hintText: label_clientcity,
-                      //   obscureText: false,
-                      //   controller: cityController,
-                      // ),
-                      //manage
-                      SizedBox(
-                        height: 15,
-                      ),
-                      RowEdit(name: label_clientmobile, des: 'Required'),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: '+966000000000',
-                        obscureText: false,
-                        controller: mobileController,
-                      ),
-                      //RowEdit(name: 'Image', des: ''),
-                      RowEdit(name: 'رقم آخر', des: 'اختياري'),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      EditTextFormField(
-                        // vaild: (value) {
-                        //   if (value!.toString().trim().isEmpty) {
-                        //     return label_empty;
-                        //   }
-                        // },
-                        hintText: '+0',
-                        obscureText: false,
-                        controller: phoneController,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      RowEdit(name: label_clientlocation, des: ''),
-                      EditTextFormField(
-                        hintText: 'location',
-                        obscureText: false,
-                        controller: locationController,
-                      ),
-                      ////////////////////////////////////////////////
-                      SizedBox(
-                        height: 15,
-                      ),
-                      // RowEdit(name: label_clientregoin, des: ''),
-                      // //show chose image
-                      // SizedBox(
-                      //   height: 15,
-                      // ),
-                      // RowEdit(name: label_clientdate, des: ''),
-                      //
-                      // SizedBox(
-                      //   height: 15,
-                      // ),
-                      // RowEdit(name: label_clientnameuser, des: controllerUsers.currentUser.value.nameUser.toString()),
-                      // SizedBox(
-                      //   height: 15,
-                      // ),
-                      // RowEdit(name: label_clienttype, des: "تفاوض"),
-                      //RowEdit(name: 'نظام سابق', des: 'اختياري'),
-                       RowEdit(name: 'مصدر العميل', des: 'اختياري'),
-
-                      DropdownButtonFormField(
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                    width: 2, color: Colors.grey))),
-
-                        isExpanded: true,
-                        //hint: Text("حدد حالة العميل"),
-                        items:  list_sourcclient.map((level_one) {
-                          return DropdownMenuItem(
-                            child: Text(
-                                level_one ), //label of item
-
-                            value: level_one , //value of item
-                          );
-                        }).toList(),
-                        value: presystemcomb,
-                        onChanged: (value) {
-                          setState(() {
-                            sourclient=value.toString();
-                          });
-                          //  setState(() {
-                          //cart.changevalueOut(value.toString());
-                          // });
-                        },
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      RowEdit(name: 'نظام سابق', des: 'اختياري'),
-
-                      Consumer<company_vm>(
-                        builder: (context, cart, child) {
-                          return SizedBox(
-                            //width: 240,
-                            child:
-                            DropdownButtonFormField(
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.grey))),
-
-                              isExpanded: true,
-                              //hint: Text("حدد حالة العميل"),
-                              items: cart.list_company.map((level_one) {
-                                return DropdownMenuItem(
-                                  child: Text(
-                                      level_one.name_company.toString()), //label of item
-
-                                  value: level_one.id_Company, //value of item
-                                );
-                              }).toList(),
-                              value: cart.selectedValueOut,
-                              onChanged: (value) {
-                                //  setState(() {
-                                cart.changevalueOut(value.toString());
-                                // });
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-
-
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Center(
-                        child: custom_button_new(
-                          text: label_clientadd,
-                          onpress: () async {
-
-                            if (_globalKey.currentState!.validate()&&Provider
-                                .of<activity_vm>(
-                                context,
-                                listen: false)
-                                .selectedValueOut!=null && sourclient!='' ) {
-                              _globalKey.currentState!.save();
-                                Provider.of<LoadProvider>(
-                                    context, listen: false)
-                                    .changebooladdclient(true);
-                                UserModel _user =
-                                    Provider
-                                        .of<user_vm_provider>
-                                      (context, listen: false)
-                                        .currentUser;
-                                Provider.of<client_vm>(context, listen: false)
-                                    .addclient_vm({
-                                  'descActivController':descActivController.text,
-                                  // 'presystem':presystem ,
-                                  'name_client': nameclientController.text,
-                                  'address_client':address_client.text,
-                                  'name_enterprise': nameEnterpriseController
-                                      .text,
-                                  'type_job':'type',
-                                  // Provider
-                                  //     .of<activity_vm>(
-                                  //     context,
-                                  //     listen: false)
-                                  //     .selectedValueOut
-                                  //     .toString(),  //typejobController.text,
-                                  'city': cityController.toString(),
-                                  'location':
-                                  // locationController.text==null?"null":
-                                  locationController.text.toString(),
-                                  "fk_regoin": _user.fkRegoin == null
-                                      ? "null"
-                                      : _user.fkRegoin,
-                                  "date_create": DateTime.now().toString(),
-
-                                  //Utils.toDate22(DateTime.now()),
-                                  //,  //formatter.format(_currentDate),
-                                  "type_client": "تفاوض",
-                                  "fk_user": _user.idUser,
-                                  "user_add": _user.idUser,
-                                  // "date_transfer":,
-                                  'presystem':Provider
-                                      .of<company_vm>(
-                                      context,
-                                      listen: false)
-                                      .selectedValueOut.toString(),
-                                  'sourcclient':sourclient,
-                                  'activity_type_fk':
-                                Provider
-                                    .of<activity_vm>(
-                                    context,
-                                    listen: false)
-                                    .selectedValueOut
-                                    .toString(),
-                                  "mobile": mobileController.text,
-                                  "phone": phoneController.text,
-                                  "ismarketing": sourclient=='ميداني'?'0':'1'  ,
-                                  //"date_changetype":,
-                                }, _user.nameUser.toString(),
-                                    _user.nameRegoin.toString()
-                                ).then((value) =>
-                                value != "false"
-                                    ? clear(context)
-                                    : error(context)
-                                  // Fluttertoast.showToast(
-                                  //  backgroundColor:
-                                  //      Colors.lightBlueAccent,
-                                  //  msg: label_errorAddProd, // message
-                                  //  toastLength:
-                                  //      Toast.LENGTH_SHORT, // length
-                                  //  gravity: ToastGravity.CENTER, //
-                                );
-                              // }else{
-                              //   _scaffoldKey.currentState!.showSnackBar(
-                              //       SnackBar(content: Text('من فضلك حدد مدينة')));
-                              // }
-                            }
-                          },
-                        ),
-                      ),
-                      SizedBox(height: 3,),
-                    ],
-                  ),
-               // ),
+                    ),
+                    SizedBox(height: 3),
+                  ],
+                ),
+                // ),
               ),
             ),
           ),
@@ -554,9 +368,7 @@ class _addClientState extends State<addClient> {
   }
 
   clear(BuildContext context) {
-
-    Provider.of<LoadProvider>(context, listen: false)
-        .changebooladdclient(false);
+    Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
     Navigator.pop(context);
 
     // nameEnterpriseController.text="";
@@ -567,16 +379,13 @@ class _addClientState extends State<addClient> {
     // typejobController.text="";
     // _scaffoldKey.currentState!.showSnackBar(
     //     SnackBar(content: Text(label_Addeduser))
-   // );
+    // );
     print("succ");
   }
 
   error(context) {
-    Provider.of<LoadProvider>(context, listen: false)
-        .changebooladdclient(false);
-    _scaffoldKey.currentState!.showSnackBar(
-        SnackBar(content: Text(label_errorAddProd))
-    );
+    Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
+    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(label_errorAddProd)));
     print("error");
   }
 

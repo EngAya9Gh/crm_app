@@ -315,15 +315,20 @@ class _addinvoiceState extends State<addinvoice> {
                         obscureText: false,
                         controller: addressController,
                       ),
-                      RowEdit(name: label_amount_paid, des: 'required'),
+                      RowEdit(name: label_amount_paid, des: '*'),
                       EditTextFormField(
                         obscureText: false,
                         hintText: label_amount_paid,
                         vaild: (value) {
-                          if (value.toString().trim().isEmpty) {
+                          if (value?.trim().isEmpty ?? true) {
                             return label_empty;
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
+
+                          if (num.parse(value!) <= 0) {
+                            return "يجب إدخال قيمة أكبر من 0.";
+                          }
+                          return null;
                         },
                         controller: amount_paidController,
                         //اسم المؤسسة
@@ -339,18 +344,20 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 5,
                       ),
-                      RowEdit(name: label_renew, des: 'Required'),
+                      RowEdit(name: label_renew, des: '*'),
                       EditTextFormField(
                         hintText: label_renew,
                         obscureText: false,
                         vaild: (value) {
-                          if (value.toString().trim().isEmpty) {
+                          if (value?.trim().isEmpty ?? true) {
                             return label_empty;
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
-                          // else if(value.characters){
-                          //   return ;
-                          // }
+
+                          if (num.parse(value!) <= 0) {
+                            return "يجب إدخال قيمة أكبر من 0.";
+                          }
+                          return null;
                         },
                         inputType: TextInputType.number,
                         // inputformate: <TextInputFormatter>[
@@ -370,15 +377,16 @@ class _addinvoiceState extends State<addinvoice> {
                       EditTextFormField(
                         hintText: label_renew2year,
                         obscureText: false,
-                        // vaild: (value) {
-                        //   if (value.toString().trim().isEmpty) {
-                        //     return label_empty;
-                        //   }
-                        //   if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
-                        //   // else if(value.characters){
-                        //   //   return ;
-                        //   // }
-                        // },
+                        vaild: (value) {
+                          if (value == null) {
+                            return null;
+                          }
+
+                          if (num.parse(value) <= 0) {
+                            return "يجب إدخال قيمة أكبر من 0.";
+                          }
+                          return null;
+                        },
                         inputType: TextInputType.number,
                         // inputformate: <TextInputFormatter>[
                         //   FilteringTextInputFormatter.digitsOnly
@@ -395,7 +403,7 @@ class _addinvoiceState extends State<addinvoice> {
                       ),
 
                       //admin
-                      RowEdit(name: label_typepay, des: 'Required'),
+                      RowEdit(name: label_typepay, des: '*'),
                       Container(
                         padding: EdgeInsets.only(left: 2, right: 2),
                         decoration: BoxDecoration(
@@ -434,7 +442,7 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 5,
                       ),
-                      RowEdit(name: label_typeinstall, des: 'Required'),
+                      RowEdit(name: label_typeinstall, des: '*'),
                       Container(
                         padding: EdgeInsets.only(left: 2, right: 2),
                         decoration: BoxDecoration(
@@ -472,7 +480,7 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 15,
                       ),
-                      _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: 'Required') : Container(),
+                      _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: '*') : Container(),
                       _invoice!.idInvoice == null
                           ? Container(
                               padding: EdgeInsets.only(left: 2, right: 2),
@@ -511,6 +519,7 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 15,
                       ),
+                      RowEdit(name: 'العملة', des: '*'),
                       Container(
                         padding: EdgeInsets.only(left: 2, right: 2),
                         decoration: BoxDecoration(
@@ -887,10 +896,19 @@ class _addinvoiceState extends State<addinvoice> {
                                 cursorColor: Colors.black,
                                 readOnly: false,
                                 validator: (text) {
-                                  // if (text?.trim().isEmpty ?? true) {
-                                  //   return 'هذا الحقل مطلوب';
-                                  // }
-                                  // return null;
+                                  if (text == null) {
+                                    return null;
+                                  }
+
+                                  if (num.tryParse(text) == null) return "أدخل رقم صحيح.";
+
+                                  if (num.parse(text) <= 0) {
+                                    return "يجب إدخال قيمة أكبر من 0.";
+                                  }
+                                  if (num.parse(text) > 100) {
+                                    return "النسبة يجب أن تكون أصغر أو تساوي 100";
+                                  }
+                                  return null;
                                 },
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -1014,10 +1032,10 @@ class _addinvoiceState extends State<addinvoice> {
                                         if (sellerCommissionRate.text.isNotEmpty)
                                           'rate_participate': sellerCommissionRate.text,
 
-                                          if (invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                            'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-                                          else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-                                            'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+                                        if (invoiceViewmodel.selectedSellerType == SellerType.agent)
+                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
+                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
+                                          'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
                                           'participate_fk':
