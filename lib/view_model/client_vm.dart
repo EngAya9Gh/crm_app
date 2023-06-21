@@ -123,7 +123,8 @@ class client_vm extends ChangeNotifier {
     List<int> listval=[];
     List<ClientModel> _list=[];
     notifyListeners();
-    if(listparam!.isEmpty) _list=  await ClientService()
+    if(listparam!.isEmpty)
+      _list=  await ClientService()
         .getAllClientsupport(usercurrent!.fkCountry.toString(),null);
     else {
 
@@ -307,6 +308,7 @@ class client_vm extends ChangeNotifier {
     notifyListeners();
   }
   Future<void> getallclientAccept()async{
+    listClientAccept=[];
     listClient =
         await ClientService()
             .getAcceptClient(usercurrent!.fkCountry.toString());
