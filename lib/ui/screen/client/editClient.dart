@@ -524,7 +524,7 @@ class _editclientState extends State<editclient> {
                       obscureText: false,
                       controller: mobileController,
                     ),
-                    RowEdit(name: 'رقم آخر', des: 'اختياري'),
+                    RowEdit(name: 'رقم آخر', des: ' '),
                     SizedBox(
                       height: 5,
                     ),
@@ -562,7 +562,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: 'مصدر العميل', des: 'اختياري'),
+                    RowEdit(name: 'مصدر العميل', des: ' '),
 
                     DropdownButtonFormField(
                       decoration: InputDecoration(
@@ -594,7 +594,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: 'نظام سابق', des: 'اختياري'),
+                    RowEdit(name: 'نظام سابق', des: ' '),
 
                     Consumer<company_vm>(
                       builder: (context, cart, child) {
