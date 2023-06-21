@@ -18,6 +18,7 @@ class EditTextFormField extends StatelessWidget {
   EdgeInsetsGeometry? paddcustom;
   List<TextInputFormatter>? inputformate;
   FormFieldSetter<String>? onSaved;
+  int? maxLength;
 
   EditTextFormField(
       {this.ontap,
@@ -34,6 +35,7 @@ class EditTextFormField extends StatelessWidget {
       this.paddcustom,
       this.onSaved,
       this.inputformate,
+      this.maxLength,
       Key? key})
       : super(key: key);
 
@@ -51,6 +53,7 @@ class EditTextFormField extends StatelessWidget {
       readOnly: read == null ? false : true,
       inputFormatters: inputformate,
       onSaved: onSaved,
+      maxLength:maxLength ,
       decoration: InputDecoration(
         //icon: ,
         contentPadding: paddcustom == null ? EdgeInsets.all(2) : paddcustom,
@@ -58,6 +61,7 @@ class EditTextFormField extends StatelessWidget {
           icon,
           color: kMainColor,
         ),
+        counter: SizedBox.shrink(),
         hintStyle: const TextStyle(
             color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
         hintText: hintText,

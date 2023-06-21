@@ -93,7 +93,7 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
             SizedBox(height: 15),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'السنة', des: 'Required'),
+              child: RowEdit(name: 'السنة', des: '*'),
             ),
             SizedBox(height: 5),
             Selector<BranchRaceViewmodel, String?>(
@@ -158,7 +158,7 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
             SizedBox(height: 15),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'الفرع', des: 'Required'),
+              child: RowEdit(name: 'الفرع', des: '*'),
             ),
             SizedBox(height: 5),
             Container(
@@ -214,7 +214,7 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
             SizedBox(height: 15),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'الهدف الفرعي', des: 'Required'),
+              child: RowEdit(name: 'الهدف الفرعي', des: '*'),
             ),
             SizedBox(height: 5),
             Padding(
@@ -264,7 +264,7 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
       padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
       child: Column(
         children: [
-          RowEdit(name: 'الشهر', des: 'Required'),
+          RowEdit(name: 'الشهر', des: '*'),
           SizedBox(height: 5),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
@@ -329,7 +329,7 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
       padding: const EdgeInsets.only(left: 15, right: 15, top: 15),
       child: Column(
         children: [
-          RowEdit(name: 'الربع', des: 'Required'),
+          RowEdit(name: 'الربع', des: '*'),
           SizedBox(height: 5),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),

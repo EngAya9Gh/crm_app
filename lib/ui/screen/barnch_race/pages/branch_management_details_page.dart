@@ -64,7 +64,7 @@ class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPag
             // SizedBox(height: 10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'تعديل الهدف الشهري', des: 'Required'),
+              child: RowEdit(name: 'تعديل الهدف الشهري', des: '*'),
             ),
             SizedBox(height: 5),
             Padding(

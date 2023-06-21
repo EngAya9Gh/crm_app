@@ -57,7 +57,7 @@ class _addresaonState extends State<addresaon> {
                   child: Column(
                     children: [
                       SizedBox(height: 15,),
-                      RowEdit(name: widget.type=='client'?'السبب':'نوع', des: 'REQUIRED'),
+                      RowEdit(name: widget.type=='client'?'السبب':'نوع', des: '*'),
                       SizedBox(height: 15,),
 
                       EditTextFormField(

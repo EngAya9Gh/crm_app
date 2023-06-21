@@ -62,7 +62,7 @@ class _addmaincityState extends State<addmaincity> {
                 child: Column(
                   children: [
                     SizedBox(height: 15,),
-                    RowEdit(name: 'المنطقة', des: 'REQUIRED'),
+                    RowEdit(name: 'المنطقة', des: '*'),
                     SizedBox(height: 15,),
 
                     EditTextFormField(

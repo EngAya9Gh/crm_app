@@ -59,7 +59,7 @@ class _addmanageState extends State<addmanage> {
                 child: Column(
                   children: [
                     SizedBox(height: 15,),
-                    RowEdit(name: 'الإدارات', des: 'REQUIRED'),
+                    RowEdit(name: 'الإدارات', des: '*'),
                     SizedBox(height: 15,),
 
                     EditTextFormField(

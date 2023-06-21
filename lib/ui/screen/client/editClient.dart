@@ -332,7 +332,7 @@ class _editclientState extends State<editclient> {
 
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RowEdit(name: label_cliententerprise, des: 'required'),
+                    RowEdit(name: label_cliententerprise, des: '*'),
 
                     EditTextFormField(
                       obscureText: false,
@@ -352,7 +352,7 @@ class _editclientState extends State<editclient> {
                       height: 5,
                     ),
 
-                    RowEdit(name: label_clientname, des: 'required'),
+                    RowEdit(name: label_clientname, des: '*'),
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
@@ -371,7 +371,7 @@ class _editclientState extends State<editclient> {
                                 .checkprivlge('27') ==
                             true
                         ? Container()
-                        : RowEdit(name: label_client_typejob, des: 'Required'),
+                        : RowEdit(name: label_client_typejob, des: '*'),
                     Provider.of<privilge_vm>(context, listen: true)
                                 .checkprivlge('27') ==
                             true
@@ -393,7 +393,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(
                       height: 5,
                     ),
-                    RowEdit(name: 'وصف النشاط', des: 'REQUIRED'),
+                    RowEdit(name: 'وصف النشاط', des: '*'),
 
                     EditTextFormField(
                       vaild: (value) {
@@ -408,7 +408,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: label_client_typejob, des: 'Required'),
+                    RowEdit(name: label_client_typejob, des: '*'),
                     Consumer<activity_vm>(
                       builder: (context, cart, child) {
                         return SizedBox(
@@ -443,7 +443,7 @@ class _editclientState extends State<editclient> {
                       },
                     ),
 
-                    RowEdit(name: label_usernameclient, des: 'Required'),
+                    RowEdit(name: label_usernameclient, des: '*'),
                     EditTextFormField(
                       maxline: 3,
                       vaild: (value) {
@@ -460,7 +460,7 @@ class _editclientState extends State<editclient> {
                     ),
                     //admin
 
-                    RowEdit(name: label_clientcity, des: 'Required'),
+                    RowEdit(name: label_clientcity, des: '*'),
                     // Padding(
                     //   padding: const EdgeInsets.only(left: 20.0,right: 8),
                     //   child: Consumer<maincity_vm>(
@@ -513,7 +513,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(
                       height: 5,
                     ),
-                    RowEdit(name: label_clientmobile, des: 'Required'),
+                    RowEdit(name: label_clientmobile, des: '*'),
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {

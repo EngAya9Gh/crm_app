@@ -60,7 +60,7 @@ class _addActvState extends State<addractivity> {
                     child: Column(
                       children: [
                         SizedBox(height: 15,),
-                        RowEdit(name: 'النشاط', des: 'REQUIRED'),
+                        RowEdit(name: 'النشاط', des: '*'),
                         SizedBox(height: 15,),
 
                         EditTextFormField(

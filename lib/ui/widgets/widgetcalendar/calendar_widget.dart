@@ -82,7 +82,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   child: Form(
            child: Column(
              children: [
-               RowEdit(name: " تاريخ الزيارة ", des: 'required'),
+               RowEdit(name: " تاريخ الزيارة ", des: '*'),
                TextField(
                  decoration: InputDecoration(
                    prefixIcon: Icon(

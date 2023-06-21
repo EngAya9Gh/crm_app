@@ -48,7 +48,7 @@ class add_payement extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                RowEdit(name: 'اجمالي المبلغ المدفوع', des: 'required'),
+                RowEdit(name: 'اجمالي المبلغ المدفوع', des: '*'),
                 EditTextFormField(
                   obscureText: false,
                   hintText: 'اجمالي المبلغ المدفوع',

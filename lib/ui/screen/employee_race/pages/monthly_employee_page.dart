@@ -28,7 +28,7 @@ class _MonthlyEmployeePageState extends State<MonthlyEmployeePage> {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'السنة', des: 'Required'),
+              child: RowEdit(name: 'السنة', des: '*'),
             ),
             SizedBox(height: 5),
             Container(
@@ -71,7 +71,7 @@ class _MonthlyEmployeePageState extends State<MonthlyEmployeePage> {
             SizedBox(height: 5),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              child: RowEdit(name: 'الشهر', des: 'Required'),
+              child: RowEdit(name: 'الشهر', des: '*'),
             ),
             SizedBox(height: 5),
             Container(

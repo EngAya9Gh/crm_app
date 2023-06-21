@@ -17,6 +17,7 @@ import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -229,12 +230,20 @@ class _EditUserState extends State<EditUser> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     RowEdit(name: 'Email', des: ''),
-                    SizedBox(height: 2,),
-
+                    SizedBox(height: 2),
                     EditTextFormField(
                       hintText: 'Email',
                       obscureText: false,
                       controller: emailController,
+                      vaild: (value){
+                        if(value == null){
+                          return null;
+                        }
+                        if(!validateEmail(value)){
+                          return "أدخل ايميل صحيح";
+                        }
+                        return null;
+                      },
                     ),
                     SizedBox(
                       height: 20,
@@ -261,7 +270,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: label_level, des: 'Required'),
+                    RowEdit(name: label_level, des: '*'),
                     //mangwidget(),
                     Consumer<level_vm>(
                       builder: (context, cart, child){
@@ -291,7 +300,7 @@ class _EditUserState extends State<EditUser> {
                     ),
 
                     //admin
-                    RowEdit(name: 'الفرع', des: 'Required'),
+                    RowEdit(name: 'الفرع', des: '*'),
                     Consumer<regoin_vm>(
                       builder: (context, cart, child){
                         return DropdownButton(
@@ -318,11 +327,13 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: label_mobile, des: 'Required'),
+                    RowEdit(name: label_mobile, des: '*'),
                     EditTextFormField(
-                      hintText: '+966000000000',
+                      hintText: '00966000000000',
                       obscureText: false,
                       controller: mobileController,
+                      maxLength: 1,
+                      inputformate: [FilteringTextInputFormatter.digitsOnly],
                     ),
                     //RowEdit(name: 'Image', des: ''),
                     SizedBox(
@@ -402,4 +413,8 @@ class _EditUserState extends State<EditUser> {
         .showSnackBar(SnackBar(content: Text(label_errorAddProd)));
     Navigator.pop(context);
   }
+
+  bool validateEmail(String email) => RegExp(
+      r'''(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])''')
+      .hasMatch(email);
 }
