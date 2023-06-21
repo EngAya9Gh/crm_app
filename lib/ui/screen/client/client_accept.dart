@@ -58,12 +58,12 @@ class _ClientAcceptState extends State<ClientAccept> {
         //   .getallclient();
       // Provider.of<client_vm>(context, listen: false). getclient_Local('مشترك');
 
-      // Provider.of<maincity_vm>
-      //   (context,listen: false).changevalue(null);
-       Provider.of<client_vm>(context,listen: false)
-          .getallclientAccept();
+;
+      //  Provider.of<client_vm>(context,listen: false)
+      //     .getallclientAccept();
       Provider.of<client_vm>(context,listen: false)
-          .getfilterviewSupport(selecteditemmaincity);
+          .getfilterviewSupport(Provider.of<maincity_vm>
+        (context,listen: false).selecteditemmaincity);
     });
 
     super.initState();
