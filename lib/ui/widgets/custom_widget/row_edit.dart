@@ -11,7 +11,7 @@ class RowEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextUtilis(
           color: Colors.black,
@@ -22,9 +22,9 @@ class RowEdit extends StatelessWidget {
         ),
         if (des != null)
           TextUtilis(
-            color: Colors.black38,
+            color: Colors.black,
             fontSize: 35,
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.w800,
             textstring: des!,
             underline: TextDecoration.none,
           ),

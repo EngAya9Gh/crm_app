@@ -373,7 +373,7 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 5,
                       ),
-                      RowEdit(name: label_renew2year, des: 'اختياري'),
+                      RowEdit(name: label_renew2year, des: ' '),
                       EditTextFormField(
                         hintText: label_renew2year,
                         obscureText: false,

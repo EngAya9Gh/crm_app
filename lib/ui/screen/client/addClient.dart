@@ -248,7 +248,7 @@ class _addClientState extends State<addClient> {
                       controller: locationController,
                     ),
                     SizedBox(height: 15),
-                    RowEdit(name: 'رقم آخر', des: 'اختياري'),
+                    RowEdit(name: 'رقم آخر', des: ' '),
                     SizedBox(height: 5),
                     EditTextFormField(
                       hintText: '+0',
@@ -287,7 +287,7 @@ class _addClientState extends State<addClient> {
                       },
                     ),
                     SizedBox(height: 15),
-                    RowEdit(name: 'نظام سابق', des: 'اختياري'),
+                    RowEdit(name: 'نظام سابق', des: ' '),
                     Consumer<company_vm>(
                       builder: (context, cart, child) {
                         return SizedBox(
