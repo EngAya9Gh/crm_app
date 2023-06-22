@@ -75,7 +75,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                         selectedIndex: selectedProvider.isbarsales,
                       ),
                       options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
-                      buttons: ['تفاوض', 'مشترك', 'منسحب', 'عرض سعر'],
+                      buttons: ['تفاوض', 'مشترك', 'مستبعد', 'عرض سعر'],
                       onSelected: (_, index, isselected) {
                         print(index);
                         switch (index) {
@@ -274,10 +274,10 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                           fontFamily: kfontfamily2,
                                                         ),
                                                       ),
-                                                      // Text(
-                                                      //   itemapprove.nameUser.toString(),
-                                                      //   style: TextStyle(fontFamily: kfontfamily2),
-                                                      // ),
+                                                      Text(
+                                                        'مضى على آخر تعليق',
+                                                        style: TextStyle(fontFamily: kfontfamily2),
+                                                      ),
                                                     ],
                                                   ),
                                                   // type=='wait'?

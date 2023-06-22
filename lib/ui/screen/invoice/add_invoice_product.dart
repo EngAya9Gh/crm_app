@@ -291,7 +291,7 @@ void calculate(){
                           Flexible(
                             child: Column(
                               children: [
-                                RowEdit(name: ' الخصم للموظف', des: 'اختياري'),
+                                RowEdit(name: ' الخصم للموظف', des: ' '),
                                 EditTextFormField(
                                   onChanged: (val) {
                                     _taxuser_value=val;
@@ -311,7 +311,7 @@ void calculate(){
                           Flexible(
                             child: Column(
                               children: [
-                                RowEdit(name: ' الخصم للمشرف', des: 'اختياري'),
+                                RowEdit(name: ' الخصم للمشرف', des: ' '),
                                 EditTextFormField(
                                   onChanged: (val) {
                                     _taxadmin_value=val;

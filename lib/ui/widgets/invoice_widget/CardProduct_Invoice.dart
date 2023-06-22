@@ -171,7 +171,7 @@ bool isepmty=false;
                   //radius: 10
                 ),
                 SizedBox(height: 5,),
-                RowEdit(name: 'نسبة الخصم المتاحة للموظف', des: 'اختياري'),
+                RowEdit(name: 'نسبة الخصم المتاحة للموظف', des: ' '),
                 EditTextFormField(
                   //read: false,
                   onChanged: (val) {
@@ -188,7 +188,7 @@ bool isepmty=false;
                 ),
 
                 SizedBox(height: 3,),
-                RowEdit(name: 'نسبة الخصم المتاحة للمشرف', des: 'اختياري'),
+                RowEdit(name: 'نسبة الخصم المتاحة للمشرف', des: ' '),
                 EditTextFormField(
                   onChanged: (val) {
                     _taxadmin_value=val;

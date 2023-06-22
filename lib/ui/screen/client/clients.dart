@@ -85,6 +85,9 @@ class client_dashboard extends StatefulWidget {
     void initState()  {
       _tabcontroller = TabController(length: 3, vsync: this);
       WidgetsBinding.instance.addPostFrameCallback((_)async {
+        await  Provider.of<client_vm>(context, listen: false)
+            .get_byIdClient(widget.invoiceModel.fkIdClient.toString()
+        );
         Provider.of<comment_vm>(context, listen: false)
             .getComment(widget.invoiceModel.fkIdClient.toString());
       });
@@ -100,9 +103,8 @@ class client_dashboard extends StatefulWidget {
       // _invoiceModel= Provider.of<invoice_vm>(context, listen: false)
       //     .get_byIdInvoice(widget.itemapprove.fk_invoice.toString())!;
       //
-      // _clientModel= Provider.of<client_vm>(context, listen: false)
-      //     .get_byIdClient(widget.itemapprove.fkClient.toString()
-      //);
+      // _clientModel=
+
       print("init tabbar");
       super.initState();
   }
@@ -114,7 +116,8 @@ class client_dashboard extends StatefulWidget {
     Widget build(BuildContext context) {
       _clientModel=Provider.of<client_vm>(context,listen: true)
       .listClient.firstWhere((element) =>
-      element.idClients==widget.invoiceModel.fkIdClient);
+      element.idClients ==
+      widget.invoiceModel.fkIdClient);
 
       current = Provider.of<user_vm_provider>(context).currentUser;
       int _tabBarIndex = 0;

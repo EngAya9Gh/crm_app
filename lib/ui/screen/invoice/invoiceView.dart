@@ -75,6 +75,7 @@ class _InvoiceViewState extends State<InvoiceView> {
      // await Provider.of<invoice_vm>(context,listen: false).getinvoices();
      await Provider.of<client_vm>(context,listen: false)
          .get_byIdClient(widget.invoice!.fkIdClient.toString());
+
      clientmodel=Provider.of<client_vm>(context,listen: false)
          .listClient.firstWhere(
              (element) => element.idClients==widget.invoice!.fkIdClient);
@@ -129,7 +130,8 @@ class _InvoiceViewState extends State<InvoiceView> {
         final list = Provider.of<invoice_vm>(context,listen: true).listInvoicesAccept;
 
         if(list.any((element) => element.idInvoice==widget.invoice!.idInvoice))
-         widget.invoice= list.firstWhereOrNull((element) => element.idInvoice==widget.invoice!.idInvoice) ?? widget.invoice;
+         widget.invoice= list.firstWhereOrNull((element) =>
+         element.idInvoice==widget.invoice!.idInvoice) ?? widget.invoice;
 
     final _globalKey = GlobalKey<FormState>();
     Widget dialog = SimpleDialog(
@@ -261,12 +263,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     Provider.of<user_vm_provider>(context, listen: false).currentUser
                                         .nameUser.toString(),
                                     "fk_client":widget.invoice!.fkIdClient.toString(),
-                                    "reason_back": typeclient_provider.selectedValueOut,
+                                    "reason_back": typeclient_provider.selectedValueOut.toString(),
                                     "fkuser_back": Provider
                                         .of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
                                     "desc_reason_back": descresaonController.text,
                                     "date_change_back": _currentDate.toString(),//DateTime.now().toString(),
-                                    "value_back": valueBackController.text,
+                                    "value_back": valueBackController.text.toString(),
                                   }, widget.invoice!.idInvoice.toString());
                                   Navigator.of(context, rootNavigator: true)
                                       .pop(false);
@@ -299,12 +301,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     Provider.of<user_vm_provider>(context, listen: false).currentUser
                                         .nameUser.toString(),
                                     "fk_client":widget.invoice!.fkIdClient.toString(),
-                                    "reason_back": typeclient_provider.selectedValueOut,
+                                    "reason_back": typeclient_provider.selectedValueOut.toString(),
                                     "fkuser_back": Provider
                                         .of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
                                     "desc_reason_back": descresaonController.text,
                                     "date_change_back": _currentDate.toString(),//DateTime.now().toString(),
-                                    "value_back": valueBackController.text,
+                                    "value_back": valueBackController.text.toString(),
                                   }, widget.invoice!.idInvoice.toString());
                                   Navigator.of(context, rootNavigator: true)
                                       .pop(false);
