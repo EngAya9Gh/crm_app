@@ -269,6 +269,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                               cardRow(
                                   value: invoice.agent_distibutor!.nameAgent.toString(),
                                   title: invoice.agent_distibutor!.typeAgent == '1' ? 'اسم الوكيل' : 'اسم الموزع'),
+
+                              if(invoice.rate_participate != null)
                               cardRow(
                                   value: invoice.rate_participate.toString(),
                                   title: invoice.agent_distibutor!.typeAgent == '1' ? 'نسبة الوكيل' : 'نسبة الموزع'),

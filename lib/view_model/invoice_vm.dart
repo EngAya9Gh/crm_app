@@ -592,18 +592,17 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> getinvoice_Localwithprev() async {
-    List<InvoiceModel> list = [];
+    Stopwatch stopwatch = Stopwatch();
+    stopwatch.start();
     listInvoicesAccept = [];
     isloading = true;
     notifyListeners();
     await getinvoiceswithprev();
-    listInvoicesAccept.forEach((element) {
-      if (element.stateclient == 'مشترك' && element.isApprove == "1") list.add(element);
-    });
-    listInvoicesAccept = list;
-    listforme = List.from(list);
+    listInvoicesAccept = listInvoicesAccept.where((element) => element.stateclient == 'مشترك' && element.isApprove == "1").toList();
+    listforme = List.from(listInvoicesAccept);
     isloading = false;
-    // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
+    stopwatch.stop();
+    stopwatch.elapsed.inSeconds;
     notifyListeners();
   }
 

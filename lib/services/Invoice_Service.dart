@@ -137,15 +137,7 @@ class Invoice_Service {
     data=await Api()
         .get(url:url+ 'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
     print(data);
-    List<InvoiceModel> prodlist = [];
-    // final json = "[" + data[i] + "]";
-    for (int i = 0; i < data.length; i++) {
-      print(i);
-
-      //print("data "+ "[" + data[i] + "]");
-      prodlist.add(InvoiceModel.fromJson(data[i]));
-    }
-    print(prodlist);
+    List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
   Future<List<InvoiceModel>> getinvoicebyregoin(String regoin) async {
@@ -153,12 +145,7 @@ class Invoice_Service {
     data=await Api()
         .get(url:url+ 'client/invoice/getinvoicebyregoin.php?fk_regoin=$regoin');
     print(data);
-    List<InvoiceModel> prodlist = [];
-    for (int i = 0; i < data.length; i++) {
-      print(i);
-      prodlist.add(InvoiceModel.fromJson(data[i]));
-    }
-    print(prodlist);
+    List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
   Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst( Map<String,dynamic> body) async {

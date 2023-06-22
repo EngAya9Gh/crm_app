@@ -3,6 +3,7 @@ import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/productmodel.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 
 import '../constants.dart';
 
@@ -47,19 +48,18 @@ class ClientService{
     //client/setApproveClient.php
     return result=="done"? true:false;
   }
+
+  List<ClientModel> convertToClients(List<dynamic> list) {
+    return List<Map<String, dynamic>>.from(list).map<ClientModel>((e) => ClientModel.fromJson(e)).toList();
+  }
+
   //
   Future<List<ClientModel>> getAllClient(String? fkcountry) async {
     List<dynamic> data =[];
     data=await Api()
         .get(url:url+ 'client/getClientAll.php?fk_country=$fkcountry');
 
-    List<ClientModel> prodlist = [];
-
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(ClientModel.fromJson(data[i]));
-      print('nmnm');
-    }
-    print(prodlist);
+    List<ClientModel> prodlist =  await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
     return prodlist;
   }
   Future<List<ClientModel>> getAllClientsupport(String? fkcountry,List<int>? listparam) async {
@@ -137,14 +137,7 @@ class ClientService{
         .get(url:url+ 'client/getclientbyuser.php?fk_user=$fk_user');
     print('before data');
      print(data);
-    List<ClientModel> prodlist = [];
-
-    for (int i = 0; i < data.length; i++) {
-
-      print(data[i]);
-      prodlist.add(ClientModel.fromJson(data[i]));
-    }
-    print(prodlist);
+    List<ClientModel> prodlist = await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
     return prodlist;
   }
   //
@@ -152,11 +145,7 @@ class ClientService{
     List<dynamic> data = await Api()
         .get(url:url+ 'client/getclientByRegoin.php?fk_regoin=$regoin');
 
-    List<ClientModel> prodlist = [];
-
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(ClientModel.fromJson(data[i]));
-    }
+    List<ClientModel> prodlist = await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
     return prodlist;
   }
 }
