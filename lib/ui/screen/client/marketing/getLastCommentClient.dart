@@ -256,7 +256,15 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                             //fontWeight: FontWeight.bold,
                                                             fontFamily: kfontfamily2,
                                                             color: kMainColor),
-                                                      )
+                                                      ),
+                                                      Text(
+                                                        'مضى على آخر تعليق',
+                                                        style:TextStyle(
+                                                            fontSize: 12,
+                                                            //fontWeight: FontWeight.bold,
+                                                            fontFamily: kfontfamily2,
+                                                            color: kMainColor),
+                                                      ),
                                                     ],
                                                   ),
                                                   Row(
@@ -274,10 +282,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                           fontFamily: kfontfamily2,
                                                         ),
                                                       ),
-                                                      Text(
-                                                        'مضى على آخر تعليق',
-                                                        style: TextStyle(fontFamily: kfontfamily2),
-                                                      ),
+
                                                     ],
                                                   ),
                                                   // type=='wait'?
