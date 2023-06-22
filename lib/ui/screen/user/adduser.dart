@@ -22,6 +22,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 
+import '../../../function_global.dart';
 import '../../../labeltext.dart';
 
 class addUser extends StatefulWidget {
@@ -119,12 +120,12 @@ class _addUserState extends State<addUser> {
                   RowEdit(name:'Email', des: '*'),
                   SizedBox(height: 2,),
                   EditTextFormField(
-
-
+                    vaild: (data)=>  validateEmail(data.toString()),
                     hintText: 'Email',
                     obscureText: false,
                     controller: emailController,
                   ),
+
                   SizedBox(height: 15,),
                   RowEdit(name: label_manage, des: '*'),
                   Consumer<manage_provider>(builder: (context, mangelist, child) {

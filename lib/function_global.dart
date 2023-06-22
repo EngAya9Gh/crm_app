@@ -28,6 +28,13 @@ String getnameshort(String name){
   name.toString();
   return nameshort;
 }
+String? validateEmail(String email) {
+  String pattern =
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+  RegExp regex = new RegExp(pattern);
+  if (!regex.hasMatch(email))
+    return 'Please make sure your email address is valid';
+}
 String get_title_care(String type ){
   switch(type){
     case 'ترحيب':

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../../constants.dart';
+import '../../function_global.dart';
 import '../../labeltext.dart';
 import 'home/home.dart';
 import 'mainpage.dart';
@@ -30,13 +31,7 @@ class _loginState extends State<login> {
    String valEmail="";
    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-   String? validateEmail(String email) {
-    String pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(email))
-      return 'Please make sure your email address is valid';
-  }
+
 
   @override
   Widget build(BuildContext context) {
