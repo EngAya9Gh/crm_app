@@ -26,6 +26,12 @@ enum SellerStatus { init, loading, loaded, failed }
 class invoice_vm extends ChangeNotifier {
   String total = '0';
 
+  InvoiceModel? currentInvoice;
+
+  setCurrentInvoice(InvoiceModel invoice){
+    currentInvoice = invoice;
+  }
+
   void set_total(val) {
     total = val;
     notifyListeners();
@@ -603,18 +609,18 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> getinvoice_Localwithprev() async {
-    List<InvoiceModel> list = [];
+    // Stopwatch stopwatch = Stopwatch();
+    // stopwatch.start();
     listInvoicesAccept = [];
     isloading = true;
     notifyListeners();
     await getinvoiceswithprev();
-    listInvoicesAccept.forEach((element) {
-      if (element.stateclient == 'مشترك' && element.isApprove == "1") list.add(element);
-    });
-    listInvoicesAccept = list;
-    listforme = List.from(list);
+    listInvoicesAccept =
+        listInvoicesAccept.where((element) => element.stateclient == 'مشترك' && element.isApprove == "1").toList();
+    listforme = List.from(listInvoicesAccept);
     isloading = false;
-    // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
+    // stopwatch.stop();
+    // stopwatch.elapsed.inSeconds;
     notifyListeners();
   }
 
@@ -1000,6 +1006,7 @@ class invoice_vm extends ChangeNotifier {
     //InvoiceModel.fromJson(body);
     //listProduct.insert(0, ProductModel.fromJson(body));
     isloadingdone = false;
+    currentInvoice = data;
     notifyListeners();
 
     return true;
@@ -1201,6 +1208,11 @@ class invoice_vm extends ChangeNotifier {
     }
 
     if (collaboratorsState.data != null) {
+      if (invoice != null) {
+          selectedCollaborator =
+              collaboratorsState.data?.firstWhereOrNull((element) => element.id_participate == invoice.participate_fk);
+        notifyListeners();
+      }
       return;
     }
 
@@ -1210,6 +1222,11 @@ class invoice_vm extends ChangeNotifier {
     final result = await getCollaborators();
     if (collaboratorsState.isSuccess) {
       sellerStatus = SellerStatus.loaded;
+      if (invoice != null) {
+        selectedCollaborator =
+            collaboratorsState.data?.firstWhereOrNull((element) => element.id_participate == invoice.participate_fk);
+        notifyListeners();
+      }
     } else {
       sellerStatus = SellerStatus.failed;
     }
@@ -1233,6 +1250,10 @@ class invoice_vm extends ChangeNotifier {
   }
 
   initAdditionalInformation(InvoiceModel invoiceModel) {
+    if( invoiceModel.type_seller == "3"){
+      return;
+    }
+
     final sellerType = SellerType.values[int.parse(invoiceModel.type_seller ?? '0')];
     onChangeSellerType(sellerType, invoice: invoiceModel);
   }

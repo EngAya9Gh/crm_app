@@ -168,7 +168,9 @@ class _addinvoiceState extends State<addinvoice> {
           ..listproductinvoic = _invoice!.products!
           ..initAdditionalInformation(_invoice!);
 
-        sellerCommissionRate.text = _invoice!.rate_participate.toString();
+        sellerCommissionRate.text = _invoice?.rate_participate != null && _invoice?.rate_participate != ""
+            ? _invoice!.rate_participate.toString()
+            : "";
 
         // invoiceViewmodel.onChangeSelectedIndex(_invoice!.participate_fk);
       } else {
@@ -378,11 +380,11 @@ class _addinvoiceState extends State<addinvoice> {
                         hintText: label_renew2year,
                         obscureText: false,
                         vaild: (value) {
-                          if (value == null) {
+                          if (value?.trim().isEmpty ?? true) {
                             return null;
                           }
 
-                          if (num.parse(value) <= 0) {
+                          if (num.parse(value!) <= 0) {
                             return "يجب إدخال قيمة أكبر من 0.";
                           }
                           return null;
@@ -896,13 +898,13 @@ class _addinvoiceState extends State<addinvoice> {
                                 cursorColor: Colors.black,
                                 readOnly: false,
                                 validator: (text) {
-                                  if (text == null) {
+                                  if (text?.trim().isEmpty ?? true) {
                                     return null;
                                   }
 
-                                  if (num.tryParse(text) == null) return "أدخل رقم صحيح.";
+                                  if (num.tryParse(text ?? "0") == null) return "أدخل رقم صحيح.";
 
-                                  if (num.parse(text) <= 0) {
+                                  if (num.parse(text!) <= 0) {
                                     return "يجب إدخال قيمة أكبر من 0.";
                                   }
                                   if (num.parse(text) > 100) {
@@ -1023,9 +1025,12 @@ class _addinvoiceState extends State<addinvoice> {
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
                                             invoiceViewmodel.selectedCollaborator?.id_participate != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType != SellerType.collaborator &&
+                                        else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
                                             invoiceViewmodel.selectedAgent != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
+                                              invoiceViewmodel.selectedDistributor != null)
+                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
                                           'type_seller': '3', // type seller is employee,
 
@@ -1087,9 +1092,12 @@ class _addinvoiceState extends State<addinvoice> {
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
                                             invoiceViewmodel.selectedCollaborator?.id_participate != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType != SellerType.collaborator &&
+                                        else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
                                             invoiceViewmodel.selectedAgent != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
+                                              invoiceViewmodel.selectedDistributor != null)
+                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
                                           'type_seller': '3', // type seller is employee,
 

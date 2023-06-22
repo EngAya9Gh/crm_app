@@ -23,6 +23,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import 'addClient.dart';
@@ -40,7 +41,7 @@ class client_dashboard extends StatefulWidget {
   // final controllerUsers = Get.find<AllUserVMController>();
     late UserModel current ;
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-    late ClientModel _clientModel;
+    late ClientModel? _clientModel=ClientModel();
     Widget _switchcaseBody(int _selectedIndex){
       var _selectedView;
       switch(_selectedIndex){
@@ -79,152 +80,162 @@ class client_dashboard extends StatefulWidget {
     }
     return _selectedView;
   }
+
+
    late TabController _tabcontroller;
 
     @override
     void initState()  {
       _tabcontroller = TabController(length: 3, vsync: this);
-      WidgetsBinding.instance.addPostFrameCallback((_)async {
-        await  Provider.of<client_vm>(context, listen: false)
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        _clientModel =
+        await  Provider.of<client_vm>
+          (context, listen: false)
             .get_byIdClient(widget.invoiceModel.fkIdClient.toString()
         );
+        // final list = Provider.of<client_vm>(context,listen: true).listClient;
+        // if(list.any((element) =>
+        // element.idClients==widget.invoiceModel.fkIdClient))
+        //   _clientModel= list.firstWhereOrNull((element) =>
+        //   element.idClients==widget.invoiceModel.fkIdClient) ??
+        //       _clientModel;
         Provider.of<comment_vm>(context, listen: false)
             .getComment(widget.invoiceModel.fkIdClient.toString());
       });
-      //check level user
-      // Provider.of<client_vm>(context, listen: false)
-      //     .getclientByRegoin([]);//list empty that mean
-      // //level user all client in country
-      // // Provider.of<client_vm>(context, listen: false)
-      // //     . getclient_vm();
-      // // Provider.of<invoice_vm>(context, listen: false)
-      // //     .get_invoicesbyRegoin([]);
-      //
-      // _invoiceModel= Provider.of<invoice_vm>(context, listen: false)
-      //     .get_byIdInvoice(widget.itemapprove.fk_invoice.toString())!;
-      //
-      // _clientModel=
 
-      print("init tabbar");
       super.initState();
   }
+
+
+
   @override void dispose() {
-    //Navigator.of(context,rootNavigator: true).pop();
     super.dispose();
   }
     @override
     Widget build(BuildContext context) {
-      _clientModel=Provider.of<client_vm>(context,listen: true)
-      .listClient.firstWhere((element) =>
-      element.idClients ==
-      widget.invoiceModel.fkIdClient);
+
+      // _clientModel=Provider.of<client_vm>(context,listen: true)
+      //     .listClient.firstWhereOrNull((element) =>
+      // element.idClients ==
+      //     widget.invoiceModel.fkIdClient)!;
+
+
 
       current = Provider.of<user_vm_provider>(context).currentUser;
       int _tabBarIndex = 0;
 
       return DefaultTabController(
       length: 3,
-      child:Scaffold(
+      child:ModalProgressHUD(
+        inAsyncCall: Provider.of<client_vm>(context, listen: false)
+            .isloading,
+        child: Scaffold(
 
-        appBar: AppBar(
-          backgroundColor: kMainColor,
-          title:Text('ملف العميل',style: TextStyle(color: kWhiteColor),)
-          ,centerTitle: true,
-        bottom:    TabBar(
-          labelPadding: const EdgeInsets.only(left: 10,right: 10,top: 2),
-          indicatorSize: TabBarIndicatorSize.tab,
-          controller: _tabcontroller,
-          indicatorColor: kWhiteColor,
-          indicatorWeight: 5,
-          indicator: BoxDecoration(
-            color: kMainColor,
-            borderRadius: BorderRadius.circular(2),
-          ),
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.black,
-          //isScrollable: true,
-          tabs: <Widget>[
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   //crossAxisAlignment: CrossAxisAlignment.center,
-            //   children: [
-            //     Text('120',
-            //       style: TextStyle(
-            //       color: _tabBarIndex == 0 ? kMainColor : kUnActiveColor,
-            //       fontSize: _tabBarIndex == 0 ? 10 : null,
-            //           height:0.2,
-            //           fontWeight: FontWeight.bold,
-            //           //decoration: TextDecoration.underline,
-            //           //decorationThickness: 2,
-            //
-            //           decorationStyle: TextDecorationStyle.double
-            //     ),),
-            //     //Icon(Icons.category,color: kMainColor,),
-            //     SizedBox(width: 5,),
-            //
-            //   ],
-            // ),
-            Text(
-              'البيانات',
-              // style: TextStyle(
-              //     fontWeight: FontWeight.bold,
-              //     color: _tabBarIndex == 0 ?kMainColor : kUnActiveColor,
-              //     fontSize: _tabBarIndex == 0 ? 20 : null,
-              //     decorationStyle: TextDecorationStyle.double
-              // ),
-            ),
-            Text(
-              'الفاتورة ',
-              // style: TextStyle(
-              //     fontWeight: FontWeight.bold,
-              //     color: _tabBarIndex == 1?kMainColor : kUnActiveColor,
-              //     fontSize: _tabBarIndex == 1 ? 20 : null,
-              //     decorationStyle: TextDecorationStyle.double
-              // ),
-            ),
-            Text('التعليقات'),
-
-          ],
-        ),
-        ),
-        body: Container(
-          margin: EdgeInsets.only(bottom: 5),
-          padding: const EdgeInsets.only(top:10,left: 10,right: 10),
-           height: MediaQuery.of(context).size.height*0.9,
-          child: TabBarView(
+          appBar: AppBar(
+            backgroundColor: kMainColor,
+            title:Text('ملف العميل',style: TextStyle(color: kWhiteColor),)
+            ,centerTitle: true,
+          bottom:    TabBar(
+            labelPadding: const EdgeInsets.only(left: 10,right: 10,top: 2),
+            indicatorSize: TabBarIndicatorSize.tab,
             controller: _tabcontroller,
-            children: <Widget>[
-              ClientView(
-                idclient:widget.invoiceModel.fkIdClient.toString(),
-                invoice: widget.invoiceModel,
-                typeinvoice:widget.typeinvoice
+            indicatorColor: kWhiteColor,
+            indicatorWeight: 5,
+            indicator: BoxDecoration(
+              color: kMainColor,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.black,
+            //isScrollable: true,
+            tabs: <Widget>[
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   //crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     Text('120',
+              //       style: TextStyle(
+              //       color: _tabBarIndex == 0 ? kMainColor : kUnActiveColor,
+              //       fontSize: _tabBarIndex == 0 ? 10 : null,
+              //           height:0.2,
+              //           fontWeight: FontWeight.bold,
+              //           //decoration: TextDecoration.underline,
+              //           //decorationThickness: 2,
+              //
+              //           decorationStyle: TextDecorationStyle.double
+              //     ),),
+              //     //Icon(Icons.category,color: kMainColor,),
+              //     SizedBox(width: 5,),
+              //
+              //   ],
+              // ),
+              Text(
+                'البيانات',
+                // style: TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     color: _tabBarIndex == 0 ?kMainColor : kUnActiveColor,
+                //     fontSize: _tabBarIndex == 0 ? 20 : null,
+                //     decorationStyle: TextDecorationStyle.double
+                // ),
               ),
+              Text(
+                'الفاتورة ',
+                // style: TextStyle(
+                //     fontWeight: FontWeight.bold,
+                //     color: _tabBarIndex == 1?kMainColor : kUnActiveColor,
+                //     fontSize: _tabBarIndex == 1 ? 20 : null,
+                //     decorationStyle: TextDecorationStyle.double
+                // ),
+              ),
+              Text('التعليقات'),
 
-              InvoiceView(
-                type:'approved',
-                invoice:
-                widget.invoiceModel,
-                //clientmodel: _clientModel,
-              ),
-              commentView(
-                  client: _clientModel,),
             ],
           ),
-        ),
-       //  appBar: _switchcaseAppBar(0),
+          ),
+          body:
+          Provider.of<client_vm>(context, listen: true)
+              .isloading==true?
+          Container():
+          Container(
+            margin: EdgeInsets.only(bottom: 5),
+            padding: const EdgeInsets.only(top:10,left: 10,right: 10),
+             height: MediaQuery.of(context).size.height*0.9,
+            child: TabBarView(
+              controller: _tabcontroller,
+              children: <Widget>[
 
-       // body:_switchcaseBody(0),
-      //   floatingActionButton: FloatingActionButton(
-      //     backgroundColor: kMainColor,
-      // onPressed: (){
-      //
-      //   Navigator.push(context, MaterialPageRoute(
-      //       builder: (context)=>addClient()));
-      //
-      // },
-      // tooltip: 'إضافة عميل',
-      // child: Icon(Icons.add),
-        //),
+                ClientView(
+                  idclient:widget.invoiceModel.fkIdClient.toString(),
+                  invoice: widget.invoiceModel,
+                  typeinvoice:widget.typeinvoice
+                ),
+
+                InvoiceView(
+                  type:'approved',
+                  invoice:
+                  widget.invoiceModel,
+                  //clientmodel: _clientModel,
+                ),
+                commentView(
+                    client: _clientModel,),
+              ],
+            ),
+          ),
+         //  appBar: _switchcaseAppBar(0),
+
+         // body:_switchcaseBody(0),
+        //   floatingActionButton: FloatingActionButton(
+        //     backgroundColor: kMainColor,
+        // onPressed: (){
+        //
+        //   Navigator.push(context, MaterialPageRoute(
+        //       builder: (context)=>addClient()));
+        //
+        // },
+        // tooltip: 'إضافة عميل',
+        // child: Icon(Icons.add),
+          //),
+        ),
       ),
       );
     }
