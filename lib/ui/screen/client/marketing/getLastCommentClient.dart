@@ -31,10 +31,13 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
   @override
   initState() {
     super.initState();
-    Provider.of<lastcommentclient_vm>(context, listen: false).getLastcommentClientModel();
+    WidgetsBinding.instance.addPostFrameCallback((_)async{
+
+      Provider.of<lastcommentclient_vm>(context, listen: false)
+        .getLastcommentClientModel();
 
     // scheduleMicrotask(() {
-    // });
+     });
   }
 
   @override
@@ -209,106 +212,110 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                         //             .list_LastcommentClientModel[index])
                                         //     ));
                                       },
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                                        ),
-                                        //height: 70,//MediaQuery.of(context).size.height*0.15,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8),
-                                          child: Flex(
-                                            direction: Axis.vertical,
-                                            children: [
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        Provider.of<lastcommentclient_vm>(context, listen: false)
-                                                            .list_LastcommentClientModel[index]
-                                                            .client_obj!
-                                                            .name_regoin
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            //fontWeight: FontWeight.bold,
-                                                            fontSize: 12,
-                                                            fontFamily: kfontfamily2,
-                                                            color: kMainColor),
-                                                      ),
-                                                      Text(
-                                                        int.parse(Provider.of<lastcommentclient_vm>(context,
-                                                                        listen: false)
-                                                                    .list_LastcommentClientModel[index]
-                                                                    .hoursLastComment
-                                                                    .toString()) <
-                                                                0
-                                                            ? '0'
-                                                            : Provider.of<lastcommentclient_vm>(context, listen: false)
-                                                                    .list_LastcommentClientModel[index]
-                                                                    .hoursLastComment
-                                                                    .toString() +
-                                                                ' يوم ',
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            //fontWeight: FontWeight.bold,
-                                                            fontFamily: kfontfamily2,
-                                                            color: kMainColor),
-                                                      ),
-                                                      Text(
-                                                        'مضى على آخر تعليق',
-                                                        style:TextStyle(
-                                                            fontSize: 12,
-                                                            //fontWeight: FontWeight.bold,
-                                                            fontFamily: kfontfamily2,
-                                                            color: kMainColor),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      Text(
-                                                        Provider.of<lastcommentclient_vm>(context, listen: false)
-                                                            .list_LastcommentClientModel[index]
-                                                            .client_obj!
-                                                            .nameEnterprise
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                          fontWeight: FontWeight.bold,
-                                                          fontSize: 12,
-                                                          fontFamily: kfontfamily2,
-                                                        ),
-                                                      ),
+                                      child: Directionality(
+                                        textDirection: TextDirection.rtl,
 
-                                                    ],
-                                                  ),
-                                                  // type=='wait'?
-                                                  // Row(
-                                                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                  //   children: [
-                                                  //     Text(
-                                                  //       'تاريخ التواصل القادم',
-                                                  //       style: TextStyle(
-                                                  //         fontWeight: FontWeight.bold,
-                                                  //         fontSize: 12,
-                                                  //         fontFamily: kfontfamily2,
-                                                  //       ),
-                                                  //     ), Text(
-                                                  //       listCommunication[index].dateNext.toString(),
-                                                  //       style: TextStyle(
-                                                  //         fontWeight: FontWeight.bold,
-                                                  //         fontSize: 12,
-                                                  //         fontFamily: kfontfamily2,
-                                                  //       ),
-                                                  //     ),
-                                                  //   ],
-                                                  // ):Container(),
-                                                ],
-                                              )
-                                            ],
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                                          ),
+                                          //height: 70,//MediaQuery.of(context).size.height*0.15,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(8),
+                                            child: Flex(
+                                              direction: Axis.vertical,
+                                              children: [
+                                                Column(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          Provider.of<lastcommentclient_vm>(context, listen: false)
+                                                              .list_LastcommentClientModel[index]
+                                                              .client_obj!
+                                                              .name_regoin
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                              //fontWeight: FontWeight.bold,
+                                                              fontSize: 12,
+                                                              fontFamily: kfontfamily2,
+                                                              color: kMainColor),
+                                                        ),
+                                                        Text(
+                                                          int.parse(Provider.of<lastcommentclient_vm>(context,
+                                                                          listen: false)
+                                                                      .list_LastcommentClientModel[index]
+                                                                      .hoursLastComment
+                                                                      .toString()) <
+                                                                  0
+                                                              ? '0'
+                                                              : Provider.of<lastcommentclient_vm>(context, listen: false)
+                                                                      .list_LastcommentClientModel[index]
+                                                                      .hoursLastComment
+                                                                      .toString() +
+                                                                  ' يوم ',
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              //fontWeight: FontWeight.bold,
+                                                              fontFamily: kfontfamily2,
+                                                              color: kMainColor),
+                                                        ),
+
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          Provider.of<lastcommentclient_vm>(context, listen: false)
+                                                              .list_LastcommentClientModel[index]
+                                                              .client_obj!
+                                                              .nameEnterprise
+                                                              .toString(),
+                                                          style: TextStyle(
+                                                            fontWeight: FontWeight.bold,
+                                                            fontSize: 12,
+                                                            fontFamily: kfontfamily2,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          'مضى على آخر تعليق',
+                                                          style:TextStyle(
+                                                              fontSize: 12,
+                                                              //fontWeight: FontWeight.bold,
+                                                              fontFamily: kfontfamily2,
+                                                              color: kMainColor),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    // type=='wait'?
+                                                    // Row(
+                                                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    //   children: [
+                                                    //     Text(
+                                                    //       'تاريخ التواصل القادم',
+                                                    //       style: TextStyle(
+                                                    //         fontWeight: FontWeight.bold,
+                                                    //         fontSize: 12,
+                                                    //         fontFamily: kfontfamily2,
+                                                    //       ),
+                                                    //     ), Text(
+                                                    //       listCommunication[index].dateNext.toString(),
+                                                    //       style: TextStyle(
+                                                    //         fontWeight: FontWeight.bold,
+                                                    //         fontSize: 12,
+                                                    //         fontFamily: kfontfamily2,
+                                                    //       ),
+                                                    //     ),
+                                                    //   ],
+                                                    // ):Container(),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),

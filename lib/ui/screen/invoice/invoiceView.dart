@@ -137,7 +137,8 @@ class _InvoiceViewState extends State<InvoiceView> {
 
         if(list.any((element) => element.idInvoice==widget.invoice!.idInvoice))
          widget.invoice= list.firstWhereOrNull((element) =>
-         element.idInvoice==widget.invoice!.idInvoice) ?? widget.invoice;
+         element.idInvoice==widget.invoice!.idInvoice) ??
+             widget.invoice;
 
     final _globalKey = GlobalKey<FormState>();
 
@@ -340,7 +341,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             textDirection: myui.TextDirection.rtl,
                                             child: ModalProgressHUD(
                                               inAsyncCall:
-                                              Provider.of<invoice_vm>(context, listen: true).isloading,
+                                              Provider.of<invoice_vm>(context, listen: true)
+                                                  .isloading,
                                               child: StatefulBuilder(
                                                 builder: (BuildContext context,
                                                     void Function(void Function()) setState) {
@@ -480,7 +482,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                                       "fk_client":
                                                                       invoice.fkIdClient.toString(),
                                                                       "reason_back": typeclient_provider
-                                                                          .selectedValueOut,
+                                                                          .selectedValueOut.toString(),
                                                                       "fkuser_back":
                                                                       Provider.of<user_vm_provider>(
                                                                           context,
@@ -489,11 +491,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                                           .idUser
                                                                           .toString(),
                                                                       "desc_reason_back":
-                                                                      descresaonController.text,
+                                                                      descresaonController.text.toString(),
                                                                       "date_change_back":
                                                                       _currentDate.toString(),
                                                                       //DateTime.now().toString(),
-                                                                      "value_back": valueBackController.text,
+                                                                      "value_back": valueBackController.text.toString(),
                                                                     }, invoice.idInvoice.toString());
                                                                     Navigator.of(context, rootNavigator: true)
                                                                         .pop(false);
@@ -542,7 +544,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                                       "fk_client":
                                                                       invoice.fkIdClient.toString(),
                                                                       "reason_back": typeclient_provider
-                                                                          .selectedValueOut,
+                                                                          .selectedValueOut.toString(),
                                                                       "fkuser_back":
                                                                       Provider.of<user_vm_provider>(
                                                                           context,
@@ -551,11 +553,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                                           .idUser
                                                                           .toString(),
                                                                       "desc_reason_back":
-                                                                      descresaonController.text,
+                                                                      descresaonController.text.toString(),
                                                                       "date_change_back":
                                                                       _currentDate.toString(),
                                                                       //DateTime.now().toString(),
-                                                                      "value_back": valueBackController.text,
+                                                                      "value_back": valueBackController.text.toString(),
                                                                     }, invoice.idInvoice.toString());
                                                                     Navigator.of(context, rootNavigator: true)
                                                                         .pop(false);
@@ -700,65 +702,70 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     await showDialog(
                                       context: context,
                                       builder: (context) {
-                                        return AlertDialog(
-                                          title: Text(''),
-                                          content: Text('تأكيد العملية'),
-                                          actions: <Widget>[
-                                            new ElevatedButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                              onPressed: () {
-                                                Navigator.of(context, rootNavigator: true)
-                                                    .pop(false); // dismisses only the dialog and returns false
-                                              },
-                                              child: Text('لا'),
-                                            ),
-                                            ElevatedButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                              onPressed: () async {
-                                                // Navigator.of(context,
-                                                //     rootNavigator: true)
-                                                //     .pop(true);
-                                                // update client to approved client
-                                                Provider.of<invoice_vm>(context, listen: false)
-                                                    .setApproveclient_vm({
-                                                  "id_clients": invoice.fkIdClient,
-                                                  //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                  "fk_user": invoice.fkIdUser, //صاحب العميل
-                                                  "fk_regoin": invoice.fk_regoin,
-                                                  "regoin": invoice.name_regoin,
-                                                  "fk_country": invoice.fk_country,
-                                                  "isApprove": "1",
-                                                  "name_enterprise": invoice.name_enterprise,
-                                                  "fkusername": invoice.nameUser, //موظف المبيعات
-                                                  //"message":"",//
-                                                  "nameuserApproved":
-                                                  Provider.of<user_vm_provider>(context, listen: false)
-                                                      .currentUser
-                                                      .nameUser,
-                                                  "iduser_approve":
-                                                  Provider.of<user_vm_provider>(context, listen: false)
-                                                      .currentUser
-                                                      .idUser //معتمد الاشتراك
-                                                }, invoice.idInvoice).then(
-                                                        (value) => value != false ? clear() : error() // clear()
-                                                  // _scaffoldKey.currentState!.showSnackBar(
-                                                  //     SnackBar(content: Text('هناك مشكلة ما')))
-                                                );
-                                                //Navigator.of(context,rootNavigator: true).pop();
-                                                // Navigator.pop(context);
-                                                // Navigator.pushAndRemoveUntil(context,
-                                                //     MaterialPageRoute(builder: (context)=>Home()),
-                                                //         (route) => true
-                                                // );//this is active
-                                                //  Navigator.pushReplacement(context,
-                                                //      MaterialPageRoute(builder:
-                                                //          (context)=>ApprovePage()));
-                                              },
-                                              child: Text('نعم'),
-                                            ),
-                                          ],
+                                        return ModalProgressHUD(
+                                          inAsyncCall: Provider.of<invoice_vm>(context)
+                                              .isapproved,
+                                          child: AlertDialog(
+                                            title: Text(''),
+                                            content: Text('تأكيد العملية'),
+                                            actions: <Widget>[
+                                              new ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                onPressed: () {
+                                                  Navigator.of(context, rootNavigator: true)
+                                                      .pop(false); // dismisses only the dialog and returns false
+                                                },
+                                                child: Text('لا'),
+                                              ),
+                                              ElevatedButton(
+                                                style: ButtonStyle(
+                                                    backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                onPressed: () async {
+                                                  // Navigator.of(context,
+                                                  //     rootNavigator: true)
+                                                  //     .pop(true);
+                                                  // update client to approved client
+                                                  Provider.of<invoice_vm>(context, listen: false)
+                                                      .setApproveclient_vm({
+                                                    "id_clients": invoice.fkIdClient,
+                                                    'date_approve':DateTime.now().toString(),
+                                                    //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                    "fk_user": invoice.fkIdUser, //صاحب العميل
+                                                    "fk_regoin": invoice.fk_regoin,
+                                                    "regoin": invoice.name_regoin,
+                                                    "fk_country": invoice.fk_country,
+                                                    "isApprove": "1",
+                                                    "name_enterprise": invoice.name_enterprise,
+                                                    "fkusername": invoice.nameUser, //موظف المبيعات
+                                                    //"message":"",//
+                                                    "nameuserApproved":
+                                                    Provider.of<user_vm_provider>(context, listen: false)
+                                                        .currentUser
+                                                        .nameUser,
+                                                    "iduser_approve":
+                                                    Provider.of<user_vm_provider>(context, listen: false)
+                                                        .currentUser
+                                                        .idUser //معتمد الاشتراك
+                                                  }, invoice.idInvoice).then(
+                                                          (value) => value != false ? clear() : error() // clear()
+                                                    // _scaffoldKey.currentState!.showSnackBar(
+                                                    //     SnackBar(content: Text('هناك مشكلة ما')))
+                                                  );
+                                                  //Navigator.of(context,rootNavigator: true).pop();
+                                                  // Navigator.pop(context);
+                                                  // Navigator.pushAndRemoveUntil(context,
+                                                  //     MaterialPageRoute(builder: (context)=>Home()),
+                                                  //         (route) => true
+                                                  // );//this is active
+                                                  //  Navigator.pushReplacement(context,
+                                                  //      MaterialPageRoute(builder:
+                                                  //          (context)=>ApprovePage()));
+                                                },
+                                                child: Text('نعم'),
+                                              ),
+                                            ],
+                                          ),
                                         );
                                       },
                                     );
@@ -773,7 +780,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   style:
                                   ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
                                   onPressed: () async {
-                                    Provider.of<invoice_vm>(context, listen: false).setApproveclient_vm({
+                                    Provider.of<invoice_vm>(context, listen: false)
+                                        .setApproveclient_vm({
                                       "id_clients": invoice.fkIdClient,
                                       //'idApproveClient':widget.itemapprove!.idApproveClient,
                                       "fk_user": invoice.fkIdUser,

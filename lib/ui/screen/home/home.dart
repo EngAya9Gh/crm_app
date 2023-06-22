@@ -83,8 +83,8 @@ class _HomeState extends State<Home> {
       Provider.of<ticket_vm>(context, listen: false)
           .getticket();
 
-    Provider.of<invoice_vm>(context, listen: false)
-        .getinvoices();
+    // Provider.of<invoice_vm>(context, listen: false)
+    //     .getinvoices();
     await Provider.of<privilge_vm>
       (context,listen: false).getprivlg_usercurrent();
 
@@ -95,8 +95,8 @@ class _HomeState extends State<Home> {
            Provider.of<privilge_vm>(context,listen: false).privilgelist;
      Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
 
-     Provider.of<client_vm>(context, listen: false)
-        .getallclient();//getclient_vm();
+     // Provider.of<client_vm>(context, listen: false)
+     //    .getallclient();//getclient_vm();
 
     });
 

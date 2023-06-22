@@ -15,6 +15,7 @@ import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import 'clientView.dart';
@@ -41,7 +42,7 @@ class ProfileClient extends StatefulWidget {
 
 class _ProfileClientState extends State<ProfileClient> with TickerProviderStateMixin {
   late UserModel current;
-  late ClientModel _clientModel;
+  late ClientModel _clientModel=ClientModel();
   late TabController _tabController;
   int indexTab = 0;
 
@@ -57,7 +58,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
       Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
 
-      Provider.of<client_vm>(context, listen: false)
+     await Provider.of<client_vm>(context, listen: false)
           .get_byIdClient(widget.idClient.toString());
 
       Provider.of<communication_vm>(context, listen: false).getCommunicationclient(widget.idClient.toString());
@@ -71,11 +72,17 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    _clientModel = widget.client ??
-        Provider.of<client_vm>(context, listen: true)
-            .listClient.firstWhere((element) //error
-            =>
-            element.idClients == widget.idClient);
+    final list = Provider.of<client_vm>(context,listen: true).listClient;
+    if(list.any((element) =>
+    element.idClients==widget.idClient))
+      _clientModel= list.firstWhereOrNull((element) =>
+      element.idClients==widget.idClient) ??
+          _clientModel;
+    // _clientModel = widget.client ??
+    //     Provider.of<client_vm>(context, listen: true)
+    //         .listClient.firstorNullWhere((element) //error
+    //         =>
+    //         element.idClients == widget.idClient);
 
     current = Provider.of<user_vm_provider>(context).currentUser;
 
@@ -83,7 +90,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
       appBar: AppBar(
         backgroundColor: kMainColor,
         title: Text(
-          getnamelong(_clientModel.nameEnterprise.toString()),
+            _clientModel==null?'':  getnamelong(_clientModel.nameEnterprise.toString()),
           style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
         ),
         centerTitle: true,

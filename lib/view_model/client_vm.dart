@@ -13,6 +13,7 @@ import 'package:crm_smart/services/clientService.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'country_vm.dart';
@@ -387,19 +388,24 @@ class client_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> get_byIdClient(String idClient) async {
+  Future<ClientModel> get_byIdClient(String idClient) async {
 
     ClientModel? inv;
     bool res=true;
-//errror
-   inv= listClient.firstWhere((element) =>
-   element.idClients==idClient
-       ,orElse:null);
+    isloading=true;
+    notifyListeners();
+   inv= listClient.firstWhereOrNull((element) =>
+   element.idClients==idClient);
+       // ,orElse:null);
     if(inv==null) {
       inv=await ClientService().getclientid(idClient);
       listClient.add(inv);
     }
-      notifyListeners();
+
+    isloading=false;
+
+    notifyListeners();
+    return inv;
   }
   Future<void> getclientMarketing() async {
     //عملائي

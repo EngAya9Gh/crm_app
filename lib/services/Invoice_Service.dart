@@ -12,10 +12,21 @@ import '../model/participatModel.dart';
 class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoice(String fk_country) async {
-    var data = await Api().get(url: url + 'client/invoice/getinvoice.php?fk_country=$fk_country');
+    var data = await Api()
+        .get(url: url + 'client/invoice/getinvoice.php?fk_country=$fk_country');
 
-    List<InvoiceModel> invoices = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
-    return invoices;
+    List<InvoiceModel> prodlist = [];
+    // final json = "[" + data[i] + "]";
+    for (int i = 0; i < data.length; i++) {
+      print(i);
+
+      //print("data "+ "[" + data[i] + "]");
+      prodlist.add(InvoiceModel.fromJson(data[i]));
+    }
+    // List<InvoiceModel> invoices =
+    // await compute<List<dynamic>,
+    //     List<InvoiceModel>>(convertToInvoices, data);
+    return prodlist;
   }
 
   List<InvoiceModel> convertToInvoices(List<dynamic> list) {
@@ -137,7 +148,8 @@ class Invoice_Service {
     data=await Api()
         .get(url:url+ 'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
     print(data);
-    List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
+    List<InvoiceModel> prodlist =
+    await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
   Future<List<InvoiceModel>> getinvoicebyregoin(String regoin) async {
@@ -145,7 +157,8 @@ class Invoice_Service {
     data=await Api()
         .get(url:url+ 'client/invoice/getinvoicebyregoin.php?fk_regoin=$regoin');
     print(data);
-    List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
+    List<InvoiceModel> prodlist =
+    await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
   Future<List<InvoiceModel>> getinvoiceMarketing(String fk_country) async {

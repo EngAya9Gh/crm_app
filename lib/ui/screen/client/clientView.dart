@@ -25,7 +25,9 @@ import '../../../constants.dart';
 import '../../../function_global.dart';
 
 class ClientView extends StatefulWidget {
-  ClientView( {this.clienttransfer, required this.invoice,this.typeinvoice, required this.idclient,this.client, Key? key}) : super(key: key);
+  ClientView( {
+    this.clienttransfer, required this.invoice,
+    this.typeinvoice, required this.idclient,this.client, Key? key}) : super(key: key);
   String idclient;
   InvoiceModel? invoice;
   String? clienttransfer;
@@ -571,7 +573,7 @@ class _ClientViewState extends State<ClientView> {
 
                 //approve finance
                 widget.invoice!=null?
-                widget.invoice!.isApprove!=null&&
+                widget.invoice!.isApprove!=1&&
                     widget.invoice!.isApproveFinance==null&&
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('111')==true

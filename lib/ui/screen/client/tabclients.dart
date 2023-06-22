@@ -363,12 +363,17 @@ class _tabclientsState extends State<tabclients> {
                               child: ListView.builder(
                                       scrollDirection: Axis.vertical,
                                       itemCount: value.listClientfilter.length,
-                                  padding: const EdgeInsets.all(2),
+                                       // padding: const EdgeInsets.all(2),
                                       itemBuilder: (context, index) {
 
-                                        return cardAllClient(
-                                        clientModel:
-                                        value.listClientfilter[index],
+                                        return SingleChildScrollView(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: cardAllClient(
+                                            clientModel:
+                                            value.listClientfilter[index],
+                                            ),
+                                          ),
                                         );
                                       }),
                             ),

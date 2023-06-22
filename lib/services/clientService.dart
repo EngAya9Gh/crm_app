@@ -59,7 +59,9 @@ class ClientService{
     data=await Api()
         .get(url:url+ 'client/getClientAll.php?fk_country=$fkcountry');
 
-    List<ClientModel> prodlist =  await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
+    List<ClientModel> prodlist =
+    await compute<List<dynamic>, List<ClientModel>>
+      (convertToClients, data);
     return prodlist;
   }
   Future<List<ClientModel>> getAllClientsupport(String? fkcountry,List<int>? listparam) async {
