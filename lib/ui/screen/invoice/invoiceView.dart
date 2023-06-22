@@ -15,7 +15,6 @@ import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -28,47 +27,60 @@ import 'add_payement.dart';
 import 'edit_invoice.dart';
 
 class InvoiceView extends StatefulWidget {
-  InvoiceView({this.type, required this.invoice,
-    //required this.clientmodel,
-    Key? key})
-      : super(key: key);
-  //String idinvoice;
-  //bool?  itemapprove;
-  InvoiceModel? invoice;
+  InvoiceView({
+    this.type,
+    required this.invoice,
+    Key? key,
+  }) : super(key: key);
+
+  InvoiceModel invoice;
   String? type;
-  //&&  type=='approved'
+
   @override
   _InvoiceViewState createState() => _InvoiceViewState();
 }
 
 class _InvoiceViewState extends State<InvoiceView> {
-
-
   final TextEditingController resaonController = TextEditingController();
   final TextEditingController valueBackController = TextEditingController();
   final TextEditingController descresaonController = TextEditingController();
   late typeclient typeclient_provider;
   late ClientModel clientmodel;
 
-  Widget _product(String name,String price ) {
-   return    Column(
-        children: [
-          Row(
-
-            children: [
-              //Expanded flex 1
-              Text(name,
-                style: TextStyle(fontFamily: kfontfamily2),),
-              Spacer(),
-              Text( price,style: TextStyle(fontFamily: kfontfamily2),),
-            ],
-          ),
-          Divider(thickness: 1,color: Colors.grey,),
-
-        ],
-      );
+  Widget _product(String name, String price) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            //Expanded flex 1
+            Text(
+              name,
+              style: TextStyle(fontFamily: kfontfamily2),
+            ),
+            Spacer(),
+            Text(
+              price,
+              style: TextStyle(fontFamily: kfontfamily2),
+            ),
+          ],
+        ),
+        Divider(
+          thickness: 1,
+          color: Colors.grey,
+        ),
+      ],
+    );
   }
 
+  @override
+  void initState() {
+    context.read<invoice_vm>().setCurrentInvoice(widget.invoice);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // await Provider.of<invoice_vm>(context,listen: false).getinvoices();
+      await Provider.of<client_vm>(context, listen: false).get_byIdClient(widget.invoice.fkIdClient.toString());
+      clientmodel = Provider.of<client_vm>(context, listen: false)
+          .listClient
+          .firstWhere((element) => element.idClients == widget.invoice.fkIdClient);
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
 
@@ -81,9 +93,7 @@ class _InvoiceViewState extends State<InvoiceView> {
              (element) => element.idClients==widget.invoice!.fkIdClient);
 
 
-     print('nameEEnter'+clientmodel.idClients.toString());
-     // await Provider.of<invoice_vm>(context, listen: false)
-     //      .get_invoiceclientlocal(widget.invoice!.fkIdClient,'');
+      print('nameEEnter' + clientmodel.idClients.toString());
 
       typeclient_provider = Provider.of<typeclient>(context, listen: false);
       typeclient_provider.getreasons('client');
@@ -105,6 +115,7 @@ class _InvoiceViewState extends State<InvoiceView> {
     descresaonController.dispose();
     super.dispose();
   }
+
   DateTime _currentDate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
