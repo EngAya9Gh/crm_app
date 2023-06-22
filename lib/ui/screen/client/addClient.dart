@@ -122,6 +122,7 @@ class _addClientState extends State<addClient> {
                           return label_empty;
                         }
                       },
+                      //inputformate: [FilteringTextInputFormatter.allow(RegExp(r'''/^[a-zA-Z]+$/'''))],
                       controller: nameEnterpriseController,
                     ),
                     SizedBox(height: 15),

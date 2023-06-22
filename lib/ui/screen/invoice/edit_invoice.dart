@@ -79,7 +79,6 @@ class _edit_invoiceState extends State<edit_invoice> {
       _currentDateApprove = DateTime.parse(widget.invoiceModel.date_approve.toString());
       Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateApprove!);
     }
-
     _currentDateCreate = DateTime.parse(widget.invoiceModel.dateCreate.toString());
     Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateCreate);
     Provider.of<regoin_vm>(context, listen: false).changeVal(regoin);
