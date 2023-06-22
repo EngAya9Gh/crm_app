@@ -81,17 +81,6 @@ class _InvoiceViewState extends State<InvoiceView> {
       clientmodel = Provider.of<client_vm>(context, listen: false)
           .listClient
           .firstWhere((element) => element.idClients == widget.invoice.fkIdClient);
-  @override void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_)async {
-
-     // await Provider.of<invoice_vm>(context,listen: false).getinvoices();
-     await Provider.of<client_vm>(context,listen: false)
-         .get_byIdClient(widget.invoice!.fkIdClient.toString());
-
-     clientmodel=Provider.of<client_vm>(context,listen: false)
-         .listClient.firstWhere(
-             (element) => element.idClients==widget.invoice!.fkIdClient);
-
 
       print('nameEEnter' + clientmodel.idClients.toString());
 
@@ -128,11 +117,11 @@ class _InvoiceViewState extends State<InvoiceView> {
         initialDate: currentDate,
         firstDate: DateTime(2015),
         lastDate: DateTime(3000));
-    if (pickedDate != null )//&& pickedDate != currentDate)
+    if (pickedDate != null) //&& pickedDate != currentDate)
       setState(() {
-        _currentDate = pickedDate;});
-    Provider.of<datetime_vm>(context,listen: false)
-        .setdatetimevalue1(_currentDate );
+        _currentDate = pickedDate;
+      });
+    Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDate);
   }
 
   @override
@@ -145,119 +134,315 @@ class _InvoiceViewState extends State<InvoiceView> {
          element.idInvoice==widget.invoice!.idInvoice) ?? widget.invoice;
 
     final _globalKey = GlobalKey<FormState>();
-    Widget dialog = SimpleDialog(
-      elevation: 0,
-      //backgroundColor: Colors.yellowAccent,
-      // shape: StadiumBorder(
-      //    side: BorderSide.none
-      // ),
-      titlePadding:const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0) ,
-      insetPadding:  EdgeInsets.only(left: 10,right: 10,bottom: 10),
-      contentPadding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
-      title: Center(child: Text('تحويل العميل إلى منسحب',style:TextStyle(fontFamily: kfontfamily2))),
-      // titleTextStyle: TextStyle(fontFamily: kfontfamily2),
-      children: [
-        Directionality(
-          textDirection: myui.TextDirection.rtl,
-          child:  ModalProgressHUD(
-              inAsyncCall:
-              Provider.of<invoice_vm>(context, listen: true).isloading,
-                  child: StatefulBuilder(
 
-              builder: (BuildContext context, void Function(void Function()) setState) {
-                return   Form(
-                  key: _globalKey,
-                  child: Column(
-                    children: [
-                      RowEdit(name: "اسباب الإنسحاب", des: '*'),
-                      Consumer<typeclient>(
-                        builder: (context, cart, child){
-                          return DropdownButton(
-                            isExpanded: true,
-                            //hint: Text("حدد حالة العميل"),
-                            items: cart.type_of_out.map((level_one) {
-                              return DropdownMenuItem(
-                                child: Text(level_one.nameReason), //label of item
-                                value: level_one.idReason, //value of item
-                              );
-                            }).toList(),
-                            value:cart.selectedValueOut,
-                            onChanged:(value) {
-                              cart.changevalueOut(value.toString());
+    return Scaffold(
+      appBar: widget.type == 'approved'
+          ? null
+          : AppBar(
+              elevation: 1,
+            ),
+      body: Padding(
+        padding: EdgeInsets.only(top: 15, left: 10, right: 10),
+        child: Directionality(
+          textDirection: myui.TextDirection.rtl, // TextDirection.rtl,
+          child:
+              //invoice!=null?
+              Consumer<invoice_vm>(builder: (context, value, child) {
+            final invoice = value.currentInvoice;
 
-                            },
-                          );},
-                      ),
-                      SizedBox(height: 3,),
-                      EditTextFormField(
-                        vaild: (value) {
-                          if (value!.isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: "وصف سبب الإنسحاب",
-                        //obscureText: false,
-                        //  con: descresaonController, read: false,
-                        //radius: 5,
-                        paddcustom: EdgeInsets.all(8),
-                        maxline: 5,
-                        controller: descresaonController,
-                      ),
-                      SizedBox(height: 3,),
-                      EditTextFormField(
-                        //read: false,
-                        vaild: (value) {
-                          if (value!.isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        hintText: 'المبلغ المسترجع',
-                        //obscureText: false,
-                        controller: valueBackController,
-                        //radius: 5,
-                      ),
-                      SizedBox(height: 3,),
-                      RowEdit(name: "تاريخ الإنسحاب", des: '*'),
-                      TextField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.date_range,
-                            color: kMainColor,
+            return Container(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    for (int index = 0; index < invoice!.products!.length; index++)
+                      _product(
+                          invoice.products![index].nameProduct.toString(), invoice.products![index].price.toString()),
+                    Container(
+                      color: Colors.amberAccent,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'المبلغ الإجمالي   ',
+                            style: TextStyle(fontFamily: kfontfamily3),
                           ),
-                          hintStyle: const TextStyle(
-                              color: Colors.black45,
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                          hintText://_currentDate.toString(),
-                          Provider.of<datetime_vm>(context,listen: true).valuedateTime.toString(),
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                        ),
-                        readOnly: true,
-                        onTap: () {
-                          setState((){
-                            _selectDate(context,_currentDate);
-                          });
-                        },
+                          //Spacer(),
+                          Text(
+                            invoice.total.toString(),
+                            style: TextStyle(fontFamily: kfontfamily2),
+                          ),
+                        ],
                       ),
-                      // RaisedButton(
-                      //   onPressed: () => _selectDate(context,_currentDate),
-                      //   child: Text('Select date'),
-                      // ),
-                      SizedBox(height: 6,),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    invoice.date_approve.toString() == null
+                        ? cardRow(title: 'تاريخ عقد الإشتراك', value: invoice.date_approve.toString())
+                        : Container(),
 
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      kMainColor)),
-                              onPressed: () async {
-                                print(typeclient_provider.selectedValueOut);
-                                // dismisses only the dialog and returns false
-                                if (_globalKey.currentState!.validate()) {
-                                  _globalKey.currentState!.save();
+                    cardRow(title: 'المبلغ المدفوع', value: invoice.amountPaid.toString()),
+                    cardRow(
+                        title: ' المبلغ المتبقي',
+                        value: (double.parse(invoice.total.toString()) - double.parse(invoice.amountPaid.toString()))
+                            .toStringAsFixed(2)
+                            .toString()),
+                    cardRow(title: ' التجديد السنوي', value: invoice.renewYear.toString()),
+                    cardRow(title: ' طريقة الدفع', value: invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
+                    //nameuserApprove
+
+                    cardRow(title: ' العملة', value: invoice.currency_name.toString() == '0' ? 'USD' : 'SAR'),
+
+                    invoice.nameuserApprove != null
+                        ? cardRow(title: 'معتمد الفاتورة', value: getnameshort(invoice.nameuserApprove.toString()))
+                        : Container(),
+
+                    invoice.nameuserApprove != null
+                        ? cardRow(title: 'تاريخ اعتماد الفاتورة', value: invoice.date_approve.toString())
+                        : Container(),
+                    invoice.date_lastuserupdate != null
+                        ? cardRow(
+                            title: 'تاريخ آخر تعديل',
+                            value: invoice.date_lastuserupdate != null ? invoice.date_lastuserupdate.toString() : '')
+                        : Container(),
+                    invoice.date_lastuserupdate != null
+                        ? cardRow(
+                            title: 'آخر تعديل من قبل',
+                            value: invoice.date_lastuserupdate != null
+                                ? getnameshort(invoice.lastuserupdateName.toString())
+                                : '')
+                        : Container(),
+
+                    invoice.date_change_back != null
+                        ? cardRow(title: 'تاريخ الإنسحاب', value: invoice.date_change_back.toString())
+                        : Container(),
+                    invoice.date_change_back != null
+                        ? cardRow(title: 'تم الإنسحاب عن طريق', value: getnameshort(invoice.nameuserback.toString()))
+                        : Container(),
+                    invoice.fkuser_back != null
+                        ? cardRow(title: 'المبلغ المسترجع', value: invoice.value_back.toString())
+                        : Container(),
+                    invoice.fkuser_back != null
+                        ? cardRow(
+                            title: 'سبب الإنسحاب',
+                            value: invoice.desc_reason_back.toString(),
+                            isExpanded: true,
+                          )
+                        : Container(),
+                    invoice.numbarnch.toString().trim().isNotEmpty && invoice.numbarnch != null
+                        ? cardRow(title: 'عدد الفروع', value: invoice.numbarnch.toString())
+                        : Container(),
+                    //invoice!.nummostda != null||
+                    invoice.nummostda.toString().trim().isNotEmpty && invoice.nummostda != null
+                        ? cardRow(title: 'عدد المستودعات ', value: invoice.nummostda.toString())
+                        : Container(),
+                    invoice.numusers.toString().trim().isNotEmpty && invoice.numusers != null
+                        ? cardRow(title: 'عدد المستخدمين', value: invoice.numusers.toString())
+                        : Container(),
+                    invoice.address_invoice.toString() == ''
+                        ? cardRow(title: 'عنوان الفاتورة', value: invoice.address_invoice.toString())
+                        : Container(),
+
+                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true
+                        ? invoice.clientusername != null && invoice.clientusername.toString().isNotEmpty
+                            ? cardRow(
+                                title: 'يوزر العميل',
+                                value: invoice.clientusername == null ? '' : invoice.clientusername.toString())
+                            : Container()
+                        : Container(),
+
+                    invoice.imagelogo != null && invoice.imagelogo.toString().isNotEmpty
+                        ? widgetlogo(title: 'شعار المؤسسة', value: invoice.imagelogo.toString())
+                        : Container(),
+
+                    invoice.participal != null
+                        ? Column(
+                            children: [
+                              cardRow(value: invoice.participal!.name_participate.toString(), title: 'اسم المتعاون'),
+                              cardRow(value: invoice.rate_participate.toString(), title: 'نسبة المتعاون'),
+                              cardRow(
+                                  value: invoice.participal!.numberbank_participate.toString(),
+                                  title: 'رقم بنك المتعاون'),
+                              cardRow(
+                                  value: invoice.participal!.mobile_participate.toString(),
+                                  title: 'رقم موبايل المتعاون'),
+                            ],
+                          )
+                        : Container(),
+                    invoice.agent_distibutor != null
+                        ? Column(
+                            children: [
+                              cardRow(
+                                  value: invoice.agent_distibutor!.nameAgent.toString(),
+                                  title: invoice.agent_distibutor!.typeAgent == '1' ? 'اسم الوكيل' : 'اسم الموزع'),
+
+                              if(invoice.rate_participate != null)
+                              cardRow(
+                                  value: invoice.rate_participate.toString(),
+                                  title: invoice.agent_distibutor!.typeAgent == '1' ? 'نسبة الوكيل' : 'نسبة الموزع'),
+                              cardRow(
+                                  value: invoice.agent_distibutor!.mobileAgent.toString(),
+                                  title: invoice.agent_distibutor!.typeAgent == '1'
+                                      ? 'رقم موبايل الوكيل'
+                                      : 'رقم موبايل الموزع'),
+                            ],
+                          )
+                        : Container(),
+
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        //crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('31') == true
+                              ? CustomButton(
+                                  text: 'تعديل الفاتورة',
+                                  onTap: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                addinvoice(invoice: invoice, itemClient: clientmodel)));
+                                  },
+                                )
+                              : Container(),
+                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('41') == true
+                              ? invoice.isApprove != null
+                                  ? CustomButton(
+                                      //width: MediaQuery.of(context).size.width * 0.2,
+                                      text: 'الاجراءات',
+                                      onTap: () async {
+                                        showDialog<void>(
+                                            context: context,
+                                            builder: (context) => SimpleDialog(
+                                                  elevation: 0,
+                                                  //backgroundColor: Colors.yellowAccent,
+                                                  // shape: StadiumBorder(
+                                                  //    side: BorderSide.none
+                                                  // ),
+                                                  titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
+                                                  insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                                                  contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                                                  title: Center(
+                                                      child: Text('تحويل العميل إلى منسحب',
+                                                          style: TextStyle(fontFamily: kfontfamily2))),
+                                                  // titleTextStyle: TextStyle(fontFamily: kfontfamily2),
+                                                  children: [
+                                                    Directionality(
+                                                      textDirection: myui.TextDirection.rtl,
+                                                      child: ModalProgressHUD(
+                                                        inAsyncCall:
+                                                            Provider.of<invoice_vm>(context, listen: true).isloading,
+                                                        child: StatefulBuilder(
+                                                          builder: (BuildContext context,
+                                                              void Function(void Function()) setState) {
+                                                            return Form(
+                                                              key: _globalKey,
+                                                              child: Column(
+                                                                children: [
+                                                                  RowEdit(name: "اسباب الإنسحاب", des: '*'),
+                                                                  Consumer<typeclient>(
+                                                                    builder: (context, cart, child) {
+                                                                      return DropdownButton(
+                                                                        isExpanded: true,
+                                                                        //hint: Text("حدد حالة العميل"),
+                                                                        items: cart.type_of_out.map((level_one) {
+                                                                          return DropdownMenuItem(
+                                                                            child: Text(
+                                                                                level_one.nameReason), //label of item
+                                                                            value: level_one.idReason, //value of item
+                                                                          );
+                                                                        }).toList(),
+                                                                        value: cart.selectedValueOut,
+                                                                        onChanged: (value) {
+                                                                          cart.changevalueOut(value.toString());
+                                                                        },
+                                                                      );
+                                                                    },
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 3,
+                                                                  ),
+                                                                  EditTextFormField(
+                                                                    vaild: (value) {
+                                                                      if (value!.isEmpty) {
+                                                                        return label_empty;
+                                                                      }
+                                                                    },
+                                                                    hintText: "وصف سبب الإنسحاب",
+                                                                    //obscureText: false,
+                                                                    //  con: descresaonController, read: false,
+                                                                    //radius: 5,
+                                                                    paddcustom: EdgeInsets.all(8),
+                                                                    maxline: 5,
+                                                                    controller: descresaonController,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 3,
+                                                                  ),
+                                                                  EditTextFormField(
+                                                                    //read: false,
+                                                                    vaild: (value) {
+                                                                      if (value!.isEmpty) {
+                                                                        return label_empty;
+                                                                      }
+                                                                    },
+                                                                    hintText: 'المبلغ المسترجع',
+                                                                    //obscureText: false,
+                                                                    controller: valueBackController,
+                                                                    //radius: 5,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    height: 3,
+                                                                  ),
+                                                                  RowEdit(name: "تاريخ الإنسحاب", des: '*'),
+                                                                  TextField(
+                                                                    decoration: InputDecoration(
+                                                                      prefixIcon: Icon(
+                                                                        Icons.date_range,
+                                                                        color: kMainColor,
+                                                                      ),
+                                                                      hintStyle: const TextStyle(
+                                                                          color: Colors.black45,
+                                                                          fontSize: 16,
+                                                                          fontWeight: FontWeight.w500),
+                                                                      hintText: //_currentDate.toString(),
+                                                                          Provider.of<datetime_vm>(context,
+                                                                                  listen: true)
+                                                                              .valuedateTime
+                                                                              .toString(),
+                                                                      filled: true,
+                                                                      fillColor: Colors.grey.shade200,
+                                                                    ),
+                                                                    readOnly: true,
+                                                                    onTap: () {
+                                                                      setState(() {
+                                                                        _selectDate(context, _currentDate);
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                  // RaisedButton(
+                                                                  //   onPressed: () => _selectDate(context,_currentDate),
+                                                                  //   child: Text('Select date'),
+                                                                  // ),
+                                                                  SizedBox(
+                                                                    height: 6,
+                                                                  ),
+                                                                  Center(
+                                                                    child: Row(
+                                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                      children: [
+                                                                        ElevatedButton(
+                                                                          style: ButtonStyle(
+                                                                              backgroundColor:
+                                                                                  MaterialStateProperty.all(
+                                                                                      kMainColor)),
+                                                                          onPressed: () async {
+                                                                            print(typeclient_provider.selectedValueOut);
+                                                                            // dismisses only the dialog and returns false
+                                                                            if (_globalKey.currentState!.validate()) {
+                                                                              _globalKey.currentState!.save();
 
                                   await Provider.of<invoice_vm>(context, listen: false)
                                       .set_state_back({

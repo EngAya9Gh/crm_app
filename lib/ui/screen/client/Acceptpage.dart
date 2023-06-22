@@ -1,6 +1,3 @@
-
-
-
 import 'dart:ffi';
 
 import 'package:crm_smart/constants.dart';
@@ -24,8 +21,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
+
 class invoicesAcceptclient extends StatefulWidget {
-  invoicesAcceptclient({ Key? key}) : super(key: key);
+  invoicesAcceptclient({Key? key}) : super(key: key);
 
   @override
   _invoicesAcceptclientState createState() => _invoicesAcceptclientState();
@@ -35,16 +33,17 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   String? regoin;
   String? typeclientvalue;
   late ClientModel itemClient;
-  // late String typepayController;
-  @override void didChangeDependencies() async {
 
+  // late String typepayController;
+  @override
+  void didChangeDependencies() async {
     super.didChangeDependencies();
   }
-  @override void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_)async{
-      List<PrivilgeModel> list=
-      await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      List<PrivilgeModel> list = await Provider.of<privilge_vm>(context, listen: false).privilgelist;
       Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);
       Provider.of<invoice_vm>(context, listen: false).getinvoice_Debt();
           // .getinvoice_Localwithprev();
@@ -68,7 +67,10 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('فواتير العملاء',style: TextStyle(color: kWhiteColor),),
+        title: Text(
+          'فواتير العملاء',
+          style: TextStyle(color: kWhiteColor),
+        ),
         centerTitle: true,
       ),
       body: Consumer<privilge_vm>(
