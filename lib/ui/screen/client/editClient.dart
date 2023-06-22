@@ -18,6 +18,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -362,9 +363,24 @@ class _editclientState extends State<editclient> {
                       obscureText: false,
                       controller: nameclientController,
                     ),
-
                     SizedBox(
-                      height: 5,
+                        height: 5
+                    ),
+                    RowEdit(name: label_clientmobile, des: '*'),
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value!.toString().trim().isEmpty) {
+                          return label_empty;
+                        }
+                      },
+                      hintText: '+966000000000',
+                      obscureText: false,
+                      controller: mobileController,
+                      inputformate: [FilteringTextInputFormatter.digitsOnly],
+                      maxLength: 15,
+                    ),
+                    SizedBox(
+                      height: 5
                     ),
                     Provider.of<privilge_vm>(context, listen: true)
                                 .checkprivlge('27') ==
@@ -390,21 +406,6 @@ class _editclientState extends State<editclient> {
                             },
                           ),
                     SizedBox(
-                      height: 5,
-                    ),
-                    RowEdit(name: 'وصف النشاط', des: '*'),
-
-                    EditTextFormField(
-                      vaild: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return label_empty;
-                        }
-                      },
-                      hintText: label_desc_activ,
-                      obscureText: false,
-                      controller: descActivController,
-                    ),
-                    SizedBox(
                       height: 15,
                     ),
                     RowEdit(name: label_client_typejob, des: '*'),
@@ -427,7 +428,7 @@ class _editclientState extends State<editclient> {
                                     .name_activity_type), //label of item
 
                                 value:
-                                    level_one.id_activity_type, //value of item
+                                level_one.id_activity_type, //value of item
                               );
                             }).toList(),
                             value: cart.selectedValueOut,
@@ -441,18 +442,19 @@ class _editclientState extends State<editclient> {
                         );
                       },
                     ),
-
-                    RowEdit(name: label_usernameclient, des: '*'),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    RowEdit(name: 'وصف النشاط', des: '*'),
                     EditTextFormField(
-                      maxline: 3,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return label_empty;
                         }
                       },
-                      hintText: label_usernameclient,
+                      hintText: label_desc_activ,
                       obscureText: false,
-                      controller: usernameclientController,
+                      controller: descActivController,
                     ),
                     SizedBox(
                       height: 5,
@@ -460,27 +462,6 @@ class _editclientState extends State<editclient> {
                     //admin
 
                     RowEdit(name: label_clientcity, des: '*'),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 20.0,right: 8),
-                    //   child: Consumer<maincity_vm>(
-                    //       builder: (context, cart, child){
-                    //         return DropdownButton(
-                    //           isExpanded: true,
-                    //           hint: Text(label_clientcity),
-                    //           items: cart.listcity.map((city) {
-                    //             return DropdownMenuItem(
-                    //               child: Text(city.name_city), //label of item
-                    //               value: city.id_city, //value of item
-                    //             );
-                    //           }).toList(),
-                    //           value:cart.selectedValuemanag,
-                    //           onChanged:(value) {
-                    //             cityController.text=value.toString();
-                    //             cart.changevalue(value.toString());
-                    //           },
-                    //         );}
-                    //   ),
-                    // ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Consumer<maincity_vm>(
@@ -508,21 +489,27 @@ class _editclientState extends State<editclient> {
                         },
                       ),
                     ),
-                    //manage
                     SizedBox(
-                      height: 5,
+                      height: 15,
                     ),
-                    RowEdit(name: label_clientmobile, des: '*'),
+                    RowEdit(name: label_usernameclient, des: '*'),
                     EditTextFormField(
+                      maxline: 3,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return label_empty;
                         }
                       },
-                      hintText: '+966000000000',
+                      hintText: label_usernameclient,
                       obscureText: false,
-                      controller: mobileController,
+                      controller: usernameclientController,
                     ),
+
+                    //manage
+                    SizedBox(
+                      height: 5,
+                    ),
+
                     RowEdit(name: 'رقم آخر', des: 'اختياري'),
                     SizedBox(
                       height: 5,
@@ -536,6 +523,8 @@ class _editclientState extends State<editclient> {
                       hintText: '+0',
                       obscureText: false,
                       controller: phoneController,
+                      inputformate: [FilteringTextInputFormatter.digitsOnly],
+                      maxLength: 15,
                     ),
                     //RowEdit(name: 'Image', des: ''),
                     SizedBox(

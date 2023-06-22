@@ -24,6 +24,12 @@ enum SellerStatus { init, loading, loaded, failed }
 class invoice_vm extends ChangeNotifier {
   String total = '0';
 
+  InvoiceModel? currentInvoice;
+
+  setCurrentInvoice(InvoiceModel invoice){
+    currentInvoice = invoice;
+  }
+
   void set_total(val) {
     total = val;
     notifyListeners();
@@ -735,9 +741,9 @@ class invoice_vm extends ChangeNotifier {
   Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
     bool isParticipate = type == 'مشترك';
     try {
-      if(isParticipate){
+      if (isParticipate) {
         isLoadingInvoicesClientParticipateLocal = true;
-      }else{
+      } else {
         isLoadingInvoicesClientLocal = true;
       }
       List<InvoiceModel> list = [];
@@ -760,16 +766,16 @@ class invoice_vm extends ChangeNotifier {
 
       print('length list invoice client ' + listinvoiceClient.length.toString());
       print('length list invoice client ' + listinvoiceClientSupport.length.toString());
-      if(isParticipate){
+      if (isParticipate) {
         isLoadingInvoicesClientParticipateLocal = false;
-      }else{
+      } else {
         isLoadingInvoicesClientLocal = false;
       }
       notifyListeners();
     } catch (e) {
-      if(isParticipate){
+      if (isParticipate) {
         isLoadingInvoicesClientParticipateLocal = false;
-      }else{
+      } else {
         isLoadingInvoicesClientLocal = false;
       }
       notifyListeners();
@@ -941,6 +947,7 @@ class invoice_vm extends ChangeNotifier {
     //InvoiceModel.fromJson(body);
     //listProduct.insert(0, ProductModel.fromJson(body));
     isloadingdone = false;
+    currentInvoice = data;
     notifyListeners();
 
     return true;
@@ -1142,6 +1149,11 @@ class invoice_vm extends ChangeNotifier {
     }
 
     if (collaboratorsState.data != null) {
+      if (invoice != null) {
+          selectedCollaborator =
+              collaboratorsState.data?.firstWhereOrNull((element) => element.id_participate == invoice.participate_fk);
+        notifyListeners();
+      }
       return;
     }
 
@@ -1151,6 +1163,11 @@ class invoice_vm extends ChangeNotifier {
     final result = await getCollaborators();
     if (collaboratorsState.isSuccess) {
       sellerStatus = SellerStatus.loaded;
+      if (invoice != null) {
+        selectedCollaborator =
+            collaboratorsState.data?.firstWhereOrNull((element) => element.id_participate == invoice.participate_fk);
+        notifyListeners();
+      }
     } else {
       sellerStatus = SellerStatus.failed;
     }
@@ -1174,6 +1191,10 @@ class invoice_vm extends ChangeNotifier {
   }
 
   initAdditionalInformation(InvoiceModel invoiceModel) {
+    if( invoiceModel.type_seller == "3"){
+      return;
+    }
+
     final sellerType = SellerType.values[int.parse(invoiceModel.type_seller ?? '0')];
     onChangeSellerType(sellerType, invoice: invoiceModel);
   }
