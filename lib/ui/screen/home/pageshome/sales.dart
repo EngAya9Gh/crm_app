@@ -118,9 +118,6 @@ class _salesState extends State<sales> {
                   colortitle: Colors.black,
                   colorarrow: Colors.black,),
 
-
-
-
                 buildSelectCategory(
                     colorbag:   Colors.white,
                     colortitle: Colors.black,

@@ -83,6 +83,7 @@ class InvoiceModel extends CacheRepository {
   String? type_seller;
   String? fk_agent;
   String? fk_regoin_invoice;
+  String? name_regoin_invoice;
   String? city, name_city, namemaincity, id_maincity;
 
   //Map<String, dynamic> products;
@@ -172,6 +173,7 @@ class InvoiceModel extends CacheRepository {
     this.type_seller,
     this.currency_name,
     this.fk_regoin_invoice,
+    this.name_regoin_invoice,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -271,6 +273,7 @@ class InvoiceModel extends CacheRepository {
     fk_agent = jsondata['fk_agent'];
     type_seller = jsondata['type_seller'];
     fk_regoin_invoice = jsondata['fk_regoin_invoice'];
+    name_regoin_invoice = jsondata['name_regoin_invoice'];
 
     participal = jsondata['participal_info'] == null
         ? null
@@ -387,6 +390,7 @@ class InvoiceModel extends CacheRepository {
     _data['Date_FApprove'] = Date_FApprove;
     _data['renew2year'] = renew2year;
     _data['fk_regoin_invoice'] = fk_regoin_invoice;
+    _data['name_regoin_invoice'] = name_regoin_invoice;
     _data['rate_participate'] = rate_participate;
 
     _data['products'] = products!.map((e) => e.toJson()).toList();

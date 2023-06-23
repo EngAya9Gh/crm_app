@@ -51,10 +51,11 @@ class _invoice_marketingState extends State<invoice_marketing> {
       //if(widget.type=='client')
       Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-      await Provider.of<client_vm>(context, listen: false)
-          .getclientMarketing();
       Provider.of<invoice_vm>(context, listen: false)
           .getinvoice_marketing();
+      await Provider.of<client_vm>(context, listen: false)
+          .getclientMarketing();
+
     });
     super.initState();
   }

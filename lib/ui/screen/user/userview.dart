@@ -2,6 +2,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/user/image_profile.dart';
+import 'package:crm_smart/ui/screen/user/row_edit2.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
@@ -179,7 +180,7 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit(
+                                        child: RowEdit2(
                                           des:
                                           //controllerUser.userall![widget.index]
                                           useredit.name_mange
@@ -200,7 +201,7 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit(
+                                        child: RowEdit2(
                                           des:
                                           //controllerUser.userall![widget.index]
                                           useredit.nameRegoin.toString() ==
@@ -225,7 +226,7 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit(
+                                        child: RowEdit2(
                                           des:
                                           //controllerUser.userall![widget.index]
                                           useredit.name_level.toString(),
@@ -250,7 +251,7 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit(
+                                        child: RowEdit2(
                                           des:
                                           //controllerUser.userall![widget.index]
                                           useredit.isActive=="1"?'نشط':'غير نشط',
@@ -351,7 +352,7 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit(
+                                        child: RowEdit2(
                                           des:
                                           //controllerUser.userall![widget.index]
                                           getnameshort(useredit.nameuserAdd.toString()),
@@ -368,7 +369,7 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit(
+                                        child: RowEdit2(
                                           des:
                                           //controllerUser.userall![widget.index]
                                           useredit.created_at.toString(),
@@ -387,7 +388,7 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit(
+                                        child: RowEdit2(
                                           des:
                                           //controllerUser.userall![widget.index]
                                           getnameshort(useredit.nameuserupdate.toString()),
@@ -405,7 +406,7 @@ class _UserScreenState extends State<UserScreen> {
                                           left: 10,
                                           right: 10,
                                         ),
-                                        child: RowEdit(
+                                        child: RowEdit2(
                                           des:
                                           //controllerUser.userall![widget.index]
                                           useredit.updated_at.toString(),

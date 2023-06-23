@@ -209,7 +209,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
   bool get isSelectedRegionEqualNull => selectedRegion == null;
 
-  bool isSelectedRegionEqualInvoice(InvoiceModel element) => element.fk_regoin == selectedRegion;
+  bool isSelectedRegionEqualInvoice(InvoiceModel element) =>
+      element.fk_regoin_invoice == selectedRegion;
 
   bool isSelectedSellerTypeFilterEqualInvoice(InvoiceModel element) =>
       element.type_seller == selectedSellerTypeFilter.index.toString();

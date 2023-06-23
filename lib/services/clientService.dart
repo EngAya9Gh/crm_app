@@ -100,6 +100,7 @@ class ClientService{
     print(prodlist);
     return prodlist;
   }
+
   Future<ClientModel> getclientid(String? id_clients) async {
     var
     data=await Api()

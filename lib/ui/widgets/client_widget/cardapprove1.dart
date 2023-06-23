@@ -65,7 +65,9 @@ class cardapprove1 extends StatelessWidget {
                       Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            itemapprove.name_regoin.toString(),
+                           type=='f'?
+                           itemapprove.name_regoin_invoice.toString():
+                           itemapprove.name_regoin.toString(),
                             style: TextStyle(
                                 //fontWeight: FontWeight.bold,
                                 fontSize: 12,

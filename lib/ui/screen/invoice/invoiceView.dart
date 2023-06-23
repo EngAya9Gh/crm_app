@@ -199,7 +199,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                         cardRow(title: ' طريقة الدفع', value: invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
                         //nameuserApprove
 
-                        cardRow(title: ' العملة', value: invoice.currency_name.toString() == '0' ? 'USD' : 'SAR'),
+                        cardRow(title: ' العملة',
+                            value:invoice.currency_name==null? 'SAR':
+                        invoice.currency_name.toString() == '0' ? 'USD' : 'SAR'),
 
                         invoice.nameuserApprove != null
                             ? cardRow(title: 'معتمد الفاتورة', value: getnameshort(invoice.nameuserApprove.toString()))

@@ -539,7 +539,7 @@ class invoice_vm extends ChangeNotifier {
       if (listinvoicesMarketing.isNotEmpty) {
         if (filter == 'الكل')
           listinvoicesMarketing.forEach((element) {
-            if (element.fk_regoin == regoin) {
+            if (element.fk_regoin_invoice == regoin) {
               _listInvoicesAccept.add(element);
               print('regoin الكل');
             }
@@ -547,14 +547,14 @@ class invoice_vm extends ChangeNotifier {
 
         if (filter == 'بالإنتظار')
           listinvoicesMarketing.forEach((element) {
-            if (element.isdoneinstall.toString() == null && element.fk_regoin == regoin) {
+            if (element.isdoneinstall.toString() == null && element.fk_regoin_invoice == regoin) {
               _listInvoicesAccept.add(element);
               print('regoin بالإنتظار');
             }
           });
         if (filter == 'تم التركيب')
           listinvoicesMarketing.forEach((element) {
-            if (element.isdoneinstall == '1' && element.fk_regoin == regoin) {
+            if (element.isdoneinstall == '1' && element.fk_regoin_invoice == regoin) {
               _listInvoicesAccept.add(element);
               print('regoin تم التركيب');
             }
@@ -562,7 +562,8 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'معلق') {
           if (regoin != '0') {
             listinvoicesMarketing.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install == '0' && element.fk_regoin == regoin) {
+              if (element.isdoneinstall != '1' && element.ready_install == '0'
+                  && element.fk_regoin_invoice == regoin) {
                 _listInvoicesAccept.add(element);
                 print('regoin معلق');
               }
@@ -591,7 +592,7 @@ class invoice_vm extends ChangeNotifier {
     List<InvoiceModel> _listInvoicesAccept = [];
     if (regoin != '0')
       listInvoicesAccept.forEach((element) {
-        if (element.fk_regoin == regoin) {
+        if (element.fk_regoin_invoice == regoin) {
           _listInvoicesAccept.add(element);
           print('regoin الكل');
         }
@@ -672,9 +673,7 @@ class invoice_vm extends ChangeNotifier {
     List<InvoiceModel> list = [];
     isloading = true;
     listInvoicesAccept = [];
-
     notifyListeners();
-
     print('dcvcvvvvvvvvvvvvvvvvvvvvvvvvv');
     print(approvetype);
     if (approvetype == null) {
@@ -700,10 +699,10 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = list;
       }
     } else {
-      if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
-
-      if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
-      if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
+      print('0000000000000000000000000000000');
+      if (approvetype == 'country') await  get_invoicesbyRegoin_accept_requst('c');
+      if (approvetype == 'regoin')  await  get_invoicesbyRegoin_accept_requst('r');
+       if (approvetype == 'finance') await  get_invoicesbyRegoin_accept_requst('f');
     }
 
     isloading = false;
@@ -911,11 +910,12 @@ class invoice_vm extends ChangeNotifier {
 
   //getinvoaicebyregoin_accept_requst
   Future<void> get_invoicesbyRegoin_accept_requst(String type) async {
-    // if(type=='r')
+    print(' method type requst ');
     switch (type) {
       case 'r':
         listinvoicebyregoin =
-            await Invoice_Service().getinvoaicebyregoin_accept_requst({'fk_regoin': usercurrent!.fkRegoin.toString()});
+            await Invoice_Service()
+                .getinvoaicebyregoin_accept_requst({'fk_regoin': usercurrent!.fkRegoin.toString()});
         break;
 
       // else
@@ -926,7 +926,6 @@ class invoice_vm extends ChangeNotifier {
       case 'f':
         listinvoicebyregoin = await Invoice_Service().getinvoaicebyregoin_accept_requst({'FApprove': 'f'});
     }
-
     listInvoicesAccept = List.from(listinvoicebyregoin);
     notifyListeners();
   }
