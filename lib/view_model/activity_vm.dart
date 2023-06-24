@@ -19,6 +19,9 @@ class activity_vm extends ChangeNotifier {
 }
 
   late String? selectedValueOut=null;
+
+  initValueOut() => selectedValueOut=null;
+
   void changevalueOut(String? s){
     selectedValueOut=s;
     notifyListeners();

@@ -28,7 +28,7 @@ class invoice_vm extends ChangeNotifier {
 
   InvoiceModel? currentInvoice;
 
-  setCurrentInvoice(InvoiceModel invoice){
+  setCurrentInvoice(InvoiceModel invoice) {
     currentInvoice = invoice;
   }
 
@@ -182,13 +182,13 @@ class invoice_vm extends ChangeNotifier {
     listinvoicesMarketing = [];
     isloading = true;
     notifyListeners();
-    list_temp=  await  Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
+    list_temp = await Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
     // listinvoices.forEach((element) {
     //   // if (element.ismarketing == '1')
     //     //&& element.isApprove == "1")
     //     listinvoicesMarketing.add(element);
     // });
-     listinvoicesMarketing=List.from(list_temp);
+    listinvoicesMarketing = List.from(list_temp);
     isloading = false;
     notifyListeners();
   }
@@ -346,12 +346,10 @@ class invoice_vm extends ChangeNotifier {
     } else {
       String params = '';
       // if (listparam.toString().isNotEmpty)
-      if (listparam.length!=0)
-      {
+      if (listparam.length != 0) {
         idexist = listparam.indexWhere((element) => element.id_maincity == '0');
         if (idexist == -1) {
-          for (int i = 0; i < listparam.length; i++)
-            listval.add(int.parse(listparam[i].id_maincity));
+          for (int i = 0; i < listparam.length; i++) listval.add(int.parse(listparam[i].id_maincity));
 
           for (int i = 0; i < listval.length; i++) {
             params += '&maincity_fks[]=${listval[i]}';
@@ -379,7 +377,6 @@ class invoice_vm extends ChangeNotifier {
       print('typpping ' + type);
 
       switch (type) {
-
         case 'allmaincity':
           listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
               'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}',
@@ -404,8 +401,7 @@ class invoice_vm extends ChangeNotifier {
 
         case 'all':
           listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
-              'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
-              {'all': 'all'});
+              'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'});
           break;
       }
     }
@@ -499,88 +495,133 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept = _listInvoicesAccept;
     notifyListeners();
   }
-  List<InvoiceModel> list_temp= [];
-  Future<void> getclienttype_marketing(String? filter, String? regoin, String tyype) async {
-    // getinvoice_marketing();
-    listinvoicesMarketing =List.from( list_temp);
 
-    List<InvoiceModel> _listInvoicesAccept = [];
-    if (regoin == null) {
-      print(filter);
-      if (listinvoicesMarketing.isNotEmpty) {
-        if (filter == 'الكل') {
-          _listInvoicesAccept =List.from( listinvoicesMarketing);
-          print('serch الكل');
-        }
-        if (filter == 'بالإنتظار')
-          listinvoicesMarketing.forEach((element) {
-            print(element.isdoneinstall);
-            if (element.isdoneinstall == null) {
-              _listInvoicesAccept.add(element);
-              print('serch بالانتظار');
-            }
-          });
-        if (filter == 'تم التركيب')
-          listinvoicesMarketing.forEach((element) {
-            if (element.isdoneinstall == '1') {
-              _listInvoicesAccept.add(element);
-              print('serch تم التركيب');
-            }
-          });
-        if (filter == 'معلق')
-          listinvoicesMarketing.forEach((element) {
-            if (element.isdoneinstall != '1' && element.ready_install == '0') {
-              _listInvoicesAccept.add(element);
-              print('serch lمعلق');
-            }
-          });
-      }
-    } else {
-      if (listinvoicesMarketing.isNotEmpty) {
-        if (filter == 'الكل')
-          listinvoicesMarketing.forEach((element) {
-            if (element.fk_regoin_invoice == regoin) {
-              _listInvoicesAccept.add(element);
-              print('regoin الكل');
-            }
-          });
+  List<InvoiceModel> list_temp = [];
 
-        if (filter == 'بالإنتظار')
-          listinvoicesMarketing.forEach((element) {
-            if (element.isdoneinstall.toString() == null && element.fk_regoin_invoice == regoin) {
-              _listInvoicesAccept.add(element);
-              print('regoin بالإنتظار');
-            }
-          });
-        if (filter == 'تم التركيب')
-          listinvoicesMarketing.forEach((element) {
-            if (element.isdoneinstall == '1' && element.fk_regoin_invoice == regoin) {
-              _listInvoicesAccept.add(element);
-              print('regoin تم التركيب');
-            }
-          });
-        if (filter == 'معلق') {
-          if (regoin != '0') {
-            listinvoicesMarketing.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install == '0'
-                  && element.fk_regoin_invoice == regoin) {
-                _listInvoicesAccept.add(element);
-                print('regoin معلق');
-              }
-            });
-          } else {
-            listinvoicesMarketing.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install == '0') {
-                _listInvoicesAccept.add(element);
-                print('معلق  ');
-              }
-            });
-          }
+  Future<void> onFilterInvoice(String? invoiceStatus, String? region, String? query) async {
+
+    listinvoicesMarketing = list_temp.where((element) {
+      if ((region == null || region == '0') && (invoiceStatus == null || invoiceStatus == 'الكل')) {
+        return true && filterQuery(element,query);
+      } else if ((region != null && region != '0') && (invoiceStatus == null || invoiceStatus == 'الكل')) {
+        return element.fk_regoin == region && filterQuery(element,query);
+      } else if ((region == null || region == '0') && (invoiceStatus != null && invoiceStatus != 'الكل')) {
+        if (invoiceStatus == "بالإنتظار") {
+          return isWaitingInvoice(element) && filterQuery(element,query);
+        } else if (invoiceStatus == "تم التركيب") {
+          return isInstallingInvoice(element) && filterQuery(element,query);
+        } else {
+          return isPendingInvoice(element) && filterQuery(element,query);
         }
+      } else {
+        final typeCondition;
+
+        if (invoiceStatus == "بالإنتظار") {
+          typeCondition = isWaitingInvoice(element);
+        } else if (invoiceStatus == "تم التركيب") {
+          typeCondition = isInstallingInvoice(element);
+        } else {
+          typeCondition = isPendingInvoice(element);
+        }
+
+        return typeCondition && region == element.fk_regoin && filterQuery(element,query);
       }
-    }
-    listinvoicesMarketing =List.from(_listInvoicesAccept) ;
+    }).toList();
+
     notifyListeners();
+
+    // List<InvoiceModel> _listInvoicesAccept = [];
+    // if (regoin == null) {
+    //   print(filter);
+    //   if (listinvoicesMarketing.isNotEmpty) {
+    //     if (filter == 'الكل') {
+    //       _listInvoicesAccept =List.from( listinvoicesMarketing);
+    //       print('serch الكل');
+    //     }
+    //     if (filter == 'بالإنتظار')
+    //       listinvoicesMarketing.forEach((element) {
+    //         print(element.isdoneinstall);
+    //         if (element.isdoneinstall == null) {
+    //           _listInvoicesAccept.add(element);
+    //           print('serch بالانتظار');
+    //         }
+    //       });
+    //     if (filter == 'تم التركيب')
+    //       listinvoicesMarketing.forEach((element) {
+    //         if (element.isdoneinstall == '1') {
+    //           _listInvoicesAccept.add(element);
+    //           print('serch تم التركيب');
+    //         }
+    //       });
+    //     if (filter == 'معلق')
+    //       listinvoicesMarketing.forEach((element) {
+    //         if (element.isdoneinstall != '1' && element.ready_install == '0') {
+    //           _listInvoicesAccept.add(element);
+    //           print('serch lمعلق');
+    //         }
+    //       });
+    //   }
+    // } else {
+    //   if (listinvoicesMarketing.isNotEmpty) {
+    //     if (filter == 'الكل')
+    //       listinvoicesMarketing.forEach((element) {
+    //         if (element.fk_regoin_invoice == regoin) {
+    //           _listInvoicesAccept.add(element);
+    //           print('regoin الكل');
+    //         }
+    //       });
+    //
+    //     if (filter == 'بالإنتظار')
+    //       listinvoicesMarketing.forEach((element) {
+    //         if (element.isdoneinstall.toString() == null && element.fk_regoin_invoice == regoin) {
+    //           _listInvoicesAccept.add(element);
+    //           print('regoin بالإنتظار');
+    //         }
+    //       });
+    //     if (filter == 'تم التركيب')
+    //       listinvoicesMarketing.forEach((element) {
+    //         if (element.isdoneinstall == '1' && element.fk_regoin_invoice == regoin) {
+    //           _listInvoicesAccept.add(element);
+    //           print('regoin تم التركيب');
+    //         }
+    //       });
+    //     if (filter == 'معلق') {
+    //       if (regoin != '0') {
+    //         listinvoicesMarketing.forEach((element) {
+    //           if (element.isdoneinstall != '1' && element.ready_install == '0'
+    //               && element.fk_regoin_invoice == regoin) {
+    //             _listInvoicesAccept.add(element);
+    //             print('regoin معلق');
+    //           }
+    //         });
+    //       } else {
+    //         listinvoicesMarketing.forEach((element) {
+    //           if (element.isdoneinstall != '1' && element.ready_install == '0') {
+    //             _listInvoicesAccept.add(element);
+    //             print('معلق  ');
+    //           }
+    //         });
+    //       }
+    //     }
+    //   }
+    // }
+    // listinvoicesMarketing =List.from(_listInvoicesAccept) ;
+  }
+
+  bool isWaitingInvoice(InvoiceModel invoiceModel) => invoiceModel.isdoneinstall == null;
+
+  bool isPendingInvoice(InvoiceModel invoiceModel) => invoiceModel.isdoneinstall != '1' && invoiceModel.ready_install == '0' ;
+
+  bool isInstallingInvoice(InvoiceModel invoiceModel) => invoiceModel.isdoneinstall == '1';
+
+  bool filterQuery(InvoiceModel element , String? query){
+    if(query?.isEmpty ?? true){
+      return true;
+    }
+
+    return (element.name_enterprise!.toLowerCase().contains(query!.toLowerCase())) ||
+        (element.mobile!.toLowerCase().contains(query.toLowerCase())) ||
+        (element.nameClient!.toLowerCase().contains(query.toLowerCase()) ) ;
   }
 
   Future<void> getfilterview(String? regoin, String tyype) async {
@@ -647,9 +688,9 @@ class invoice_vm extends ChangeNotifier {
     }
     listInvoicesAccept = List.from(listinvoices);
     listInvoicesAccept.forEach((element) {
-      if (element.stateclient == 'مشترك' && element.isApprove == "1"&&
-          (double.parse(element.total.toString()) -
-          double.parse(element.amountPaid.toString()))>0) list.add(element);
+      if (element.stateclient == 'مشترك' &&
+          element.isApprove == "1" &&
+          (double.parse(element.total.toString()) - double.parse(element.amountPaid.toString())) > 0) list.add(element);
     });
     listInvoicesAccept = list;
     listforme = List.from(list);
@@ -700,9 +741,9 @@ class invoice_vm extends ChangeNotifier {
       }
     } else {
       print('0000000000000000000000000000000');
-      if (approvetype == 'country') await  get_invoicesbyRegoin_accept_requst('c');
-      if (approvetype == 'regoin')  await  get_invoicesbyRegoin_accept_requst('r');
-       if (approvetype == 'finance') await  get_invoicesbyRegoin_accept_requst('f');
+      if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
+      if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
+      if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
     }
 
     isloading = false;
@@ -786,23 +827,26 @@ class invoice_vm extends ChangeNotifier {
     // listinvoices.add(inv!);
     // notifyListeners();
   }
+
   List<InvoiceModel> list = [];
-  Future<void> get_invoiceclientlocal2(String? fk_client ) async {
+
+  Future<void> get_invoiceclientlocal2(String? fk_client) async {
     list = await Invoice_Service().getinvoicebyclient(fk_client!);
     notifyListeners();
   }
+
   Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
     bool isParticipate = type == 'مشترك';
 
     try {
-      if(isParticipate){
-          listinvoiceClientSupport = [];
-          isLoadingInvoicesClientParticipateLocal = true;
-          notifyListeners();
-      }else{
-          listinvoiceClient = [];
-          isLoadingInvoicesClientLocal = true;
-          notifyListeners();
+      if (isParticipate) {
+        listinvoiceClientSupport = [];
+        isLoadingInvoicesClientParticipateLocal = true;
+        notifyListeners();
+      } else {
+        listinvoiceClient = [];
+        isLoadingInvoicesClientLocal = true;
+        notifyListeners();
       }
       List<InvoiceModel> list = [];
       listinvoiceClient = [];
@@ -824,21 +868,21 @@ class invoice_vm extends ChangeNotifier {
 
       print('length list invoice client ' + listinvoiceClient.length.toString());
       print('length list invoice client ' + listinvoiceClientSupport.length.toString());
-      if(isParticipate){
+      if (isParticipate) {
         isLoadingInvoicesClientParticipateLocal = false;
-      }else{
+      } else {
         isLoadingInvoicesClientLocal = false;
       }
       notifyListeners();
     } catch (e) {
-      if(isParticipate){
+      if (isParticipate) {
         isLoadingInvoicesClientParticipateLocal = false;
-      }else{
+      } else {
         isLoadingInvoicesClientLocal = false;
       }
       notifyListeners();
     }
-}
+  }
 
   void setvaluepriv(privilgelistparam) {
     print('in set privilge client vm');
@@ -914,8 +958,7 @@ class invoice_vm extends ChangeNotifier {
     switch (type) {
       case 'r':
         listinvoicebyregoin =
-            await Invoice_Service()
-                .getinvoaicebyregoin_accept_requst({'fk_regoin': usercurrent!.fkRegoin.toString()});
+            await Invoice_Service().getinvoaicebyregoin_accept_requst({'fk_regoin': usercurrent!.fkRegoin.toString()});
         break;
 
       // else
@@ -1208,8 +1251,8 @@ class invoice_vm extends ChangeNotifier {
 
     if (collaboratorsState.data != null) {
       if (invoice != null) {
-          selectedCollaborator =
-              collaboratorsState.data?.firstWhereOrNull((element) => element.id_participate == invoice.participate_fk);
+        selectedCollaborator =
+            collaboratorsState.data?.firstWhereOrNull((element) => element.id_participate == invoice.participate_fk);
         notifyListeners();
       }
       return;
@@ -1249,7 +1292,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   initAdditionalInformation(InvoiceModel invoiceModel) {
-    if( invoiceModel.type_seller == "3"){
+    if (invoiceModel.type_seller == "3") {
       return;
     }
 
