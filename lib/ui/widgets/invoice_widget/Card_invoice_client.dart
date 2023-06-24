@@ -65,11 +65,11 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.itemProd.name_regoin.toString(),
+                          widget.itemProd.name_regoin_invoice.toString(),
                           style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                         ),
                         Text(
-                          widget.itemProd.date_approve != null
+                          widget.itemProd.date_approve!= null
                               ? widget.itemProd.date_approve.toString()
                               : widget.itemProd.dateCreate.toString(),
                           style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
@@ -103,7 +103,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                              ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
+                                widget.itemProd.currency_name==null?'ريال': int.parse(widget.itemProd.currency_name.toString())==0?' USD ':' ريال ',
+
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   color: kMainColor,
@@ -127,7 +128,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                               ),
                             Text(
-                              ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
+                              widget.itemProd.currency_name==null?'ريال':  int.parse(widget.itemProd.currency_name.toString())==0?' USD ':' ريال ',
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   color: kMainColor,
@@ -152,7 +153,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                              ' ' + widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
+                              widget.itemProd.currency_name==null?'ريال':int.parse(widget.itemProd.currency_name.toString())==0?' USD ':' ريال ',
+
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   color: kMainColor,
@@ -173,7 +175,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                              ' ' +widget.itemProd.currency_name.toString()=='0'?'usd':'ريال',
+                              widget.itemProd.currency_name==null?'ريال':   int.parse(widget.itemProd.currency_name.toString())==0?' USD ':' ريال ',
+
                               style: TextStyle(
                                   fontFamily: kfontfamily2,
                                   color: kMainColor,

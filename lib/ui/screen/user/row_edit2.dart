@@ -2,16 +2,16 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class RowEdit extends StatelessWidget {
+class RowEdit2 extends StatelessWidget {
   final String name;
   final String? des;
 
-  const RowEdit({required this.name, this.des, Key? key}) : super(key: key);
+  const RowEdit2({required this.name, this.des, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextUtilis(
           color: Colors.black,

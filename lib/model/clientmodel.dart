@@ -101,7 +101,7 @@ class ClientModel extends CacheRepository{
   late  String? sourcclient;
   late  String? activity_type_fk;
   late  String? activity_type_title;
-  late  String? phone;
+  late  String? phone='';
   late  String?  user_add;
   late  String? nameAdduser;
   String? date_visit_Client;

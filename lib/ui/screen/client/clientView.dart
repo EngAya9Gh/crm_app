@@ -41,7 +41,7 @@ class ClientView extends StatefulWidget {
 class _ClientViewState extends State<ClientView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  late ClientModel clientModel;
+  late ClientModel clientModel=ClientModel();
   @override
   Widget build(BuildContext context) {
     clientModel= widget.client ?? Provider.of<client_vm>(context,listen: true).listClient

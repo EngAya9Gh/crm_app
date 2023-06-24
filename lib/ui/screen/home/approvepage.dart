@@ -41,8 +41,8 @@ class _ApprovePageState extends State<ApprovePage> {
       else{
         if( Provider.of<privilge_vm>(context,listen: false)
             .checkprivlge('7')==true)
-          Provider.of<invoice_vm>(context, listen: false)
-              .getinvoice_Local('مشترك','not approved','regoin');
+      Provider.of<invoice_vm>(context, listen: false)
+           .getinvoice_Local('مشترك','not approved','regoin');
       }
 
     });

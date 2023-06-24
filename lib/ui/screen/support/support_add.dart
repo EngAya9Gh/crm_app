@@ -495,12 +495,16 @@ class _support_addState extends State<support_add> {
                               title: ' تم التركيب من قبل ',
                               value: getnameshort(
                                   _invoice!.nameuserinstall.toString())),
-                      _invoice!.clientusername == null
+                      _invoice!.clientusername.toString() == null
                           ? Container()
                           : cardRow(
                               title: 'يوزر العميل ',
                               value: getnameshort(
                                   _invoice!.clientusername.toString())),
+                      cardRow(
+                          title: 'عنوان الفاتورة ',
+                          value: getnameshort(
+                              _invoice!.address_invoice.toString())),
 //////////////////////////////////////////////////////////////////////////////////////////
                       _invoice!.daterepaly != null
                           ? cardRow(
@@ -849,7 +853,8 @@ class _support_addState extends State<support_add> {
                                                                               () async {
                                                                             Provider.of<invoice_vm>(context, listen: false).setisload();
 
-                                                                            await Provider.of<invoice_vm>(context, listen: false).set_ready_install({
+                                                                            await Provider.of<invoice_vm>(context, listen: false)
+                                                                                .set_ready_install({
                                                                               'date_readyinstall': DateTime.now().toString(),
                                                                               'user_ready_install': Provider.of<user_vm_provider>
                                                                                 (context, listen: false).currentUser.idUser.toString(),

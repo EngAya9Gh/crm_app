@@ -64,7 +64,7 @@ class _clientmarketingState extends State<clientmarketing> {
       List<PrivilgeModel> list=
       await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-      await Provider.of<client_vm>(context, listen: false);
+       await Provider.of<client_vm>(context, listen: false).getclientMarketing();
       await Provider.of<activity_vm>(context, listen: false)
           .getactv();
     });
@@ -342,7 +342,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                   top:8.0,bottom: 20),
                               child:
                               Consumer<client_vm>(builder: (context, value, child) {
-                                return value.listClientMarketing.length==0?
+                                return value.isloading?
                                 Center(
                                     child: CircularProgressIndicator()
                                 ):Column(

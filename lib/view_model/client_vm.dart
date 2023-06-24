@@ -299,21 +299,31 @@ class client_vm extends ChangeNotifier {
 
   void resetlist(){
 
-   listClientfilter= listClient;
+   listClientfilter=List.from(listClient) ;
    notifyListeners();
   }
   Future<void> getallclient()async{
+    isloading=true;
+    notifyListeners();
+    // if(listClient.isEmpty)
     listClient =
         await ClientService().getAllClient(usercurrent!.fkCountry.toString());
-    listClientAccept = listClient;
+    listClientAccept =List.from(listClient) ;
+    isloading=false;
+
     notifyListeners();
   }
   Future<void> getallclientAccept()async{
+
     listClientAccept=[];
+    isloading=true;
+    notifyListeners();
     listClient =
         await ClientService()
             .getAcceptClient(usercurrent!.fkCountry.toString());
     listClientAccept =List.from(listClient);
+    isloading=false;
+
     notifyListeners();
   }
   Future<void> getallclientTransfer()async{
@@ -411,6 +421,7 @@ class client_vm extends ChangeNotifier {
     //عملائي
     // await get
     listClientMarketing=[];
+    isloading=true;
     notifyListeners();
     listClient= await ClientService()
         .getAllClientmarket(usercurrent!.fkCountry.toString());
@@ -420,6 +431,7 @@ class client_vm extends ChangeNotifier {
     //     if (element.ismarketing =='1' )
     //       listClientMarketing.add(element);
     //   } );
+    isloading=false;
     notifyListeners();
     }
 

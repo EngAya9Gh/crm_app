@@ -77,7 +77,7 @@ class _addinvoiceState extends State<addinvoice> {
 
   late String typeinstallController = '0';
   late String readyinstallController = '0';
-  late String currencyController = '0';
+  late int currencyController =0;
 
   final TextEditingController noteController = TextEditingController();
   final TextEditingController numbranchController = TextEditingController();
@@ -157,7 +157,8 @@ class _addinvoiceState extends State<addinvoice> {
         renew2Controller.text = _invoice!.renew2year.toString();
 
         typepayController = _invoice!.typePay.toString();
-        currencyController = _invoice!.currency_name == null ? '1' : _invoice!.currency_name.toString();
+        currencyController = _invoice!.currency_name == null ? 1 :
+          int.parse(_invoice!.currency_name.toString())  ;
         print(typepayController.toString());
         typeinstallController = _invoice!.typeInstallation.toString();
         print(typeinstallController);
@@ -204,6 +205,8 @@ class _addinvoiceState extends State<addinvoice> {
 
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuetypeinstall(int.parse(typeinstallController.toString()));
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValueCurrency(int.parse(currencyController.toString()));
       print(typeinstallController);
     });
     super.initState();
@@ -304,7 +307,7 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 5,
                       ),
-                      RowEdit(name: 'عنوان الفاتورة', des: ''),
+                      RowEdit(name: 'عنوان الفاتورة', des: '*'),
                       EditTextFormField(
                         vaild: (value) {
                           if (value.toString().trim().isEmpty) {
@@ -506,7 +509,9 @@ class _addinvoiceState extends State<addinvoice> {
                                       // int.tryParse( typeinstallController!)
                                     ),
                                     options:
-                                        GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                                        GroupButtonOptions(
+                                            buttonWidth: 110,
+                                            borderRadius: BorderRadius.circular(10)),
                                     buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
                                     onSelected: (_, index, isselected) {
                                       print(index);
@@ -548,7 +553,7 @@ class _addinvoiceState extends State<addinvoice> {
                               onSelected: (_, index, isselected) {
                                 print(index);
                                 //setState(() {
-                                currencyController = index.toString();
+                                currencyController = index;
                                 selectedProvider.selectValueCurrency(index);
                                 //  });
                               });
@@ -982,16 +987,21 @@ class _addinvoiceState extends State<addinvoice> {
 
                                     if (_invoice!.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
-                                      Provider.of<invoice_vm>(context, listen: false).update_invoiceclient_vm({
+                                      Provider.of<invoice_vm>(context, listen: false)
+                                          .update_invoiceclient_vm({
                                         "name_enterprise": widget.itemClient.nameEnterprise,
                                         "name_client": widget.itemClient.nameClient.toString(),
                                         "nameUser": widget.itemClient.nameUser.toString(),
                                         "renew_year": renewController.text.toString(),
                                         "renew2year": renew2Controller.text.toString(),
                                         "type_pay": typepayController.toString(),
-                                        "date_create": DateTime.now().toString(),
+                                        // "date_create": DateTime.now().toString(),
                                         "type_installation": typeinstallController.toString(),
                                         "ready_install": readyinstallController.toString(),
+                                        // "user_not_ready_install": Provider.of<user_vm_provider>(context, listen: false)
+                                        //     .currentUser
+                                        //     .idUser
+                                        //     .toString(),
                                         "currency_name": currencyController.toString(),
 
                                         /////////////////////////////////////////////////////////////////////
@@ -1226,7 +1236,8 @@ class _addinvoiceState extends State<addinvoice> {
     //        .of<invoice_vm>(context, listen: false)
     //        .listproductinvoic;
     // //
-    Provider.of<invoice_vm>(context, listen: false).listinvoices[index1].products = _invoice!.products;
+    Provider.of<invoice_vm>(context, listen: false)
+        .listinvoices[index1].products = _invoice!.products;
 
     Provider.of<invoice_vm>(context, listen: false).updatelistproducetInvoice();
 

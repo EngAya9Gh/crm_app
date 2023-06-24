@@ -15,6 +15,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:group_button/group_button.dart';
@@ -42,10 +43,12 @@ class _calender_clientState extends State<calender_client> {
           .userall.length);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
 
-
+     await Provider.of<client_vm>(context,listen: false).getallclient();
       Provider.of<EventProvider>(context,listen: false).setvalueClient(
-          Provider.of<client_vm>(context,listen: false).listClient);
-      Provider.of<EventProvider>(context,listen: false). getevent_AllClient();
+          Provider.of<client_vm>(context,listen: false)
+              .listClient);
+      Provider.of<EventProvider>(context,listen: false)
+          . getevent_AllClient();
     }
     );
 
@@ -74,7 +77,7 @@ class _calender_clientState extends State<calender_client> {
         title: Text(' جدول زيارات العملاء ',style: TextStyle(color: kWhiteColor),),
         centerTitle: true,
       ),
-      body: SafeArea(
+      body:SafeArea(
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(

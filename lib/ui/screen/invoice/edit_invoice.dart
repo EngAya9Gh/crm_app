@@ -238,7 +238,8 @@ class _edit_invoiceState extends State<edit_invoice> {
                     readOnly: true,
                     onTap: () {
                       setState(() {
-                        _selectDate(context, _currentDateApprove ?? DateTime.now());
+                        _selectDate(context, _currentDateApprove ??
+                            DateTime.now());
                       });
                     },
                   ),
@@ -259,7 +260,8 @@ class _edit_invoiceState extends State<edit_invoice> {
                     text: 'تعديل',
                     onTap: () async {
                       if (_globalKey.currentState!.validate()) {
-                        Provider.of<invoice_vm>(context, listen: false).update_invoiceclient_vm({
+                        Provider.of<invoice_vm>(context, listen: false)
+                            .update_invoiceclient_vm({
                           "name_enterprise": widget.invoiceModel.name_enterprise,
                           "name_client": widget.invoiceModel.nameClient.toString(),
                           'date_create': _currentDateCreate.toString(),
