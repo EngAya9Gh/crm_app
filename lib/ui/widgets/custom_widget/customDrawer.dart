@@ -158,7 +158,8 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
+                  MaterialPageRoute<void>(builder: (BuildContext context) =>
+                      BranchRaceView()),
                 );
                 // ProductView();
               },

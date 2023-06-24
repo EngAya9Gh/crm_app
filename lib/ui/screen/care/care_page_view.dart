@@ -71,6 +71,8 @@ class _care_page_viewState extends State<care_page_view> {
             parmater);
       }
     }
+    setState(() {
+    });
   }
   @override void initState() {
 

@@ -120,7 +120,12 @@ class _addUserState extends State<addUser> {
                   RowEdit(name:'Email', des: '*'),
                   SizedBox(height: 2,),
                   EditTextFormField(
-                    vaild: (data)=>  validateEmail(data.toString()),
+                    vaild: (data){
+                      if(!validateEmail2(data.toString())){
+
+                        return "أدخل ايميل صحيح";
+
+                      }  }  ,
                     hintText: 'Email',
                     obscureText: false,
                     controller: emailController,

@@ -43,12 +43,11 @@ class _calender_clientState extends State<calender_client> {
           .userall.length);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
 
-     await Provider.of<client_vm>(context,listen: false).getallclient();
+      await Provider.of<client_vm>(context,listen: false).getallclient();
+
       Provider.of<EventProvider>(context,listen: false).setvalueClient(
-          Provider.of<client_vm>(context,listen: false)
-              .listClient);
-      Provider.of<EventProvider>(context,listen: false)
-          . getevent_AllClient();
+      Provider.of<client_vm>(context,listen: false).listClient);
+      Provider.of<EventProvider>(context,listen: false).getevent_AllClient();
     }
     );
 
@@ -80,76 +79,73 @@ class _calender_clientState extends State<calender_client> {
       body:SafeArea(
         child: Directionality(
           textDirection: TextDirection.rtl,
-          child: Padding(
+          child:     Padding(
             padding: EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 2),
             child: ListView(
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0, right: 8),
                         child:
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20.0,right: 8),
-                            child: Consumer<client_vm>(
-                              builder: (context, cart, child){
-                                return  DropdownSearch<ClientModel>(
-                                  mode: Mode.DIALOG,
-                                  // label: " الموظف ",
-                                  //hint: 'الموظف',
-                                  //onFind: (String filter) => cart.getfilteruser(filter),
-                                  filterFn: (user, filter) => user!.getfilteruser(filter!),
-                                  //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                                  // itemAsString: (UserModel u) => u.userAsStringByName(),
-                                  items: cart.listClient,
-                                  itemAsString: (u) => u!.userAsString(),
-                                  onChanged: (data) {
-                                   setState(() {
-                                     clientModel=data!;
-                                     idclient=data!.idClients!;
-                                     print('idclient');
-                                     print(idclient.toString());
-                                   });
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0,right: 8),
+                          child: Consumer<client_vm>(
+                            builder: (context, cart, child){
+                              return  DropdownSearch<ClientModel>(
+                                mode: Mode.DIALOG,
+                                // label: " الموظف ",
+                                //hint: 'الموظف',
+                                //onFind: (String filter) => cart.getfilteruser(filter),
+                                filterFn: (user, filter) => user!.getfilteruser(filter!),
+                                //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
+                                // itemAsString: (UserModel u) => u.userAsStringByName(),
+                                items: cart.listClient,
+                                itemAsString: (u) => u!.userAsString(),
+                                onChanged: (data) {
+                                 setState(() {
+                                   clientModel=data!;
+                                   idclient=data!.idClients!;
+                                   print('idclient');
+                                   print(idclient.toString());
+                                 });
 
-                                    Provider.of<EventProvider>(context, listen: false)
-                                        .getevent_Client(idclient);
-                                    // Provider.of<client_vm>(context, listen: false)
-                                    //     .getclientfilter_Local(iduser!,"user");
+                                  Provider.of<EventProvider>(context, listen: false)
+                                      .getevent_Client(idclient);
+                                  // Provider.of<client_vm>(context, listen: false)
+                                  //     .getclientfilter_Local(iduser!,"user");
 
-                                  } ,
-                                  selectedItem: cart.selectedclient,
-                                  showSearchBox: true,
-                                  dropdownSearchDecoration:
-                                  InputDecoration(
-                                    //filled: true,
-                                    isCollapsed: true,
-                                    hintText: 'العميل',
-                                    alignLabelWithHint: true,
-                                    fillColor:  Colors.grey.withOpacity(0.2),
-                                    //labelText: "choose a user",
-                                    contentPadding: EdgeInsets.all(0),
-                                    //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                    // focusedBorder: OutlineInputBorder(
-                                    //     borderRadius: BorderRadius.circular(10),
-                                    //     borderSide: const BorderSide(color: Colors.white)),
-                                    border:
-                                    UnderlineInputBorder(
-                                        borderSide: const BorderSide(  color: Colors.grey)
-                                    ),
-                                    // OutlineInputBorder(
-                                    //     borderRadius: BorderRadius.circular(10),
-                                    //     borderSide: const BorderSide( color: Colors.white)),
+                                } ,
+                                selectedItem: cart.selectedclient,
+                                showSearchBox: true,
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                  //filled: true,
+                                  isCollapsed: true,
+                                  hintText: 'العميل',
+                                  alignLabelWithHint: true,
+                                  fillColor:  Colors.grey.withOpacity(0.2),
+                                  //labelText: "choose a user",
+                                  contentPadding: EdgeInsets.all(0),
+                                  //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                  // focusedBorder: OutlineInputBorder(
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //     borderSide: const BorderSide(color: Colors.white)),
+                                  border:
+                                  UnderlineInputBorder(
+                                      borderSide: const BorderSide(  color: Colors.grey)
                                   ),
-                                  // InputDecoration(border: InputBorder.none),
+                                  // OutlineInputBorder(
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //     borderSide: const BorderSide( color: Colors.white)),
+                                ),
+                                // InputDecoration(border: InputBorder.none),
 
-                                );
+                              );
 
-                              },
-                            ),
+                            },
                           ),
                         ),
                       ),

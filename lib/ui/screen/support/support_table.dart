@@ -17,6 +17,8 @@ import 'package:provider/provider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:group_button/group_button.dart';
 
+import '../../../view_model/invoice_vm.dart';
+
 class support_table extends StatefulWidget {
   const support_table({Key? key}) : super(key: key);
 
@@ -38,7 +40,8 @@ class _support_tableState extends State<support_table> {
       print(Provider.of<user_vm_provider>(context,listen: false)
           .userall.length);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-
+     await Provider.of<invoice_vm>(context, listen: false)
+          .getfilter_maincity([],'الكل');
       Provider.of<EventProvider>(context,listen: false). getevent_vm();
     }
     );

@@ -38,6 +38,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   bool isloading = false;
+  bool isloading_marketing = false;
   UserModel? usercurrent;
 
   invoice_vm() {
@@ -180,16 +181,20 @@ class invoice_vm extends ChangeNotifier {
 
   void getinvoice_marketing() async {
     listinvoicesMarketing = [];
-    isloading = true;
+    isloading_marketing = true;
     notifyListeners();
-    list_temp=  await  Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
-    // listinvoices.forEach((element) {
-    //   // if (element.ismarketing == '1')
-    //     //&& element.isApprove == "1")
-    //     listinvoicesMarketing.add(element);
-    // });
+    await  getinvoiceswithprev();
+    list_temp= List.from(listInvoicesAccept);
+    // await  Invoice_Service()
+    //     .getinvoiceMarketing(usercurrent!.fkCountry.toString());
+
+    list_temp.forEach((element) {
+      if (element.ismarketing == '1')
+        //&& element.isApprove == "1")
+        listinvoicesMarketing.add(element);
+    });
      listinvoicesMarketing=List.from(list_temp);
-    isloading = false;
+    isloading_marketing = false;
     notifyListeners();
   }
 

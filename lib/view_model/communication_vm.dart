@@ -343,7 +343,7 @@ class communication_vm extends ChangeNotifier{
 
     }
    else {
-     await getCommunicationall('تركيب');
+     await getInstall1();//getCommunicationall('تركيب');
      listCommunicationInstall=List.from(listCommunicationInstall_temp);
 
       // if(listCommunication.isNotEmpty) {
@@ -588,6 +588,21 @@ class communication_vm extends ChangeNotifier{
     if(data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationInstall2_temp.add(CommunicationModel.fromJson(data[i]));
+      }
+      // notifyListeners();
+    }
+  }
+  Future<void> getInstall1( )async {
+    listCommunicationInstall_temp=[];
+    List<dynamic> data=[];
+
+    data= await Api()
+        .get(url:url+ 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}');
+    print('data.length');
+    print(data.length);
+    if(data.length.toString().isNotEmpty) {
+      for (int i = 0; i < data.length; i++) {
+        listCommunicationInstall_temp.add(CommunicationModel.fromJson(data[i]));
       }
       // notifyListeners();
     }
