@@ -145,7 +145,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
                         ),
                         search_widget(
                             'marketinvoice',
-                            hintnamefilter,''
+                            hintnamefilter,'',
+                          onChange: (value) => filtershow(query: value),
                         ),
                         SizedBox(height: 5,),
                         Padding(
@@ -212,11 +213,11 @@ class _invoice_marketingState extends State<invoice_marketing> {
     );
   }
 
-  void filtershow(){
+  void filtershow({String? query}){
     print(regoin);
     print(typeclientvalue);
     Provider.of<invoice_vm>(context,listen: false)
-        .getclienttype_marketing(typeclientvalue,regoin,'only');
+        .onFilterInvoice(typeclientvalue,regoin,query);
 
     // }
   }

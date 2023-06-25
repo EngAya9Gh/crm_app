@@ -8,29 +8,33 @@ import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 class search_widget extends StatelessWidget {
   search_widget(
-      this.serch,
-      this.hint,
-      this.type,{Key? key}) : super(key: key);
-  String hint='';
+    this.serch,
+    this.hint,
+    this.type, {
+    Key? key,
+    this.onChange,
+  }) : super(key: key);
+  String hint = '';
   String serch;
   String? type;
+  ValueChanged<String>? onChange;
+
   //List<dynamic> list;
   @override
   Widget build(BuildContext context) {
-    return
-      Container(
+    return Container(
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(
-               Radius.circular(5),
+            Radius.circular(5),
           )),
       height: 50,
       child: Padding(
         padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
         child: Container(
-
           decoration: BoxDecoration(
             color: Colors.grey.withOpacity(0.2),
             borderRadius: BorderRadius.circular(10),
@@ -47,71 +51,59 @@ class search_widget extends StatelessWidget {
                 //     builder: (context) => productSearchView(
                 //         pattern, list)));
 
-                switch(serch){
-                    case 'client':
-                    Provider.of<client_vm>(context,listen: false)
-                        .searchProducts(pattern);
+                onChange?.call(pattern);
+                switch (serch) {
+                  case 'client':
+                    Provider.of<client_vm>(context, listen: false).searchProducts(pattern);
                     break;
-                    case 'product':
-                    Provider.of<product_vm>(context,listen: false)
-                        .searchProducts(pattern);
-                    break;
-
-                    // case 'delayinstall':
-                    // Provider.of<client_vm>(context,listen: false)
-                    //     .searchdelay(pattern);
-                    // break;
-
-                    case 'clientmarketing':
-                    Provider.of<client_vm>(context,listen: false)
-                        .searchmarket(pattern);
+                  case 'product':
+                    Provider.of<product_vm>(context, listen: false).searchProducts(pattern);
                     break;
 
-                    case 'accept':
-                    Provider.of<client_vm>(context,listen: false)
-                        .searchclientAccept(pattern);
+                  // case 'delayinstall':
+                  // Provider.of<client_vm>(context,listen: false)
+                  //     .searchdelay(pattern);
+                  // break;
+
+                  case 'clientmarketing':
+                    Provider.of<client_vm>(context, listen: false).searchmarket(pattern);
                     break;
 
-                    case 'ticket':
-                    Provider.of<ticket_vm>(context,listen: false)
-                        .searchProducts(pattern);
+                  case 'accept':
+                    Provider.of<client_vm>(context, listen: false).searchclientAccept(pattern);
                     break;
 
-                    case 'user':
-                    Provider.of<user_vm_provider>(context,listen: false)
-                        .searchProducts(pattern);
+                  case 'ticket':
+                    Provider.of<ticket_vm>(context, listen: false).searchProducts(pattern);
                     break;
-                    case 'marketinvoice':
-                    Provider.of<invoice_vm>(context,listen: false)
-                        .searchmarketing(pattern);
+
+                  case 'user':
+                    Provider.of<user_vm_provider>(context, listen: false).searchProducts(pattern);
                     break;
-                    case 'welcome':
-                    Provider.of<communication_vm>(context,listen: false)
-                        .searchwelcome(pattern,type);
+                  case 'marketinvoice':
+                    Provider.of<invoice_vm>(context, listen: false).searchmarketing(pattern);
+                    break;
+                  case 'welcome':
+                    Provider.of<communication_vm>(context, listen: false).searchwelcome(pattern, type);
                     break;
                   // case 'invoice':
                   //   Provider.of<invoice_vm>(context,listen: false)
                   //       .searchProducts(pattern);
                   //   break;
-                    case 'wait':
-                    Provider.of<invoice_vm>(context,listen: false)
-                        .searchwait(pattern);
+                  case 'wait':
+                    Provider.of<invoice_vm>(context, listen: false).searchwait(pattern);
                     break;
-                    case 'waitcare':
-                    Provider.of<communication_vm>(context,listen: false)
-                        .searchwaitcare(pattern);
+                  case 'waitcare':
+                    Provider.of<communication_vm>(context, listen: false).searchwaitcare(pattern);
                     break;
-                    case 'waitout':
-                    Provider.of<invoice_vm>(context,listen: false)
-                        .searchwaitout(pattern);
+                  case 'waitout':
+                    Provider.of<invoice_vm>(context, listen: false).searchwaitout(pattern);
                     break;
-                    case 'withprev':
-                    Provider.of<invoice_vm>(context,listen: false)
-                        .searchwaitwithprev(pattern);
+                  case 'withprev':
+                    Provider.of<invoice_vm>(context, listen: false).searchwaitwithprev(pattern);
                     break;
-                    case 'waitsupport':
-                    Provider.of<invoice_vm>(context,listen: false)
-                        .searchwaitsupport(pattern);
+                  case 'waitsupport':
+                    Provider.of<invoice_vm>(context, listen: false).searchwaitsupport(pattern);
                     break;
                 }
                 //.search(productName: pattern);

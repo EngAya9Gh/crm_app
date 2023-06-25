@@ -69,7 +69,7 @@ class _addinvoiceState extends State<addinvoice> {
 
   late String totalController; //= TextEditingController();
 
-  final TextEditingController amount_paidController = TextEditingController();
+  late final TextEditingController amount_paidController ;
 
   final TextEditingController renewController = TextEditingController();
 
@@ -130,6 +130,17 @@ class _addinvoiceState extends State<addinvoice> {
   @override
   void initState() {
     if (_invoice == null) _invoice = InvoiceModel(products: []);
+
+    amount_paidController = TextEditingController()..addListener(() {
+      final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
+      final amountPaid = num.tryParse(amount_paidController.text) ?? 0;
+
+      if(amountPaid > total){
+        amount_paidController.text = total.toString();
+        amount_paidController.selection = TextSelection.fromPosition(TextPosition(offset: amount_paidController.text.length));
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
       Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
@@ -332,6 +343,13 @@ class _addinvoiceState extends State<addinvoice> {
 
                           if (num.parse(value!) <= 0) {
                             return "يجب إدخال قيمة أكبر من 0.";
+                          }
+
+                          final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
+                          final amountPaid = num.tryParse(value) ?? 0;
+
+                          if(amountPaid > total){
+                            return "لا يمكن إدخال مبلغ أكبر من قيمة الفاتورة.";
                           }
                           return null;
                         },
