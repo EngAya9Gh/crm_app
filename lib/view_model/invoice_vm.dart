@@ -504,8 +504,9 @@ class invoice_vm extends ChangeNotifier {
   List<InvoiceModel> list_temp = [];
 
   Future<void> onFilterInvoice(String? invoiceStatus, String? region, String? query) async {
+    final list = List<InvoiceModel>.from(list_temp);
 
-    listinvoicesMarketing = list_temp.where((element) {
+    listinvoicesMarketing = list.where((element) {
       if ((region == null || region == '0') && (invoiceStatus == null || invoiceStatus == 'الكل')) {
         return true && filterQuery(element,query);
       } else if ((region != null && region != '0') && (invoiceStatus == null || invoiceStatus == 'الكل')) {
@@ -624,9 +625,12 @@ class invoice_vm extends ChangeNotifier {
       return true;
     }
 
-    return (element.name_enterprise!.toLowerCase().contains(query!.toLowerCase())) ||
-        (element.mobile!.toLowerCase().contains(query.toLowerCase())) ||
-        (element.nameClient!.toLowerCase().contains(query.toLowerCase()) ) ;
+    print("(element.address_invoice!.toLowerCase().contains(query!.toLowerCase())) ${element.address_invoice}  ${(element.address_invoice!.toLowerCase().contains(query!.toLowerCase()))}");
+    return (element.address_invoice!.toLowerCase().contains(query!.toLowerCase()))
+        // ||
+        // (element.mobile!.toLowerCase().contains(query.toLowerCase())) ||
+        // (element.nameClient!.toLowerCase().contains(query.toLowerCase()) )
+    ;
   }
 
   Future<void> getfilterview(String? regoin, String tyype) async {
