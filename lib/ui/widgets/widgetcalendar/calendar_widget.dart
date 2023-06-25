@@ -13,6 +13,7 @@ import 'dart:ui' as myui;
 
 import '../../../constants.dart';
 import '../../../view_model/datetime_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 import '../custom_widget/row_edit.dart';
 
 class CalendarWidget extends StatefulWidget {
@@ -147,51 +148,62 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
       ],
     );
-    return SfCalendar(
-      view: CalendarView.month,
-      dataSource: EventDataSource(events),
-      initialSelectedDate: DateTime.now(),
-      cellBorderColor: Colors.transparent,
-      onLongPress: (longDetail) async{
-        //print('sdsada'+widget.clientModel!.idClients.toString());
-        if(widget.clientModel !=null) {
-          print('iside if');
-         await showDialog<void>(
-              context: context,
-              builder: (context) => dialog);
 
-         if( Provider.of<EventProvider>(
-              context, listen: false).is_save){
-          final providerlong = Provider.of<EventProvider>(
-              context, listen: false);
+    return Selector2<user_vm_provider, client_vm , bool>(
+      selector: (_, p1, p2) => p1.isLoading || p2.isloading,
+      builder: (context, value, child) {
 
-          providerlong.setDate(_currentDate);//longDetail.date!);
-          providerlong.addEvents(
-              Event(
-                  fkIdClient: widget.clientModel?.idClients,
-                  title: widget.clientModel!.nameEnterprise.toString(),
-                  description: 'description',
-                  from: _currentDate,//longDetail.date!,
-                  to: _currentDate.add(Duration(hours: 2)),
-                  idinvoice: null)
-          );
-        }}
+        if(value) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return SfCalendar(
+          view: CalendarView.month,
+          dataSource: EventDataSource(events),
+          initialSelectedDate: DateTime.now(),
+          cellBorderColor: Colors.transparent,
+          onLongPress: (longDetail) async{
+            //print('sdsada'+widget.clientModel!.idClients.toString());
+            if(widget.clientModel !=null) {
+              print('iside if');
+              await showDialog<void>(
+                  context: context,
+                  builder: (context) => dialog);
+
+              if( Provider.of<EventProvider>(
+                  context, listen: false).is_save){
+                final providerlong = Provider.of<EventProvider>(
+                    context, listen: false);
+
+                providerlong.setDate(_currentDate);//longDetail.date!);
+                providerlong.addEvents(
+                    Event(
+                        fkIdClient: widget.clientModel?.idClients,
+                        title: widget.clientModel!.nameEnterprise.toString(),
+                        description: 'description',
+                        from: _currentDate,//longDetail.date!,
+                        to: _currentDate.add(Duration(hours: 2)),
+                        idinvoice: null)
+                );
+              }}
+          },
+          onTap: (details) {
+
+            final provider = Provider.of<EventProvider>(context, listen: false);
+            print(details.date!);
+            provider.setDate(details.date!);
+            print(details.date!);
+            showModalBottomSheet(
+                context: context, builder: (context) => TaskWidget());
+          },
+          // onLongPress: (details) {
+          //   final provider = Provider.of<EventProvider>(context, listen: false);
+          //   provider.setDate(details.date!);
+          //   showModalBottomSheet(
+          //       context: context, builder: (context) => TaskWidget());
+          // },
+        );
       },
-      onTap: (details) {
-
-        final provider = Provider.of<EventProvider>(context, listen: false);
-        print(details.date!);
-        provider.setDate(details.date!);
-        print(details.date!);
-        showModalBottomSheet(
-            context: context, builder: (context) => TaskWidget());
-      },
-      // onLongPress: (details) {
-      //   final provider = Provider.of<EventProvider>(context, listen: false);
-      //   provider.setDate(details.date!);
-      //   showModalBottomSheet(
-      //       context: context, builder: (context) => TaskWidget());
-      // },
     );
+
   }
 }
