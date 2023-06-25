@@ -97,7 +97,8 @@ class BranchRaceViewmodel extends ChangeNotifier {
 
   void onFilterDateTyp() {
     final list = List<BranchRaceModel>.from(_allTargetsList)
-        .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+        .where((element) => element.typeTarget ==
+        selectedDateFilter.index.toString())
         .toList();
 
     targetsState = targetsState.copyWith(data: list);

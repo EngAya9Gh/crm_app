@@ -84,7 +84,8 @@ class _HomeState extends State<Home> {
           .getticket();
 
     // Provider.of<invoice_vm>(context, listen: false)
-    //     .getinvoices();
+    //     .getfilter_maincity([],'الكل');
+        // .getinvoices();
     await Provider.of<privilge_vm>
       (context,listen: false).getprivlg_usercurrent();
 

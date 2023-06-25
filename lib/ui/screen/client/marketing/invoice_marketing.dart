@@ -49,6 +49,9 @@ class _invoice_marketingState extends State<invoice_marketing> {
       //if(widget.type=='only')
       //  Provider.of<invoice_vm>(context, listen: false).getinvoice_Local("مشترك",'approved only');
       //if(widget.type=='client')
+      List<PrivilgeModel> list = await Provider.of<privilge_vm>(context, listen: false).privilgelist;
+      Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);
+
       Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
       Provider.of<invoice_vm>(context, listen: false)
@@ -64,7 +67,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('فواتير العملاء',style: TextStyle(color: kWhiteColor),),
+        title: Text('فواتير عملاء التسويق الالكتروني',style: TextStyle(color: kWhiteColor),),
         centerTitle: true,
       ),
       body: Consumer<privilge_vm>(
@@ -79,6 +82,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            privilge.checkprivlge('8')==true? //regoin
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -109,7 +113,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                                   },
                                 ),
                               ),
-                            ),
+                            ):Container(),
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 20.0,right: 8),
@@ -141,7 +145,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
                         ),
                         search_widget(
                             'marketinvoice',
-                            hintnamefilter,''
+                            hintnamefilter,'',
+                          onChange: (value) => filtershow(query: value),
                         ),
                         SizedBox(height: 5,),
                         Padding(
@@ -169,7 +174,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                             padding: const EdgeInsets.all(8.0),
                             child: Consumer<invoice_vm>(
                                 builder: (context, value, child) {
-                                  return value.isloading==true ?
+                                  return value.isloading_marketing==true ?
                                   Center(
                                       child: CircularProgressIndicator()
                                   ):value.listinvoicesMarketing.length == 0?
@@ -208,11 +213,12 @@ class _invoice_marketingState extends State<invoice_marketing> {
     );
   }
 
-  void filtershow(){
+  void filtershow({String? query}){
     print(regoin);
     print(typeclientvalue);
     Provider.of<invoice_vm>(context,listen: false)
-        .getclienttype_marketing(typeclientvalue,regoin,'only');
+        // .getclienttype_marketing(typeclientvalue,regoin,'only');
+       .onFilterInvoice(typeclientvalue,regoin,query);
 
     // }
   }

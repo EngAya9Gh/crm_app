@@ -79,14 +79,21 @@ class _addClientState extends State<addClient> {
     super.dispose();
   }
 
+  late activity_vm activityViewmodel;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<maincity_vm>(context, listen: false).getcityAll();
-      await Provider.of<activity_vm>(context, listen: false).getactv();
-      await Provider.of<company_vm>(context, listen: false).getcompany();
 
-      Provider.of<maincity_vm>(context, listen: false).changevalue(null);
+      context.read<maincity_vm>().getcityAll();
+      activityViewmodel = context.read<activity_vm>()
+        ..initValueOut()
+        ..getactv();
+      context.read<company_vm>()
+        ..initValueOut()
+        ..getcompany();
+
+      context.read<maincity_vm>().changevalue(null);
     });
     super.initState();
   }
@@ -315,7 +322,6 @@ class _addClientState extends State<addClient> {
                       },
                     ),
                     SizedBox(height: 15),
-
                     Center(
                       child: custom_button_new(
                         text: label_clientadd,

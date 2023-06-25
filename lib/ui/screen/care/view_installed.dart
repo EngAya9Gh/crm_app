@@ -200,7 +200,6 @@ class _View_installedClientState extends State<View_installedClient> {
                               value.listCommunicationInstall.length == 0
                                       ? Center(child: Text(messageNoData))
                                       :
-
                               Column(
                                 children: [
                                             Expanded(

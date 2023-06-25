@@ -395,18 +395,22 @@ class _tabclientsState extends State<tabclients> {
   void filtershow(){
     print(typeclientvalue);
     if(typeclientvalue=='الكل'){
-      Provider.of<client_vm>(context, listen: false) .resetlist();
+      Provider.of<client_vm>(context, listen: false)
+          .resetlist();
     }
     else{
     if( Provider.of<regoin_vm>(context,listen: false).selectedValueLevel!=null&&
         iduser!=null) {
       Provider.of<client_vm>(context, listen: false)
           .getclientfilter_Local(iduser ,"3", typeclientvalue, regoin,activity);
+
     } else {
+
       if(Provider.of<regoin_vm>(context,listen: false).selectedValueLevel==null&&
           iduser==null){
         Provider.of<client_vm>(context, listen: false)
             .getclientfilter_Local(typeclientvalue,"type",null,null,activity);
+
       }
       else{
         if(iduser==null) {

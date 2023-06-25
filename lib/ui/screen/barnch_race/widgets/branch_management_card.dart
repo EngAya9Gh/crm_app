@@ -37,8 +37,12 @@ class BranchManagementCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      branchRaceModel.x!=null?
                       Text(
                         branchRaceModel.x.toString(),
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, fontFamily: kfontfamily),
+                      ):Text(
+                        branchRaceModel.name_regoin.toString(),
                         style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, fontFamily: kfontfamily),
                       ),
                       Text(
