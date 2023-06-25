@@ -110,7 +110,8 @@ class cardcommalltype extends StatelessWidget {
                       ),
 
                       itemcom.hoursdelaylabel!=null?
-                      itemcom.type_install=='2' ?Text(
+                      // itemcom.type_install=='2' ?
+                      Text(
                         int.parse(itemcom.hoursdelaylabel.toString())<0?
                         ' تأخر عن التواصل  '+(int.parse(itemcom.hoursdelaylabel.toString())*-1).toString()+ ' يوم '
                             :
@@ -121,19 +122,20 @@ class cardcommalltype extends StatelessWidget {
                             //fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2,
                             color: kMainColor),
-                      ):Text(
-                        int.parse(itemcom.hoursdelaylabel.toString())<0?
-                        ' تأخر عن التواصل  '+(int.parse(itemcom.hoursdelaylabel.toString())*-1).toString()+ ' ساعة '
-                            :
-                        ' باقي '+ itemcom.hoursdelaylabel.toString()+' ساعة '
-                        ,
-                        style: TextStyle(
-                            fontSize: 12,
-                            //fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2,
-                            color: kMainColor),
                       )
-                          :Container()
+                      // Text(
+                      //   int.parse(itemcom.hoursdelaylabel.toString())<0?
+                      //   ' تأخر عن التواصل  '+(int.parse(itemcom.hoursdelaylabel.toString())*-1).toString()+ ' ساعة '
+                      //       :
+                      //   ' باقي '+ itemcom.hoursdelaylabel.toString()+' ساعة '
+                      //   ,
+                      //   style: TextStyle(
+                      //       fontSize: 12,
+                      //       //fontWeight: FontWeight.bold,
+                      //       fontFamily: kfontfamily2,
+                      //       color: kMainColor),
+                      // )
+                        :Container()
 
                     ],
                   ):Container(),

@@ -217,7 +217,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
     print(regoin);
     print(typeclientvalue);
     Provider.of<invoice_vm>(context,listen: false)
-        .onFilterInvoice(typeclientvalue,regoin,query);
+        // .getclienttype_marketing(typeclientvalue,regoin,'only');
+       .onFilterInvoice(typeclientvalue,regoin,query);
 
     // }
   }

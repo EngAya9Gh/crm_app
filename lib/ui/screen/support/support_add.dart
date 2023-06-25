@@ -709,9 +709,7 @@ class _support_addState extends State<support_add> {
                                                                   .dateTime;
                                                               print(datanext
                                                                   .toString());
-                                                              await Provider.of<
-                                                                  invoice_vm>(
-                                                                  context,
+                                                              await Provider.of<invoice_vm>( context,
                                                                   listen:
                                                                   false)
                                                                   .setdatedone_vm(
