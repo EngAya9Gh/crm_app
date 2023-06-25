@@ -211,6 +211,7 @@ class _installAddState extends State<installAdd> {
                             if(widget.com.dateCommunication==null) {
                               Provider.of<communication_vm>
                             (context,listen: false).addcommmuncation({
+                                'fk_client':widget.com.fkClient.toString(),
                             'fk_user':Provider.of<user_vm_provider>
                                (context,listen: false).currentUser.idUser.toString(),
                             'date_communication':DateTime.now().toString(),
