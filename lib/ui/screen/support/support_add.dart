@@ -295,7 +295,6 @@ class _support_addState extends State<support_add> {
         ]);
     print('builld');
     return SafeArea(
-
       child: Directionality(
         textDirection: myui.TextDirection.rtl,
         child: SingleChildScrollView(
@@ -546,15 +545,14 @@ class _support_addState extends State<support_add> {
                           value: _invoice!.typeInstallation.toString() == '0'
                               ? 'ميداني'
                               : 'اونلاين'),
-                      _invoice!.ready_install == '0'?
-                      cardRow(
-                          title: 'هل تم التركيب للعميل ',
-                          value: 'معلق'):
-                      cardRow(
-                          title: 'هل تم التركيب للعميل ',
-                          value: _invoice!.dateinstall_done == null
-                              ? 'بالانتظار'
-                              : 'تم التركيب'),
+                      _invoice!.ready_install == '0'
+                          ? cardRow(
+                              title: 'هل تم التركيب للعميل ', value: 'معلق')
+                          : cardRow(
+                              title: 'هل تم التركيب للعميل ',
+                              value: _invoice!.dateinstall_done == null
+                                  ? 'بالانتظار'
+                                  : 'تم التركيب'),
 
                       _invoice!.date_readyinstall != null
                           ? cardRow(
@@ -595,192 +593,210 @@ class _support_addState extends State<support_add> {
                                           MaterialStateProperty.all(
                                               kMainColor)),
                                   onPressed: () async {
-                                    if(  _invoice!.ready_install == '0')
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(content: Text('العميل غير جاهز للتركيب ')));
-                                      // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('العميل غير جاهز للتركيب ')));
-                                    else{
-                                    await showDialog(
-                                      context: context,
-                                      builder: (context) {
-
-                                        return ModalProgressHUD(
-                                          inAsyncCall: Provider.of<invoice_vm>(
-                                                  context,
-                                                  listen: true)
-                                              .isloadingdone,
-                                          child: Directionality(
-                                            textDirection:
-                                                myui.TextDirection.rtl,
-                                            child: AlertDialog(
-                                              title: Text('التأكيد'),
+                                    if (_invoice!.ready_install == '0')
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
                                               content: Text(
-                                                  'هل تريد تأكيد عملية التركيب'),
-                                              actions: <Widget>[
-                                                Column(
-                                                  children: [
-                                                    EditTextFormField(
-                                                      maxline: 4,
-                                                      paddcustom:
-                                                          EdgeInsets.all(10),
-                                                      hintText: ' يوزر العميل',
-                                                      obscureText: false,
-                                                      controller:
-                                                          _textnameuserclient,
-                                                      vaild: (value) {
-                                                        if (value
-                                                            .toString()
-                                                            .trim()
-                                                            .isEmpty) {
-                                                          return 'الحقل فارغ';
-                                                        }
-                                                      },
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                  'العميل غير جاهز للتركيب ')));
+                                    // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('العميل غير جاهز للتركيب ')));
+                                    else {
+                                      await showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return ModalProgressHUD(
+                                              inAsyncCall:
+                                                  Provider.of<invoice_vm>(
+                                                          context,
+                                                          listen: true)
+                                                      .isloadingdone,
+                                              child: Directionality(
+                                                textDirection:
+                                                    myui.TextDirection.rtl,
+                                                child: AlertDialog(
+                                                  title: Text('التأكيد'),
+                                                  content: Text(
+                                                      'هل تريد تأكيد عملية التركيب'),
+                                                  actions: <Widget>[
+                                                    Column(
                                                       children: [
-                                                        ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .all(
-                                                                          kMainColor)),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context,
-                                                                    rootNavigator:
-                                                                        true)
-                                                                .pop(
-                                                                    false); // dismisses only the dialog and returns false
+                                                        EditTextFormField(
+                                                          maxline: 4,
+                                                          paddcustom:
+                                                              EdgeInsets.all(
+                                                                  10),
+                                                          hintText:
+                                                              ' يوزر العميل',
+                                                          obscureText: false,
+                                                          controller:
+                                                              _textnameuserclient,
+                                                          vaild: (value) {
+                                                            if (value
+                                                                .toString()
+                                                                .trim()
+                                                                .isEmpty) {
+                                                              return 'الحقل فارغ';
+                                                            }
                                                           },
-                                                          child: Text('لا'),
                                                         ),
-                                                        ElevatedButton(
-                                                          style: ButtonStyle(
-                                                              backgroundColor:
-                                                                  MaterialStateProperty
-                                                                      .all(
-                                                                          kMainColor)),
-                                                          onPressed: () async {
-
-                                                              Provider.of<
-                                                                  invoice_vm>(
-                                                                  context,
-                                                                  listen:
-                                                                  false)
-                                                                  .setisload();
-                                                              await Provider.of<
-                                                                  config_vm>(
-                                                                  context,
-                                                                  listen:
-                                                                  false)
-                                                                  .getAllConfig();
-                                                              List<ConfigModel>
-                                                              _listconfg =
-                                                                  Provider
-                                                                      .of<
-                                                                      config_vm>(
-                                                                      context,
-                                                                      listen:
-                                                                      false)
-                                                                      .listofconfig;
-                                                              ConfigModel peroid =
-                                                              _listconfg
-                                                                  .firstWhere(
-                                                                      (
-                                                                      element) =>
-                                                                  element
-                                                                      .name_config ==
-                                                                      'period_commincation3'); //تواصل دوري
-                                                              DateTime datanext =
-                                                              DateTime.now();
-                                                              int peroidtime =
-                                                              int.parse(peroid
-                                                                  .value_config);
-                                                              datanext = Jiffy()
-                                                                  .add(
-                                                                  days:
-                                                                  peroidtime)
-                                                                  .dateTime;
-                                                              print(datanext
-                                                                  .toString());
-                                                              await Provider.of<invoice_vm>( context,
-                                                                  listen:
-                                                                  false)
-                                                                  .setdatedone_vm(
-                                                                  {
-                                                                    'clientusername':
-                                                                    _textnameuserclient
-                                                                        .text,
-                                                                    'datanext':
-                                                                    datanext
-                                                                        .toString(),
-                                                                    'dateinstall_done':
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            ElevatedButton(
+                                                              style: ButtonStyle(
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                              kMainColor)),
+                                                              onPressed: () {
+                                                                Navigator.of(
+                                                                        context,
+                                                                        rootNavigator:
+                                                                            true)
+                                                                    .pop(
+                                                                        false); // dismisses only the dialog and returns false
+                                                              },
+                                                              child: Text('لا'),
+                                                            ),
+                                                            ElevatedButton(
+                                                              style: ButtonStyle(
+                                                                  backgroundColor:
+                                                                      MaterialStateProperty
+                                                                          .all(
+                                                                              kMainColor)),
+                                                              onPressed:
+                                                                  () async {
+                                                                Provider.of<invoice_vm>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .setisload();
+                                                                await Provider.of<
+                                                                            config_vm>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .getAllConfig();
+                                                                List<ConfigModel>
+                                                                    _listconfg =
+                                                                    Provider.of<config_vm>(
+                                                                            context,
+                                                                            listen:
+                                                                                false)
+                                                                        .listofconfig;
+                                                                ConfigModel
+                                                                    peroid =
+                                                                    _listconfg.firstWhere((element) =>
+                                                                        element
+                                                                            .name_config ==
+                                                                        'period_commincation3'); //تواصل دوري
+                                                                DateTime
+                                                                    datanext =
                                                                     DateTime
-                                                                        .now()
-                                                                        .toString(),
-                                                                    'userinstall': Provider
-                                                                        .of<
-                                                                        user_vm_provider>(
+                                                                        .now();
+                                                                int peroidtime =
+                                                                    int.parse(peroid
+                                                                        .value_config);
+                                                                datanext = Jiffy()
+                                                                    .add(
+                                                                        days:
+                                                                            peroidtime)
+                                                                    .dateTime;
+                                                                print(datanext
+                                                                    .toString());
+
+                                                                peroid =
+                                                                    _listconfg.firstWhere((element) =>
+                                                                    element
+                                                                        .name_config ==
+                                                                        'period_commincation2'); //تواصل دوري
+                                                                DateTime
+                                                                datanext_install =
+                                                                DateTime
+                                                                    .now();
+                                                                 peroidtime =
+                                                                int.parse(peroid
+                                                                    .value_config);
+                                                                datanext_install = Jiffy()
+                                                                    .add(
+                                                                    days:
+                                                                    peroidtime)
+                                                                    .dateTime;
+                                                                print(datanext
+                                                                    .toString());
+                                                                await Provider.of<
+                                                                            invoice_vm>(
                                                                         context,
                                                                         listen:
-                                                                        false)
-                                                                        .currentUser
-                                                                        .idUser
-                                                                        .toString(),
-                                                                    'isdoneinstall':
-                                                                    '1',
-                                                                    'fkIdClient':
-                                                                    _invoice!
-                                                                        .fkIdClient,
-                                                                    'nameuserinstall': Provider
-                                                                        .of<
-                                                                        user_vm_provider>(
+                                                                            false)
+                                                                    .setdatedone_vm(
+                                                                        {
+                                                                      'clientusername':
+                                                                          _textnameuserclient
+                                                                              .text,
+                                                                      'datanext':
+                                                                          datanext
+                                                                              .toString(),
+                                                                      'datanext_install':
+                                                                          datanext_install
+                                                                              .toString(),
+                                                                      'dateinstall_done':
+                                                                          DateTime.now()
+                                                                              .toString(),
+                                                                      'userinstall': Provider.of<user_vm_provider>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .currentUser
+                                                                          .idUser
+                                                                          .toString(),
+                                                                      'isdoneinstall':
+                                                                          '1',
+                                                                      'fkIdClient':
+                                                                          _invoice!
+                                                                              .fkIdClient,
+                                                                      'nameuserinstall': Provider.of<user_vm_provider>(
+                                                                              context,
+                                                                              listen: false)
+                                                                          .currentUser
+                                                                          .nameUser
+                                                                          .toString(),
+                                                                      'name_enterprise':
+                                                                          _invoice!
+                                                                              .name_enterprise,
+                                                                      'fkcountry':
+                                                                          _invoice!
+                                                                              .fk_country,
+                                                                      'fk_regoin':
+                                                                          _invoice!
+                                                                              .fk_regoin
+                                                                    },
+                                                                        _invoice!
+                                                                            .idInvoice).then(
+                                                                        (value) =>
+                                                                            clear());
+                                                                Navigator.of(
                                                                         context,
-                                                                        listen:
-                                                                        false)
-                                                                        .currentUser
-                                                                        .nameUser
-                                                                        .toString(),
-                                                                    'name_enterprise':
-                                                                    _invoice!
-                                                                        .name_enterprise,
-                                                                    'fkcountry':
-                                                                    _invoice!
-                                                                        .fk_country,
-                                                                    'fk_regoin':
-                                                                    _invoice!
-                                                                        .fk_regoin
-                                                                  },
-                                                                  _invoice!
-                                                                      .idInvoice)
-                                                                  .then(
-                                                                      (value) =>
-                                                                      clear());
-                                                              Navigator.of(
-                                                                  context,
-                                                                  rootNavigator:
-                                                                  true)
-                                                                  .pop(true);
-                                                               },
-                                                          child: Text('نعم'),
-                                                        ),
+                                                                        rootNavigator:
+                                                                            true)
+                                                                    .pop(true);
+                                                              },
+                                                              child:
+                                                                  Text('نعم'),
+                                                            ),
+                                                          ],
+                                                        )
                                                       ],
-                                                    )
+                                                    ),
                                                   ],
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }
-
-                                    );}
+                                              ),
+                                            );
+                                          });
+                                    }
                                     //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
                                   },
                                   child: Text('تم التركيب للعميل'))
@@ -851,14 +867,12 @@ class _support_addState extends State<support_add> {
                                                                               () async {
                                                                             Provider.of<invoice_vm>(context, listen: false).setisload();
 
-                                                                            await Provider.of<invoice_vm>(context, listen: false)
-                                                                                .set_ready_install({
+                                                                            await Provider.of<invoice_vm>(context, listen: false).set_ready_install({
                                                                               'date_readyinstall': DateTime.now().toString(),
-                                                                              'user_ready_install': Provider.of<user_vm_provider>
-                                                                                (context, listen: false).currentUser.idUser.toString(),
+                                                                              'user_ready_install': Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
                                                                               'ready_install': '1',
                                                                             }, _invoice!.idInvoice).then((value) => clear());
-                                                                             Navigator.of(context, rootNavigator: true).pop(true);
+                                                                            Navigator.of(context, rootNavigator: true).pop(true);
                                                                           },
                                                                           child:
                                                                               Text('نعم'),
@@ -941,18 +955,16 @@ class _support_addState extends State<support_add> {
                                                                               // _invoice.date_not_readyinstall-
                                                                               'date_temp': _invoice!.date_not_readyinstall.toString(),
                                                                               'date_not_readyinstall': DateTime.now().toString(),
-                                                                              'user_not_ready_install': Provider.of<user_vm_provider>
-                                                                                (context, listen: false)
-                                                                                  .currentUser.idUser.toString(),
+                                                                              'user_not_ready_install': Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
                                                                               'ready_install': '0', //suspend client
                                                                             };
-                                                                            if (_invoice!.count_delay_ready != null)
+                                                                            if (_invoice!.count_delay_ready !=
+                                                                                null)
                                                                               body.addAll({
                                                                                 'count_delay_ready': _invoice!.count_delay_ready.toString(),
                                                                               });
 
-                                                                            await Provider.of<invoice_vm>(context, listen: false)
-                                                                                .set_ready_install(body, _invoice!.idInvoice).then((value) =>
+                                                                            await Provider.of<invoice_vm>(context, listen: false).set_ready_install(body, _invoice!.idInvoice).then((value) =>
                                                                                 clear());
                                                                             Navigator.of(context, rootNavigator: true).pop(true);
                                                                           },
