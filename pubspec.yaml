@@ -101,6 +101,7 @@ flutter:
     - assest/images/money.png
     - assest/images/social-care.png
     - assest/images/technical-support.png
+#    - assest/images/technical-support.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
