@@ -61,13 +61,11 @@ class _tabclientsState extends State<tabclients> {
       // Add Your Code here.
       // Provider.of<regoin_vm>(context,listen: false).getregoin();
       Provider.of<client_vm>(context, listen: false).clear();
-      List<PrivilgeModel> list=
-          await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
+      List<PrivilgeModel> list= Provider.of<privilge_vm>(context,listen: false).privilgelist;
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-     await  Provider.of<client_vm>(context, listen: false)
+      Provider.of<client_vm>(context, listen: false)
           .getclient_vm();
-     await  Provider.of<activity_vm>(context, listen: false)
-          .getactv();
+     context.read<activity_vm>()..initValueOut()..getactv();
     });
   }
   @override
@@ -393,33 +391,42 @@ class _tabclientsState extends State<tabclients> {
         );
   }
   void filtershow(){
-    print(typeclientvalue);
-    if(typeclientvalue=='الكل'){
-      Provider.of<client_vm>(context, listen: false) .resetlist();
-    }
-    else{
-    if( Provider.of<regoin_vm>(context,listen: false).selectedValueLevel!=null&&
-        iduser!=null) {
-      Provider.of<client_vm>(context, listen: false)
-          .getclientfilter_Local(iduser ,"3", typeclientvalue, regoin,activity);
-    } else {
-      if(Provider.of<regoin_vm>(context,listen: false).selectedValueLevel==null&&
-          iduser==null){
-        Provider.of<client_vm>(context, listen: false)
-            .getclientfilter_Local(typeclientvalue,"type",null,null,activity);
-      }
-      else{
-        if(iduser==null) {
-          Provider.of<client_vm>(context, listen: false)
-              .getclientfilter_Local(
-               regoin, "regoin",
-              typeclientvalue,null,activity);
-        }else{
+    print("******* filter ******** ");
+    context.read<client_vm>().filterClientMarketingSalesList(
+      activity: activity,
+      idUser: iduser,
+      region: regoin,
+      typeClient: typeclientvalue,
+    );
 
-          Provider.of<client_vm>(context, listen: false)
-              .getclientfilter_Local(iduser,"user",typeclientvalue,null,activity);
-        }
-      }}
-    }
+
+    /// old way to filter clients list
+    // if(typeclientvalue=='الكل'){
+    //   Provider.of<client_vm>(context, listen: false) .resetlist();
+    // }
+    // else{
+    // if( Provider.of<regoin_vm>(context,listen: false).selectedValueLevel!=null&&
+    //     iduser!=null) {
+    //   Provider.of<client_vm>(context, listen: false)
+    //       .getclientfilter_Local(iduser ,"3", typeclientvalue, regoin,activity);
+    // } else {
+    //   if(Provider.of<regoin_vm>(context,listen: false).selectedValueLevel==null&&
+    //       iduser==null){
+    //     Provider.of<client_vm>(context, listen: false)
+    //         .getclientfilter_Local(typeclientvalue,"type",null,null,activity);
+    //   }
+    //   else{
+    //     if(iduser==null) {
+    //       Provider.of<client_vm>(context, listen: false)
+    //           .getclientfilter_Local(
+    //            regoin, "regoin",
+    //           typeclientvalue,null,activity);
+    //     }else{
+    //
+    //       Provider.of<client_vm>(context, listen: false)
+    //           .getclientfilter_Local(iduser,"user",typeclientvalue,null,activity);
+    //     }
+    //   }}
+    // }
   }
 }

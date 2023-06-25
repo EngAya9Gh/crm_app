@@ -172,6 +172,8 @@ class client_vm extends ChangeNotifier {
     isloading=false;
     notifyListeners();
   }
+
+  @Deprecated('use function filterClientMarketingSalesList instead of this.')
   Future<void> getclientfilter_Local(
       String? searchfilter,String type,
       String? filter2,String? filter3,String? filteractivity
@@ -294,6 +296,42 @@ class client_vm extends ChangeNotifier {
         listClientfilter=List.from(listClientfilter_temp);
       listClientMarketing=List.from(listClientfilter_temp);
     }
+    notifyListeners();
+  }
+
+  filterClientMarketingSalesList({
+    String? region,
+    String? activity,
+    String? idUser,
+    String? typeClient,
+}) {
+    final list = List<ClientModel>.from(listClient).toList();
+
+    if(region == '0'){
+      region = null;
+    }
+
+    if(typeClient == 'الكل'){
+      typeClient = null;
+    }
+
+    if(activity == ''){
+      activity = null;
+    }
+
+    final filteredListClient =  list.where((element) {
+      final regionCondition = region == null ?  true : element.fkRegoin == region;
+      final typeClientCondition = typeClient == null ?  true : element.typeClient == typeClient;
+      final activityCondition = activity == null ?  true : element.activity_type_fk == activity;
+      final idUserCondition = idUser == null ?  true : element.fkUser == idUser && element.fkcountry == usercurrent!.fkCountry;
+
+      return regionCondition && typeClientCondition && activityCondition && idUserCondition;
+    }).toList();
+
+
+    listClientfilter = filteredListClient;
+    listClientMarketing = filteredListClient;
+
     notifyListeners();
   }
 
