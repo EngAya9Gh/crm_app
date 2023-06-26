@@ -18,6 +18,7 @@ import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:group_button/group_button.dart';
 
 import '../../../view_model/invoice_vm.dart';
+import '../../widgets/widgetcalendar/calender_install.dart';
 
 class support_table extends StatefulWidget {
   const support_table({Key? key}) : super(key: key);
@@ -302,7 +303,7 @@ class _support_tableState extends State<support_table> {
                     ],
                   ),
                   SizedBox(height: 25,),
-                  CalendarWidget(type: 'invoice'),
+                  CalendarWidget_install(type: 'invoice'),
                 ],
             ),
           ),

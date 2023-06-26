@@ -160,7 +160,7 @@ void main() async {
 
     ChangeNotifierProxyProvider<invoice_vm, EventProvider>(
       create: (_) => EventProvider(),
-      update: (ctx, value, prev) => prev!..setvalue(value.listinvoices),
+      update: (ctx, value, prev) => prev!..setvalue(value.listInvoicesAccept),
     ),
     ChangeNotifierProxyProvider<user_vm_provider, ticket_vm>(
       create: (_) => ticket_vm(),

@@ -29,6 +29,7 @@ import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
@@ -341,8 +342,8 @@ class _addinvoiceState extends State<addinvoice> {
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
 
-                          if (num.parse(value!) <= 0) {
-                            return "يجب إدخال قيمة أكبر من 0.";
+                          if (int.parse(value!) < 0) {
+                            return "يجب إدخال قيمة مناسبة";
                           }
 
                           final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
@@ -377,8 +378,8 @@ class _addinvoiceState extends State<addinvoice> {
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
 
-                          if (num.parse(value!) <= 0) {
-                            return "يجب إدخال قيمة أكبر من 0.";
+                          if (num.parse(value!) < 0) {
+                            return "يجب إدخال قيمة مناسبة";
                           }
                           return null;
                         },
@@ -402,10 +403,10 @@ class _addinvoiceState extends State<addinvoice> {
                         obscureText: false,
                         vaild: (value) {
                           if (value?.trim().isEmpty ?? true) {
-                            return null;
+                            return 'الحقل فارغ';
                           }
 
-                          if (num.parse(value!) <= 0) {
+                          if (num.parse(value!) < 0) {
                             return "يجب إدخال قيمة أكبر من 0.";
                           }
                           return null;

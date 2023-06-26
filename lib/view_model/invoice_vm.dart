@@ -865,7 +865,7 @@ class invoice_vm extends ChangeNotifier {
         if (isParticipate) {
           listinvoiceClientSupport = [];
           list.forEach((element) {
-            if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
+            if (element.fkIdClient == fk_client && element.isApprove != null ) listinvoiceClientSupport.add(element);
           });
         } else {
           listinvoiceClient = [];

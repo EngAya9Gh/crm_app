@@ -65,18 +65,19 @@ class _support_install_reportState extends State<support_install_report> {
     String idregoin = usermodel.fkRegoin.toString();
 
     String paramprivilge='';
-    if(Provider.of<privilge_vm>(context,listen: false)
-        .checkprivlge('80')==true )
-      paramprivilge='&id_user=${iduser}';
-    else {
-      if(Provider.of<privilge_vm>(context,listen: false)
-          .checkprivlge('81')==true )
-        paramprivilge='&id_regoin=${idregoin}';
-    }
-    if(Provider.of<privilge_vm>(context,listen: false).checkprivlge('82')==true ||
-        Provider.of<privilge_vm>(context,listen: false)
-            .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
-        .checkprivlge('81')==true){
+    // if(Provider.of<privilge_vm>(context,listen: false)
+    //     .checkprivlge('80')==true )
+    //   paramprivilge='&id_user=${iduser}';
+    // else {
+    //   if(Provider.of<privilge_vm>(context,listen: false)
+    //       .checkprivlge('81')==true )
+    //     paramprivilge='&id_regoin=${idregoin}';
+    // }
+    // if(Provider.of<privilge_vm>(context,listen: false).checkprivlge('82')==true ||
+    //     Provider.of<privilge_vm>(context,listen: false)
+    //         .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
+    //     .checkprivlge('81')==true)
+    {
       var data;
 
       switch (type) {

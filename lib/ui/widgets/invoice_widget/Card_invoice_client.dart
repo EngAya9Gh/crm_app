@@ -68,6 +68,29 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           widget.itemProd.name_regoin_invoice.toString(),
                           style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                         ),
+                        widget.itemProd.isApprove=='1'&&  widget.itemProd.stateclient=='مشترك'?
+                        Text(
+                          ' مشترك',
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.normal),
+                        ):Container(),
+                        widget.itemProd.isApprove!='1'&&widget.itemProd.stateclient=='مشترك'?
+                        Text(
+                          'غير معتمد بعد',
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.normal),
+                        ):Container(),
+                        widget.itemProd.stateclient=='منسحب'?
+                        Text(
+                          widget.itemProd.stateclient.toString(),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.normal),
+                        ):
+
+                        Container(),
                         Text(
                           widget.itemProd.date_approve!= null
                               ? widget.itemProd.date_approve.toString()
@@ -82,12 +105,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                           )
                         : Container(),
-                    // Text(
-                    //   widget.itemProd.name_enterprise.toString(),
-                    //   style: TextStyle(
-                    //       fontFamily: kfontfamily2,
-                    //       fontWeight: FontWeight.bold),
-                    // ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

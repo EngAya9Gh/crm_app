@@ -61,7 +61,8 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
      await Provider.of<client_vm>(context, listen: false)
           .get_byIdClient(widget.idClient.toString());
 
-      Provider.of<communication_vm>(context, listen: false).getCommunicationclient(widget.idClient.toString());
+      Provider.of<communication_vm>(context, listen: false)
+          .getCommunicationclient(widget.idClient.toString());
 
       Provider.of<ticket_vm>(context, listen: false).getclient_ticket(widget.idClient.toString());
     });

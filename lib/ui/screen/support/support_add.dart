@@ -501,6 +501,9 @@ class _support_addState extends State<support_add> {
                               value: getnameshort(
                                   _invoice!.clientusername.toString())),
                       cardRow(
+                          title: 'حالة الفاتورة',
+                          value: _invoice!.stateclient.toString()),
+                      cardRow(
                           title: 'عنوان الفاتورة ',
                           value: getnameshort(
                               _invoice!.address_invoice.toString())),
