@@ -91,8 +91,10 @@ class _salesState extends State<sales> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context)=>  AgentsDistributorsInvoicesView()
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                          builder: (context)=>
+                              AgentsDistributorsInvoicesView()
                       ));
                     }, title:'فواتير العملاء' ):Container(),
 

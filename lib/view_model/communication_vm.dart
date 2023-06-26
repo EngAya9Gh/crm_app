@@ -101,7 +101,8 @@ class communication_vm extends ChangeNotifier{
       notifyListeners();
   }}
   List<CommunicationModel> listCommunicationWelcome_temp=[];
-  void getcommtype_filter(String? filter,String? regoin)async{
+  void getcommtype_filter(String? filter,String? regoin)
+  async{
     listCommunicationWelcome=[];
     isloading=true;
     notifyListeners();
@@ -358,7 +359,7 @@ class communication_vm extends ChangeNotifier{
     //   });
     // }
    }
-   listCommunication=List.from(listCommunicationInstall_temp);
+   listCommunication=List.from(listCommunicationInstall);
     // getCommunicationInstallednumber();
     isloading=false;
     notifyListeners();

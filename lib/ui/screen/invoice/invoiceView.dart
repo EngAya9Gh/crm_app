@@ -48,17 +48,27 @@ class _InvoiceViewState extends State<InvoiceView> {
   late typeclient typeclient_provider;
   late ClientModel clientmodel;
 
-  Widget _product(String name, String price) {
+  Widget _product(String name,String amount, String price) {
     return Column(
       children: [
         Row(
           children: [
             //Expanded flex 1
+            Expanded(
+              flex: 1,
+              child: Text(
+                name,
+                style: TextStyle(fontFamily: kfontfamily2),
+              ),
+            ),
+
+
+            // Spacer(),
             Text(
-              name,
+              amount,
               style: TextStyle(fontFamily: kfontfamily2),
             ),
-            Spacer(),
+           SizedBox(width: 13),
             Text(
               price,
               style: TextStyle(fontFamily: kfontfamily2),
@@ -162,9 +172,13 @@ class _InvoiceViewState extends State<InvoiceView> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        _product('اسم المنتج','الكمية','السعر'),
                         for (int index = 0; index < invoice!.products!.length; index++)
                           _product(
-                              invoice.products![index].nameProduct.toString(), invoice.products![index].price.toString()),
+                              invoice.products![index].nameProduct.toString(),
+                              invoice.products![index].amount.toString(),
+
+                              invoice.products![index].price.toString()),
                         Container(
                           color: Colors.amberAccent,
                           child: Row(
@@ -185,6 +199,16 @@ class _InvoiceViewState extends State<InvoiceView> {
                         SizedBox(
                           height: 10,
                         ),
+
+                        cardRow(title: 'اسم العميل', value: invoice.nameClient.toString()),
+                        cardRow(title: 'اسم المؤسسة', value: invoice.name_enterprise.toString()),
+                        cardRow(title: 'حالة الفاتورة', value: invoice.stateclient.toString()),
+                        cardRow(title: 'فرع الفاتورة', value: invoice.name_regoin_invoice.toString()),
+
+                        cardRow(title: 'اسم الموظف', value: invoice.nameUser.toString()),
+                        cardRow(title: 'فرع الموظف', value: invoice.name_regoin.toString()),
+                        //cardRow(title: 'حالة الفاتورة', value: invoice.amountPaid.toString()),
+
                         invoice.date_approve.toString() == null
                             ? cardRow(title: 'تاريخ عقد الإشتراك', value: invoice.date_approve.toString())
                             : Container(),
