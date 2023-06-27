@@ -181,7 +181,7 @@ class _transferClientState extends State<transferClient> {
                                     content:
                                     Text('تم تحويل العميل')));
 
-                            //Navigator.pop(context);
+                             Navigator.pop(context);
                             // Navigator.pushAndRemoveUntil(context,
                             //     MaterialPageRoute(builder: (context)=>ticketclientview()),
                             //         (route) => false
