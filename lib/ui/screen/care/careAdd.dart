@@ -331,9 +331,9 @@ class _careAddState extends State<careAdd> {
    //  });
    // Navigator.pop(context);
     Navigator.pop(context);
-    Navigator.pushAndRemoveUntil(context,
+    Navigator.push(context,
         MaterialPageRoute(builder: (context)=>care_page_view()),
-            (route) => false
+           // (route) => false
     );
   }
 
