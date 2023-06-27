@@ -19,7 +19,7 @@ const CACHE_InvoiceClient_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
 const CACHE_Invoice_Deleted_KEY = "CACHE_Invoice_Deleted_KEY";
 const CACHE_Invoice_Deleted_INTERVAL = 60 * 1000; // 30s in millis
 
-enum SellerType { distributor, agent, collaborator }
+enum SellerType { distributor, agent, collaborator, employee }
 
 enum SellerStatus { init, loading, loaded, failed }
 
@@ -1208,12 +1208,16 @@ class invoice_vm extends ChangeNotifier {
     }
   }
 
-  SellerType? selectedSellerType;
+  SellerType? selectedSellerType = SellerType.employee;
   SellerStatus sellerStatus = SellerStatus.init;
 
   Future<void> onChangeSellerType(SellerType sellerType, {InvoiceModel? invoice}) async {
     selectedSellerType = sellerType;
     notifyListeners();
+    if(selectedSellerType == SellerType.employee){
+      return;
+    }
+
     if (selectedSellerType != SellerType.collaborator) {
       if (agentDistributorsState.data != null) {
         if (invoice != null) {
@@ -1296,9 +1300,9 @@ class invoice_vm extends ChangeNotifier {
   }
 
   initAdditionalInformation(InvoiceModel invoiceModel) {
-    if (invoiceModel.type_seller == "3") {
-      return;
-    }
+    // if (invoiceModel.type_seller == "3") {
+    //   return;
+    // }
 
     final sellerType = SellerType.values[int.parse(invoiceModel.type_seller ?? '0')];
     onChangeSellerType(sellerType, invoice: invoiceModel);
@@ -1308,7 +1312,7 @@ class invoice_vm extends ChangeNotifier {
     selectedCollaborator = null;
     selectedAgent = null;
     selectedDistributor = null;
-    selectedSellerType = null;
+    selectedSellerType = SellerType.employee;
     agentDistributorsState = PageState();
     collaboratorsState = PageState();
   }
