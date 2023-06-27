@@ -188,6 +188,8 @@ class _ClientViewState extends State<ClientView> {
                     title:'وصف النشاط',
                     value:clientModel.descActivController.toString()):Container(),
 
+                widget.clienttransfer=='transfer'?
+                Container():
                 Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

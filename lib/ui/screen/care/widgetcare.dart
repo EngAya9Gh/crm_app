@@ -42,7 +42,13 @@ Widget commview(CommunicationModel element) {
 
               element.typeCommuncation=='دوري'?
               cardRow(title:' نتيجة التواصل' ,value:
-              element.result.toString()=='0'?'لايستخدم النظام':'يستخدم النظام',): Container(),
+              element.result.toString()=='false'?'لايستخدم النظام':'يستخدم النظام',): Container(),
+              element.typeCommuncation=='دوري'&&element.clientRepeat.toString()!='false'?
+              cardRow(title:' نتيجة التواصل' ,value:
+              element.clientRepeat.toString()=='false'?'':'العميل متكرر',): Container(),
+              element.typeCommuncation=='دوري'&&element.number_wrong.toString()!='false'?
+              cardRow(title:' نتيجة التواصل' ,value:
+              element.number_wrong.toString()=='false'?'':'الرقم خاطئ',): Container(),
 
               element.typeCommuncation=='دوري'|| element.typeCommuncation=='تركيب'?
               Row(
