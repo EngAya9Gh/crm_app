@@ -118,7 +118,7 @@ class _wrong_numberState extends State<wrong_number> {
                                                                     color: kMainColor),
                                                               ),
                                                               Text(
-                                                                value.list_wrong_number[index].date_approve.toString(),
+                                                                value.list_wrong_number[index].dateCommunication.toString(),
                                                                 style: TextStyle(
                                                                     fontSize: 12,
                                                                     // fontWeight: FontWeight.bold,

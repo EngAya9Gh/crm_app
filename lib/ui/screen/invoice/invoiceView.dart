@@ -323,6 +323,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                         )
                             : Container(),
 
+                        if(invoice.participal == null && invoice.agent_distibutor == null && invoice.type_seller == "3")
+                          cardRow(
+                              value: "موظف",
+                              title: "نوع البائع"),
+
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Row(

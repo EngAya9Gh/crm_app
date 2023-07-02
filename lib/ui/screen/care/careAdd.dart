@@ -33,7 +33,7 @@ class _careAddState extends State<careAdd> {
   bool numberwrong=false;
   bool repeat=false;
   bool isdone=false;
-  double rate=1.0;
+  double rate=0.0;
   late ConfigModel peroid;
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
@@ -107,8 +107,8 @@ class _careAddState extends State<careAdd> {
                   children: [
                   Text('التقييم 1/5'),
             RatingBar.builder(
-              initialRating: 1,
-              minRating: 1,
+              initialRating: 0.0,
+              minRating: 0,
               direction: Axis.horizontal,
               allowHalfRating: false,
               itemCount: 5,
@@ -276,6 +276,7 @@ class _careAddState extends State<careAdd> {
                 cardRow(
                     title: 'تاريخ التركيب',
                     value:widget.com.dateinstall_done.toString()):Container(),
+
                 widget.com.typeCommuncation=='ترحيب'&&widget.com.dateCommunication!=null?
                 cardRow(
                     title: 'تاريخ الترحيب',
@@ -330,9 +331,9 @@ class _careAddState extends State<careAdd> {
    //  });
    // Navigator.pop(context);
     Navigator.pop(context);
-    Navigator.pushAndRemoveUntil(context,
+    Navigator.push(context,
         MaterialPageRoute(builder: (context)=>care_page_view()),
-            (route) => false
+           // (route) => false
     );
   }
 
