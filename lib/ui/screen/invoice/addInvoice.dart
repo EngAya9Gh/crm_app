@@ -132,15 +132,7 @@ class _addinvoiceState extends State<addinvoice> {
   void initState() {
     if (_invoice == null) _invoice = InvoiceModel(products: []);
 
-    amount_paidController = TextEditingController()..addListener(() {
-      final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
-      final amountPaid = num.tryParse(amount_paidController.text) ?? 0;
-
-      if(amountPaid > total){
-        amount_paidController.text = total.toString();
-        amount_paidController.selection = TextSelection.fromPosition(TextPosition(offset: amount_paidController.text.length));
-      }
-    });
+    amount_paidController = TextEditingController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
@@ -212,6 +204,15 @@ class _addinvoiceState extends State<addinvoice> {
       }
       Provider.of<invoice_vm>(context, listen: false).set_total(totalController.toString());
 
+      amount_paidController.addListener(() {
+      final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
+      final amountPaid = num.tryParse(amount_paidController.text) ?? 0;
+
+      if(amountPaid > total){
+        amount_paidController.text = total.toString();
+        amount_paidController.selection = TextSelection.fromPosition(TextPosition(offset: amount_paidController.text.length));
+      }
+      });
       Provider.of<selected_button_provider>(context, listen: false).selectValuetypepay(int.parse(typepayController));
       print(typepayController);
 
@@ -864,10 +865,10 @@ class _addinvoiceState extends State<addinvoice> {
                               child: GroupButton(
                                 controller: GroupButtonController(selectedIndex: selectedSellerType?.index),
                                 options: GroupButtonOptions(
-                                  buttonWidth: (MediaQuery.of(context).size.width - 130) / 3,
+                                  buttonWidth: (MediaQuery.of(context).size.width - 130) / 4,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                buttons: ['موزع', 'وكيل', 'متعاون'],
+                                buttons: ['موزع', 'وكيل', 'متعاون','موظف'],
                                 onSelected: (_, index, isselected) {
                                   invoiceViewmodel.onChangeSellerType(
                                       SellerType.values.firstWhere((element) => element.index == index));
@@ -894,7 +895,7 @@ class _addinvoiceState extends State<addinvoice> {
                             : invoice.selectedAgent;
 
                         final selectedCollaborate = invoice.selectedCollaborator;
-                        if (selectedSellerType != null)
+                        if (selectedSellerType != null && selectedSellerType != SellerType.employee)
                           return Column(
                             children: [
                               RowEdit(name: "اسم البائع"),
@@ -1061,9 +1062,9 @@ class _addinvoiceState extends State<addinvoice> {
                                               invoiceViewmodel.selectedDistributor != null)
                                             'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
-                                          'type_seller': '3', // type seller is employee,
+                                          'type_seller': widget.invoice?.type_seller != "3" ? null.toString() : '3', // type seller is employee,
 
-                                        if (sellerCommissionRate.text.isNotEmpty)
+                                        if (sellerCommissionRate.text.isNotEmpty && invoiceViewmodel.selectedSellerType != SellerType.employee)
                                           'rate_participate': sellerCommissionRate.text,
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.agent)
@@ -1136,6 +1137,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         else
                                           'type_seller': '3', // type seller is employee,
 
+                                        if (sellerCommissionRate.text.isNotEmpty && invoiceViewmodel.selectedSellerType != SellerType.employee)
                                         'rate_participate': sellerCommissionRate.text,
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.agent)
