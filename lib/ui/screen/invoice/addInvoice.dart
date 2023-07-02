@@ -197,7 +197,11 @@ class _addinvoiceState extends State<addinvoice> {
           path: '',
           total: totalController,
           notes: noteController.text,
+
         );
+        renewController.text = '0';
+        renew2Controller.text = '0';
+
         //);
 
         Provider.of<invoice_vm>(context, listen: false).listproductinvoic = [];
@@ -1062,7 +1066,9 @@ class _addinvoiceState extends State<addinvoice> {
                                               invoiceViewmodel.selectedDistributor != null)
                                             'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
-                                          'type_seller': widget.invoice?.type_seller != "3" ? null.toString() : '3', // type seller is employee,
+                                          'type_seller':"3",
+                                          // widget.invoice?.type_seller != "3" ? null.toString() : '3',
+                                           // type seller is employee,
 
                                         if (sellerCommissionRate.text.isNotEmpty && invoiceViewmodel.selectedSellerType != SellerType.employee)
                                           'rate_participate': sellerCommissionRate.text,

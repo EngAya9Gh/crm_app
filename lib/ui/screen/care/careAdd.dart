@@ -331,10 +331,13 @@ class _careAddState extends State<careAdd> {
    //  });
    // Navigator.pop(context);
     Navigator.pop(context);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context)=>care_page_view()),
-           // (route) => false
-    );
+    Navigator.pop(context);
+
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (context)=>
+    //         care_page_view()),
+    //        // (route) => false
+    // );
   }
 
 }

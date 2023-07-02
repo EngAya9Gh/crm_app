@@ -95,7 +95,8 @@ class _HomeState extends State<Home> {
      List<PrivilgeModel> list=
            Provider.of<privilge_vm>(context,listen: false).privilgelist;
      Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-
+      // await Provider.of<invoice_vm>(context, listen: false)
+      //     .getfilter_maincity([],'الكل');
      // Provider.of<client_vm>(context, listen: false)
      //    .getallclient();//getclient_vm();
 
