@@ -91,8 +91,10 @@ class _salesState extends State<sales> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context)=>  AgentsDistributorsInvoicesView()
+                      Navigator.push(context,
+                          MaterialPageRoute(
+                          builder: (context)=>
+                              AgentsDistributorsInvoicesView()
                       ));
                     }, title:'فواتير العملاء' ):Container(),
 
@@ -108,6 +110,8 @@ class _salesState extends State<sales> {
                               invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
                       ));
                     }, title:'ديون العملاء' ):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+                Provider.of<privilge_vm>(context,listen: true)
+                    .checkprivlge('120')==true?
                 buildSelectCategory(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
@@ -116,7 +120,7 @@ class _salesState extends State<sales> {
                   }, title:  'جدول زيارات العميل ',
                   colorbag: Colors.white,
                   colortitle: Colors.black,
-                  colorarrow: Colors.black,),
+                  colorarrow: Colors.black,):Container(),
 
                 buildSelectCategory(
                     colorbag:   Colors.white,

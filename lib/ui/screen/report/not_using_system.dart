@@ -116,7 +116,7 @@ class _not_using_systemState extends State<not_using_system> {
                                                                     color: kMainColor),
                                                               ),
                                                               Text(
-                                                                value.list_not_use[index].date_approve.toString(),
+                                                                value.list_not_use[index].dateCommunication.toString(),
                                                                 style: TextStyle(
                                                                     fontSize: 12,
                                                                     // fontWeight: FontWeight.bold,

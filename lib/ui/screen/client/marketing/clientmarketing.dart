@@ -64,7 +64,8 @@ class _clientmarketingState extends State<clientmarketing> {
       List<PrivilgeModel> list=
       await   Provider.of<privilge_vm>(context,listen: false).privilgelist;
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-       await Provider.of<client_vm>(context, listen: false).getclientMarketing();
+       await Provider.of<client_vm>(context, listen: false)
+           .getclientMarketing();
       await Provider.of<activity_vm>(context, listen: false)
           .getactv();
     });
@@ -109,14 +110,14 @@ class _clientmarketingState extends State<clientmarketing> {
               return RefreshIndicator(
                 onRefresh: ()async{
                   ///setstat
-                  Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-                  Provider.of<typeclient>(context,listen: false).changevaluefilter(null);
-                  Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
-                  await    Provider.of<client_vm>(context, listen: false)
-                      .getclientMarketing(
-                    // Provider.of<privilge_vm>(context,listen: false)
-                    //     .privilgelist
-                  );
+                  // Provider.of<regoin_vm>(context,listen: false).changeVal(null);
+                  // Provider.of<typeclient>(context,listen: false).changevaluefilter(null);
+                  // Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+                  // await    Provider.of<client_vm>(context, listen: false)
+                  //     .getclientMarketing(
+                  //   // Provider.of<privilge_vm>(context,listen: false)
+                  //   //     .privilgelist
+                  // );
                   // setState(() {
                   //   Provider.of<user_vm_provider>(context,listen: false).changevalueuser();
                   // });
@@ -342,7 +343,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                   top:8.0,bottom: 20),
                               child:
                               Consumer<client_vm>(builder: (context, value, child) {
-                                return value.isloading?
+                                return value.isloading_marketing?
                                 Center(
                                     child: CircularProgressIndicator()
                                 ):Column(

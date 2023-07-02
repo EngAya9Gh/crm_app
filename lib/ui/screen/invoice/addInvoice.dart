@@ -29,6 +29,7 @@ import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
+
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
@@ -196,7 +197,11 @@ class _addinvoiceState extends State<addinvoice> {
           path: '',
           total: totalController,
           notes: noteController.text,
+
         );
+        renewController.text = '0';
+        renew2Controller.text = '0';
+
         //);
 
         Provider.of<invoice_vm>(context, listen: false).listproductinvoic = [];
@@ -342,8 +347,8 @@ class _addinvoiceState extends State<addinvoice> {
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
 
-                          if (num.parse(value!) <= 0) {
-                            return "يجب إدخال قيمة أكبر من 0.";
+                          if (int.parse(value!) < 0) {
+                            return "يجب إدخال قيمة مناسبة";
                           }
 
                           final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
@@ -378,8 +383,8 @@ class _addinvoiceState extends State<addinvoice> {
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
 
-                          if (num.parse(value!) <= 0) {
-                            return "يجب إدخال قيمة أكبر من 0.";
+                          if (num.parse(value!) < 0) {
+                            return "يجب إدخال قيمة مناسبة";
                           }
                           return null;
                         },
@@ -403,10 +408,10 @@ class _addinvoiceState extends State<addinvoice> {
                         obscureText: false,
                         vaild: (value) {
                           if (value?.trim().isEmpty ?? true) {
-                            return null;
+                            return 'الحقل فارغ';
                           }
 
-                          if (num.parse(value!) <= 0) {
+                          if (num.parse(value!) < 0) {
                             return "يجب إدخال قيمة أكبر من 0.";
                           }
                           return null;
@@ -1061,7 +1066,9 @@ class _addinvoiceState extends State<addinvoice> {
                                               invoiceViewmodel.selectedDistributor != null)
                                             'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
-                                          'type_seller': widget.invoice?.type_seller != "3" ? null.toString() : '3', // type seller is employee,
+                                          'type_seller':"3",
+                                          // widget.invoice?.type_seller != "3" ? null.toString() : '3',
+                                           // type seller is employee,
 
                                         if (sellerCommissionRate.text.isNotEmpty && invoiceViewmodel.selectedSellerType != SellerType.employee)
                                           'rate_participate': sellerCommissionRate.text,
@@ -1072,8 +1079,14 @@ class _addinvoiceState extends State<addinvoice> {
                                           'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                          'participate_fk':
-                                              invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
+
+                                            'participate_fk':
+                                              invoiceViewmodel.selectedCollaborator?.id_participate.toString()
+
+                                        else 'participate_fk':null.toString(),
+
+                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||invoiceViewmodel.selectedSellerType == SellerType.employee)
+                                          'fk_agent':null.toString()
 
                                         // 'type_seller':
                                         // 'rate_participate':

@@ -188,6 +188,8 @@ class _ClientViewState extends State<ClientView> {
                     title:'وصف النشاط',
                     value:clientModel.descActivController.toString()):Container(),
 
+                widget.clienttransfer=='transfer'?
+                Container():
                 Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -211,7 +213,7 @@ class _ClientViewState extends State<ClientView> {
                     clientModel.typeClient=="عرض سعر"
                         ||  clientModel.typeClient=="تفاوض"?
                         SizedBox(width:5 ,):Container(),
-                    clientModel.typeClient=="عرض سعر" ||  clientModel.typeClient=="تفاوض"?
+                    (clientModel.typeClient=="عرض سعر" ||  clientModel.typeClient=="تفاوض")&& clientModel.fkusertrasfer==null?
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(

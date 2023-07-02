@@ -38,6 +38,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   bool isloading = false;
+  bool isloading_marketing = false;
   UserModel? usercurrent;
 
   invoice_vm() {
@@ -180,16 +181,20 @@ class invoice_vm extends ChangeNotifier {
 
   void getinvoice_marketing() async {
     listinvoicesMarketing = [];
-    isloading = true;
+    isloading_marketing = true;
     notifyListeners();
-    list_temp = await Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
-    // listinvoices.forEach((element) {
-    //   // if (element.ismarketing == '1')
-    //     //&& element.isApprove == "1")
-    //     listinvoicesMarketing.add(element);
-    // });
-    listinvoicesMarketing = List.from(list_temp);
-    isloading = false;
+    await  getinvoiceswithprev();
+    list_temp= List.from(listInvoicesAccept);
+    // await  Invoice_Service()
+    //     .getinvoiceMarketing(usercurrent!.fkCountry.toString());
+
+    list_temp.forEach((element) {
+      if (element.ismarketing == '1')
+        //&& element.isApprove == "1")
+        listinvoicesMarketing.add(element);
+    });
+     listinvoicesMarketing=List.from(list_temp);
+    isloading_marketing = false;
     notifyListeners();
   }
 
@@ -745,9 +750,9 @@ class invoice_vm extends ChangeNotifier {
       }
     } else {
       print('0000000000000000000000000000000');
-      if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
-      if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
-      if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
+      if (approvetype == 'country') await  get_invoicesbyRegoin_accept_requst('c');
+      if (approvetype == 'regoin')  await  get_invoicesbyRegoin_accept_requst('r');
+       if (approvetype == 'finance') await  get_invoicesbyRegoin_accept_requst('f');
     }
 
     isloading = false;
@@ -860,7 +865,7 @@ class invoice_vm extends ChangeNotifier {
         if (isParticipate) {
           listinvoiceClientSupport = [];
           list.forEach((element) {
-            if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
+            if (element.fkIdClient == fk_client && element.isApprove != null ) listinvoiceClientSupport.add(element);
           });
         } else {
           listinvoiceClient = [];
@@ -872,21 +877,21 @@ class invoice_vm extends ChangeNotifier {
 
       print('length list invoice client ' + listinvoiceClient.length.toString());
       print('length list invoice client ' + listinvoiceClientSupport.length.toString());
-      if (isParticipate) {
+      if(isParticipate){
         isLoadingInvoicesClientParticipateLocal = false;
-      } else {
+      }else{
         isLoadingInvoicesClientLocal = false;
       }
       notifyListeners();
     } catch (e) {
-      if (isParticipate) {
+      if(isParticipate){
         isLoadingInvoicesClientParticipateLocal = false;
-      } else {
+      }else{
         isLoadingInvoicesClientLocal = false;
       }
       notifyListeners();
     }
-  }
+}
 
   void setvaluepriv(privilgelistparam) {
     print('in set privilge client vm');

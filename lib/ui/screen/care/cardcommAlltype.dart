@@ -78,9 +78,9 @@ class cardcommalltype extends StatelessWidget {
                     children: [
                       itemcom.type_install=='2' ?
                       Text(
-            itemcom.dateCommunication==null?
-              itemcom.date_last_com_install.toString()
-                  :itemcom.dateCommunication.toString(),
+                     itemcom.dateCommunication==null?
+                     itemcom.date_last_com_install.toString()
+                     :itemcom.dateCommunication.toString(),
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontFamily: kfontfamily2,color: kMainColor),):
@@ -95,7 +95,8 @@ class cardcommalltype extends StatelessWidget {
                             fontFamily: kfontfamily2,color: kMainColor),),
                     ],
                   ),
-                  itemcom.type_install=='2' && itemcom.dateCommunication==null?
+                  // itemcom.type_install=='2' &&
+                      itemcom.dateCommunication==null?
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -109,6 +110,7 @@ class cardcommalltype extends StatelessWidget {
                       ),
 
                       itemcom.hoursdelaylabel!=null?
+                      // itemcom.type_install=='2' ?
                       Text(
                         int.parse(itemcom.hoursdelaylabel.toString())<0?
                         ' تأخر عن التواصل  '+(int.parse(itemcom.hoursdelaylabel.toString())*-1).toString()+ ' يوم '
@@ -121,7 +123,19 @@ class cardcommalltype extends StatelessWidget {
                             fontFamily: kfontfamily2,
                             color: kMainColor),
                       )
-                          :Container()
+                      // Text(
+                      //   int.parse(itemcom.hoursdelaylabel.toString())<0?
+                      //   ' تأخر عن التواصل  '+(int.parse(itemcom.hoursdelaylabel.toString())*-1).toString()+ ' ساعة '
+                      //       :
+                      //   ' باقي '+ itemcom.hoursdelaylabel.toString()+' ساعة '
+                      //   ,
+                      //   style: TextStyle(
+                      //       fontSize: 12,
+                      //       //fontWeight: FontWeight.bold,
+                      //       fontFamily: kfontfamily2,
+                      //       color: kMainColor),
+                      // )
+                        :Container()
 
                     ],
                   ):Container(),

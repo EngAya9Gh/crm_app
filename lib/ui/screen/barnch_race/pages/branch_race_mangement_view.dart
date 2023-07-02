@@ -109,7 +109,9 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                   );
                 }
                 final list = targetsState.data ?? [];
-                return Expanded(child: BranchManagementList(targetList: list));
+                return Expanded(
+                    child:
+                BranchManagementList(targetList: list));
               }),
         ],
       ),

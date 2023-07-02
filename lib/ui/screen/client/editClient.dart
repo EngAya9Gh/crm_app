@@ -28,6 +28,8 @@ import '../../../labeltext.dart';
 import 'dart:ui' as myui;
 import 'package:intl/intl.dart';
 
+import '../../../view_model/datetime_vm.dart';
+
 class editclient extends StatefulWidget {
   editclient(
       {required this.itemClient,
@@ -91,6 +93,26 @@ class _editclientState extends State<editclient> {
     descActivController.dispose();
     // address_client.dispose();
     super.dispose();
+  }
+  DateTime dateprice = DateTime.now();
+  final DateFormat formatter = DateFormat('yyyy-MM-dd');
+
+  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
+    String output = formatter.format(currentDate);
+
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        currentDate: currentDate,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(3000));
+    if (pickedDate != null) //&& pickedDate != currentDate)
+        {
+      setState(() {
+        dateprice = pickedDate;
+      });
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(dateprice!);
+    }
   }
 
   @override
@@ -244,13 +266,14 @@ class _editclientState extends State<editclient> {
                     Map<String, dynamic> body = {};
                     if (typeclient_provider.selectedValuemanag == "عرض سعر")
                       body = {
-                        "date_price": formatter.format(DateTime.now()),
+                        "date_price": dateprice.toString(),
+                        // formatter.format(DateTime.now()),
                       };
                     if (namemanage != null)
                       body.addAll(
                         {
                           "date_changetype": //typeclient_provider.selectedValuemanag == "منسحب"?
-                              formatter.format(_currentDate)
+                              formatter1.format(_currentDate)
                         }, //:"null",
                       );
                     body.addAll({
@@ -662,7 +685,8 @@ class _editclientState extends State<editclient> {
 
                     widget.itemClient.typeClient != "مشترك" &&
                                 widget.itemClient.typeClient != "منسحب"
-                            ? DropdownButton(
+                            ?
+                             DropdownButton(
                                 isExpanded: true,
                                 //hint: Text("حدد حالة العميل"),
                                 items: typeclient_provider.type_of_client
@@ -710,11 +734,43 @@ class _editclientState extends State<editclient> {
                         ? Container()
                         :
                     typeclient_provider.selectedValuemanag == "عرض سعر"
-                            ? EditTextFormField(
-                                hintText: 'عرض سعر',
-                                obscureText: false,
-                                controller: offerpriceController,
-                              )
+                            ? Row(
+                              children: [
+                                EditTextFormField(
+                                    hintText: 'عرض سعر',
+                                    obscureText: false,
+                                    controller: offerpriceController,
+                                  ),
+                                Flexible(
+                                  flex: 1,
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (dateprice == DateTime(1, 1, 1)) {
+                                        return 'يرجى تعيين التاريخ ';
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.date_range,
+                                        color: kMainColor,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      hintText:
+                                      Provider.of<datetime_vm>(context, listen: true).valuedateTime.toString(),
+                                      filled: true,
+                                      fillColor: Colors.grey.shade200,
+                                    ),
+                                    readOnly: true,
+                                    onTap: () {
+                                      _selectDate(context, DateTime.now());
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
                             : Provider.of<privilge_vm>(context, listen: true)
                                         .checkprivlge('27') ==
                                     true
@@ -781,10 +837,10 @@ class _editclientState extends State<editclient> {
   }
 
   DateTime _currentDate = DateTime.now();
-  final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
+  final DateFormat formatter1 = DateFormat('yyyy-MM-dd hh:mm:ss');
 
-  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    String output = formatter.format(currentDate);
+  Future<void> _selectDate1(BuildContext context, DateTime currentDate) async {
+    String output = formatter1.format(currentDate);
 
     final DateTime? pickedDate = await showDatePicker(
         context: context,

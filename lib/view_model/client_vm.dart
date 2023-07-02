@@ -46,6 +46,7 @@ class client_vm extends ChangeNotifier {
   }
   UserModel? usercurrent;
   bool isloading=false;
+  bool isloading_marketing=false;
   void setvalue(user){
     print('in set usercurrent client vm');
 
@@ -459,19 +460,22 @@ class client_vm extends ChangeNotifier {
     //عملائي
     // await get
     listClientMarketing=[];
-    isloading=true;
+    isloading_marketing=true;
     notifyListeners();
-    listClient= await ClientService()
-        .getAllClientmarket(usercurrent!.fkCountry.toString());
-    listClientMarketing=List.from(listClient);
-    // if(listClient.isNotEmpty){
-    //   listClient.forEach((element) {
-    //     if (element.ismarketing =='1' )
-    //       listClientMarketing.add(element);
-    //   } );
-    isloading=false;
+    await getclient_vm();
+    //listClient= List.from(listClientfilter);
+    // await ClientService()
+    //     .getAllClientmarket(usercurrent!.fkCountry.toString());
+    // listClientMarketing=List.from(listClient);
+    if(listClient.isNotEmpty){
+      listClient.forEach((element) {
+        if (element.ismarketing =='1' )
+          listClientMarketing.add(element);
+      } );
+      isloading_marketing=false;
     notifyListeners();
     }
+  }
 
   Future<void> getclientByIdUser_vm(List<ClientModel> list) async {
    //عملائي
@@ -607,19 +611,19 @@ else{
     notifyListeners();
   }
 
-  Future<bool> setfkUserclient_vm(Map<String, dynamic?> body,String? id_client) async {
+  Future<void> setfkUserclient_vm(Map<String, dynamic?> body,String? id_client) async {
   isloading=true;
   notifyListeners();
-    bool res = await ClientService()
+    ClientModel res = await ClientService()
         .setfkuserClient(body,id_client!);
-    // if (res) {
-    //   int index=listClient.indexWhere(
-    //           (element) => element.idClients==id_client);
-    //   listClient.removeAt(index);
+
+      int index=listClient.indexWhere(
+              (element) => element.idClients==id_client);
+     if(index!=-1) listClient[index]=res;
+
+
   isloading=false;
-      notifyListeners();
-    // }
-    return res;
+  notifyListeners();
   }
   //isapproved
   void removeclient(idclient){

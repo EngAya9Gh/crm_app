@@ -38,6 +38,7 @@ class _config_viewState extends State<config_view> {
  double h=0,w=0;
  String value='';
  String valueinstall_second='';
+ String valueinstall_first='';
   @override void initState() {
 
 
@@ -85,7 +86,7 @@ class _config_viewState extends State<config_view> {
           element.name_config == 'period_commincation1')
               .value_config;
 
-      _controllerperiod_commincation2.text =
+      valueinstall_first=_controllerperiod_commincation2.text =
           _listconfg
               .firstWhere((element) =>
           element.name_config == 'period_commincation2')
@@ -166,10 +167,17 @@ class _config_viewState extends State<config_view> {
                         }
                       break;
                       case 'period_commincation2':
-                      Provider.of<config_vm>(context,listen: false)
-                          .updateConfig_vm({'value_config':_controllerperiod_commincation2.text},
+                        if(valueinstall_first!=_controllerperiod_commincation2.text) {
+
+                          Provider.of<config_vm>(context,listen: false)
+                          .updateConfig_vm({
+                        'value_config':_controllerperiod_commincation2.text,
+                        'comminstall_First':valueinstall_first
+
+                      },
                           Provider.of<config_vm>(context,listen: false)
                               .listofconfig[i].id_config);
+                        }
                       break;
                       case 'install_second':
                         if(valueinstall_second!=_controllerperiod_install_second.text) {
@@ -353,8 +361,8 @@ class _config_viewState extends State<config_view> {
                           }
                         },
                         con: _controllerperiod_commincation2,
-                        label: "ساعة ",
-                        hintText: 'ساعة',
+                        label: "يوم ",
+                        hintText: 'يوم',
                       ),
                       Text('فترة السماح الثاني لجودة التركيب والتدريب'),
                       CustomFormField(
