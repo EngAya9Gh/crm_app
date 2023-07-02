@@ -43,6 +43,9 @@ class _support_tableState extends State<support_table> {
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
      await Provider.of<invoice_vm>(context, listen: false)
           .getfilter_maincity([],'الكل');
+      Provider.of<EventProvider>(context,listen: false).setvalue(
+          Provider.of<invoice_vm>(context,listen: false)
+              .listInvoicesAccept);
       Provider.of<EventProvider>(context,listen: false). getevent_vm();
     }
     );

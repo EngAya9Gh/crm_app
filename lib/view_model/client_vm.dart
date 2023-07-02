@@ -611,19 +611,19 @@ else{
     notifyListeners();
   }
 
-  Future<bool> setfkUserclient_vm(Map<String, dynamic?> body,String? id_client) async {
+  Future<void> setfkUserclient_vm(Map<String, dynamic?> body,String? id_client) async {
   isloading=true;
   notifyListeners();
-    bool res = await ClientService()
+    ClientModel res = await ClientService()
         .setfkuserClient(body,id_client!);
-    // if (res) {
-    //   int index=listClient.indexWhere(
-    //           (element) => element.idClients==id_client);
-    //   listClient.removeAt(index);
+
+      int index=listClient.indexWhere(
+              (element) => element.idClients==id_client);
+     if(index!=-1) listClient[index]=res;
+
+
   isloading=false;
-      notifyListeners();
-    // }
-    return res;
+  notifyListeners();
   }
   //isapproved
   void removeclient(idclient){
