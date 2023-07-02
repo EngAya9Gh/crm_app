@@ -1079,7 +1079,7 @@ class _addinvoiceState extends State<addinvoice> {
 
                                         else 'participate_fk':null.toString(),
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||invoiceViewmodel.selectedSellerType == SellerType.employee)
                                           'fk_agent':null.toString()
 
                                         // 'type_seller':

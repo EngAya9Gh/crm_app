@@ -66,27 +66,27 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                       children: [
                         Text(
                           widget.itemProd.name_regoin_invoice.toString(),
-                          style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
+                          style: TextStyle(fontFamily: kfontfamily, color: kMainColor, fontSize: 12),
                         ),
                         widget.itemProd.isApprove=='1'&&  widget.itemProd.stateclient=='مشترك'?
                         Text(
                           ' مشترك',
                           style: TextStyle(
-                              fontFamily: kfontfamily2,
+                              fontFamily: kfontfamily,
                               fontWeight: FontWeight.normal),
                         ):Container(),
                         widget.itemProd.isApprove!='1'&&widget.itemProd.stateclient=='مشترك'?
                         Text(
                           'غير معتمد بعد',
                           style: TextStyle(
-                              fontFamily: kfontfamily2,
+                              fontFamily: kfontfamily,
                               fontWeight: FontWeight.normal),
                         ):Container(),
                         widget.itemProd.stateclient=='منسحب'?
                         Text(
                           widget.itemProd.stateclient.toString(),
                           style: TextStyle(
-                              fontFamily: kfontfamily2,
+                              fontFamily: kfontfamily,
                               fontWeight: FontWeight.normal),
                         ):
 

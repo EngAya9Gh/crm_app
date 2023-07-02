@@ -68,7 +68,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'فواتير العملاء',
+          'ديون العملاء',
           style: TextStyle(color: kWhiteColor),
         ),
         centerTitle: true,
