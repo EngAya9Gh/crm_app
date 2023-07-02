@@ -4,6 +4,7 @@ import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/manage_provider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/services/UserService.dart';
+import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
 import 'package:crm_smart/ui/widgets/combox_widget/levelcombox.dart';
 import 'package:crm_smart/ui/widgets/combox_widget/manage_widget.dart';
 import 'package:crm_smart/ui/widgets/combox_widget/regoincombox.dart';
@@ -51,6 +52,7 @@ class _EditUserState extends State<EditUser> {
   final TextEditingController emailController = TextEditingController();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
    String? namemanage, fklevel, fkregoin = "";
    String? regoinname,levelname;
@@ -142,245 +144,284 @@ class _EditUserState extends State<EditUser> {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
 
 
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        actions: [
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          actions: [
 
-          IconButton(
-            onPressed: () {
-              fkregoin = Provider.of<regoin_vm>(context, listen: false)
-                  .selectedValueuser;
-              fklevel = Provider.of<level_vm>(context, listen: false)
-                  .selectedValueLevel;
-              regoinname=
-                  fkregoin==null?"":
-                  Provider.of<regoin_vm>(context, listen: false)
-                  .listregoin.firstWhere((element) => element.id_regoin==fkregoin).name_regoin;
+            IconButton(
+              onPressed: () {
 
-              levelname=Provider.of<level_vm>(context, listen: false)
-              .listoflevel.firstWhere((element) => element.idLevel==fklevel).nameLevel;
+                _formKey.currentState!.save();
+                final validate = _formKey.currentState!.validate();
+                if(!validate){
+                  return;
+                }
 
-              //String id_country=Provider.of<country_vm>(context,listen: false).id_country;
-              print("level in update button" + levelname.toString());
-              print("regoin in update button" + regoinname.toString());
-              if (levelname != null &&
-                  emailController.text.toString().trim().isNotEmpty) {
-                // Provider.of<LoadProvider>(context, listen: false)
-                //     .changeboolUpdateUser(true);
-                Map<String,String?> body = {
-                  'email': emailController.text != null
-                      ? emailController.text
-                      : "",
-                  'mobile': mobileController.text != null
-                      ? mobileController.text
-                      : "",
-                  //'fk_country': id_country,
-                  'type_administration':
-                  namemanage ,//!= null ? namemanage : "",
-                  'type_level': fklevel,
-                  'fk_regoin': fkregoin != null ? fkregoin : "null",
-                  'name_regoin':regoinname,
-                  'name_level' :levelname,
-                  'isActive' :isAcive,
-                  "updated_at":DateTime.now().toString(),
-                  "fkuserupdate":Provider.of<user_vm_provider>
-                    (context,listen: false).currentUser.idUser.toString(),
-                };
-              Provider.of<user_vm_provider>(context,listen: false)
-                  .updateuser_vm(body,
-                 // controllerUsers[widget.index]
-                  widget.userModel.idUser,null
-                  // Provider.of<user_vm_provider>(context,listen: false)
-                  //     .currentUser!.path!.isNotEmpty?
-                  // File(
-                  //     Provider.of<user_vm_provider>(context,listen: false)
-                  //     .currentUser!.path!):null
-              );
-                    //.then((value) => value != "error" //   ?
-                  clear(body);
-                   // : error());
-              } else {
-                _scaffoldKey.currentState!.showSnackBar(SnackBar(
-                    content: Text('حدد مستوى للصلاحية من فضلك')));
-              }
-            },
-            icon: const Icon(Icons.check,color: kWhiteColor,),
-          )
-        ],
-        title: const Text(' ',style: TextStyle(color: kWhiteColor),),
-        centerTitle: true,
-      ),
-      body: ModalProgressHUD(
-        inAsyncCall: Provider.of<user_vm_provider>(context,listen: true).isupdate,//Provider.of<LoadProvider>(context).isLoadingUpdateUser,
-        child: SingleChildScrollView(
-          child: ContainerShadows(
-            width: double.infinity,
-            padding:
-            EdgeInsets.only(
-                top: 50,right: 20,left: 20,bottom: 50), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
-            margin: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 50,bottom: 10
-            ),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    RowEdit(name: 'Email', des: ''),
-                    SizedBox(height: 2),
-                    EditTextFormField(
-                      hintText: 'Email',
-                      obscureText: false,
-                      controller: emailController,
-                      vaild: (value){
-                        if(value == null){
-                          return null;
-                        }
-                        if(!validateEmail(value)){
-                          return "أدخل ايميل صحيح";
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    RowEdit(name: label_manage, des: ''),
+                fkregoin = Provider.of<regoin_vm>(context, listen: false)
+                    .selectedValueuser;
+                fklevel = Provider.of<level_vm>(context, listen: false)
+                    .selectedValueLevel;
+                regoinname=
+                    fkregoin==null?"":
+                    Provider.of<regoin_vm>(context, listen: false)
+                    .listregoin.firstWhere((element) => element.id_regoin==fkregoin).name_regoin;
 
-                    Consumer<manage_provider>(builder: (context, mangelist, child) {
-                      return DropdownButton(
-                        isExpanded: true,
-                        hint: Text("حددالإدارة"),
-                        items: mangelist.listtext.map((level_one) {
-                          return DropdownMenuItem(
-                            child: Text(level_one.name_mange), //label of item
-                            value: level_one.idmange, //value of item
-                          );
-                        }).toList(),
-                        value: mangelist.selectedValuemanag,
-                        onChanged: (value) {
-                          namemanage = value.toString();
-                          mangelist.changevalue(value.toString());
-                        },
-                      );
-                    }),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    RowEdit(name: label_level, des: '*'),
-                    //mangwidget(),
-                    Consumer<level_vm>(
-                      builder: (context, cart, child){
-                        return DropdownButton(
-                          isExpanded: true,
-                          //hint: Text("حدد حالة العميل"),
-                          items: cart.listoflevel.map((level_one) {
-                            return DropdownMenuItem(
-                              child: Text(level_one.nameLevel), //label of item
-                              value: level_one.idLevel, //value of item
-                            );
-                          }).toList(),
-                          value:cart.selectedValueLevel,
-                          onChanged:(value) {
-                           // name_level=
-                            //  setState(() {
-                            cart.changeVal(value.toString());
-                            // });
-                          },
-                        );},
-                    ),
-                    // levelCombox(
-                    //   selected: level,
-                    // ),
-                    SizedBox(
-                      height: 20,
-                    ),
+                levelname=Provider.of<level_vm>(context, listen: false)
+                .listoflevel.firstWhere((element) => element.idLevel==fklevel).nameLevel;
 
-                    //admin
-                    RowEdit(name: 'الفرع', des: '*'),
-                    Consumer<regoin_vm>(
-                      builder: (context, cart, child){
-                        return DropdownButton(
-                          isExpanded: true,
-                          //hint: Text("حدد حالة العميل"),
-                          items: cart.listregoin.map((level_one) {
-                            return DropdownMenuItem(
-                              child: Text(level_one.name_regoin), //label of item
-                              value: level_one.id_regoin, //value of item
-                            );
-                          }).toList(),
-                          value:cart.selectedValueuser,
-                          onChanged:(value) {
-                            //  setState(() {
-                            cart.changeValuser(value.toString());
-                            // });
-                          },
-                        );},
-                    ),
-                    // RegoinCombox(
-                    //   selected: regoin,
-                    // ),
-                    //manage
-                    SizedBox(
-                      height: 20,
-                    ),
-                    RowEdit(name: label_mobile, des: '*'),
-                    EditTextFormField(
-                      hintText: '00966000000000',
-                      obscureText: false,
-                      controller: mobileController,
-                      maxLength: 1,
-                      inputformate: [FilteringTextInputFormatter.digitsOnly],
-                    ),
-                    //RowEdit(name: 'Image', des: ''),
-                    SizedBox(
-                      height:20,
-                    ),
-                   // Consumer<selected_button_provider>(
-                     //   builder: (context, selectedProvider, child) {
-                         // return
-                            GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex:int.parse(isAcive),
-                                //selectedProvider.isSelectedtypeinstall,
-                                // typeinstallController==null
-                                //     ? 0 :
-                                // int.tryParse( typeinstallController!)
-                              ),
-                              options: GroupButtonOptions(
-                                  buttonWidth: 110,
-                                selectedColor: kMainColor,
-                                  borderRadius: BorderRadius.circular(10)),
-                              buttons: ['غير نشط','نشط'],
-                              onSelected: (_,index,isselected) {
-                                print(index);
-                                setState(() {
-                                isAcive=index.toString();
-                                //selectedProvider.selectValuetypeinstall(index);
-                                  });
-                              }
-                          ),
-                       // }),
-                    //show chose image
-
-                    // Center(
-                    //   child: TextButton(
-                    //       // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),
-                    //       onPressed: () {
-                    //
-                    //       },
-                    //       child: Text(
-                    //         'تعديل ',
-                    //         style: TextStyle(color: kMainColor),
-                    //       )),
-                    // )
-                  ],
-                ),
+                //String id_country=Provider.of<country_vm>(context,listen: false).id_country;
+                print("level in update button" + levelname.toString());
+                print("regoin in update button" + regoinname.toString());
+                if (levelname != null &&
+                    emailController.text.toString().trim().isNotEmpty) {
+                  // Provider.of<LoadProvider>(context, listen: false)
+                  //     .changeboolUpdateUser(true);
+                  Map<String,String?> body = {
+                    'email': emailController.text != null
+                        ? emailController.text
+                        : "",
+                    'mobile': mobileController.text != null
+                        ? mobileController.text
+                        : "",
+                    //'fk_country': id_country,
+                    'type_administration':
+                    namemanage ,//!= null ? namemanage : "",
+                    'type_level': fklevel,
+                    'fk_regoin': fkregoin != null ? fkregoin : "null",
+                    'name_regoin':regoinname,
+                    'name_level' :levelname,
+                    'isActive' :isAcive,
+                    "updated_at":DateTime.now().toString(),
+                    "fkuserupdate":Provider.of<user_vm_provider>
+                      (context,listen: false).currentUser.idUser.toString(),
+                  };
+                Provider.of<user_vm_provider>(context,listen: false)
+                    .updateuser_vm(body,
+                   // controllerUsers[widget.index]
+                    widget.userModel.idUser,null
+                    // Provider.of<user_vm_provider>(context,listen: false)
+                    //     .currentUser!.path!.isNotEmpty?
+                    // File(
+                    //     Provider.of<user_vm_provider>(context,listen: false)
+                    //     .currentUser!.path!):null
+                );
+                      //.then((value) => value != "error" //   ?
+                    clear(body);
+                     // : error());
+                } else {
+                  _scaffoldKey.currentState!.showSnackBar(SnackBar(
+                      content: Text('حدد مستوى للصلاحية من فضلك')));
+                }
+              },
+              icon: const Icon(Icons.check,color: kWhiteColor,),
+            )
+          ],
+          title: const Text(' ',style: TextStyle(color: kWhiteColor),),
+          centerTitle: true,
+        ),
+        body: ModalProgressHUD(
+          inAsyncCall: Provider.of<user_vm_provider>(context,listen: true).isupdate,//Provider.of<LoadProvider>(context).isLoadingUpdateUser,
+          child: SingleChildScrollView(
+            child: ContainerShadows(
+              width: double.infinity,
+              padding:
+              EdgeInsets.only(
+                  top: 50,right: 20,left: 20,bottom: 50), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+              margin: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 50,bottom: 10
               ),
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      RowEdit(name: 'Email', des: '*'),
+                      SizedBox(height: 2),
+                      EditTextFormField(
+                        hintText: 'Email',
+                        obscureText: false,
+                        controller: emailController,
+                        vaild: (value){
+                          if (value?.trim() == null || value?.trim() == '') {
+                            return "هذا الحقل مطلوب.";
+                          } else {
+                            if (!value!.validateEmail) {
+                              return "من فضلك أدخل بريد الكتروني صحيح.";
+                            }
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RowEdit(name: label_manage, des: '*'),
 
+                      Consumer<manage_provider>(builder: (context, mangelist, child) {
+                        return DropdownButtonFormField(
+                          isExpanded: true,
+                          hint: Text("حددالإدارة"),
+                          items: mangelist.listtext.map((level_one) {
+                            return DropdownMenuItem(
+                              child: Text(level_one.name_mange), //label of item
+                              value: level_one.idmange, //value of item
+                            );
+                          }).toList(),
+                          value: mangelist.selectedValuemanag,
+                          onChanged: (value) {
+                            namemanage = value.toString();
+                            mangelist.changevalue(value.toString());
+                          },
+                          validator: (value){
+                            if(value == null){
+                              return "هذا الحقل مطلوب.";
+                            }
+
+                            return null;
+                          },
+                        );
+                      }),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RowEdit(name: label_level, des: '*'),
+                      //mangwidget(),
+                      Consumer<level_vm>(
+                        builder: (context, cart, child){
+                          return DropdownButtonFormField(
+                            isExpanded: true,
+                            //hint: Text("حدد حالة العميل"),
+                            items: cart.listoflevel.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(level_one.nameLevel), //label of item
+                                value: level_one.idLevel, //value of item
+                              );
+                            }).toList(),
+                            value:cart.selectedValueLevel,
+                            onChanged:(value) {
+                             // name_level=
+                              //  setState(() {
+                              cart.changeVal(value.toString());
+                              // });
+                            },
+                            validator: (value){
+                              if(value == null){
+                                return "هذا الحقل مطلوب.";
+                              }
+
+                              return null;
+                            },
+                          );},
+                      ),
+                      // levelCombox(
+                      //   selected: level,
+                      // ),
+                      SizedBox(
+                        height: 20,
+                      ),
+
+                      //admin
+                      RowEdit(name: 'الفرع', des: '*'),
+                      Consumer<regoin_vm>(
+                        builder: (context, cart, child){
+                          return DropdownButtonFormField(
+                            isExpanded: true,
+                            //hint: Text("حدد حالة العميل"),
+                            items: cart.listregoin.map((level_one) {
+                              return DropdownMenuItem(
+                                child: Text(level_one.name_regoin), //label of item
+                                value: level_one.id_regoin, //value of item
+                              );
+                            }).toList(),
+                            value:cart.selectedValueuser,
+                            onChanged:(value) {
+                              //  setState(() {
+                              cart.changeValuser(value.toString());
+                              // });
+                            },
+                            validator: (value){
+                              if(value == null){
+                                return "هذا الحقل مطلوب.";
+                              }
+
+                              return null;
+                            },
+                          );},
+                      ),
+                      // RegoinCombox(
+                      //   selected: regoin,
+                      // ),
+                      //manage
+                      SizedBox(
+                        height: 20,
+                      ),
+                      RowEdit(name: label_mobile, des: '*'),
+                      EditTextFormField(
+                        hintText: '00966000000000',
+                        obscureText: false,
+                        controller: mobileController,
+                        vaild: (value){
+                          if (value?.trim() == null || value?.trim() == '') {
+                            return "هذا الحقل مطلوب.";
+                          }
+                          return null;
+                        },
+                        inputType: TextInputType.phone,
+                        maxLength: 15,
+                        inputformate: [FilteringTextInputFormatter.digitsOnly],
+                      ),
+                      //RowEdit(name: 'Image', des: ''),
+                      SizedBox(
+                        height:20,
+                      ),
+                     // Consumer<selected_button_provider>(
+                       //   builder: (context, selectedProvider, child) {
+                           // return
+                              GroupButton(
+                                controller: GroupButtonController(
+                                  selectedIndex:int.parse(isAcive),
+                                  //selectedProvider.isSelectedtypeinstall,
+                                  // typeinstallController==null
+                                  //     ? 0 :
+                                  // int.tryParse( typeinstallController!)
+                                ),
+                                options: GroupButtonOptions(
+                                    buttonWidth: 110,
+                                  selectedColor: kMainColor,
+                                    borderRadius: BorderRadius.circular(10)),
+                                buttons: ['غير نشط','نشط'],
+                                onSelected: (_,index,isselected) {
+                                  print(index);
+                                  setState(() {
+                                  isAcive=index.toString();
+                                  //selectedProvider.selectValuetypeinstall(index);
+                                    });
+                                }
+                            ),
+                         // }),
+                      //show chose image
+
+                      // Center(
+                      //   child: TextButton(
+                      //       // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),
+                      //       onPressed: () {
+                      //
+                      //       },
+                      //       child: Text(
+                      //         'تعديل ',
+                      //         style: TextStyle(color: kMainColor),
+                      //       )),
+                      // )
+                    ],
+                  ),
+                ),
+
+            ),
           ),
         ),
       ),

@@ -57,6 +57,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.1
   tuple: ^2.0.1
   async: ^2.8.2
+  marquee: ^2.2.3
 
 
 dependency_overrides:
