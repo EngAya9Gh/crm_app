@@ -72,6 +72,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+
     final list = Provider.of<client_vm>(context,listen: true).listClient;
     if(list.any((element) =>
     element.idClients==widget.idClient))
@@ -86,12 +87,18 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
     current = Provider.of<user_vm_provider>(context).currentUser;
 
+    print("getnamelong(_clientModel.nameEnterprise.toString()) ${getnamelong(_clientModel.nameEnterprise.toString())}");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kMainColor,
-        title: Text(
-            _clientModel==null?'':  getnamelong(_clientModel.nameEnterprise.toString()),
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+        title: Padding(
+          padding:  EdgeInsets.only(top: 10.0),
+          child: Text(
+              _clientModel==null?'':  _clientModel.nameEnterprise.toString(),
+            style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+          ),
         ),
         centerTitle: true,
         bottom: TabBar(
@@ -111,6 +118,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             Text('التذاكر ', style: TextStyle(fontFamily: kfontfamily2)),
           ],
         ),
+        toolbarHeight: 75,
       ),
       body: Container(
         margin: EdgeInsets.only(bottom: 1),
