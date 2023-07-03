@@ -20,6 +20,8 @@ class typeclient extends ChangeNotifier{
   late String? selectedValuemanag=null;
 
   void changevalue(String? s){
+    print('s.toString()');
+    print(s.toString());
     selectedValuemanag=s;
     notifyListeners();
   }

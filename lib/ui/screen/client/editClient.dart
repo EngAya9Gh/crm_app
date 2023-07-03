@@ -184,12 +184,17 @@ class _editclientState extends State<editclient> {
       // ['مشترك','منسحب']
       //     :['تفاوض','عرض سعر','مستبعد'];
       // widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
-      widget.itemClient.typeClient == "تفاوض" ||
+    if(   widget.itemClient.typeClient == "تفاوض" ||
               widget.itemClient.typeClient == "عرض سعر" ||
-              widget.itemClient.typeClient == "مستبعد"
-          ? typeclient_provider.selectedValuemanag = widget.itemClient.typeClient.toString()
-          : null;
+              widget.itemClient.typeClient == "مستبعد")
+          typeclient_provider.selectedValuemanag = widget.itemClient.typeClient.toString();
+           if(widget.itemClient.typeClient == "مشترك")
+             typeclient_provider.selectedValuemanag =null;
       typeclient_provider.changevalue(typeclient_provider.selectedValuemanag);
+      print('typeclient_provider.selectedValuemanag ');
+      print( typeclient_provider.selectedValuemanag );
+      print('widget.itemClient.typeClient ' );
+      print( widget.itemClient.typeClient   );
       //typeclient_provider.getreasons('client');
       // typeclient_provider.selectedValuemanag=
       //     widget.itemClient.typeClient.toString();
@@ -668,7 +673,7 @@ class _editclientState extends State<editclient> {
                     Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == false
                         ? Container()
                         : typeclient_provider.selectedValuemanag == "عرض سعر"
-                            ? Row(
+                            ?  Row(
                                 children: [
                                   Flexible(
                                     flex: 3,
@@ -708,7 +713,7 @@ class _editclientState extends State<editclient> {
                                   ),
                                 ],
                               )
-                            : Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
+                            :  Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
                                 ? Container()
                                 : typeclient_provider.selectedValuemanag == "مستبعد"
                                     ? EditTextFormField(
