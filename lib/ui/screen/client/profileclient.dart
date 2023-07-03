@@ -16,6 +16,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import 'clientView.dart';
@@ -73,6 +74,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+
     final list = Provider.of<client_vm>(context,listen: true).listClient;
     if(list.any((element) =>
     element.idClients==widget.idClient))
@@ -87,12 +89,36 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
     current = Provider.of<user_vm_provider>(context).currentUser;
 
+    print("getnamelong(_clientModel.nameEnterprise.toString()) ${getnamelong(_clientModel.nameEnterprise.toString())}");
+
+
+    final size = AppBar().preferredSize;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kMainColor,
-        title: Text(
-            _clientModel==null?'':  getnamelong(_clientModel.nameEnterprise.toString()),
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+        title: SizedBox(
+          width: size.width,
+          height: size.height,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Marquee(
+              key: Key("true"),
+              text: _clientModel.nameEnterprise.toString(),
+              style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+              scrollAxis: Axis.horizontal,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              blankSpace: 20.0,
+              velocity: 50.0,
+              pauseAfterRound: Duration(seconds: 2),
+              startPadding: 0.0,
+              accelerationDuration: Duration(seconds: 2),
+              accelerationCurve: Curves.linear,
+              decelerationDuration: Duration(milliseconds: 500),
+              decelerationCurve: Curves.easeOut,
+              textDirection: TextDirection.rtl,
+            ),
+          ),
         ),
         centerTitle: true,
         bottom: TabBar(
@@ -112,6 +138,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             Text('التذاكر ', style: TextStyle(fontFamily: kfontfamily2)),
           ],
         ),
+        // toolbarHeight: 75,
       ),
       body: Container(
         margin: EdgeInsets.only(bottom: 1),

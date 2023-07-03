@@ -8,6 +8,32 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
+enum StatusClient { subscriber, withdrawn, unsupported }
+
+extension on StatusClient {
+  String get text {
+    switch (this) {
+      case StatusClient.subscriber:
+        return "مشترك";
+      case StatusClient.withdrawn:
+        return "منسحب";
+      case StatusClient.unsupported:
+        return "غير معتمد بعد";
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case StatusClient.subscriber:
+        return Colors.lightGreen;
+      case StatusClient.withdrawn:
+        return Colors.redAccent;
+      case StatusClient.unsupported:
+        return Colors.orangeAccent;
+    }
+  }
+}
+
 class CardInvoiceClient extends StatefulWidget {
   CardInvoiceClient({
     required this.type,
@@ -68,43 +94,36 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           widget.itemProd.name_regoin_invoice.toString(),
                           style: TextStyle(fontFamily: kfontfamily, color: kMainColor, fontSize: 12),
                         ),
-                        widget.itemProd.isApprove=='1'&&  widget.itemProd.stateclient=='مشترك'?
                         Text(
-                          ' مشترك',
-                          style: TextStyle(
-                              fontFamily: kfontfamily,
-                              fontWeight: FontWeight.normal),
-                        ):Container(),
-                        widget.itemProd.isApprove!='1'&&widget.itemProd.stateclient=='مشترك'?
-                        Text(
-                          'غير معتمد بعد',
-                          style: TextStyle(
-                              fontFamily: kfontfamily,
-                              fontWeight: FontWeight.normal),
-                        ):Container(),
-                        widget.itemProd.stateclient=='منسحب'?
-                        Text(
-                          widget.itemProd.stateclient.toString(),
-                          style: TextStyle(
-                              fontFamily: kfontfamily,
-                              fontWeight: FontWeight.normal),
-                        ):
-
-                        Container(),
-                        Text(
-                          widget.itemProd.date_approve!= null
+                          widget.itemProd.date_approve != null
                               ? widget.itemProd.date_approve.toString()
                               : widget.itemProd.dateCreate.toString(),
                           style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                         ),
                       ],
                     ),
-                    widget.itemProd.address_invoice != null
-                        ? Text(
-                            widget.itemProd.address_invoice.toString(),
-                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (widget.itemProd.address_invoice != null)
+                          Expanded(
+                            child: Text(
+                              widget.itemProd.address_invoice.toString() ,
+                              style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                            ),
                           )
-                        : Container(),
+                        else
+                          Spacer(),
+                        if (widget.itemProd.isApprove == '1' && widget.itemProd.stateclient == 'مشترك')
+                          statusClientChip(StatusClient.subscriber)
+                        else if (widget.itemProd.isApprove != '1' && widget.itemProd.stateclient == 'مشترك')
+                          statusClientChip(StatusClient.unsupported)
+                        else if (widget.itemProd.stateclient == 'منسحب')
+                          statusClientChip(StatusClient.withdrawn)
+                        else
+                          SizedBox.shrink(),
+                      ],
+                    ),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,12 +140,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                                widget.itemProd.currency_name==null?'ريال': int.parse(widget.itemProd.currency_name.toString())==0?' USD ':' ريال ',
-
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              widget.itemProd.currency_name == null
+                                  ? 'ريال'
+                                  : int.parse(widget.itemProd.currency_name.toString()) == 0
+                                      ? ' USD '
+                                      : ' ريال ',
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                           ],
                         ),
@@ -146,11 +165,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                                 style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                               ),
                             Text(
-                              widget.itemProd.currency_name==null?'ريال':  int.parse(widget.itemProd.currency_name.toString())==0?' USD ':' ريال ',
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              widget.itemProd.currency_name == null
+                                  ? 'ريال'
+                                  : int.parse(widget.itemProd.currency_name.toString()) == 0
+                                      ? ' USD '
+                                      : ' ريال ',
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                           ],
                         ),
@@ -171,12 +191,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                              widget.itemProd.currency_name==null?'ريال':int.parse(widget.itemProd.currency_name.toString())==0?' USD ':' ريال ',
-
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              widget.itemProd.currency_name == null
+                                  ? 'ريال'
+                                  : int.parse(widget.itemProd.currency_name.toString()) == 0
+                                      ? ' USD '
+                                      : ' ريال ',
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                           ],
                         ),
@@ -193,12 +213,12 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                              widget.itemProd.currency_name==null?'ريال':   int.parse(widget.itemProd.currency_name.toString())==0?' USD ':' ريال ',
-
-                              style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  color: kMainColor,
-                                  fontSize: 12),
+                              widget.itemProd.currency_name == null
+                                  ? 'ريال'
+                                  : int.parse(widget.itemProd.currency_name.toString()) == 0
+                                      ? ' USD '
+                                      : ' ريال ',
+                              style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                           ],
                         ),
@@ -237,6 +257,24 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
           ),
         ),
         //  ),
+      ),
+    );
+  }
+
+  Widget statusClientChip(StatusClient statusClient) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+      decoration: BoxDecoration(
+        color: statusClient.color,
+        borderRadius: BorderRadius.circular(10)
+      ),
+      child: Text(
+        statusClient.text,
+        style: TextStyle(
+          fontFamily: kfontfamily,
+          fontWeight: FontWeight.w600,
+          color: Colors.white
+        ),
       ),
     );
   }

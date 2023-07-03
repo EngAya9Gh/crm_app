@@ -78,31 +78,29 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           child:  StatefulBuilder(
 
               builder: (BuildContext context, void Function(void Function()) setState) {
-                return   Expanded(
-                  // flex: 1,
-                  child: Form(
+                return   Form(
            child: Column(
              children: [
                RowEdit(name: " تاريخ الزيارة ", des: '*'),
                TextField(
                  decoration: InputDecoration(
-                   prefixIcon: Icon(
-                     Icons.date_range,
-                     color: kMainColor,
-                   ),
-                   hintStyle: const TextStyle(
-                       color: Colors.black45,
-                       fontSize: 16, fontWeight: FontWeight.w500),
-                   hintText://_currentDate.toString(),
-                   Provider.of<datetime_vm>(context,listen: true).valuedateTime.toString(),
-                   filled: true,
-                   fillColor: Colors.grey.shade200,
+                 prefixIcon: Icon(
+                   Icons.date_range,
+                   color: kMainColor,
+                 ),
+                 hintStyle: const TextStyle(
+                     color: Colors.black45,
+                     fontSize: 16, fontWeight: FontWeight.w500),
+                 hintText://_currentDate.toString(),
+                 Provider.of<datetime_vm>(context,listen: true).valuedateTime.toString(),
+                 filled: true,
+                 fillColor: Colors.grey.shade200,
                  ),
                  readOnly: true,
                  onTap: () {
-                   setState((){
-                     selectDate(context,_currentDate);
-                   });
+                 setState((){
+                   selectDate(context,_currentDate);
+                 });
                  },
                ),
                // RaisedButton(
@@ -112,33 +110,32 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                SizedBox(height: 6,),
                Center(
                  child: Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [
+                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
 
-                     ElevatedButton(
-                       style: ButtonStyle(
-                           backgroundColor: MaterialStateProperty.all(
-                               kMainColor)),
-                       onPressed: () async {
-                         await Provider.of<client_vm>(context, listen: false)
-                             .updateclient_vm({
-                           "date_visit_Client": _currentDate.toString(),//DateTime.now().toString(),
+                   ElevatedButton(
+                     style: ButtonStyle(
+                         backgroundColor: MaterialStateProperty.all(
+                             kMainColor)),
+                     onPressed: () async {
+                       await Provider.of<client_vm>(context, listen: false)
+                           .updateclient_vm({
+                         "date_visit_Client": _currentDate.toString(),//DateTime.now().toString(),
 
-                         }, widget.clientModel!.idClients.toString());
-                         Provider.of<EventProvider>(
-                             context, listen: false).setvalue_save();
-                         Navigator.of(context, rootNavigator: true)
-                             .pop(false);
-                       },
-                       child: Text('حفظ موعد الزيارة'),
-                     ),
+                       }, widget.clientModel!.idClients.toString());
+                       Provider.of<EventProvider>(
+                           context, listen: false).setvalue_save();
+                       Navigator.of(context, rootNavigator: true)
+                           .pop(false);
+                     },
+                     child: Text('حفظ موعد الزيارة'),
+                   ),
 
-                   ],
+                 ],
                  ),
                ),
              ],
            ),
-                  ),
                 );
 
               },
