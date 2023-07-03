@@ -71,7 +71,6 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
     _tabController = TabController(length: 6, vsync: this, initialIndex: indexTab);
   }
 
-  final GlobalKey _textKey = GlobalKey();
   final appBarSize = AppBar().preferredSize;
 
   @override
