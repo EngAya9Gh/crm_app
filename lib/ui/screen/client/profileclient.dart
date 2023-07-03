@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
+import 'package:text_scroll/text_scroll.dart';
 import '../../../constants.dart';
 import 'clientView.dart';
 
@@ -43,7 +44,7 @@ class ProfileClient extends StatefulWidget {
 
 class _ProfileClientState extends State<ProfileClient> with TickerProviderStateMixin {
   late UserModel current;
-  late ClientModel _clientModel=ClientModel();
+  late ClientModel _clientModel = ClientModel();
   late TabController _tabController;
   int indexTab = 0;
 
@@ -59,11 +60,9 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
       Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
 
-     await Provider.of<client_vm>(context, listen: false)
-          .get_byIdClient(widget.idClient.toString());
+      await Provider.of<client_vm>(context, listen: false).get_byIdClient(widget.idClient.toString());
 
-      Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationclient(widget.idClient.toString());
+      Provider.of<communication_vm>(context, listen: false).getCommunicationclient(widget.idClient.toString());
 
       Provider.of<ticket_vm>(context, listen: false).getclient_ticket(widget.idClient.toString());
     });
@@ -72,15 +71,13 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
     _tabController = TabController(length: 6, vsync: this, initialIndex: indexTab);
   }
 
+  final appBarSize = AppBar().preferredSize;
+
   @override
   Widget build(BuildContext context) {
-
-    final list = Provider.of<client_vm>(context,listen: true).listClient;
-    if(list.any((element) =>
-    element.idClients==widget.idClient))
-      _clientModel= list.firstWhereOrNull((element) =>
-      element.idClients==widget.idClient) ??
-          _clientModel;
+    final list = Provider.of<client_vm>(context, listen: true).listClient;
+    if (list.any((element) => element.idClients == widget.idClient))
+      _clientModel = list.firstWhereOrNull((element) => element.idClients == widget.idClient) ?? _clientModel;
     // _clientModel = widget.client ??
     //     Provider.of<client_vm>(context, listen: true)
     //         .listClient.firstorNullWhere((element) //error
@@ -91,35 +88,46 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
     print("getnamelong(_clientModel.nameEnterprise.toString()) ${getnamelong(_clientModel.nameEnterprise.toString())}");
 
-
-    final size = AppBar().preferredSize;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kMainColor,
-        title: SizedBox(
-          width: size.width,
-          height: size.height,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: Marquee(
-              key: Key("true"),
-              text: _clientModel.nameEnterprise.toString(),
-              style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-              scrollAxis: Axis.horizontal,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              blankSpace: 20.0,
-              velocity: 50.0,
-              pauseAfterRound: Duration(seconds: 2),
-              startPadding: 0.0,
-              accelerationDuration: Duration(seconds: 2),
-              accelerationCurve: Curves.linear,
-              decelerationDuration: Duration(milliseconds: 500),
-              decelerationCurve: Curves.easeOut,
-              textDirection: TextDirection.rtl,
+        title: LayoutBuilder(builder: (context, constraints) {
+          return SizedBox(
+            width: constraints.maxWidth,
+            height: appBarSize.height,
+            child: Center(
+              child: Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: TextScroll(
+                    _clientModel.nameEnterprise.toString() + "   ",
+                    mode: TextScrollMode.endless,
+                    velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
+                    delayBefore: Duration(milliseconds: 2000),
+                    pauseBetween: Duration(milliseconds: 1000),
+                    style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+                    textAlign: TextAlign.center,
+                    textDirection: TextDirection.rtl,
+                  )
+                  // Marquee(
+                  //   key: _textKey,
+                  //   text: _clientModel.nameEnterprise.toString(),
+                  //   style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+                  //   scrollAxis: Axis.horizontal,
+                  //   crossAxisAlignment: CrossAxisAlignment.start,
+                  //   blankSpace: 20.0,
+                  //   velocity: 30.0,
+                  //   pauseAfterRound: Duration(seconds: 2),
+                  //   startPadding: 0.0,
+                  //   accelerationDuration: Duration(seconds: 2),
+                  //   accelerationCurve: Curves.linear,
+                  //   decelerationDuration: Duration(milliseconds: 1000),
+                  //   decelerationCurve: Curves.easeOut,
+                  //   textDirection: TextDirection.rtl,
+                  // ),
+                  ),
             ),
-          ),
-        ),
+          );
+        }),
         centerTitle: true,
         bottom: TabBar(
           labelPadding: const EdgeInsets.only(left: 2, right: 2),

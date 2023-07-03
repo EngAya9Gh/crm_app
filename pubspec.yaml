@@ -58,6 +58,7 @@ dependencies:
   tuple: ^2.0.1
   async: ^2.8.2
   marquee: ^2.2.3
+  text_scroll: ^0.1.0
 
 
 dependency_overrides:
