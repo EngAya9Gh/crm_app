@@ -143,13 +143,13 @@ class _ClientViewState extends State<ClientView> {
                 cardRow( title:'الموظف',value:getnameshort(clientModel.nameUser.toString())),
 
                 cardRow( title:'رقم الموظف',value:clientModel.mobileuser.toString()),
-                (clientModel.reasonTransfer==null||
-                clientModel.reasonTransfer=="null") && clientModel.fkusertrasfer!=null?
+
+                (clientModel.reasonTransfer ==null ) && clientModel.fkusertrasfer!=null?
 
                 cardRow( title:'قام بتحويل العميل',value:getnameshort(
                 clientModel.nameusertransfer.toString())):Container(),
-                (clientModel.reasonTransfer==null||
-                clientModel.reasonTransfer=="null")&&clientModel.fkusertrasfer!=null?
+
+                (clientModel.reasonTransfer ==null )&&clientModel.fkusertrasfer!=null?
 
                 cardRow( title:'تاريخ التحويل',value:clientModel.dateTransfer.toString()):Container(),
 
@@ -210,11 +210,13 @@ class _ClientViewState extends State<ClientView> {
                                   fkuser: clientModel.fkUser.toString())
                           ));
                      },  child:Text ('تعديل بيانات العميل'),),
+
                     clientModel.typeClient=="عرض سعر"
                         ||  clientModel.typeClient=="تفاوض"?
                         SizedBox(width:5 ,):Container(),
+
                     (clientModel.typeClient=="عرض سعر" ||  clientModel.typeClient=="تفاوض")
-                        && clientModel.reasonTransfer==null ?
+                        && clientModel.reasonTransfer ==null ?
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
