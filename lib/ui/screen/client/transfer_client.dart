@@ -173,7 +173,6 @@ class _transferClientState extends State<transferClient> {
                                       .currentUser
                                       .idUser
                                       .toString(),
-
                                 }, widget.idclient
                             );
                             _scaffoldKey.currentState!.showSnackBar(

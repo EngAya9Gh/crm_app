@@ -213,7 +213,8 @@ class _ClientViewState extends State<ClientView> {
                     clientModel.typeClient=="عرض سعر"
                         ||  clientModel.typeClient=="تفاوض"?
                         SizedBox(width:5 ,):Container(),
-                    (clientModel.typeClient=="عرض سعر" ||  clientModel.typeClient=="تفاوض")&& clientModel.fkusertrasfer==null?
+                    (clientModel.typeClient=="عرض سعر" ||  clientModel.typeClient=="تفاوض")
+                        && clientModel.reasonTransfer==null ?
                     ElevatedButton(
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
@@ -280,7 +281,7 @@ class _ClientViewState extends State<ClientView> {
                                                  'approve':'1',
                                                  'reason_transfer':reason_transfer.toString(),
                                                  'fkuser':Provider.of<user_vm_provider>(context,listen:
-                                                 false).currentUser.idUser.toString(),//user reciept
+                                                   false).currentUser.idUser.toString(),//user reciept
                                                  // 'nameusertransfer':
                                                  // Provider.of<user_vm_provider>(context,listen: false)
                                                  //     .currentUser.nameUser.toString(),//الموظف الذي حول العميل
