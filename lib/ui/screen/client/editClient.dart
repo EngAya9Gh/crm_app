@@ -117,7 +117,7 @@ class _editclientState extends State<editclient> {
 
   @override
   void initState() {
-
+    context.read<company_vm>().initValueOut();
     currentUser =
         Provider.of<user_vm_provider>(context, listen: false).currentUser;
     nameclientController.text = widget.itemClient.nameClient!.toString();
@@ -159,6 +159,7 @@ class _editclientState extends State<editclient> {
       await Provider.of<activity_vm>(context, listen: false).getactv();
       Provider.of<activity_vm>(context, listen: false)
           .changevalueOut(widget.itemClient.activity_type_fk);
+
 
       await Provider.of<company_vm>(context, listen: false).getcompany();
 
@@ -630,7 +631,7 @@ class _editclientState extends State<editclient> {
                                 value: level_one.id_Company.toString(), //value of item
                               );
                             }).toList(),
-                            value:  cart.selectedValueOut,
+                            value: cart.selectedValueOut,
                             onChanged: (value) {
                               //  setState(() {
                               cart.changevalueOut(value.toString());
@@ -736,13 +737,16 @@ class _editclientState extends State<editclient> {
                     typeclient_provider.selectedValuemanag == "عرض سعر"
                             ? Row(
                               children: [
-                                EditTextFormField(
-                                    hintText: 'عرض سعر',
-                                    obscureText: false,
-                                    controller: offerpriceController,
-                                  ),
                                 Flexible(
-                                  flex: 1,
+                                  flex:3,
+                                  child: EditTextFormField(
+                                      hintText: 'عرض سعر',
+                                      obscureText: false,
+                                      controller: offerpriceController,
+                                    ),
+                                ),
+                                Expanded(
+                                  flex: 5,
                                   child: TextFormField(
                                     validator: (value) {
                                       if (dateprice == DateTime(1, 1, 1)) {
