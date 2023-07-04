@@ -130,11 +130,11 @@ class QuarterPage extends StatelessWidget {
                         break;
                         case 'Q2':
                           datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),04,01);
-                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),07,31);
+                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),06,31);
 
                         break;
                         case 'Q3':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),06,01);
+                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),07,01);
                           dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),09,31);
 
                         break;
