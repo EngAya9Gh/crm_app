@@ -3,6 +3,7 @@
 
 import 'package:crm_smart/api/api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 import '../constants.dart';
 
 class  AuthServices{
@@ -23,17 +24,18 @@ class  AuthServices{
   }
   Future<String?> verfiy_otp(String email,String otp) async {
     String? result;
-    try{
-      // print(await FirebaseMessaging.instance.getToken());
-      result= await Api()
-        .post( url:url+"Auth/check_otp.php",
-          body: {
-      'email':email,
-      'otp':otp,
-      'token':await FirebaseMessaging.instance.getToken(),
-    } );
-    return result!="code is wrong"? result:"false";
 
+    try {
+      final fcm = await FirebaseMessaging.instance.getToken();
+
+      print("fcmmmmmmm: $fcm");
+      // print(await FirebaseMessaging.instance.getToken());
+      result = await Api().post(url: url + "Auth/check_otp.php", body: {
+        'email': email,
+        'otp': otp,
+        'token': fcm,
+      });
+      return result != "code is wrong" ? result : "false";
     }
     catch(e){
 

@@ -29,6 +29,10 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+    <true/>
+    <key>UIApplicationExitsOnSuspend</key>
+    <false/>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) camera library use</string>
 	<key>NSMicrophoneUsageDescription</key>

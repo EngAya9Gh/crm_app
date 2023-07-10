@@ -4,6 +4,7 @@ import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
 import 'package:crm_smart/view_model/employee_race_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../helper/get_month_name.dart';
 import '../../../../model/employee_report_model.dart';
 
@@ -30,7 +31,7 @@ class EmployeeCard extends StatelessWidget {
         elevation: 5.0,
         shadowColor: Colors.grey.shade200,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             Stack(

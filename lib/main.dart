@@ -1,4 +1,6 @@
-import 'package:crm_smart/api/fcm.dart';
+import 'dart:io';
+
+import 'package:crm_smart/api/firebase_option.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
 import 'package:crm_smart/provider/config_vm.dart';
@@ -37,15 +39,14 @@ import 'package:crm_smart/view_model/usertest_vm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:crm_smart/api/firebase_option.dart';
-import 'binding/binding.dart';
+
 import 'constants.dart';
 
 //import 'package:firebase_core/firebase_core.dart';
+
+@pragma("entry-point")
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
   // make sure you call `initializeApp` before using other Firebase services.
@@ -65,12 +66,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // if (Firebase.apps.isEmpty) {
   await Firebase.initializeApp(
-    name: "crm_smart",
+    // name: "crm_smart",
     options: DefaultFirebaseOptions.currentPlatform,
   );
   // }
 
   // Set the background messaging handler early on, as a named top-level function
+
+  if (Platform.isIOS) {
+    await FirebaseMessaging.instance.requestPermission();
+  }
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
