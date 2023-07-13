@@ -306,7 +306,7 @@ class _addProductState extends State<addProduct> {
   void error() {
     Provider.of<LoadProvider>(context, listen: false)
         .changeboolValueisLoading(false);
-    _scaffoldKey.currentState!
+    ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(label_errorAddProd)));
   }
 
@@ -317,7 +317,7 @@ class _addProductState extends State<addProduct> {
     _textName.text = "";
     _textprice.text = "";
     Provider.of<switch_provider>(context, listen: false).changeboolValue(false);
-    _scaffoldKey.currentState!
+    ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(label_doneAddProduct)));
 
     Navigator.pop(context);

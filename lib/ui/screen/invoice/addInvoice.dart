@@ -1180,7 +1180,7 @@ class _addinvoiceState extends State<addinvoice> {
                                               value != "false" ? clear(context, value, _products) : error(context));
                                     }
                                   } else {
-                                    _scaffoldKey.currentState!
+                                    ScaffoldMessenger.of(context)
                                         .showSnackBar(SnackBar(content: Text('من فضلك ادخل منتجات')));
                                   }
                                 }
@@ -1286,7 +1286,7 @@ class _addinvoiceState extends State<addinvoice> {
   error(context) {
     print("error method");
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
-    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
   }
 
   DateTime _currentDate = DateTime.now();

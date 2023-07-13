@@ -379,7 +379,7 @@ void calculate(){
                                         .addlistproductinvoic(pp);
                                   }
                                   else{
-                                    _scaffoldKey.currentState!.showSnackBar(
+                                    ScaffoldMessenger.of(context).showSnackBar(
                                         SnackBar(content: Text('من فضلك تأكد من عملية الإدخال')));
                                   }
                                  setState(() {

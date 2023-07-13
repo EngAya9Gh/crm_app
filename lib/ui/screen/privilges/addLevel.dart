@@ -72,7 +72,7 @@ class addLevel extends StatelessWidget {
                       : error(context)
         );
     }else {
-          _scaffoldKey.currentState!.showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('الحقل فارغ  '))
           );
         }
@@ -92,7 +92,7 @@ class addLevel extends StatelessWidget {
      Provider.of<LoadProvider>(context, listen: false)
          .changebooladdclient(false);
      namelevel.text="";
-     _scaffoldKey.currentState!.showSnackBar(
+     ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(content: Text('تم إنشاء مستوى جديد'))
      );
      Navigator.pop(context);
@@ -102,7 +102,7 @@ class addLevel extends StatelessWidget {
    error(context) {
      Provider.of<LoadProvider>(context, listen: false)
          .changebooladdclient(false);
-     _scaffoldKey.currentState!.showSnackBar(
+     ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(content: Text('هناك خطأ ما'))
      );
      print("error");

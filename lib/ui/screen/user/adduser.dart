@@ -356,7 +356,7 @@ class _addUserState extends State<addUser> {
                                 .adduser_vm(body)
                                 .then((value) => value != "repeat" ? clear() : error());
                           } else {
-                            _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('تأكد من الخيارات من فضلك')));
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('تأكد من الخيارات من فضلك')));
                           }
                         },
                         text:
@@ -378,7 +378,7 @@ class _addUserState extends State<addUser> {
 
   void error() {
     Provider.of<LoadProvider>(context, listen: false).changeboolValueUser(false);
-    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('الموظف مضاف مسبقاً')));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('الموظف مضاف مسبقاً')));
   }
 
   void clear() {
@@ -390,7 +390,7 @@ class _addUserState extends State<addUser> {
     nameController.text = "";
     mobileController.text = "";
     emailController.text = "";
-    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(label_Addeduser)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_Addeduser)));
     Navigator.pop(context);
   }
 }

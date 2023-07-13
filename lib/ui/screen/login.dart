@@ -93,7 +93,7 @@ class _loginState extends State<login> {
                         else{
                           Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
 
-                          _scaffoldKey.currentState!.showSnackBar(new SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                               content: new Text(emailError)
                           ));
                         }
@@ -124,7 +124,7 @@ class _loginState extends State<login> {
                         else{
                           Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
 
-                          _scaffoldKey.currentState!.showSnackBar(new SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                               content: new Text(codeverifyError)
                           ));
                         }

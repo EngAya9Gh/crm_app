@@ -68,7 +68,7 @@ Key? key,
       return _inActiveButton(title, index);
   }
 
-  Widget _activeButton(String title) => FlatButton(
+  Widget _activeButton(String title) => MaterialButton(
     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     disabledColor: secondaryColor,
     disabledTextColor: color,
@@ -79,7 +79,7 @@ Key? key,
     onPressed: null,
   );
 
-  Widget _inActiveButton(String title, int index) => FlatButton(
+  Widget _inActiveButton(String title, int index) => MaterialButton(
     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     color: Colors.transparent,
     textColor: Colors.white,

@@ -769,7 +769,7 @@ class _editclientState extends State<editclient> {
 
   error(BuildContext context) {
     Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
-    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text("حدث خطأ ما")));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("حدث خطأ ما")));
   }
 
   DateTime _currentDate = DateTime.now();

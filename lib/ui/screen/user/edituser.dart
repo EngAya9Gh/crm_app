@@ -212,7 +212,7 @@ class _EditUserState extends State<EditUser> {
                     clear(body);
                      // : error());
                 } else {
-                  _scaffoldKey.currentState!.showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text('حدد مستوى للصلاحية من فضلك')));
                 }
               },
@@ -442,7 +442,7 @@ class _EditUserState extends State<EditUser> {
     // descriptionController.text = "";
     // mobileController.text = "";
     // emailController.text = "";
-    _scaffoldKey.currentState!
+    ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(label_Edituser)));
     Navigator.pop(context);
   }
@@ -450,7 +450,7 @@ class _EditUserState extends State<EditUser> {
   error() {
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changeboolUpdateUser(false);
-    _scaffoldKey.currentState!
+    ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(label_errorAddProd)));
     Navigator.pop(context);
   }

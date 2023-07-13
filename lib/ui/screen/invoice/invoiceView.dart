@@ -624,14 +624,14 @@ class _InvoiceViewState extends State<InvoiceView> {
                                           title: Text('التأكيد'),
                                           content: Text('هل تريد حذف الفاتورة'),
                                           actions: <Widget>[
-                                            new FlatButton(
+                                            new TextButton(
                                               onPressed: () {
                                                 Navigator.of(context, rootNavigator: true)
                                                     .pop(false); // dismisses only the dialog and returns false
                                               },
                                               child: Text('لا'),
                                             ),
-                                            FlatButton(
+                                            TextButton(
                                               onPressed: () async {
                                                 Navigator.of(context, rootNavigator: true).pop(true);
                                                 // dismisses only the dialog and returns true

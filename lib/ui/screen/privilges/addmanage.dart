@@ -102,7 +102,7 @@ class _addmanageState extends State<addmanage> {
                             );
                           }
                         }else {
-                          _scaffoldKey.currentState!.showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('الحقل فارغ  '))
                           );
                         }
@@ -123,7 +123,7 @@ class _addmanageState extends State<addmanage> {
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdclient(false);
     namelevel.text="";
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
@@ -133,7 +133,7 @@ class _addmanageState extends State<addmanage> {
   error(context) {
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdclient(false);
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
     print("error");

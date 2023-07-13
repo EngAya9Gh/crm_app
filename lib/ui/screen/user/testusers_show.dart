@@ -49,7 +49,7 @@ class testuser_show extends StatelessWidget {
                         ClipboardData(
                         text:userTestModel.des_usertest.toString()));
 
-                    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('تم النسخ بنجاح')));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('تم النسخ بنجاح')));
                     },
                 ),
               ],

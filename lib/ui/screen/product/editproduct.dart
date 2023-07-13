@@ -336,14 +336,14 @@ class _EditProductState extends State<EditProduct> {
                                         title: Center(child: Text('تأكيد')),
                                         content: Text('هل تريد الحذف'),
                                         actions: <Widget>[
-                                          new FlatButton(
+                                          new TextButton(
                                             onPressed: () {
                                               Navigator.of(context, rootNavigator: true)
                                                   .pop(false); // dismisses only the dialog and returns false
                                             },
                                             child: Text('لا'),
                                           ),
-                                          FlatButton(
+                                          TextButton(
                                             onPressed: ()async {
                                               Provider.of<LoadProvider>(context,listen: false)
                                                   .changebooldelete(true);
@@ -353,27 +353,27 @@ class _EditProductState extends State<EditProduct> {
                                                   .changebooldelete(false);
                                               print(res);
                                               if(res=="remove error")
-                                                _scaffoldKey.currentState!.showSnackBar(
+                                                ScaffoldMessenger.of(context).showSnackBar(
                                                     SnackBar(content: Text("لا يمكن حذف هذا المنتج"))
                                                 );
                                               else{
 
                                                 if(res=="done") {
-                                                  _scaffoldKey.currentState!
+                                                  ScaffoldMessenger.of(context)
                                                       .showSnackBar(
                                                       SnackBar(content: Text(
                                                           "تم الحذف بنجاح")));
                                                Navigator.pop(context);
                                                 } else
                                                 if(res=='bad requst')
-                                                  _scaffoldKey.currentState!.showSnackBar(
+                                                  ScaffoldMessenger.of(context).showSnackBar(
                                                       SnackBar(content: Text("ارسال خاطئ")));
                                                 else
                                                 if(res=='error')
-                                                  _scaffoldKey.currentState!.showSnackBar(
+                                                  ScaffoldMessenger.of(context).showSnackBar(
                                                       SnackBar(content: Text(" هناك مشكلة ما أثناء حذف المنتج")));
                                                 else
-                                                  _scaffoldKey.currentState!.showSnackBar(
+                                                  ScaffoldMessenger.of(context).showSnackBar(
                                                       SnackBar(content: Text("يوجد مشكلة ما ")));
                                               }
 
@@ -467,7 +467,7 @@ class _EditProductState extends State<EditProduct> {
     // _textName.text = "";
     // _textprice.text = "";
 
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(label_Edituser)));
 
     Navigator.pop(context);
@@ -477,7 +477,7 @@ class _EditProductState extends State<EditProduct> {
   error() {
     Provider.of<LoadProvider>(context, listen: false)
         .changeLoadingupdateprod(false);
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(label_errorAddProd)));
   }
 }

@@ -175,7 +175,7 @@ class _transferClientState extends State<transferClient> {
                                       .toString(),
                                 }, widget.idclient
                             );
-                            _scaffoldKey.currentState!.showSnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                     content:
                                     Text('تم تحويل العميل')));
