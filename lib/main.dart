@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:crm_smart/api/firebase_option.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
 import 'package:crm_smart/provider/config_vm.dart';
@@ -52,7 +51,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // make sure you call `initializeApp` before using other Firebase services.
 
   //DefaultFirebaseOptions .currentPlatform );
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
   print("Handling a background message: ${message.messageId}");
   print("Handling a background message: ${message.data['idclient']}");
   print("Handling a background message: ${message.data['Typenotify']}");
@@ -67,7 +66,6 @@ void main() async {
   // if (Firebase.apps.isEmpty) {
   await Firebase.initializeApp(
     // name: "crm_smart",
-    options: DefaultFirebaseOptions.currentPlatform,
   );
   // }
 
