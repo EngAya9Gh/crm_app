@@ -51,7 +51,7 @@ class CustomDrawer extends StatelessWidget {
               ),
               currentAccountPicture: CircleAvatar(
                   backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Color(0xFF56ccf2) : Colors.grey,
-                  child: Provider.of<user_vm_provider>(context, listen: true).currentUser.img_image!.isNotEmpty
+                  child: (Provider.of<user_vm_provider>(context, listen: true).currentUser.img_image?.isNotEmpty ?? false)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(45),
                           child: CachedNetworkImage(

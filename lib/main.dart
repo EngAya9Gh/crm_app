@@ -194,13 +194,25 @@ void main() async {
   ], child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   bool isUserLoggedIn = false;
+  late Future<SharedPreferences> currentUser;
+
+  @override
+  void initState() {
+    currentUser = Provider.of<user_vm_provider>(context, listen: false).getcurrentuser();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<SharedPreferences>(
-        future: Provider.of<user_vm_provider>(context, listen: false).getcurrentuser(),
+        future: currentUser,
         builder: (context, snapshot) {
           print('in main builder');
           if (!snapshot.hasData) {

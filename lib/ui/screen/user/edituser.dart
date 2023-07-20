@@ -127,7 +127,7 @@ class _EditUserState extends State<EditUser> {
       //print(widget.index);
 
       setState(() {
-        isAcive=widget.userModel.isActive;
+        isAcive=widget.userModel.isActive!;
       });
       print("init");
     });
