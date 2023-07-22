@@ -57,11 +57,6 @@ class _loginState extends State<login> {
                   SizedBox(
                     height: 20,
                   ),
-                  IconButton(
-                      onPressed: () async {
-                        print("fcm : ${await FirebaseMessaging.instance.getToken()}");
-                      },
-                      icon: Icon(Icons.add)),
                   CustomFormField(
                     textdirehint: TextDirection.ltr,
                     read: false,
@@ -117,11 +112,10 @@ class _loginState extends State<login> {
                           preferences.setBool(kKeepMeLoggedIn, true);
                           preferences.setString("id_user",res!);
                           // preferences.set("map_clientlist",res!);
-                          Provider.of<user_vm_provider>(context, listen: false)
-                              .getcurrentuser();
+                          await Provider.of<user_vm_provider>(context, listen: false).getcurrentuser();
                           Provider.of<AuthProvider>(context,listen: false)
                               .changeboolValueisLoading(false);
-
+                          val.changeboolValue();
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(

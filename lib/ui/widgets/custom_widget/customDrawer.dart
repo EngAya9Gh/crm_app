@@ -184,7 +184,7 @@ class CustomDrawer extends StatelessWidget {
             ):Container(),
             ListTile(
               title: Text(
-                'تسجيل خروج',
+                'تسجيل الخروج',
                 style: TextStyle(fontFamily: kfontfamily2),
               ),
               leading: Icon(
@@ -193,9 +193,11 @@ class CustomDrawer extends StatelessWidget {
               ),
               onTap: () async {
                 SharedPreferences preferences = await SharedPreferences.getInstance();
-                preferences.clear();
-                Navigator.pushAndRemoveUntil(
+                await preferences.clear();
+                if(context.mounted) {
+                  Navigator.pushAndRemoveUntil(
                     context, MaterialPageRoute(builder: (context) => login()), (route) => false);
+                }
 
                 // preferences.setBool(kKeepMeLoggedIn, false);
               },

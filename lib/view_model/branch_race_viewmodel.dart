@@ -26,7 +26,6 @@ class BranchRaceViewmodel extends ChangeNotifier {
   List<BranchRaceModel> _allTargetsList = [];
   DateFilterType selectedDateFilter = DateFilterType.yearly;
   DateFilterType selectedDateFilterAddTarget = DateFilterType.yearly;
-  List<BranchRaceModel> targetList= [];
   List<String> monthsFilter = [];
   List<String> quartersFilter = [];
   List<String> quarterYearsFilter = [];
@@ -43,6 +42,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
   String? selectedRegionId;
   String? branchTarget;
   bool isLoadingAction = false;
+  String _querySearch = '';
 
   String? updateBranchTarget;
 
@@ -50,6 +50,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
     targetsState = PageState();
     _allTargetsList = [];
     selectedDateFilter = DateFilterType.yearly;
+    _querySearch = '';
     notifyListeners();
   }
 
@@ -97,12 +98,12 @@ class BranchRaceViewmodel extends ChangeNotifier {
 
   void onFilterDateTyp() {
     final list = List<BranchRaceModel>.from(_allTargetsList)
-        .where((element) => element.typeTarget ==
-        selectedDateFilter.index.toString())
+        .where((element) =>
+            element.typeTarget == selectedDateFilter.index.toString() &&
+            (element.name_regoin?.toLowerCase().contains(_querySearch) ?? false))
         .toList();
 
     targetsState = targetsState.copyWith(data: list);
-
     notifyListeners();
   }
 
@@ -127,7 +128,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
         .toList();
   }
 
-  onChangeMonth(DateTime monthdate,String month,String fkcountry) async{
+  onChangeMonth(DateTime monthdate, String month, String fkcountry) async {
     selectedMonthFilter = month;
 
     // List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
@@ -136,21 +137,19 @@ class BranchRaceViewmodel extends ChangeNotifier {
     //
     // list = list.where((element) => element.nameTarget == getMonthIndex(selectedMonthFilter!).toString()).toList();
 
-   // list = list.where((element) => element.nameTarget == getMonthNumber(selectedMonthFilter!).toString()).toList();
-    var data  = await Api().post(
-        url: url +
-            "target/get_sales_target.php?fk_country=$fkcountry&month=${monthdate.toString()}",
+    // list = list.where((element) => element.nameTarget == getMonthNumber(selectedMonthFilter!).toString()).toList();
+    var data = await Api().post(
+        url: url + "target/get_sales_target.php?fk_country=$fkcountry&month=${monthdate.toString()}",
         body: {'type': 'datemonth'});
-    List<BranchRaceModel> list=[];
-    for (int i = 0; i < data.length; i++)
-      list.add(BranchRaceModel.fromJson(data[i]));
+    List<BranchRaceModel> list = [];
+    for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
 
     targetsState = targetsState.copyWith(data: list);
 
     notifyListeners();
   }
 
-  onChangeYear(String year,String fkcountry) async {
+  onChangeYear(String year, String fkcountry) async {
     selectedYearFilter = year;
 
     // List<BranchRaceModel> list = List<>.from(_allTargetsList)
@@ -158,20 +157,17 @@ class BranchRaceViewmodel extends ChangeNotifier {
     //     .toList();
     //
     // list = list.where((element) => element.yearTarget == selectedYearFilter).toList();
-    var data  = await Api().post(
-        url: url +
-            "target/get_sales_target.php?fk_country=$fkcountry&year=${year}",
-        body: {'type': 'dateyear'});
-    List<BranchRaceModel> list=[];
-    for (int i = 0; i < data.length; i++)
-      list.add(BranchRaceModel.fromJson(data[i]));
+    var data = await Api()
+        .post(url: url + "target/get_sales_target.php?fk_country=$fkcountry&year=${year}", body: {'type': 'dateyear'});
+    List<BranchRaceModel> list = [];
+    for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
 
     targetsState = targetsState.copyWith(data: list);
 
     notifyListeners();
   }
 
-  onChangeQuarter(String quarter,String fkcountry,DateTime Datefrom,DateTime Dateto) async {
+  onChangeQuarter(String quarter, String fkcountry, DateTime Datefrom, DateTime Dateto) async {
     selectedQuarterFilter = quarter;
 
     if (selectedQuarterYearFilter == null) {
@@ -187,20 +183,19 @@ class BranchRaceViewmodel extends ChangeNotifier {
     //         (element) => element.yearTarget == selectedQuarterYearFilter && element.nameTarget == selectedQuarterFilter)
     //     .toList();
 
-    var data  = await Api().post(
+    var data = await Api().post(
         url: url +
             "target/get_sales_target.php?fk_country=$fkcountry&from=${Datefrom.toString()}&to=${Dateto.toString()}&Q=$quarter",
         body: {'type': 'datedays'});
-    List<BranchRaceModel> list=[];
-    for (int i = 0; i < data.length; i++)
-      list.add(BranchRaceModel.fromJson(data[i]));
+    List<BranchRaceModel> list = [];
+    for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
 
     targetsState = targetsState.copyWith(data: list);
 
     notifyListeners();
   }
 
-  onChangeQuarterYear(String quarterYear) async{
+  onChangeQuarterYear(String quarterYear) async {
     selectedQuarterYearFilter = quarterYear;
     List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
         .where((element) => element.typeTarget == selectedDateFilter.index.toString())
@@ -309,6 +304,21 @@ class BranchRaceViewmodel extends ChangeNotifier {
 
   onEditBranchTarget(String updateBranchTarget) {
     this.updateBranchTarget = updateBranchTarget;
+    notifyListeners();
+  }
+
+  onSearch(String query) {
+    if (!targetsState.isSuccess) {
+      return;
+    }
+    _querySearch = query;
+
+    final list = List<BranchRaceModel>.from(_allTargetsList)
+        .where((element) =>
+            element.typeTarget == selectedDateFilter.index.toString() &&
+            (element.name_regoin?.toLowerCase().contains(_querySearch) ?? false))
+        .toList();
+    targetsState = targetsState.copyWith(data: list);
     notifyListeners();
   }
 }

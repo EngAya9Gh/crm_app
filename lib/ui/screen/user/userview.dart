@@ -166,255 +166,254 @@ class _UserScreenState extends State<UserScreen> {
                         ),
                         Expanded(
                           child:
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: RowEdit2(
-                                          des:
-                                          //controllerUser.userall![widget.index]
-                                          useredit.name_mange
-                                              .toString(),
-                                          name: 'الإدارات',
-                                        ),
-                                      )),
+                          SingleChildScrollView(
 
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: RowEdit2(
-                                          des:
-                                          //controllerUser.userall![widget.index]
-                                          useredit.nameRegoin.toString() ==
-                                              "null"
-                                              ? ""
-                                              :
-                                          //controllerUser.userall![widget.index]
-                                          useredit.nameRegoin.toString(),
-                                          name: 'المنطقة',
-                                        ),
-                                      )),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            child: Column(
+                              children: [
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: RowEdit2(
+                                        des:
+                                        //controllerUser.userall![widget.index]
+                                        useredit.name_mange
+                                            .toString(),
+                                        name: 'الإدارات',
+                                      ),
+                                    )),
 
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: RowEdit2(
-                                          des:
-                                          //controllerUser.userall![widget.index]
-                                          useredit.name_level.toString(),
-                                          name: 'المستوى',
-                                        ),
-                                      )),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: RowEdit2(
+                                        des:
+                                        //controllerUser.userall![widget.index]
+                                        useredit.nameRegoin.toString() ==
+                                            "null"
+                                            ? ""
+                                            :
+                                        //controllerUser.userall![widget.index]
+                                        useredit.nameRegoin.toString(),
+                                        name: 'المنطقة',
+                                      ),
+                                    )),
 
-                                  SizedBox(
-                                    height: 10,
-                                  ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: RowEdit2(
+                                        des:
+                                        //controllerUser.userall![widget.index]
+                                        useredit.name_level.toString(),
+                                        name: 'المستوى',
+                                      ),
+                                    )),
 
-                                  // RowWidget(
-                                  //   name: 'Added by',
-                                  //   des: 'added',
-                                  // ),
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: RowEdit2(
-                                          des:
-                                          //controllerUser.userall![widget.index]
-                                          useredit.isActive=="1"?'نشط':'غير نشط',
-                                          name: 'الحالة',
-                                        ),
-                                      )),
-                                  SizedBox(height: 10,),
+                                SizedBox(
+                                  height: 10,
+                                ),
 
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            TextUtilis(
-                                              color: Colors.black,
-                                              fontSize: 35,
-                                              fontWeight: FontWeight.bold,
-                                              textstring:
-                                              //controllerUser.userall![widget.index]
-                                              useredit.email.toString(),
-                                              underline: TextDecoration.none,
+                                // RowWidget(
+                                //   name: 'Added by',
+                                //   des: 'added',
+                                // ),
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: RowEdit2(
+                                        des:
+                                        //controllerUser.userall![widget.index]
+                                        useredit.isActive=="1"?'نشط':'غير نشط',
+                                        name: 'الحالة',
+                                      ),
+                                    )),
+                                SizedBox(height: 10,),
+
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TextUtilis(
+                                            color: Colors.black,
+                                            fontSize: 35,
+                                            fontWeight: FontWeight.bold,
+                                            textstring:
+                                            //controllerUser.userall![widget.index]
+                                            useredit.email.toString(),
+                                            underline: TextDecoration.none,
+                                          ),
+                                          IconButton(
+                                            onPressed: () {
+                                              // controllerUser.onPressEmail(
+                                              //     controllerUser.userall!index].email.toString());
+                                              //
+                                            },
+                                            icon: const Icon(
+                                              Icons.email,
+                                              size: 20,
+                                              color: kMainColor,
                                             ),
-                                            IconButton(
-                                              onPressed: () {
-                                                // controllerUser.onPressEmail(
-                                                //     controllerUser.userall!index].email.toString());
-                                                //
-                                              },
-                                              icon: const Icon(
-                                                Icons.email,
-                                                size: 20,
-                                                color: kMainColor,
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          TextUtilis(
+                                            color: Colors.black,
+                                            fontSize: 35,
+                                            fontWeight: FontWeight.bold,
+                                            textstring: 'الهاتف',
+                                            underline: TextDecoration.none,
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              await FlutterPhoneDirectCaller
+                                                  .callNumber(useredit.mobile.toString());
+                                            },
+                                            // onPressed: () async {
+                                            //   controllerUser.onPressPhone(
+                                            //       controllerUser.userall![index].mobile.toString());
+                                            // },
+                                            child:
+                                            Text( useredit.mobile.toString(),
+                                              style: TextStyle(
+
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      )),
 
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            TextUtilis(
-                                              color: Colors.black,
-                                              fontSize: 35,
-                                              fontWeight: FontWeight.bold,
-                                              textstring: 'الهاتف',
-                                              underline: TextDecoration.none,
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                await FlutterPhoneDirectCaller
-                                                    .callNumber(useredit.mobile.toString());
-                                              },
-                                              // onPressed: () async {
-                                              //   controllerUser.onPressPhone(
-                                              //       controllerUser.userall![index].mobile.toString());
-                                              // },
-                                              child:
-                                              Text( useredit.mobile.toString(),
-                                                style: TextStyle(
+                                          ),
+                                        ],
+                                      ),
+                                    )),
 
-                                                ),
-                                              ),
-
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: RowEdit2(
-                                          des:
-                                          //controllerUser.userall![widget.index]
-                                          getnameshort(useredit.nameuserAdd.toString()),
-                                          name: 'تمت الإضافة من قبل ',
-                                        ),
-                                      )),
-                                  SizedBox(height: 10,),
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: RowEdit2(
-                                          des:
-                                          //controllerUser.userall![widget.index]
-                                          useredit.created_at.toString(),
-                                          name: 'تاريخ الإضافة',
-                                        ),
-                                      )),
-                                  SizedBox(height: 10,),
-                                  useredit.nameuserupdate==null?
-                                  Container():
-                                  ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: RowEdit2(
-                                          des:
-                                          //controllerUser.userall![widget.index]
-                                          getnameshort(useredit.nameuserupdate.toString()),
-                                          name: 'تم التعديل من قبل ',
-                                        ),
-                                      )),
-                                  SizedBox(height: 10,),
-                                  useredit.updated_at==null
-                                  ?Container():ContainerShadows(
-                                      width: double.infinity,
-                                      height: 50,
-                                      margin: EdgeInsets.only(),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
-                                          right: 10,
-                                        ),
-                                        child: RowEdit2(
-                                          des:
-                                          //controllerUser.userall![widget.index]
-                                          useredit.updated_at.toString(),
-                                          name: 'تاريخ التعديل',
-                                        ),
-                                      )),
-                                ],
-                              ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: RowEdit2(
+                                        des:
+                                        //controllerUser.userall![widget.index]
+                                        getnameshort(useredit.nameuserAdd.toString()),
+                                        name: 'تمت الإضافة من قبل ',
+                                      ),
+                                    )),
+                                SizedBox(height: 10,),
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: RowEdit2(
+                                        des:
+                                        //controllerUser.userall![widget.index]
+                                        useredit.created_at.toString(),
+                                        name: 'تاريخ الإضافة',
+                                      ),
+                                    )),
+                                SizedBox(height: 10,),
+                                useredit.nameuserupdate==null?
+                                Container():
+                                ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: RowEdit2(
+                                        des:
+                                        //controllerUser.userall![widget.index]
+                                        getnameshort(useredit.nameuserupdate.toString()),
+                                        name: 'تم التعديل من قبل ',
+                                      ),
+                                    )),
+                                SizedBox(height: 10,),
+                                useredit.updated_at==null
+                                ?Container():ContainerShadows(
+                                    width: double.infinity,
+                                    height: 50,
+                                    margin: EdgeInsets.only(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                      ),
+                                      child: RowEdit2(
+                                        des:
+                                        //controllerUser.userall![widget.index]
+                                        useredit.updated_at.toString(),
+                                        name: 'تاريخ التعديل',
+                                      ),
+                                    )),
+                              ],
                             ),
                           ),
                           //info(context),
