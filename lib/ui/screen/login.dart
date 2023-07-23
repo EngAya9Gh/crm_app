@@ -57,11 +57,11 @@ class _loginState extends State<login> {
                   SizedBox(
                     height: 20,
                   ),
-                  IconButton(
-                      onPressed: () async {
-                        print("fcm : ${await FirebaseMessaging.instance.getToken()}");
-                      },
-                      icon: Icon(Icons.add)),
+                  // IconButton(
+                  //     onPressed: () async {
+                  //       print("fcm : ${await FirebaseMessaging.instance.getToken()}");
+                  //     },
+                  //     icon: Icon(Icons.add)),
                   CustomFormField(
                     textdirehint: TextDirection.ltr,
                     read: false,
