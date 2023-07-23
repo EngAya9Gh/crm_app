@@ -132,7 +132,7 @@ class _OutClientState extends State<OutClient> {
                                 builder: (context, value, child) {
                                   return
                                     value.isloading==true?
-                                    CircularProgressIndicator():
+                                    Center(child: CircularProgressIndicator()):
                                     value.listInvoicesAccept.length == 0 ?
                                   Center(
                                       child: Text(messageNoData),

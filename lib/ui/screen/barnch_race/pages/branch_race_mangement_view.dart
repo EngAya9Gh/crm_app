@@ -23,6 +23,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text(
           'سباق الفروع',
@@ -44,6 +45,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                 border: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.white), borderRadius: BorderRadius.circular(10)),
               ),
+              onChanged: (value) => viewmodel.onSearch(value),
             ),
           ),
           preferredSize: Size.fromHeight(65),
@@ -91,28 +93,26 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي'],
-                  onSelected: (_, index, isselected) =>
-                      viewmodel.onChangeSelectedFilterType(index),
+                  onSelected: (_, index, isselected) => viewmodel.onChangeSelectedFilterType(index),
                 );
               },
             ),
           ),
           SizedBox(height: 15),
           Selector<BranchRaceViewmodel, PageState<List<BranchRaceModel>>>(
-              selector: (_, vm) => vm.targetsState,
-              builder: (context, targetsState, _) {
-                if (targetsState.isLoading) {
-                  return Center(child: CircularProgressIndicator.adaptive());
-                } else if (targetsState.isFailure) {
-                  return Center(
-                    child: IconButton(onPressed: viewmodel.getTargets, icon: Icon(Icons.refresh)),
-                  );
-                }
-                final list = targetsState.data ?? [];
-                return Expanded(
-                    child:
-                BranchManagementList(targetList: list));
-              }),
+            selector: (_, vm) => vm.targetsState,
+            builder: (context, targetsState, _) {
+              if (targetsState.isLoading) {
+                return Center(child: CircularProgressIndicator.adaptive());
+              } else if (targetsState.isFailure) {
+                return Center(
+                  child: IconButton(onPressed: viewmodel.getTargets, icon: Icon(Icons.refresh)),
+                );
+              }
+              final list = targetsState.data ?? [];
+              return Expanded(child: BranchManagementList(targetList: list));
+            },
+          ),
         ],
       ),
     );

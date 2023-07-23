@@ -49,7 +49,7 @@ class Api {
 
   Future<dynamic> post({
     required String url,
-    @required dynamic? body,
+    @required dynamic body,
     @required String? token,
   }) async {
     Map<String, String> headers = {};
