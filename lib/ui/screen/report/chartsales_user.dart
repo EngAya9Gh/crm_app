@@ -266,6 +266,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
@@ -274,7 +275,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                                   selectedIndex: selectedProvider.isbarsalestype,
                                 ),
                                 options: GroupButtonOptions(
-                                    buttonWidth: 110,
+                                    buttonWidth: (MediaQuery.sizeOf(context).width / 3) -16,
                                     borderRadius: BorderRadius.circular(10)),
                                 buttons: ['الكل', 'أجهزة', 'برامج'],
                                 onSelected: (_,index, isselected) {
@@ -636,7 +637,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                                         ),
                                       ],
                                       rows:rowsdata,dividerThickness: 3,
-                                      horizontalMargin: 3,columnSpacing: 35,
+                                      horizontalMargin: 3,columnSpacing: 20,
                                       //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
                                       //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
                                       //     <DataRow>[

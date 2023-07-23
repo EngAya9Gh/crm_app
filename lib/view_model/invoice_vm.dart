@@ -183,8 +183,8 @@ class invoice_vm extends ChangeNotifier {
     listinvoicesMarketing = [];
     isloading_marketing = true;
     notifyListeners();
-    await  getinvoiceswithprev();
-    list_temp= List.from(listInvoicesAccept);
+    await getinvoiceswithprev();
+    list_temp = List.from(listInvoicesAccept);
     // await  Invoice_Service()
     //     .getinvoiceMarketing(usercurrent!.fkCountry.toString());
 
@@ -193,7 +193,7 @@ class invoice_vm extends ChangeNotifier {
         //&& element.isApprove == "1")
         listinvoicesMarketing.add(element);
     });
-     listinvoicesMarketing=List.from(list_temp);
+    listinvoicesMarketing = List.from(list_temp);
     isloading_marketing = false;
     notifyListeners();
   }
@@ -508,16 +508,16 @@ class invoice_vm extends ChangeNotifier {
 
     listinvoicesMarketing = list.where((element) {
       if ((region == null || region == '0') && (invoiceStatus == null || invoiceStatus == 'الكل')) {
-        return true && filterQuery(element,query);
+        return true && filterQuery(element, query);
       } else if ((region != null && region != '0') && (invoiceStatus == null || invoiceStatus == 'الكل')) {
-        return element.fk_regoin == region && filterQuery(element,query);
+        return element.fk_regoin == region && filterQuery(element, query);
       } else if ((region == null || region == '0') && (invoiceStatus != null && invoiceStatus != 'الكل')) {
         if (invoiceStatus == "بالإنتظار") {
-          return isWaitingInvoice(element) && filterQuery(element,query);
+          return isWaitingInvoice(element) && filterQuery(element, query);
         } else if (invoiceStatus == "تم التركيب") {
-          return isInstallingInvoice(element) && filterQuery(element,query);
+          return isInstallingInvoice(element) && filterQuery(element, query);
         } else {
-          return isPendingInvoice(element) && filterQuery(element,query);
+          return isPendingInvoice(element) && filterQuery(element, query);
         }
       } else {
         final typeCondition;
@@ -530,7 +530,7 @@ class invoice_vm extends ChangeNotifier {
           typeCondition = isPendingInvoice(element);
         }
 
-        return typeCondition && region == element.fk_regoin && filterQuery(element,query);
+        return typeCondition && region == element.fk_regoin && filterQuery(element, query);
       }
     }).toList();
 
@@ -616,21 +616,23 @@ class invoice_vm extends ChangeNotifier {
 
   bool isWaitingInvoice(InvoiceModel invoiceModel) => invoiceModel.isdoneinstall == null;
 
-  bool isPendingInvoice(InvoiceModel invoiceModel) => invoiceModel.isdoneinstall != '1' && invoiceModel.ready_install == '0' ;
+  bool isPendingInvoice(InvoiceModel invoiceModel) =>
+      invoiceModel.isdoneinstall != '1' && invoiceModel.ready_install == '0';
 
   bool isInstallingInvoice(InvoiceModel invoiceModel) => invoiceModel.isdoneinstall == '1';
 
-  bool filterQuery(InvoiceModel element , String? query){
-    if(query?.isEmpty ?? true){
+  bool filterQuery(InvoiceModel element, String? query) {
+    if (query?.isEmpty ?? true) {
       return true;
     }
 
-    print("(element.address_invoice!.toLowerCase().contains(query!.toLowerCase())) ${element.address_invoice}  ${(element.address_invoice!.toLowerCase().contains(query!.toLowerCase()))}");
+    print(
+        "(element.address_invoice!.toLowerCase().contains(query!.toLowerCase())) ${element.address_invoice}  ${(element.address_invoice!.toLowerCase().contains(query!.toLowerCase()))}");
     return (element.address_invoice!.toLowerCase().contains(query!.toLowerCase()))
         // ||
         // (element.mobile!.toLowerCase().contains(query.toLowerCase())) ||
         // (element.nameClient!.toLowerCase().contains(query.toLowerCase()) )
-    ;
+        ;
   }
 
   Future<void> getfilterview(String? regoin, String tyype) async {
@@ -699,7 +701,8 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept.forEach((element) {
       if (element.stateclient == 'مشترك' &&
           element.isApprove == "1" &&
-          (double.parse(element.total.toString()) - double.parse(element.amountPaid.toString())) > 0) list.add(element);
+          ((num.tryParse(element.total?.toString() ?? '0') ?? 0) - ( num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) > 0)
+        list.add(element);
     });
     listInvoicesAccept = list;
     listforme = List.from(list);
@@ -750,9 +753,9 @@ class invoice_vm extends ChangeNotifier {
       }
     } else {
       print('0000000000000000000000000000000');
-      if (approvetype == 'country') await  get_invoicesbyRegoin_accept_requst('c');
-      if (approvetype == 'regoin')  await  get_invoicesbyRegoin_accept_requst('r');
-       if (approvetype == 'finance') await  get_invoicesbyRegoin_accept_requst('f');
+      if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
+      if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
+      if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
     }
 
     isloading = false;
@@ -865,7 +868,7 @@ class invoice_vm extends ChangeNotifier {
         if (isParticipate) {
           listinvoiceClientSupport = [];
           list.forEach((element) {
-            if (element.fkIdClient == fk_client && element.isApprove != null ) listinvoiceClientSupport.add(element);
+            if (element.fkIdClient == fk_client && element.isApprove != null) listinvoiceClientSupport.add(element);
           });
         } else {
           listinvoiceClient = [];
@@ -877,21 +880,21 @@ class invoice_vm extends ChangeNotifier {
 
       print('length list invoice client ' + listinvoiceClient.length.toString());
       print('length list invoice client ' + listinvoiceClientSupport.length.toString());
-      if(isParticipate){
+      if (isParticipate) {
         isLoadingInvoicesClientParticipateLocal = false;
-      }else{
+      } else {
         isLoadingInvoicesClientLocal = false;
       }
       notifyListeners();
     } catch (e) {
-      if(isParticipate){
+      if (isParticipate) {
         isLoadingInvoicesClientParticipateLocal = false;
-      }else{
+      } else {
         isLoadingInvoicesClientLocal = false;
       }
       notifyListeners();
     }
-}
+  }
 
   void setvaluepriv(privilgelistparam) {
     print('in set privilge client vm');
@@ -1219,7 +1222,7 @@ class invoice_vm extends ChangeNotifier {
   Future<void> onChangeSellerType(SellerType sellerType, {InvoiceModel? invoice}) async {
     selectedSellerType = sellerType;
     notifyListeners();
-    if(selectedSellerType == SellerType.employee){
+    if (selectedSellerType == SellerType.employee) {
       return;
     }
 
