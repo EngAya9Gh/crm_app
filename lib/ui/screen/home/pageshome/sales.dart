@@ -145,6 +145,7 @@ class _salesState extends State<sales> {
                     builder: (context)=>
                         ApprovePage()));
               }, title:  ' طلبات موافقة المشرفين '):Container(),
+
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('111')==true?
                 buildSelectCategory(

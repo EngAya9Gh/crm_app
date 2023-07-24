@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../model/invoiceModel.dart';
 class deletedinvoice extends StatefulWidget {
   const deletedinvoice({Key? key}) : super(key: key);
 
@@ -28,7 +29,7 @@ class _deletedinvoiceState extends State<deletedinvoice> {
   @override
   Widget build(BuildContext context) {
 
-    List<DeletedinvoiceModel> _listdeletedinvoice
+    List<InvoiceModel> _listdeletedinvoice
     = context.watch<invoice_vm>().listdeletedinvoice;
     return
       Scaffold(

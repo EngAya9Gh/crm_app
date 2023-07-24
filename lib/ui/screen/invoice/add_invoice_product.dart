@@ -55,7 +55,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
     _textprice.text='';
     _amount.text='';_amount_value='1';
     _taxuser.addListener(() {
-      if(_taxuser.text.trim().isNotEmpty && _taxadmin.text.trim().isNotEmpty){
+      if(_taxuser.text.trim().isNotEmpty && _taxadmin.text.trim().isNotEmpty) {
         final userTax = num.tryParse(_taxuser.text.trim()) ?? 0;
         final adminTax = num.tryParse(_taxadmin.text.trim()) ?? 0;
 
