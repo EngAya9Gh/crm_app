@@ -45,13 +45,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class addinvoice extends StatefulWidget {
-  addinvoice(
-      {required this.itemClient,
-      this.invoice,
-      // required this.iduser,
-      // required this.idClient,
-      // required this.indexinvoice,
-      Key? key})
+  addinvoice({required this.itemClient,
+    this.invoice,
+    // required this.iduser,
+    // required this.idClient,
+    // required this.indexinvoice,
+    Key? key})
       : super(key: key);
   ClientModel itemClient;
 
@@ -70,15 +69,15 @@ class _addinvoiceState extends State<addinvoice> {
 
   late String totalController; //= TextEditingController();
 
-  late final TextEditingController amount_paidController ;
+  late final TextEditingController amount_paidController;
 
   final TextEditingController renewController = TextEditingController();
 
-  late String typepayController = '0';
+  late String typepayController = '1';
 
-  late String typeinstallController = '0';
-  late String readyinstallController = '0';
-  late int currencyController =0;
+  late String typeinstallController = '1';
+  late String readyinstallController = '1';
+  late int currencyController = 1;
 
   final TextEditingController noteController = TextEditingController();
   final TextEditingController numbranchController = TextEditingController();
@@ -139,7 +138,9 @@ class _addinvoiceState extends State<addinvoice> {
       Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
 
       invoiceViewmodel = Provider.of<invoice_vm>(context, listen: false);
-      Provider.of<invoice_vm>(context, listen: false).listproductinvoic = [];
+      Provider
+          .of<invoice_vm>(context, listen: false)
+          .listproductinvoic = [];
       Provider.of<invoice_vm>(context, listen: false).set_total('0'.toString());
       print('init in addinvoice screen main');
       totalController = '0';
@@ -161,8 +162,7 @@ class _addinvoiceState extends State<addinvoice> {
         renew2Controller.text = _invoice!.renew2year.toString();
 
         typepayController = _invoice!.typePay.toString();
-        currencyController = _invoice!.currency_name == null ? 1 :
-          int.parse(_invoice!.currency_name.toString())  ;
+        currencyController = _invoice!.currency_name == null ? 1 : int.parse(_invoice!.currency_name.toString());
         print(typepayController.toString());
         typeinstallController = _invoice!.typeInstallation.toString();
         print(typeinstallController);
@@ -176,7 +176,6 @@ class _addinvoiceState extends State<addinvoice> {
         sellerCommissionRate.text = _invoice?.rate_participate != null && _invoice?.rate_participate != ""
             ? _invoice!.rate_participate.toString()
             : "";
-
         // invoiceViewmodel.onChangeSelectedIndex(_invoice!.participate_fk);
       } else {
         /// add invoice
@@ -197,33 +196,38 @@ class _addinvoiceState extends State<addinvoice> {
           path: '',
           total: totalController,
           notes: noteController.text,
-
         );
         renewController.text = '0';
         renew2Controller.text = '0';
 
         //);
 
-        Provider.of<invoice_vm>(context, listen: false).listproductinvoic = [];
+        Provider
+            .of<invoice_vm>(context, listen: false)
+            .listproductinvoic = [];
       }
       Provider.of<invoice_vm>(context, listen: false).set_total(totalController.toString());
 
       amount_paidController.addListener(() {
-      final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
-      final amountPaid = num.tryParse(amount_paidController.text) ?? 0;
+        final total = num.tryParse(context
+            .read<invoice_vm>()
+            .total) ?? 0;
+        final amountPaid = num.tryParse(amount_paidController.text) ?? 0;
 
-      if(amountPaid > total){
-        amount_paidController.text = total.toString();
-        amount_paidController.selection = TextSelection.fromPosition(TextPosition(offset: amount_paidController.text.length));
-      }
+        if (amountPaid > total) {
+          amount_paidController.text = total.toString();
+          amount_paidController.selection =
+              TextSelection.fromPosition(TextPosition(offset: amount_paidController.text.length));
+        }
       });
       Provider.of<selected_button_provider>(context, listen: false).selectValuetypepay(int.parse(typepayController));
       print(typepayController);
 
-      Provider.of<selected_button_provider>(context, listen: false)
-          .selectValuetypeinstall(int.parse(typeinstallController.toString()));
-      Provider.of<selected_button_provider>(context, listen: false)
-          .selectValueCurrency(int.parse(currencyController.toString()));
+      context.read<selected_button_provider>()
+        ..selectValuereadyinstall(int.parse(readyinstallController), isInit: true)
+        ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
+        ..selectValueCurrency(int.parse(currencyController.toString()));
+
       print(typeinstallController);
     });
     super.initState();
@@ -248,7 +252,9 @@ class _addinvoiceState extends State<addinvoice> {
         ),
       ),
       body: ModalProgressHUD(
-        inAsyncCall: Provider.of<LoadProvider>(context).isLoadingAddinvoice,
+        inAsyncCall: Provider
+            .of<LoadProvider>(context)
+            .isLoadingAddinvoice,
         child: Padding(
           padding: EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
           // child: ContainerShadows(
@@ -272,13 +278,14 @@ class _addinvoiceState extends State<addinvoice> {
                           onPressed: () {
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                  builder: (context) => add_invoiceProduct(invoice: _invoice
-                                      // Provider.of<invoice_vm>(context,listen: false)
-                                      //     .listinvoiceClient[widget.indexinvoice],
-                                      // indexinvoic:  widget.indexinvoice,
+                                  builder: (context) =>
+                                      add_invoiceProduct(invoice: _invoice
+                                        // Provider.of<invoice_vm>(context,listen: false)
+                                        //     .listinvoiceClient[widget.indexinvoice],
+                                        // indexinvoic:  widget.indexinvoice,
                                       ),
                                 ),
-                                (Route<dynamic> route) => true);
+                                    (Route<dynamic> route) => true);
                             // Navigator.push(context, MaterialPageRoute(
                             //     builder: (context)=>
                             //         add_invoiceProduct(
@@ -311,8 +318,10 @@ class _addinvoiceState extends State<addinvoice> {
                             fontSize: 35,
                             fontWeight: FontWeight.normal,
                             textstring:
-                                // widget.indexinvoice>=0?
-                                Provider.of<invoice_vm>(context, listen: true).total,
+                            // widget.indexinvoice>=0?
+                            Provider
+                                .of<invoice_vm>(context, listen: true)
+                                .total,
                             //     .listinvoiceClient[widget.indexinvoice]
                             //_invoice!.total.toString(),//totalController,
                             underline: TextDecoration.none,
@@ -327,7 +336,10 @@ class _addinvoiceState extends State<addinvoice> {
                       RowEdit(name: 'عنوان الفاتورة', des: '*'),
                       EditTextFormField(
                         vaild: (value) {
-                          if (value.toString().trim().isEmpty) {
+                          if (value
+                              .toString()
+                              .trim()
+                              .isEmpty) {
                             return label_empty;
                           }
                         },
@@ -342,7 +354,9 @@ class _addinvoiceState extends State<addinvoice> {
                         obscureText: false,
                         hintText: label_amount_paid,
                         vaild: (value) {
-                          if (value?.trim().isEmpty ?? true) {
+                          if (value
+                              ?.trim()
+                              .isEmpty ?? true) {
                             return label_empty;
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
@@ -351,10 +365,12 @@ class _addinvoiceState extends State<addinvoice> {
                             return "يجب إدخال قيمة مناسبة";
                           }
 
-                          final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
+                          final total = num.tryParse(context
+                              .read<invoice_vm>()
+                              .total) ?? 0;
                           final amountPaid = num.tryParse(value) ?? 0;
 
-                          if(amountPaid > total){
+                          if (amountPaid > total) {
                             return "لا يمكن إدخال مبلغ أكبر من قيمة الفاتورة.";
                           }
                           return null;
@@ -378,7 +394,9 @@ class _addinvoiceState extends State<addinvoice> {
                         hintText: label_renew,
                         obscureText: false,
                         vaild: (value) {
-                          if (value?.trim().isEmpty ?? true) {
+                          if (value
+                              ?.trim()
+                              .isEmpty ?? true) {
                             return label_empty;
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
@@ -407,7 +425,9 @@ class _addinvoiceState extends State<addinvoice> {
                         hintText: label_renew2year,
                         obscureText: false,
                         vaild: (value) {
-                          if (value?.trim().isEmpty ?? true) {
+                          if (value
+                              ?.trim()
+                              .isEmpty ?? true) {
                             return 'الحقل فارغ';
                           }
 
@@ -447,24 +467,27 @@ class _addinvoiceState extends State<addinvoice> {
                           color: Colors.white,
                         ),
                         child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
-                          return GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex: selectedProvider.isSelectedtypepay,
-                                //
-                                // typepayController==null
-                                //    ? 0
-                                //    :
-                                //int.tryParse( typepayController!)
-                              ),
-                              options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
-                              buttons: ['نقدا', 'تحويل'],
-                              onSelected: (_, index, isselected) {
-                                print(index);
-                                //setState(() {
-                                typepayController = index.toString();
-                                selectedProvider.selectValuetypepay(index);
-                                //});
-                              });
+                          return Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: GroupButton(
+                                controller: GroupButtonController(
+                                  selectedIndex: selectedProvider.isSelectedtypepay,
+                                  //
+                                  // typepayController==null
+                                  //    ? 0
+                                  //    :
+                                  //int.tryParse( typepayController!)
+                                ),
+                                options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                                buttons: ['نقدا', 'تحويل'],
+                                onSelected: (_, index, isselected) {
+                                  print(index);
+                                  //setState(() {
+                                  typepayController = index.toString();
+                                  selectedProvider.selectValuetypepay(index);
+                                  //});
+                                }),
+                          );
                         }),
                       ),
                       //manage
@@ -486,22 +509,25 @@ class _addinvoiceState extends State<addinvoice> {
                           color: Colors.white,
                         ),
                         child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
-                          return GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex: selectedProvider.isSelectedtypeinstall,
-                                // typeinstallController==null
-                                //     ? 0 :
-                                // int.tryParse( typeinstallController!)
-                              ),
-                              options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
-                              buttons: ['ميداني', 'اونلاين'],
-                              onSelected: (_, index, isselected) {
-                                print(index);
-                                //setState(() {
-                                typeinstallController = index.toString();
-                                selectedProvider.selectValuetypeinstall(index);
-                                //  });
-                              });
+                          return Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: GroupButton(
+                                controller: GroupButtonController(
+                                  selectedIndex: selectedProvider.isSelectedtypeinstall,
+                                  // typeinstallController==null
+                                  //     ? 0 :
+                                  // int.tryParse( typeinstallController!)
+                                ),
+                                options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                                buttons: ['ميداني', 'اونلاين'],
+                                onSelected: (_, index, isselected) {
+                                  print(index);
+                                  //setState(() {
+                                  typeinstallController = index.toString();
+                                  selectedProvider.selectValuetypeinstall(index);
+                                  //  });
+                                }),
+                          );
                         }),
                       ),
                       //RowEdit(name: 'Image', des: ''),
@@ -512,40 +538,41 @@ class _addinvoiceState extends State<addinvoice> {
                       _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: '*') : Container(),
                       _invoice!.idInvoice == null
                           ? Container(
-                              padding: EdgeInsets.only(left: 2, right: 2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(12)),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 8.0,
-                                    color: Colors.black87.withOpacity(0.2),
-                                  ),
-                                ],
-                                color: Colors.white,
-                              ),
-                              child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
-                                return GroupButton(
-                                    controller: GroupButtonController(
-                                      selectedIndex: selectedProvider.isSelectedreadyinstall,
-                                      // typeinstallController==null
-                                      //     ? 0 :
-                                      // int.tryParse( typeinstallController!)
-                                    ),
-                                    options:
-                                        GroupButtonOptions(
-                                            buttonWidth: 110,
-                                            borderRadius: BorderRadius.circular(10)),
-                                    buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
-                                    onSelected: (_, index, isselected) {
-                                      print(index);
-                                      //setState(() {
-                                      readyinstallController = index.toString();
-                                      selectedProvider.selectValuereadyinstall(index);
-                                      //  });
-                                    });
-                              }),
-                            )
+                        padding: EdgeInsets.only(left: 2, right: 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              offset: Offset(1.0, 1.0),
+                              blurRadius: 8.0,
+                              color: Colors.black87.withOpacity(0.2),
+                            ),
+                          ],
+                          color: Colors.white,
+                        ),
+                        child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                          return Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: GroupButton(
+                                controller: GroupButtonController(
+                                  selectedIndex: selectedProvider.isSelectedreadyinstall,
+                                  // typeinstallController==null
+                                  //     ? 0 :
+                                  // int.tryParse( typeinstallController!)
+                                ),
+                                options:
+                                GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                                buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
+                                onSelected: (_, index, isselected) {
+                                  print(index);
+                                  //setState(() {
+                                  readyinstallController = index.toString();
+                                  selectedProvider.selectValuereadyinstall(index);
+                                  //  });
+                                }),
+                          );
+                        }),
+                      )
                           : Container(),
                       SizedBox(
                         height: 15,
@@ -565,22 +592,25 @@ class _addinvoiceState extends State<addinvoice> {
                           color: Colors.white,
                         ),
                         child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
-                          return GroupButton(
-                              controller: GroupButtonController(
-                                selectedIndex: selectedProvider.isSelectCurrency,
-                                // typeinstallController==null
-                                //     ? 0 :
-                                // int.tryParse( typeinstallController!)
-                              ),
-                              options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
-                              buttons: [' USD دولار', '  SAR ريال'],
-                              onSelected: (_, index, isselected) {
-                                print(index);
-                                //setState(() {
-                                currencyController = index;
-                                selectedProvider.selectValueCurrency(index);
-                                //  });
-                              });
+                          return Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: GroupButton(
+                                controller: GroupButtonController(
+                                  selectedIndex: selectedProvider.isSelectCurrency,
+                                  // typeinstallController==null
+                                  //     ? 0 :
+                                  // int.tryParse( typeinstallController!)
+                                ),
+                                options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                                buttons: [' USD دولار', '  SAR ريال'],
+                                onSelected: (_, index, isselected) {
+                                  print(index);
+                                  //setState(() {
+                                  currencyController = index;
+                                  selectedProvider.selectValueCurrency(index);
+                                  //  });
+                                }),
+                          );
                         }),
                       ),
                       SizedBox(
@@ -667,19 +697,19 @@ class _addinvoiceState extends State<addinvoice> {
                         ],
                       ),
                       Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true &&
-                              _invoice!.idInvoice != null &&
-                              _invoice!.userinstall != null
+                          _invoice!.idInvoice != null &&
+                          _invoice!.userinstall != null
                           ? RowEdit(name: 'يوزر العميل', des: '')
                           : Container(),
                       Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true &&
-                              _invoice!.idInvoice != null &&
-                              _invoice!.userinstall != null
+                          _invoice!.idInvoice != null &&
+                          _invoice!.userinstall != null
                           ? EditTextFormField(
-                              paddcustom: EdgeInsets.all(16),
-                              hintText: '',
-                              obscureText: false,
-                              controller: userclientController,
-                            )
+                        paddcustom: EdgeInsets.all(16),
+                        hintText: '',
+                        obscureText: false,
+                        controller: userclientController,
+                      )
                           : Container(),
 
                       //CustomButton(text: 'd',width: 50,onTap: (){},),
@@ -728,26 +758,29 @@ class _addinvoiceState extends State<addinvoice> {
                               borderSide: const BorderSide(color: Colors.white)),
                         ),
                       ),
-                      _invoice!.imagelogo != null && widget.invoice!.imagelogo.toString().isNotEmpty
+                      _invoice!.imagelogo != null && widget.invoice!
+                          .imagelogo
+                          .toString()
+                          .isNotEmpty
                           ? Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Container(
-                                height: 40,
-                                width: 50,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.network(_invoice!.imagelogo.toString()),
-                                    // Positioned(
-                                    //     bottom: 0,
-                                    //     child: Text(
-                                    //       'smart life',
-                                    //       style: TextStyle(fontSize: 15,color: Colors.black,fontFamily: 'Pacifico'),)
-                                    // )
-                                  ],
-                                ),
-                              ),
-                            )
+                        padding: const EdgeInsets.all(10),
+                        child: Container(
+                          height: 40,
+                          width: 50,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Image.network(_invoice!.imagelogo.toString()),
+                              // Positioned(
+                              //     bottom: 0,
+                              //     child: Text(
+                              //       'smart life',
+                              //       style: TextStyle(fontSize: 15,color: Colors.black,fontFamily: 'Pacifico'),)
+                              // )
+                            ],
+                          ),
+                        ),
+                      )
                           : Container(),
                       RowEdit(name: label_image, des: ''),
                       //show chose image
@@ -792,91 +825,104 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 15,
                       ),
-                      _invoice!.imageRecord.toString().isNotEmpty
+                      _invoice!
+                          .imageRecord
+                          .toString()
+                          .isNotEmpty
                           ? Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                      iconSize: 50,
-                                      onPressed: () async {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => photoviewcustom(
-                                                      urlimagecon: _invoice!.imageRecord.toString(),
-                                                    ) // support_view(type: 'only',)
-                                                ));
-                                      },
-                                      icon: Icon(
-                                        Icons.image,
-                                        color: kMainColor,
-                                      ))
-                                  // Text('فتح الملف'),
-                                  // IconButton(
-                                  //   iconSize: 50,
-                                  //      onPressed: ()async {
-                                  //   //await FilePicker.platform.
-                                  //   if( _invoice!.imageRecord.toString().isNotEmpty){
-                                  //     Provider.of<LoadProvider>(context, listen: false)
-                                  //         .changebooladdinvoice(true);
-                                  //   File? filee=await  createFileOfPdfUrl(_invoice!.imageRecord.toString());
-                                  //     Provider.of<LoadProvider>(context, listen: false)
-                                  //         .changebooladdinvoice(false);
-                                  //       Navigator.push(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //           builder: (context) => PDFScreen(
-                                  //               path: filee.path),
-                                  //         ),
-                                  //       );
-                                  //     //   String url =_invoice!.imageRecord.toString();
-                                  //     //   if (await canLaunch(url)) {
-                                  //     //     await launch(url);
-                                  //     //   } else {
-                                  //     //     throw 'Could not launch $url';
-                                  //        }
-                                  //
-                                  // }, icon:Icon( Icons.image)),
-                                ],
-                              ),
-                            )
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                iconSize: 50,
+                                onPressed: () async {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              photoviewcustom(
+                                                urlimagecon: _invoice!.imageRecord.toString(),
+                                              ) // support_view(type: 'only',)
+                                      ));
+                                },
+                                icon: Icon(
+                                  Icons.image,
+                                  color: kMainColor,
+                                ))
+                            // Text('فتح الملف'),
+                            // IconButton(
+                            //   iconSize: 50,
+                            //      onPressed: ()async {
+                            //   //await FilePicker.platform.
+                            //   if( _invoice!.imageRecord.toString().isNotEmpty){
+                            //     Provider.of<LoadProvider>(context, listen: false)
+                            //         .changebooladdinvoice(true);
+                            //   File? filee=await  createFileOfPdfUrl(_invoice!.imageRecord.toString());
+                            //     Provider.of<LoadProvider>(context, listen: false)
+                            //         .changebooladdinvoice(false);
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => PDFScreen(
+                            //               path: filee.path),
+                            //         ),
+                            //       );
+                            //     //   String url =_invoice!.imageRecord.toString();
+                            //     //   if (await canLaunch(url)) {
+                            //     //     await launch(url);
+                            //     //   } else {
+                            //     //     throw 'Could not launch $url';
+                            //        }
+                            //
+                            // }, icon:Icon( Icons.image)),
+                          ],
+                        ),
+                      )
                           : Container(),
                       Divider(),
                       Text(
                         "تفاصيل إضافية",
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .titleMedium,
                       ),
                       RowEdit(name: "نوع البائع"),
                       SizedBox(height: 5),
                       Selector<invoice_vm, SellerType?>(
                           selector: (_, vm) => vm.selectedSellerType,
                           builder: (context, selectedSellerType, _) {
-                            return Container(
-                              padding: EdgeInsets.only(left: 2, right: 2),
-                              margin: EdgeInsets.zero,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(12)),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 8.0,
-                                    color: Colors.black87.withOpacity(0.2),
-                                  ),
-                                ],
-                                color: Colors.white,
-                              ),
-                              child: GroupButton(
-                                controller: GroupButtonController(selectedIndex: selectedSellerType?.index),
-                                options: GroupButtonOptions(
-                                  buttonWidth: (MediaQuery.of(context).size.width - 130) / 4,
-                                  borderRadius: BorderRadius.circular(10),
+                            return Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 2, right: 2),
+                                margin: EdgeInsets.zero,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      offset: Offset(1.0, 1.0),
+                                      blurRadius: 8.0,
+                                      color: Colors.black87.withOpacity(0.2),
+                                    ),
+                                  ],
+                                  color: Colors.white,
                                 ),
-                                buttons: ['موزع', 'وكيل', 'متعاون','موظف'],
-                                onSelected: (_, index, isselected) {
-                                  invoiceViewmodel.onChangeSellerType(
-                                      SellerType.values.firstWhere((element) => element.index == index));
-                                },
+                                child: GroupButton(
+                                  controller: GroupButtonController(selectedIndex: selectedSellerType?.index),
+                                  options: GroupButtonOptions(
+                                    buttonWidth: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width - 130) / 4,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
+                                  onSelected: (_, index, isselected) {
+                                    invoiceViewmodel.onChangeSellerType(
+                                        SellerType.values.firstWhere((element) => element.index == index));
+                                  },
+                                ),
                               ),
                             );
                           }),
@@ -906,63 +952,75 @@ class _addinvoiceState extends State<addinvoice> {
                               SizedBox(height: 5),
                               if (sellerStatus == SellerStatus.loading)
                                 loadingWidget
-                              else if (sellerStatus == SellerStatus.failed)
-                                refreshIcon(() {})
-                              else if (isCollaborate)
-                                sellerDropdown<ParticipateModel>(
-                                  collaboratesList,
-                                  selectedValue: selectedCollaborate,
-                                )
                               else
-                                sellerDropdown<AgentDistributorModel>(
-                                  agentsListtemp, // agentsList,
-                                  selectedValue: selectedAgent,
-                                ),
+                                if (sellerStatus == SellerStatus.failed)
+                                  refreshIcon(() {})
+                                else
+                                  if (isCollaborate)
+                                    sellerDropdown<ParticipateModel>(
+                                      collaboratesList,
+                                      selectedValue: selectedCollaborate,
+                                    )
+                                  else
+                                    sellerDropdown<AgentDistributorModel>(
+                                      agentsListtemp, // agentsList,
+                                      selectedValue: selectedAgent,
+                                    ),
                               SizedBox(height: 10),
                               RowEdit(name: "نسبة عمولة البائع"),
                               SizedBox(height: 5),
-                              TextFormField(
-                                controller: sellerCommissionRate,
-                                obscureText: false,
-                                cursorColor: Colors.black,
-                                readOnly: false,
-                                validator: (text) {
-                                  if (text?.trim().isEmpty ?? true) {
-                                    return null;
-                                  }
+                              Selector<invoice_vm, SellerType?>(
+                                selector: (_, vm) => vm.selectedSellerType,
+                                builder: (context, selectedSellerType, _) {
+                                  return TextFormField(
+                                    controller: sellerCommissionRate,
+                                    obscureText: false,
+                                    cursorColor: Colors.black,
+                                    readOnly: false,
+                                    validator: (text) {
+                                      if (text
+                                          ?.trim()
+                                          .isEmpty ?? true) {
+                                        if (selectedSellerType == SellerType.employee) {
+                                          return null;
+                                        }
+                                        return "هذا الحقل مطلوب.";
+                                      }
 
-                                  if (num.tryParse(text ?? "0") == null) return "أدخل رقم صحيح.";
+                                      if (num.tryParse(text ?? "0") == null) return "أدخل رقم صحيح.";
 
-                                  if (num.parse(text!) <= 0) {
-                                    return "يجب إدخال قيمة أكبر من 0.";
-                                  }
-                                  if (num.parse(text) > 100) {
-                                    return "النسبة يجب أن تكون أصغر أو تساوي 100";
-                                  }
-                                  return null;
+                                      if (num.parse(text!) <= 0) {
+                                        return "يجب إدخال قيمة أكبر من 0.";
+                                      }
+                                      if (num.parse(text) > 100) {
+                                        return "النسبة يجب أن تكون أصغر أو تساوي 100";
+                                      }
+                                      return null;
+                                    },
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(10),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                      hintText: '',
+                                      filled: true,
+                                      fillColor: Colors.grey.shade200,
+                                      enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.white)),
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.white)),
+                                      errorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.white)),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: const BorderSide(color: Colors.white)),
+                                    ),
+                                  );
                                 },
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(10),
-                                  hintStyle:
-                                      const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                  hintText: '',
-                                  filled: true,
-                                  fillColor: Colors.grey.shade200,
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(color: Colors.white)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(color: Colors.white)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(color: Colors.white)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(color: Colors.white)),
-                                ),
                               ),
                             ],
                           );
@@ -981,7 +1039,10 @@ class _addinvoiceState extends State<addinvoice> {
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(75))),
                                 backgroundColor: MaterialStateProperty.all(Colors.lightBlue),
-                                shadowColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSurface),
+                                shadowColor: MaterialStateProperty.all(Theme
+                                    .of(context)
+                                    .colorScheme
+                                    .onSurface),
                               ),
                               child: Text(
                                 'حفظ',
@@ -989,11 +1050,13 @@ class _addinvoiceState extends State<addinvoice> {
                               ),
                               onPressed: () async {
                                 if (_globalKey.currentState!.validate()) {
-                                  typepayController = Provider.of<selected_button_provider>(context, listen: false)
+                                  typepayController = Provider
+                                      .of<selected_button_provider>(context, listen: false)
                                       .isSelectedtypepay
                                       .toString();
 
-                                  typeinstallController = Provider.of<selected_button_provider>(context, listen: false)
+                                  typeinstallController = Provider
+                                      .of<selected_button_provider>(context, listen: false)
                                       .isSelectedtypeinstall
                                       .toString();
                                   // if (invoiceViewmodel.selectedSellerType == null) {
@@ -1009,10 +1072,9 @@ class _addinvoiceState extends State<addinvoice> {
                                     List<ProductsInvoice>? _products = [];
                                     _products = _invoice!.products;
 
-                                    if (_invoice!.idInvoice != null) {
+                                    if (_invoice?.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
-                                      Provider.of<invoice_vm>(context, listen: false)
-                                          .update_invoiceclient_vm({
+                                      Provider.of<invoice_vm>(context, listen: false).update_invoiceclient_vm({
                                         "name_enterprise": widget.itemClient.nameEnterprise,
                                         "name_client": widget.itemClient.nameClient.toString(),
                                         "nameUser": widget.itemClient.nameUser.toString(),
@@ -1021,7 +1083,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         "type_pay": typepayController.toString(),
                                         // "date_create": DateTime.now().toString(),
                                         "type_installation": typeinstallController.toString(),
-                                        "ready_install": readyinstallController.toString(),
+                                        "ready_install": _invoice!.ready_install,
                                         // "user_not_ready_install": Provider.of<user_vm_provider>(context, listen: false)
                                         //     .currentUser
                                         //     .idUser
@@ -1036,11 +1098,13 @@ class _addinvoiceState extends State<addinvoice> {
                                         "fk_idClient": widget.itemClient.idClients.toString(),
                                         "fk_idUser": widget.itemClient.fkUser.toString(),
                                         "image_record": imageController.text.toString(),
-                                        "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
+                                        "lastuserupdate": Provider
+                                            .of<user_vm_provider>(context, listen: false)
                                             .currentUser
                                             .idUser
                                             .toString(),
-                                        "lastnameuser": Provider.of<user_vm_provider>(context, listen: false)
+                                        "lastnameuser": Provider
+                                            .of<user_vm_provider>(context, listen: false)
                                             .currentUser
                                             .nameUser
                                             .toString(),
@@ -1059,50 +1123,59 @@ class _addinvoiceState extends State<addinvoice> {
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
                                             invoiceViewmodel.selectedCollaborator?.id_participate != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
-                                            invoiceViewmodel.selectedAgent != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
-                                              invoiceViewmodel.selectedDistributor != null)
-                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
-                                          'type_seller':"3",
-                                          // widget.invoice?.type_seller != "3" ? null.toString() : '3',
-                                           // type seller is employee,
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
+                                              invoiceViewmodel.selectedAgent != null)
+                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                          else
+                                            if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
+                                                invoiceViewmodel.selectedDistributor != null)
+                                              'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                            else
+                                              'type_seller': "3",
+                                        // widget.invoice?.type_seller != "3" ? null.toString() : '3',
+                                        // type seller is employee,
 
-                                        if (sellerCommissionRate.text.isNotEmpty && invoiceViewmodel.selectedSellerType != SellerType.employee)
+                                        if (sellerCommissionRate.text.isNotEmpty &&
+                                            invoiceViewmodel.selectedSellerType != SellerType.employee)
                                           'rate_participate': sellerCommissionRate.text,
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.agent)
                                           'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-                                          'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+                                        else
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
+                                            'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+                                          'participate_fk':
+                                          invoiceViewmodel.selectedCollaborator?.id_participate.toString()
+                                        else
+                                          'participate_fk': null.toString(),
 
-                                            'participate_fk':
-                                              invoiceViewmodel.selectedCollaborator?.id_participate.toString()
-
-                                        else 'participate_fk':null.toString(),
-
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||invoiceViewmodel.selectedSellerType == SellerType.employee)
-                                          'fk_agent':null.toString()
+                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||
+                                            invoiceViewmodel.selectedSellerType == SellerType.employee)
+                                          'fk_agent': null.toString()
 
                                         // 'type_seller':
                                         // 'rate_participate':
 
                                         // 'fk_agent':
                                         // 'participate_fk':
-                                      }, invoiceID, _invoice!.path.toString().isNotEmpty ? _myfile : null,
-                                          _myfilelogo).then((value) => value !=
-                                              false
+                                      }, invoiceID, _invoice!
+                                          .path
+                                          .toString()
+                                          .isNotEmpty ? _myfile : null,
+                                          _myfilelogo).then((value) =>
+                                      value !=
+                                          false
                                           ? clear(context, invoiceID.toString(), _products)
                                           : error(context));
                                     } else {
                                       var body = {
                                         "name_enterprise": widget.itemClient.nameEnterprise,
                                         "name_client": widget.itemClient.nameClient.toString(),
-                                        "nameUser": Provider.of<user_vm_provider>(context, listen: false)
+                                        "nameUser": Provider
+                                            .of<user_vm_provider>(context, listen: false)
                                             .currentUser
                                             .nameUser
                                             .toString(),
@@ -1134,40 +1207,46 @@ class _addinvoiceState extends State<addinvoice> {
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
                                             invoiceViewmodel.selectedCollaborator?.id_participate != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
-                                            invoiceViewmodel.selectedAgent != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
-                                              invoiceViewmodel.selectedDistributor != null)
-                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
                                         else
-                                          'type_seller': '3', // type seller is employee,
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
+                                              invoiceViewmodel.selectedAgent != null)
+                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                          else
+                                            if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
+                                                invoiceViewmodel.selectedDistributor != null)
+                                              'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                            else
+                                              'type_seller': '3', // type seller is employee,
 
-                                        if (sellerCommissionRate.text.isNotEmpty && invoiceViewmodel.selectedSellerType != SellerType.employee)
-                                        'rate_participate': sellerCommissionRate.text,
+                                        if (sellerCommissionRate.text.isNotEmpty &&
+                                            invoiceViewmodel.selectedSellerType != SellerType.employee)
+                                          'rate_participate': sellerCommissionRate.text,
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.agent)
                                           'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-                                          'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+                                        else
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
+                                            'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
 
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
                                           'participate_fk':
-                                              invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
+                                          invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
                                       };
                                       if (readyinstallController == '0')
                                         body.addAll({
                                           'date_not_readyinstall': DateTime.now().toString(),
                                           'user_not_ready_install':
-                                              Provider.of<user_vm_provider>(context, listen: false)
-                                                  .currentUser
-                                                  .idUser
-                                                  .toString(),
+                                          Provider
+                                              .of<user_vm_provider>(context, listen: false)
+                                              .currentUser
+                                              .idUser
+                                              .toString(),
                                         });
                                       else
                                         body.addAll({
                                           'date_readyinstall': DateTime.now().toString(),
-                                          'user_ready_install': Provider.of<user_vm_provider>(context, listen: false)
+                                          'user_ready_install': Provider
+                                              .of<user_vm_provider>(context, listen: false)
                                               .currentUser
                                               .idUser
                                               .toString(),
@@ -1175,9 +1254,9 @@ class _addinvoiceState extends State<addinvoice> {
                                       log(body.toString());
                                       Provider.of<invoice_vm>(context, listen: false)
                                           .add_invoiceclient_vm(
-                                              body, _invoice!.path!.isNotEmpty ? _myfile : null, _myfilelogo)
+                                          body, _invoice!.path!.isNotEmpty ? _myfile : null, _myfilelogo)
                                           .then((value) =>
-                                              value != "false" ? clear(context, value, _products) : error(context));
+                                      value != "false" ? clear(context, value, _products) : error(context));
                                     }
                                   } else {
                                     ScaffoldMessenger.of(context)
@@ -1223,10 +1302,10 @@ class _addinvoiceState extends State<addinvoice> {
     print('in clear');
     //widget.indexinvoice = 0;
     _products =
-        // Provider
-        // .of<invoice_vm>(context, listen: false)
-        // .listinvoiceClient[widget.indexinvoice]
-        _invoice!.products;
+    // Provider
+    // .of<invoice_vm>(context, listen: false)
+    // .listinvoiceClient[widget.indexinvoice]
+    _invoice!.products;
     print('length ' + _products!.length.toString());
     for (int i = 0; i < _products.length; i++) {
       print('inside for');
@@ -1244,7 +1323,9 @@ class _addinvoiceState extends State<addinvoice> {
           body.addAll({
             'idInvoiceProduct': res,
           });
-          Provider.of<invoice_vm>(context, listen: false).listproductinvoic[i].idInvoiceProduct = res;
+          Provider
+              .of<invoice_vm>(context, listen: false)
+              .listproductinvoic[i].idInvoiceProduct = res;
         }
       } //if
       else {
@@ -1257,7 +1338,8 @@ class _addinvoiceState extends State<addinvoice> {
       }
     }
     //for loop
-    int index1 = Provider.of<invoice_vm>(context, listen: false)
+    int index1 = Provider
+        .of<invoice_vm>(context, listen: false)
         .listinvoices
         .indexWhere((element) => element.idInvoice == value);
 
@@ -1269,7 +1351,8 @@ class _addinvoiceState extends State<addinvoice> {
     //        .of<invoice_vm>(context, listen: false)
     //        .listproductinvoic;
     // //
-    Provider.of<invoice_vm>(context, listen: false)
+    Provider
+        .of<invoice_vm>(context, listen: false)
         .listinvoices[index1].products = _invoice!.products;
 
     Provider.of<invoice_vm>(context, listen: false).updatelistproducetInvoice();
@@ -1421,8 +1504,7 @@ class _addinvoiceState extends State<addinvoice> {
     );
   }
 
-  Widget sellerDropdown<T>(
-    List<T> sellerNames, {
+  Widget sellerDropdown<T>(List<T> sellerNames, {
     T? selectedValue,
   }) {
     return Container(

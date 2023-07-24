@@ -105,6 +105,11 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        if(widget.itemProd.idInvoice != null)
+                          Text(
+                            "${widget.itemProd.idInvoice}#  ",
+                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold,color: Ktoast),
+                          ),
                         if (widget.itemProd.address_invoice != null)
                           Expanded(
                             child: Text(
@@ -124,7 +129,6 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           SizedBox.shrink(),
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
