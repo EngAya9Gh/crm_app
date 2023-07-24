@@ -216,9 +216,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                         cardRow(title: 'المبلغ المدفوع', value: invoice.amountPaid.toString()),
                         cardRow(
                             title: ' المبلغ المتبقي',
-                            value: (double.parse(invoice.total.toString()) - double.parse(invoice.amountPaid.toString()))
-                                .toStringAsFixed(2)
-                                .toString()),
+                            value: ((num.tryParse(invoice.total?.toString() ?? "0") ?? 0) - (num.tryParse(invoice.amountPaid?.toString() ?? "0") ?? 0))
+                                .toStringAsFixed(2)),
                         cardRow(title: ' التجديد السنوي', value: invoice.renewYear.toString()),
                         cardRow(title: ' طريقة الدفع', value: invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
                         //nameuserApprove
