@@ -84,6 +84,8 @@ class InvoiceModel extends CacheRepository {
   String? fk_agent;
   String? fk_regoin_invoice;
   String? name_regoin_invoice;
+  String? date_delete;
+  String? user_delete;
   String? city, name_city, namemaincity, id_maincity;
 
   //Map<String, dynamic> products;
@@ -174,6 +176,8 @@ class InvoiceModel extends CacheRepository {
     this.currency_name,
     this.fk_regoin_invoice,
     this.name_regoin_invoice,
+    this.user_delete,
+    this.date_delete,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -186,6 +190,8 @@ class InvoiceModel extends CacheRepository {
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     print(jsondata);
     idInvoice = jsondata['id_invoice'];
+    user_delete = jsondata['user_delete'];
+    date_delete = jsondata['date_delete'];
     dateCreate = jsondata['date_create'];
     typePay = jsondata['type_pay'];
     renewYear = jsondata['renew_year'];

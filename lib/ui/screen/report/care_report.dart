@@ -275,7 +275,7 @@ class _care_reportState extends State<care_report> {
                                   selectedIndex: selectedProvider.isbarsalestype,
                                 ),
                                 options: GroupButtonOptions(
-                                    buttonWidth: (MediaQuery.sizeOf(context).width /3) -16,
+                                    buttonWidth: (MediaQuery.of(context).size.width /3) -16,
                                     borderRadius: BorderRadius.circular(10)),
                                 buttons: ['ترحيب', 'جودة', 'العناية'],
                                 onSelected: (_,index, isselected) {

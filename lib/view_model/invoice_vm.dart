@@ -56,7 +56,7 @@ class invoice_vm extends ChangeNotifier {
   List<InvoiceModel> listinvoiceClient = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listforme = [];
-  List<DeletedinvoiceModel> listdeletedinvoice = [];
+  List<InvoiceModel> listdeletedinvoice = [];
   List<ProductsInvoice> listproductinvoic = [];
   List<DeletedinvoiceModel> listdeleted = [];
   List<InvoiceModel> listinvoicebyregoin = [];
@@ -1069,6 +1069,7 @@ class invoice_vm extends ChangeNotifier {
   Future<String> delete_invoice(Map<String, String> body, String? id_invoice) async {
     int index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
     listinvoiceClient.removeAt(index);
+    notifyListeners();
     String res = await Invoice_Service().deleteInvoiceById(body);
     print("res in delete invoice " + res);
     //if(res=="done"){

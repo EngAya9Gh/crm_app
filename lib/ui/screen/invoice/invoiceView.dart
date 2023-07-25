@@ -170,7 +170,8 @@ class _InvoiceViewState extends State<InvoiceView> {
 
                 return Container(
                   child: SingleChildScrollView(
-                    child: Column(
+                    child:
+                    Column(
                       children: [
                         _product('اسم المنتج','الكمية','السعر'),
                         for (int index = 0; index < invoice!.products!.length; index++)
@@ -632,30 +633,31 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             ),
                                             TextButton(
                                               onPressed: () async {
-                                                Navigator.of(context, rootNavigator: true).pop(true);
+                                                    Navigator.of(context, rootNavigator: true).pop(true);
                                                 // dismisses only the dialog and returns true
                                                 // if(itemProd.idInvoice!=null)
+                                                print('das');
                                                 DateTime _currentDate = DateTime.now();
                                                 final rt.DateFormat formatter = rt.DateFormat('yyyy-MM-dd');
-                                                Provider.of<invoice_vm>(context, listen: false)
-                                                    .addlistinvoicedeleted(DeletedinvoiceModel(
-                                                  fkClient: invoice.fkIdClient.toString(),
-                                                  fkUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                      .currentUser
-                                                      .idUser,
-                                                  //cuerrent user
-                                                  dateDelete: formatter.format(_currentDate),
-                                                  //city:itemProd.
-                                                  nameClient: invoice.nameClient.toString(),
-                                                  nameEnterprise: clientmodel.nameEnterprise,
-                                                  mobileclient: clientmodel.mobile,
-                                                  //mobileuser:widget.itemClient. ,
-                                                  // nameUser: widget.itemProd
-                                                  //     .nameUser, //موظف المبيعات
-                                                  nameUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                      .currentUser
-                                                      .nameUser, //name user that doing delete
-                                                ));
+                                                // Provider.of<invoice_vm>(context, listen: false)
+                                                //     .addlistinvoicedeleted(DeletedinvoiceModel(
+                                                //   fkClient: invoice.fkIdClient.toString(),
+                                                //   fkUser: Provider.of<user_vm_provider>(context, listen: false)
+                                                //       .currentUser
+                                                //       .idUser,
+                                                //   //cuerrent user
+                                                //   dateDelete: formatter.format(_currentDate),
+                                                //   //city:itemProd.
+                                                //   nameClient: invoice.nameClient.toString(),
+                                                //   nameEnterprise: clientmodel.nameEnterprise,
+                                                //   mobileclient: clientmodel.mobile,
+                                                //   //mobileuser:widget.itemClient. ,
+                                                //   // nameUser: widget.itemProd
+                                                //   //     .nameUser, //موظف المبيعات
+                                                //   nameUser: Provider.of<user_vm_provider>(context, listen: false)
+                                                //       .currentUser
+                                                //       .nameUser, //name user that doing delete
+                                                // ));
                                                 Provider.of<invoice_vm>(context, listen: false).delete_invoice({
                                                   "id_invoice": invoice.idInvoice.toString(),
                                                   'fk_regoin': invoice.fk_regoin.toString(),
