@@ -10,7 +10,7 @@ import '../../../constants.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported }
 
-extension on StatusClient {
+extension StatusClientExt on StatusClient {
   String get text {
     switch (this) {
       case StatusClient.subscriber:

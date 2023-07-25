@@ -264,7 +264,8 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                     borderRadius: BorderRadius.circular(10)),
                                 buttons: ['برامج','أجهزة'],
                                 enableDeselect: true,
-                                onSelected: (_, index, isselected) => onChangeProductType(ProductType.values[index] , isselected),
+                                onSelected: (_, index, isselected) =>
+                                    onChangeProductType(ProductType.values[index] , isselected),
                               ),
                             ),
                           ),
@@ -464,7 +465,9 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                             priceProduct: pm.priceProduct,
                                             taxtotal: pm.value_config == null
                                                 ? "null"
-                                                : pm.value_config);
+                                                : pm.value_config,
+                                          typeProdRenew: pm.typeProdRenew
+                                        );
                                         listAdded.add(pp);
                                         print(pp.nameProduct);
                                         Provider.of<invoice_vm>(context, listen: false).addlistproductinvoic(pp);

@@ -52,6 +52,14 @@ class view_deleted extends StatelessWidget {
     @override
     Widget build(BuildContext context) {
       return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "تفاصيل الفاتورة",
+            style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          ),
+          centerTitle: true,
+          backgroundColor: kMainColor,
+        ),
         body:
         Padding(
           padding: EdgeInsets.only(top: 15, left: 10, right: 10),
@@ -59,8 +67,9 @@ class view_deleted extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  if(invoice.products?.isNotEmpty ?? false)
                   _product('اسم المنتج','الكمية','السعر'),
-                  for (int index = 0; index < invoice!.products!.length; index++)
+                  for (int index = 0; index < invoice.products!.length; index++)
                     _product(
                         invoice.products![index].nameProduct.toString(),
                         invoice.products![index].amount.toString(),

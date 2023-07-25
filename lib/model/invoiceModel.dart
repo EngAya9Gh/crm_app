@@ -58,6 +58,7 @@ class InvoiceModel extends CacheRepository {
   String? mobile; //mobile client
   String? ismarketing;
   String? numbarnch;
+  String? renewPlus;
   String? numusers;
   String? nummostda;
   String? numTax;
@@ -150,6 +151,7 @@ class InvoiceModel extends CacheRepository {
     this.namemaincity,
     this.id_maincity,
     this.numbarnch,
+    this.renewPlus,
     this.numusers,
     this.nummostda,
     this.numTax,
@@ -255,6 +257,7 @@ class InvoiceModel extends CacheRepository {
     namemaincity = jsondata['namemaincity'];
     id_maincity = jsondata['id_maincity'];
     numbarnch = jsondata['numbarnch'];
+    renewPlus = jsondata['renew_plus'];
     numusers = jsondata['numusers'];
     nummostda = jsondata['nummostda'];
     numTax = jsondata['numTax'];
@@ -379,6 +382,7 @@ class InvoiceModel extends CacheRepository {
     _data['nummostda'] = nummostda;
     _data['numusers'] = numusers;
     _data['numTax'] = numTax;
+    _data['renew_plus'] = renewPlus;
     _data['hoursdelaytabel'] = hoursdelaytabel;
     _data['hoursdelayinstall'] = hoursdelayinstall;
     _data['clientusername'] = clientusername;
@@ -466,12 +470,14 @@ class ProductsInvoice extends CacheRepository {
   bool? isdeleted = false;
   String? fkuser;
   String? fkclient;
+  String? typeProdRenew;
+
 
   //endregion
 
   //region Constructor
-  ProductsInvoice(
-      {this.idInvoiceProduct,
+  ProductsInvoice({
+    this.idInvoiceProduct,
       this.fkIdInvoice,
       this.fkProduct,
       this.amount,
@@ -487,7 +493,9 @@ class ProductsInvoice extends CacheRepository {
       this.fkConfig,
       this.isdeleted,
       this.fkclient,
-      this.fkuser});
+      this.fkuser,
+      this.typeProdRenew,
+      });
 
   //endregion
 

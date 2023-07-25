@@ -37,6 +37,7 @@ String? validateEmail(String email) {
   RegExp regex = new RegExp(pattern);
   if (!regex.hasMatch(email))
     return 'Please make sure your email address is valid';
+  return null;
 }
 String get_title_care(String type ){
   switch(type){
