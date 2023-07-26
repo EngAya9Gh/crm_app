@@ -391,7 +391,7 @@ class _addClientState extends State<addClient> {
 
   error(context) {
     Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
-    _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(label_errorAddProd)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_errorAddProd)));
     print("error");
   }
 

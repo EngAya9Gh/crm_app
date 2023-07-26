@@ -28,8 +28,8 @@ class _InvoicesState extends State<invoices> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
-        child: ListView(
+        padding: const EdgeInsets.only(left: 2, right: 2),
+        child: Column(
           children: [
             CustomButton(
               text: 'إنشاء فاتورة جديدة',
@@ -38,8 +38,7 @@ class _InvoicesState extends State<invoices> {
                     context, MaterialPageRoute(builder: (context) => addinvoice(itemClient: widget.itemClient)));
               },
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.8,
+            Expanded(
               child: Consumer<invoice_vm>(
                 builder: (context, value, child) {
                   final listInvoice = value.listinvoiceClient;
@@ -51,7 +50,8 @@ class _InvoicesState extends State<invoices> {
 
                   return ListView.separated(
                     itemCount: listInvoice.length,
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    separatorBuilder: (BuildContext context, int index) => const Divider(indent: 2,endIndent: 2),
                     itemBuilder: (BuildContext context, int index) => Builder(
                       builder: (context) => CardInvoiceClient(
                         type: '',

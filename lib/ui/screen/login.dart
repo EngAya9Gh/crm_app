@@ -1,19 +1,21 @@
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/services/AuthService.dart';
+import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+
 import '../../constants.dart';
 import '../../function_global.dart';
 import '../../labeltext.dart';
 import 'home/home.dart';
-import 'mainpage.dart';
 
 class login extends StatefulWidget {
   login({Key? key}) : super(key: key);
@@ -53,9 +55,16 @@ class _loginState extends State<login> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomLogo(),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  // IconButton(
+                  //     onPressed: () async {
+                  //       print("fcm : ${await FirebaseMessaging.instance.getToken()}");
+                  //     },
+                  //     icon: Icon(Icons.add)),
                   CustomFormField(
-                   textdirehint: TextDirection.ltr,
+                    textdirehint: TextDirection.ltr,
                     read: false,
                     radius: 10,
                     con: _textcontroller,
@@ -63,7 +72,7 @@ class _loginState extends State<login> {
                       if (data!.isEmpty) {
                         return message_empty;
                       }
-                     if( val.sendcode )return validateEmail(data);
+                      if (val.sendcode) return validateEmail(data.trim());
                     },
                     hintText:val.sendcode ? hintEmailText:hintCodeText,
                     onChanged: (data) {
@@ -84,7 +93,8 @@ class _loginState extends State<login> {
                       if (val.sendcode) {
                         Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
 
-                        if (await AuthServices().send_otp(valEmail.trim())) {
+                        final email = valEmail.trim();
+                        if (await AuthServices().send_otp(email)) {
                           _textcontroller!.text="";
                           val.changeboolValue();
                           Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
@@ -93,7 +103,7 @@ class _loginState extends State<login> {
                         else{
                           Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
 
-                          _scaffoldKey.currentState!.showSnackBar(new SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                               content: new Text(emailError)
                           ));
                         }
@@ -102,18 +112,20 @@ class _loginState extends State<login> {
                         print(valEmail);
                         print(valueField);
                         Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
-                        String? res=await AuthServices().verfiy_otp(valEmail,valueField!);
+                        final email = valEmail.trim();
+                        final otpCode = valueField?.trim() ?? '';
+
+                        String? res=await AuthServices().verfiy_otp(email,otpCode);
                         print(res);
                         if (res!="false") {
                           SharedPreferences preferences  = await SharedPreferences.getInstance();
                           preferences.setBool(kKeepMeLoggedIn, true);
                           preferences.setString("id_user",res!);
                           // preferences.set("map_clientlist",res!);
-                          Provider.of<user_vm_provider>(context, listen: false)
-                              .getcurrentuser();
+                          await Provider.of<user_vm_provider>(context, listen: false).getcurrentuser();
                           Provider.of<AuthProvider>(context,listen: false)
                               .changeboolValueisLoading(false);
-
+                          val.changeboolValue();
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
@@ -124,7 +136,7 @@ class _loginState extends State<login> {
                         else{
                           Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
 
-                          _scaffoldKey.currentState!.showSnackBar(new SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                               content: new Text(codeverifyError)
                           ));
                         }

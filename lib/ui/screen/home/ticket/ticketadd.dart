@@ -202,6 +202,8 @@ class _ticketAddState extends State<ticketAdd> {
                               if (_globalKey.currentState!.validate()) {
                                 _globalKey.currentState!.save();
                                 if (widget.fk_client != null) {
+                                  print('widget.fk_client.toString()' );
+                                  print(widget.fk_client.toString() );
                                   bool isav= await Provider.of<ticket_vm>(context, listen: false)
                                       .addticket({
                                     'name_enterprise': name_enterprise,
@@ -237,13 +239,13 @@ class _ticketAddState extends State<ticketAdd> {
                                     // : error(context)
                                   );
                                   if(isav) {clear(context);}else{
-                                  _scaffoldKey.currentState!.showSnackBar(
+                                    ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(
                                            'لا يمكن فتح تذكرة لعميل لديه تذكرة غير مغلقة')));
                                 }
                                 } else {
-                                  _scaffoldKey.currentState!.showSnackBar(
+                                  ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(
                                               'من فضلك تأكد من عملية الإدخال')));
@@ -262,14 +264,14 @@ class _ticketAddState extends State<ticketAdd> {
   }
 
   clear(BuildContext context) {
-    _scaffoldKey.currentState!
+    ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('تم إنشاء تذكرة جديد')));
     Navigator.pop(context);
     // print("succ");
   }
 
   error(context) {
-    _scaffoldKey.currentState!
+    ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
     print("error");
   }

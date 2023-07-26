@@ -106,7 +106,7 @@ class _addActvState extends State<addractivity> {
                                 );
                               }
                             }else {
-                              _scaffoldKey.currentState!.showSnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('الحقل فارغ  '))
                               );
                             }
@@ -129,7 +129,7 @@ class _addActvState extends State<addractivity> {
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changebooladdclient(false);
     nameractv.text="";
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
@@ -139,7 +139,7 @@ class _addActvState extends State<addractivity> {
   error(context) {
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdclient(false);
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
     print("error");

@@ -170,7 +170,8 @@ class _InvoiceViewState extends State<InvoiceView> {
 
                 return Container(
                   child: SingleChildScrollView(
-                    child: Column(
+                    child:
+                    Column(
                       children: [
                         _product('اسم المنتج','الكمية','السعر'),
                         for (int index = 0; index < invoice!.products!.length; index++)
@@ -216,9 +217,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                         cardRow(title: 'المبلغ المدفوع', value: invoice.amountPaid.toString()),
                         cardRow(
                             title: ' المبلغ المتبقي',
-                            value: (double.parse(invoice.total.toString()) - double.parse(invoice.amountPaid.toString()))
-                                .toStringAsFixed(2)
-                                .toString()),
+                            value: ((num.tryParse(invoice.total?.toString() ?? "0") ?? 0) - (num.tryParse(invoice.amountPaid?.toString() ?? "0") ?? 0))
+                                .toStringAsFixed(2)),
                         cardRow(title: ' التجديد السنوي', value: invoice.renewYear.toString()),
                         cardRow(title: ' طريقة الدفع', value: invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
                         //nameuserApprove
@@ -624,39 +624,40 @@ class _InvoiceViewState extends State<InvoiceView> {
                                           title: Text('التأكيد'),
                                           content: Text('هل تريد حذف الفاتورة'),
                                           actions: <Widget>[
-                                            new FlatButton(
+                                            new TextButton(
                                               onPressed: () {
                                                 Navigator.of(context, rootNavigator: true)
                                                     .pop(false); // dismisses only the dialog and returns false
                                               },
                                               child: Text('لا'),
                                             ),
-                                            FlatButton(
+                                            TextButton(
                                               onPressed: () async {
-                                                Navigator.of(context, rootNavigator: true).pop(true);
+                                                    Navigator.of(context, rootNavigator: true).pop(true);
                                                 // dismisses only the dialog and returns true
                                                 // if(itemProd.idInvoice!=null)
+                                                print('das');
                                                 DateTime _currentDate = DateTime.now();
                                                 final rt.DateFormat formatter = rt.DateFormat('yyyy-MM-dd');
-                                                Provider.of<invoice_vm>(context, listen: false)
-                                                    .addlistinvoicedeleted(DeletedinvoiceModel(
-                                                  fkClient: invoice.fkIdClient.toString(),
-                                                  fkUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                      .currentUser
-                                                      .idUser,
-                                                  //cuerrent user
-                                                  dateDelete: formatter.format(_currentDate),
-                                                  //city:itemProd.
-                                                  nameClient: invoice.nameClient.toString(),
-                                                  nameEnterprise: clientmodel.nameEnterprise,
-                                                  mobileclient: clientmodel.mobile,
-                                                  //mobileuser:widget.itemClient. ,
-                                                  // nameUser: widget.itemProd
-                                                  //     .nameUser, //موظف المبيعات
-                                                  nameUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                      .currentUser
-                                                      .nameUser, //name user that doing delete
-                                                ));
+                                                // Provider.of<invoice_vm>(context, listen: false)
+                                                //     .addlistinvoicedeleted(DeletedinvoiceModel(
+                                                //   fkClient: invoice.fkIdClient.toString(),
+                                                //   fkUser: Provider.of<user_vm_provider>(context, listen: false)
+                                                //       .currentUser
+                                                //       .idUser,
+                                                //   //cuerrent user
+                                                //   dateDelete: formatter.format(_currentDate),
+                                                //   //city:itemProd.
+                                                //   nameClient: invoice.nameClient.toString(),
+                                                //   nameEnterprise: clientmodel.nameEnterprise,
+                                                //   mobileclient: clientmodel.mobile,
+                                                //   //mobileuser:widget.itemClient. ,
+                                                //   // nameUser: widget.itemProd
+                                                //   //     .nameUser, //موظف المبيعات
+                                                //   nameUser: Provider.of<user_vm_provider>(context, listen: false)
+                                                //       .currentUser
+                                                //       .nameUser, //name user that doing delete
+                                                // ));
                                                 Provider.of<invoice_vm>(context, listen: false).delete_invoice({
                                                   "id_invoice": invoice.idInvoice.toString(),
                                                   'fk_regoin': invoice.fk_regoin.toString(),

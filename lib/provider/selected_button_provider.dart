@@ -11,24 +11,26 @@ class selected_button_provider extends ChangeNotifier{
     isSelected=val;
     notifyListeners();
   }
-  int isSelectedtypepay= 0;
+  int isSelectedtypepay= 1;
   void selectValuetypepay(val){
     print('in provider typepay');
     print(int.parse('1'));
     isSelectedtypepay=val;
     notifyListeners();
   }
-  int isSelectedtypeinstall= 0;
+  int isSelectedtypeinstall= 1;
   void selectValuetypeinstall(val){
     isSelectedtypeinstall=val;
     notifyListeners();
   }
-  int isSelectedreadyinstall= 0;
-  void selectValuereadyinstall(val){
+  int isSelectedreadyinstall= 1;
+  void selectValuereadyinstall(val , {bool isInit = false}){
     isSelectedreadyinstall=val;
-    notifyListeners();
+    if(!isInit) {
+      notifyListeners();
+    }
   }
-  int isSelectCurrency= 0;
+  int isSelectCurrency= 1;
   void selectValueCurrency(val){
     isSelectCurrency=val;
     notifyListeners();

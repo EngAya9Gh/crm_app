@@ -176,7 +176,7 @@ class _updatecompanyState extends State<updatecompany> {
                               //   );
                               // }
                             }else {
-                              _scaffoldKey.currentState!.showSnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('الحقل فارغ  '))
                               );
                             }
@@ -199,7 +199,7 @@ class _updatecompanyState extends State<updatecompany> {
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changebooladdclient(false);
     nameractv.text="";
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
@@ -209,7 +209,7 @@ class _updatecompanyState extends State<updatecompany> {
   error(context) {
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdclient(false);
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
     print("error");

@@ -58,6 +58,7 @@ class InvoiceModel extends CacheRepository {
   String? mobile; //mobile client
   String? ismarketing;
   String? numbarnch;
+  String? renewPlus;
   String? numusers;
   String? nummostda;
   String? numTax;
@@ -84,6 +85,8 @@ class InvoiceModel extends CacheRepository {
   String? fk_agent;
   String? fk_regoin_invoice;
   String? name_regoin_invoice;
+  String? date_delete;
+  String? user_delete;
   String? city, name_city, namemaincity, id_maincity;
 
   //Map<String, dynamic> products;
@@ -148,6 +151,7 @@ class InvoiceModel extends CacheRepository {
     this.namemaincity,
     this.id_maincity,
     this.numbarnch,
+    this.renewPlus,
     this.numusers,
     this.nummostda,
     this.numTax,
@@ -174,6 +178,8 @@ class InvoiceModel extends CacheRepository {
     this.currency_name,
     this.fk_regoin_invoice,
     this.name_regoin_invoice,
+    this.user_delete,
+    this.date_delete,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -186,6 +192,8 @@ class InvoiceModel extends CacheRepository {
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
     print(jsondata);
     idInvoice = jsondata['id_invoice'];
+    user_delete = jsondata['user_delete'];
+    date_delete = jsondata['date_delete'];
     dateCreate = jsondata['date_create'];
     typePay = jsondata['type_pay'];
     renewYear = jsondata['renew_year'];
@@ -249,6 +257,7 @@ class InvoiceModel extends CacheRepository {
     namemaincity = jsondata['namemaincity'];
     id_maincity = jsondata['id_maincity'];
     numbarnch = jsondata['numbarnch'];
+    renewPlus = jsondata['renew_plus'];
     numusers = jsondata['numusers'];
     nummostda = jsondata['nummostda'];
     numTax = jsondata['numTax'];
@@ -373,6 +382,7 @@ class InvoiceModel extends CacheRepository {
     _data['nummostda'] = nummostda;
     _data['numusers'] = numusers;
     _data['numTax'] = numTax;
+    _data['renew_plus'] = renewPlus;
     _data['hoursdelaytabel'] = hoursdelaytabel;
     _data['hoursdelayinstall'] = hoursdelayinstall;
     _data['clientusername'] = clientusername;
@@ -460,12 +470,14 @@ class ProductsInvoice extends CacheRepository {
   bool? isdeleted = false;
   String? fkuser;
   String? fkclient;
+  String? typeProdRenew;
+
 
   //endregion
 
   //region Constructor
-  ProductsInvoice(
-      {this.idInvoiceProduct,
+  ProductsInvoice({
+    this.idInvoiceProduct,
       this.fkIdInvoice,
       this.fkProduct,
       this.amount,
@@ -481,7 +493,9 @@ class ProductsInvoice extends CacheRepository {
       this.fkConfig,
       this.isdeleted,
       this.fkclient,
-      this.fkuser});
+      this.fkuser,
+      this.typeProdRenew,
+      });
 
   //endregion
 

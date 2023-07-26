@@ -39,6 +39,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   DateTime _selectedDatemonth = DateTime.now();
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
+  late privilge_vm privilegeVm;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
@@ -47,6 +49,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsales(0);
     });
+    privilegeVm = Provider.of<privilge_vm>(context, listen: false);
     super.initState();
     getData();
   }
@@ -67,17 +70,18 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     String idregoin = usermodel.fkRegoin.toString();
     List<BarModel> tempdata = [];
     String paramprivilge='';
-      if(Provider.of<privilge_vm>(context,listen: false)
+      if(privilegeVm
           .checkprivlge('83')==true )
         paramprivilge='&id_regoin=${idregoin}';
 
 
-    if(Provider.of<privilge_vm>(context,listen: false).checkprivlge('83')==true ||
-        Provider.of<privilge_vm>(context,listen: false)
+    if(privilegeVm.checkprivlge('83')==true ||
+        privilegeVm
             .checkprivlge('84')==true){
 
       var data;
-    String params='';
+      var endPoint;
+      String params='';
     if(typeproduct=='أجهزة') params='&product=0';
     if(typeproduct=='برامج') params='&product=1';
     print(type);
@@ -87,29 +91,31 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       // }
     switch (type) {
       case "userSum":
-        data = await Api().post(
-            url: url + "reports/reportsalesRegoin.php?fk_country=$fkcountry$params$paramprivilge",
-            body: {'type': type});
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry$params$paramprivilge";
         break;
       case "dateyear":
-        data = await Api().post(
-            url: url +
-                "reports/reportsalesRegoin.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge",
-            body: {'type': type});
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge";
         break;
       case "datemonth":
-        data = await Api().post(
-            url: url +
-                "reports/reportsalesRegoin.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge",
-            body: {'type': type});
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge";
         break;
       case "datedays":
-        data = await Api().post(
-            url: url +
-                "reports/reportsalesRegoin.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge",
-            body: {'type': type});
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge";
         break;
     }
+
+      try {
+        data = await Api().post(
+          url: url + endPoint,
+          body: {'type': type},
+          token: null,
+        );
+      } catch (e, st) {
+        setState(() {
+          loading = false;
+        });
+        print("e: $e , st: $st");
+      }
 
     totalval=0; rowsdata=[];
     for (int i = 0; i < data.length; i++) {
@@ -261,6 +267,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
@@ -269,7 +276,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                   selectedIndex: selectedProvider.isbarsalestype,
                                 ),
                                 options: GroupButtonOptions(
-                                    buttonWidth: 110,
+                                    buttonWidth: (MediaQuery.of(context).size.width / 3) -16,
                                     borderRadius: BorderRadius.circular(10)),
                                 buttons: ['الكل', 'أجهزة', 'برامج'],
                                 onSelected: (_,index, isselected) {
@@ -603,7 +610,6 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                 child: SingleChildScrollView(
                                     child:
                                     DataTable(
-
                                       columns: const <DataColumn>[
                                         DataColumn(
                                           label: Text(
@@ -629,8 +635,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                           ),
                                         ),
                                       ],
-                                      rows:rowsdata,dividerThickness: 3,
-                                      horizontalMargin: 3,columnSpacing: 35,
+                                      rows:rowsdata,dividerThickness: 2,
+                                      horizontalMargin: 0,columnSpacing: 25,
                                       //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
                                       //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
                                       //     <DataRow>[

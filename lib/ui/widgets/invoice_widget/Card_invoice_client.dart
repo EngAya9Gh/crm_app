@@ -10,7 +10,7 @@ import '../../../constants.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported }
 
-extension on StatusClient {
+extension StatusClientExt on StatusClient {
   String get text {
     switch (this) {
       case StatusClient.subscriber:
@@ -105,10 +105,15 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        if(widget.itemProd.idInvoice != null)
+                          Text(
+                            "${widget.itemProd.idInvoice}#  ",
+                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold,color: Ktoast),
+                          ),
                         if (widget.itemProd.address_invoice != null)
                           Expanded(
                             child: Text(
-                              widget.itemProd.address_invoice.toString() ,
+                              widget.itemProd.address_invoice.toString(),
                               style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                             ),
                           )
@@ -124,7 +129,6 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           SizedBox.shrink(),
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -158,10 +162,9 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             SizedBox(width: 4),
                             if (widget.itemProd.total != null && widget.itemProd.amountPaid != null)
                               Text(
-                                (num.parse(widget.itemProd.total.toString()) -
-                                        num.parse(widget.itemProd.amountPaid.toString()))
-                                    .toStringAsFixed(2)
-                                    .toString(),
+                                ((num.tryParse(widget.itemProd.total?.toString() ?? '0') ?? 0) -
+                                        (num.tryParse(widget.itemProd.amountPaid?.toString() ?? '0') ?? 0))
+                                    .toStringAsFixed(2),
                                 style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                               ),
                             Text(
@@ -264,17 +267,10 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
   Widget statusClientChip(StatusClient statusClient) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-      decoration: BoxDecoration(
-        color: statusClient.color,
-        borderRadius: BorderRadius.circular(10)
-      ),
+      decoration: BoxDecoration(color: statusClient.color, borderRadius: BorderRadius.circular(10)),
       child: Text(
         statusClient.text,
-        style: TextStyle(
-          fontFamily: kfontfamily,
-          fontWeight: FontWeight.w600,
-          color: Colors.white
-        ),
+        style: TextStyle(fontFamily: kfontfamily, fontWeight: FontWeight.w600, color: Colors.white),
       ),
     );
   }

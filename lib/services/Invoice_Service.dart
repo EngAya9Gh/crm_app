@@ -259,16 +259,16 @@ class Invoice_Service {
     return res;
   }
 
-  Future<List<DeletedinvoiceModel>> getinvoice_deleted(String fk_regoin) async {
+  Future<List<InvoiceModel>> getinvoice_deleted(String fk_regoin) async {
     List<dynamic> data =[];
     data=await Api()
         .get(url:url+
         'client/invoice/get_invoice_deleted.php?fk_regoin=$fk_regoin');
 
-    List<DeletedinvoiceModel> prodlist = [];
+    List<InvoiceModel> prodlist = [];
 
     for (int i = 0; i < data.length; i++) {
-      prodlist.add(DeletedinvoiceModel.fromJson(data[i]));
+      prodlist.add(InvoiceModel.fromJson(data[i]));
     }
     print(prodlist);
     return prodlist;

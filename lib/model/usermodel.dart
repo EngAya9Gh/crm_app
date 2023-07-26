@@ -15,7 +15,7 @@ class UserModel {
   String? nameRegoin;
   String? name_level;
   String? currency;
-  String isActive;
+  String? isActive;
   String? fkuserAdd;
   String? nameuserAdd;
   String? created_at;
@@ -39,13 +39,13 @@ class UserModel {
      this.fkRegoin,
      this.nameCountry,
      this.nameRegoin,
-      required  this.isActive,
-     required this.fkuserAdd,
-     required this.created_at,
-     required this.nameuserAdd,
-     required this.fkuserupdate,
-     required this.updated_at,
-     required this.nameuserupdate,
+      this.isActive,
+     this.fkuserAdd,
+     this.created_at,
+     this.nameuserAdd,
+     this.fkuserupdate,
+     this.updated_at,
+     this.nameuserupdate,
     this.name_level,
     this.currency,
     this.img_image,
@@ -74,9 +74,8 @@ class UserModel {
       fkuserAdd: jsonData['fkuserAdd'],
       nameuserAdd: jsonData['nameuserAdd'],
       created_at: jsonData['created_at'],
-      img_image:jsonData['img_image'].toString().trim().isEmpty?
-      jsonData['img_image']: urlimage+ jsonData['img_image'],
-      img_thumbnail:urlimage+ jsonData['img_thumbnail'],
+      img_image: jsonData['img_image'] == null ? '' : urlimage + jsonData['img_image'],
+      img_thumbnail: jsonData['img_thumbnail'] == null ? '' : urlimage+ jsonData['img_thumbnail'],
       path: jsonData['path'],
       fkuserupdate: jsonData['fkuserupdate'],
       updated_at: jsonData['updated_at'],

@@ -266,6 +266,7 @@ class _care_reportState extends State<care_report> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center ,
                     children: [
                       Consumer<selected_button_provider>(
                           builder: (context, selectedProvider, child) {
@@ -274,7 +275,7 @@ class _care_reportState extends State<care_report> {
                                   selectedIndex: selectedProvider.isbarsalestype,
                                 ),
                                 options: GroupButtonOptions(
-                                    buttonWidth: 110,
+                                    buttonWidth: (MediaQuery.of(context).size.width /3) -16,
                                     borderRadius: BorderRadius.circular(10)),
                                 buttons: ['ترحيب', 'جودة', 'العناية'],
                                 onSelected: (_,index, isselected) {

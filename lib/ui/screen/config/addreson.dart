@@ -103,7 +103,7 @@ class _addresaonState extends State<addresaon> {
                               );
                             }
                           }else {
-                            _scaffoldKey.currentState!.showSnackBar(
+                            ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('الحقل فارغ  '))
                             );
                           }
@@ -125,7 +125,7 @@ class _addresaonState extends State<addresaon> {
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changebooladdclient(false);
     namereson.text="";
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
@@ -135,7 +135,7 @@ class _addresaonState extends State<addresaon> {
   error(context) {
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdclient(false);
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
     print("error");

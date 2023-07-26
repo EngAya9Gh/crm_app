@@ -129,7 +129,7 @@ class _MyDropDown extends State<select_country>{
                     Navigator.push(context, MaterialPageRoute(
                         builder: (context)=>ProductView()));
                     else {
-                      _scaffoldKey.currentState!.showSnackBar(new SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                           content: new Text("من فضلك اختر البلد")
                       ));
                     }

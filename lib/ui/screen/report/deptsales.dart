@@ -459,7 +459,7 @@ class _deptsalesState extends State<deptsales> {
                                     ),
                                   ],
                                   rows:rowsdata,dividerThickness: 3,
-                                  horizontalMargin: 2,columnSpacing: 50,
+                                  horizontalMargin: 2,columnSpacing: 20,
                                   //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
                                   //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
                                   //     <DataRow>[

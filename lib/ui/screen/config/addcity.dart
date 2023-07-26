@@ -100,7 +100,7 @@ class _addcityState extends State<addcity> {
                             );
                           }
                         }else {
-                          _scaffoldKey.currentState!.showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('الحقل فارغ  '))
                           );
                         }
@@ -115,7 +115,7 @@ class _addcityState extends State<addcity> {
   }
   clear(BuildContext context) {
     namelevel.text="";
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
@@ -124,7 +124,7 @@ class _addcityState extends State<addcity> {
 
   error(context) {
 
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
     print("error");

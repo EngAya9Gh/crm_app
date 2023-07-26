@@ -126,7 +126,7 @@ class _addusertestState extends State<addusertest> {
                                 );
                               }
                             }else {
-                              _scaffoldKey.currentState!.showSnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('الحقل فارغ  '))
                               );
                             }
@@ -144,7 +144,7 @@ class _addusertestState extends State<addusertest> {
   clear(BuildContext context) {
     nameusertest.text="";
     desusertest.text="";
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
@@ -153,7 +153,7 @@ class _addusertestState extends State<addusertest> {
 
   error(context) {
 
-    _scaffoldKey.currentState!.showSnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
     print("error");
