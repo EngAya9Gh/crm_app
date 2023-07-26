@@ -87,56 +87,56 @@ class _loginState extends State<login> {
                     text: val.sendcode? textbutton_code : textbutton_code2,
                     onTap: () async {
                     if(_globalKey.currentState!.validate()){
-                      // //print('before ${_textcontroller!.text}');
-                      // _globalKey.currentState!.save();
-                      // // print('after ${_textcontroller!.text}');
-                      // if (val.sendcode) {
-                      //   Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
-                      //
-                      //   if (await AuthServices().send_otp(valEmail.trim())) {
-                      //     _textcontroller!.text="";
-                      //     val.changeboolValue();
-                      //     Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
-                      //
-                      //   }
-                      //   else{
-                      //     Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
-                      //
-                      //     ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                      //         content: new Text(emailError)
-                      //     ));
-                      //   }
-                      // }
-                      // else {
-                      //   print(valEmail);
-                      //   print(valueField);
-                      //   Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
-                      //   String? res=await AuthServices().verfiy_otp(valEmail,valueField!);
-                      //   print(res);
-                      //   if (res!="false") {
-                      //     SharedPreferences preferences  = await SharedPreferences.getInstance();
-                      //     preferences.setBool(kKeepMeLoggedIn, true);
-                      //     preferences.setString("id_user",res!);
-                      //     // preferences.set("map_clientlist",res!);
-                      //     await Provider.of<user_vm_provider>(context, listen: false).getcurrentuser();
-                      //     Provider.of<AuthProvider>(context,listen: false)
-                      //         .changeboolValueisLoading(false);
-                      //     val.changeboolValue();
-                      //     Navigator.pushAndRemoveUntil(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //             builder: (context) => Home()),
-                      //            (rouets)=>false);
-                      //
-                      //   }
-                      //   else{
-                      //     Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
-                      //
-                      //     ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                      //         content: new Text(codeverifyError)
-                      //     ));
-                      //   }
-                      // }
+                      //print('before ${_textcontroller!.text}');
+                      _globalKey.currentState!.save();
+                      // print('after ${_textcontroller!.text}');
+                      if (val.sendcode) {
+                        Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
+
+                        if (await AuthServices().send_otp(valEmail.trim())) {
+                          _textcontroller!.text="";
+                          val.changeboolValue();
+                          Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
+
+                        }
+                        else{
+                          Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
+
+                          ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                              content: new Text(emailError)
+                          ));
+                        }
+                      }
+                      else {
+                        print(valEmail);
+                        print(valueField);
+                        Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
+                        String? res=await AuthServices().verfiy_otp(valEmail,valueField!);
+                        print(res);
+                        if (res!="false") {
+                          SharedPreferences preferences  = await SharedPreferences.getInstance();
+                          preferences.setBool(kKeepMeLoggedIn, true);
+                          preferences.setString("id_user",res!);
+                          // preferences.set("map_clientlist",res!);
+                          await Provider.of<user_vm_provider>(context, listen: false).getcurrentuser();
+                          Provider.of<AuthProvider>(context,listen: false)
+                              .changeboolValueisLoading(false);
+                          val.changeboolValue();
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Home()),
+                                 (rouets)=>false);
+
+                        }
+                        else{
+                          Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
+
+                          ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                              content: new Text(codeverifyError)
+                          ));
+                        }
+                      }
                     }},
                   )
                 ],
