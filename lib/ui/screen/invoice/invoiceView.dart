@@ -219,7 +219,14 @@ class _InvoiceViewState extends State<InvoiceView> {
                             title: ' المبلغ المتبقي',
                             value: ((num.tryParse(invoice.total?.toString() ?? "0") ?? 0) - (num.tryParse(invoice.amountPaid?.toString() ?? "0") ?? 0))
                                 .toStringAsFixed(2)),
-                        cardRow(title: ' التجديد السنوي', value: invoice.renewYear.toString()),
+
+                        invoice.renewYear!='0' &&invoice.renewYear!=null? cardRow(title: ' التجديد السنوي', value: invoice.renewYear.toString()):Container(),
+                        invoice.renew2year!='0'&&invoice.renew2year!=null ? cardRow(title: 'تجديد الموارد البشرية', value: invoice.renew2year.toString()):Container(),
+
+                        invoice.renewPlus.toString() == ''|| invoice.renewPlus==null
+                            ? Container():
+                        cardRow(title: 'تجديد الفرع الإضافي', value: invoice.renewPlus.toString()),
+
                         cardRow(title: ' طريقة الدفع', value: invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
                         //nameuserApprove
 
@@ -276,6 +283,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                         invoice.address_invoice.toString() == ''
                             ? cardRow(title: 'عنوان الفاتورة', value: invoice.address_invoice.toString())
                             : Container(),
+
+
 
                         Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true
                             ? invoice.clientusername != null && invoice.clientusername.toString().isNotEmpty

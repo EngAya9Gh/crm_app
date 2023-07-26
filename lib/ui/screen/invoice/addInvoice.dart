@@ -360,7 +360,7 @@ class _addinvoiceState extends State<addinvoice> {
                           }
                           if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
 
-                          if (int.parse(value!) < 0) {
+                          if (int.parse(value!) <= 0) {
                             return "يجب إدخال قيمة مناسبة";
                           }
 

@@ -183,16 +183,16 @@ class invoice_vm extends ChangeNotifier {
     listinvoicesMarketing = [];
     isloading_marketing = true;
     notifyListeners();
-    await getinvoiceswithprev();
+    await getinvoiceswithprev_marketing();
     list_temp = List.from(listInvoicesAccept);
     // await  Invoice_Service()
     //     .getinvoiceMarketing(usercurrent!.fkCountry.toString());
 
-    list_temp.forEach((element) {
-      if (element.ismarketing == '1')
-        //&& element.isApprove == "1")
-        listinvoicesMarketing.add(element);
-    });
+    // list_temp.forEach((element) {
+    //   if (element.ismarketing == '1')
+    //     //&& element.isApprove == "1")
+    //     listinvoicesMarketing.add(element);
+    // });
     listinvoicesMarketing = List.from(list_temp);
     isloading_marketing = false;
     notifyListeners();
@@ -910,6 +910,27 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> getinvoiceswithprev_marketing() async {
+    // if(listClient.isEmpty)
+    //main list
+    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '1').isCheck == '1' ? true : false;
+    if (res) {
+      listinvoices = await Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
+      print('indddddd');
+    } else {
+      res = privilgelist.firstWhere((element) => element.fkPrivileg == '38').isCheck == '1' ? true : false;
+      if (res) {
+        listinvoices = await Invoice_Service().getinvoicebyregoin_marketing(usercurrent!.fkRegoin!);
+      } else {
+        res = privilgelist.firstWhere((element) => element.fkPrivileg == '6').isCheck == '1' ? true : false;
+        if (res) {
+          listinvoices = await Invoice_Service().getinvoicebyiduser_marketing(usercurrent!.idUser.toString());
+        }
+      }
+    }
+    listInvoicesAccept = List.from(listinvoices);
+    notifyListeners();
+  }
   Future<void> getinvoiceswithprev() async {
     // if(listClient.isEmpty)
     //main list

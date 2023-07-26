@@ -43,10 +43,10 @@ class _calender_clientState extends State<calender_client> {
           .userall.length);
       Provider.of<regoin_vm>(context,listen: false).changeVal(null);
 
-     await Provider.of<client_vm>(context,listen: false).getallclient();
+     await Provider.of<client_vm>(context,listen: false).getClientDateTable_vm();
       Provider.of<EventProvider>(context,listen: false).setvalueClient(
           Provider.of<client_vm>(context,listen: false)
-              .listClient);
+              .listClientAccept);
       Provider.of<EventProvider>(context,listen: false)
           . getevent_AllClient();
     }
@@ -96,7 +96,7 @@ class _calender_clientState extends State<calender_client> {
                         filterFn: (user, filter) => user!.getfilteruser(filter!),
                         //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                         // itemAsString: (UserModel u) => u.userAsStringByName(),
-                        items: cart.listClient,
+                        items: cart.listClientAccept,
                         itemAsString: (u) => u!.userAsString(),
                         onChanged: (data) {
                           setState(() {

@@ -352,6 +352,40 @@ class client_vm extends ChangeNotifier {
 
     notifyListeners();
   }
+  Future<void> getClientDateTable_vm()async{
+    isloading=true;
+    notifyListeners();
+    bool res= privilgelist.firstWhere(
+            (element) => element.fkPrivileg=='8').isCheck=='1'?true:false;
+    if(res) {
+      listClientAccept =
+      await ClientService().getClientDateTable(usercurrent!.fkCountry.toString() );
+    }
+    else {
+      res= privilgelist.firstWhere(
+              (element) => element.fkPrivileg=='15').isCheck=='1'?true:false;
+      if(res) {
+        listClientAccept =
+        await ClientService().getClientDateTable_regoin(usercurrent!.fkCountry.toString(),usercurrent!.fkRegoin.toString());
+
+      } else{
+
+        res= privilgelist.firstWhere(
+                (element) => element.fkPrivileg=='16').isCheck=='1'?true:false;
+        if(res) {
+          listClientAccept =
+          await ClientService().getClientDateTable_user(usercurrent!.idUser.toString());
+
+        }
+      }
+    }
+    // if(listClient.isEmpty)
+
+    // listClientAccept =List.from(listClient) ;
+    isloading=false;
+
+    notifyListeners();
+  }
   Future<void> getallclientAccept()async{
 
     listClientAccept=[];

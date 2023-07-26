@@ -65,6 +65,37 @@ class ClientService{
       (convertToClients, data);
     return prodlist;
   }
+  //
+  Future<List<ClientModel>> getClientDateTable(String? fkcountry ) async {
+    List<dynamic> data =[];
+    data=await Api()
+        .get(url:url+ 'client/getClientDateTable.php?fk_country=$fkcountry');
+
+    List<ClientModel> prodlist =
+    await compute<List<dynamic>, List<ClientModel>>
+      (convertToClients, data);
+    return prodlist;
+  }
+  Future<List<ClientModel>> getClientDateTable_regoin(String? fkcountry,String regoin) async {
+    List<dynamic> data =[];
+    data=await Api()
+        .get(url:url+ 'client/getclient_accept_regoin.php?fk_country=$fkcountry&regoin=$regoin');
+
+    List<ClientModel> prodlist =
+    await compute<List<dynamic>, List<ClientModel>>
+      (convertToClients, data);
+    return prodlist;
+  }
+  Future<List<ClientModel>> getClientDateTable_user( String user) async {
+    List<dynamic> data =[];
+    data=await Api()
+        .get(url:url+ 'client/getclient_accept_user.php?user_id=$user');
+
+    List<ClientModel> prodlist =
+    await compute<List<dynamic>, List<ClientModel>>
+      (convertToClients, data);
+    return prodlist;
+  }
   Future<List<ClientModel>> getAllClientsupport(String? fkcountry,List<int>? listparam) async {
     List<dynamic> data =[];
     if(listparam!=null) {

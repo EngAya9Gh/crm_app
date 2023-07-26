@@ -257,7 +257,7 @@ class InvoiceModel extends CacheRepository {
     namemaincity = jsondata['namemaincity'];
     id_maincity = jsondata['id_maincity'];
     numbarnch = jsondata['numbarnch'];
-    renewPlus = jsondata['renew_plus'];
+    renewPlus = jsondata['renew_pluse'];
     numusers = jsondata['numusers'];
     nummostda = jsondata['nummostda'];
     numTax = jsondata['numTax'];
@@ -382,7 +382,7 @@ class InvoiceModel extends CacheRepository {
     _data['nummostda'] = nummostda;
     _data['numusers'] = numusers;
     _data['numTax'] = numTax;
-    _data['renew_plus'] = renewPlus;
+    _data['renew_pluse'] = renewPlus;
     _data['hoursdelaytabel'] = hoursdelaytabel;
     _data['hoursdelayinstall'] = hoursdelayinstall;
     _data['clientusername'] = clientusername;
