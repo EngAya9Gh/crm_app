@@ -147,6 +147,14 @@ class _addinvoiceState extends State<addinvoice> {
       print('init in addinvoice screen main');
       totalController = '0';
       _invoice = widget.invoice;
+      numbranchController.addListener(() {
+        num number = 0;
+        if (numbranchController.text.isNotEmpty) {
+          number = num.tryParse(numbranchController.text) ?? 0;
+        }
+        isNumberOfBranchesBiggerThanOne.value = number > 1;
+      });
+
       if (_invoice != null) {
         print('in if invoice');
         //in mode edit
@@ -154,14 +162,6 @@ class _addinvoiceState extends State<addinvoice> {
         // Provider.of<invoice_vm>(context,listen: false).set_total(totalController.toString());
         numuserController.text = _invoice!.numusers == null ? '' : _invoice!.numusers.toString();
         nummostawdaController.text = _invoice!.nummostda == null ? '' : _invoice!.nummostda.toString();
-
-        numbranchController.addListener(() {
-          num number = 0;
-          if (numbranchController.text.isNotEmpty) {
-            number = num.tryParse(numbranchController.text) ?? 0;
-          }
-          isNumberOfBranchesBiggerThanOne.value = number > 1;
-        });
 
         numbranchController.text = _invoice!.numbarnch == null ? '' : _invoice!.numbarnch.toString();
         renewAdditionalOfBranchesController.text = _invoice!.renewPlus == null ? '' : _invoice!.renewPlus.toString();

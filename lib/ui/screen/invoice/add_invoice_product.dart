@@ -22,8 +22,8 @@ import '../../../constants.dart';
 import '../../../labeltext.dart';
 
 enum ProductType {
-  program,
   device,
+  program
 }
 
 class add_invoiceProduct extends StatefulWidget {
@@ -254,19 +254,15 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                               ],
                               color: Colors.white,
                             ),
-                            child: Directionality(
-
-                              textDirection: TextDirection.ltr,
-                              child: GroupButton(
-                                controller: GroupButtonController(selectedIndex: selectedProductType?.index),
-                                options: GroupButtonOptions(
-                                    buttonWidth: (MediaQuery.sizeOf(context).width / 2) - 50,
-                                    borderRadius: BorderRadius.circular(10)),
-                                buttons: ['برامج','أجهزة'],
-                                enableDeselect: true,
-                                onSelected: (_, index, isselected) =>
-                                    onChangeProductType(ProductType.values[index] , isselected),
-                              ),
+                            child: GroupButton(
+                              controller: GroupButtonController(selectedIndex: selectedProductType?.index),
+                              options: GroupButtonOptions(
+                                  buttonWidth: (MediaQuery.sizeOf(context).width / 2) - 50,
+                                  borderRadius: BorderRadius.circular(10)),
+                              buttons: ['أجهزة','برامج'],
+                              enableDeselect: true,
+                              onSelected: (_, index, isselected) =>
+                                  onChangeProductType(ProductType.values[index] , isselected),
                             ),
                           ),
                           SizedBox(height: 10),
