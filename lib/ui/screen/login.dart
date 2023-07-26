@@ -93,7 +93,8 @@ class _loginState extends State<login> {
                       if (val.sendcode) {
                         Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
 
-                        if (await AuthServices().send_otp(valEmail.trim())) {
+                        final email = valEmail.trim();
+                        if (await AuthServices().send_otp(email)) {
                           _textcontroller!.text="";
                           val.changeboolValue();
                           Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
@@ -111,7 +112,10 @@ class _loginState extends State<login> {
                         print(valEmail);
                         print(valueField);
                         Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
-                        String? res=await AuthServices().verfiy_otp(valEmail,valueField!);
+                        final email = valEmail.trim();
+                        final otpCode = valueField?.trim() ?? '';
+
+                        String? res=await AuthServices().verfiy_otp(email,otpCode);
                         print(res);
                         if (res!="false") {
                           SharedPreferences preferences  = await SharedPreferences.getInstance();
