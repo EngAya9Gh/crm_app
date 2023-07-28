@@ -198,7 +198,6 @@ notifyListeners();
 
       listclient.forEach((element) {
 
-
             if(element.date_visit_Client!=null){
             DateTime temp = DateTime
                 .parse(element.date_visit_Client.toString())

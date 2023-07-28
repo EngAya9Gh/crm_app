@@ -174,6 +174,32 @@ class Invoice_Service {
     print(prodlist);
     return prodlist;
   }
+  Future<List<InvoiceModel>> getinvoicebyiduser_marketing(String iduser) async {
+    var
+    data=await Api()
+        .get(url:url+ 'client/invoice/getinvoiceMarkting_user.php?iduser=$iduser');
+    print(data);
+    List<InvoiceModel> prodlist = [];
+    for (int i = 0; i < data.length; i++) {
+      print(i);
+      prodlist.add(InvoiceModel.fromJson(data[i]));
+    }
+    print(prodlist);
+    return prodlist;
+  }
+  Future<List<InvoiceModel>> getinvoicebyregoin_marketing(String regoin) async {
+    var
+    data=await Api()
+        .get(url:url+ 'client/invoice/getclientMarketing_regoin.php?regoin=$regoin');
+    print(data);
+    List<InvoiceModel> prodlist = [];
+    for (int i = 0; i < data.length; i++) {
+      print(i);
+      prodlist.add(InvoiceModel.fromJson(data[i]));
+    }
+    print(prodlist);
+    return prodlist;
+  }
   Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst( Map<String,dynamic> body) async {
     var
     data=await Api()

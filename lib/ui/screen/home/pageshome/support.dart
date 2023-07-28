@@ -113,15 +113,15 @@ class _supportpageState extends State<supportpage> {
                       support_install_report()));
             }, title: 'تقرير التركيب للعملاء'):Container(),
 
-           buildSelectCategory(
-               colorbag: Colors.white,
-               colortitle: Colors.black,
-               colorarrow: Colors.black,
-               onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context)=>
-                      waiting_report()));
-            }, title: 'تقرير عملاء الانتظار') ,
+           // buildSelectCategory(
+           //     colorbag: Colors.white,
+           //     colortitle: Colors.black,
+           //     colorarrow: Colors.black,
+           //     onTap: () {
+           //    Navigator.push(context, MaterialPageRoute(
+           //        builder: (context)=>
+           //            waiting_report()));
+           //  }, title: 'تقرير عملاء الانتظار') ,
            privilge.checkprivlge('100')==true?
            buildSelectCategory(
                colorbag: Colors.white,

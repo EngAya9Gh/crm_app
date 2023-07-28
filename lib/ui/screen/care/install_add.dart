@@ -241,11 +241,13 @@ class _installAddState extends State<installAdd> {
                     title: 'تاريخ عقد الإشتراك',
                     value: widget.com.date_approve.toString()),
                 SizedBox(height: 10,),
-                widget.com.typeCommuncation=='تركيب'&&widget.com.dateCommunication!=null?
+
+                widget.com.typeCommuncation=='تركيب'&&widget.com.dateCommunication==null?
                 cardRow(
                     title: 'تاريخ التركيب',
                     value:widget.com.dateinstall_done.toString()):Container(),
                   SizedBox(height: 10,),
+
                 widget.com.typeCommuncation=='تركيب'&&widget.com.dateCommunication!=null?
                 cardRow(
                     title: 'تاريخ التركيب',
