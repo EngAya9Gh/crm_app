@@ -236,7 +236,6 @@ class _addinvoiceState extends State<addinvoice> {
         ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
         ..selectValueCurrency(int.parse(currencyController.toString()));
 
-
       print(typeinstallController);
     });
     super.initState();
@@ -386,30 +385,45 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 5,
                       ),
-                      RowEdit(name: label_renew, des: '*'),
-                      EditTextFormField(
-                        hintText: label_renew,
-                        obscureText: false,
-                        vaild: (value) {
-                          if (value?.trim().isEmpty ?? true) {
-                            return label_empty;
-                          }
-                          if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
-
-                          if (num.parse(value!) < 0) {
-                            return "يجب إدخال قيمة مناسبة";
-                          }
-                          return null;
+                      Consumer<invoice_vm>(
+                        builder: (context, data, _) {
+                          bool invoiceHaveProductsOfTypePrograms = data.listproductinvoic
+                              .any((element) => element.type == ProductType.program.index.toString());
+                          return RowEdit(name: label_renew, des: invoiceHaveProductsOfTypePrograms ? "*" : ' ');
                         },
-                        inputType: TextInputType.number,
-                        // inputformate: <TextInputFormatter>[
-                        //   FilteringTextInputFormatter.digitsOnly
-                        // ],
-                        controller: renewController,
-                        //اسم المؤسسة
-                        label: label_renew,
-                        onChanged: (val) {
-                          // nameprod = val;
+                      ),
+                      Consumer<invoice_vm>(
+                        builder: (context, data, _) {
+                          bool invoiceHaveProductsOfTypePrograms = data.listproductinvoic
+                              .any((element) => element.type == ProductType.program.index.toString());
+
+                          return EditTextFormField(
+                            hintText: label_renew,
+                            obscureText: false,
+                            vaild: (value) {
+                              if ((value?.trim() == '0' || (value?.trim().isEmpty ?? true)) &&
+                                  invoiceHaveProductsOfTypePrograms) {
+                                return 'الحقل مطلوب.';
+                              }
+                              if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
+
+
+                              if (num.parse(value!) < 0) {
+                                return "يجب إدخال قيمة أكبر من 0.";
+                              }
+                              return null;
+                            },
+                            inputType: TextInputType.number,
+                            // inputformate: <TextInputFormatter>[
+                            //   FilteringTextInputFormatter.digitsOnly
+                            // ],
+                            controller: renewController,
+                            //اسم المؤسسة
+                            label: label_renew,
+                            onChanged: (val) {
+                              // nameprod = val;
+                            },
+                          );
                         },
                       ),
                       SizedBox(
