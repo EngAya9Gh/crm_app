@@ -151,10 +151,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                           ],
                         ),
 
-                        search_widget(
-                            'waitwithprev',
-                            hintnamefilter,''
-                        ),
+
                         Row (
                           children: [
                             Flexible(
@@ -233,6 +230,10 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                               ),
                             ),
                           ],),
+                        search_widget(
+                            'waitwithprev',
+                            hintnamefilter,''
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0,right: 30),
                           child: Row(
