@@ -257,7 +257,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                             child: GroupButton(
                               controller: GroupButtonController(selectedIndex: selectedProductType?.index),
                               options: GroupButtonOptions(
-                                  buttonWidth: (MediaQuery.sizeOf(context).width / 2) - 50,
+                                  buttonWidth: (MediaQuery.of (context).size.width / 2) - 50,
                                   borderRadius: BorderRadius.circular(10)),
                               buttons: ['أجهزة','برامج'],
                               enableDeselect: true,
