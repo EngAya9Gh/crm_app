@@ -21,12 +21,13 @@ import 'dart:io';
 
 import '../../screen/barnch_race/pages/branch_race_view.dart';
 import '../../screen/employee_race/pages/employee_race_page.dart';
+import '../animated_dialog.dart';
+import '../delete_acconut_dialog.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
 
   //final controllerUsers = Get.find<AllUserVMController>();
-
   @override
   Widget build(BuildContext context) {
     var controllerUsers = Provider.of<user_vm_provider>(context, listen: true);
@@ -51,7 +52,8 @@ class CustomDrawer extends StatelessWidget {
               ),
               currentAccountPicture: CircleAvatar(
                   backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Color(0xFF56ccf2) : Colors.grey,
-                  child: (Provider.of<user_vm_provider>(context, listen: true).currentUser.img_image?.isNotEmpty ?? false)
+                  child: (Provider.of<user_vm_provider>(context, listen: true).currentUser.img_image?.isNotEmpty ??
+                          false)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(45),
                           child: CachedNetworkImage(
@@ -158,30 +160,30 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute<void>(builder: (BuildContext context) =>
-                      BranchRaceView()),
+                  MaterialPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
                 );
                 // ProductView();
               },
             ),
-            Provider.of<privilge_vm>(context,listen: true).checkprivlge('118') == true?
-            ListTile(
-              title: Text(
-                'سباق الموظفين',
-                style: TextStyle(fontFamily: kfontfamily2),
-              ),
-              leading: Icon(
-                Icons.bar_chart,
-                color: kMainColor,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
-                );
-                // ProductView();
-              },
-            ):Container(),
+            Provider.of<privilge_vm>(context, listen: true).checkprivlge('118') == true
+                ? ListTile(
+                    title: Text(
+                      'سباق الموظفين',
+                      style: TextStyle(fontFamily: kfontfamily2),
+                    ),
+                    leading: Icon(
+                      Icons.bar_chart,
+                      color: kMainColor,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
+                      );
+                      // ProductView();
+                    },
+                  )
+                : Container(),
             ListTile(
               title: Text(
                 'تسجيل الخروج',
@@ -194,14 +196,30 @@ class CustomDrawer extends StatelessWidget {
               onTap: () async {
                 SharedPreferences preferences = await SharedPreferences.getInstance();
                 await preferences.clear();
-                if(context.mounted) {
+                if (context.mounted) {
                   Navigator.pushAndRemoveUntil(
-                    context, MaterialPageRoute(builder: (context) => login()), (route) => false);
+                      context, MaterialPageRoute(builder: (context) => login()), (route) => false);
                 }
 
                 // preferences.setBool(kKeepMeLoggedIn, false);
               },
-            )
+            ),
+            ListTile(
+              title: Text(
+                'حذف حسابي',
+                style: TextStyle(fontFamily: kfontfamily2),
+              ),
+              leading: Icon(
+                Icons.delete_rounded,
+                color: Colors.red,
+              ),
+              onTap: () async {
+                AnimatedDialog.show(
+                  context,
+                  child: DeleteAccountDialog(),
+                );
+              },
+            ),
           ],
         ),
       ),
