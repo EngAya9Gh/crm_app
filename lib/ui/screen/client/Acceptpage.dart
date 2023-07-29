@@ -20,8 +20,9 @@ import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-
+import 'dart:ui' as myui;
 class invoicesAcceptclient extends StatefulWidget {
   invoicesAcceptclient({Key? key}) : super(key: key);
 
@@ -33,7 +34,8 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   String? regoin;
   String? typeclientvalue;
   late ClientModel itemClient;
-
+  DateTime _selectedDatefrom = DateTime.now();
+  DateTime _selectedDateto = DateTime.now();
   // late String typepayController;
   @override
   void didChangeDependencies() async {
@@ -77,7 +79,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
           builder: (context, privilge, child) {
             return SafeArea(
               child: Directionality(
-                textDirection: TextDirection.rtl,
+                textDirection: myui.TextDirection.rtl,
                 child: Padding(
                     padding: const EdgeInsets.only(top: 10, bottom: 10),
                     child: ListView(
@@ -153,7 +155,84 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                             'waitwithprev',
                             hintnamefilter,''
                         ),
+                        Row (
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('from'),
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                        return 'يرجى تعيين التاريخ ';
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.date_range,
+                                        color: kMainColor,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                          ? 'from' //_currentDate.toString()
+                                          : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                                      //_invoice!.dateinstall_task.toString(),
+                                      filled: true,
+                                      fillColor: Colors.grey.shade200,
+                                    ),
+                                    readOnly: true,
+                                    onTap: () {
+                                      _selectDatefrom(context, DateTime.now());
 
+
+                                      // _selectDate(context, DateTime.now());
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Flexible(
+                              child: Column(
+                                children: [
+                                  Text('to'),
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (_selectedDateto == DateTime(1, 1, 1)) {
+                                        return 'يرجى تعيين التاريخ ';
+                                      }
+                                    },
+                                    decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.date_range,
+                                        color: kMainColor,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                      hintText: _selectedDateto == DateTime(1, 1, 1)
+                                          ? 'to' //_currentDate.toString()
+                                          : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                                      //_invoice!.dateinstall_task.toString(),
+                                      filled: true,
+                                      fillColor: Colors.grey.shade200,
+                                    ),
+                                    readOnly: true,
+                                    onTap: () {
+                                      _selectDateto(context, DateTime.now());
+                                      // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                                      //   getData();
+                                      // _selectDate(context, DateTime.now());
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],),
                         Padding(
                           padding: const EdgeInsets.only(left: 30.0,right: 30),
                           child: Row(
@@ -227,8 +306,48 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
     print(regoin);
     print(typeclientvalue);
     Provider.of<invoice_vm>(context,listen: false)
-        .getfilterinvoicesclient(typeclientvalue,regoin);
+        .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);
 
     // }
+  }
+
+  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+    DateTime? pickedDate = await showDatePicker(
+
+        context: context,
+        currentDate: currentDate,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(3010));
+    if (pickedDate != null)
+      setState(() {
+        // Navigator.pop(context);
+        _selectedDatefrom = pickedDate;
+        print(_selectedDatefrom.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          Provider.of<invoice_vm>(context,listen: false)
+              .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);
+
+      });
+  }
+  Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
+    DateTime? pickedDate = await showDatePicker(
+      // initialEntryMode: DatePickerEntryMode.calendarOnly,
+      // initialDatePickerMode: DatePickerMode.year,
+        context: context,
+        currentDate: currentDate,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(3010));
+    if (pickedDate != null)
+      setState(() {
+        // Navigator.pop(context);
+        _selectedDateto = pickedDate;
+        print(_selectedDateto.toString());
+        if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          Provider.of<invoice_vm>(context,listen: false)
+              .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);
+
+      });
   }
 }

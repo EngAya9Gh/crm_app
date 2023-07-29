@@ -215,34 +215,49 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getfilterinvoicesclient(String? filter, String? regoin) async {
+  Future<void> getfilterinvoicesclient(String? filter, String? regoin,DateTime from,DateTime to) async {
     List<InvoiceModel> _listInvoicesAccept = [];
 
     if (regoin == null) {
       print(filter);
       if (listforme.isNotEmpty) {
         if (filter == 'الكل') {
-          _listInvoicesAccept = List.from(listforme);
+          // _listInvoicesAccept = List.from(listforme);
+          listforme.forEach((element) {
+            if (
+                 DateTime.parse(element.date_approve.toString()).isAfter(from)
+                && DateTime.parse(element.date_approve.toString()).isBefore(to)
+            ) {
+              _listInvoicesAccept.add(element);
+
+            }
+          });
           print('serch الكل');
         }
         if (filter == 'بالإنتظار')
           listforme.forEach((element) {
             print(element.isdoneinstall);
-            if (element.isdoneinstall == null) {
+            if (element.isdoneinstall == null  
+                && DateTime.parse(element.date_approve.toString()).isAfter(from) 
+                && DateTime.parse(element.date_approve.toString()).isBefore(to) 
+            ) {
               _listInvoicesAccept.add(element);
               print('serch بالانتظار');
             }
           });
         if (filter == 'تم التركيب')
           listforme.forEach((element) {
-            if (element.isdoneinstall == '1') {
+            if (element.isdoneinstall == '1'       && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
               _listInvoicesAccept.add(element);
               print('serch تم التركيب');
             }
           });
         if (filter == 'معلق')
           listforme.forEach((element) {
-            if (element.isdoneinstall != '1' && element.ready_install == '0') {
+            if (element.isdoneinstall != '1' && element.ready_install == '0'
+                && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
               _listInvoicesAccept.add(element);
               print('serch lمعلق');
             }
@@ -253,7 +268,9 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'الكل' || filter == null) {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.fk_regoin == regoin) {
+              if (element.fk_regoin == regoin
+                  && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                  && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
                 _listInvoicesAccept.add(element);
                 print('regoin الكل');
               }
@@ -265,14 +282,18 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'بالإنتظار') {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.isdoneinstall.toString() == null && element.fk_regoin == regoin) {
+              if (element.isdoneinstall.toString() == null && element.fk_regoin == regoin
+                  && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                  && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
                 _listInvoicesAccept.add(element);
                 print('regoin بالإنتظار');
               }
             });
           } else {
             listforme.forEach((element) {
-              if (element.isdoneinstall.toString() == null) {
+              if (element.isdoneinstall.toString() == null
+                  && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                  && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
                 _listInvoicesAccept.add(element);
                 print('regoin بالإنتظار');
               }
@@ -282,14 +303,18 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'تم التركيب') {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.isdoneinstall == '1' && element.fk_regoin == regoin) {
+              if (element.isdoneinstall == '1' && element.fk_regoin == regoin
+                  && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                  && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
                 _listInvoicesAccept.add(element);
                 print('regoin تم التركيب');
               }
             });
           } else {
             listforme.forEach((element) {
-              if (element.isdoneinstall == '1') {
+              if (element.isdoneinstall == '1'
+                  && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                  && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
                 _listInvoicesAccept.add(element);
                 print('regoin تم التركيب');
               }
@@ -299,14 +324,20 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'معلق') {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install == '0' && element.fk_regoin == regoin) {
+              if (element.isdoneinstall != '1' &&
+                  element.ready_install == '0' &&
+                  element.fk_regoin == regoin
+                  && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                  && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
                 _listInvoicesAccept.add(element);
                 print('regoin معلق');
               }
             });
           } else {
             listforme.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install == '0') {
+              if (element.isdoneinstall != '1' && element.ready_install == '0'
+                  && DateTime.parse(element.date_approve.toString()).isAfter(from)
+                  && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
                 _listInvoicesAccept.add(element);
                 print('معلق  ');
               }
@@ -315,6 +346,7 @@ class invoice_vm extends ChangeNotifier {
         }
       }
     }
+
     listInvoicesAccept = List.from(_listInvoicesAccept);
     notifyListeners();
   }
