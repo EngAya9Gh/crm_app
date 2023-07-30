@@ -15,10 +15,12 @@ import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../function_global.dart';
+import 'communcation_view_widget.dart';
 class care_client_view extends StatefulWidget {
    care_client_view({required this.fk_client,Key? key}) : super(key: key);
   String fk_client;
@@ -34,102 +36,76 @@ class _care_client_viewState extends State<care_client_view> {
   Widget build(BuildContext context) {
     listCommunication=Provider.of<communication_vm>(context, listen: true)
         .listCommunicationClient;
-    listticket_client= Provider.of<ticket_vm>(context, listen: true)
-        .listticket_client;
+    // listticket_client= Provider.of<ticket_vm>(context, listen: true)
+    //     .listticket_client;
     return Scaffold(
 
       body: Directionality(
 
         textDirection: TextDirection.rtl,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 8.0),
-              //   child: Text('عدد التذاكر التي فتحت للعميل '+listticket_client.length.toString()),
-              // ),
-              SizedBox(height: 8,),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //   // listticket_client.isNotEmpty||
-              //   //     listticket_client.firstWhere(
-              //   //             (element) =>
-              //   //         element.typeTicket=='قيد التنفيذ' ||   element.typeTicket=='جديدة',
-              //   //         orElse: ()=>TicketModel(
-              //   //             idTicket: '',
-              //   //             fkClient: '',
-              //   //             typeProblem: '',
-              //   //             detailsProblem: '',
-              //   //             notesTicket: '',
-              //   //             typeTicket: '',
-              //   //             fkUserOpen: '',
-              //   //             fkUserClose: '',
-              //   //             fkUserRecive: '',
-              //   //             dateOpen: '',
-              //   //             dateClose: '',
-              //   //             dateRecive: '',
-              //   //             clientType: '',
-              //   //             nameClient: '',
-              //   //             nameEnterprise: '',
-              //   //             nameRegoin: '',
-              //   //             nameuseropen: '',
-              //   //             nameuserrecive: '', nameuserclose: '',
-              //   //             fk_country: '')).idTicket!=''?
-              //   //       Text('توجد تذكرة دعم فني مفتوحة حالياً')
-              //   //     : ElevatedButton(
-              //   //     style: ButtonStyle(
-              //   //         backgroundColor: MaterialStateProperty.all(
-              //   //             kMainColor)),
-              //   //     onPressed: () async{
-              //   //       Navigator.push(context,
-              //   //           MaterialPageRoute(builder: (context)=>
-              //   //               ticketAdd(fk_client: widget.fk_client.toString(),)));
-              //   //     },
-              //   //     child: Text(' فتح تذكرة دعم ')) ,
-              //      //SizedBox(width: 5,),
-              //     listticket_client.isNotEmpty?
-              //     buildSelectCategory(
-              //       colorbag: kMainColor,
-              //       colorarrow: kWhiteColor,
-              //       colortitle: kWhiteColor,
-              //       onTap: () async{
-              //         Navigator.push(context,
-              //             MaterialPageRoute(builder: (context)=>
-              //                 ticketall()));
-              //       },
-              //       title:
-              //       'عدد التذاكر التي فتحت للعميل   '+listticket_client.length.toString(),
-              //     ):Container(),
-              // ],),
-          //     listCommunication.isNotEmpty?
-          // Text(''):ContainerShadows(
-          // margin: EdgeInsets.only(),
-          // child: Center(child: Text('العميل ليس لديه أي تواصلات '))),
+        child: Padding(
 
-              SizedBox(height: 10,),
-              listticket_client.isNotEmpty?
-              buildcardExpansion('تفاصيل آخر تذكرة','',
-                  TicketView(ticketModel: listticket_client.last ,type:'1' )):Container(),
+            padding: const EdgeInsets.all(16.0),
+            child:GroupedListView<CommunicationModel, String>(
+              elements:  listCommunication,
+              groupBy: (element) {
+                switch(element.typeCommuncation)
+                {
+                  case 'ترحيب':
+                    return 'ترحيب';
 
-              for(int i=0;i<listCommunication.length;i++)
-                if(listCommunication[i].typeCommuncation!='دوري')
-                  commview(listCommunication[i]) ,
+                  case 'تركيب':
+                    return 'تركيب';
 
-             // else commview(listCommunication[i])
-              listCommunication.isNotEmpty?
-              commview( listCommunication
-                  .firstWhere((element) => element.typeCommuncation=='دوري',
-                  orElse: ()=> CommunicationModel(
-                    idCommunication: '',nameUser: '',nameEnterprise: '',
-                    clientRepeat: '',result: '',number_wrong: '',rate: '',
-                    typeCommuncation: '',mobile: '',notes: '',
-                    fkClient: '',fkUser: '',date_create: '',dateNext: '',
-                    dateCommunication: '',id_invoice: '',dateinstall_done: ''
-                  ) ) ) :Container(),
-            ],
-          ),
-        ),
+                  case 'دوري':
+                    return 'دوري';
+
+                }
+                return '';
+              },
+              groupComparator: (value1, value2) =>
+                  value2.compareTo(value1),
+              itemComparator: (item1, item2) =>
+                  item1.idCommunication!.compareTo(item2.idCommunication),
+              order: GroupedListOrder.ASC,
+              useStickyGroupSeparators: true,
+              groupSeparatorBuilder: (String value) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  value,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              itemBuilder: (c, element) {
+                return Container(
+                    //children: _privilgelist.map(( key) {
+                    child:
+                    Column(
+                      children: [
+                       // for(int i=0;i<listCommunication.length;i++)
+                          // if(listCommunication[i].typeCommuncation!='دوري')
+                        communcation_view_widget(element: element),
+
+                       // else commview(listCommunication[i])
+                       //  listCommunication.isNotEmpty?
+                       //  commview( listCommunication
+                       //      .firstWhere((element) => element.typeCommuncation=='دوري',
+                       //  orElse: ()=> CommunicationModel(
+                       //  idCommunication: '',nameUser: '',nameEnterprise: '',
+                       //  clientRepeat: '',result: '',number_wrong: '',rate: '',
+                       //  typeCommuncation: '',mobile: '',notes: '',
+                       //  fkClient: '',fkUser: '',date_create: '',dateNext: '',
+                       //  dateCommunication: '',id_invoice: '',dateinstall_done: ''
+                       //  ) ) ) :Container(),
+                      ],
+                    )
+
+                );
+
+                // );
+              },
+            )),
       ),
     );
   }

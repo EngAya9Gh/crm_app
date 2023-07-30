@@ -39,7 +39,7 @@ class _installAddState extends State<installAdd> {
 
   String?  titleInstall='هذا العميل مشترك جديد , قم بالتواصل مع العميل والتأكد من جودة التركيب والتدريب له , ثم اكتب تعليق وانقر على زر تم التواصل';
 
-  double rate=1.0;
+  double rate=0.0;
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<comment_vm>(context, listen: false)
@@ -71,7 +71,8 @@ class _installAddState extends State<installAdd> {
                 titleInstall.toString():
                 widget.com.type_install=='2'?
                      ''
-                    :titleWelcom.toString() ):Container(),
+                    :titleWelcom.toString()
+                ):Container(),
                 Divider(thickness: 1,color: Colors.grey,),
                 SizedBox(height: 10,),
                 Row(

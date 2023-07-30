@@ -33,15 +33,26 @@ class communication_vm extends ChangeNotifier{
     selectedtypeinstall=s;
     notifyListeners();
   }
-  void getCommunicationclient(String fk_client) {
+  void getCommunicationclient(String fk_client)async {
     listCommunicationClient=[];
     notifyListeners();
-    if(listCommunication.isNotEmpty){
-      listCommunication.forEach((element) {
-        if(element.fkClient==fk_client&&element.dateCommunication!=null)
-          listCommunicationClient.add(element);
-      });
-    }
+    // if(listCommunication.isNotEmpty) {
+    //   listCommunication.forEach((element) {
+    //     if(element.fkClient==fk_client&&element.dateCommunication!=null)
+    //       listCommunicationClient.add(element);
+    //   });
+    // }
+    List<dynamic> data=[];
+    data= await Api()
+        .get(url:url+ 'care/getCommunicationClient.php?fk_client=${fk_client}');
+    print(data);
+
+
+      if(data.length.toString().isNotEmpty) {
+        for (int i = 0; i < data.length; i++) {
+          listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
+        }
+      }
       notifyListeners();
   }
   void isloadval(bool val){

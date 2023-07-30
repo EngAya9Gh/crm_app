@@ -222,14 +222,13 @@ class invoice_vm extends ChangeNotifier {
       print(filter);
       if (listforme.isNotEmpty) {
         if (filter == 'الكل') {
-          // _listInvoicesAccept = List.from(listforme);
+          //_listInvoicesAccept = List.from(listforme);
           listforme.forEach((element) {
             if (
                  DateTime.parse(element.date_approve.toString()).isAfter(from)
-                && DateTime.parse(element.date_approve.toString()).isBefore(to)
-            ) {
-              _listInvoicesAccept.add(element);
-
+                 &&
+                 DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
+                 _listInvoicesAccept.add(element);
             }
           });
           print('serch الكل');
@@ -276,7 +275,15 @@ class invoice_vm extends ChangeNotifier {
               }
             });
           } else {
-            _listInvoicesAccept = List.from(listforme);
+            listforme.forEach((element) {
+              if (
+              DateTime.parse(element.date_approve.toString()).isAfter(from)
+                  &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
+                _listInvoicesAccept.add(element);
+              }
+            });
+            //_listInvoicesAccept = List.from(listforme);
           }
         }
         if (filter == 'بالإنتظار') {
@@ -346,7 +353,13 @@ class invoice_vm extends ChangeNotifier {
         }
       }
     }
-
+    if (regoin == null && filter==null){
+      listforme.forEach((element) {
+        if ( DateTime.parse(element.date_approve.toString()).isAfter(from)
+            && DateTime.parse(element.date_approve.toString()).isBefore(to) ) {
+          _listInvoicesAccept.add(element);
+    }});
+    }
     listInvoicesAccept = List.from(_listInvoicesAccept);
     notifyListeners();
   }
