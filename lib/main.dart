@@ -38,6 +38,7 @@ import 'package:crm_smart/view_model/usertest_vm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -91,6 +92,8 @@ void main() async {
   //   runApp(MyApp());
   // }
   //await Firebase.initializeApp();
+  await initializeDateFormatting();
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<user_vm_provider>(create: (_) => user_vm_provider()),
     ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),

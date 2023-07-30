@@ -59,6 +59,7 @@ dependencies:
   async: ^2.8.2
   marquee: ^2.2.3
   text_scroll: ^0.1.0
+  table_calendar: ^3.0.8
 
 
 dependency_overrides:
