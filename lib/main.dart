@@ -164,9 +164,9 @@ void main() async {
     //ChangeNotifierProvider<invoice_vm>(create: (_) => invoice_vm()),
     ChangeNotifierProvider<typeclient>(create: (_) => typeclient()),
 
-    ChangeNotifierProxyProvider<invoice_vm, EventProvider>(
+    ChangeNotifierProvider<EventProvider>(
       create: (_) => EventProvider(),
-      update: (ctx, value, prev) => prev!..setvalue(value.listInvoicesAccept),
+      // update: (ctx, value, prev) => prev!..setvalue(value.listInvoicesAccept),
     ),
     ChangeNotifierProxyProvider<user_vm_provider, ticket_vm>(
       create: (_) => ticket_vm(),

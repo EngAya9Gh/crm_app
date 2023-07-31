@@ -18,8 +18,11 @@ class user_vm_provider extends ChangeNotifier {
   bool isupdate = false;
   late UserModel? selecteduser = null;
 
-  void changevalueuser(UserModel? s) {
+  void changevalueuser(UserModel? s , [bool isInit = false]) {
     selecteduser = s;
+    if(isInit){
+      return ;
+    }
     notifyListeners();
   }
 

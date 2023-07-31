@@ -1,19 +1,21 @@
 import 'dart:collection';
 
+import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/calendar/event.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
+import 'package:crm_smart/services/date_installation_service.dart';
 
 // import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../model/clientmodel.dart';
+import 'page_state.dart';
 
 class EventProvider extends ChangeNotifier {
   bool is_save = false;
-  final List<Event> _events = [];
-  bool loadEvents = false;
+  List<Event> _events = [];
 
   List<Event> get events => _events;
   LinkedHashMap<DateTime, List<Event>> eventDataSource = LinkedHashMap();
@@ -23,9 +25,15 @@ class EventProvider extends ChangeNotifier {
 
   void setDate(DateTime date) => _selectDate = date;
 
+  List<String>? selectedMainCityFks;
+  String? selectedFkUser;
+  late String fkCountry;
+
 //when click this date show events المرتبيط for this date just
   List<Event> get eventsOfSelectedDate => _events;
-  List<InvoiceModel> listinvoices = [];
+  PageState<List<AppointmentModel>> appointmentsState = PageState();
+
+  // List<InvoiceModel> listinvoices = [];
   List<ClientModel> listclient = [];
 
   void setvalue_save() {
@@ -33,9 +41,14 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setvalue(List<InvoiceModel> list) {
-    listinvoices = list;
-    notifyListeners();
+  // void setvalue(List<InvoiceModel> list) {
+  //   listinvoices = list;
+  //   notifyListeners();
+  // }
+
+  resetFilter() {
+    selectedMainCityFks = null;
+    selectedFkUser = null;
   }
 
   void setvalueClient(List<ClientModel> list) {
@@ -48,141 +61,224 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getevent_vm(// List<PrivilgeModel> privilgelist
-      ) async {
-    loadEvents = false;
-    notifyListeners();
-    late Event event; //
-    _events.clear();
+  Future<void> getAppointments() async {
+    try {
+      if (!appointmentsState.isLoading) {
+        appointmentsState = appointmentsState.changeToLoading;
+        notifyListeners();
+      }
 
-    listinvoices.forEach((element) {
-      if (element.dateinstall_task != null &&
-          (element.isdoneinstall == null || element.isdoneinstall != '0') &&
-          (element.daterepaly == null)) {
-        DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
-            ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
-            : DateTime.parse(element.dateinstall_task.toString());
-        print(element.dateinstall_task);
-        event = Event(
-            fkIdClient: element.fkIdClient,
-            title: element.name_enterprise.toString(),
-            description: 'description',
-            from: temp,
-            to: temp.add(Duration(hours: 2)),
-            idinvoice: element.idInvoice);
-        addEvents(event);
+      List<AppointmentModel> list;
+
+      if (selectedFkUser != null && selectedMainCityFks != null) {
+        /// mix
+        list = await DateInstallationService.getDateInstallationMix(
+          fkCountry: fkCountry,
+          fkUser: selectedFkUser!,
+          mainCityFks: selectedMainCityFks!.where((element) => element != '0').map((e) => int.parse(e)).toList(),
+        );
+      } else if (selectedFkUser != null && selectedMainCityFks == null) {
+        /// user
+        list = await DateInstallationService.getDateInstallationFkUser(
+          fkCountry: fkCountry,
+          fkUser: selectedFkUser!,
+        );
+      } else if (selectedFkUser == null && selectedMainCityFks != null) {
+        /// main city
+        list = await DateInstallationService.getDateInstallationMainCity(
+          fkCountry: fkCountry,
+          mainCityFks: selectedMainCityFks!.where((element) => element != '0').map((e) => int.parse(e)).toList(),
+        );
       } else {
-        if (element.daterepaly != null && element.isdoneinstall == null) {
-          DateTime temp = DateTime.parse(element.daterepaly.toString()).hour >= 21
-              ? DateTime.parse(element.daterepaly.toString()).subtract(Duration(hours: 3))
-              : DateTime.parse(element.daterepaly.toString());
-          print(element.daterepaly);
-          event = Event(
-              fkIdClient: element.fkIdClient,
-              title: element.name_enterprise.toString(),
-              description: 'description',
-              from: temp,
-              to: temp.add(Duration(hours: 2)),
-              idinvoice: element.idInvoice);
-          addEvents(event);
-        }
+        /// all
+        list = await DateInstallationService.getDateInstallationAll(fkCountry: fkCountry);
       }
-    });
 
-    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
-      _events,
-      key: (item) => (item as Event).from,
-      value: (item) => [item as Event],
-    );
+      appointmentsState = appointmentsState.changeToLoaded(list);
 
-    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
-      equals: isSameDay,
-      hashCode: getHashCode,
-    )..addAll(mapEvents);
-    // if(listClient.isEmpty)
-    //main list
-    // bool res= privilgelist.firstWhere(
-    //         (element) => element.fkPrivileg=='8').isCheck=='1'?true:false;
-    // if(res) {
-    //   listClient =
-    //   await ClientService().getAllClient(usercurrent!.fkCountry.toString());
-    //   listClientfilter = listClient;
-    // }
-    // else {
-    //   res= privilgelist.firstWhere(
-    //           (element) => element.fkPrivileg=='15').isCheck=='1'?true:false;
-    //   if(res) {
-    //     listClient =
-    //     await ClientService().getAllClientByRegoin(usercurrent!.fkRegoin.toString());
-    //     listClientfilter = listClient;
-    //   } else{
-    //
-    //     res= privilgelist.firstWhere(
-    //             (element) => element.fkPrivileg=='16').isCheck=='1'?true:false;
-    //     if(res) {
-    //       listClient =
-    //       await ClientService().getClientbyuser(usercurrent!.idUser.toString());
-    //       listClientfilter = listClient;
-    //     }
-    //   }
-    // }
-    loadEvents = true;
-    notifyListeners();
+      _events = list.map((e) => e.asEvent()).toList();
+
+      final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+        _events,
+        key: (item) => (item as Event).from,
+        value: (item) => _events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+      );
+
+      eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+        equals: isSameDay,
+        hashCode: getHashCode,
+      )..addAll(mapEvents);
+
+      notifyListeners();
+
+      return;
+    } catch (e) {
+      appointmentsState = appointmentsState.changeToFailed;
+      notifyListeners();
+      return;
+    }
   }
 
-  Future<void> getevents(String searchfilter, List<MainCityModel> idmaincitysList, String type) async {
-    late Event event; //
-    _events.clear();
-    if (type == 'regoin') {
-      List<int> listval = [];
-      int idexist = idmaincitysList.indexWhere((element) => element.id_maincity == '0');
-      if (idexist == -1) {
-        for (int i = 0; i < idmaincitysList.length; i++) listval.add(int.parse(idmaincitysList[i].id_maincity));
-      }
-      listinvoices.forEach((element) {
-        if (element.dateinstall_task != null && (element.isdoneinstall != null || element.isdoneinstall != '0')) {
-          for (int i = 0; i < listval.length; i++)
-            if (element.id_maincity == listval[i]) {
-              DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
-                  ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
-                  : DateTime.parse(element.dateinstall_task.toString());
-              print(element.dateinstall_task);
-              event = Event(
-                  fkIdClient: element.fkIdClient,
-                  title: element.name_enterprise.toString(),
-                  description: 'description',
-                  from: temp,
-                  to: temp.add(Duration(hours: 2)),
-                  idinvoice: element.idInvoice);
-              addEvents(event);
-            }
-        }
-      });
-    }
-
-    if (type == 'user') {
-      listinvoices.forEach((element) {
-        if (element.dateinstall_task != null && (element.isdoneinstall != null || element.isdoneinstall != '0')) {
-          if (element.fkIdUser == searchfilter) {
-            DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
-                ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
-                : DateTime.parse(element.dateinstall_task.toString());
-            print(element.dateinstall_task);
-            event = Event(
-                fkIdClient: element.fkIdClient,
-                title: element.name_enterprise.toString(),
-                description: 'description',
-                from: temp,
-                to: temp.add(Duration(hours: 2)),
-                idinvoice: element.idInvoice);
-            addEvents(event);
-          }
-        }
-      });
+  onChangeFkUser(String idUser) {
+    if (idUser.isEmpty) {
+      selectedFkUser = null;
+    } else {
+      selectedFkUser = idUser;
     }
 
     notifyListeners();
+    getAppointments();
   }
+
+  onChangeFkMainCity(List<String> mainCity) {
+    if (mainCity.isEmpty) {
+      selectedMainCityFks = null;
+    } else {
+      selectedMainCityFks = mainCity;
+    }
+    notifyListeners();
+    getAppointments();
+  }
+
+  setFkCountry(String fkCountry) {
+    this.fkCountry = fkCountry;
+  }
+
+  // Future<void> getevent_vm(// List<PrivilgeModel> privilgelist
+  //     ) async {
+  //   loadEvents = false;
+  //   notifyListeners();
+  //   late Event event; //
+  //   _events.clear();
+  //
+  //   listinvoices.forEach((element) {
+  //     if (element.dateinstall_task != null &&
+  //         (element.isdoneinstall == null || element.isdoneinstall != '0') &&
+  //         (element.daterepaly == null)) {
+  //       DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
+  //           ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
+  //           : DateTime.parse(element.dateinstall_task.toString());
+  //       print(element.dateinstall_task);
+  //       event = Event(
+  //           fkIdClient: element.fkIdClient,
+  //           title: element.name_enterprise.toString(),
+  //           description: 'description',
+  //           from: temp,
+  //           to: temp.add(Duration(hours: 2)),
+  //           idinvoice: element.idInvoice);
+  //       addEvents(event);
+  //     } else {
+  //       if (element.daterepaly != null && element.isdoneinstall == null) {
+  //         DateTime temp = DateTime.parse(element.daterepaly.toString()).hour >= 21
+  //             ? DateTime.parse(element.daterepaly.toString()).subtract(Duration(hours: 3))
+  //             : DateTime.parse(element.daterepaly.toString());
+  //         print(element.daterepaly);
+  //         event = Event(
+  //             fkIdClient: element.fkIdClient,
+  //             title: element.name_enterprise.toString(),
+  //             description: 'description',
+  //             from: temp,
+  //             to: temp.add(Duration(hours: 2)),
+  //             idinvoice: element.idInvoice);
+  //         addEvents(event);
+  //       }
+  //     }
+  //   });
+  //
+  //   final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+  //     _events,
+  //     key: (item) => (item as Event).from,
+  //     value: (item) => _events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+  //   );
+  //
+  //   eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+  //     equals: isSameDay,
+  //     hashCode: getHashCode,
+  //   )..addAll(mapEvents);
+  //   // if(listClient.isEmpty)
+  //   //main list
+  //   // bool res= privilgelist.firstWhere(
+  //   //         (element) => element.fkPrivileg=='8').isCheck=='1'?true:false;
+  //   // if(res) {
+  //   //   listClient =
+  //   //   await ClientService().getAllClient(usercurrent!.fkCountry.toString());
+  //   //   listClientfilter = listClient;
+  //   // }
+  //   // else {
+  //   //   res= privilgelist.firstWhere(
+  //   //           (element) => element.fkPrivileg=='15').isCheck=='1'?true:false;
+  //   //   if(res) {
+  //   //     listClient =
+  //   //     await ClientService().getAllClientByRegoin(usercurrent!.fkRegoin.toString());
+  //   //     listClientfilter = listClient;
+  //   //   } else{
+  //   //
+  //   //     res= privilgelist.firstWhere(
+  //   //             (element) => element.fkPrivileg=='16').isCheck=='1'?true:false;
+  //   //     if(res) {
+  //   //       listClient =
+  //   //       await ClientService().getClientbyuser(usercurrent!.idUser.toString());
+  //   //       listClientfilter = listClient;
+  //   //     }
+  //   //   }
+  //   // }
+  //   loadEvents = true;
+  //   notifyListeners();
+  // }
+
+  // Future<void> getevents(String searchfilter, List<MainCityModel> idmaincitysList, String type) async {
+  //   late Event event; //
+  //   _events.clear();
+  //   if (type == 'regoin') {
+  //     List<int> listval = [];
+  //     int idexist = idmaincitysList.indexWhere((element) => element.id_maincity == '0');
+  //     if (idexist == -1) {
+  //       for (int i = 0; i < idmaincitysList.length; i++) listval.add(int.parse(idmaincitysList[i].id_maincity));
+  //     }
+  //     listinvoices.forEach((element) {
+  //       if (element.dateinstall_task != null && (element.isdoneinstall != null || element.isdoneinstall != '0')) {
+  //         for (int i = 0; i < listval.length; i++)
+  //           if (element.id_maincity == listval[i]) {
+  //             DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
+  //                 ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
+  //                 : DateTime.parse(element.dateinstall_task.toString());
+  //             print(element.dateinstall_task);
+  //             event = Event(
+  //                 fkIdClient: element.fkIdClient,
+  //                 title: element.name_enterprise.toString(),
+  //                 description: 'description',
+  //                 from: temp,
+  //                 to: temp.add(Duration(hours: 2)),
+  //                 idinvoice: element.idInvoice);
+  //             addEvents(event);
+  //           }
+  //       }
+  //     });
+  //   }
+  //
+  //   if (type == 'user') {
+  //     listinvoices.forEach((element) {
+  //       if (element.dateinstall_task != null && (element.isdoneinstall != null || element.isdoneinstall != '0')) {
+  //         if (element.fkIdUser == searchfilter) {
+  //           DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
+  //               ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
+  //               : DateTime.parse(element.dateinstall_task.toString());
+  //           print(element.dateinstall_task);
+  //           event = Event(
+  //               fkIdClient: element.fkIdClient,
+  //               title: element.name_enterprise.toString(),
+  //               description: 'description',
+  //               from: temp,
+  //               to: temp.add(Duration(hours: 2)),
+  //               idinvoice: element.idInvoice);
+  //           addEvents(event);
+  //         }
+  //       }
+  //     });
+  //   }
+  //
+  //   notifyListeners();
+  // }
 
   int getHashCode(DateTime key) {
     return key.day * 1000000 + key.month * 10000 + key.year;
