@@ -139,6 +139,7 @@ class user_vm_provider extends ChangeNotifier {
     return true;
   }
 
+
   Future<SharedPreferences> getcurrentuser() async {
     prefs = await SharedPreferences.getInstance();
     try {
@@ -158,7 +159,8 @@ class user_vm_provider extends ChangeNotifier {
           print(prefs.containsKey('id_user'));
           prefs.setString("id_user1", '-1');
           return prefs;
-        } else {
+        }
+        else {
           SharedPreferences preferences = await SharedPreferences.getInstance();
           //preferences.setBool(kKeepMeLoggedIn, true);
           preferences.setString("id_user1", '0');

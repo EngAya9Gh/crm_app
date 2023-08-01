@@ -61,6 +61,8 @@ class privilge_vm extends ChangeNotifier {
   }
 
   Future<void> getprivlg_usercurrent() async {
+    print('usercurrent!.typeLevel.toStr');
+    print(usercurrent!.typeLevel.toString());
     privilgelist = await getPrivilge(usercurrent!.typeLevel.toString());
     notifyListeners();
   }

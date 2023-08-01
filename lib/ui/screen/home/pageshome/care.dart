@@ -32,12 +32,18 @@ class carepage extends StatefulWidget {
 class _carepageState extends State<carepage> {
   int lengthInstall=0;
   int lengthWelcome=0;
+
+
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
 
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
       Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
+
+      Provider.of<communication_vm>(context, listen: false)
+          .setvaluepriv(
+          Provider.of<privilge_vm>(context, listen: false).privilgelist);
      //  Provider.of<ticket_vm>(context,listen: false)
      //      .getclientticket_filter('جديدة');
      // await Provider.of<communication_vm>(context, listen: false)

@@ -1,3 +1,5 @@
+import 'package:crm_smart/model/privilgemodel.dart';
+
 import '../constants.dart';
 
 class UserModel {
@@ -26,6 +28,8 @@ class UserModel {
   String? img_thumbnail = '';
   String? path = '';
 
+  // List<PrivilgeModel>? privilgelist = [];
+
   UserModel({
      this.idUser,
      this.nameUser,
@@ -51,10 +55,11 @@ class UserModel {
     this.img_image,
     this.img_thumbnail,
     this.path,
+    // this.privilgelist,
   });
 
-  factory UserModel.fromJson(jsonData) {
-    return UserModel(
+    UserModel.fromJson(jsonData) {
+      UserModel(
       idUser: jsonData['id_user'],
       nameUser: jsonData['nameUser'],
 
@@ -80,7 +85,10 @@ class UserModel {
       fkuserupdate: jsonData['fkuserupdate'],
       updated_at: jsonData['updated_at'],
       nameuserupdate: jsonData['nameuserupdate'],
+      // privilgelist: getproud(jsonData['privilgelist']),
     );
+    // privilgelist= getproud(jsonData['privilgelist']);
+
   }
 
   Map<String, dynamic> toJson() {
@@ -111,6 +119,20 @@ class UserModel {
      _data['path']=path;
     return _data;
   }
+
+  List<PrivilgeModel> getproud(data) {
+    List<PrivilgeModel> prodlist = [];
+    if (data != null) {
+      for (int i = 0; i < data.length; i++) {
+        print(i);
+
+        //print("data "+ "[" + data[i] + "]");
+        prodlist.add(PrivilgeModel.fromJson(data[i]));
+      }
+    }
+    return prodlist;
+  }
+
   ///this method will prevent the override of toString
   String userAsString() {
     return "${this.nameUser}";
