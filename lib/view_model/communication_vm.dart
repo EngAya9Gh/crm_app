@@ -4,11 +4,11 @@
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
+import '../model/privilgemodel.dart';
 
 class communication_vm extends ChangeNotifier{
 
@@ -25,6 +25,7 @@ class communication_vm extends ChangeNotifier{
   void setvaluepriv(privilgelistparam) {
     print('in set privilge client vm');
     privilgelist = privilgelistparam;
+    param=get_privilgelist();
     notifyListeners();
   }
 
@@ -33,7 +34,7 @@ class communication_vm extends ChangeNotifier{
   String param='';
   void setvalue(user){
     usercurrent=user;
-    param=get_privilgelist();
+    // param=get_privilgelist();
     notifyListeners();
   }
   bool isloading=false;
@@ -356,7 +357,7 @@ class communication_vm extends ChangeNotifier{
     // if(listClient.isEmpty)
     //main list
     String param='';
-    bool res =  privilgelist?.firstWhere((element) => element.fkPrivileg == '123').isCheck == '1' ? true : false;
+    bool res = privilgelist?.firstWhere((element) => element.fkPrivileg == '123').isCheck == '1' ? true : false;
     if (res) {
 
       param='';//'''&fk_country'+usercurrent!.fkCountry.toString();
@@ -366,7 +367,7 @@ class communication_vm extends ChangeNotifier{
       if (res) {
         param='&fk_regoin='+usercurrent!.fkRegoin.toString();
       } else {
-        res =  privilgelist?.firstWhere((element) => element.fkPrivileg == '121').isCheck == '1' ? true : false;
+        res = privilgelist?.firstWhere((element) => element.fkPrivileg == '121').isCheck == '1' ? true : false;
         if (res) {
           param='&fk_user='+usercurrent!.idUser.toString();
         }
@@ -414,7 +415,7 @@ class communication_vm extends ChangeNotifier{
     listCommunicationWelcome_temp=[];
     isloading=true;
     notifyListeners();
-     await getCommunicationall('ترحيب');
+     await getCommunicationall1('ترحيب');
     // if(listCommunication.isNotEmpty) {
     //   listCommunicationWelcome=[];
     //   listCommunication.forEach((element) {
@@ -584,7 +585,7 @@ class communication_vm extends ChangeNotifier{
     return data;
   }
 
-  Future<void> getCommunicationall(String? type)async {
+  Future<void> getCommunicationall1(String? type)async {
 
     List<dynamic> data=[];
     data= await Api()

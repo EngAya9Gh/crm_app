@@ -40,7 +40,7 @@ class _carepageState extends State<carepage> {
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
       Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
-
+      //
       Provider.of<communication_vm>(context, listen: false)
           .setvaluepriv(
           Provider.of<privilge_vm>(context, listen: false).privilgelist);

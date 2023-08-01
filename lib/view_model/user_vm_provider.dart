@@ -150,8 +150,11 @@ class user_vm_provider extends ChangeNotifier {
       print(id);
       //print("in get user" + userall[0].nameUser.toString());
       if (id != null) {
+        // currentUser=await UserService().userByIdServices(idUser: id.toString());
+
         final index = userall.indexWhere((element) => element.idUser == id && element.isActive == '1');
         if (index >= 0) {
+        // if (currentUser.isActive=='1') {
           currentUser = userall[index];
           currentUser.path = "";
           notifyListeners();

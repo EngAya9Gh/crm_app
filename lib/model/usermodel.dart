@@ -58,8 +58,41 @@ class UserModel {
     // this.privilgelist,
   });
 
-    UserModel.fromJson(jsonData) {
-      UserModel(
+  //    UserModel.fromJson(jsonData) {
+  //     // UserModel user= UserModel(
+  //    
+  //     idUser=jsonData['id_user'];
+  //     nameUser= jsonData['nameUser'];
+  //
+  //     email= jsonData['email'];
+  //     mobile= jsonData['mobile'];
+  //     codeVerfiy= jsonData!['code_verfiy'];
+  //     fkCountry=jsonData['fk_country'];
+  //     typeAdministration= jsonData['type_administration'];
+  //     name_mange= jsonData['name_mange'];
+  //     typeLevel= jsonData['type_level'];
+  //     fkRegoin= jsonData['fk_regoin'];
+  //     nameCountry= jsonData['nameCountry'];
+  //     nameRegoin= jsonData['name_regoin'];
+  //     name_level= jsonData['name_level'];
+  //     isActive= jsonData['isActive'];
+  //     currency= jsonData['currency'];
+  //     fkuserAdd= jsonData['fkuserAdd'];
+  //     nameuserAdd= jsonData['nameuserAdd'];
+  //     created_at= jsonData['created_at'];
+  //     img_image= jsonData['img_image'] == null ? '' : urlimage + jsonData['img_image'];
+  //     img_thumbnail= jsonData['img_thumbnail'] == null ? '' : urlimage+ jsonData['img_thumbnail'];
+  //     path= jsonData['path'];
+  //     fkuserupdate= jsonData['fkuserupdate'];
+  //     updated_at= jsonData['updated_at'];
+  //     nameuserupdate= jsonData['nameuserupdate'];
+  //      privilgelist=getproud(jsonData['privilgelist']);
+  //
+  //   // privilgelist= getproud(jsonData['privilgelist']);
+  // // return user;
+  // }
+  factory UserModel.fromJson(jsonData) {
+    return UserModel(
       idUser: jsonData['id_user'],
       nameUser: jsonData['nameUser'],
 
@@ -85,10 +118,8 @@ class UserModel {
       fkuserupdate: jsonData['fkuserupdate'],
       updated_at: jsonData['updated_at'],
       nameuserupdate: jsonData['nameuserupdate'],
-      // privilgelist: getproud(jsonData['privilgelist']),
+      // privilgelist: getproud(jsonData['privilgelist'])
     );
-    // privilgelist= getproud(jsonData['privilgelist']);
-
   }
 
   Map<String, dynamic> toJson() {
