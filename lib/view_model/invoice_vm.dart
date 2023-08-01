@@ -701,8 +701,9 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept.forEach((element) {
       if (element.stateclient == 'مشترك' &&
           element.isApprove == "1" &&
-          ((num.tryParse(element.total?.toString() ?? '0') ?? 0) - ( num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) > 0)
-        list.add(element);
+          ((num.tryParse(element.total?.toString() ?? '0') ?? 0) -
+                  (num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) >
+              0) list.add(element);
     });
     listInvoicesAccept = list;
     listforme = List.from(list);
