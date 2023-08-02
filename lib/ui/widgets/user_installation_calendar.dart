@@ -3,7 +3,9 @@ import 'package:crm_smart/model/calendar/event.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:collection';
@@ -175,7 +177,9 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                           decoration: BoxDecoration(
                             border: Border.all(width: 0.5),
                             borderRadius: BorderRadius.circular(12.0),
-                            color: Colors.indigo.withOpacity(0.15),
+                            color: (value[index].isDone ?? false)
+                                ? Colors.green.withOpacity(0.15)
+                                : Colors.indigo.withOpacity(0.15),
                           ),
                           child: ListTile(
                             onTap: () {
@@ -193,6 +197,24 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                 textDirection: TextDirection.ltr,
                                 textAlign: TextAlign.end,
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: kfontfamily2)),
+                            trailing: (value[index].isDone ?? false)
+                                ? SizedBox()
+                                : TextButton(
+                                    child: Text("تم التركيب",
+                                        style: context.textTheme.labelLarge?.copyWith(
+                                            color: context.theme.primaryColor,
+                                            fontFamily: kfontfamily2,
+                                            fontWeight: FontWeight.w600)),
+                                    onPressed: () {
+                                      context.read<EventProvider>().changeEventToDone(
+                                            index: index,
+                                            event: value[index],
+                                            onLoading: () => context.loaderOverlay.show(),
+                                            onSuccess: () => context.loaderOverlay.hide(),
+                                            onFailure: () => context.loaderOverlay.hide(),
+                                          );
+                                    },
+                                  ),
                           ),
                         ),
                       );

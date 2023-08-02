@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/calendar/event.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -10,6 +11,7 @@ import 'package:crm_smart/services/date_installation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../constants.dart';
 import '../model/clientmodel.dart';
 import 'page_state.dart';
 
@@ -343,5 +345,29 @@ class EventProvider extends ChangeNotifier {
     final index = _events.indexOf(oldEvent);
     _events[index] = newEvent;
     notifyListeners();
+  }
+
+  changeEventToDone({
+    required Event event,
+    required int index,
+    required VoidCallback onLoading,
+    required VoidCallback onSuccess,
+    required VoidCallback onFailure,
+  }) async {
+    try {
+      onLoading();
+      // await Future.delayed(Duration(seconds: 3));
+      const isDone = 1;
+      var data = await Api().post(
+          url: url + "client/invoice/update_date_install.php?is_done=$isDone&idclients_date=${event.idClientsDate}");
+
+      final list = eventDataSource[event.from] ?? [];
+      list[index] = list[index].copyWith(isDone: true);
+      eventDataSource[event.from] = list;
+      notifyListeners();
+      onSuccess();
+    } catch (e) {
+      onFailure();
+    }
   }
 }

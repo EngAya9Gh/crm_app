@@ -46,6 +46,8 @@ class AppointmentModel {
       description: 'description',
       from: first,
       to: last,
+      isDone: isDone,
+      idClientsDate: idClientsDate,
     );
   }
 }

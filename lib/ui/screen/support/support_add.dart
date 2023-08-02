@@ -273,10 +273,14 @@ class _support_addState extends State<support_add> {
                                   selectedTime.hour, selectedTime.minute);
 
                               final idUser = Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser;
-                              Provider.of<invoice_vm>(context, listen: false).setdate_vm({
-                                'dateinstall_task': datetask.toString(),
-                                'fkusertask': idUser,
-                              }, _invoice!.idInvoice).then((value) {
+                              Provider.of<invoice_vm>(context, listen: false)
+                                  .setdate_vm(
+                                id_invoice: _invoice!.idInvoice!,
+                                fk_client: widget.idClient!,
+                                fk_user: idUser!,
+                                date_client_visit: datetask.toString(),
+                              )
+                                  .then((value) {
                                 clear();
 
                                 datesInstallation.add(DateInstallationClient(
