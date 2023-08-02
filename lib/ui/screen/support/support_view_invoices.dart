@@ -39,10 +39,8 @@ class support_view_invoicesState extends State<support_view_invoices> {
               ? Container(
                   child: ListView.builder(
                     itemCount: listInvoice.length,
-                    itemBuilder: (BuildContext context, int index) => Builder(
-                        builder: (context) => support_add(
-                              idinvoice: listInvoice[index].idInvoice,
-                            )),
+                    itemBuilder: (BuildContext context, int index) =>
+                        Builder(builder: (context) => support_add(idinvoice: listInvoice[index].idInvoice,idClient: widget.itemClient.idClients,)),
                   ),
                 )
               : Padding(

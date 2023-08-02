@@ -746,8 +746,9 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept.forEach((element) {
       if (element.stateclient == 'مشترك' &&
           element.isApprove == "1" &&
-          ((num.tryParse(element.total?.toString() ?? '0') ?? 0) - ( num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) > 0)
-        list.add(element);
+          ((num.tryParse(element.total?.toString() ?? '0') ?? 0) -
+                  (num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) >
+              0) list.add(element);
     });
     listInvoicesAccept = list;
     listforme = List.from(list);
@@ -1161,16 +1162,29 @@ class invoice_vm extends ChangeNotifier {
     return res;
   }
 
-  Future<void> setdate_vm(Map<String, dynamic?> body, String? id_invoice) async {
+  Future<void> setdate_vm({
+    required String id_invoice,
+    required String date_client_visit,
+    required String fk_user,
+    required String fk_client,
+  }) async {
     isloadingdone = true;
     notifyListeners();
-    int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
+    // int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
 
-    int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
-    InvoiceModel te = await Invoice_Service().setdate(body, id_invoice!);
-    if (index != -1) listinvoices[index] = te;
-    // print(index);
-    listinvoiceClientSupport[index1] = te;
+    // int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
+    // InvoiceModel te = await Invoice_Service().setdate(body, id_invoice!);
+
+    final data = await Invoice_Service().addDateInstall(
+      id_invoice: id_invoice,
+      date_client_visit: date_client_visit,
+      fk_user: fk_user,
+      fk_client: fk_client,
+    );
+
+    // if (index != -1) listinvoices[index] = te;
+    // // print(index);
+    // listinvoiceClientSupport[index1] = te;
 
     // listinvoiceClientSupport
     // body.addAll(

@@ -86,7 +86,6 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
     current = Provider.of<user_vm_provider>(context).currentUser;
 
-    print("getnamelong(_clientModel.nameEnterprise.toString()) ${getnamelong(_clientModel.nameEnterprise.toString())}");
 
     return Scaffold(
       appBar: AppBar(

@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  back_button_interceptor:
+    dependency: transitive
+    description:
+      name: back_button_interceptor
+      sha256: e47660f2178a4392eb72001f9594d3fdcb5efde93e59d2819d61fda499e781c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -432,6 +440,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
+  loader_overlay:
+    dependency: "direct main"
+    description:
+      name: loader_overlay
+      sha256: "5d712eb5dc0b8618797d39306227a6c3805e2b198f5361e18ec9e325f215e9a4"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.0"
   logging:
     dependency: transitive
     description:
@@ -672,6 +688,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  simple_gesture_detector:
+    dependency: transitive
+    description:
+      name: simple_gesture_detector
+      sha256: "86d08f85f1f58583b7b4b941d989f48ea6ce08c1724a1d10954a277c2ec36592"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -757,6 +781,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0+3"
+  table_calendar:
+    dependency: "direct main"
+    description:
+      name: table_calendar
+      sha256: "7f1270313c0cdb245b583ed8518982c01d4a7e95869b3c30abcbae3b642c45d0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.8"
   term_glyph:
     dependency: transitive
     description:

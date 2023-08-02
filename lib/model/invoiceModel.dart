@@ -93,6 +93,7 @@ class InvoiceModel extends CacheRepository {
   List<ProductsInvoice>? products;
   ParticipateModel? participal;
   AgentDistributorModel? agent_distibutor;
+  List<DateInstallationClient>? datesInstallationClient;
 
   //endregion
 
@@ -180,6 +181,7 @@ class InvoiceModel extends CacheRepository {
     this.name_regoin_invoice,
     this.user_delete,
     this.date_delete,
+    this.datesInstallationClient,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -200,10 +202,9 @@ class InvoiceModel extends CacheRepository {
     typeInstallation = jsondata['type_installation'];
     currency_name = jsondata['currency_name'];
 
-    imageRecord =
-        jsondata['image_record'].toString().trim().isEmpty || jsondata['image_record'] == null
-            ? jsondata['image_record']
-            : urlfile + jsondata['image_record'];
+    imageRecord = jsondata['image_record'].toString().trim().isEmpty || jsondata['image_record'] == null
+        ? jsondata['image_record']
+        : urlfile + jsondata['image_record'];
 
     imagelogo = jsondata['imagelogo'].toString().trim().isEmpty || jsondata['imagelogo'] == null
         ? jsondata['imagelogo']
@@ -284,13 +285,11 @@ class InvoiceModel extends CacheRepository {
     fk_regoin_invoice = jsondata['fk_regoin_invoice'];
     name_regoin_invoice = jsondata['name_regoin_invoice'];
 
-    participal = jsondata['participal_info'] == null
-        ? null
-        : getParticipateModel(jsondata['participal_info']);
-    agent_distibutor = jsondata['agent_distibutor_info'] == null
-        ? null
-        : getAgentDistributorModel(jsondata['agent_distibutor_info']);
+    participal = jsondata['participal_info'] == null ? null : getParticipateModel(jsondata['participal_info']);
+    agent_distibutor =
+        jsondata['agent_distibutor_info'] == null ? null : getAgentDistributorModel(jsondata['agent_distibutor_info']);
     products = getproud(jsondata['products']);
+    datesInstallationClient = List.from(jsondata['dates_install_client'] ?? []).map((e) => DateInstallationClient.fromJson(e)).toList();
     //  json.decode(
     // jsondata['products']
     // )//  jsondata['products']
@@ -472,30 +471,29 @@ class ProductsInvoice extends CacheRepository {
   String? fkclient;
   String? typeProdRenew;
 
-
   //endregion
 
   //region Constructor
   ProductsInvoice({
     this.idInvoiceProduct,
-      this.fkIdInvoice,
-      this.fkProduct,
-      this.amount,
-      this.price,
-      this.taxtotal,
-      this.rateAdmin,
-      this.rateUser,
-      this.idProduct,
-      this.nameProduct,
-      this.priceProduct,
-      this.type,
-      this.fkCountry,
-      this.fkConfig,
-      this.isdeleted,
-      this.fkclient,
-      this.fkuser,
-      this.typeProdRenew,
-      });
+    this.fkIdInvoice,
+    this.fkProduct,
+    this.amount,
+    this.price,
+    this.taxtotal,
+    this.rateAdmin,
+    this.rateUser,
+    this.idProduct,
+    this.nameProduct,
+    this.priceProduct,
+    this.type,
+    this.fkCountry,
+    this.fkConfig,
+    this.isdeleted,
+    this.fkclient,
+    this.fkuser,
+    this.typeProdRenew,
+  });
 
   //endregion
 
@@ -539,4 +537,33 @@ class ProductsInvoice extends CacheRepository {
     return _data;
   }
 //endregion
+}
+
+class DateInstallationClient {
+  final String? idclients_date;
+  final String? fk_user;
+  final String? is_done;
+  final String? fk_client;
+  final String? fk_invoice;
+  final DateTime? date_client_visit;
+
+  DateInstallationClient({
+    this.idclients_date,
+    this.fk_user,
+    this.is_done,
+    this.fk_client,
+    this.fk_invoice,
+    this.date_client_visit,
+  });
+
+  factory DateInstallationClient.fromJson(Map<String, dynamic> map) {
+    return DateInstallationClient(
+      idclients_date: map['idclients_date'] as String,
+      fk_user: map['fk_user'] as String,
+      is_done: map['is_done'] as String,
+      fk_client: map['fk_client'] as String,
+      fk_invoice: map['fk_invoice'] as String,
+      date_client_visit: DateTime.tryParse(map['date_client_visit']),
+    );
+  }
 }
