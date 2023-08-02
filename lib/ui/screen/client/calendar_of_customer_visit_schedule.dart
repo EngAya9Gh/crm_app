@@ -1,22 +1,21 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/calendar/event.dart';
+import 'dart:collection';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'dart:collection';
+import 'package:intl/intl.dart' as intl;
+import '../../../constants.dart';
+import '../../../model/calendar/event.dart';
 
-class USerInstallationCalendar extends StatefulWidget {
-  const USerInstallationCalendar({Key? key}) : super(key: key);
+class CalendarOfCustomerVisitSchedule extends StatefulWidget {
+  const CalendarOfCustomerVisitSchedule({Key? key}) : super(key: key);
 
   @override
-  State<USerInstallationCalendar> createState() => _USerInstallationCalendarState();
+  State<CalendarOfCustomerVisitSchedule> createState() => _CalendarOfCustomerVisitScheduleState();
 }
 
-class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
+class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisitSchedule> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn; // Can be toggled on/off by longpressing a date
@@ -181,6 +180,12 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                 : Colors.indigo.withOpacity(0.15),
                           ),
                           child: ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileClient(idClient: value[index].fkIdClient)));
+                            },
                             title: Text('${value[index].title}',
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(fontFamily: kfontfamily2)),
                             subtitle: Text(
@@ -190,27 +195,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                 textDirection: TextDirection.ltr,
                                 textAlign: TextAlign.end,
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: kfontfamily2)),
-                            trailing: (value[index].isDone ?? false)
-                                ? SizedBox()
-                                : TextButton(
-                                    child: Text("تمت الزيارة",
-                                        style: context.textTheme.labelLarge?.copyWith(
-                                            color: context.theme.primaryColor,
-                                            fontFamily: kfontfamily2,
-                                            fontWeight: FontWeight.w600)),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ProfileClient(
-                                            idClient: value[index].fkIdClient,
-                                            event: value[index],
-                                            tabIndex: 2,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  ),
                           ),
                         ),
                       );

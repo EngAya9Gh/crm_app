@@ -7,15 +7,12 @@ import 'package:flutter/foundation.dart';
 
 import '../constants.dart';
 
-class ClientService{
-
-  Future<ClientModel> addClient( Map<String,dynamic?> body) async {
+class ClientService {
+  Future<ClientModel> addClient(Map<String, dynamic?> body) async {
     print("$body");
-   // try{
-      var result = await Api()
-          .post( url:url+"client/clientAdd.php",
-          body: body);
-      print(result);
+    // try{
+    var result = await Api().post(url: url + "client/clientAdd.php", body: body);
+    print(result);
     //   return result !="error"? result:"false";}
     // catch(e){
     //   print(e);
@@ -23,31 +20,24 @@ class ClientService{
     // }
     return ClientModel.fromJson(result[0]);
   }
+
   //id_product
-  Future<ClientModel> updateClient( Map<String,dynamic> body,String idclient) async {
-    var data = await Api()
-        .post( url:url+"client/clientUpdate.php?id_clients=$idclient",
-         body: body );
-    return ClientModel.fromJson(data[0]);  // );//=="done"? true:false;
+  Future<ClientModel> updateClient(Map<String, dynamic> body, String idclient) async {
+    var data = await Api().post(url: url + "client/clientUpdate.php?id_clients=$idclient", body: body);
+    return ClientModel.fromJson(data[0]); // );//=="done"? true:false;
   }
 
-  Future<ClientModel> setfkuserClient( Map<String,dynamic> body,String idclient) async {
-    var data = await Api()
-        .post( url:url
-        +"client/set_fkuser_transfer.php?id_clients=$idclient",
-        body: body );
+  Future<ClientModel> setfkuserClient(Map<String, dynamic> body, String idclient) async {
+    var data = await Api().post(url: url + "client/set_fkuser_transfer.php?id_clients=$idclient", body: body);
     //client/setApproveClient.php
     return ClientModel.fromJson(data[0]);
-      // result=="done"? true:false;
+    // result=="done"? true:false;
   }
-  Future<bool> setfkuserApprovetransfer(
-      Map<String,dynamic> body,String idclient) async {
-    String result = await Api()
-        .post( url:url+"client/set_transferApprove.php?id_clients=$idclient",body:
-    body
-    );
+
+  Future<bool> setfkuserApprovetransfer(Map<String, dynamic> body, String idclient) async {
+    String result = await Api().post(url: url + "client/set_transferApprove.php?id_clients=$idclient", body: body);
     //client/setApproveClient.php
-    return result=="done"? true:false;
+    return result == "done" ? true : false;
   }
 
   List<ClientModel> convertToClients(List<dynamic> list) {
@@ -60,25 +50,20 @@ class ClientService{
     data=await Api()
         .get(url:url+ 'client/getClientAll.php?fk_country=$fkcountry');
 
-    List<ClientModel> prodlist =
-    await compute<List<dynamic>, List<ClientModel>>
-      (convertToClients, data);
+    List<ClientModel> prodlist = await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
     return prodlist;
   }
-  Future<List<ClientModel>> getAllClientsupport(String? fkcountry,List<int>? listparam) async {
-    List<dynamic> data =[];
-    if(listparam!=null) {
-      String params='';
-      for(int i=0;i<listparam.length;i++)
-        params+='&maincity[]=${listparam[i]}';
+
+  Future<List<ClientModel>> getAllClientsupport(String? fkcountry, List<int>? listparam) async {
+    List<dynamic> data = [];
+    if (listparam != null) {
+      String params = '';
+      for (int i = 0; i < listparam.length; i++) params += '&maincity[]=${listparam[i]}';
       print('params');
       print(params);
-      data = await Api()
-          .get(url: url +
-          'client/getclientfilteraccept.php?fk_country=$fkcountry$params');
-    }
-    else data=await Api()
-        .get(url:url+ 'client/getclientfilteraccept.php?fk_country=$fkcountry');
+      data = await Api().get(url: url + 'client/getclientfilteraccept.php?fk_country=$fkcountry$params');
+    } else
+      data = await Api().get(url: url + 'client/getclientfilteraccept.php?fk_country=$fkcountry');
 
     List<ClientModel> prodlist = [];
 
@@ -88,10 +73,10 @@ class ClientService{
     print(prodlist);
     return prodlist;
   }
+
   Future<List<ClientModel>> getAllClientmarket(String? fkcountry) async {
-    List<dynamic> data =[];
-    data=await Api()
-        .get(url:url+ 'client/getclientmarketing.php?fk_country=$fkcountry');
+    List<dynamic> data = [];
+    data = await Api().get(url: url + 'client/getclientmarketing.php?fk_country=$fkcountry');
 
     List<ClientModel> prodlist = [];
 
@@ -103,12 +88,11 @@ class ClientService{
   }
 
   Future<ClientModel> getclientid(String? id_clients) async {
-    var
-    data=await Api()
-        .get(url:url+ 'client/getclientid.php?id_clients=$id_clients');
+    var data = await Api().get(url: url + 'client/getclientid.php?id_clients=$id_clients');
 
     return ClientModel.fromJson(data[0]);
   }
+
   Future<List<ClientModel>> getAcceptClient(String? fkcountry) async {
     List<dynamic> data =[];
     data=await Api()
@@ -122,10 +106,10 @@ class ClientService{
     print(prodlist);
     return prodlist;
   }
+
   Future<List<ClientModel>> getTransfer(String? iduser) async {
-    List<dynamic> data =[];
-    data=await Api()
-        .get(url:url+ 'client/get_approveTransfer.php?iduser=$iduser');
+    List<dynamic> data = [];
+    data = await Api().get(url: url + 'client/get_approveTransfer.php?iduser=$iduser');
 
     List<ClientModel> prodlist = [];
 
@@ -135,19 +119,19 @@ class ClientService{
     print(prodlist);
     return prodlist;
   }
+
   Future<List<ClientModel>> getClientbyuser(String? fk_user) async {
-    List<dynamic> data =[];
-    data=await Api()
-        .get(url:url+ 'client/getclientbyuser.php?fk_user=$fk_user');
+    List<dynamic> data = [];
+    data = await Api().get(url: url + 'client/getclientbyuser.php?fk_user=$fk_user');
     print('before data');
-     print(data);
+    print(data);
     List<ClientModel> prodlist = await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
     return prodlist;
   }
+
   //
   Future<List<ClientModel>> getAllClientByRegoin(String? regoin) async {
-    List<dynamic> data = await Api()
-        .get(url:url+ 'client/getclientByRegoin.php?fk_regoin=$regoin');
+    List<dynamic> data = await Api().get(url: url + 'client/getclientByRegoin.php?fk_regoin=$regoin');
 
     List<ClientModel> prodlist = await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
     return prodlist;

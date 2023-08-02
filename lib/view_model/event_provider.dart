@@ -309,6 +309,17 @@ class EventProvider extends ChangeNotifier {
       }
     });
 
+    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+      _events,
+      key: (item) => (item as Event).from,
+      value: (item) => _events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+    );
+
+    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(mapEvents);
+
     notifyListeners();
   }
 
@@ -333,6 +344,17 @@ class EventProvider extends ChangeNotifier {
       }
     });
 
+    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+      _events,
+      key: (item) => (item as Event).from,
+      value: (item) => _events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+    );
+
+    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(mapEvents);
+
     notifyListeners();
   }
 
@@ -349,19 +371,26 @@ class EventProvider extends ChangeNotifier {
 
   changeEventToDone({
     required Event event,
-    required int index,
     required VoidCallback onLoading,
     required VoidCallback onSuccess,
     required VoidCallback onFailure,
   }) async {
     try {
       onLoading();
-      // await Future.delayed(Duration(seconds: 3));
       const isDone = 1;
       var data = await Api().post(
-          url: url + "client/invoice/update_date_install.php?is_done=$isDone&idclients_date=${event.idClientsDate}");
-
+        url: url + "client/invoice/update_date_install.php",
+        body: {
+          "is_done": isDone.toString(),
+          "idclients_date": event.idClientsDate,
+        },
+      );
       final list = eventDataSource[event.from] ?? [];
+      final index = list.indexOf(event);
+      if (index == -1) {
+        onFailure();
+        return;
+      }
       list[index] = list[index].copyWith(isDone: true);
       eventDataSource[event.from] = list;
       notifyListeners();
