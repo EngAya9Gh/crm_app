@@ -61,6 +61,7 @@ dependencies:
   text_scroll: ^0.1.0
   table_calendar: ^3.0.8
   loader_overlay: ^2.3.0
+  fancy_shimmer_image: ^2.0.2
 
 
 dependency_overrides:

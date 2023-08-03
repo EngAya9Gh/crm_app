@@ -1,3 +1,5 @@
+import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -1338,5 +1340,45 @@ class invoice_vm extends ChangeNotifier {
     selectedSellerType = SellerType.employee;
     agentDistributorsState = PageState();
     collaboratorsState = PageState();
+  }
+
+  uploadAttachedFile({
+    required String idInvoice,
+    required File file,
+    required VoidCallback onLoading,
+    required ValueChanged<String> onSuccess,
+    required VoidCallback onFailure,
+  }) async {
+    try {
+      onLoading();
+      var data = await Api().postRequestWithFile(
+          'array', url + "client/invoice/add_attach_invoice.php", {"id_invoice": idInvoice}, file, null);
+
+      final invoice = InvoiceModel.fromJson(data[0]);
+      onSuccess(invoice.fileAttach ?? "");
+    } catch (e) {
+      onFailure();
+      notifyListeners();
+    }
+  }
+
+  deleteFile({
+    required String idInvoice,
+    required VoidCallback onLoading,
+    required VoidCallback onSuccess,
+    required VoidCallback onFailure,
+  }) async {
+    try {
+      onLoading();
+      var data = await Api().post(
+        url: url + "client/invoice/delete_file_attach.php",
+        body: {'id_invoice': idInvoice},
+      );
+
+      onSuccess();
+    } catch (e) {
+      onFailure();
+      notifyListeners();
+    }
   }
 }
