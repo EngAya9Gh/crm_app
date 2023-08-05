@@ -16,10 +16,10 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 import '../../../constants.dart';
+import '../../../model/calendar/event.dart';
 import 'clientView.dart';
 
 class ProfileClient extends StatefulWidget {
@@ -30,6 +30,7 @@ class ProfileClient extends StatefulWidget {
     required this.idClient,
     this.client,
     Key? key,
+    this.event,
   }) : super(key: key);
 
   String? idClient;
@@ -37,6 +38,7 @@ class ProfileClient extends StatefulWidget {
   InvoiceModel? invoiceModel;
   String? clientTransfer;
   ClientModel? client;
+  final Event? event;
 
   @override
   _ProfileClientState createState() => _ProfileClientState();
@@ -85,7 +87,6 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
     //         element.idClients == widget.idClient);
 
     current = Provider.of<user_vm_provider>(context).currentUser;
-
 
     return Scaffold(
       appBar: AppBar(
@@ -161,7 +162,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
               invoice: null, //widget.invoiceModel,
             ),
             invoices(itemClient: _clientModel, fkclient: _clientModel.idClients.toString(), fkuser: ''),
-            commentView(client: _clientModel),
+            commentView(client: _clientModel,event: widget.event),
             support_view_invoices(itemClient: _clientModel),
             care_client_view(fk_client: _clientModel.idClients.toString()),
             ticketprofile(itemClient: _clientModel),

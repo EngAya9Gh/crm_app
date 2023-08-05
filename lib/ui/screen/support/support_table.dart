@@ -176,14 +176,16 @@ class _support_tableState extends State<support_table> {
                     builder: (context, user, event, child) {
                       return Row(
                         children: [
-                          if (event.selectedFkUser != null && event.appointmentsState.isSuccess)
+                          if (event.selectedFkUser != null && event.appointmentsState.isSuccess) ...{
                             IconButton(
                               onPressed: () {
                                 context.read<user_vm_provider>().changevalueuser(null);
                                 _eventProvider.onChangeFkUser('');
                               },
-                              icon: Icon(Icons.clear),
+                              icon: Icon(Icons.highlight_off),
                             ),
+                            SizedBox(width: 10),
+                          },
                           Expanded(
                             child: DropdownSearch<UserModel>(
                               mode: Mode.DIALOG,
@@ -192,6 +194,7 @@ class _support_tableState extends State<support_table> {
                               //onFind: (String filter) => cart.getfilteruser(filter),
                               filterFn: (user, filter) => user!.getfilteruser(filter!),
                               compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                              showSelectedItems: true,
                               // itemAsString: (UserModel u) => u.userAsStringByName(),
                               items: user.userall,
                               itemAsString: (u) => u!.userAsString(),
@@ -206,7 +209,6 @@ class _support_tableState extends State<support_table> {
                               },
                               selectedItem: user.selecteduser,
                               showSearchBox: true,
-                              showSelectedItems: true,
                               dropdownSearchDecoration: InputDecoration(
                                 //filled: true,
                                 isCollapsed: true,

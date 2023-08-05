@@ -56,4 +56,33 @@ class Event {
       idClientsDate: idClientsDate ?? this.idClientsDate,
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Event &&
+          runtimeType == other.runtimeType &&
+          title == other.title &&
+          description == other.description &&
+          from == other.from &&
+          to == other.to &&
+          backgroundColor == other.backgroundColor &&
+          isAllDay == other.isAllDay &&
+          fkIdClient == other.fkIdClient &&
+          idinvoice == other.idinvoice &&
+          isDone == other.isDone &&
+          idClientsDate == other.idClientsDate;
+
+  @override
+  int get hashCode =>
+      title.hashCode ^
+      description.hashCode ^
+      from.hashCode ^
+      to.hashCode ^
+      backgroundColor.hashCode ^
+      isAllDay.hashCode ^
+      fkIdClient.hashCode ^
+      idinvoice.hashCode ^
+      isDone.hashCode ^
+      idClientsDate.hashCode;
 }
