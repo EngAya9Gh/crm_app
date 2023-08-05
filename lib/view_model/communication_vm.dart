@@ -44,19 +44,23 @@ class communication_vm extends ChangeNotifier{
     selectedtypeinstall=s;
     notifyListeners();
   }
+  Map<String ,List<CommunicationModel>> careClientState = Map();
+  bool isLoadingCareClient = false;
   void getCommunicationclient(String fk_client)async {
-    listCommunicationClient=[];
-    notifyListeners();
-    // if(listCommunication.isNotEmpty) {
-    //   listCommunication.forEach((element) {
-    //     if(element.fkClient==fk_client&&element.dateCommunication!=null)
-    //       listCommunicationClient.add(element);
-    //   });
-    // }
-    List<dynamic> data=[];
-    data= await Api()
-        .get(url:url+ 'care/getCommunicationClient.php?fk_client=${fk_client}');
-    print(data);
+    try{
+      listCommunicationClient=[];
+      isLoadingCareClient = true;
+      notifyListeners();
+      // if(listCommunication.isNotEmpty) {
+      //   listCommunication.forEach((element) {
+      //     if(element.fkClient==fk_client&&element.dateCommunication!=null)
+      //       listCommunicationClient.add(element);
+      //   });
+      // }
+      List<dynamic> data=[];
+      data= await Api()
+          .get(url:url+ 'care/getCommunicationClient.php?fk_client=${fk_client}');
+      print(data);
 
 
       if(data.length.toString().isNotEmpty) {
@@ -64,7 +68,18 @@ class communication_vm extends ChangeNotifier{
           listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
         }
       }
+      careClientState['ترحيب'] = listCommunicationClient.where((element) => element.typeCommuncation == "ترحيب").toList();
+      careClientState['تركيب'] = listCommunicationClient.where((element) => element.typeCommuncation == "تركيب").toList();
+      careClientState['دوري'] = listCommunicationClient.where((element) => element.typeCommuncation == "دوري").toList();
+
+      careClientState.removeWhere((key, value) => value.isEmpty);
+
+      isLoadingCareClient = false;
       notifyListeners();
+    }catch(e){
+      isLoadingCareClient = false;
+      notifyListeners();
+    }
   }
   void isloadval(bool val){
     isload=val;
