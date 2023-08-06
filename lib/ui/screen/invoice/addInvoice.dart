@@ -178,6 +178,7 @@ class _addinvoiceState extends State<addinvoice> {
         print(typepayController.toString());
         typeinstallController = _invoice!.typeInstallation.toString();
         print(typeinstallController);
+        if (_invoice!.ready_install != null) readyinstallController = _invoice!.ready_install!;
 
         noteController.text = _invoice!.notes.toString();
         imageController.text = _invoice!.imageRecord.toString();
@@ -342,6 +343,7 @@ class _addinvoiceState extends State<addinvoice> {
                           if (value.toString().trim().isEmpty) {
                             return label_empty;
                           }
+                          return null;
                         },
                         maxline: 3,
                         paddcustom: EdgeInsets.all(16),
@@ -357,9 +359,9 @@ class _addinvoiceState extends State<addinvoice> {
                           if (value?.trim().isEmpty ?? true) {
                             return label_empty;
                           }
-                          if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
+                          if (num.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
 
-                          if (int.parse(value!) <= 0) {
+                          if (num.parse(value!) <= 0) {
                             return "يجب إدخال قيمة مناسبة";
                           }
 
@@ -406,7 +408,6 @@ class _addinvoiceState extends State<addinvoice> {
                                 return 'الحقل مطلوب.';
                               }
                               if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
-
 
                               if (num.parse(value!) < 0) {
                                 return "يجب إدخال قيمة أكبر من 0.";
@@ -735,6 +736,10 @@ class _addinvoiceState extends State<addinvoice> {
                                       obscureText: false,
                                       controller: renewAdditionalOfBranchesController,
                                       vaild: (text) {
+                                        if (!value) {
+                                          return null;
+                                        }
+
                                         if ((text?.trim().isEmpty ?? true) && value) {
                                           return 'الحقل مطلوب.';
                                         }
@@ -999,11 +1004,13 @@ class _addinvoiceState extends State<addinvoice> {
                               else if (isCollaborate)
                                 sellerDropdown<ParticipateModel>(
                                   collaboratesList,
+                                  selectedSellerType,
                                   selectedValue: selectedCollaborate,
                                 )
                               else
                                 sellerDropdown<AgentDistributorModel>(
                                   agentsListtemp, // agentsList,
+                                  selectedSellerType,
                                   selectedValue: selectedAgent,
                                 ),
                               SizedBox(height: 10),
@@ -1084,7 +1091,8 @@ class _addinvoiceState extends State<addinvoice> {
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () async {
-                                if (_globalKey.currentState!.validate()) {
+                                final validate = _globalKey.currentState!.validate();
+                                if (validate) {
                                   typepayController = Provider.of<selected_button_provider>(context, listen: false)
                                       .isSelectedtypepay
                                       .toString();
@@ -1520,7 +1528,8 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   Widget sellerDropdown<T>(
-    List<T> sellerNames, {
+    List<T> sellerNames,
+    SellerType selectedSellerType, {
     T? selectedValue,
   }) {
     return Container(
@@ -1531,6 +1540,10 @@ class _addinvoiceState extends State<addinvoice> {
           child: DropdownButtonFormField<T>(
             isExpanded: true,
             validator: (text) {
+              if (selectedSellerType == SellerType.employee) {
+                return null;
+              }
+
               if (text == null) {
                 return 'هذا الحقل مطلوب';
               }
