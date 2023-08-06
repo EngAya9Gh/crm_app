@@ -133,17 +133,16 @@ class _addinvoiceState extends State<addinvoice> {
 
   @override
   void initState() {
+    invoiceViewmodel = context.read<invoice_vm>();
     if (_invoice == null) _invoice = InvoiceModel(products: []);
-
     amount_paidController = TextEditingController();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
       Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
 
-      invoiceViewmodel = Provider.of<invoice_vm>(context, listen: false);
-      Provider.of<invoice_vm>(context, listen: false).listproductinvoic = [];
-      Provider.of<invoice_vm>(context, listen: false).set_total('0'.toString());
+
+      invoiceViewmodel.listproductinvoic = [];
+      invoiceViewmodel.set_total('0'.toString());
       print('init in addinvoice screen main');
       totalController = '0';
       _invoice = widget.invoice;
@@ -182,7 +181,7 @@ class _addinvoiceState extends State<addinvoice> {
 
         noteController.text = _invoice!.notes.toString();
         imageController.text = _invoice!.imageRecord.toString();
-        Provider.of<invoice_vm>(context, listen: false)
+        invoiceViewmodel
           ..listproductinvoic = _invoice!.products!
           ..initAdditionalInformation(_invoice!);
 
@@ -215,9 +214,9 @@ class _addinvoiceState extends State<addinvoice> {
 
         //);
 
-        Provider.of<invoice_vm>(context, listen: false).listproductinvoic = [];
+        invoiceViewmodel.listproductinvoic = [];
       }
-      Provider.of<invoice_vm>(context, listen: false).set_total(totalController.toString());
+      invoiceViewmodel.set_total(totalController.toString());
 
       amount_paidController.addListener(() {
         final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
@@ -1115,7 +1114,7 @@ class _addinvoiceState extends State<addinvoice> {
 
                                     if (_invoice?.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
-                                      Provider.of<invoice_vm>(context, listen: false).update_invoiceclient_vm({
+                                      invoiceViewmodel.update_invoiceclient_vm({
                                         "name_enterprise": widget.itemClient.nameEnterprise,
                                         "name_client": widget.itemClient.nameClient.toString(),
                                         "nameUser": widget.itemClient.nameUser.toString(),
@@ -1280,7 +1279,7 @@ class _addinvoiceState extends State<addinvoice> {
                                               .toString(),
                                         });
                                       log(body.toString());
-                                      Provider.of<invoice_vm>(context, listen: false)
+                                      invoiceViewmodel
                                           .add_invoiceclient_vm(
                                               body, _invoice!.path!.isNotEmpty ? _myfile : null, _myfilelogo)
                                           .then((value) =>
@@ -1345,13 +1344,13 @@ class _addinvoiceState extends State<addinvoice> {
         body.addAll({
           'fk_id_invoice': value,
         });
-        String res = await Provider.of<invoice_vm>(context, listen: false).add_invoiceProduct_vm(body);
+        String res = await invoiceViewmodel.add_invoiceProduct_vm(body);
 
         if (res != "false") {
           body.addAll({
             'idInvoiceProduct': res,
           });
-          Provider.of<invoice_vm>(context, listen: false).listproductinvoic[i].idInvoiceProduct = res;
+          invoiceViewmodel.listproductinvoic[i].idInvoiceProduct = res;
         }
       } //if
       else {
@@ -1359,12 +1358,13 @@ class _addinvoiceState extends State<addinvoice> {
         print('before else');
         Map<String, dynamic?> body = _products[i].toJson();
         print('after else');
-        bool res = await Provider.of<invoice_vm>(context, listen: false)
+        bool res = await invoiceViewmodel
             .update_invoiceProduct_vm(body, _products[i].idInvoiceProduct.toString());
       }
     }
+
     //for loop
-    int index1 = Provider.of<invoice_vm>(context, listen: false)
+    int index1 = invoiceViewmodel
         .listinvoices
         .indexWhere((element) => element.idInvoice == value);
 
@@ -1376,10 +1376,14 @@ class _addinvoiceState extends State<addinvoice> {
     //        .of<invoice_vm>(context, listen: false)
     //        .listproductinvoic;
     // //
-    Provider.of<invoice_vm>(context, listen: false).listinvoices[index1].products = _invoice!.products;
+    if(index1 != -1) {
+      invoiceViewmodel.listinvoices[index1].products = _invoice!.products;
+    }
 
-    Provider.of<invoice_vm>(context, listen: false).updatelistproducetInvoice();
-
+    final invoiceTemp = invoiceViewmodel.currentInvoice!;
+    invoiceTemp.products = _invoice!.products;
+    invoiceViewmodel.setCurrentInvoice(invoiceTemp,needRefresh: true);
+    invoiceViewmodel.updatelistproducetInvoice();
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
     Navigator.pop(context);
     // _scaffoldKey.currentState!.showSnackBar(
