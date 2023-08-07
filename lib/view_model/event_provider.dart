@@ -379,11 +379,8 @@ class EventProvider extends ChangeNotifier {
       onLoading();
       const isDone = 1;
       var data = await Api().post(
-        url: url + "client/invoice/update_date_install.php",
-        body: {
-          "is_done": isDone.toString(),
-          "idclients_date": event.idClientsDate,
-        },
+        url: url + "client/invoice/update_date_install.php?idclients_date=${event.idClientsDate}",
+        body: {"is_done": isDone.toString()},
       );
       final list = eventDataSource[event.from] ?? [];
       final index = list.indexOf(event);

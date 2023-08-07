@@ -1380,9 +1380,11 @@ class _addinvoiceState extends State<addinvoice> {
       invoiceViewmodel.listinvoices[index1].products = _invoice!.products;
     }
 
-    final invoiceTemp = invoiceViewmodel.currentInvoice!;
-    invoiceTemp.products = _invoice!.products;
-    invoiceViewmodel.setCurrentInvoice(invoiceTemp,needRefresh: true);
+    if(invoiceViewmodel.currentInvoice != null){
+      final invoiceTemp = invoiceViewmodel.currentInvoice!;
+      invoiceTemp.products = _invoice!.products;
+      invoiceViewmodel.setCurrentInvoice(invoiceTemp,needRefresh: true);
+    }
     invoiceViewmodel.updatelistproducetInvoice();
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
     Navigator.pop(context);

@@ -392,7 +392,7 @@ class _tabclientsState extends State<tabclients> {
   }
   void filtershow(){
     print("******* filter ******** ");
-    context.read<client_vm>().filterClientMarketingSalesList(
+    context.read<client_vm>().filterClient(
       activity: activity,
       idUser: iduser,
       region: regoin,

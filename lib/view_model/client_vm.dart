@@ -299,10 +299,45 @@ class client_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetlist(){
+  filterClient({
+    String? region,
+    String? activity,
+    String? idUser,
+    String? typeClient,
+  }) {
+    final list = List<ClientModel>.from(listClient).toList();
 
-   listClientfilter=List.from(listClient) ;
-   notifyListeners();
+    if (region == '0') {
+      region = null;
+    }
+
+    if (typeClient == 'الكل') {
+      typeClient = null;
+    }
+
+    if (activity == '') {
+      activity = null;
+    }
+
+    final filteredListClient = list.where((element) {
+      final regionCondition = region == null ? true : element.fkRegoin == region;
+      final typeClientCondition = typeClient == null ? true : element.typeClient == typeClient;
+      final activityCondition = activity == null ? true : element.activity_type_fk == activity;
+      final idUserCondition =
+          idUser == null ? true : element.fkUser == idUser && element.fkcountry == usercurrent!.fkCountry;
+
+      return regionCondition && typeClientCondition && activityCondition && idUserCondition;
+    }).toList();
+
+    listClientfilter = filteredListClient;
+    listClientMarketing = filteredListClient;
+
+    notifyListeners();
+  }
+
+  void resetlist() {
+    listClientfilter = List.from(listClient);
+    notifyListeners();
   }
 
   Future<void> getallclient() async {
