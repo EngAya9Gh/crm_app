@@ -15,9 +15,10 @@ Future<UserModel> addUser(body) async {
   );
    if(data=='repeatuser'){
      UserModel usermodel=UserModel(
+         // privilgelist: [],
        idUser: '0',
          isActive: '', fkuserAdd: '', created_at: '',
-         nameuserAdd: '', updated_at: '', fkuserupdate: '', nameuserupdate: '');
+         nameuserAdd: '', updated_at: '', fkuserupdate: '', nameuserupdate: ''  );
     return UserModel.fromJson(usermodel);}
   return UserModel.fromJson(data[0]);//UserModel.fromJson(data);
 }
@@ -59,10 +60,10 @@ Future<List<UserModel>> usersServices() async {
   return usersList;
 }
 
-Future<UserModel> userByIdServices({required int idUser}) async {
-  UserModel data = await Api().get(url: url+'users/getuserByID.php?id_user=$idUser');
+Future<UserModel> userByIdServices({required String idUser}) async {
+  var data = await Api().get(url: url+'users/getuserByID.php?id_user=$idUser');
 
-  return data;
+  return UserModel.fromJson(data);
 }
 
 Future<UserModel> userByUserNAmeServices({required String userName}) async {

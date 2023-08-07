@@ -1,3 +1,5 @@
+import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -28,8 +30,11 @@ class invoice_vm extends ChangeNotifier {
 
   InvoiceModel? currentInvoice;
 
-  setCurrentInvoice(InvoiceModel invoice) {
+  setCurrentInvoice(InvoiceModel invoice, {bool needRefresh = false}) {
     currentInvoice = invoice;
+    if (needRefresh) {
+      notifyListeners();
+    }
   }
 
   void set_total(val) {
@@ -215,34 +220,47 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getfilterinvoicesclient(String? filter, String? regoin) async {
+  Future<void> getfilterinvoicesclient(String? filter, String? regoin, DateTime from, DateTime to) async {
     List<InvoiceModel> _listInvoicesAccept = [];
 
     if (regoin == null) {
       print(filter);
       if (listforme.isNotEmpty) {
         if (filter == 'الكل') {
-          _listInvoicesAccept = List.from(listforme);
+          //_listInvoicesAccept = List.from(listforme);
+          listforme.forEach((element) {
+            if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+              _listInvoicesAccept.add(element);
+            }
+          });
           print('serch الكل');
         }
         if (filter == 'بالإنتظار')
           listforme.forEach((element) {
             print(element.isdoneinstall);
-            if (element.isdoneinstall == null) {
+            if (element.isdoneinstall == null &&
+                DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                DateTime.parse(element.date_approve.toString()).isBefore(to)) {
               _listInvoicesAccept.add(element);
               print('serch بالانتظار');
             }
           });
         if (filter == 'تم التركيب')
           listforme.forEach((element) {
-            if (element.isdoneinstall == '1') {
+            if (element.isdoneinstall == '1' &&
+                DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                DateTime.parse(element.date_approve.toString()).isBefore(to)) {
               _listInvoicesAccept.add(element);
               print('serch تم التركيب');
             }
           });
         if (filter == 'معلق')
           listforme.forEach((element) {
-            if (element.isdoneinstall != '1' && element.ready_install == '0') {
+            if (element.isdoneinstall != '1' &&
+                element.ready_install == '0' &&
+                DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                DateTime.parse(element.date_approve.toString()).isBefore(to)) {
               _listInvoicesAccept.add(element);
               print('serch lمعلق');
             }
@@ -253,26 +271,39 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'الكل' || filter == null) {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.fk_regoin == regoin) {
+              if (element.fk_regoin == regoin &&
+                  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
                 print('regoin الكل');
               }
             });
           } else {
-            _listInvoicesAccept = List.from(listforme);
+            listforme.forEach((element) {
+              if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+                _listInvoicesAccept.add(element);
+              }
+            });
+            //_listInvoicesAccept = List.from(listforme);
           }
         }
         if (filter == 'بالإنتظار') {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.isdoneinstall.toString() == null && element.fk_regoin == regoin) {
+              if (element.isdoneinstall.toString() == null &&
+                  element.fk_regoin == regoin &&
+                  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
                 print('regoin بالإنتظار');
               }
             });
           } else {
             listforme.forEach((element) {
-              if (element.isdoneinstall.toString() == null) {
+              if (element.isdoneinstall.toString() == null &&
+                  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
                 print('regoin بالإنتظار');
               }
@@ -282,14 +313,19 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'تم التركيب') {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.isdoneinstall == '1' && element.fk_regoin == regoin) {
+              if (element.isdoneinstall == '1' &&
+                  element.fk_regoin == regoin &&
+                  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
                 print('regoin تم التركيب');
               }
             });
           } else {
             listforme.forEach((element) {
-              if (element.isdoneinstall == '1') {
+              if (element.isdoneinstall == '1' &&
+                  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
                 print('regoin تم التركيب');
               }
@@ -299,14 +335,21 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'معلق') {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install == '0' && element.fk_regoin == regoin) {
+              if (element.isdoneinstall != '1' &&
+                  element.ready_install == '0' &&
+                  element.fk_regoin == regoin &&
+                  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
                 print('regoin معلق');
               }
             });
           } else {
             listforme.forEach((element) {
-              if (element.isdoneinstall != '1' && element.ready_install == '0') {
+              if (element.isdoneinstall != '1' &&
+                  element.ready_install == '0' &&
+                  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+                  DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
                 print('معلق  ');
               }
@@ -314,6 +357,14 @@ class invoice_vm extends ChangeNotifier {
           }
         }
       }
+    }
+    if (regoin == null && filter == null) {
+      listforme.forEach((element) {
+        if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+            DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+          _listInvoicesAccept.add(element);
+        }
+      });
     }
     listInvoicesAccept = List.from(_listInvoicesAccept);
     notifyListeners();
@@ -701,8 +752,9 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept.forEach((element) {
       if (element.stateclient == 'مشترك' &&
           element.isApprove == "1" &&
-          ((num.tryParse(element.total?.toString() ?? '0') ?? 0) - ( num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) > 0)
-        list.add(element);
+          ((num.tryParse(element.total?.toString() ?? '0') ?? 0) -
+                  (num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) >
+              0) list.add(element);
     });
     listInvoicesAccept = list;
     listforme = List.from(list);
@@ -931,6 +983,7 @@ class invoice_vm extends ChangeNotifier {
     listInvoicesAccept = List.from(listinvoices);
     notifyListeners();
   }
+
   Future<void> getinvoiceswithprev() async {
     // if(listClient.isEmpty)
     //main list
@@ -1116,16 +1169,29 @@ class invoice_vm extends ChangeNotifier {
     return res;
   }
 
-  Future<void> setdate_vm(Map<String, dynamic?> body, String? id_invoice) async {
+  Future<void> setdate_vm({
+    required String id_invoice,
+    required String date_client_visit,
+    required String fk_user,
+    required String fk_client,
+  }) async {
     isloadingdone = true;
     notifyListeners();
-    int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
+    // int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
 
-    int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
-    InvoiceModel te = await Invoice_Service().setdate(body, id_invoice!);
-    if (index != -1) listinvoices[index] = te;
-    // print(index);
-    listinvoiceClientSupport[index1] = te;
+    // int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
+    // InvoiceModel te = await Invoice_Service().setdate(body, id_invoice!);
+
+    final data = await Invoice_Service().addDateInstall(
+      id_invoice: id_invoice,
+      date_client_visit: date_client_visit,
+      fk_user: fk_user,
+      fk_client: fk_client,
+    );
+
+    // if (index != -1) listinvoices[index] = te;
+    // // print(index);
+    // listinvoiceClientSupport[index1] = te;
 
     // listinvoiceClientSupport
     // body.addAll(
@@ -1345,5 +1411,45 @@ class invoice_vm extends ChangeNotifier {
     selectedSellerType = SellerType.employee;
     agentDistributorsState = PageState();
     collaboratorsState = PageState();
+  }
+
+  uploadAttachedFile({
+    required String idInvoice,
+    required File file,
+    required VoidCallback onLoading,
+    required ValueChanged<String> onSuccess,
+    required VoidCallback onFailure,
+  }) async {
+    try {
+      onLoading();
+      var data = await Api().postRequestWithFile(
+          'array', url + "client/invoice/add_attach_invoice.php", {"id_invoice": idInvoice}, file, null);
+
+      final invoice = InvoiceModel.fromJson(data[0]);
+      onSuccess(invoice.fileAttach ?? "");
+    } catch (e) {
+      onFailure();
+      notifyListeners();
+    }
+  }
+
+  deleteFile({
+    required String idInvoice,
+    required VoidCallback onLoading,
+    required VoidCallback onSuccess,
+    required VoidCallback onFailure,
+  }) async {
+    try {
+      onLoading();
+      var data = await Api().post(
+        url: url + "client/invoice/delete_file_attach.php",
+        body: {'id_invoice': idInvoice},
+      );
+
+      onSuccess();
+    } catch (e) {
+      onFailure();
+      notifyListeners();
+    }
   }
 }

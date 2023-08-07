@@ -37,8 +37,8 @@ class _careAddState extends State<careAdd> {
   late ConfigModel peroid;
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
-      Provider.of<comment_vm>(context, listen: false)
-          .getComment(widget.com.fkClient);
+      // Provider.of<comment_vm>(context, listen: false)
+      //     .getComment(widget.com.fkClient);
       //period_commincation3
 
 
@@ -285,37 +285,37 @@ class _careAddState extends State<careAdd> {
                 //     title: 'تاريخ التدريب',
                 //     value:widget.com.dateCommunication.toString()),
                 SizedBox(height: 10,),
-                Container(
-                  height: MediaQuery.of(context).size.height* 0.45,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 8, right: 8, top: 10.0, bottom: 5),
-                    child: Consumer<comment_vm>(builder: (context, value, child) {
-                      return value.listComments.length == 0
-                          ? Text('')
-                          : Column(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: value.listComments.length,
-                                itemBuilder: (context, index) {
-                                  return SingleChildScrollView(
-                                      child: Padding(
-                                          padding: const EdgeInsets.all(2),
-                                          child:
-                                          //Text(''),
-                                          cardcomment(
-                                            commentmodel:
-                                            value.listComments[index],
-                                          )));
-                                }),
-                          ),
-                        ],
-                      );
-                    }),
-                  ),
-                ),
+                // Container(
+                //   height: MediaQuery.of(context).size.height* 0.45,
+                //   child: Padding(
+                //     padding: const EdgeInsets.only(
+                //         left: 8, right: 8, top: 10.0, bottom: 5),
+                //     child: Consumer<comment_vm>(builder: (context, value, child) {
+                //       return value.listComments.length == 0
+                //           ? Text('')
+                //           : Column(
+                //         children: [
+                //           Expanded(
+                //             child: ListView.builder(
+                //                 scrollDirection: Axis.vertical,
+                //                 itemCount: value.listComments.length,
+                //                 itemBuilder: (context, index) {
+                //                   return SingleChildScrollView(
+                //                       child: Padding(
+                //                           padding: const EdgeInsets.all(2),
+                //                           child:
+                //                           //Text(''),
+                //                           cardcomment(
+                //                             commentmodel:
+                //                             value.listComments[index],
+                //                           )));
+                //                 }),
+                //           ),
+                //         ],
+                //       );
+                //     }),
+                //   ),
+                // ),
               ],
             ),
           ),

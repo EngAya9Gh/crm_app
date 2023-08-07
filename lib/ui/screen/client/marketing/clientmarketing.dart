@@ -354,19 +354,18 @@ class _clientmarketingState extends State<clientmarketing> {
                                           itemCount: value.listClientMarketing.length,
                                           itemBuilder: (context, index) {
 
-                                            return SingleChildScrollView(
-                                                child: Padding(
-                                                    padding: const EdgeInsets.all(2),
-                                                    child:
-                                                    cardAllClient(
-                                                      clientModel:
-                                                      value.listClientMarketing[index],
-                                                    )
-                                                  //cardClientAccept(iteminvoice: null,)
-                                                  // cardClientnew(
-                                                  //     itemClient: value.listClientfilter[index],
-                                                  //     iduser: iduser.toString()),
-                                                ));
+                                            return Padding(
+                                                padding: const EdgeInsets.all(2),
+                                                child:
+                                                cardAllClient(
+                                                  clientModel:
+                                                  value.listClientMarketing[index],
+                                                )
+                                              //cardClientAccept(iteminvoice: null,)
+                                              // cardClientnew(
+                                              //     itemClient: value.listClientfilter[index],
+                                              //     iduser: iduser.toString()),
+                                            );
                                           }),
                                     ),
                                   ],

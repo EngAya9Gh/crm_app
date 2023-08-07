@@ -18,8 +18,11 @@ class user_vm_provider extends ChangeNotifier {
   bool isupdate = false;
   late UserModel? selecteduser = null;
 
-  void changevalueuser(UserModel? s) {
+  void changevalueuser(UserModel? s , [bool isInit = false]) {
     selecteduser = s;
+    if(isInit){
+      return ;
+    }
     notifyListeners();
   }
 
@@ -139,6 +142,7 @@ class user_vm_provider extends ChangeNotifier {
     return true;
   }
 
+
   Future<SharedPreferences> getcurrentuser() async {
     prefs = await SharedPreferences.getInstance();
     try {
@@ -149,8 +153,11 @@ class user_vm_provider extends ChangeNotifier {
       print(id);
       //print("in get user" + userall[0].nameUser.toString());
       if (id != null) {
+        // currentUser=await UserService().userByIdServices(idUser: id.toString());
+
         final index = userall.indexWhere((element) => element.idUser == id && element.isActive == '1');
         if (index >= 0) {
+        // if (currentUser.isActive=='1') {
           currentUser = userall[index];
           currentUser.path = "";
           notifyListeners();
@@ -158,7 +165,8 @@ class user_vm_provider extends ChangeNotifier {
           print(prefs.containsKey('id_user'));
           prefs.setString("id_user1", '-1');
           return prefs;
-        } else {
+        }
+        else {
           SharedPreferences preferences = await SharedPreferences.getInstance();
           //preferences.setBool(kKeepMeLoggedIn, true);
           preferences.setString("id_user1", '0');

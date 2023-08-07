@@ -8,6 +8,7 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
+import '../model/privilgemodel.dart';
 
 class communication_vm extends ChangeNotifier{
 
@@ -20,29 +21,65 @@ class communication_vm extends ChangeNotifier{
   List<CommunicationModel> listCommunicationClient=[];
   List<CommunicationModel> listinstallnumber=[];
   List<CommunicationModel> listwelcomenumber=[];
-  UserModel? usercurrent;
 
+  void setvaluepriv(privilgelistparam) {
+    print('in set privilge client vm');
+    privilgelist = privilgelistparam;
+    param=get_privilgelist();
+    notifyListeners();
+  }
+
+  List<PrivilgeModel> privilgelist = [];
+  UserModel? usercurrent;
+  String param='';
   void setvalue(user){
     usercurrent=user;
+    // param=get_privilgelist();
     notifyListeners();
   }
   bool isloading=false;
   int selectedtypeinstall=0;
 
-  void changeinstall(int s){
+  void changeinstall(int s) {
     selectedtypeinstall=s;
     notifyListeners();
   }
-  void getCommunicationclient(String fk_client) {
-    listCommunicationClient=[];
-    notifyListeners();
-    if(listCommunication.isNotEmpty){
-      listCommunication.forEach((element) {
-        if(element.fkClient==fk_client&&element.dateCommunication!=null)
-          listCommunicationClient.add(element);
-      });
-    }
+  Map<String ,List<CommunicationModel>> careClientState = Map();
+  bool isLoadingCareClient = false;
+  void getCommunicationclient(String fk_client)async {
+    try{
+      listCommunicationClient=[];
+      isLoadingCareClient = true;
       notifyListeners();
+      // if(listCommunication.isNotEmpty) {
+      //   listCommunication.forEach((element) {
+      //     if(element.fkClient==fk_client&&element.dateCommunication!=null)
+      //       listCommunicationClient.add(element);
+      //   });
+      // }
+      List<dynamic> data=[];
+      data= await Api()
+          .get(url:url+ 'care/getCommunicationClient.php?fk_client=${fk_client}');
+      print(data);
+
+
+      if(data.length.toString().isNotEmpty) {
+        for (int i = 0; i < data.length; i++) {
+          listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
+        }
+      }
+      careClientState['ترحيب'] = listCommunicationClient.where((element) => element.typeCommuncation == "ترحيب").toList();
+      careClientState['تركيب'] = listCommunicationClient.where((element) => element.typeCommuncation == "تركيب").toList();
+      careClientState['دوري'] = listCommunicationClient.where((element) => element.typeCommuncation == "دوري").toList();
+
+      careClientState.removeWhere((key, value) => value.isEmpty);
+
+      isLoadingCareClient = false;
+      notifyListeners();
+    }catch(e){
+      isLoadingCareClient = false;
+      notifyListeners();
+    }
   }
   void isloadval(bool val){
     isload=val;
@@ -331,12 +368,37 @@ class communication_vm extends ChangeNotifier{
     });}
      notifyListeners();
   }
+  String get_privilgelist()   {
+    // if(listClient.isEmpty)
+    //main list
+    String param='';
+    bool res = privilgelist?.firstWhere((element) => element.fkPrivileg == '123').isCheck == '1' ? true : false;
+    if (res) {
+
+      param='';//'''&fk_country'+usercurrent!.fkCountry.toString();
+
+    } else {
+      res =  privilgelist?.firstWhere((element) => element.fkPrivileg == '122').isCheck == '1' ? true : false;
+      if (res) {
+        param='&fk_regoin='+usercurrent!.fkRegoin.toString();
+      } else {
+        res = privilgelist?.firstWhere((element) => element.fkPrivileg == '121').isCheck == '1' ? true : false;
+        if (res) {
+          param='&fk_user='+usercurrent!.idUser.toString();
+        }
+      }
+    }
+     return param;
+  }
  Future <void> getCommunicationInstall(int type) async{
    listCommunicationInstall_temp=[];
    listCommunicationInstall2_temp=[];
     isloading=true;
     notifyListeners();
     print(type.toString());
+    print('param');
+    print(param);
+    // String param= get_privilgelist();
     if(type==2)
     {
       await getInstall2();
@@ -368,7 +430,7 @@ class communication_vm extends ChangeNotifier{
     listCommunicationWelcome_temp=[];
     isloading=true;
     notifyListeners();
-     await getCommunicationall('ترحيب');
+     await getCommunicationall1('ترحيب');
     // if(listCommunication.isNotEmpty) {
     //   listCommunicationWelcome=[];
     //   listCommunication.forEach((element) {
@@ -391,7 +453,7 @@ class communication_vm extends ChangeNotifier{
     notifyListeners();
     List<dynamic> data=[];
     data= await Api()
-        .get(url:url+ 'care/getcomm_repeat.php?fk_country=$country');
+        .get(url:url+ 'care/getcomm_repeat.php?fk_country=$country$param');
     print(data);
     if(data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
@@ -403,14 +465,14 @@ class communication_vm extends ChangeNotifier{
   }
 
   Future<void> getCommunicationallrepeatpage_done(
-      String country,String param)async {
+      String country,String param1)async {
     listCommunicationrepeat=[];
     isload=true;
     notifyListeners();
     List<dynamic> data=[];
     data= await Api()
         .post(
-        url:url+ 'reports/report_care_rate.php?fk_country=$country$param'
+        url:url+ 'reports/report_care_rate.php?fk_country=$country$param1'
     ,body: {'type':'datedays'});
     print(data);
     if(data.length.toString().isNotEmpty) {
@@ -538,7 +600,7 @@ class communication_vm extends ChangeNotifier{
     return data;
   }
 
-  Future<void> getCommunicationall(String? type)async {
+  Future<void> getCommunicationall1(String? type)async {
 
     List<dynamic> data=[];
     data= await Api()
@@ -583,7 +645,7 @@ class communication_vm extends ChangeNotifier{
     List<dynamic> data=[];
 
     data= await Api()
-        .get(url:url+ 'care/get_install2.php?fk_country=${usercurrent!.fkCountry}');
+        .get(url:url+ 'care/get_install2.php?fk_country=${usercurrent!.fkCountry}$param');
     print('data.length');
     print(data.length);
     if(data.length.toString().isNotEmpty) {
@@ -598,7 +660,7 @@ class communication_vm extends ChangeNotifier{
     List<dynamic> data=[];
 
     data= await Api()
-        .get(url:url+ 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}');
+        .get(url:url+ 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}$param');
     print('data.length');
     print(data.length);
     if(data.length.toString().isNotEmpty) {

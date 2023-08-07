@@ -371,7 +371,8 @@ class _care_reportState extends State<care_report> {
                 )
                     : Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 1
-                    ? Row(
+                    ?
+                Row(
                       children: [
                         Flexible(
                   child: TextFormField(
@@ -443,7 +444,8 @@ class _care_reportState extends State<care_report> {
                       ],
                     ): Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 2
-                    ? Row (
+                    ?
+                Row (
                   children: [
                     Flexible(
                       child: Column(

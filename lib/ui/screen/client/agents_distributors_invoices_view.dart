@@ -45,7 +45,7 @@ class AgentsDistributorsInvoicesView extends StatefulWidget {
 
 class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoicesView>
     with StateViewModelMixin<AgentsDistributorsInvoicesView, AgentsCollaboratorsInvoicesViewmodel> {
-  late privilge_vm privilegeVm;
+    late privilge_vm privilegeVm;
 
   @override
   void initState() {

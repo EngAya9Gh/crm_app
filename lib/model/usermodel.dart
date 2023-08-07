@@ -1,3 +1,5 @@
+import 'package:crm_smart/model/privilgemodel.dart';
+
 import '../constants.dart';
 
 class UserModel {
@@ -26,6 +28,8 @@ class UserModel {
   String? img_thumbnail = '';
   String? path = '';
 
+  // List<PrivilgeModel>? privilgelist = [];
+
   UserModel({
      this.idUser,
      this.nameUser,
@@ -51,8 +55,42 @@ class UserModel {
     this.img_image,
     this.img_thumbnail,
     this.path,
+    // this.privilgelist,
   });
 
+  //    UserModel.fromJson(jsonData) {
+  //     // UserModel user= UserModel(
+  //    
+  //     idUser=jsonData['id_user'];
+  //     nameUser= jsonData['nameUser'];
+  //
+  //     email= jsonData['email'];
+  //     mobile= jsonData['mobile'];
+  //     codeVerfiy= jsonData!['code_verfiy'];
+  //     fkCountry=jsonData['fk_country'];
+  //     typeAdministration= jsonData['type_administration'];
+  //     name_mange= jsonData['name_mange'];
+  //     typeLevel= jsonData['type_level'];
+  //     fkRegoin= jsonData['fk_regoin'];
+  //     nameCountry= jsonData['nameCountry'];
+  //     nameRegoin= jsonData['name_regoin'];
+  //     name_level= jsonData['name_level'];
+  //     isActive= jsonData['isActive'];
+  //     currency= jsonData['currency'];
+  //     fkuserAdd= jsonData['fkuserAdd'];
+  //     nameuserAdd= jsonData['nameuserAdd'];
+  //     created_at= jsonData['created_at'];
+  //     img_image= jsonData['img_image'] == null ? '' : urlimage + jsonData['img_image'];
+  //     img_thumbnail= jsonData['img_thumbnail'] == null ? '' : urlimage+ jsonData['img_thumbnail'];
+  //     path= jsonData['path'];
+  //     fkuserupdate= jsonData['fkuserupdate'];
+  //     updated_at= jsonData['updated_at'];
+  //     nameuserupdate= jsonData['nameuserupdate'];
+  //      privilgelist=getproud(jsonData['privilgelist']);
+  //
+  //   // privilgelist= getproud(jsonData['privilgelist']);
+  // // return user;
+  // }
   factory UserModel.fromJson(jsonData) {
     return UserModel(
       idUser: jsonData['id_user'],
@@ -80,6 +118,7 @@ class UserModel {
       fkuserupdate: jsonData['fkuserupdate'],
       updated_at: jsonData['updated_at'],
       nameuserupdate: jsonData['nameuserupdate'],
+      // privilgelist: getproud(jsonData['privilgelist'])
     );
   }
 
@@ -111,6 +150,20 @@ class UserModel {
      _data['path']=path;
     return _data;
   }
+
+  List<PrivilgeModel> getproud(data) {
+    List<PrivilgeModel> prodlist = [];
+    if (data != null) {
+      for (int i = 0; i < data.length; i++) {
+        print(i);
+
+        //print("data "+ "[" + data[i] + "]");
+        prodlist.add(PrivilgeModel.fromJson(data[i]));
+      }
+    }
+    return prodlist;
+  }
+
   ///this method will prevent the override of toString
   String userAsString() {
     return "${this.nameUser}";
