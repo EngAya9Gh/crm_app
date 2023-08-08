@@ -29,6 +29,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
   bool repeat = false;
   bool isdone = false;
   late ConfigModel peroid;
+  bool isRecommendation = false;
+  bool isVisit = false;
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +109,21 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                               )
                             : Container(),
 
+                        widget.element.typeCommuncation == 'دوري' &&
+                                widget.element.isRecommendation.toString() != 'false'
+                            ? cardRow(
+                                title: ' نتيجة التواصل',
+                                value: widget.element.isRecommendation.toString() == 'false' ? '' : 'لم يتم التوصية به',
+                              )
+                            : Container(),
+
+                        widget.element.typeCommuncation == 'دوري' && widget.element.is_visit.toString() != 'false'
+                            ? cardRow(
+                                title: ' نتيجة التواصل',
+                                value: widget.element.is_visit.toString() == 'false' ? '' : 'لم تتم الزيارة',
+                              )
+                            : Container(),
+
                         widget.element.typeCommuncation == 'دوري' || widget.element.typeCommuncation == 'تركيب'
                             ? Row(
                                 children: [
@@ -175,6 +192,32 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                   setState(() {
                                     print(value);
                                     repeat = value!;
+                                    //values[key] = value;
+                                  });
+                                },
+                              )
+                            : Container(),
+                        widget.element.typeCommuncation == 'دوري'
+                            ? CheckboxListTile(
+                                title: new Text('لا يوجد توصية'),
+                                value: isRecommendation, // as bool,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    print(value);
+                                    isRecommendation = value!;
+                                    //values[key] = value;
+                                  });
+                                },
+                              )
+                            : Container(),
+                        widget.element.typeCommuncation == 'دوري'
+                            ? CheckboxListTile(
+                                title: new Text('لم تتم الزيارة'),
+                                value: isVisit, // as bool,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    print(value);
+                                    isVisit = value!;
                                     //values[key] = value;
                                   });
                                 },
@@ -270,6 +313,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                     'number_wrong': numberwrong.toString(),
                                     'client_repeat': repeat.toString(),
                                     'date_next': datanext.toString(),
+                                    'isRecommendation': isRecommendation.toString(),
+                                    'is_visit': isVisit.toString(),
                                   }, widget.element.idCommunication);
                                   // clear(val);
                                 }

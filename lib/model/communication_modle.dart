@@ -48,6 +48,8 @@ class CommunicationModel {
   late final String? nameClient;
   late   String? type_install;
   late  String? hoursdelaylabel;
+  late  String? isRecommendation;
+  late  String? is_visit;
 
   CommunicationModel.fromJson(Map<String, dynamic> json){
     idCommunication = json['id_communication'];
@@ -74,6 +76,8 @@ class CommunicationModel {
     nameClient = json['nameClient'];
     type_install = json['type_install'];
     date_last_com_install = json['date_last_com_install'];
+    isRecommendation = json['isRecommendation'];
+    is_visit = json['is_visit'];
   }
 
   Map<String, dynamic> toJson() {
