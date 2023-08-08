@@ -218,7 +218,7 @@ class _View_installedClientState extends State<View_installedClient> {
                                                               2),
                                                       child: cardcommalltype(
                                                           itemcom:
-                                                          value.listCommunicationInstall[index]),
+                                                          value.listCommunicationInstall[index],tabCareIndex: 1),
                                                     )));
                                                   }),
                                             ),

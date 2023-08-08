@@ -10,8 +10,9 @@ import 'communcation_view_widget.dart';
 import 'package:collection/collection.dart';
 
 class care_client_view extends StatefulWidget {
-  care_client_view({required this.fk_client, Key? key}) : super(key: key);
+  care_client_view({required this.fk_client, Key? key, this.tabCareIndex = 0}) : super(key: key);
   String fk_client;
+  int tabCareIndex;
 
   @override
   _care_client_viewState createState() => _care_client_viewState();
@@ -21,6 +22,12 @@ class _care_client_viewState extends State<care_client_view> {
   // List<CommunicationModel> listCommunication = [];
   // List<TicketModel> listticket_client = [];
   // TicketModel? ttc;
+
+  Map tabsToIndex = {
+    0: "ترحيب",
+    1: "تركيب",
+    2: "دوري",
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +46,16 @@ class _care_client_viewState extends State<care_client_view> {
     return Consumer<communication_vm>(builder: (context, communicationVm, _) {
       final carteClientState = communicationVm.careClientState;
       final isLoading = communicationVm.isLoadingCareClient;
+
+      final initialIndex = carteClientState.keys.toList().indexOf(tabsToIndex[widget.tabCareIndex]) == -1
+          ? 0
+          : carteClientState.keys.toList().indexOf(tabsToIndex[widget.tabCareIndex]);
       if (isLoading) {
         return Center(child: CircularProgressIndicator.adaptive());
       }
       return DefaultTabController(
         length: carteClientState.keys.length,
+        initialIndex: initialIndex,
         child: Builder(builder: (context) {
           return Column(
             children: [
@@ -51,8 +63,10 @@ class _care_client_viewState extends State<care_client_view> {
                 controller: DefaultTabController.of(context),
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
                 indicator: _CustomIndicator(color: kMainColor),
-                unselectedLabelStyle: context.textTheme.titleMedium?.copyWith(color: Colors.grey.shade700,fontFamily: kfontfamily2),
-                labelStyle: context.textTheme.titleMedium?.copyWith(color: kMainColor,fontWeight: FontWeight.w800,fontFamily: kfontfamily2),
+                unselectedLabelStyle:
+                context.textTheme.titleMedium?.copyWith(color: Colors.grey.shade700, fontFamily: kfontfamily2),
+                labelStyle: context.textTheme.titleMedium
+                    ?.copyWith(color: kMainColor, fontWeight: FontWeight.w800, fontFamily: kfontfamily2),
                 labelColor: kMainColor,
                 unselectedLabelColor: Colors.grey.shade700,
                 splashBorderRadius: BorderRadius.circular(15),
@@ -102,36 +116,37 @@ class _care_client_viewState extends State<care_client_view> {
           itemComparator: (item1, item2) => item1.idCommunication!.compareTo(item2.idCommunication),
           order: GroupedListOrder.ASC,
           useStickyGroupSeparators: true,
-          groupSeparatorBuilder: (String value) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              value,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-          ),
+          groupSeparatorBuilder: (String value) =>
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  value,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
           itemBuilder: (c, element) {
             return Container(
-                //children: _privilgelist.map(( key) {
+              //children: _privilgelist.map(( key) {
                 child: Column(
-              children: [
-                // for(int i=0;i<listCommunication.length;i++)
-                // if(listCommunication[i].typeCommuncation!='دوري')
-                communcation_view_widget(element: element),
+                  children: [
+                    // for(int i=0;i<listCommunication.length;i++)
+                    // if(listCommunication[i].typeCommuncation!='دوري')
+                    communcation_view_widget(element: element),
 
-                // else commview(listCommunication[i])
-                //  listCommunication.isNotEmpty?
-                //  commview( listCommunication
-                //      .firstWhere((element) => element.typeCommuncation=='دوري',
-                //  orElse: ()=> CommunicationModel(
-                //  idCommunication: '',nameUser: '',nameEnterprise: '',
-                //  clientRepeat: '',result: '',number_wrong: '',rate: '',
-                //  typeCommuncation: '',mobile: '',notes: '',
-                //  fkClient: '',fkUser: '',date_create: '',dateNext: '',
-                //  dateCommunication: '',id_invoice: '',dateinstall_done: ''
-                //  ) ) ) :Container(),
-              ],
-            ));
+                    // else commview(listCommunication[i])
+                    //  listCommunication.isNotEmpty?
+                    //  commview( listCommunication
+                    //      .firstWhere((element) => element.typeCommuncation=='دوري',
+                    //  orElse: ()=> CommunicationModel(
+                    //  idCommunication: '',nameUser: '',nameEnterprise: '',
+                    //  clientRepeat: '',result: '',number_wrong: '',rate: '',
+                    //  typeCommuncation: '',mobile: '',notes: '',
+                    //  fkClient: '',fkUser: '',date_create: '',dateNext: '',
+                    //  dateCommunication: '',id_invoice: '',dateinstall_done: ''
+                    //  ) ) ) :Container(),
+                  ],
+                ));
 
             // );
           },
@@ -163,9 +178,10 @@ class _DotPainter extends BoxPainter {
     required this.color,
     required this.radius,
     VoidCallback? onChange,
-  })  : _paint = Paint()
-          ..color = color
-          ..style = PaintingStyle.fill,
+  })
+      : _paint = Paint()
+    ..color = color
+    ..style = PaintingStyle.fill,
         super(onChange);
 
   final Paint _paint;

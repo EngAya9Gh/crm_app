@@ -129,7 +129,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 children: [
                                   Text('مستوى التقييم'),
                                   RatingBar.builder(
-                                    initialRating: double.parse(widget.element.rate.toString()),
+                                    initialRating: num.tryParse(widget.element.rate.toString())?.toDouble() ?? 0,
                                     minRating: 1,
                                     direction: Axis.horizontal,
                                     allowHalfRating: false,

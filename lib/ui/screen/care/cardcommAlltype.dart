@@ -28,9 +28,10 @@ class cardcommalltype extends StatelessWidget {
   cardcommalltype(
       { Key? key,
         // required this.iduser,
-        required this.itemcom}) : super(key: key);
+        required this.itemcom, required this.tabCareIndex}) : super(key: key);
   ///ClientModel itemClient;
   CommunicationModel itemcom;
+  final int tabCareIndex;
   //String iduser;
 
   @override
@@ -54,13 +55,23 @@ class cardcommalltype extends StatelessWidget {
       child: Center(
         child: InkWell(
           onTap: () {
-             Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    installAdd(
-                                      com: itemcom,
-                                    )));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ProfileClient(
+                  idClient:itemcom.fkClient,
+                  tabIndex: 4,
+                  tabCareIndex: tabCareIndex,
+                ),
+              ),
+            );
+
+             // Navigator.push(
+             //                context,
+             //                MaterialPageRoute(
+             //                    builder: (context) =>
+             //                        installAdd(
+             //                          com: itemcom,
+             //                        )));
           },
           child: Container(
             decoration: BoxDecoration(

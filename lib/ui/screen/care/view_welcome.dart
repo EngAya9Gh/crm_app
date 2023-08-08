@@ -205,7 +205,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                                                         2),
                                                     child: cardcommalltype(
                                                         itemcom:
-                                                        value.listCommunicationWelcome[index]),
+                                                        value.listCommunicationWelcome[index],tabCareIndex: 0),
                                                     // child: Column(
                                                     //   children: [
                                                     //     ListTile(

@@ -340,6 +340,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                         listCommunication[index].fkClient)
                                                                     .idClients,
                                                                 tabIndex: 4,
+                                                                tabCareIndex: 2,
                                                               ),
                                                             ),
                                                           );

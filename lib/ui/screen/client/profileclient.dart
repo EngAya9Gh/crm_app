@@ -27,6 +27,7 @@ class ProfileClient extends StatefulWidget {
     this.clientTransfer,
     this.invoiceModel,
     this.tabIndex,
+    this.tabCareIndex = 0,
     required this.idClient,
     this.client,
     Key? key,
@@ -35,6 +36,7 @@ class ProfileClient extends StatefulWidget {
 
   String? idClient;
   int? tabIndex = 0;
+  int tabCareIndex;
   InvoiceModel? invoiceModel;
   String? clientTransfer;
   ClientModel? client;
@@ -60,7 +62,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
         ..get_invoiceclientlocal(widget.idClient, '')
         ..get_invoiceclientlocal(widget.idClient, 'مشترك');
 
-       // Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
+      // Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
 
       await Provider.of<client_vm>(context, listen: false).get_byIdClient(widget.idClient.toString());
 
@@ -162,9 +164,12 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
               invoice: null, //widget.invoiceModel,
             ),
             invoices(itemClient: _clientModel, fkclient: _clientModel.idClients.toString(), fkuser: ''),
-            commentView(client: _clientModel,event: widget.event),
+            commentView(client: _clientModel, event: widget.event),
             support_view_invoices(itemClient: _clientModel),
-            care_client_view(fk_client: _clientModel.idClients.toString()),
+            care_client_view(
+              fk_client: _clientModel.idClients.toString(),
+              tabCareIndex: widget.tabCareIndex,
+            ),
             ticketprofile(itemClient: _clientModel),
             //InvoiceView(invoice: _invoiceModel,),
             //Icon(Icons.add),

@@ -39,7 +39,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -195,7 +194,7 @@ void main() async {
     ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
     ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
     //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
-  ], child: GlobalLoaderOverlay(child: MyApp())));
+  ], child:  MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -255,9 +254,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 home: Directionality(
                   textDirection: TextDirection.rtl,
-                  child: LoaderOverlay(
-                      useDefaultLoading: false,
-                      child: isUserLoggedIn ? Home() : login()),
+                  child: isUserLoggedIn ? Home() : login(),
                 ),
               );
             }
