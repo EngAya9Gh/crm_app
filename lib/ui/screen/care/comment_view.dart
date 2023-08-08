@@ -117,9 +117,9 @@ class _commentViewState extends State<commentView> {
                             if (widget.event != null && isFirstComment) {
                               context.read<EventProvider>().changeEventToDone(
                                     event: widget.event!,
-                                    onLoading: () => context.loaderOverlay.show(),
-                                    onSuccess: () => context.loaderOverlay.hide(),
-                                    onFailure: () => context.loaderOverlay.hide(),
+                                    onLoading: () {},
+                                    onSuccess: () {},
+                                    onFailure: () {},
                                   );
                               isFirstComment = false;
                             }

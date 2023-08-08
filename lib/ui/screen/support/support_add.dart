@@ -546,7 +546,7 @@ class _support_addState extends State<support_add> {
                                       )),
                                     ],
                                   )
-                                : _invoiceAttachFile?.fileAttach != null
+                                : (_invoiceAttachFile?.fileAttach?.isNotEmpty ?? false)
                                     ? InkWell(
                                         onTap: () => AppPhotoViewer(urls: [
                                           urlfile + _invoiceAttachFile!.fileAttach!
