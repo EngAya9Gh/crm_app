@@ -10,9 +10,15 @@ import 'communcation_view_widget.dart';
 import 'package:collection/collection.dart';
 
 class care_client_view extends StatefulWidget {
-  care_client_view({required this.fk_client, Key? key, this.tabCareIndex = 0}) : super(key: key);
+  care_client_view({
+    required this.fk_client,
+    Key? key,
+    this.tabCareIndex = 0,
+    required this.idCommunication,
+  }) : super(key: key);
   String fk_client;
   int tabCareIndex;
+  String idCommunication;
 
   @override
   _care_client_viewState createState() => _care_client_viewState();
@@ -64,7 +70,7 @@ class _care_client_viewState extends State<care_client_view> {
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
                 indicator: _CustomIndicator(color: kMainColor),
                 unselectedLabelStyle:
-                context.textTheme.titleMedium?.copyWith(color: Colors.grey.shade700, fontFamily: kfontfamily2),
+                    context.textTheme.titleMedium?.copyWith(color: Colors.grey.shade700, fontFamily: kfontfamily2),
                 labelStyle: context.textTheme.titleMedium
                     ?.copyWith(color: kMainColor, fontWeight: FontWeight.w800, fontFamily: kfontfamily2),
                 labelColor: kMainColor,
@@ -79,7 +85,10 @@ class _care_client_viewState extends State<care_client_view> {
                     final list = carteClientState.values.toList()[i];
 
                     return ListView.separated(
-                      itemBuilder: (context, index) => communcation_view_widget(element: list[index]),
+                      itemBuilder: (context, index) => communcation_view_widget(
+                        element: list[index],
+                        initiallyExpanded: list[index].idCommunication == widget.idCommunication,
+                      ),
                       separatorBuilder: (context, index) => SizedBox(height: 10),
                       itemCount: list.length,
                     );
@@ -116,37 +125,36 @@ class _care_client_viewState extends State<care_client_view> {
           itemComparator: (item1, item2) => item1.idCommunication!.compareTo(item2.idCommunication),
           order: GroupedListOrder.ASC,
           useStickyGroupSeparators: true,
-          groupSeparatorBuilder: (String value) =>
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  value,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
+          groupSeparatorBuilder: (String value) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              value,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
           itemBuilder: (c, element) {
             return Container(
-              //children: _privilgelist.map(( key) {
+                //children: _privilgelist.map(( key) {
                 child: Column(
-                  children: [
-                    // for(int i=0;i<listCommunication.length;i++)
-                    // if(listCommunication[i].typeCommuncation!='دوري')
-                    communcation_view_widget(element: element),
+              children: [
+                // for(int i=0;i<listCommunication.length;i++)
+                // if(listCommunication[i].typeCommuncation!='دوري')
+                // communcation_view_widget(element: element),
 
-                    // else commview(listCommunication[i])
-                    //  listCommunication.isNotEmpty?
-                    //  commview( listCommunication
-                    //      .firstWhere((element) => element.typeCommuncation=='دوري',
-                    //  orElse: ()=> CommunicationModel(
-                    //  idCommunication: '',nameUser: '',nameEnterprise: '',
-                    //  clientRepeat: '',result: '',number_wrong: '',rate: '',
-                    //  typeCommuncation: '',mobile: '',notes: '',
-                    //  fkClient: '',fkUser: '',date_create: '',dateNext: '',
-                    //  dateCommunication: '',id_invoice: '',dateinstall_done: ''
-                    //  ) ) ) :Container(),
-                  ],
-                ));
+                // else commview(listCommunication[i])
+                //  listCommunication.isNotEmpty?
+                //  commview( listCommunication
+                //      .firstWhere((element) => element.typeCommuncation=='دوري',
+                //  orElse: ()=> CommunicationModel(
+                //  idCommunication: '',nameUser: '',nameEnterprise: '',
+                //  clientRepeat: '',result: '',number_wrong: '',rate: '',
+                //  typeCommuncation: '',mobile: '',notes: '',
+                //  fkClient: '',fkUser: '',date_create: '',dateNext: '',
+                //  dateCommunication: '',id_invoice: '',dateinstall_done: ''
+                //  ) ) ) :Container(),
+              ],
+            ));
 
             // );
           },
@@ -178,10 +186,9 @@ class _DotPainter extends BoxPainter {
     required this.color,
     required this.radius,
     VoidCallback? onChange,
-  })
-      : _paint = Paint()
-    ..color = color
-    ..style = PaintingStyle.fill,
+  })  : _paint = Paint()
+          ..color = color
+          ..style = PaintingStyle.fill,
         super(onChange);
 
   final Paint _paint;

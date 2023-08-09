@@ -4,9 +4,10 @@ import 'package:crm_smart/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget buildcardExpansion( String title,String? subtitle, Widget items) {
+Widget buildcardExpansion( String title,String? subtitle, Widget items , {bool initiallyExpanded = false}) {
   return Card(
     child: ExpansionTile(
+      initiallyExpanded: initiallyExpanded,
       subtitle: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(

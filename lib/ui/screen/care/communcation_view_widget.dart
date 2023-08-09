@@ -15,8 +15,9 @@ import '../../widgets/custom_widget/RowWidget.dart';
 import '../../widgets/custom_widget/card_expansion.dart';
 
 class communcation_view_widget extends StatefulWidget {
-  communcation_view_widget({required this.element, Key? key}) : super(key: key);
+  communcation_view_widget({required this.element, required this.initiallyExpanded, Key? key}) : super(key: key);
   CommunicationModel element;
+  final bool initiallyExpanded;
 
   @override
   State<communcation_view_widget> createState() => _communcation_view_widgetState();
@@ -328,6 +329,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                       ],
                     ),
                   ),
+            initiallyExpanded: widget.initiallyExpanded,
           )
         : Container();
   }

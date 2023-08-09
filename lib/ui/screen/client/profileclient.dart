@@ -171,6 +171,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             care_client_view(
               fk_client: _clientModel.idClients.toString(),
               tabCareIndex: widget.tabCareIndex,
+              idCommunication: widget.idCommunication,
             ),
             ticketprofile(itemClient: _clientModel),
             //InvoiceView(invoice: _invoiceModel,),
