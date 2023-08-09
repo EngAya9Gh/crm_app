@@ -45,7 +45,7 @@ class communication_vm extends ChangeNotifier {
   Map<String, List<CommunicationModel>> careClientState = Map();
   bool isLoadingCareClient = false;
 
-  void getCommunicationclient(String fk_client) async {
+  void getCommunicationclient(String fk_client,String idCommunication) async {
     try {
       listCommunicationClient = [];
       isLoadingCareClient = true;
@@ -57,7 +57,7 @@ class communication_vm extends ChangeNotifier {
       //   });
       // }
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'care/getCommunicationClient.php?fk_client=${fk_client}');
+      data = await Api().get(url: url + 'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
       print(data);
 
       if (data.length.toString().isNotEmpty) {

@@ -32,6 +32,7 @@ class ProfileClient extends StatefulWidget {
     this.client,
     Key? key,
     this.event,
+    this.idCommunication = '0',
   }) : super(key: key);
 
   String? idClient;
@@ -40,6 +41,7 @@ class ProfileClient extends StatefulWidget {
   InvoiceModel? invoiceModel;
   String? clientTransfer;
   ClientModel? client;
+  String idCommunication;
   final Event? event;
 
   @override
@@ -66,7 +68,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
       await Provider.of<client_vm>(context, listen: false).get_byIdClient(widget.idClient.toString());
 
-      Provider.of<communication_vm>(context, listen: false).getCommunicationclient(widget.idClient.toString());
+      Provider.of<communication_vm>(context, listen: false).getCommunicationclient(widget.idClient.toString(),widget.idCommunication);
 
       Provider.of<ticket_vm>(context, listen: false).getclient_ticket(widget.idClient.toString());
     });

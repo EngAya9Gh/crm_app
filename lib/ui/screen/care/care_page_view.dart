@@ -341,6 +341,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                                     .idClients,
                                                                 tabIndex: 4,
                                                                 tabCareIndex: 2,
+                                                                idCommunication: listCommunication[index].idCommunication,
                                                               ),
                                                             ),
                                                           );
