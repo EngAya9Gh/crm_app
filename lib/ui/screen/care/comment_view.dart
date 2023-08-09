@@ -60,112 +60,123 @@ class _commentViewState extends State<commentView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ModalProgressHUD(
-      inAsyncCall: Provider.of<comment_vm>(context, listen: false).isloadadd,
-      child: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: ListView(children: [
-              Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Form(
-                      key: _globalKey,
-                      child: EditTextFormField(
-                        vaild: (value) {
-                          if (value!.toString().trim().isEmpty) {
-                            return label_empty;
-                          }
-                        },
-                        maxline: 3,
-                        paddcustom: EdgeInsets.only(top: 20, left: 3, right: 3, bottom: 3),
-                        controller: _comment,
-                        hintText: 'إضافة تعليق',
-                        // keyboardType: TextInputType.multiline,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: ListView(children: [
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Form(
+                        key: _globalKey,
+                        child: EditTextFormField(
+                          vaild: (value) {
+                            if (value!.toString().trim().isEmpty) {
+                              return label_empty;
+                            }
+                          },
+                          maxline: 3,
+                          paddcustom: EdgeInsets.only(top: 20, left: 3, right: 3, bottom: 3),
+                          controller: _comment,
+                          hintText: 'إضافة تعليق',
+                          // keyboardType: TextInputType.multiline,
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                      onPressed: () async {
-                        if (_globalKey.currentState!.validate()) {
-                          _globalKey.currentState!.save();
-
-                          Provider.of<comment_vm>(context, listen: false).addComment_vm(
-                            {
-                              'content': _comment.text,
-                              'fk_user': await Provider.of<user_vm_provider>(context, listen: false)
-                                  .currentUser
-                                  .idUser
-                                  .toString(),
-                              'fk_client': fk_client,
-                              'fkuser_client': widget.client!.fkUser.toString(), //صتحب العميل
-                              'nameUser': widget.client!.nameUser.toString(),
-                              'date_comment':
-                                  //Utils.toDateTime(
-                                  DateTime.now().toString(),
-                              //),
-                              'nameUser': Provider.of<user_vm_provider>(context, listen: false).currentUser.nameUser,
-                              'img_image': '',
-                              'name_enterprise': nameEnterprise
-                            },
-                            Provider.of<user_vm_provider>(context, listen: false).currentUser.img_image,
-                          ).then((value) {
-                            if (widget.event != null && isFirstComment) {
-                              context.read<EventProvider>().changeEventToDone(
-                                    event: widget.event!,
-                                    onLoading: () {},
-                                    onSuccess: () {},
-                                    onFailure: () {},
-                                  );
-                              isFirstComment = false;
-                            }
-                          });
-                          _comment.text = '';
+                    Consumer<comment_vm>(
+                      builder: (context, value, child) {
+                        if (value.isloadadd) {
+                          return AnimatedPadding(
+                            duration: kTabScrollDuration,
+                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Center(
+                              child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator()),
+                            ),
+                          );
                         }
+                        return IconButton(
+                            onPressed: () async {
+                              if (_globalKey.currentState!.validate()) {
+                                _globalKey.currentState!.save();
+
+                                Provider.of<comment_vm>(context, listen: false).addComment_vm(
+                                  {
+                                    'content': _comment.text,
+                                    'fk_user': await Provider.of<user_vm_provider>(context, listen: false)
+                                        .currentUser
+                                        .idUser
+                                        .toString(),
+                                    'fk_client': fk_client,
+                                    'fkuser_client': widget.client!.fkUser.toString(), //صتحب العميل
+                                    'nameUser': widget.client!.nameUser.toString(),
+                                    'date_comment':
+                                        //Utils.toDateTime(
+                                        DateTime.now().toString(),
+                                    //),
+                                    'nameUser':
+                                        Provider.of<user_vm_provider>(context, listen: false).currentUser.nameUser,
+                                    'img_image': '',
+                                    'name_enterprise': nameEnterprise
+                                  },
+                                  Provider.of<user_vm_provider>(context, listen: false).currentUser.img_image,
+                                ).then((value) {
+                                  if (widget.event != null && isFirstComment) {
+                                    context.read<EventProvider>().changeEventToDone(
+                                          event: widget.event!,
+                                          onLoading: () {},
+                                          onSuccess: () {},
+                                          onFailure: () {},
+                                        );
+                                    isFirstComment = false;
+                                  }
+                                });
+                                _comment.text = '';
+                              }
+                            },
+                            icon: Icon(Icons.send, color: kMainColor));
                       },
-                      icon: Icon(Icons.send, color: kMainColor)),
-                ],
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height * 0.68,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8, top: 10.0, bottom: 5),
-                  child: Consumer<comment_vm>(builder: (context, value, child) {
-                    return value.isLoading
-                        ? Center(child: CircularProgressIndicator.adaptive())
-                        : value.listComments.isNotEmpty && value.isLoading
-                            ? Center(child: CircularProgressIndicator.adaptive())
-                            : value.listComments.length == 0
-                                ? Text('')
-                                : Column(
-                                    children: [
-                                      Expanded(
-                                        child: ListView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: value.listComments.length,
-                                            itemBuilder: (context, index) {
-                                              return SingleChildScrollView(
-                                                  child: Padding(
-                                                      padding: const EdgeInsets.all(2),
-                                                      child:
-                                                          //Text(''),
-                                                          cardcomment(
-                                                        commentmodel: value.listComments[index],
-                                                      )));
-                                            }),
-                                      ),
-                                    ],
-                                  );
-                  }),
+                    ),
+                  ],
                 ),
-              ),
-            ]),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.68,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8, top: 10.0, bottom: 5),
+                    child: Consumer<comment_vm>(builder: (context, value, child) {
+                      return value.isLoading
+                          ? Center(child: CircularProgressIndicator.adaptive())
+                          : value.listComments.isNotEmpty && value.isLoading
+                              ? Center(child: CircularProgressIndicator.adaptive())
+                              : value.listComments.length == 0
+                                  ? Text('')
+                                  : Column(
+                                      children: [
+                                        Expanded(
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              itemCount: value.listComments.length,
+                                              itemBuilder: (context, index) {
+                                                return SingleChildScrollView(
+                                                    child: Padding(
+                                                        padding: const EdgeInsets.all(2),
+                                                        child:
+                                                            //Text(''),
+                                                            cardcomment(
+                                                          commentmodel: value.listComments[index],
+                                                        )));
+                                              }),
+                                        ),
+                                      ],
+                                    );
+                    }),
+                  ),
+                ),
+              ]),
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 }

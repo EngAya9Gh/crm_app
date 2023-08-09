@@ -44,7 +44,7 @@ class user_vm_provider extends ChangeNotifier {
 
   late SharedPreferences prefs;
 
-  late UserModel currentUser = UserModel(
+  late UserModel  currentUser = UserModel(
       nameUser: "aya",
       fkCountry: "1",
       fkRegoin: "1",
