@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/function_global.dart';
+import 'package:crm_smart/model/calendar/event.dart';
 import 'package:crm_smart/model/configmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/ticketmodel.dart';
@@ -19,6 +20,7 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/fancy_image_shimmer_viewer.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
+import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
@@ -56,6 +58,8 @@ class _support_addState extends State<support_add> {
   String? fk_client;
   bool valueresoan = false;
 
+  late EventProvider _eventProvider;
+
   @override
   void dispose() {
     _textsupport.dispose();
@@ -69,6 +73,7 @@ class _support_addState extends State<support_add> {
   @override
   void initState() {
     timinit = TimeOfDay.now();
+    _eventProvider = context.read<EventProvider>();
     // if (widget.idinvoice != '') {
     //   // _invoice = Provider
     //   //     .of<invoice_vm>(context, listen: false)
@@ -290,6 +295,21 @@ class _support_addState extends State<support_add> {
                                 fk_client: widget.idClient!,
                                 fk_user: idUser!,
                                 date_client_visit: datetask.toString(),
+                                onSuccess: (value) {
+                                  DateTime temp =
+                                      datetask.hour >= 21 ? datetask.subtract(Duration(hours: 3)) : datetask;
+
+                                  final event = Event(
+                                    fkIdClient: widget.idClient!,
+                                    idinvoice: _invoice!.idInvoice!,
+                                    title: _invoice!.name_enterprise!,
+                                    description: "description",
+                                    from: temp,
+                                    to: temp.add(Duration(hours: 2)),
+                                  );
+
+                                  _eventProvider.addEvent(event);
+                                },
                               )
                                   .then((value) {
                                 clear();
@@ -548,16 +568,16 @@ class _support_addState extends State<support_add> {
                                   )
                                 : (_invoiceAttachFile?.fileAttach?.isNotEmpty ?? false)
                                     ? InkWell(
-                                        onTap: () => AppPhotoViewer(urls: [
-                                          urlfile + _invoiceAttachFile!.fileAttach!
-                                        ]).show(context),
+                                        onTap: () => AppPhotoViewer(urls: [urlfile + _invoiceAttachFile!.fileAttach!])
+                                            .show(context),
                                         child: Stack(
                                           children: [
                                             Positioned.fill(
                                                 child: ClipRRect(
                                               borderRadius: BorderRadius.circular(15),
                                               child: FancyImageShimmerViewer(
-                                                imageUrl: urlfile + _invoiceAttachFile!.fileAttach!, fit: BoxFit.cover,
+                                                imageUrl: urlfile + _invoiceAttachFile!.fileAttach!,
+                                                fit: BoxFit.cover,
                                               ),
                                             )),
                                             Positioned.fill(

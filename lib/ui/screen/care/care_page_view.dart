@@ -302,184 +302,195 @@ class _care_page_viewState extends State<care_page_view> {
                       height: MediaQuery.of(context).size.height * 0.73,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Provider.of<communication_vm>(context, listen: true).isload == true
-                            ? Center(child: CircularProgressIndicator())
-                            : listCommunication.length == 0
-                                ? Center(child: Text(messageNoData))
-                                : Column(
-                                    children: [
-                                      Expanded(
-                                        child: ListView.builder(
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: listCommunication.length,
-                                            itemBuilder: (context, index) {
-                                              return Padding(
-                                                  padding: const EdgeInsets.all(2),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
-                                                      boxShadow: <BoxShadow>[
-                                                        BoxShadow(
-                                                          offset: Offset(1.0, 1.0),
-                                                          blurRadius: 8.0,
-                                                          color: Colors.black87.withOpacity(0.2),
-                                                        ),
-                                                      ],
-                                                      color: Colors.white30,
-                                                    ),
-                                                    child: Center(
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          Navigator.of(context).push(
-                                                            MaterialPageRoute(
-                                                              builder: (context) => ProfileClient(
-                                                                idClient: Provider.of<client_vm>(context, listen: true)
-                                                                    .listClient
-                                                                    .firstWhere((element) =>
-                                                                        element.idClients ==
-                                                                        listCommunication[index].fkClient)
-                                                                    .idClients,
-                                                                tabIndex: 4,
-                                                                tabCareIndex: 2,
-                                                                idCommunication: listCommunication[index].idCommunication,
-                                                              ),
+                        child: Consumer2<communication_vm, client_vm>(
+                          builder: (context, value, value2, child) {
+                            final isLoadingClient = value2.isloading;
+                            final isLoadingCommunication = value.isload;
+
+                            return isLoadingClient || isLoadingCommunication
+                                ? Center(child: CircularProgressIndicator())
+                                : listCommunication.length == 0
+                                    ? Center(child: Text(messageNoData))
+                                    : Column(
+                                        children: [
+                                          Expanded(
+                                            child: ListView.builder(
+                                                scrollDirection: Axis.vertical,
+                                                itemCount: listCommunication.length,
+                                                itemBuilder: (context, index) {
+                                                  return Padding(
+                                                      padding: const EdgeInsets.all(2),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.only(bottomRight: Radius.circular(0)),
+                                                          boxShadow: <BoxShadow>[
+                                                            BoxShadow(
+                                                              offset: Offset(1.0, 1.0),
+                                                              blurRadius: 8.0,
+                                                              color: Colors.black87.withOpacity(0.2),
                                                             ),
-                                                          );
-                                                          // Navigator.push(
-                                                          //     context,
-                                                          //     MaterialPageRoute(
-                                                          //         builder: (context) => careRepeat(
-                                                          //             type: type,
-                                                          //             comobj: listCommunication[index],
-                                                          //             // tabindex:2, //move to tab support in profile client
-                                                          //             idclient:
-                                                          //                 Provider.of<client_vm>(context, listen: true)
-                                                          //                     .listClient
-                                                          //                     .firstWhere((element) =>
-                                                          //                         element.idClients ==
-                                                          //                         listCommunication[index].fkClient))));
-                                                        },
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.white,
-                                                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                                                          ),
-                                                          //height: 70,//MediaQuery.of(context).size.height*0.15,
-                                                          child: Padding(
-                                                            padding: EdgeInsets.all(8),
-                                                            child: Flex(
-                                                              direction: Axis.vertical,
-                                                              children: [
-                                                                Column(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          ],
+                                                          color: Colors.white30,
+                                                        ),
+                                                        child: Center(
+                                                          child: InkWell(
+                                                            onTap: () {
+                                                              Navigator.of(context).push(
+                                                                MaterialPageRoute(
+                                                                  builder: (context) => ProfileClient(
+                                                                    idClient:
+                                                                        Provider.of<client_vm>(context, listen: true)
+                                                                            .listClient
+                                                                            .firstWhere((element) =>
+                                                                                element.idClients ==
+                                                                                listCommunication[index].fkClient)
+                                                                            .idClients,
+                                                                    tabIndex: 4,
+                                                                    tabCareIndex: 2,
+                                                                    idCommunication:
+                                                                        listCommunication[index].idCommunication,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                              // Navigator.push(
+                                                              //     context,
+                                                              //     MaterialPageRoute(
+                                                              //         builder: (context) => careRepeat(
+                                                              //             type: type,
+                                                              //             comobj: listCommunication[index],
+                                                              //             // tabindex:2, //move to tab support in profile client
+                                                              //             idclient:
+                                                              //                 Provider.of<client_vm>(context, listen: true)
+                                                              //                     .listClient
+                                                              //                     .firstWhere((element) =>
+                                                              //                         element.idClients ==
+                                                              //                         listCommunication[index].fkClient))));
+                                                            },
+                                                            child: Container(
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.white,
+                                                                borderRadius: BorderRadius.all(Radius.circular(5)),
+                                                              ),
+                                                              //height: 70,//MediaQuery.of(context).size.height*0.15,
+                                                              child: Padding(
+                                                                padding: EdgeInsets.all(8),
+                                                                child: Flex(
+                                                                  direction: Axis.vertical,
                                                                   children: [
-                                                                    Row(
+                                                                    Column(
                                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                       children: [
-                                                                        Text(
-                                                                          listCommunication[index]
-                                                                              .name_regoin
-                                                                              .toString(),
-                                                                          style: TextStyle(
-                                                                              //fontWeight: FontWeight.bold,
-                                                                              fontSize: 12,
-                                                                              fontFamily: kfontfamily2,
-                                                                              color: kMainColor),
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceBetween,
+                                                                          children: [
+                                                                            Text(
+                                                                              listCommunication[index]
+                                                                                  .name_regoin
+                                                                                  .toString(),
+                                                                              style: TextStyle(
+                                                                                  //fontWeight: FontWeight.bold,
+                                                                                  fontSize: 12,
+                                                                                  fontFamily: kfontfamily2,
+                                                                                  color: kMainColor),
+                                                                            ),
+                                                                            type == 'wait'
+                                                                                ? Text(
+                                                                                    int.parse(listCommunication[index]
+                                                                                                .hoursdelaylabel
+                                                                                                .toString()) <
+                                                                                            0
+                                                                                        ? ' تأخر عن التواصل  ' +
+                                                                                            (int.parse(listCommunication[
+                                                                                                            index]
+                                                                                                        .hoursdelaylabel
+                                                                                                        .toString()) *
+                                                                                                    -1)
+                                                                                                .toString() +
+                                                                                            ' يوم '
+                                                                                        : ' باقي ' +
+                                                                                            listCommunication[index]
+                                                                                                .hoursdelaylabel
+                                                                                                .toString() +
+                                                                                            ' يوم ',
+                                                                                    style: TextStyle(
+                                                                                        fontSize: 12,
+                                                                                        //fontWeight: FontWeight.bold,
+                                                                                        fontFamily: kfontfamily2,
+                                                                                        color: kMainColor),
+                                                                                  )
+                                                                                : Text(
+                                                                                    listCommunication[index]
+                                                                                        .rate
+                                                                                        .toString(),
+                                                                                    style: TextStyle(
+                                                                                        //fontWeight: FontWeight.bold,
+                                                                                        fontSize: 12,
+                                                                                        fontFamily: kfontfamily2,
+                                                                                        color: kMainColor),
+                                                                                  ),
+                                                                          ],
+                                                                        ),
+                                                                        Row(
+                                                                          children: [
+                                                                            Text(
+                                                                              listCommunication[index]
+                                                                                  .nameEnterprise
+                                                                                  .toString(),
+                                                                              style: TextStyle(
+                                                                                fontWeight: FontWeight.bold,
+                                                                                fontSize: 12,
+                                                                                fontFamily: kfontfamily2,
+                                                                              ),
+                                                                            ),
+                                                                          ],
                                                                         ),
                                                                         type == 'wait'
-                                                                            ? Text(
-                                                                                int.parse(listCommunication[index]
-                                                                                            .hoursdelaylabel
-                                                                                            .toString()) <
-                                                                                        0
-                                                                                    ? ' تأخر عن التواصل  ' +
-                                                                                        (int.parse(listCommunication[
-                                                                                                        index]
-                                                                                                    .hoursdelaylabel
-                                                                                                    .toString()) *
-                                                                                                -1)
-                                                                                            .toString() +
-                                                                                        ' يوم '
-                                                                                    : ' باقي ' +
-                                                                                        listCommunication[index]
-                                                                                            .hoursdelaylabel
-                                                                                            .toString() +
-                                                                                        ' يوم ',
-                                                                                style: TextStyle(
-                                                                                    fontSize: 12,
-                                                                                    //fontWeight: FontWeight.bold,
-                                                                                    fontFamily: kfontfamily2,
-                                                                                    color: kMainColor),
+                                                                            ? Row(
+                                                                                mainAxisAlignment:
+                                                                                    MainAxisAlignment.spaceAround,
+                                                                                children: [
+                                                                                  Text(
+                                                                                    'تاريخ التواصل القادم',
+                                                                                    style: TextStyle(
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                      fontSize: 12,
+                                                                                      fontFamily: kfontfamily2,
+                                                                                    ),
+                                                                                  ),
+                                                                                  Text(
+                                                                                    listCommunication[index]
+                                                                                        .dateNext
+                                                                                        .toString(),
+                                                                                    style: TextStyle(
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                      fontSize: 12,
+                                                                                      fontFamily: kfontfamily2,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
                                                                               )
-                                                                            : Text(
-                                                                                listCommunication[index]
-                                                                                    .rate
-                                                                                    .toString(),
-                                                                                style: TextStyle(
-                                                                                    //fontWeight: FontWeight.bold,
-                                                                                    fontSize: 12,
-                                                                                    fontFamily: kfontfamily2,
-                                                                                    color: kMainColor),
-                                                                              ),
+                                                                            : Container(),
                                                                       ],
-                                                                    ),
-                                                                    Row(
-                                                                      children: [
-                                                                        Text(
-                                                                          listCommunication[index]
-                                                                              .nameEnterprise
-                                                                              .toString(),
-                                                                          style: TextStyle(
-                                                                            fontWeight: FontWeight.bold,
-                                                                            fontSize: 12,
-                                                                            fontFamily: kfontfamily2,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    type == 'wait'
-                                                                        ? Row(
-                                                                            mainAxisAlignment:
-                                                                                MainAxisAlignment.spaceAround,
-                                                                            children: [
-                                                                              Text(
-                                                                                'تاريخ التواصل القادم',
-                                                                                style: TextStyle(
-                                                                                  fontWeight: FontWeight.bold,
-                                                                                  fontSize: 12,
-                                                                                  fontFamily: kfontfamily2,
-                                                                                ),
-                                                                              ),
-                                                                              Text(
-                                                                                listCommunication[index]
-                                                                                    .dateNext
-                                                                                    .toString(),
-                                                                                style: TextStyle(
-                                                                                  fontWeight: FontWeight.bold,
-                                                                                  fontSize: 12,
-                                                                                  fontFamily: kfontfamily2,
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          )
-                                                                        : Container(),
+                                                                    )
                                                                   ],
-                                                                )
-                                                              ],
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                  // cardAccept(
-                                                  //   itemClient: value.listClientAccept[index],
-                                                  // ),
-                                                  );
-                                            }),
-                                      ),
-                                    ],
-                                  ),
+                                                      )
+                                                      // cardAccept(
+                                                      //   itemClient: value.listClientAccept[index],
+                                                      // ),
+                                                      );
+                                                }),
+                                          ),
+                                        ],
+                                      );
+                          },
+                        ),
                       ),
                     ),
                   ],

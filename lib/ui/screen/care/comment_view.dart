@@ -4,6 +4,7 @@ import 'package:crm_smart/ui/screen/care/card_comment.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/comment.dart';
+import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,6 +35,7 @@ class _commentViewState extends State<commentView> {
   final _globalKey = GlobalKey<FormState>();
 
   TextEditingController _comment = TextEditingController();
+
   // late String fk_client;
   // String? nameEnterprise;
 
@@ -127,7 +129,9 @@ class _commentViewState extends State<commentView> {
                                   context.read<EventProvider>().changeEventToDone(
                                         event: widget.event!,
                                         onLoading: () {},
-                                        onSuccess: () {},
+                                        onSuccess: () => context
+                                            .read<invoice_vm>()
+                                            .updateListInvoiceAfterMarkEventIsDone(widget.event!),
                                         onFailure: () {},
                                       );
                                   isFirstComment = false;

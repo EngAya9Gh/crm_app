@@ -768,4 +768,22 @@ class DateInstallationClient {
       date_client_visit: DateTime.tryParse(map['date_client_visit']),
     );
   }
+
+  DateInstallationClient copyWith({
+    String? idclients_date,
+    String? fk_user,
+    String? is_done,
+    String? fk_client,
+    String? fk_invoice,
+    DateTime? date_client_visit,
+  }) {
+    return DateInstallationClient(
+      idclients_date: idclients_date ?? this.idclients_date,
+      fk_user: fk_user ?? this.fk_user,
+      is_done: is_done ?? this.is_done,
+      fk_client: fk_client ?? this.fk_client,
+      fk_invoice: fk_invoice ?? this.fk_invoice,
+      date_client_visit: date_client_visit ?? this.date_client_visit,
+    );
+  }
 }

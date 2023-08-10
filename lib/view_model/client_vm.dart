@@ -7,6 +7,7 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/ProductService.dart';
 import 'package:crm_smart/services/clientService.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
+import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -450,22 +451,34 @@ class client_vm extends ChangeNotifier {
     notifyListeners();
   }
 
+  PageState<ClientModel?> currentClientModel = PageState();
+
+
   Future<ClientModel> get_byIdClient(String idClient) async {
     ClientModel? inv;
-    bool res = true;
-    isloading = true;
-    notifyListeners();
-    inv = listClient.firstWhereOrNull((element) => element.idClients == idClient);
-    // ,orElse:null);
-    if (inv == null) {
-      inv = await ClientService().getclientid(idClient);
-      listClient.add(inv);
+    try {
+
+      currentClientModel = currentClientModel.changeToLoading;
+      isloading = true;
+      notifyListeners();
+
+      inv = listClient.firstWhereOrNull((element) => element.idClients == idClient);
+
+      if (inv == null) {
+        inv = await ClientService().getclientid(idClient);
+        listClient.add(inv);
+        currentClientModel = currentClientModel.changeToLoaded(inv);
+      } else {
+        currentClientModel = currentClientModel.changeToLoaded(listClient.firstWhereOrNull((element) => element.idClients == idClient));
+      }
+
+      isloading = false;
+      notifyListeners();
+      return inv;
+    } catch (e) {
+      currentClientModel = currentClientModel.changeToFailed;
+      return ClientModel();
     }
-
-    isloading = false;
-
-    notifyListeners();
-    return inv;
   }
 
   Future<void> getclientMarketing() async {

@@ -19,7 +19,7 @@ class USerInstallationCalendar extends StatefulWidget {
 class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.disabled; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -127,8 +127,8 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
               lastDay: _lastDay,
               focusedDay: _focusedDay,
               selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-              rangeStartDay: _rangeStart,
-              rangeEndDay: _rangeEnd,
+              // rangeStartDay: _rangeStart,
+              // rangeEndDay: _rangeEnd,
               calendarFormat: _calendarFormat,
               rangeSelectionMode: _rangeSelectionMode,
               holidayPredicate: (day) {
@@ -142,11 +142,13 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                 outsideDaysVisible: false,
                 selectedDecoration: BoxDecoration(color: Colors.indigo.shade200, shape: BoxShape.circle),
                 markerDecoration: BoxDecoration(color: Colors.indigo, shape: BoxShape.circle),
+                todayDecoration: BoxDecoration(color: Colors.teal.shade300,shape: BoxShape.circle),
+                isTodayHighlighted: true,
                 markersMaxCount: 10,
               ),
               headerVisible: true,
               onDaySelected: (selectedDay, focusedDay) => _onDaySelected(selectedDay, focusedDay, events),
-              onRangeSelected: (start, end, focusedDay) => _onRangeSelected(start, end, focusedDay, events),
+              // onRangeSelected: (start, end, focusedDay) => _onRangeSelected(start, end, focusedDay, events),
               onFormatChanged: (format) {
                 if (_calendarFormat != format) {
                   setState(() {

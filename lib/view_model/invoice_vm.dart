@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import '../model/agent_distributor_model.dart';
+import '../model/calendar/event.dart';
 import '../model/participatModel.dart';
 import 'package:collection/collection.dart';
 
@@ -899,6 +900,20 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
+  updateListInvoiceAfterMarkEventIsDone(Event event) {
+    final invoice = listinvoiceClientSupport.firstWhereOrNull((element) => element.idInvoice == event.idinvoice);
+    if (invoice == null) {
+      return;
+    }
+    List<DateInstallationClient> list = invoice.datesInstallationClient ?? [];
+    list = list.map((e) => e.idclients_date == event.idClientsDate ? e.copyWith(is_done: '1') : e).toList();
+
+    invoice.datesInstallationClient = list;
+    listinvoiceClientSupport =
+        listinvoiceClientSupport.map((e) => e.idInvoice == invoice.idInvoice ? invoice : e).toList();
+    notifyListeners();
+  }
+
   Future<void> get_invoiceclientlocal(String? fk_client, String type) async {
     bool isParticipate = type == 'مشترك';
 
@@ -1174,6 +1189,7 @@ class invoice_vm extends ChangeNotifier {
     required String date_client_visit,
     required String fk_user,
     required String fk_client,
+    required ValueChanged<String> onSuccess,
   }) async {
     isloadingdone = true;
     notifyListeners();
@@ -1189,6 +1205,7 @@ class invoice_vm extends ChangeNotifier {
       fk_client: fk_client,
     );
 
+    onSuccess.call(data);
     // if (index != -1) listinvoices[index] = te;
     // // print(index);
     // listinvoiceClientSupport[index1] = te;
