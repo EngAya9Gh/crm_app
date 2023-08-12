@@ -16,6 +16,8 @@ import '../../../function_global.dart';
 import '../../../labeltext.dart';
 import 'dart:ui' as myui;
 
+import 'is_marketing_chekbox.dart';
+
 
 class repeat_report extends StatefulWidget {
   const repeat_report({Key? key}) : super(key: key);
@@ -35,6 +37,7 @@ class _repeat_reportState extends State<repeat_report> {
   double totalval = 0;
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
+  bool isMarketing = false;
 
   @override void initState() {
     // TODO: implement initState
@@ -52,14 +55,19 @@ class _repeat_reportState extends State<repeat_report> {
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     var data;
-
+    String isMarketingParams = '';
+    if(isMarketing){
+      isMarketingParams = '&ismarketing=1';
+    }else{
+      isMarketingParams = '';
+    }
     switch (type) {
       case "datedays":
         data = await Api().get(
             url: url +
                 "reports/care_communication_report.php?fk_country=$fkcountry&from=${_selectedDatefrom
                     .toString()}&to=${_selectedDateto
-                    .toString()}",
+                    .toString()}$isMarketingParams",
             //body: {'type': type}
         );
         break;
@@ -227,6 +235,12 @@ class _repeat_reportState extends State<repeat_report> {
                     ),
                   ),
                 ],),
+              IsMarketingCheckbox(
+                onChange: (value) {
+                  isMarketing = value;
+                  getData();
+                },
+              ),
               Expanded(
                 child: Center(
                   child: loading

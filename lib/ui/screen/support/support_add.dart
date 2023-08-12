@@ -698,7 +698,7 @@ class _support_addState extends State<support_add> {
                           title: 'عدد الزيارات المتبقية',
                           value: datesInstallation.where((element) => element.is_done == "0").length.toString()),
 
-                      _invoice!.clientusername.toString() == null
+                      _invoice!.clientusername == null
                           ? Container()
                           : cardRow(title: 'يوزر العميل ', value: getnameshort(_invoice!.clientusername.toString())),
                       cardRow(title: 'حالة الفاتورة', value: _invoice!.stateclient.toString()),
@@ -764,7 +764,7 @@ class _support_addState extends State<support_add> {
                           : Container(),
 
                       Provider.of<privilge_vm>(context, listen: true).checkprivlge('43') == true
-                          ? _invoice!.dateinstall_done == null && _invoice!.dateinstall_task != null
+                          ? _invoice!.dateinstall_done == null
                               ? ElevatedButton(
                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                   onPressed: () async {

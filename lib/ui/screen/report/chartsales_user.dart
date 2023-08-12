@@ -1,5 +1,5 @@
 
-import 'package:charts_flutter/flutter.dart' as fl;
+
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import 'is_marketing_chekbox.dart';
 
 class BarChartAPI extends StatefulWidget {
   const BarChartAPI({Key? key}) : super(key: key);
@@ -39,6 +40,8 @@ class _BarChartAPIState extends State<BarChartAPI> {
   DateTime _selectedDatemonth = DateTime.now();
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
+  bool isMarketing = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
@@ -83,28 +86,35 @@ class _BarChartAPIState extends State<BarChartAPI> {
     String params='';
     if(typeproduct=='أجهزة') params='&product=0';
     if(typeproduct=='برامج') params='&product=1';
+
+    String isMarketingParams = '';
+    if(isMarketing){
+      isMarketingParams = '&ismarketing=1';
+    }else{
+      isMarketingParams = '';
+    }
     switch (type) {
       case "userSum":
         data = await Api().post(
-            url: url + "reports/reportsales.php?fk_country=$fkcountry$params$paramprivilge",
+            url: url + "reports/reportsales.php?fk_country=$fkcountry$params$paramprivilge$isMarketingParams",
             body: {'type': type});
         break;
       case "dateyear":
         data = await Api().post(
             url: url +
-                "reports/reportsales.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge",
+                "reports/reportsales.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge$isMarketingParams",
             body: {'type': type});
         break;
       case "datemonth":
         data = await Api().post(
             url: url +
-                "reports/reportsales.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge",
+                "reports/reportsales.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge$isMarketingParams",
             body: {'type': type});
         break;
       case "datedays":
         data = await Api().post(
             url: url +
-                "reports/reportsales.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge",
+                "reports/reportsales.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge$isMarketingParams",
             body: {'type': type});
         break;
     }
@@ -305,6 +315,12 @@ class _BarChartAPIState extends State<BarChartAPI> {
                           }),
                     ],
                   ),
+                ),
+                IsMarketingCheckbox(
+                  onChange: (value) {
+                    isMarketing = value;
+                    getData();
+                  },
                 ),
                 Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 0 ?

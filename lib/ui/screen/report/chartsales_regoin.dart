@@ -1,5 +1,5 @@
 
-import 'package:charts_flutter/flutter.dart' as fl;
+
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import 'is_marketing_chekbox.dart';
 
 class BarChartregoinsales extends StatefulWidget {
   const BarChartregoinsales({Key? key}) : super(key: key);
@@ -40,6 +41,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   late privilge_vm privilegeVm;
+  bool isMarketing = false;
 
   @override
   void initState() {
@@ -89,18 +91,24 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       //   type='userSum';
       //   paramprivilge='';
       // }
+      String isMarketingParams = '';
+      if(isMarketing){
+        isMarketingParams = '&ismarketing=1';
+      }else{
+        isMarketingParams = '';
+      }
     switch (type) {
       case "userSum":
-        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry$params$paramprivilge";
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry$params$paramprivilge$isMarketingParams";
         break;
       case "dateyear":
-        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge";
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge$isMarketingParams";
         break;
       case "datemonth":
-        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge";
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge$isMarketingParams";
         break;
       case "datedays":
-        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge";
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge$isMarketingParams";
         break;
     }
 
@@ -306,6 +314,12 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                           }),
                     ],
                   ),
+                ),
+                IsMarketingCheckbox(
+                  onChange: (value) {
+                    isMarketing = value;
+                    getData();
+                  },
                 ),
                 Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 0 ?

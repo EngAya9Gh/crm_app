@@ -1,9 +1,9 @@
-import 'package:charts_flutter/flutter.dart' as fl;
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
+import 'package:crm_smart/ui/screen/report/is_marketing_chekbox.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/rowtitle.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
@@ -43,6 +43,7 @@ class _salesproductState extends State<salesproduct> {
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   late privilge_vm privilegeVm;
+  bool isMarketing = false;
 
   @override
   void initState() {
@@ -93,23 +94,29 @@ class _salesproductState extends State<salesproduct> {
       String params = '';
       if (typeproduct == 'أجهزة') params = '&product=0';
       if (typeproduct == 'برامج') params = '&product=1';
+      String isMarketingParams = '';
+      if(isMarketing){
+        isMarketingParams = '&ismarketing=1';
+      }else{
+        isMarketingParams = '';
+      }
       var data;
       var endPoint;
       switch (type) {
         case "userSum":
-          endPoint = "reports/sales_product.php?fk_country=$fkCountry$paramPrivilege$params";
+          endPoint = "reports/sales_product.php?fk_country=$fkCountry$paramPrivilege$params$isMarketingParams";
           break;
         case "dateyear":
           endPoint =
-              "reports/sales_product.php?fk_country=$fkCountry&year=${_selectedDate.year.toString()}$paramPrivilege$params";
+              "reports/sales_product.php?fk_country=$fkCountry&year=${_selectedDate.year.toString()}$paramPrivilege$params$isMarketingParams";
           break;
         case "datemonth":
           endPoint =
-              "reports/sales_product.php?fk_country=$fkCountry&month=${_selectedDatemonth.toString()}$paramPrivilege$params";
+              "reports/sales_product.php?fk_country=$fkCountry&month=${_selectedDatemonth.toString()}$paramPrivilege$params$isMarketingParams";
           break;
         case "datedays":
           endPoint =
-              "reports/sales_product.php?fk_country=$fkCountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramPrivilege$params";
+              "reports/sales_product.php?fk_country=$fkCountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramPrivilege$params$isMarketingParams";
           break;
       }
 
@@ -352,6 +359,12 @@ class _salesproductState extends State<salesproduct> {
                 ),
               ],
             ),
+            IsMarketingCheckbox(
+              onChange: (value) {
+                isMarketing = value;
+                getData();
+              },
+            ),
             Provider.of<selected_button_provider>(context, listen: true).isbarsales == 0
                 ? TextFormField(
                     validator: (value) {
@@ -568,7 +581,9 @@ class _salesproductState extends State<salesproduct> {
                         controller: GroupButtonController(
                           selectedIndex: selectedProvider.isbarsalestype,
                         ),
-                        options: GroupButtonOptions(buttonWidth: (MediaQuery.of(context).size.width / 3) - 16, borderRadius: BorderRadius.circular(10)),
+                        options: GroupButtonOptions(
+                            buttonWidth: (MediaQuery.of(context).size.width / 3) - 16,
+                            borderRadius: BorderRadius.circular(10)),
                         buttons: ['الكل', 'أجهزة', 'برامج'],
                         onSelected: (_, index, isselected) {
                           print(index);

@@ -1,5 +1,5 @@
 
-import 'package:charts_flutter/flutter.dart' as fl;
+
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
@@ -20,6 +20,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import 'is_marketing_chekbox.dart';
 
 class deptsales extends StatefulWidget {
   const deptsales({Key? key}) : super(key: key);
@@ -40,6 +41,7 @@ class _deptsalesState extends State<deptsales> {
   String type = 'allregoin';
   String typeproduct = 'الكل';
   double totalval=0;
+  bool isMarketing = false;
 
   @override
   void initState() {
@@ -116,23 +118,30 @@ class _deptsalesState extends State<deptsales> {
         labelxx='الفرع';
       }
       print(paramprivilge);
+
+      String isMarketingParams = '';
+      if(isMarketing){
+        isMarketingParams = '&ismarketing=1';
+      }else{
+        isMarketingParams = '';
+      }
       var data;
       switch (type) {
         case "allregoin":
           data = await Api().post(
-              url: url + "reports/debt_report.php?fk_country=$fkcountry",
+              url: url + "reports/debt_report.php?fk_country=$fkcountry$isMarketingParams",
               body: {'type': type});
           break;
         case "users":
           data = await Api().post(
               url: url +
-                  "reports/debt_report.php?fk_country=$fkcountry&id_user=$iduser",
+                  "reports/debt_report.php?fk_country=$fkcountry&id_user=$iduser$isMarketingParams",
               body: {'type': type});
           break;
         case "regoin":
           data = await Api().post(
               url: url +
-                  "reports/debt_report.php?fk_country=$fkcountry&id_regoin=$idregoin",
+                  "reports/debt_report.php?fk_country=$fkcountry&id_regoin=$idregoin$isMarketingParams",
               body: {'type': type});
           break;
       }
@@ -347,6 +356,12 @@ class _deptsalesState extends State<deptsales> {
                       ):Container(),
                     ),
                   ],
+                ),
+                IsMarketingCheckbox(
+                  onChange: (value) {
+                    isMarketing = value;
+                    getData();
+                  },
                 ),
                 Center(
                   child: loading

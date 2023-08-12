@@ -1,5 +1,5 @@
 
-import 'package:charts_flutter/flutter.dart' as fl;
+
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import 'is_marketing_chekbox.dart';
 
 class support_install_report extends StatefulWidget {
   const support_install_report({Key? key}) : super(key: key);
@@ -40,6 +41,8 @@ class _support_install_reportState extends State<support_install_report> {
   DateTime _selectedDatemonth = DateTime.now();
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
+  bool isMarketing = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
@@ -79,29 +82,34 @@ class _support_install_reportState extends State<support_install_report> {
     //     .checkprivlge('81')==true)
     {
       var data;
-
+      String isMarketingParams = '';
+      if(isMarketing){
+        isMarketingParams = '&ismarketing=1';
+      }else{
+        isMarketingParams = '';
+      }
       switch (type) {
         case "userSum":
           data = await Api().post(
-              url: url + "reports/support_report_install.php?fk_country=$fkcountry$paramprivilge",
+              url: url + "reports/support_report_install.php?fk_country=$fkcountry$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;
         case "dateyear":
           data = await Api().post(
               url: url +
-                  "reports/support_report_install.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$paramprivilge",
+                  "reports/support_report_install.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;
         case "datemonth":
           data = await Api().post(
               url: url +
-                  "reports/support_report_install.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$paramprivilge",
+                  "reports/support_report_install.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;
         case "datedays":
           data = await Api().post(
               url: url +
-                  "reports/support_report_install.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramprivilge",
+                  "reports/support_report_install.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;
       }
@@ -237,6 +245,12 @@ class _support_install_reportState extends State<support_install_report> {
                           }),
                     ],
                   ),
+                ),
+                IsMarketingCheckbox(
+                  onChange: (value) {
+                    isMarketing = value;
+                    getData();
+                  },
                 ),
                 Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 0 ?

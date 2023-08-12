@@ -133,7 +133,7 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
               holidayPredicate: (day) {
                 return day.weekday == 5;
               },
-              enabledDayPredicate: (day) => day.weekday != 5,
+              // enabledDayPredicate: (day) => day.weekday != 5,
               eventLoader: (day) => _getEventsForDay(day, events),
               startingDayOfWeek: StartingDayOfWeek.saturday,
               availableGestures: AvailableGestures.all,

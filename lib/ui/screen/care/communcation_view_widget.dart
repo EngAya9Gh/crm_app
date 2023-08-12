@@ -61,18 +61,18 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 value: widget.element.dateCommunication.toString(),
                               )
                             : Container(),
-                        widget.element.typeCommuncation == 'تركيب'
-                            ? cardRow(
-                                title: 'تم التأكد من جودة التركيب من قبل',
-                                value: getnameshort(widget.element.nameUser.toString()),
-                              )
-                            : Container(),
-                        widget.element.typeCommuncation == 'تركيب'
-                            ? cardRow(
-                                title: 'تاريخ التأكد من التركيب للعميل',
-                                value: widget.element.dateCommunication.toString(),
-                              )
-                            : Container(),
+                        // widget.element.typeCommuncation == 'تركيب'
+                        //     ? cardRow(
+                        //         title: 'تم التأكد من جودة التركيب من قبل',
+                        //         value: getnameshort(widget.element.nameUser.toString()),
+                        //       )
+                        //     : Container(),
+                        // widget.element.typeCommuncation == 'تركيب'
+                        //     ? cardRow(
+                        //         title: 'تاريخ التأكد من التركيب للعميل',
+                        //         value: widget.element.dateCommunication.toString(),
+                        //       )
+                        //     : Container(),
                         // element.typeCommuncation=='تركيب'?
                         // cardRow(title:' نتيجة التواصل' ,value:
                         // element.result.toString()=='1'?'راضي':'غير راضي',): Container(),
@@ -167,11 +167,11 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 },
                               )
                             : Container(),
-                        widget.element.typeCommuncation == 'دوري'
-                            ? SizedBox(
-                                height: 20,
-                              )
-                            : Container(),
+                        // widget.element.typeCommuncation == 'دوري'
+                        //     ? SizedBox(
+                        //         height: 20,
+                        //       )
+                        //     : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
                                 title: new Text('لايوجد رقم هاتف-أو الرقم خاطئ'),
