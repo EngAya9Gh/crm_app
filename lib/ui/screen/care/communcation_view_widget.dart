@@ -124,6 +124,12 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 value: widget.element.is_visit.toString() == 'false' ? '' : 'لم تتم الزيارة',
                               )
                             : Container(),
+                        widget.element.typeCommuncation == 'تركيب'
+                            ? cardRow(
+                          title: ' نوع التركيب',
+                          value: widget.element.type_install.toString() == '1' ? 'جودة أول' : 'جودة ثاني',
+                        )
+                            : Container(),
 
                         widget.element.typeCommuncation == 'دوري' || widget.element.typeCommuncation == 'تركيب'
                             ? Row(
