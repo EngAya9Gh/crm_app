@@ -102,7 +102,8 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : ((((num.parse(e.salary!) * 6 * 12)) * 100)/num.parse(e.sales!) ).toStringAsFixed(2)))
+                  : ((num.parse(e.sales!) * 100) / ((num.parse(e.salary!) * 6 * 12)))
+                      .toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
@@ -133,7 +134,8 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : (( ((num.parse(e.salary!) * 6 * 3)) * 100)/ (num.parse(e.sales!))).toStringAsFixed(2)))
+                  : ((num.parse(e.sales!) * 100) / (((num.parse(e.salary!) * 6 * 3))))
+                      .toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
@@ -164,7 +166,8 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : ( ( (num.parse(e.salary!) * 6) * 100)/(num.parse(e.sales!))).toStringAsFixed(2)))
+                  : (((num.parse(e.sales!)) * 100) / (num.parse(e.salary!) * 6))
+                      .toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0.0").compareTo(num.parse(a.percentage ?? "0.0")));
 
