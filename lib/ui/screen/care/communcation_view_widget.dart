@@ -206,7 +206,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                             : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
-                                title: new Text('لا يوجد توصية'),
+                                title: new Text('وصى بالنظام'),
                                 value: isRecommendation, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
@@ -219,7 +219,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                             : Container(),
                         widget.element.typeCommuncation == 'دوري'
                             ? CheckboxListTile(
-                                title: new Text('لم تتم الزيارة'),
+                                title: new Text('يحتاج زيارة ميدانية'),
                                 value: isVisit, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {

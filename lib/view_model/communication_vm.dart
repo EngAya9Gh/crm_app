@@ -2,6 +2,7 @@ import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 
 import '../constants.dart';
 import '../model/privilgemodel.dart';
@@ -45,7 +46,7 @@ class communication_vm extends ChangeNotifier {
   Map<String, List<CommunicationModel>> careClientState = Map();
   bool isLoadingCareClient = false;
 
-  void getCommunicationclient(String fk_client,String idCommunication) async {
+  void getCommunicationclient(String fk_client, String idCommunication) async {
     try {
       listCommunicationClient = [];
       isLoadingCareClient = true;
@@ -57,7 +58,8 @@ class communication_vm extends ChangeNotifier {
       //   });
       // }
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
+      data = await Api()
+          .get(url: url + 'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
       print(data);
 
       if (data.length.toString().isNotEmpty) {
@@ -65,11 +67,34 @@ class communication_vm extends ChangeNotifier {
           listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
         }
       }
-      careClientState['ترحيب'] =
-          listCommunicationClient.where((element) => element.typeCommuncation == "ترحيب").toList();
-      careClientState['تركيب'] =
-          listCommunicationClient.where((element) => element.typeCommuncation == "تركيب").toList();
-      careClientState['دوري'] = listCommunicationClient.where((element) => element.typeCommuncation == "دوري").toList();
+      final listWelcome = listCommunicationClient.where((element) => element.typeCommuncation == "ترحيب").toList();
+      final listInstallation = listCommunicationClient.where((element) => element.typeCommuncation == "تركيب").toList();
+      final listRepeat = listCommunicationClient.where((element) => element.typeCommuncation == "دوري").toList();
+
+      CommunicationModel? communicationSelected =
+          listWelcome.firstWhereOrNull((element) => element.idCommunication == idCommunication);
+
+      if (communicationSelected != null) {
+        listWelcome.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
+        listWelcome.insert(0, communicationSelected);
+      } else {
+        communicationSelected =
+            listInstallation.firstWhereOrNull((element) => element.idCommunication == idCommunication);
+
+        if (communicationSelected != null) {
+          listInstallation.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
+          listInstallation.insert(0, communicationSelected);
+        } else {
+          communicationSelected = listRepeat.firstWhereOrNull((element) => element.idCommunication == idCommunication);
+          if (communicationSelected != null) {
+            listRepeat.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
+            listRepeat.insert(0, communicationSelected);
+          }
+        }
+      }
+      careClientState['ترحيب'] = listWelcome;
+      careClientState['تركيب'] = listInstallation;
+      careClientState['دوري'] = listRepeat;
 
       careClientState.removeWhere((key, value) => value.isEmpty);
 
@@ -554,7 +579,7 @@ class communication_vm extends ChangeNotifier {
         getCommunicationclientrepeat(data.fkClient);
         if (listCommunicationrepeat.isNotEmpty) {
           index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
-          if(index != -1)listCommunicationrepeat.removeAt(index);
+          if (index != -1) listCommunicationrepeat.removeAt(index);
 
           // listCommunicationrepeat[index] = data;
         }
