@@ -131,9 +131,17 @@ class _support_tableState extends State<support_table> {
                           for (int i = 0; i < data.length; i++) print(data[i].id_maincity);
                           print(data);
                           // selecteditemmaincity=data;
+
                           cart.changeitemlist(data);
 
-                          _eventProvider.onChangeFkMainCity(data.map((e) => e.id_maincity).toList());
+                          if (data.any((element) => element.id_maincity == '0')) {
+                            _eventProvider.onChangeFkMainCity(cart.listmaincityfilter
+                                .where((element) => element.id_maincity != "0")
+                                .map((e) => e.id_maincity)
+                                .toList());
+                          } else {
+                            _eventProvider.onChangeFkMainCity(data.map((e) => e.id_maincity).toList());
+                          }
                           // Provider.of<EventProvider>(context, listen: false).getevents('', data, "regoin");
                         },
                         //selectedItem: cart.selecteduser,

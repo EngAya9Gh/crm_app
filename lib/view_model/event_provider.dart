@@ -77,7 +77,7 @@ class EventProvider extends ChangeNotifier {
         list = await DateInstallationService.getDateInstallationMix(
           fkCountry: fkCountry,
           fkUser: selectedFkUser!,
-          mainCityFks: selectedMainCityFks!.where((element) => element != '0').map((e) => int.parse(e)).toList(),
+          mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
         );
       } else if (selectedFkUser != null && selectedMainCityFks == null) {
         /// user
@@ -89,7 +89,7 @@ class EventProvider extends ChangeNotifier {
         /// main city
         list = await DateInstallationService.getDateInstallationMainCity(
           fkCountry: fkCountry,
-          mainCityFks: selectedMainCityFks!.where((element) => element != '0').map((e) => int.parse(e)).toList(),
+          mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
         );
       } else {
         /// all
