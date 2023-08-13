@@ -246,20 +246,20 @@ class client_vm extends ChangeNotifier {
       listClientMarketing = List.from(listClientfilter);
     }
     if (filteractivity != '') {
-      List<ClientModel> listClientfilter_temp = [];
+      List<ClientModel> listclientfilterTemp = [];
 
       if (listClientfilter.isNotEmpty) {
         listClientfilter.forEach((element) {
-          if (element.activity_type_fk == filteractivity) listClientfilter_temp.add(element);
+          if (element.activity_type_fk == filteractivity) listclientfilterTemp.add(element);
         });
         //
       } else {
         listClient.forEach((element) {
-          if (element.activity_type_fk == filteractivity) listClientfilter_temp.add(element);
+          if (element.activity_type_fk == filteractivity) listclientfilterTemp.add(element);
         });
       }
-      listClientfilter = List.from(listClientfilter_temp);
-      listClientMarketing = List.from(listClientfilter_temp);
+      listClientfilter = List.from(listclientfilterTemp);
+      listClientMarketing = List.from(listclientfilterTemp);
     }
     notifyListeners();
   }
@@ -453,11 +453,9 @@ class client_vm extends ChangeNotifier {
 
   PageState<ClientModel?> currentClientModel = PageState();
 
-
   Future<ClientModel> get_byIdClient(String idClient) async {
     ClientModel? inv;
     try {
-
       currentClientModel = currentClientModel.changeToLoading;
       isloading = true;
       notifyListeners();
@@ -469,7 +467,8 @@ class client_vm extends ChangeNotifier {
         listClient.add(inv);
         currentClientModel = currentClientModel.changeToLoaded(inv);
       } else {
-        currentClientModel = currentClientModel.changeToLoaded(listClient.firstWhereOrNull((element) => element.idClients == idClient));
+        currentClientModel =
+            currentClientModel.changeToLoaded(listClient.firstWhereOrNull((element) => element.idClients == idClient));
       }
 
       isloading = false;
@@ -578,28 +577,35 @@ class client_vm extends ChangeNotifier {
     return "done";
   }
 
-  Future<bool> updateclient_vm(Map<String, dynamic?> body, String? id_client) async {
-    ClientModel data = await ClientService().updateClient(body, id_client!);
-    isloading = true;
-    notifyListeners();
-    int index = listClient.indexWhere((element) => element.idClients == id_client);
+  Future<bool> updateclient_vm(Map<String, dynamic?> body, String? idClient,
+      {ValueChanged<ClientModel>? onSuccess}) async {
+    try {
+      ClientModel data = await ClientService().updateClient(body, idClient!);
+      isloading = true;
+      notifyListeners();
+      int index = listClient.indexWhere((element) => element.idClients == idClient);
 
-    listClient[index] = data;
+      if (index != -1) listClient[index] = data;
 
-    index = listClientfilter.indexWhere((element) => element.idClients == id_client);
-    if (index != -1) listClientfilter[index] = data;
+      index = listClientfilter.indexWhere((element) => element.idClients == idClient);
+      if (index != -1) listClientfilter[index] = data;
 
-    index = listClientAccept.indexWhere((element) => element.idClients == id_client);
-    if (index != -1) listClientAccept[index] = data;
-    isloading = false;
-    notifyListeners();
-    return true;
+      index = listClientAccept.indexWhere((element) => element.idClients == idClient);
+      if (index != -1) listClientAccept[index] = data;
+
+      isloading = false;
+      notifyListeners();
+      onSuccess?.call(data);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
-  Future<bool> setfkUserApprove(Map<String, dynamic?> body, String? id_client) async {
+  Future<bool> setfkUserApprove(Map<String, dynamic?> body, String? idClient) async {
     isapproved = true;
     notifyListeners();
-    await ClientService().setfkuserApprovetransfer(body, id_client!);
+    await ClientService().setfkuserApprovetransfer(body, idClient!);
     // int index= listClient.indexWhere((element) =>
     // element.idClients==id_client);
     // if(index!=-1)
@@ -609,7 +615,7 @@ class client_vm extends ChangeNotifier {
     // // if(index !=-1)
     // //   listClientfilter[index]=data;
     //
-    int index = listClientAprroveTransfer.indexWhere((element) => element.idClients == id_client);
+    int index = listClientAprroveTransfer.indexWhere((element) => element.idClients == idClient);
     // if(index !=-1)
     //  {
     //    listClientAccept[index]=data;
@@ -625,12 +631,12 @@ class client_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> setfkUserclient_vm(Map<String, dynamic?> body, String? id_client) async {
+  Future<void> setfkUserclient_vm(Map<String, dynamic?> body, String? idClient) async {
     isloading = true;
     notifyListeners();
-    ClientModel res = await ClientService().setfkuserClient(body, id_client!);
+    ClientModel res = await ClientService().setfkuserClient(body, idClient!);
 
-    int index = listClient.indexWhere((element) => element.idClients == id_client);
+    int index = listClient.indexWhere((element) => element.idClients == idClient);
     if (index != -1) listClient[index] = res;
 
     isloading = false;

@@ -397,9 +397,29 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  addEvent(Event event){
-    final events = List.of(_events);
-    events.add(event);
+  addEvent(Event event) {
+    _events.add(event);
+
+    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+      events,
+      key: (item) => (item as Event).from,
+      value: (item) => events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+    );
+
+    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(mapEvents);
+
+    notifyListeners();
+  }
+
+  checkAndActionEvent(Event event) {
+    if (events.any((element) => element.fkIdClient == event.fkIdClient)) {
+      _events = _events.map((e) => e.fkIdClient == event.fkIdClient ? event : e).toList();
+    } else {
+      _events.add(event);
+    }
 
     final mapEvents = Map<DateTime, List<Event>>.fromIterable(
       events,
