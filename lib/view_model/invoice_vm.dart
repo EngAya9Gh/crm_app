@@ -1469,4 +1469,17 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  List<InvoiceModel> listApproveFinanceFilter = [];
+
+  void onSearch(String query) {
+    final list = List.of(listInvoicesAccept);
+
+    listApproveFinanceFilter = list.where((element) {
+      return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false);
+    }).toList();
+
+    notifyListeners();
+  }
 }

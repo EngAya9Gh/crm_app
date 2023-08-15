@@ -724,4 +724,18 @@ class client_vm extends ChangeNotifier {
     notifyListeners();
     //return clientlistsearch;
   }
+
+  List<ClientModel> listClientAcceptFilter = [];
+
+  void onSearch(String query) {
+    final list = List.of(listClientAccept);
+
+    listClientAcceptFilter = list.where((element) {
+      return (element.nameEnterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.phone?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ?? false);
+    }).toList();
+
+    notifyListeners();
+  }
 }

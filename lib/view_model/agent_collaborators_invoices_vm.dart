@@ -89,14 +89,14 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
       return;
     }
 
-    if(selectedSellerTypeFilter == SellerTypeFilter.employee){
+    if (selectedSellerTypeFilter == SellerTypeFilter.employee) {
       selectedEmployee = null;
       notifyListeners();
       onFilter();
       return;
     }
 
-    if ([SellerTypeFilter.agent,SellerTypeFilter.distributor].contains(selectedSellerTypeFilter)) {
+    if ([SellerTypeFilter.agent, SellerTypeFilter.distributor].contains(selectedSellerTypeFilter)) {
       if (agentDistributorsState.data != null) {
         selectedAgentDistributor = null;
         notifyListeners();
@@ -157,6 +157,15 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     onFilter();
   }
 
+  onSearch(String query) {
+    final list = List<InvoiceModel>.from(invoicesList);
+    invoicesFiltered = list.where((element) {
+      return (element.address_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false);
+    }).toList();
+    notifyListeners();
+  }
+
   onFilter() {
     final list = List<InvoiceModel>.from(invoicesList);
 
@@ -209,8 +218,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
   bool get isSelectedRegionEqualNull => selectedRegion == null;
 
-  bool isSelectedRegionEqualInvoice(InvoiceModel element) =>
-      element.fk_regoin_invoice == selectedRegion;
+  bool isSelectedRegionEqualInvoice(InvoiceModel element) => element.fk_regoin_invoice == selectedRegion;
 
   bool isSelectedSellerTypeFilterEqualInvoice(InvoiceModel element) =>
       element.type_seller == selectedSellerTypeFilter.index.toString();
@@ -221,8 +229,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   bool isSelectedCollaborateEqualInvoice(InvoiceModel element) =>
       selectedCollaborator?.id_participate == element.participate_fk;
 
-  bool isSelectedEmployeeEqualInvoice(InvoiceModel element) =>
-      selectedEmployee?.idUser == element.fkIdUser;
+  bool isSelectedEmployeeEqualInvoice(InvoiceModel element) => selectedEmployee?.idUser == element.fkIdUser;
 
   bool get isSelectedSellerTypeFilterEqualAgentOrDistributor =>
       [SellerTypeFilter.distributor, SellerTypeFilter.agent].contains(selectedSellerTypeFilter);
