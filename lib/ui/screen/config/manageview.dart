@@ -46,7 +46,7 @@ class _managviewState extends State<managview> {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            CupertinoPageRoute<void>(
               builder: (BuildContext context)
               => addmanage(
                 fk_country: null,
@@ -79,7 +79,7 @@ class _managviewState extends State<managview> {
                             child: InkWell(
                               onTap: (){
                                 Navigator.push(context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context)=>addmanage(
                                           fk_country: _listlevel[index].fk_country,
                                           name_mange:_listlevel[index].name_mange,

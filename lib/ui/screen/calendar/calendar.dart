@@ -30,7 +30,7 @@ class Calendar extends StatelessWidget {
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: kMainColor,
       //   onPressed: () {
-      //     Navigator.push(context, MaterialPageRoute(
+      //     Navigator.push(context, CupertinoPageRoute(
       //         builder: (context)=>
       //             EventEditingPage()));
       //     //Get.to(EventEditingPage());

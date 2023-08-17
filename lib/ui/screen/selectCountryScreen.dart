@@ -9,6 +9,7 @@ import 'package:crm_smart/ui/screen/product/productView.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
@@ -124,9 +125,9 @@ class _MyDropDown extends State<select_country>{
                   {
                     // Navigator.pushAndRemoveUntil(
                     //     context,
-                    //     MaterialPageRoute(builder: (context) => addProduct()), (route) => false );
+                    //     CupertinoPageRoute(builder: (context) => addProduct()), (route) => false );
                     if(_selected!=null)
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, CupertinoPageRoute(
                         builder: (context)=>ProductView()));
                     else {
                       ScaffoldMessenger.of(context).showSnackBar(new SnackBar(

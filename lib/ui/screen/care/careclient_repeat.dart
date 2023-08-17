@@ -75,7 +75,7 @@ class _careRepeatState extends State<careRepeat> {
                               kMainColor)),
                       onPressed: () async{
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context)=>
+                            CupertinoPageRoute(builder: (context)=>
                                 ProfileClient(
                                   idClient: widget.idclient.idClients ,
                                 )));
@@ -92,7 +92,7 @@ class _careRepeatState extends State<careRepeat> {
                               kMainColor)),
                       onPressed: () async{
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context)=>
+                            CupertinoPageRoute(builder: (context)=>
                                 careAdd(
                                   com:widget.comobj
                                   // listCommunication.firstWhere  (

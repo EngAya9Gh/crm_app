@@ -40,7 +40,7 @@ class cardAllClient extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>
+                CupertinoPageRoute(builder: (context) =>
                     ProfileClient(
                         idClient:
                         clientModel.idClients.toString())

@@ -18,6 +18,20 @@ class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listinstallnumber = [];
   List<CommunicationModel> listwelcomenumber = [];
 
+  List<CommunicationModel> listCommunicationFilterSearch = [];
+
+  void onSearch(String query) {
+    final list = List.of(listCommunicationInstall);
+
+    listCommunicationFilterSearch = list.where((element) {
+      return element.nameEnterprise.toLowerCase().contains(query.toLowerCase()) ||
+          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ?? false);
+    }).toList();
+
+    notifyListeners();
+  }
+
   void setvaluepriv(privilgelistparam) {
     print('in set privilge client vm');
     privilgelist = privilgelistparam;

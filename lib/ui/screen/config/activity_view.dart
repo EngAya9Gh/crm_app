@@ -51,7 +51,7 @@ class _resoan_viewState extends State<activity_view> {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            CupertinoPageRoute<void>(
               builder: (BuildContext context)
               => addractivity(
                 // type: widget.type,
@@ -83,7 +83,7 @@ class _resoan_viewState extends State<activity_view> {
                             child: InkWell(
                               onTap: (){
                                 Navigator.push(context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context)=>addractivity(
                                            nameActv:_listlevel[index].name_activity_type,
                                            idActivity: _listlevel[index].id_activity_type,

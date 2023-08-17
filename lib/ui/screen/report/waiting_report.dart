@@ -85,7 +85,7 @@ class _waiting_reportState extends State<waiting_report> {
                                         child: InkWell(
                                           onTap: (){//pushReplacement
                                             Navigator.push(context,
-                                                MaterialPageRoute(builder:
+                                                CupertinoPageRoute(builder:
                                                     (context) =>
                                                     ProfileClient(
                                                       idClient: value.

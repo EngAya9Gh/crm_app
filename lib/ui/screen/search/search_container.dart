@@ -47,7 +47,7 @@ class search_widget extends StatelessWidget {
             title: TextField(
               textInputAction: TextInputAction.search,
               onChanged: (pattern) async {
-                // await Navigator.of(context).push(MaterialPageRoute(
+                // await Navigator.of(context).push(CupertinoPageRoute(
                 //     builder: (context) => productSearchView(
                 //         pattern, list)));
 

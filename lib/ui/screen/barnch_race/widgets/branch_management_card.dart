@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
@@ -16,7 +17,7 @@ class BranchManagementCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(
+          CupertinoPageRoute(
             builder: (context) => BranchManagementDetailsPage(branchRaceModel: branchRaceModel),
           ),
         );

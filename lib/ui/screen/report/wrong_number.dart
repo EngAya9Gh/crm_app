@@ -87,7 +87,7 @@ class _wrong_numberState extends State<wrong_number> {
                                             child: InkWell(
                                               onTap: (){//pushReplacement
                                                 Navigator.push(context,
-                                                    MaterialPageRoute(builder:
+                                                    CupertinoPageRoute(builder:
                                                         (context) =>
                                                         ProfileClient(
                                                           idClient: value.

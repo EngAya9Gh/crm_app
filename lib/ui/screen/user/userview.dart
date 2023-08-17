@@ -11,6 +11,7 @@ import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
@@ -67,7 +68,7 @@ class _UserScreenState extends State<UserScreen> {
           widget.ismyprofile!=null?
             IconButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
+                  Navigator.push(context, CupertinoPageRoute(
                       builder: (context)=>
                           edit_profile()));
                 },
@@ -78,7 +79,7 @@ class _UserScreenState extends State<UserScreen> {
                 .checkprivlge('50')==true ?
             IconButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
+                  Navigator.push(context, CupertinoPageRoute(
                       builder: (context)=>
                           EditUser(
                               userModel:useredit//widget.userModel

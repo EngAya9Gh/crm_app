@@ -192,7 +192,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                       onTap: () {
                                         Navigator.push(
                                             context,
-                                            MaterialPageRoute(
+                                            CupertinoPageRoute(
                                                 builder: (context) => ProfileClient(
                                                     tabIndex: 2,
                                                     client: Provider.of<lastcommentclient_vm>(context, listen: false)
@@ -204,7 +204,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                         .idClients)));
                                         // Navigator.push(
                                         //     context,
-                                        //     MaterialPageRoute(
+                                        //     CupertinoPageRoute(
                                         //         builder: (context) =>
                                         //         lastcomment_page(
                                         //           LastcommentClient:

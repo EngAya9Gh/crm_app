@@ -1,5 +1,6 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/constantsList.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +27,7 @@ class BuildCard extends StatelessWidget {
                   item: itemCategory[index],
                   ontap: () =>
                      Navigator.push(context,
-                         MaterialPageRoute(
+                         CupertinoPageRoute(
                              builder: (context)=>
                              listwidget[index]
                      ))

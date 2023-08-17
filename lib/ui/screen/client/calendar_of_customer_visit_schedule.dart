@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -183,7 +184,7 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
                             onTap: () {
                               Navigator.push(
                                   context,
-                                  MaterialPageRoute(
+                                  CupertinoPageRoute(
                                       builder: (context) => ProfileClient(idClient: value[index].fkIdClient)));
                             },
                             title: Text('${value[index].title}',

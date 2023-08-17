@@ -337,7 +337,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                           child: InkWell(
                                                             onTap: () {
                                                               Navigator.of(context).push(
-                                                                MaterialPageRoute(
+                                                                CupertinoPageRoute(
                                                                   builder: (context) => ProfileClient(
                                                                     idClient:
                                                                         Provider.of<client_vm>(context, listen: true)
@@ -355,7 +355,7 @@ class _care_page_viewState extends State<care_page_view> {
                                                               );
                                                               // Navigator.push(
                                                               //     context,
-                                                              //     MaterialPageRoute(
+                                                              //     CupertinoPageRoute(
                                                               //         builder: (context) => careRepeat(
                                                               //             type: type,
                                                               //             comobj: listCommunication[index],

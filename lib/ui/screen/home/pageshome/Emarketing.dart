@@ -37,7 +37,7 @@ class marketingpage extends StatelessWidget {
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         clientmarketing()));
           }, title: 'عملاء التسويق الإلكتروني'):Container(),
@@ -48,7 +48,7 @@ class marketingpage extends StatelessWidget {
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         invoice_marketing()));
               },
@@ -60,7 +60,7 @@ class marketingpage extends StatelessWidget {
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                // Navigator.push(context, MaterialPageRoute(
+                // Navigator.push(context, CupertinoPageRoute(
                 //     builder: (context)=>
                 //         invoice_marketing()
                 // ));
@@ -72,7 +72,7 @@ class marketingpage extends StatelessWidget {
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         getLastCommentClient()
                 ));

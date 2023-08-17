@@ -194,7 +194,7 @@ class ticketdetail extends StatelessWidget {
                                   kMainColor)),
                           onPressed: () {
 
-                            Navigator.push(context,MaterialPageRoute(
+                            Navigator.push(context,CupertinoPageRoute(
                                 builder: (context)=>transferClient(
                                   name_enterprise:  ticketModel.nameEnterprise.toString(),
                                   idclient:  ticketModel.fkClient.toString(),
@@ -214,7 +214,7 @@ class ticketdetail extends StatelessWidget {
                                 kMainColor)),
                         onPressed: () {
 
-                          Navigator.push(context,MaterialPageRoute(
+                          Navigator.push(context,CupertinoPageRoute(
                               builder: (context)=>ProfileClient(
                                 idClient: ticketModel.fkClient.toString(),
                               )
@@ -231,7 +231,7 @@ class ticketdetail extends StatelessWidget {
                                 kMainColor)),
                         onPressed: () {
 
-                          Navigator.push(context,MaterialPageRoute(
+                          Navigator.push(context,CupertinoPageRoute(
                               builder: (context)=>ticket_rate(
                                 ticket_model: ticketModel,
                               )

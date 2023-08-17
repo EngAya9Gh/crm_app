@@ -8,6 +8,7 @@ import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/home/approvepage.dart';
 import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
 import 'package:crm_smart/ui/screen/support/support_add.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'model/clientmodel.dart';
@@ -92,17 +93,17 @@ void route_notifyto(typeNotify,context,
   switch (typeNotify){
     case "ApproveRequest":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ApprovePage()));
       break;
       case "ApproveFRequest":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ApproveFinancePage()));
       break;
     case "Transfer" :
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => TransferPage(
                // idclient:data==null?datanotify: data['idclient'],
               )
@@ -110,7 +111,7 @@ void route_notifyto(typeNotify,context,
       break;
       case "TransferRefuse" :
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 idClient: data==null?datanotify:data['idclient'],
                // idclient:data==null?datanotify: data['idclient'],
@@ -119,7 +120,7 @@ void route_notifyto(typeNotify,context,
       break;
     case "ApproveDone":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 idClient: data==null?datanotify:data['idclient'],
               )
@@ -127,7 +128,7 @@ void route_notifyto(typeNotify,context,
       break;
     case "ApproveRefuse":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 idClient: data==null?datanotify: data['idclient'],
               )
@@ -135,14 +136,14 @@ void route_notifyto(typeNotify,context,
       break;
     case "InvoiceDeleted":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => deletedinvoice(
               )
           ));
       break;
       case "Install":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
                 idClient: data==null?datanotify: data['idclient'],
@@ -151,7 +152,7 @@ void route_notifyto(typeNotify,context,
       break;
       case "AddComment":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
                 idClient: data==null?datanotify: data['idclient'],
@@ -160,7 +161,7 @@ void route_notifyto(typeNotify,context,
       break;
       case "OpenTicket":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 tabIndex: 5,
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
@@ -170,7 +171,7 @@ void route_notifyto(typeNotify,context,
       break;
       case "InvoiceUpdated":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 tabIndex: 1,
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
@@ -180,7 +181,7 @@ void route_notifyto(typeNotify,context,
       break;
       case "InvoiceBack":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
                 idClient: data==null?datanotify: data['idclient'],
@@ -190,7 +191,7 @@ void route_notifyto(typeNotify,context,
 
       case "InvoiceReplay":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 tabIndex: 3,
                 idClient: data==null?datanotify: data['idclient'],
@@ -199,7 +200,7 @@ void route_notifyto(typeNotify,context,
       break;
       case "TransferTicket":
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 tabIndex: 5,
                 idClient: data==null?datanotify: data['idclient'],

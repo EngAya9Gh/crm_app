@@ -228,7 +228,7 @@ class client_dashboard extends StatefulWidget {
         //     backgroundColor: kMainColor,
         // onPressed: (){
         //
-        //   Navigator.push(context, MaterialPageRoute(
+        //   Navigator.push(context, CupertinoPageRoute(
         //       builder: (context)=>addClient()));
         //
         // },

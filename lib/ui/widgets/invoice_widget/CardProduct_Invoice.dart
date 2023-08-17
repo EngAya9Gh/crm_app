@@ -327,7 +327,7 @@ SizedBox(width: 15,),
                 context: context,
                 builder: (context) => dialog);
 
-            //Navigator.push(context, MaterialPageRoute(builder: (context)=>Detail_Client()));
+            //Navigator.push(context, CupertinoPageRoute(builder: (context)=>Detail_Client()));
           },
           child: Container(
             decoration: BoxDecoration(

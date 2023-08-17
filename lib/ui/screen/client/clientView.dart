@@ -203,7 +203,7 @@ class _ClientViewState extends State<ClientView> {
                       onPressed: () async {
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                               builder: (context) => editclient(
                                   itemClient: clientModel,
                                   fkclient: clientModel.idClients.toString(),
@@ -222,7 +222,7 @@ class _ClientViewState extends State<ClientView> {
                           backgroundColor: MaterialStateProperty.all(
                               kMainColor)),
                       onPressed: () {
-                        Navigator.push(context,MaterialPageRoute(
+                        Navigator.push(context,CupertinoPageRoute(
                             builder: (context)=>transferClient(
                               name_enterprise:  clientModel.nameEnterprise.toString(),
                               idclient:   clientModel.idClients.toString(),
@@ -330,7 +330,7 @@ class _ClientViewState extends State<ClientView> {
                          onPressed: ()  async{
 
                            // Navigator.pushAndRemoveUntil(context,
-                           //     MaterialPageRoute(builder: (context)=>Home()),
+                           //     CupertinoPageRoute(builder: (context)=>Home()),
                            //         (route) => true
                            // );
                            String? reason_transfer=null;
@@ -498,7 +498,7 @@ class _ClientViewState extends State<ClientView> {
                           onPressed: ()  async{
 
                             // Navigator.pushAndRemoveUntil(context,
-                            //     MaterialPageRoute(builder: (context)=>Home()),
+                            //     CupertinoPageRoute(builder: (context)=>Home()),
                             //         (route) => true
                             // );
                              await showDialog(
@@ -681,7 +681,7 @@ class _ClientViewState extends State<ClientView> {
                       //     onPressed: ()  async{
                       //
                       //       // Navigator.pushAndRemoveUntil(context,
-                      //       //     MaterialPageRoute(builder: (context)=>Home()),
+                      //       //     CupertinoPageRoute(builder: (context)=>Home()),
                       //       //         (route) => true
                       //       // );
                       //       await showDialog(

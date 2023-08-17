@@ -877,7 +877,7 @@ class _support_addState extends State<support_add> {
                                             );
                                           });
                                     }
-                                    //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
+                                    //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
                                   },
                                   child: Text('تم التركيب للعميل'))
                               : Container()
@@ -959,7 +959,7 @@ class _support_addState extends State<support_add> {
                                                     );
                                                   },
                                                 );
-                                                //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
+                                                //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
                                               },
                                         child: Text('جاهز للتركيب'))
                                     : Container(),
@@ -1045,7 +1045,7 @@ class _support_addState extends State<support_add> {
                                                     );
                                                   },
                                                 );
-                                                //Navigator.push(context, MaterialPageRoute(builder: (context)=> second()));
+                                                //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
                                               },
                                         child: Text('غير جاهز للتركيب'))
                                     : Container(),

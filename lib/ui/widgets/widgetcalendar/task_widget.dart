@@ -4,6 +4,7 @@ import 'package:crm_smart/ui/screen/calendar/event_view_page.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/support/support_add.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -57,28 +58,28 @@ class _TaskWidgetState extends State<TaskWidget> {
           if (details.appointments == null) return;
           final event = details.appointments!.first;
           print(event.idinvoice);
-          Navigator.push(context, MaterialPageRoute(
-              builder: (context)=>
-                  ProfileClient( idClient: event.fkIdClient,)
+          Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => ProfileClient(
+                        idClient: event.fkIdClient,
+                      )
                   // EventViewingPage(
                   //   event: event,)
-          ));
-
+                  ));
         },
       ),
     );
   }
 
-  Widget appointmentBuilder(
-      BuildContext context, CalendarAppointmentDetails details) {
+  Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails details) {
     print('fdfdsf');
-    print( details.bounds.width);
+    print(details.bounds.width);
     final event = details.appointments.first;
     return Container(
-        width:  details.bounds.width,
+        width: details.bounds.width,
         height: details.bounds.height,
-        decoration: BoxDecoration(
-            color: Colors.amberAccent, borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(color: Colors.amberAccent, borderRadius: BorderRadius.circular(12)),
         child: Center(
           child: Text(
             event.title,

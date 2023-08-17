@@ -35,12 +35,12 @@ class CardProduct extends StatelessWidget {
           child: InkWell(
             //splashColor: Colors.blue.withAlpha(30),
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.push(context, CupertinoPageRoute(
                   builder: (context)=>
                       EditProduct(
                         productModel: itemProd,)));
 
-              //Navigator.push(context, MaterialPageRoute(builder: (context)=>Detail_Client()));
+              //Navigator.push(context, CupertinoPageRoute(builder: (context)=>Detail_Client()));
             },
             child: Container(
               decoration: BoxDecoration(
@@ -109,7 +109,7 @@ class CardProduct extends StatelessWidget {
                             //      IconButton(
                             //       icon: Icon(Icons.edit, color: kMainColor,),
                             //       onPressed: () {
-                            //         Navigator.push(context, MaterialPageRoute(
+                            //         Navigator.push(context, CupertinoPageRoute(
                             //             builder: (context)=>
                             //                 EditProduct(
                             //                   productModel: itemProd,)));

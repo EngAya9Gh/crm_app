@@ -59,7 +59,7 @@ class _calender_clientState extends State<calender_client> {
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: kMainColor,
       //   onPressed: () {
-      //     Navigator.push(context, MaterialPageRoute(
+      //     Navigator.push(context, CupertinoPageRoute(
       //         builder: (context)=>
       //             EventEditingPage()));
       //     //Get.to(EventEditingPage());

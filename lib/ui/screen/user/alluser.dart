@@ -43,7 +43,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
       FloatingActionButton(
       backgroundColor: kMainColor,
       onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>addUser()));
+        Navigator.push(context, CupertinoPageRoute(builder: (context)=>addUser()));
 
       },
       tooltip: 'إضافة موظف',

@@ -49,7 +49,7 @@ class _resoan_viewState extends State<resoan_view> {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            CupertinoPageRoute<void>(
               builder: (BuildContext context)
               => addresaon(
                 idReason: null,
@@ -66,7 +66,7 @@ class _resoan_viewState extends State<resoan_view> {
             onPressed: (){
               Navigator.push(
                 context,
-                MaterialPageRoute<void>(
+                CupertinoPageRoute<void>(
                   builder: (BuildContext context)
                   => addresaon(
                     type: widget.type,
@@ -98,7 +98,7 @@ class _resoan_viewState extends State<resoan_view> {
                             child: InkWell(
                               onTap: (){
                                 Navigator.push(context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context)=>addresaon(
                                           nameReason:_listlevel[index].nameReason,
                                           idReason: _listlevel[index].idReason,

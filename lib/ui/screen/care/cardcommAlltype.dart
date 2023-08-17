@@ -58,7 +58,7 @@ class cardcommalltype extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => ProfileClient(
                   idClient: itemcom.fkClient,
                   tabIndex: 4,
@@ -70,7 +70,7 @@ class cardcommalltype extends StatelessWidget {
 
             // Navigator.push(
             //                context,
-            //                MaterialPageRoute(
+            //                CupertinoPageRoute(
             //                    builder: (context) =>
             //                        installAdd(
             //                          com: itemcom,

@@ -60,7 +60,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => widget.type == 'profile'
                     ? ProfileClient(tabIndex: 1, idClient: widget.itemProd.fkIdClient.toString())
                     : InvoiceView(invoice: widget.itemProd),
@@ -238,7 +238,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     //       onPressed: () {
                     //         Navigator.push(
                     //             context,
-                    //             MaterialPageRoute(
+                    //             CupertinoPageRoute(
                     //                 builder: (context) => addinvoice(
                     //                       //edit invoice
                     //                       itemClient: widget.itemClient,

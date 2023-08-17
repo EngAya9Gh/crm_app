@@ -48,7 +48,7 @@ class cardWaiting extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>
+                CupertinoPageRoute(builder: (context) =>
                     ProfileClient(
                         tabIndex:3, //move to tab support in profile client
                         idClient:

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
@@ -39,7 +40,7 @@ class AppPhotoViewer extends StatelessWidget {
 
   show(BuildContext context) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => AppPhotoViewer(urls: urls)),
+      CupertinoPageRoute(builder: (context) => AppPhotoViewer(urls: urls)),
     );
   }
 

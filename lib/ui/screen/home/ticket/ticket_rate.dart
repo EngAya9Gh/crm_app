@@ -149,7 +149,7 @@ class _ticket_rateState extends State<ticket_rate> {
                 //                 kMainColor)),
                 //         onPressed: () async{
                 //           Navigator.push(context,
-                //               MaterialPageRoute(builder: (context)=>
+                //               CupertinoPageRoute(builder: (context)=>
                 //                   ProfileClient(
                 //                     idclient: widget.ticket_model.fkClient ,
                 //                   )));

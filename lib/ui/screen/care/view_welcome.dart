@@ -212,7 +212,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                                                     //       onTap: () {
                                                     //         Navigator.push(
                                                     //             context,
-                                                    //             MaterialPageRoute(
+                                                    //             CupertinoPageRoute(
                                                     //                 builder:
                                                     //                     (
                                                     //                     context) =>
@@ -286,7 +286,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
               //                 onTap: () {
               //                   Navigator.push(
               //                       context,
-              //                       MaterialPageRoute(
+              //                       CupertinoPageRoute(
               //                           builder:
               //                               (
               //                               context) =>

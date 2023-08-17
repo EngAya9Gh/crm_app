@@ -194,7 +194,7 @@ class _installAddState extends State<installAdd> {
                                 kMainColor)),
                         onPressed: () async{
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context)=>
+                              CupertinoPageRoute(builder: (context)=>
                                   ProfileClient(
                                     idClient: widget.com.fkClient ,
                                   )));

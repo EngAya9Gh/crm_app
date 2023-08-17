@@ -50,7 +50,7 @@ class cardAccept extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>
+                CupertinoPageRoute(builder: (context) =>
                     ProfileClient(
                        // tabindex:2, //move to tab support in profile client
                         idClient:

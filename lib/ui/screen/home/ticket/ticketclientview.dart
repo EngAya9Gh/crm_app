@@ -62,7 +62,7 @@ class _ticketclientviewState extends State<ticketclientview> {
                           kMainColor)),
                   onPressed: () async{
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context)=>
+                        CupertinoPageRoute(builder: (context)=>
                             ticketAdd(
                               fk_client: null,
                             )));
@@ -146,7 +146,7 @@ class _ticketclientviewState extends State<ticketclientview> {
                                             child: Center(
                                               child: InkWell(
                                                 onTap: (){
-                                                  Navigator.push(context, MaterialPageRoute(
+                                                  Navigator.push(context, CupertinoPageRoute(
                                                       builder: (context)=>
                                                           ticketdetail(
                                                             ticketModel: value.tickesearchlist[index],) // support_view(type: 'only',)

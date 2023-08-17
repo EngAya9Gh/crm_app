@@ -283,7 +283,7 @@ class _addinvoiceState extends State<addinvoice> {
                           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                           onPressed: () {
                             Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
+                                CupertinoPageRoute(
                                   builder: (context) => add_invoiceProduct(invoice: _invoice
                                       // Provider.of<invoice_vm>(context,listen: false)
                                       //     .listinvoiceClient[widget.indexinvoice],
@@ -291,7 +291,7 @@ class _addinvoiceState extends State<addinvoice> {
                                       ),
                                 ),
                                 (Route<dynamic> route) => true);
-                            // Navigator.push(context, MaterialPageRoute(
+                            // Navigator.push(context, CupertinoPageRoute(
                             //     builder: (context)=>
                             //         add_invoiceProduct(
                             //           invoice:
@@ -891,7 +891,7 @@ class _addinvoiceState extends State<addinvoice> {
                                       onPressed: () async {
                                         Navigator.push(
                                             context,
-                                            MaterialPageRoute(
+                                            CupertinoPageRoute(
                                                 builder: (context) => photoviewcustom(
                                                       urlimagecon: _invoice!.imageRecord.toString(),
                                                     ) // support_view(type: 'only',)
@@ -914,7 +914,7 @@ class _addinvoiceState extends State<addinvoice> {
                                   //         .changebooladdinvoice(false);
                                   //       Navigator.push(
                                   //         context,
-                                  //         MaterialPageRoute(
+                                  //         CupertinoPageRoute(
                                   //           builder: (context) => PDFScreen(
                                   //               path: filee.path),
                                   //         ),

@@ -36,7 +36,7 @@ class usertest_view extends StatefulWidget {
          backgroundColor: kMainColor,
          onPressed: () {
            Navigator.push(context,
-               MaterialPageRoute(
+               CupertinoPageRoute(
                builder: (context)=> addusertest(idregoin: null, nameusertest: '',)));
          },
          tooltip: 'إضافة ',
@@ -66,7 +66,7 @@ class usertest_view extends StatefulWidget {
                              child: InkWell(
                                onTap: (){
                                  Navigator.push(context,
-                                     MaterialPageRoute(
+                                     CupertinoPageRoute(
                                          builder: (context)=>
                                              testuser_show(
                                                userTestModel:list_ticket[index],

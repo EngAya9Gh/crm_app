@@ -113,7 +113,7 @@ class _tabclientsState extends State<tabclients> {
             ? FloatingActionButton(
                 backgroundColor: kMainColor,
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => addClient()));
+                  Navigator.push(context, CupertinoPageRoute(builder: (context) => addClient()));
                 },
                 tooltip: 'إضافة عميل',
                 child: Icon(Icons.add),

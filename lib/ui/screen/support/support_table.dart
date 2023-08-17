@@ -65,7 +65,7 @@ class _support_tableState extends State<support_table> {
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: kMainColor,
       //   onPressed: () {
-      //     Navigator.push(context, MaterialPageRoute(
+      //     Navigator.push(context, CupertinoPageRoute(
       //         builder: (context)=>
       //             EventEditingPage()));
       //     //Get.to(EventEditingPage());

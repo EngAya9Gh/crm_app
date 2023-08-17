@@ -130,7 +130,7 @@ class _loginState extends State<login> {
                           val.changeboolValue();
                           Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                                   builder: (context) => Home()),
                                  (rouets)=>false);
 

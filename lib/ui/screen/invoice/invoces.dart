@@ -5,6 +5,7 @@ import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +36,7 @@ class _InvoicesState extends State<invoices> {
               text: 'إنشاء فاتورة جديدة',
               onTap: () async {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => addinvoice(itemClient: widget.itemClient)));
+                    context, CupertinoPageRoute(builder: (context) => addinvoice(itemClient: widget.itemClient)));
               },
             ),
             Expanded(
