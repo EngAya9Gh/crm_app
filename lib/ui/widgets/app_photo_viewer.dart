@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 
-enum ImageSource {
+enum ImageSourceViewer {
   network,
   asset,
 }
@@ -13,7 +13,7 @@ class AppPhotoViewer extends StatelessWidget {
   const AppPhotoViewer({
     Key? key,
     required this.urls,
-    this.imageSource = ImageSource.network,
+    this.imageSource = ImageSourceViewer.network,
     this.loadingBuilder,
     this.backgroundDecoration,
     this.wantKeepAlive = false,
@@ -44,7 +44,7 @@ class AppPhotoViewer extends StatelessWidget {
     );
   }
 
-  final ImageSource imageSource;
+  final ImageSourceViewer imageSource;
 
   final List<String> urls;
 
@@ -141,7 +141,7 @@ class AppPhotoViewer extends StatelessWidget {
           PageView.builder(
             itemCount: urls.length,
             itemBuilder: (context, index) => PhotoView(
-              imageProvider: imageSource == ImageSource.network
+              imageProvider: imageSource == ImageSourceViewer.network
                   ? CachedNetworkImageProvider(urls[index]) as ImageProvider
                   : AssetImage(urls[index]),
               loadingBuilder: loadingBuilder,

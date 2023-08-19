@@ -26,6 +26,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
@@ -37,6 +38,9 @@ import 'dart:ui' as myui;
 
 import '../../../constants.dart';
 import '../../../labeltext.dart';
+import '../../widgets/app_photo_viewer.dart';
+import '../../widgets/fancy_image_shimmer_viewer.dart';
+import '../../widgets/pick_image_bottom_sheet.dart';
 import '../showpdf.dart';
 import 'add_invoice_product.dart';
 import 'dart:io';
@@ -105,9 +109,11 @@ class _addinvoiceState extends State<addinvoice> {
   bool _userAborted = false;
   bool _multiPick = false;
   FileType _pickingType = FileType.any;
-  late File? _myfile = null;
-  late File? _myfilelogo = null;
+  ValueNotifier<File?> companyLogoNotifier = ValueNotifier(null);
+  ValueNotifier<File?> recordCommercialImageNotifier = ValueNotifier(null);
   InvoiceModel? _invoice = null;
+  ValueNotifier<bool> isDeleteCompanyLogoNetworkImage = ValueNotifier(false);
+  ValueNotifier<bool> isDeleteRecordCommercialImageNetworkImage = ValueNotifier(false);
 
   ValueNotifier<bool> isNumberOfBranchesBiggerThanOne = ValueNotifier(false);
 
@@ -139,7 +145,6 @@ class _addinvoiceState extends State<addinvoice> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
       Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
-
 
       invoiceViewmodel.listproductinvoic = [];
       invoiceViewmodel.set_total('0'.toString());
@@ -773,164 +778,427 @@ class _addinvoiceState extends State<addinvoice> {
 
                       //CustomButton(text: 'd',width: 50,onTap: (){},),
                       RowEdit(name: 'شعار المؤسسة', des: ''),
-                      TextFormField(
-                        controller: logoController,
-                        obscureText: false,
-                        cursorColor: Colors.black,
-                        onTap: () async {
-                          ImagePicker imagePicker = ImagePicker();
-                          final pickedImage = await imagePicker.pickImage(
-                            source: ImageSource.gallery,
-                            imageQuality: 100,
-                          );
-                          File? pickedFile = File(pickedImage!.path);
-                          setState(() {
-                            print(pickedFile.path);
-                            _myfilelogo = pickedFile;
-                            logoController.text = pickedFile.path;
-                          });
-
-                          // _invoice!.path=pickedFile.path;
-                        },
-                        readOnly: true,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(2),
-                          prefixIcon: Icon(
-                            Icons.add_photo_alternate,
-                            color: kMainColor,
-                          ),
-                          hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                          hintText: '',
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(color: Colors.white)),
-                        ),
-                      ),
-                      _invoice!.imagelogo != null && widget.invoice!.imagelogo.toString().isNotEmpty
-                          ? Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Container(
-                                height: 40,
-                                width: 50,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.network(_invoice!.imagelogo.toString()),
-                                    // Positioned(
-                                    //     bottom: 0,
-                                    //     child: Text(
-                                    //       'smart life',
-                                    //       style: TextStyle(fontSize: 15,color: Colors.black,fontFamily: 'Pacifico'),)
-                                    // )
-                                  ],
-                                ),
-                              ),
-                            )
-                          : Container(),
-                      RowEdit(name: label_image, des: ''),
-                      //show chose image
-                      EditTextFormField(
-                        read: true,
-                        icon: Icons.camera,
-                        hintText: label_image,
-                        ontap: () async {
-                          ImagePicker imagePicker = ImagePicker();
-                          final pickedImage = await imagePicker.pickImage(
-                            source: ImageSource.gallery,
-                            imageQuality: 100,
-                          );
-                          File? pickedFile = File(pickedImage!.path);
-                          print(pickedFile.path);
-                          _myfile = pickedFile;
-                          _invoice!.path = pickedFile.path;
-                          imageController.text = _myfile!.path;
-                          //Navigator.of(context).pop();
-                          //  FilePickerResult? result
-                          //  = await FilePicker.platform.pickFiles(
-                          //   // allowedExtensions: ['pdf'],
-                          //  );
-                          // //
-                          //  if (result != null) {
-                          //   File? file = File(result.files.single.path.toString());
-                          //  _myfile=file;
-                          //   imageController.text=file.path;
-                          //   _invoice!.path=file.path;
-                          //   //   _pickFiles();
-                          // //   _saveFile();
-                          // } else {
-                          //   // User canceled the picker
-                          // }
-                          //  setState(() {
-                          //
-                          //  });
-                        },
-                        obscureText: false,
-                        controller: imageController,
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      _invoice!.imageRecord.toString().isNotEmpty
-                          ? Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                      iconSize: 50,
-                                      onPressed: () async {
-                                        Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                                builder: (context) => photoviewcustom(
-                                                      urlimagecon: _invoice!.imageRecord.toString(),
-                                                    ) // support_view(type: 'only',)
-                                                ));
+                      SizedBox(height: 20),
+                      ValueListenableBuilder<File?>(
+                          valueListenable: companyLogoNotifier,
+                          builder: (context, companyLogo, _) {
+                            return ValueListenableBuilder<bool>(
+                                valueListenable: isDeleteCompanyLogoNetworkImage,
+                                builder: (context, isDeleteCompanyLogo, _) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      if (companyLogo != null ||
+                                          ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogo)) ...{
+                                        Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () => pickImage((context, file) => onPickCompanyLogo(file)),
+                                              borderRadius: BorderRadius.circular(90),
+                                              child: Container(
+                                                height: 40,
+                                                width: 40,
+                                                margin: EdgeInsets.only(top: 10, right: 15),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.shade200,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Icon(Icons.attachment_rounded,
+                                                    color: Colors.grey.shade700, size: 20),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () => onDeleteCompanyLogo(),
+                                              borderRadius: BorderRadius.circular(90),
+                                              child: Container(
+                                                height: 40,
+                                                width: 40,
+                                                margin: EdgeInsets.only(top: 10, right: 15),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey.shade200,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: Icon(
+                                                  Icons.delete_rounded,
+                                                  color: Colors.red,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(width: 20),
                                       },
-                                      icon: Icon(
-                                        Icons.image,
-                                        color: kMainColor,
-                                      ))
-                                  // Text('فتح الملف'),
-                                  // IconButton(
-                                  //   iconSize: 50,
-                                  //      onPressed: ()async {
-                                  //   //await FilePicker.platform.
-                                  //   if( _invoice!.imageRecord.toString().isNotEmpty){
-                                  //     Provider.of<LoadProvider>(context, listen: false)
-                                  //         .changebooladdinvoice(true);
-                                  //   File? filee=await  createFileOfPdfUrl(_invoice!.imageRecord.toString());
-                                  //     Provider.of<LoadProvider>(context, listen: false)
-                                  //         .changebooladdinvoice(false);
-                                  //       Navigator.push(
-                                  //         context,
-                                  //         CupertinoPageRoute(
-                                  //           builder: (context) => PDFScreen(
-                                  //               path: filee.path),
-                                  //         ),
-                                  //       );
-                                  //     //   String url =_invoice!.imageRecord.toString();
-                                  //     //   if (await canLaunch(url)) {
-                                  //     //     await launch(url);
-                                  //     //   } else {
-                                  //     //     throw 'Could not launch $url';
-                                  //        }
-                                  //
-                                  // }, icon:Icon( Icons.image)),
-                                ],
-                              ),
-                            )
-                          : Container(),
+                                      Container(
+                                        height: 150,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade200,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: companyLogo != null
+                                            ? ClipOval(
+                                                child:
+                                                    Image.file(companyLogo, fit: BoxFit.cover, height: 150, width: 150))
+                                            : ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogo)
+                                                ? InkWell(
+                                                    onTap: () =>
+                                                        AppPhotoViewer(urls: [_invoice!.imagelogo!]).show(context),
+                                                    child: ClipOval(
+                                                      child: FancyImageShimmerViewer(
+                                                        imageUrl: _invoice!.imagelogo!,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : InkWell(
+                                                    borderRadius: BorderRadius.circular(15),
+                                                    onTap: () => pickImage((context, file) => onPickCompanyLogo(file)),
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Icon(Icons.attachment_rounded,
+                                                            color: Colors.grey.shade700, size: 35),
+                                                        SizedBox(height: 0),
+                                                        Text(
+                                                          'Attach logo',
+                                                          style: context.textTheme.titleMedium?.copyWith(
+                                                              fontFamily: kfontfamily2,
+                                                              fontWeight: FontWeight.w700,
+                                                              color: Colors.grey.shade600),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                      ),
+                                    ],
+                                  );
+                                });
+                          }),
+                      SizedBox(height: 20),
+
+                      // TextFormField(
+                      //   controller: logoController,
+                      //   obscureText: false,
+                      //   cursorColor: Colors.black,
+                      //   onTap: () async {
+                      //     ImagePicker imagePicker = ImagePicker();
+                      //     final pickedImage = await imagePicker.pickImage(
+                      //       source: ImageSource.gallery,
+                      //       imageQuality: 100,
+                      //     );
+                      //     File? pickedFile = File(pickedImage!.path);
+                      //     setState(() {
+                      //       print(pickedFile.path);
+                      //       _myfilelogo = pickedFile;
+                      //       logoController.text = pickedFile.path;
+                      //     });
+                      //
+                      //     // _invoice!.path=pickedFile.path;
+                      //   },
+                      //   readOnly: true,
+                      //   decoration: InputDecoration(
+                      //     contentPadding: EdgeInsets.all(2),
+                      //     prefixIcon: Icon(
+                      //       Icons.add_photo_alternate,
+                      //       color: kMainColor,
+                      //     ),
+                      //     hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                      //     hintText: '',
+                      //     filled: true,
+                      //     fillColor: Colors.grey.shade200,
+                      //     enabledBorder: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         borderSide: const BorderSide(color: Colors.white)),
+                      //     focusedBorder: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         borderSide: const BorderSide(color: Colors.white)),
+                      //     errorBorder: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         borderSide: const BorderSide(color: Colors.white)),
+                      //     focusedErrorBorder: OutlineInputBorder(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //         borderSide: const BorderSide(color: Colors.white)),
+                      //   ),
+                      // ),
+                      // _invoice!.imagelogo != null && widget.invoice!.imagelogo.toString().isNotEmpty
+                      //     ? Padding(
+                      //         padding: const EdgeInsets.all(10),
+                      //         child: Container(
+                      //           height: 40,
+                      //           width: 50,
+                      //           child: Stack(
+                      //             alignment: Alignment.center,
+                      //             children: [
+                      //               Image.network(_invoice!.imagelogo.toString()),
+                      //               // Positioned(
+                      //               //     bottom: 0,
+                      //               //     child: Text(
+                      //               //       'smart life',
+                      //               //       style: TextStyle(fontSize: 15,color: Colors.black,fontFamily: 'Pacifico'),)
+                      //               // )
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       )
+                      //     : Container(),
+                      RowEdit(name: label_image, des: ''),
+                      SizedBox(width: 20),
+                      //show chose image
+                      // EditTextFormField(
+                      //   read: true,
+                      //   icon: Icons.camera,
+                      //   hintText: label_image,
+                      //   ontap: () async {
+                      //     ImagePicker imagePicker = ImagePicker();
+                      //     final pickedImage = await imagePicker.pickImage(
+                      //       source: ImageSource.gallery,
+                      //       imageQuality: 100,
+                      //     );
+                      //     File? pickedFile = File(pickedImage!.path);
+                      //     print(pickedFile.path);
+                      //     // _myfile = pickedFile;
+                      //
+                      //     _invoice!.path = pickedFile.path;
+                      //
+                      //     // imageController.text = _myfile!.path;
+                      //
+                      //     //Navigator.of(context).pop();
+                      //     //  FilePickerResult? result
+                      //     //  = await FilePicker.platform.pickFiles(
+                      //     //   // allowedExtensions: ['pdf'],
+                      //     //  );
+                      //     // //
+                      //     //  if (result != null) {
+                      //     //   File? file = File(result.files.single.path.toString());
+                      //     //  _myfile=file;
+                      //     //   imageController.text=file.path;
+                      //     //   _invoice!.path=file.path;
+                      //     //   //   _pickFiles();
+                      //     // //   _saveFile();
+                      //     // } else {
+                      //     //   // User canceled the picker
+                      //     // }
+                      //     //  setState(() {
+                      //     //
+                      //     //  });
+                      //   },
+                      //   obscureText: false,
+                      //   controller: imageController,
+                      // ),
+
+                      ValueListenableBuilder<File?>(
+                          valueListenable: recordCommercialImageNotifier,
+                          builder: (context, recordCommercialImage, _) {
+                            return ValueListenableBuilder<bool>(
+                                valueListenable: isDeleteRecordCommercialImageNetworkImage,
+                                builder: (context, isDeleteRecordCommercial, _) {
+                                  return Container(
+                                    height: 200,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade200,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: recordCommercialImage != null
+                                        ? Stack(
+                                            children: [
+                                              Positioned.fill(
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(15),
+                                                  child: Image.file(recordCommercialImage, fit: BoxFit.cover),
+                                                ),
+                                              ),
+                                              Positioned.fill(
+                                                child: Align(
+                                                  alignment: Alignment.topRight,
+                                                  child: Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () => pickImage(
+                                                            (context, file) => onPickCommercialRecordImage(file)),
+                                                        borderRadius: BorderRadius.circular(90),
+                                                        child: Container(
+                                                          height: 40,
+                                                          width: 40,
+                                                          margin: EdgeInsets.only(top: 10, right: 15),
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.grey.shade50,
+                                                            shape: BoxShape.circle,
+                                                          ),
+                                                          alignment: Alignment.center,
+                                                          child: Icon(Icons.attachment_rounded,
+                                                              color: Colors.grey.shade700, size: 20),
+                                                        ),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () => onDeleteCommercialRecordImage(),
+                                                        borderRadius: BorderRadius.circular(90),
+                                                        child: Container(
+                                                          height: 40,
+                                                          width: 40,
+                                                          margin: EdgeInsets.only(top: 10, left: 15),
+                                                          decoration: BoxDecoration(
+                                                            color: Colors.grey.shade50,
+                                                            shape: BoxShape.circle,
+                                                          ),
+                                                          alignment: Alignment.center,
+                                                          child: Icon(
+                                                            Icons.delete_rounded,
+                                                            color: Colors.red,
+                                                            size: 20,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : ((_invoice!.imageRecord?.isNotEmpty ?? false) && !isDeleteRecordCommercial)
+                                            ? InkWell(
+                                                onTap: () =>
+                                                    AppPhotoViewer(urls: [_invoice!.imageRecord!]).show(context),
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned.fill(
+                                                      child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(15),
+                                                        child: FancyImageShimmerViewer(
+                                                          imageUrl: _invoice!.imageRecord!,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Positioned.fill(
+                                                      child: Align(
+                                                        alignment: Alignment.topRight,
+                                                        child: Row(
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () => pickImage(
+                                                                  (context, file) => onPickCommercialRecordImage(file)),
+                                                              borderRadius: BorderRadius.circular(90),
+                                                              child: Container(
+                                                                height: 40,
+                                                                width: 40,
+                                                                margin: EdgeInsets.only(top: 10, right: 15),
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.grey.shade50,
+                                                                  shape: BoxShape.circle,
+                                                                ),
+                                                                alignment: Alignment.center,
+                                                                child: Icon(Icons.attachment_rounded,
+                                                                    color: Colors.grey.shade700, size: 20),
+                                                              ),
+                                                            ),
+                                                            InkWell(
+                                                              onTap: () => onDeleteCommercialRecordImage(),
+                                                              borderRadius: BorderRadius.circular(90),
+                                                              child: Container(
+                                                                height: 40,
+                                                                width: 40,
+                                                                margin: EdgeInsets.only(top: 10, right: 15),
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.grey.shade50,
+                                                                  shape: BoxShape.circle,
+                                                                ),
+                                                                alignment: Alignment.center,
+                                                                child: Icon(
+                                                                  Icons.delete_rounded,
+                                                                  color: Colors.red,
+                                                                  size: 20,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            : InkWell(
+                                                borderRadius: BorderRadius.circular(15),
+                                                onTap: () =>
+                                                    pickImage((context, file) => onPickCommercialRecordImage(file)),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(Icons.attachment_rounded,
+                                                        color: Colors.grey.shade700, size: 35),
+                                                    SizedBox(height: 0),
+                                                    Text(
+                                                      'Attach image',
+                                                      style: context.textTheme.titleMedium?.copyWith(
+                                                          fontFamily: kfontfamily2,
+                                                          fontWeight: FontWeight.w700,
+                                                          color: Colors.grey.shade600),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                  );
+                                });
+                          }),
+
+                      // SizedBox(height: 20),
+                      // _invoice!.imageRecord.toString().isNotEmpty
+                      //     ? Center(
+                      //         child: Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             IconButton(
+                      //                 iconSize: 50,
+                      //                 onPressed: () async {
+                      //                   Navigator.push(
+                      //                       context,
+                      //                       CupertinoPageRoute(
+                      //                           builder: (context) => photoviewcustom(
+                      //                                 urlimagecon: _invoice!.imageRecord.toString(),
+                      //                               ) // support_view(type: 'only',)
+                      //                           ));
+                      //                 },
+                      //                 icon: Icon(
+                      //                   Icons.image,
+                      //                   color: kMainColor,
+                      //                 ))
+                      //             // Text('فتح الملف'),
+                      //             // IconButton(
+                      //             //   iconSize: 50,
+                      //             //      onPressed: ()async {
+                      //             //   //await FilePicker.platform.
+                      //             //   if( _invoice!.imageRecord.toString().isNotEmpty){
+                      //             //     Provider.of<LoadProvider>(context, listen: false)
+                      //             //         .changebooladdinvoice(true);
+                      //             //   File? filee=await  createFileOfPdfUrl(_invoice!.imageRecord.toString());
+                      //             //     Provider.of<LoadProvider>(context, listen: false)
+                      //             //         .changebooladdinvoice(false);
+                      //             //       Navigator.push(
+                      //             //         context,
+                      //             //         CupertinoPageRoute(
+                      //             //           builder: (context) => PDFScreen(
+                      //             //               path: filee.path),
+                      //             //         ),
+                      //             //       );
+                      //             //     //   String url =_invoice!.imageRecord.toString();
+                      //             //     //   if (await canLaunch(url)) {
+                      //             //     //     await launch(url);
+                      //             //     //   } else {
+                      //             //     //     throw 'Could not launch $url';
+                      //             //        }
+                      //             //
+                      //             // }, icon:Icon( Icons.image)),
+                      //           ],
+                      //         ),
+                      //       )
+                      //     : Container(),
+
                       Divider(),
                       Text(
                         "تفاصيل إضافية",
@@ -1114,92 +1382,95 @@ class _addinvoiceState extends State<addinvoice> {
 
                                     if (_invoice?.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
-                                      invoiceViewmodel.update_invoiceclient_vm({
-                                        "name_enterprise": widget.itemClient.nameEnterprise,
-                                        "name_client": widget.itemClient.nameClient.toString(),
-                                        "nameUser": widget.itemClient.nameUser.toString(),
-                                        "renew_year": renewController.text.toString(),
-                                        "renew2year": renew2Controller.text.toString(),
-                                        "type_pay": typepayController.toString(),
-                                        // "date_create": DateTime.now().toString(),
-                                        "type_installation": typeinstallController.toString(),
-                                        "ready_install": _invoice!.ready_install,
-                                        // "user_not_ready_install": Provider.of<user_vm_provider>(context, listen: false)
-                                        //     .currentUser
-                                        //     .idUser
-                                        //     .toString(),
-                                        "currency_name": currencyController.toString(),
+                                      invoiceViewmodel.update_invoiceclient_vm(
+                                        {
+                                          "name_enterprise": widget.itemClient.nameEnterprise,
+                                          "name_client": widget.itemClient.nameClient.toString(),
+                                          "nameUser": widget.itemClient.nameUser.toString(),
+                                          "renew_year": renewController.text.toString(),
+                                          "renew2year": renew2Controller.text.toString(),
+                                          "type_pay": typepayController.toString(),
+                                          // "date_create": DateTime.now().toString(),
+                                          "type_installation": typeinstallController.toString(),
+                                          "ready_install": _invoice!.ready_install,
+                                          // "user_not_ready_install": Provider.of<user_vm_provider>(context, listen: false)
+                                          //     .currentUser
+                                          //     .idUser
+                                          //     .toString(),
+                                          "currency_name": currencyController.toString(),
 
-                                        /////////////////////////////////////////////////////////////////////
-                                        "amount_paid": amount_paidController.text.toString(),
-                                        'fk_regoin': widget.invoice!.fk_regoin.toString(),
-                                        'fk_regoin_invoice': widget.invoice!.fk_regoin.toString(),
-                                        'fkcountry': widget.invoice!.fk_country.toString(),
-                                        "fk_idClient": widget.itemClient.idClients.toString(),
-                                        "fk_idUser": widget.itemClient.fkUser.toString(),
-                                        "image_record": imageController.text.toString(),
-                                        "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
-                                            .currentUser
-                                            .idUser
-                                            .toString(),
-                                        "lastnameuser": Provider.of<user_vm_provider>(context, listen: false)
-                                            .currentUser
-                                            .nameUser
-                                            .toString(),
-                                        "total": totalController,
-                                        "notes": noteController.text.toString(),
-                                        "id_invoice": invoiceID,
-                                        // 'imagelogo':'',
-                                        'numbarnch': numbranchController.text.toString(),
-                                        'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
-                                        'nummostda': nummostawdaController.text.toString(),
-                                        'numusers': numuserController.text.toString(),
-                                        'numTax': numTaxController.text.toString(),
-                                        'address_invoice': addressController.text.toString(),
-                                        'clientusername': userclientController.text.toString(),
-                                        'date_lastuserupdate': DateTime.now().toString(),
+                                          /////////////////////////////////////////////////////////////////////
+                                          "amount_paid": amount_paidController.text.toString(),
+                                          'fk_regoin': widget.invoice!.fk_regoin.toString(),
+                                          'fk_regoin_invoice': widget.invoice!.fk_regoin.toString(),
+                                          'fkcountry': widget.invoice!.fk_country.toString(),
+                                          "fk_idClient": widget.itemClient.idClients.toString(),
+                                          "fk_idUser": widget.itemClient.fkUser.toString(),
+                                          "image_record": recordCommercialImageNotifier.value?.path.toString() ?? '',
+                                          "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
+                                              .currentUser
+                                              .idUser
+                                              .toString(),
+                                          "lastnameuser": Provider.of<user_vm_provider>(context, listen: false)
+                                              .currentUser
+                                              .nameUser
+                                              .toString(),
+                                          "total": totalController,
+                                          "notes": noteController.text.toString(),
+                                          "id_invoice": invoiceID,
+                                          // 'imagelogo':'',
+                                          'numbarnch': numbranchController.text.toString(),
+                                          'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
+                                          'nummostda': nummostawdaController.text.toString(),
+                                          'numusers': numuserController.text.toString(),
+                                          'numTax': numTaxController.text.toString(),
+                                          'address_invoice': addressController.text.toString(),
+                                          'clientusername': userclientController.text.toString(),
+                                          'date_lastuserupdate': DateTime.now().toString(),
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
-                                            invoiceViewmodel.selectedCollaborator?.id_participate != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
-                                            invoiceViewmodel.selectedAgent != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
-                                            invoiceViewmodel.selectedDistributor != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else
-                                          'type_seller': "3",
-                                        // widget.invoice?.type_seller != "3" ? null.toString() : '3',
-                                        // type seller is employee,
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
+                                              invoiceViewmodel.selectedCollaborator?.id_participate != null)
+                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                          else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
+                                              invoiceViewmodel.selectedAgent != null)
+                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                          else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
+                                              invoiceViewmodel.selectedDistributor != null)
+                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                          else
+                                            'type_seller': "3",
+                                          // widget.invoice?.type_seller != "3" ? null.toString() : '3',
+                                          // type seller is employee,
 
-                                        if (sellerCommissionRate.text.isNotEmpty &&
-                                            invoiceViewmodel.selectedSellerType != SellerType.employee)
-                                          'rate_participate': sellerCommissionRate.text,
+                                          if (sellerCommissionRate.text.isNotEmpty &&
+                                              invoiceViewmodel.selectedSellerType != SellerType.employee)
+                                            'rate_participate': sellerCommissionRate.text,
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-                                          'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.agent)
+                                            'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
+                                          else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
+                                            'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                          'participate_fk':
-                                              invoiceViewmodel.selectedCollaborator?.id_participate.toString()
-                                        else
-                                          'participate_fk': null.toString(),
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+                                            'participate_fk':
+                                                invoiceViewmodel.selectedCollaborator?.id_participate.toString()
+                                          else
+                                            'participate_fk': null.toString(),
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||
-                                            invoiceViewmodel.selectedSellerType == SellerType.employee)
-                                          'fk_agent': null.toString()
+                                          if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||
+                                              invoiceViewmodel.selectedSellerType == SellerType.employee)
+                                            'fk_agent': null.toString()
 
-                                        // 'type_seller':
-                                        // 'rate_participate':
+                                          // 'type_seller':
+                                          // 'rate_participate':
 
-                                        // 'fk_agent':
-                                        // 'participate_fk':
-                                      }, invoiceID, _invoice!.path.toString().isNotEmpty ? _myfile : null,
-                                          _myfilelogo).then((value) => value !=
-                                              false
+                                          // 'fk_agent':
+                                          // 'participate_fk':
+                                        },
+                                        invoiceID,
+                                        recordCommercialImageNotifier.value,
+                                        companyLogoNotifier.value,
+                                      ).then((value) => value != false
                                           ? clear(context, invoiceID.toString(), _products)
                                           : error(context));
                                     } else {
@@ -1221,7 +1492,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         "currency_name": currencyController.toString(),
 
                                         "amount_paid": amount_paidController.text.toString(),
-                                        "image_record": imageController.text.toString(),
+                                        "image_record": recordCommercialImageNotifier.value?.path.toString() ?? '',
                                         "fk_idClient": widget.itemClient.idClients.toString(),
                                         "fk_idUser": widget.itemClient.fkUser.toString(),
                                         //the same user that create a client not current user
@@ -1281,7 +1552,10 @@ class _addinvoiceState extends State<addinvoice> {
                                       log(body.toString());
                                       invoiceViewmodel
                                           .add_invoiceclient_vm(
-                                              body, _invoice!.path!.isNotEmpty ? _myfile : null, _myfilelogo)
+                                            body,
+                                            recordCommercialImageNotifier.value,
+                                            companyLogoNotifier.value,
+                                          )
                                           .then((value) =>
                                               value != "false" ? clear(context, value, _products) : error(context));
                                     }
@@ -1358,15 +1632,12 @@ class _addinvoiceState extends State<addinvoice> {
         print('before else');
         Map<String, dynamic?> body = _products[i].toJson();
         print('after else');
-        bool res = await invoiceViewmodel
-            .update_invoiceProduct_vm(body, _products[i].idInvoiceProduct.toString());
+        bool res = await invoiceViewmodel.update_invoiceProduct_vm(body, _products[i].idInvoiceProduct.toString());
       }
     }
 
     //for loop
-    int index1 = invoiceViewmodel
-        .listinvoices
-        .indexWhere((element) => element.idInvoice == value);
+    int index1 = invoiceViewmodel.listinvoices.indexWhere((element) => element.idInvoice == value);
 
     // _invoice=Provider.of<invoice_vm>(context,listen: false)
     //     .listinvoices[index1];
@@ -1376,14 +1647,14 @@ class _addinvoiceState extends State<addinvoice> {
     //        .of<invoice_vm>(context, listen: false)
     //        .listproductinvoic;
     // //
-    if(index1 != -1) {
+    if (index1 != -1) {
       invoiceViewmodel.listinvoices[index1].products = _invoice!.products;
     }
 
-    if(invoiceViewmodel.currentInvoice != null){
+    if (invoiceViewmodel.currentInvoice != null) {
       final invoiceTemp = invoiceViewmodel.currentInvoice!;
       invoiceTemp.products = _invoice!.products;
-      invoiceViewmodel.setCurrentInvoice(invoiceTemp,needRefresh: true);
+      invoiceViewmodel.setCurrentInvoice(invoiceTemp, needRefresh: true);
     }
     invoiceViewmodel.updatelistproducetInvoice();
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
@@ -1597,5 +1868,38 @@ class _addinvoiceState extends State<addinvoice> {
         ),
       ),
     );
+  }
+
+  pickImage(PickFileCallback onPickFile) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+      builder: (context) => PickImageBottomSheet(onPickFile: onPickFile),
+    );
+  }
+
+  void onPickCommercialRecordImage(File file) {
+    recordCommercialImageNotifier.value = file;
+  }
+
+  void onDeleteCommercialRecordImage() {
+    if ((_invoice!.imageRecord?.isNotEmpty ?? false) && !isDeleteRecordCommercialImageNetworkImage.value) {
+      isDeleteRecordCommercialImageNetworkImage.value = true;
+      return;
+    }
+    recordCommercialImageNotifier.value = null;
+  }
+
+  void onPickCompanyLogo(File file) {
+    companyLogoNotifier.value = file;
+  }
+
+  void onDeleteCompanyLogo() {
+    if ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogoNetworkImage.value) {
+      isDeleteCompanyLogoNetworkImage.value = true;
+      return;
+    }
+    companyLogoNotifier.value = null;
   }
 }
