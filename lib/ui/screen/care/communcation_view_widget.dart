@@ -1,3 +1,4 @@
+import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -13,6 +14,7 @@ import '../../../view_model/communication_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/RowWidget.dart';
 import '../../widgets/custom_widget/card_expansion.dart';
+import 'edit_care_communication_sheet.dart';
 
 class communcation_view_widget extends StatefulWidget {
   communcation_view_widget({required this.element, required this.initiallyExpanded, Key? key}) : super(key: key);
@@ -37,8 +39,6 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
   Widget build(BuildContext context) {
     String? dateinvoice = widget.element.date_create;
     String val = dateinvoice != null ? '(فاتورة ${dateinvoice})' : '';
-    print('widget.element.idCommunication');
-    print(widget.element.idCommunication);
 
     return widget.element.idCommunication != ''
         ? buildcardExpansion(
@@ -111,24 +111,24 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                             : Container(),
 
                         widget.element.typeCommuncation == 'دوري' &&
-                                widget.element.isRecommendation.toString() != 'false'
+                                widget.element.isRecommendation.toString() != 'true'
                             ? cardRow(
                                 title: ' نتيجة التواصل',
-                                value: widget.element.isRecommendation.toString() == 'false' ? '' : 'لم يتم التوصية به',
+                                value: 'لم يتم التوصية به',
                               )
                             : Container(),
 
-                        widget.element.typeCommuncation == 'دوري' && widget.element.is_visit.toString() != 'false'
+                        widget.element.typeCommuncation == 'دوري' && widget.element.is_visit.toString() != 'true'
                             ? cardRow(
                                 title: ' نتيجة التواصل',
-                                value: widget.element.is_visit.toString() == 'false' ? '' : 'لم تتم الزيارة',
+                                value: 'لم تتم الزيارة',
                               )
                             : Container(),
                         widget.element.typeCommuncation == 'تركيب'
                             ? cardRow(
-                          title: ' نوع التركيب',
-                          value: widget.element.type_install.toString() == '1' ? 'جودة أول' : 'جودة ثاني',
-                        )
+                                title: ' نوع التركيب',
+                                value: widget.element.type_install.toString() == '1' ? 'جودة أول' : 'جودة ثاني',
+                              )
                             : Container(),
 
                         widget.element.typeCommuncation == 'دوري' || widget.element.typeCommuncation == 'تركيب'
@@ -153,6 +153,25 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 ],
                               )
                             : Container(),
+
+                        if (context.read<privilge_vm>().checkprivlge('125') == true &&
+                            widget.element.typeCommuncation != 'ترحيب')
+                        ElevatedButton(
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                            onPressed: () async {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => EditCareCommunicationSheet(communicationModel: widget.element),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                                ),
+                                isScrollControlled: true,
+                              );
+                            },
+                            child: Text(
+                              'تعديل',
+                              style: TextStyle(color: kWhiteColor),
+                            )),
                       ],
                     ),
                   )
@@ -268,7 +287,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                           .idUser
                                           .toString(),
                                       'date_communication': DateTime.now().toString(),
-                                      'result': '0', //
+                                      'result': '0',
+                                      //
                                       'nameUser': Provider.of<user_vm_provider>(context, listen: false)
                                           .currentUser
                                           .nameUser

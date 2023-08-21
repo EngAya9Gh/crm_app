@@ -503,29 +503,35 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updatecarecommuncation(Map<String, dynamic?> body, String id_communication) async {
-    isload = true;
-    notifyListeners();
-    var result =
-        await Api().post(url: url + 'care/updateCommunication.php?id_communication=$id_communication', body: body);
-    //CommunicationModel data = CommunicationModel.fromJson(result[0]);
-    if (listCommunicationrepeat.isNotEmpty) {
-      int index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
-      if (index != -1) {
-        listCommunicationrepeat.removeAt(index);
+  Future<void> updatecarecommuncation(Map<String, dynamic?> body, String id_communication,{VoidCallback? onSuccess}) async {
+    try {
+      isload = true;
+      notifyListeners();
+      var result =
+          await Api().post(url: url + 'care/updateCommunication.php?id_communication=$id_communication', body: body);
+      //CommunicationModel data = CommunicationModel.fromJson(result[0]);
+      if (listCommunicationrepeat.isNotEmpty) {
+        int index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
+        if (index != -1) {
+          listCommunicationrepeat.removeAt(index);
+        }
+        // listCommunicationrepeat[index] = data;
       }
-      // listCommunicationrepeat[index] = data;
+      isload = false;
+      final communication = CommunicationModel.fromJson(result[0]);
+      var list = careClientState['دوري'] ?? [];
+      list = list.map((e) => communication.idCommunication == e.idCommunication ? communication : e).toList();
+      careClientState['دوري'] = list;
+      notifyListeners();
+      onSuccess?.call();
+    } catch (e) {
+      isload = false;
+      notifyListeners();
     }
-    isload = false;
-    final communication = CommunicationModel.fromJson(result[0]);
-    var list = careClientState['دوري'] ?? [];
-    list = list.map((e) => communication.idCommunication == e.idCommunication ? communication : e).toList();
-    careClientState['دوري'] = list;
-    notifyListeners();
   }
 
   //addcommuncation
-  Future<CommunicationModel> addcommmuncation(Map<String, dynamic?> body, String id_communication, int type) async {
+  Future<CommunicationModel> addcommmuncation(Map<String, dynamic?> body, String id_communication, int type,{VoidCallback? onSuccess}) async {
     print(id_communication);
     isload = true;
     notifyListeners();
@@ -613,6 +619,7 @@ class communication_vm extends ChangeNotifier {
     }
     isload = false;
     notifyListeners();
+    onSuccess?.call();
     // if(listCommunication[index].typeCommuncation=='تركيب')
     // getCommunicationInstall();
     //
