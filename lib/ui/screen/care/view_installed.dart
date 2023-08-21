@@ -5,6 +5,7 @@ import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
@@ -12,7 +13,11 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../function_global.dart';
+import '../../../model/clientmodel.dart';
+import '../../../model/usermodel.dart';
 import '../../../provider/selected_button_provider.dart';
+import '../../../view_model/client_vm.dart';
+import '../../../view_model/user_vm_provider.dart';
 import 'cardcommAlltype.dart';
 import 'install_add.dart';
 
@@ -30,6 +35,7 @@ class _View_installedClientState extends State<View_installedClient> {
   String? typeclientvalue = 'الكل';
   int type = 1;
   late TextEditingController _searchTextField;
+  String? employeeId;
 
   @override
   void initState() {
@@ -38,8 +44,8 @@ class _View_installedClientState extends State<View_installedClient> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<typeclient>(context, listen: false).changelisttype_install_iso('الكل');
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);
-      // Provider.of<typeclient>(context, listen: false).changelisttype_install_iso('الكل');
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
+      context.read<user_vm_provider>().changevalueuser(null, true);
       await Provider.of<communication_vm>(context, listen: false).getCommunicationInstall(1);
     });
     super.initState();
@@ -59,9 +65,6 @@ class _View_installedClientState extends State<View_installedClient> {
 
   @override
   Widget build(BuildContext context) {
-    // listCommunicationinstall = Provider.of<communication_vm>(context, listen: true).listCommunicationInstall;
-    // isload = Provider.of<communication_vm>(context, listen: true).isloading;
-
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -138,10 +141,55 @@ class _View_installedClientState extends State<View_installedClient> {
                   ),
                 ],
               ),
-              //search_widget('welcome', hintnamefilter, 'install'),
-              SizedBox(
-                height: 5,
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                child: Consumer<user_vm_provider>(
+                  builder: (context, user, child) {
+                    return Row(
+                      children: [
+                        if (user.selecteduser != null) ...{
+                          IconButton(
+                            onPressed: () {
+                              employeeId = null;
+                              context.read<user_vm_provider>().changevalueuser(null);
+                              filtershow();
+                            },
+                            icon: Icon(Icons.highlight_off),
+                          ),
+                          SizedBox(width: 10),
+                        },
+                        Expanded(
+                          child: DropdownSearch<UserModel>(
+                            mode: Mode.DIALOG,
+                            filterFn: (user, filter) => user!.getfilteruser(filter!),
+                            compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                            showSelectedItems: true,
+                            items: user.userall,
+                            itemAsString: (u) => u!.userAsString(),
+                            onChanged: (data) {
+                              context.read<user_vm_provider>().changevalueuser(data);
+                              employeeId = data?.idUser;
+                              filtershow();
+                            },
+                            selectedItem: user.selecteduser,
+                            showSearchBox: true,
+                            dropdownSearchDecoration: InputDecoration(
+                              isCollapsed: true,
+                              hintText: 'الموظف',
+                              alignLabelWithHint: true,
+                              fillColor: Colors.grey.withOpacity(0.2),
+                              contentPadding: EdgeInsets.all(0),
+                              border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                            ),
+                            // InputDecoration(border: InputBorder.none),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
+              SizedBox(height: 15),
               Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
                 return GroupButton(
                     controller: GroupButtonController(
@@ -220,7 +268,6 @@ class _View_installedClientState extends State<View_installedClient> {
               SizedBox(
                 height: 5,
               ),
-
               Consumer<communication_vm>(
                 builder: (context, value, child) {
                   final list = _searchTextField.text.isEmpty
@@ -269,10 +316,6 @@ class _View_installedClientState extends State<View_installedClient> {
   }
 
   void filtershow() {
-    print(regoin);
-    print('typeclientvalue');
-    print(typeclientvalue);
-
-    Provider.of<communication_vm>(context, listen: false).getinstalltype_filter(typeclientvalue, regoin, type);
+    Provider.of<communication_vm>(context, listen: false).getinstalltype_filter(typeclientvalue, regoin, type,employeeId);
   }
 }

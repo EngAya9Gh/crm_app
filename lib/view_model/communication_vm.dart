@@ -240,7 +240,7 @@ class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunicationInstall_temp = [];
   List<CommunicationModel> listCommunicationInstall2_temp = [];
 
-  void getinstalltype_filter(String? filter, String? regoin, int typefilter) async {
+  void getinstalltype_filter(String? filter, String? regoin, int typefilter, String? employeeId) async {
     listCommunicationInstall = [];
     isloading = true;
     notifyListeners();
@@ -302,6 +302,9 @@ class communication_vm extends ChangeNotifier {
     }
 
     listCommunicationInstall = List.from(_listInvoicesAccept);
+    if (employeeId != null) {
+      listCommunicationInstall = listCommunicationInstall.where((element) => element.fkUser == employeeId).toList();
+    }
     isloading = false;
     notifyListeners();
   }
@@ -503,7 +506,8 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updatecarecommuncation(Map<String, dynamic?> body, String id_communication,{VoidCallback? onSuccess}) async {
+  Future<void> updatecarecommuncation(Map<String, dynamic?> body, String id_communication,
+      {VoidCallback? onSuccess}) async {
     try {
       isload = true;
       notifyListeners();
@@ -531,7 +535,8 @@ class communication_vm extends ChangeNotifier {
   }
 
   //addcommuncation
-  Future<CommunicationModel> addcommmuncation(Map<String, dynamic?> body, String id_communication, int type,{VoidCallback? onSuccess}) async {
+  Future<CommunicationModel> addcommmuncation(Map<String, dynamic?> body, String id_communication, int type,
+      {VoidCallback? onSuccess}) async {
     print(id_communication);
     isload = true;
     notifyListeners();
