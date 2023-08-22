@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
@@ -382,10 +383,12 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setisload() {
-    isloadingdone = true;
+  void setisload({bool isLoading = true}) {
+    isloadingdone = isLoading;
     notifyListeners();
   }
+
+  CancelableOperation<List<InvoiceModel>>? _cancelableFuture;
 
   Future<void> getfilter_maincity(List<MainCityModel>? listparam, String? state) async {
     print(state);
@@ -397,9 +400,13 @@ class invoice_vm extends ChangeNotifier {
     print('allllllllllllllllllll');
     print(listparam?.length.toString());
 
+    await _cancelableFuture?.cancel();
+
     if (listparam!.isEmpty && state == 'الكل') {
-      listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
-          'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'});
+      _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
+          'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'}));
+
+      listInvoicesAccept = await _cancelableFuture?.value ?? [];
     } else {
       String params = '';
       // if (listparam.toString().isNotEmpty)
@@ -435,30 +442,38 @@ class invoice_vm extends ChangeNotifier {
 
       switch (type) {
         case 'allmaincity':
-          listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
+          _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
               'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}',
-              {'allmaincity': 'allmaincity'});
+              {'allmaincity': 'allmaincity'}));
+
+          listInvoicesAccept = await _cancelableFuture?.value ?? [];
           break;
 
         case 'allstate':
           print('21321321');
           // for(int i=0;i<listparam.length;i++)
           //   listval.add(int.parse( listparam[i].id_maincity));
-          listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
+          _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
               'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}$params',
-              {'allstate': 'allstate'});
+              {'allstate': 'allstate'}));
+          listInvoicesAccept = await _cancelableFuture?.value ?? [];
           break;
         case 'allmix':
           // for(int i=0;i<listparam.length;i++)
           //   listval.add(int.parse( listparam[i].id_maincity));
-          listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
+
+          _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
               'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}$params',
-              {'allmix': 'allmix'});
+              {'allmix': 'allmix'}));
+
+          listInvoicesAccept = await _cancelableFuture?.value ?? [];
           break;
 
         case 'all':
-          listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
-              'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'});
+          _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
+              'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'}));
+
+          listInvoicesAccept = await _cancelableFuture?.value ?? [];
           break;
       }
     }
@@ -1238,16 +1253,23 @@ class invoice_vm extends ChangeNotifier {
 
   bool isloadingdone = false;
 
-  Future<void> setdatedone_vm(Map<String, dynamic?> body, String? id_invoice) async {
-    isloadingdone = true;
-    notifyListeners();
-    int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-    int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
-    InvoiceModel inv = await Invoice_Service().setdatedone(body, id_invoice!);
-    if (index != -1) listinvoices[index] = inv;
-    if (index1 != -1) listinvoiceClientSupport[index1] = inv;
-    isloadingdone = false;
-    notifyListeners();
+  Future<bool> setdatedone_vm(Map<String, dynamic?> body, String? id_invoice) async {
+    try {
+      isloadingdone = true;
+      notifyListeners();
+      int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
+      int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
+      InvoiceModel inv = await Invoice_Service().setdatedone(body, id_invoice!);
+      if (index != -1) listinvoices[index] = inv;
+      if (index1 != -1) listinvoiceClientSupport[index1] = inv;
+      isloadingdone = false;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      isloadingdone = false;
+      notifyListeners();
+      return false;
+    }
   }
 
   Future<void> set_ready_install(Map<String, dynamic?> body, String? id_invoice) async {

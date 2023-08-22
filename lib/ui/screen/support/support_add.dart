@@ -294,8 +294,7 @@ class _support_addState extends State<support_add> {
                               fk_user: idUser!,
                               date_client_visit: datetask.toString(),
                               onSuccess: (value) {
-                                DateTime temp =
-                                    datetask.hour >= 21 ? datetask.subtract(Duration(hours: 3)) : datetask;
+                                DateTime temp = datetask.hour >= 21 ? datetask.subtract(Duration(hours: 3)) : datetask;
 
                                 final event = Event(
                                   fkIdClient: widget.idClient!,
@@ -776,30 +775,33 @@ class _support_addState extends State<support_add> {
                                       await showDialog(
                                           context: context,
                                           builder: (context) {
-                                            return ModalProgressHUD(
-                                              inAsyncCall: Provider.of<invoice_vm>(context, listen: true).isloadingdone,
-                                              child: Directionality(
-                                                textDirection: myui.TextDirection.rtl,
-                                                child: AlertDialog(
-                                                  title: Text('التأكيد'),
-                                                  content: Text('هل تريد تأكيد عملية التركيب'),
-                                                  actions: <Widget>[
-                                                    Column(
-                                                      children: [
-                                                        EditTextFormField(
-                                                          maxline: 4,
-                                                          paddcustom: EdgeInsets.all(10),
-                                                          hintText: ' يوزر العميل',
-                                                          obscureText: false,
-                                                          controller: _textnameuserclient,
-                                                          vaild: (value) {
-                                                            if (value.toString().trim().isEmpty) {
-                                                              return 'الحقل فارغ';
-                                                            }
-                                                          },
-                                                        ),
-                                                        SizedBox(height: 10),
-                                                        Row(
+                                            return Directionality(
+                                              textDirection: myui.TextDirection.rtl,
+                                              child: AlertDialog(
+                                                title: Text('التأكيد'),
+                                                content: Text('هل تريد تأكيد عملية التركيب'),
+                                                actions: <Widget>[
+                                                  Column(
+                                                    children: [
+                                                      EditTextFormField(
+                                                        maxline: 4,
+                                                        paddcustom: EdgeInsets.all(10),
+                                                        hintText: ' يوزر العميل',
+                                                        obscureText: false,
+                                                        controller: _textnameuserclient,
+                                                        vaild: (value) {
+                                                          if (value.toString().trim().isEmpty) {
+                                                            return 'الحقل فارغ';
+                                                          }
+                                                        },
+                                                      ),
+                                                      SizedBox(height: 10),
+                                                      Consumer<invoice_vm>(builder: (context, invoice, _) {
+                                                        if (invoice.isloadingdone) {
+                                                          return Center(child: CircularProgressIndicator());
+                                                        }
+
+                                                        return Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                           children: [
                                                             ElevatedButton(
@@ -817,62 +819,78 @@ class _support_addState extends State<support_add> {
                                                                   backgroundColor:
                                                                       MaterialStateProperty.all(kMainColor)),
                                                               onPressed: () async {
-                                                                Provider.of<invoice_vm>(context, listen: false)
-                                                                    .setisload();
-                                                                await Provider.of<config_vm>(context, listen: false)
-                                                                    .getAllConfig();
-                                                                List<ConfigModel> _listconfg =
-                                                                    Provider.of<config_vm>(context, listen: false)
-                                                                        .listofconfig;
-                                                                ConfigModel peroid = _listconfg.firstWhere((element) =>
-                                                                    element.name_config ==
-                                                                    'period_commincation3'); //تواصل دوري
-                                                                DateTime datanext = DateTime.now();
-                                                                int peroidtime = int.parse(peroid.value_config);
-                                                                datanext = Jiffy().add(days: peroidtime).dateTime;
-                                                                print(datanext.toString());
+                                                               try{
+                                                                 Provider.of<invoice_vm>(context, listen: false)
+                                                                     .setisload();
+                                                                 await Provider.of<config_vm>(context, listen: false)
+                                                                     .getAllConfig();
+                                                                 List<ConfigModel> _listconfg =
+                                                                     Provider.of<config_vm>(context, listen: false)
+                                                                         .listofconfig;
+                                                                 ConfigModel peroid = _listconfg.firstWhere((element) =>
+                                                                 element.name_config ==
+                                                                     'period_commincation3'); //تواصل دوري
+                                                                 DateTime datanext = DateTime.now();
+                                                                 int peroidtime = int.parse(peroid.value_config);
+                                                                 datanext = Jiffy().add(days: peroidtime).dateTime;
+                                                                 print(datanext.toString());
 
-                                                                peroid = _listconfg.firstWhere((element) =>
-                                                                    element.name_config ==
-                                                                    'period_commincation2'); //تواصل دوري
-                                                                DateTime datanext_install = DateTime.now();
-                                                                peroidtime = int.parse(peroid.value_config);
-                                                                datanext_install =
-                                                                    Jiffy().add(days: peroidtime).dateTime;
-                                                                print(datanext.toString());
-                                                                await Provider.of<invoice_vm>(context, listen: false)
-                                                                    .setdatedone_vm({
-                                                                  'clientusername': _textnameuserclient.text,
-                                                                  'datanext': datanext.toString(),
-                                                                  'datanext_install': datanext_install.toString(),
-                                                                  'dateinstall_done': DateTime.now().toString(),
-                                                                  'userinstall': Provider.of<user_vm_provider>(context,
-                                                                          listen: false)
-                                                                      .currentUser
-                                                                      .idUser
-                                                                      .toString(),
-                                                                  'isdoneinstall': '1',
-                                                                  'fkIdClient': _invoice!.fkIdClient,
-                                                                  'nameuserinstall': Provider.of<user_vm_provider>(
-                                                                          context,
-                                                                          listen: false)
-                                                                      .currentUser
-                                                                      .nameUser
-                                                                      .toString(),
-                                                                  'name_enterprise': _invoice!.name_enterprise,
-                                                                  'fkcountry': _invoice!.fk_country,
-                                                                  'fk_regoin': _invoice!.fk_regoin
-                                                                }, _invoice!.idInvoice).then((value) => clear());
-                                                                Navigator.of(context, rootNavigator: true).pop(true);
+                                                                 peroid = _listconfg.firstWhere((element) =>
+                                                                 element.name_config ==
+                                                                     'period_commincation2'); //تواصل دوري
+                                                                 DateTime datanext_install = DateTime.now();
+                                                                 peroidtime = int.parse(peroid.value_config);
+                                                                 datanext_install =
+                                                                     Jiffy().add(days: peroidtime).dateTime;
+                                                                 print(datanext.toString());
+                                                                 await Provider.of<invoice_vm>(context, listen: false)
+                                                                     .setdatedone_vm({
+                                                                   'clientusername': _textnameuserclient.text,
+                                                                   'datanext': datanext.toString(),
+                                                                   'datanext_install': datanext_install.toString(),
+                                                                   'dateinstall_done': DateTime.now().toString(),
+                                                                   'userinstall': Provider.of<user_vm_provider>(context,
+                                                                       listen: false)
+                                                                       .currentUser
+                                                                       .idUser
+                                                                       .toString(),
+                                                                   'isdoneinstall': '1',
+                                                                   'fkIdClient': _invoice!.fkIdClient,
+                                                                   'nameuserinstall': Provider.of<user_vm_provider>(
+                                                                       context,
+                                                                       listen: false)
+                                                                       .currentUser
+                                                                       .nameUser
+                                                                       .toString(),
+                                                                   'name_enterprise': _invoice!.name_enterprise,
+                                                                   'fkcountry': _invoice!.fk_country,
+                                                                   'fk_regoin': _invoice!.fk_regoin
+                                                                 }, _invoice!.idInvoice).then((value) {
+                                                                   if (value) {
+                                                                     clear();
+                                                                     Navigator.of(context, rootNavigator: true)
+                                                                         .pop(true);
+                                                                   } else {
+                                                                     ScaffoldMessenger.of(context).showSnackBar(
+                                                                         SnackBar(content: Text('حدث خطأ ما.')));
+                                                                   }
+                                                                 });
+                                                               }catch(e){
+
+                                                                 ScaffoldMessenger.of(context).showSnackBar(
+                                                                     SnackBar(content: Text('حدث خطأ ما.')));
+                                                                 Provider.of<invoice_vm>(context, listen: false)
+                                                                     .setisload(isLoading: false);
+                                                               }
                                                               },
                                                               child: Text('نعم'),
                                                             ),
                                                           ],
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                        );
+                                                      })
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                             );
                                           });
