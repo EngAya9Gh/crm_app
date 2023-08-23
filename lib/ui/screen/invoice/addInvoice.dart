@@ -21,6 +21,7 @@ import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -1269,11 +1270,16 @@ class _addinvoiceState extends State<addinvoice> {
                               else if (sellerStatus == SellerStatus.failed)
                                 refreshIcon(() {})
                               else if (isCollaborate)
-                                sellerDropdown<ParticipateModel>(
-                                  collaboratesList,
-                                  selectedSellerType,
+                                collaborateDropdown(
+                                  participates: collaboratesList,
                                   selectedValue: selectedCollaborate,
+                                  selectedSellerType: selectedSellerType,
                                 )
+                              // sellerDropdown<ParticipateModel>(
+                              //   collaboratesList,
+                              //   selectedSellerType,
+                              //   selectedValue: selectedCollaborate,
+                              // )
                               else
                                 sellerDropdown<AgentDistributorModel>(
                                   agentsListtemp, // agentsList,
@@ -1801,6 +1807,44 @@ class _addinvoiceState extends State<addinvoice> {
     return IconButton(
       onPressed: onPressed,
       icon: Icon(Icons.refresh),
+    );
+  }
+
+  Widget collaborateDropdown({
+    required List<ParticipateModel> participates,
+    required ParticipateModel? selectedValue,
+    required SellerType selectedSellerType,
+  }) {
+    return DropdownSearch<ParticipateModel>(
+      mode: Mode.DIALOG,
+      filterFn: (user, filter) => user!.getFilterParticipate(filter ?? ''),
+      compareFn: (item, selectedItem) => item?.id_participate == selectedItem?.id_participate,
+      showSelectedItems: true,
+      items: participates,
+      itemAsString: (u) => u!.name_participate,
+      onChanged: (seller) {
+        invoiceViewmodel.onChangeSelectedCollaborator(seller as ParticipateModel);
+      },
+      selectedItem: selectedValue,
+      showSearchBox: true,
+      validator: (text) {
+        if (selectedSellerType == SellerType.employee) {
+          return null;
+        }
+
+        if (text == null) {
+          return 'هذا الحقل مطلوب';
+        }
+        return null;
+      },
+      dropdownSearchDecoration: InputDecoration(
+        isCollapsed: true,
+        hintText: 'متعاون',
+        alignLabelWithHint: true,
+        fillColor: Colors.grey.withOpacity(0.2),
+        contentPadding: EdgeInsets.all(0),
+        border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+      ),
     );
   }
 
