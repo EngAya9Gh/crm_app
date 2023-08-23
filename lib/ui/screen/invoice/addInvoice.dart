@@ -1386,13 +1386,14 @@ class _addinvoiceState extends State<addinvoice> {
                                     List<ProductsInvoice>? _products = [];
                                     _products = _invoice!.products;
 
+                                    final user = context.read<user_vm_provider>();
                                     if (_invoice?.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
                                       invoiceViewmodel.update_invoiceclient_vm(
                                         {
                                           "name_enterprise": widget.itemClient.nameEnterprise,
                                           "name_client": widget.itemClient.nameClient.toString(),
-                                          "nameUser": widget.itemClient.nameUser.toString(),
+                                          "nameUser": user.currentUser.nameUser,
                                           "renew_year": renewController.text.toString(),
                                           "renew2year": renew2Controller.text.toString(),
                                           "type_pay": typepayController.toString(),
@@ -1411,7 +1412,7 @@ class _addinvoiceState extends State<addinvoice> {
                                           'fk_regoin_invoice': widget.invoice!.fk_regoin.toString(),
                                           'fkcountry': widget.invoice!.fk_country.toString(),
                                           "fk_idClient": widget.itemClient.idClients.toString(),
-                                          "fk_idUser": widget.itemClient.fkUser.toString(),
+                                          "fk_idUser": user.currentUser.idUser,
                                           "image_record": recordCommercialImageNotifier.value?.path.toString() ?? '',
                                           "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
                                               .currentUser
@@ -1483,10 +1484,7 @@ class _addinvoiceState extends State<addinvoice> {
                                       var body = {
                                         "name_enterprise": widget.itemClient.nameEnterprise,
                                         "name_client": widget.itemClient.nameClient.toString(),
-                                        "nameUser": Provider.of<user_vm_provider>(context, listen: false)
-                                            .currentUser
-                                            .nameUser
-                                            .toString(),
+                                        "nameUser": user.currentUser.nameUser,
                                         //widget.itemClient.nameUser,
                                         "renew_year": renewController.text.toString(),
                                         "renew2year": renew2Controller.text.toString(),
@@ -1500,7 +1498,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         "amount_paid": amount_paidController.text.toString(),
                                         "image_record": recordCommercialImageNotifier.value?.path.toString() ?? '',
                                         "fk_idClient": widget.itemClient.idClients.toString(),
-                                        "fk_idUser": widget.itemClient.fkUser.toString(),
+                                        "fk_idUser": user.currentUser.idUser,
                                         //the same user that create a client not current user
                                         "total": totalController.toString(),
                                         "notes": noteController.text.toString(),

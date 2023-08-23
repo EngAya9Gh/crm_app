@@ -251,7 +251,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                                       .hoursLastComment
                                                                       .toString()) <
                                                                   0
-                                                              ? '0'
+                                                              ? 'لا يوجد اي تعليق'
                                                               : Provider.of<lastcommentclient_vm>(context, listen: false)
                                                                       .list_LastcommentClientModel[index]
                                                                       .hoursLastComment
