@@ -322,7 +322,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
         builder: (context, value, child) => Expanded(
           flex: 5,
           child: sellerDropdown<UserModel>(
-            value.userall,
+            value.usersSalesManagement,
             selectedValue: selectedEmployee,
           ),
         ),

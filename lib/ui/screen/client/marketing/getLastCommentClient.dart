@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +33,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-
+      context.read<user_vm_provider>().changevalueuser(null,true);
       Provider.of<lastcommentclient_vm>(context, listen: false)
         .getLastcommentClientModel();
 
@@ -113,13 +114,8 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                     builder: (context, cart, child) {
                       return DropdownSearch<UserModel>(
                         mode: Mode.DIALOG,
-                        // label: " الموظف ",
-                        //hint: 'الموظف',
-                        //onFind: (String filter) => cart.getfilteruser(filter),
                         filterFn: (user, filter) => user!.getfilteruser(filter!),
-                        //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                        // itemAsString: (UserModel u) => u.userAsStringByName(),
-                        items: cart.userall,
+                        items: cart.usersMarketingManagement,
                         itemAsString: (u) => u!.userAsString(),
                         onChanged: (data) {
                           idUser = data!.idUser;
@@ -129,21 +125,12 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                         selectedItem: cart.selecteduser,
                         showSearchBox: true,
                         dropdownSearchDecoration: InputDecoration(
-                          //filled: true,
                           isCollapsed: true,
                           hintText: 'الموظف',
                           alignLabelWithHint: true,
                           fillColor: Colors.grey.withOpacity(0.2),
-                          //labelText: "choose a user",
                           contentPadding: EdgeInsets.all(0),
-                          //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                          // focusedBorder: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: const BorderSide(color: Colors.white)),
                           border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                          // OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: const BorderSide( color: Colors.white)),
                         ),
                         // InputDecoration(border: InputBorder.none),
                       );

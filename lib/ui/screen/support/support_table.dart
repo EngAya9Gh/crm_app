@@ -194,7 +194,7 @@ class _support_tableState extends State<support_table> {
                               compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
                               showSelectedItems: true,
                               // itemAsString: (UserModel u) => u.userAsStringByName(),
-                              items: user.userall,
+                              items: user.usersSupportManagement,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 iduser = data!.idUser!;

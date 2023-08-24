@@ -249,7 +249,7 @@ class _tabclientsState extends State<tabclients> {
                                     filterFn: (user, filter) => user!.getfilteruser(filter!),
                                     //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                                     // itemAsString: (UserModel u) => u.userAsStringByName(),
-                                    items: cart.userall,
+                                    items: cart.usersSalesManagement,
                                     itemAsString: (u) => u!.userAsString(),
                                     onChanged: (data) {
                                       iduser = data!.idUser;

@@ -149,13 +149,8 @@ class _delayinstallState extends State<delayinstall> {
                         return  DropdownSearch<UserModel>(
 
                           mode: Mode.DIALOG,
-                          // label: " الموظف ",
-                          //hint: 'الموظف',
-                          //onFind: (String filter) => cart.getfilteruser(filter),
                           filterFn: (user, filter) => user!.getfilteruser(filter!),
-                          //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                          // itemAsString: (UserModel u) => u.userAsStringByName(),
-                          items: cart.userall,
+                          items: cart.usersSupportManagement,
                           itemAsString: (u) => u!.userAsString(),
                           onChanged: (data) {
                             iduser=data!.idUser!;
@@ -168,27 +163,17 @@ class _delayinstallState extends State<delayinstall> {
                           showSearchBox: true,
                           dropdownSearchDecoration:
                           InputDecoration(
-                            //filled: true,
                             isCollapsed: true,
                             hintText: 'الموظف',
                             alignLabelWithHint: true,
                             fillColor:  Colors.grey.withOpacity(0.2),
                             //labelText: "choose a user",
                             contentPadding: EdgeInsets.all(0),
-                            //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                            // focusedBorder: OutlineInputBorder(
-                            //     borderRadius: BorderRadius.circular(10),
-                            //     borderSide: const BorderSide(color: Colors.white)),
                             border:
                             UnderlineInputBorder(
                                 borderSide: const BorderSide(  color: Colors.grey)
                             ),
-                            // OutlineInputBorder(
-                            //     borderRadius: BorderRadius.circular(10),
-                            //     borderSide: const BorderSide( color: Colors.white)),
                           ),
-                          // InputDecoration(border: InputBorder.none),
-
                         );
 
                       },

@@ -116,13 +116,8 @@ class _edit_invoiceState extends State<edit_invoice> {
                       builder: (context, cart, child) {
                         return DropdownSearch<UserModel>(
                           mode: Mode.DIALOG,
-                          // label: " الموظف ",
-                          //hint: 'الموظف',
-                          //onFind: (String filter) => cart.getfilteruser(filter),
                           filterFn: (user, filter) => user!.getfilteruser(filter!),
-                          //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                          // itemAsString: (UserModel u) => u.userAsStringByName(),
-                          items: cart.userall,
+                          items: cart.usersSalesManagement,
                           itemAsString: (u) => u!.userAsString(),
                           onChanged: (data) {
                             iduser = data!.idUser;
@@ -131,16 +126,13 @@ class _edit_invoiceState extends State<edit_invoice> {
                           selectedItem: cart.selecteduser,
                           showSearchBox: true,
                           dropdownSearchDecoration: InputDecoration(
-                            //filled: true,
                             isCollapsed: true,
                             hintText: 'الموظف',
                             alignLabelWithHint: true,
                             fillColor: Colors.grey.withOpacity(0.2),
-                            //labelText: "choose a user",
                             contentPadding: EdgeInsets.all(0),
                             border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
                           ),
-                          // InputDecoration(border: InputBorder.none),
                         );
                       },
                     ),

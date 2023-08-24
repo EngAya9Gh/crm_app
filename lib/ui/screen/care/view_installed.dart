@@ -164,7 +164,7 @@ class _View_installedClientState extends State<View_installedClient> {
                             filterFn: (user, filter) => user!.getfilteruser(filter!),
                             compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
                             showSelectedItems: true,
-                            items: user.userall,
+                            items: user.usersCareManagement,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
                               context.read<user_vm_provider>().changevalueuser(data);
