@@ -129,6 +129,24 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           SizedBox.shrink(),
                       ],
                     ),
+                    SizedBox(height: 3),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "اسم المؤسسة: ",
+                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold,color: kMainColor),
+                        ),
+                        Expanded(
+                          child: Text(
+                            "${widget.itemProd.name_enterprise.toString()}",
+                            maxLines: 3,
+                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold,overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 3),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

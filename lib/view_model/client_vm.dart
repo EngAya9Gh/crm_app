@@ -571,6 +571,8 @@ class client_vm extends ChangeNotifier {
     listClient.insert(0, res);
     listClientfilter.insert(0, res);
     listClientAccept.insert(0, res);
+    listClientMarketing.insert(0, res);
+    listClientMarketingFilter.insert(0, res);
     // ClientModel.fromJson(body));
     notifyListeners();
     //}
@@ -738,6 +740,7 @@ class client_vm extends ChangeNotifier {
 
     notifyListeners();
   }
+
   List<ClientModel> listClientFilterSearch = [];
 
   void onSearchListClientFilter(String query) {
@@ -751,5 +754,4 @@ class client_vm extends ChangeNotifier {
 
     notifyListeners();
   }
-
 }

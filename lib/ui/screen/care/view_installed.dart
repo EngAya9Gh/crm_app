@@ -36,9 +36,14 @@ class _View_installedClientState extends State<View_installedClient> {
   int type = 1;
   late TextEditingController _searchTextField;
   String? employeeId;
+  bool isMyClients = false;
+  late UserModel user;
+  late String userId;
 
   @override
   void initState() {
+    user = context.read<user_vm_provider>().currentUser;
+    userId = user.idUser!;
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -46,7 +51,7 @@ class _View_installedClientState extends State<View_installedClient> {
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
       context.read<user_vm_provider>().changevalueuser(null, true);
-      await Provider.of<communication_vm>(context, listen: false).getCommunicationInstall(1);
+      await Provider.of<communication_vm>(context, listen: false).getCommunicationInstall(1, '');
     });
     super.initState();
   }
@@ -190,6 +195,14 @@ class _View_installedClientState extends State<View_installedClient> {
                 ),
               ),
               SizedBox(height: 15),
+              SwitchListTile(
+                value: isMyClients,
+                onChanged: (value) {
+                  setState(() => isMyClients = value);
+                  filtershow();
+                },
+                title: Text("عملائي"),
+              ),
               Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
                 return GroupButton(
                     controller: GroupButtonController(
@@ -316,6 +329,12 @@ class _View_installedClientState extends State<View_installedClient> {
   }
 
   void filtershow() {
-    Provider.of<communication_vm>(context, listen: false).getinstalltype_filter(typeclientvalue, regoin, type,employeeId);
+    String myClientsParam = '';
+    if (isMyClients) {
+      myClientsParam = '&fk_user=$userId';
+    }
+
+    Provider.of<communication_vm>(context, listen: false)
+        .getinstalltype_filter(typeclientvalue, regoin, type, employeeId, myClientsParam);
   }
 }

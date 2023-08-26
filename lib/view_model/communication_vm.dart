@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -176,18 +177,19 @@ class communication_vm extends ChangeNotifier {
 
   List<CommunicationModel> listCommunicationWelcome_temp = [];
 
-  void getcommtype_filter(String? filter, String? regoin) async {
+  void getcommtype_filter(String? filter, String? regoin, String myClientsParam) async {
     listCommunicationWelcome = [];
     isloading = true;
     notifyListeners();
-    if (listCommunicationWelcome_temp.isEmpty) await getCommunicationWelcome();
+    if (listCommunicationWelcome_temp.isEmpty || myClientsParam.isNotEmpty)
+      await getCommunicationWelcome(myClientsParam);
     listCommunicationWelcome = List.from(listCommunicationWelcome_temp);
 
     List<CommunicationModel> _listInvoicesAccept = [];
     if (regoin == null || regoin == '0') {
       print(filter);
       if (listCommunicationWelcome.isNotEmpty) {
-        if (filter == 'الكل') {
+        if (filter == 'الكل' || filter == null) {
           _listInvoicesAccept = List.from(listCommunicationWelcome);
           print('serch الكل');
         }
@@ -208,7 +210,7 @@ class communication_vm extends ChangeNotifier {
       }
     } else {
       if (listCommunicationWelcome.isNotEmpty) {
-        if (filter == 'الكل')
+        if (filter == 'الكل' || filter == null)
           listCommunicationWelcome.forEach((element) {
             if (element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
@@ -240,13 +242,16 @@ class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunicationInstall_temp = [];
   List<CommunicationModel> listCommunicationInstall2_temp = [];
 
-  void getinstalltype_filter(String? filter, String? regoin, int typefilter, String? employeeId) async {
+  void getinstalltype_filter(
+      String? filter, String? regoin, int typefilter, String? employeeId, String myClientsParam) async {
     listCommunicationInstall = [];
     isloading = true;
     notifyListeners();
 
-    if (listCommunicationInstall_temp.isEmpty && typefilter == 1) await getCommunicationInstall(typefilter);
-    if (listCommunicationInstall2_temp.isEmpty && typefilter == 2) await getCommunicationInstall(typefilter);
+    if ((listCommunicationInstall_temp.isEmpty && typefilter == 1) || (myClientsParam.isNotEmpty && typefilter == 1))
+      await getCommunicationInstall(typefilter, myClientsParam);
+    if ((listCommunicationInstall2_temp.isEmpty && typefilter == 2) || (myClientsParam.isNotEmpty && typefilter == 2))
+      await getCommunicationInstall(typefilter, myClientsParam);
     if (typefilter == 1) listCommunicationInstall = List.from(listCommunicationInstall_temp);
     if (typefilter == 2) listCommunicationInstall = List.from(listCommunicationInstall2_temp);
 
@@ -329,10 +334,11 @@ class communication_vm extends ChangeNotifier {
   }
 
   //searchwelcome
-  Future<void> searchwelcome(String productName, String? type) async {
+  Future<void> searchwelcome(String productName, String? type, String myClientsParams) async {
     List<CommunicationModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
-    String searchKey = productName; //
+    String searchKey = productName;
+    final list = List.of(listCommunicationWelcome);
     switch (type) {
       case 'welcome':
         if (productName.isNotEmpty) {
@@ -345,22 +351,22 @@ class communication_vm extends ChangeNotifier {
             listCommunicationWelcome = _listInvoicesAccept;
           }
         } else
-          getCommunicationWelcome();
+          getCommunicationWelcome(myClientsParams);
         break;
 
-      case 'install':
-        if (productName.isNotEmpty) {
-          if (listCommunicationInstall.isNotEmpty) {
-            listCommunicationInstall.forEach((element) {
-              if (element.nameEnterprise.contains(searchKey, 0) ||
-                  element.mobile.toString().contains(searchKey, 0) ||
-                  element.nameClient.toString().contains(searchKey, 0)) _listInvoicesAccept.add(element);
-            });
-            listCommunicationInstall = _listInvoicesAccept;
-          }
-        } else
-          getCommunicationInstall(0); //;
-        break;
+      // case 'install':
+      //   if (productName.isNotEmpty) {
+      //     if (listCommunicationInstall.isNotEmpty) {
+      //       listCommunicationInstall.forEach((element) {
+      //         if (element.nameEnterprise.contains(searchKey, 0) ||
+      //             element.mobile.toString().contains(searchKey, 0) ||
+      //             element.nameClient.toString().contains(searchKey, 0)) _listInvoicesAccept.add(element);
+      //       });
+      //       listCommunicationInstall = _listInvoicesAccept;
+      //     }
+      //   } else
+      //     getCommunicationInstall(0); //;
+      //   break;
     }
     //getinvoice_Local("مشترك",'approved client',null);
     notifyListeners();
@@ -411,7 +417,7 @@ class communication_vm extends ChangeNotifier {
     return param;
   }
 
-  Future<void> getCommunicationInstall(int type) async {
+  Future<void> getCommunicationInstall(int type, String myClientsParams) async {
     listCommunicationInstall_temp = [];
     listCommunicationInstall2_temp = [];
     isloading = true;
@@ -421,10 +427,10 @@ class communication_vm extends ChangeNotifier {
     print(param);
     // String param= get_privilgelist();
     if (type == 2) {
-      await getInstall2();
+      await getInstall2(myClientsParams);
       listCommunicationInstall = List.from(listCommunicationInstall2_temp);
     } else {
-      await getInstall1(); //getCommunicationall('تركيب');
+      await getInstall1(myClientsParams); //getCommunicationall('تركيب');
       listCommunicationInstall = List.from(listCommunicationInstall_temp);
 
       // if(listCommunication.isNotEmpty) {
@@ -445,11 +451,11 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getCommunicationWelcome() async {
+  Future<void> getCommunicationWelcome(String myClientsParam) async {
     listCommunicationWelcome_temp = [];
     isloading = true;
     notifyListeners();
-    await getCommunicationall1('ترحيب');
+    await getCommunicationall1('ترحيب', myClientsParam);
     // if(listCommunication.isNotEmpty) {
     //   listCommunicationWelcome=[];
     //   listCommunication.forEach((element) {
@@ -467,12 +473,21 @@ class communication_vm extends ChangeNotifier {
   bool isload = false;
   bool valuebutton = false;
 
-  Future<void> getCommunicationallrepeatpage(String country) async {
+  CancelableOperation<dynamic>? _cancelableFuture;
+
+  Future<void> getCommunicationallrepeatpage(String country, String queryParams) async {
     listCommunicationrepeat = [];
     isload = true;
     notifyListeners();
     List<dynamic> data = [];
-    data = await Api().get(url: url + 'care/getcomm_repeat.php?fk_country=$country$param');
+
+    _cancelableFuture?.cancel();
+
+    _cancelableFuture = CancelableOperation.fromFuture(
+        Api().get(url: url + 'care/getcomm_repeat.php?fk_country=$country${param + queryParams}'));
+
+    data = await _cancelableFuture?.value;
+
     print(data);
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
@@ -488,8 +503,14 @@ class communication_vm extends ChangeNotifier {
     isload = true;
     notifyListeners();
     List<dynamic> data = [];
-    data = await Api()
-        .post(url: url + 'reports/report_care_rate.php?fk_country=$country$param1', body: {'type': 'datedays'});
+
+    _cancelableFuture?.cancel();
+
+    _cancelableFuture = CancelableOperation.fromFuture(
+        Api().post(url: url + 'reports/report_care_rate.php?fk_country=$country$param1', body: {'type': 'datedays'}));
+
+    data = await _cancelableFuture?.value;
+
     print(data);
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
@@ -640,10 +661,15 @@ class communication_vm extends ChangeNotifier {
     return data;
   }
 
-  Future<void> getCommunicationall1(String? type) async {
+  CancelableOperation<dynamic>? _cancelableWelcomeFuture;
+
+  Future<void> getCommunicationall1(String? type, String myClientsParam) async {
     List<dynamic> data = [];
-    data =
-        await Api().get(url: url + 'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&&type=$type');
+    _cancelableWelcomeFuture?.cancel();
+    _cancelableWelcomeFuture = CancelableOperation.fromFuture(Api().get(
+        url: url + 'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&type=$type$myClientsParam'));
+
+    data = await (_cancelableWelcomeFuture?.value);
     print(data);
     if (type == 'تركيب') {
       listCommunicationInstall_temp = [];
@@ -681,11 +707,18 @@ class communication_vm extends ChangeNotifier {
   //   }
   // }
 
-  Future<void> getInstall2() async {
+  CancelableOperation<dynamic>? _cancelableCommunicationInstall2Future;
+
+  Future<void> getInstall2(String myClientsParams) async {
     listCommunicationInstall2_temp = [];
     List<dynamic> data = [];
 
-    data = await Api().get(url: url + 'care/get_install2.php?fk_country=${usercurrent!.fkCountry}$param');
+    _cancelableCommunicationInstall2Future?.cancel();
+    _cancelableCommunicationInstall2Future = CancelableOperation.fromFuture(
+        Api().get(url: url + 'care/get_install2.php?fk_country=${usercurrent!.fkCountry}$param$myClientsParams'));
+
+    data = await _cancelableCommunicationInstall2Future?.value;
+
     print('data.length');
     print(data.length);
     if (data.length.toString().isNotEmpty) {
@@ -696,11 +729,18 @@ class communication_vm extends ChangeNotifier {
     }
   }
 
-  Future<void> getInstall1() async {
+  CancelableOperation<dynamic>? _cancelableCommunicationInstall1Future;
+
+  Future<void> getInstall1(String myClientsParams) async {
     listCommunicationInstall_temp = [];
     List<dynamic> data = [];
 
-    data = await Api().get(url: url + 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}$param');
+    _cancelableCommunicationInstall1Future?.cancel();
+
+    _cancelableCommunicationInstall1Future = CancelableOperation.fromFuture(
+        Api().get(url: url + 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}$param$myClientsParams'));
+
+    data = await _cancelableCommunicationInstall1Future?.value;
     print('data.length');
     print(data.length);
     if (data.length.toString().isNotEmpty) {

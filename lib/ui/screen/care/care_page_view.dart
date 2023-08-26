@@ -36,6 +36,7 @@ class _care_page_viewState extends State<care_page_view> {
   String typeproduct = '-';
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
+  bool isMyClients = false;
 
   @override
   void didChangeDependencies() async {
@@ -51,15 +52,22 @@ class _care_page_viewState extends State<care_page_view> {
     if (typeproduct == '4') params = '&product=4';
     if (typeproduct == '5') params = '&product=5';
 
+    final user = context.read<user_vm_provider>().currentUser;
+    final userId = user.idUser;
+    final fkCountry = user.fkCountry.toString();
+
+    String myClientsParam = '';
+    if (isMyClients) {
+      myClientsParam = '&fk_user=$userId';
+    }
+
     if (type == 'wait') {
-      Provider.of<communication_vm>(context, listen: false).getCommunicationallrepeatpage(
-          Provider.of<user_vm_provider>(context, listen: false).currentUser.fkCountry.toString());
+      Provider.of<communication_vm>(context, listen: false).getCommunicationallrepeatpage(fkCountry, myClientsParam);
     } else {
       if (type == 'done') {
-        String parmater = '$params&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}';
-        print(parmater);
-        Provider.of<communication_vm>(context, listen: false).getCommunicationallrepeatpage_done(
-            Provider.of<user_vm_provider>(context, listen: false).currentUser.fkCountry.toString(), parmater);
+        String parmater =
+            '$params$myClientsParam&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}';
+        Provider.of<communication_vm>(context, listen: false).getCommunicationallrepeatpage_done(fkCountry, parmater);
       }
     }
     setState(() {});
@@ -128,6 +136,14 @@ class _care_page_viewState extends State<care_page_view> {
                         //     .of<invoice_vm>(context, listen: true)
                         //     .listInvoicesAccept,
                         ),
+                    SwitchListTile(
+                      value: isMyClients,
+                      onChanged: (value) {
+                        setState(() => isMyClients = value);
+                        getData();
+                      },
+                      title: Text("عملائي"),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                       child: Row(
