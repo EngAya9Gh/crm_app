@@ -36,6 +36,7 @@ class communication_vm extends ChangeNotifier {
   void setvaluepriv(privilgelistparam) {
     print('in set privilge client vm');
     privilgelist = privilgelistparam;
+    //todo Add parameter null to get all
     param = get_privilgelist();
     notifyListeners();
   }
