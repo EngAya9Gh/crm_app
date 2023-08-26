@@ -1,24 +1,18 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
+import 'dart:ui' as myui;
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/participatModel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/customlogo.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/ui/widgets/photoviewcustom.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -29,25 +23,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
-
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:photo_view/photo_view.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as myui;
 
 import '../../../constants.dart';
 import '../../../labeltext.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
-import '../showpdf.dart';
 import 'add_invoice_product.dart';
-import 'dart:io';
-import 'package:flutter/widgets.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class addinvoice extends StatefulWidget {
   addinvoice(
@@ -1410,10 +1396,11 @@ class _addinvoiceState extends State<addinvoice> {
                                           "amount_paid": amount_paidController.text.toString(),
                                           'fk_regoin': widget.invoice!.fk_regoin.toString(),
                                           'fk_regoin_invoice': widget.invoice!.fk_regoin.toString(),
+                                          'region_invoice_name': widget.invoice!.name_regoin_invoice,
                                           'fkcountry': widget.invoice!.fk_country.toString(),
                                           "fk_idClient": widget.itemClient.idClients.toString(),
                                           "fk_idUser": user.currentUser.idUser,
-                                          "image_record": recordCommercialImageNotifier.value?.path.toString() ?? '',
+                                          "image_record": widget.invoice!.imageRecord.toString(),
                                           "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
                                               .currentUser
                                               .idUser
@@ -1425,7 +1412,7 @@ class _addinvoiceState extends State<addinvoice> {
                                           "total": totalController,
                                           "notes": noteController.text.toString(),
                                           "id_invoice": invoiceID,
-                                          // 'imagelogo':'',
+                                          'imagelogo': widget.invoice!.imagelogo.toString(),
                                           'numbarnch': numbranchController.text.toString(),
                                           'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
                                           'nummostda': nummostawdaController.text.toString(),
@@ -1503,7 +1490,8 @@ class _addinvoiceState extends State<addinvoice> {
                                         "total": totalController.toString(),
                                         "notes": noteController.text.toString(),
                                         'fk_regoin': widget.itemClient.fkRegoin.toString(),
-                                        'fk_regoin_invoice': widget.itemClient.fkRegoin.toString(),
+                                        'fk_regoin_invoice': user..currentUser.fkRegoin,
+                                        'region_invoice_name': user.currentUser.nameRegoin,
                                         'fkcountry': widget.itemClient.fkcountry.toString(),
                                         'numbarnch': numbranchController.text.toString(),
                                         'renew_pluse': renewAdditionalOfBranchesController.text.toString(),

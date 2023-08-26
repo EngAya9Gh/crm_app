@@ -1,40 +1,28 @@
 import 'dart:io';
+import 'dart:ui' as myui;
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/calendar/event.dart';
 import 'package:crm_smart/model/configmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/provider/config_vm.dart';
-import 'package:crm_smart/ui/screen/home/ticket/ticketadd.dart';
-import 'package:crm_smart/ui/screen/home/ticket/ticketview.dart';
-import 'package:crm_smart/ui/screen/product/productView.dart';
-import 'package:crm_smart/ui/screen/support/support_view.dart';
-import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/fancy_image_shimmer_viewer.dart';
-import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
-import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as myui;
 
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
@@ -951,6 +939,10 @@ class _support_addState extends State<support_add> {
                                                                         await Provider.of<invoice_vm>(context,
                                                                                 listen: false)
                                                                             .set_ready_install({
+                                                                          'date_temp': _invoice!.date_not_readyinstall
+                                                                              .toString(),
+                                                                          'date_ready_prev':
+                                                                              _invoice!.date_readyinstall.toString(),
                                                                           'date_readyinstall':
                                                                               DateTime.now().toString(),
                                                                           'user_ready_install':
@@ -1027,6 +1019,8 @@ class _support_addState extends State<support_add> {
                                                                           // _invoice.date_not_readyinstall-
                                                                           'date_temp': _invoice!.date_not_readyinstall
                                                                               .toString(),
+                                                                          'date_ready_prev':
+                                                                              _invoice!.date_readyinstall.toString(),
                                                                           'date_not_readyinstall':
                                                                               DateTime.now().toString(),
                                                                           'user_not_ready_install':
