@@ -20,6 +20,7 @@ class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listwelcomenumber = [];
 
   List<CommunicationModel> listCommunicationFilterSearch = [];
+  List<CommunicationModel> listCommunicationrepeatTemp = [];
 
   void onSearch(String query) {
     final list = List.of(listCommunicationInstall);
@@ -318,7 +319,7 @@ class communication_vm extends ChangeNotifier {
 
   Future<void> searchwaitcare(String productName) async {
     List<CommunicationModel> _listInvoicesAccept = [];
-    List<CommunicationModel> temp = List.from(listCommunicationrepeat);
+    List<CommunicationModel> temp = List.from(listCommunicationrepeatTemp);
     // code to convert the first character to uppercase
     String searchKey = productName; //
     if (productName.isNotEmpty) {
@@ -479,6 +480,7 @@ class communication_vm extends ChangeNotifier {
 
   Future<void> getCommunicationallrepeatpage(String country, String queryParams) async {
     listCommunicationrepeat = [];
+    listCommunicationrepeatTemp = [];
     isload = true;
     notifyListeners();
     List<dynamic> data = [];
@@ -494,6 +496,7 @@ class communication_vm extends ChangeNotifier {
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
+        listCommunicationrepeatTemp.add(CommunicationModel.fromJson(data[i]));
       }
     }
     isload = false;
@@ -502,6 +505,7 @@ class communication_vm extends ChangeNotifier {
 
   Future<void> getCommunicationallrepeatpage_done(String country, String param1) async {
     listCommunicationrepeat = [];
+    listCommunicationrepeatTemp = [];
     isload = true;
     notifyListeners();
     List<dynamic> data = [];
@@ -517,6 +521,7 @@ class communication_vm extends ChangeNotifier {
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
+        listCommunicationrepeatTemp.add(CommunicationModel.fromJson(data[i]));
       }
     }
     // return listCommunication;
@@ -526,6 +531,7 @@ class communication_vm extends ChangeNotifier {
 
   clear() {
     listCommunicationrepeat = [];
+    listCommunicationrepeatTemp = [];
     notifyListeners();
   }
 
@@ -541,6 +547,14 @@ class communication_vm extends ChangeNotifier {
         int index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
         if (index != -1) {
           listCommunicationrepeat.removeAt(index);
+        }
+        // listCommunicationrepeat[index] = data;
+      }
+
+      if (listCommunicationrepeatTemp.isNotEmpty) {
+        int index = listCommunicationrepeatTemp.indexWhere((element) => element.idCommunication == id_communication);
+        if (index != -1) {
+          listCommunicationrepeatTemp.removeAt(index);
         }
         // listCommunicationrepeat[index] = data;
       }
@@ -628,6 +642,12 @@ class communication_vm extends ChangeNotifier {
         if (listCommunicationrepeat.isNotEmpty) {
           index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
           if (index != -1) listCommunicationrepeat.removeAt(index);
+
+          // listCommunicationrepeat[index] = data;
+        }
+        if (listCommunicationrepeatTemp.isNotEmpty) {
+          index = listCommunicationrepeatTemp.indexWhere((element) => element.idCommunication == id_communication);
+          if (index != -1) listCommunicationrepeatTemp.removeAt(index);
 
           // listCommunicationrepeat[index] = data;
         }
