@@ -111,17 +111,17 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                             : Container(),
 
                         widget.element.typeCommuncation == 'دوري' &&
-                                widget.element.isRecommendation.toString() != 'true'
+                                widget.element.isRecommendation.toString() == 'true'
                             ? cardRow(
                                 title: ' نتيجة التواصل',
-                                value: 'لم يتم التوصية به',
+                                value: 'وصى بالنظام',
                               )
                             : Container(),
 
-                        widget.element.typeCommuncation == 'دوري' && widget.element.is_visit.toString() != 'true'
+                        widget.element.typeCommuncation == 'دوري' && widget.element.is_visit.toString() == 'true'
                             ? cardRow(
                                 title: ' نتيجة التواصل',
-                                value: 'لم تتم الزيارة',
+                                value: 'يحتاج زيارة ميدانية',
                               )
                             : Container(),
                         widget.element.typeCommuncation == 'تركيب'

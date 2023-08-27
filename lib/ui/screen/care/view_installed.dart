@@ -169,7 +169,7 @@ class _View_installedClientState extends State<View_installedClient> {
                             filterFn: (user, filter) => user!.getfilteruser(filter!),
                             compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
                             showSelectedItems: true,
-                            items: user.usersCareManagement,
+                            items: user.usersSupportManagement,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
                               context.read<user_vm_provider>().changevalueuser(data);
@@ -199,7 +199,11 @@ class _View_installedClientState extends State<View_installedClient> {
                 value: isMyClients,
                 onChanged: (value) {
                   setState(() => isMyClients = value);
-                  filtershow();
+                  String myClientsParam = '';
+                  if (isMyClients) {
+                    myClientsParam = '&fk_user=$userId';
+                  }
+                  filtershow(myClientsParam);
                 },
                 title: Text("عملائي"),
               ),
@@ -222,7 +226,12 @@ class _View_installedClientState extends State<View_installedClient> {
                       }
 
                       selectedProvider.selectValuebarsales(index);
-                      filtershow();
+                      String myClientsParam = '';
+                      if (isMyClients) {
+                        myClientsParam = '&fk_user=$userId';
+                      }
+                      filtershow(myClientsParam);
+                      filtershow(myClientsParam);
                     });
               }),
               SizedBox(
@@ -328,12 +337,7 @@ class _View_installedClientState extends State<View_installedClient> {
         ));
   }
 
-  void filtershow() {
-    String myClientsParam = '';
-    if (isMyClients) {
-      myClientsParam = '&fk_user=$userId';
-    }
-
+  void filtershow([String? myClientsParam]) {
     Provider.of<communication_vm>(context, listen: false)
         .getinstalltype_filter(typeclientvalue, regoin, type, employeeId, myClientsParam);
   }

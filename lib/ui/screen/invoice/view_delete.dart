@@ -105,7 +105,7 @@ class view_deleted extends StatelessWidget {
                     cardRow(title: 'فرع الفاتورة', value: invoice.name_regoin_invoice.toString()),
 
                     cardRow(title: 'اسم الموظف', value: invoice.nameUser.toString()),
-                    cardRow(title: 'فرع الموظف', value: invoice.name_regoin.toString()),
+                    cardRow(title: 'فرع الموظف', value: invoice.name_regoin_invoice.toString()),
                     //cardRow(title: 'حالة الفاتورة', value: invoice.amountPaid.toString()),
 
                     invoice.date_approve.toString() == null

@@ -79,6 +79,7 @@ class _care_page_viewState extends State<care_page_view> {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
+      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0,isInit: true);
       fkcountry = Provider.of<user_vm_provider>(context, listen: false).currentUser.fkCountry.toString();
       //   Provider.of<communication_vm>(context, listen: false)
       //  .getCommunicationall('');

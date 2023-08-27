@@ -161,7 +161,11 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                 value: isMyClients,
                 onChanged: (value) {
                   setState(() => isMyClients = value);
-                  filtershow();
+                  String myClientsParam = '';
+                  if (isMyClients) {
+                    myClientsParam = '&fk_user=$userId';
+                  }
+                  filtershow(myClientsParam);
                 },
                 title: Text("عملائي"),
               ),
@@ -192,59 +196,58 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                     return value.isloading == true
                         ? Center(child: CircularProgressIndicator())
                         : value.listCommunicationWelcome.length == 0
-                        ? Center(child: Text(messageNoData))
-                        : Column(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              itemCount: value.listCommunicationWelcome.length,
-                              itemBuilder: (context, index) {
-                                return SingleChildScrollView(
-                                    child: Container(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(2),
-                                          child: cardcommalltype(
-                                              itemcom: value.listCommunicationWelcome[index],
-                                              tabCareIndex: 0),
-                                          // child: Column(
-                                          //   children: [
-                                          //     ListTile(
-                                          //       onTap: () {
-                                          //         Navigator.push(
-                                          //             context,
-                                          //             CupertinoPageRoute(
-                                          //                 builder:
-                                          //                     (
-                                          //                     context) =>
-                                          //                     installAdd(
-                                          //                       com: value.listCommunicationWelcome[index],
-                                          //                     )));
-                                          //       },
-                                          //       title: Text(
-                                          //         value.listCommunicationWelcome[index].nameEnterprise
-                                          //             .toString(),
-                                          //         style: TextStyle(
-                                          //             fontFamily: kfontfamily2
-                                          //         ),),
-                                          //       // leading:
-                                          //       trailing: Text(
-                                          //        value.listCommunicationWelcome[index]
-                                          //             .date_approve
-                                          //             .toString(),
-                                          //         style: TextStyle(
-                                          //             fontFamily: kfontfamily2
-                                          //         ),),
-                                          //     ),
-                                          //     // const MySeparator(color: Colors.grey),
-                                          //     Divider(thickness: 2,),
-                                          //   ],
-                                          // ),
-                                        )));
-                              }),
-                        ),
-                      ],
-                    );
+                            ? Center(child: Text(messageNoData))
+                            : Column(
+                                children: [
+                                  Expanded(
+                                    child: ListView.builder(
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: value.listCommunicationWelcome.length,
+                                        itemBuilder: (context, index) {
+                                          return SingleChildScrollView(
+                                              child: Container(
+                                                  child: Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child: cardcommalltype(
+                                                itemcom: value.listCommunicationWelcome[index], tabCareIndex: 0),
+                                            // child: Column(
+                                            //   children: [
+                                            //     ListTile(
+                                            //       onTap: () {
+                                            //         Navigator.push(
+                                            //             context,
+                                            //             CupertinoPageRoute(
+                                            //                 builder:
+                                            //                     (
+                                            //                     context) =>
+                                            //                     installAdd(
+                                            //                       com: value.listCommunicationWelcome[index],
+                                            //                     )));
+                                            //       },
+                                            //       title: Text(
+                                            //         value.listCommunicationWelcome[index].nameEnterprise
+                                            //             .toString(),
+                                            //         style: TextStyle(
+                                            //             fontFamily: kfontfamily2
+                                            //         ),),
+                                            //       // leading:
+                                            //       trailing: Text(
+                                            //        value.listCommunicationWelcome[index]
+                                            //             .date_approve
+                                            //             .toString(),
+                                            //         style: TextStyle(
+                                            //             fontFamily: kfontfamily2
+                                            //         ),),
+                                            //     ),
+                                            //     // const MySeparator(color: Colors.grey),
+                                            //     Divider(thickness: 2,),
+                                            //   ],
+                                            // ),
+                                          )));
+                                        }),
+                                  ),
+                                ],
+                              );
                   }),
                 ),
               ),
@@ -323,14 +326,9 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
     );
   }
 
-  void filtershow() {
+  void filtershow([String? myClientsParam]) {
     print(regoin);
     print(typeclientvalue);
-
-    String myClientsParam = '';
-    if (isMyClients) {
-      myClientsParam = '&fk_user=$userId';
-    }
 
     Provider.of<communication_vm>(context, listen: false).getcommtype_filter(typeclientvalue, regoin, myClientsParam);
 

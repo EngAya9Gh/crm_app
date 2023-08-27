@@ -160,7 +160,7 @@ class user_vm_provider extends ChangeNotifier {
     if (productName.isNotEmpty) {
       if (userall.isNotEmpty) {
         userall.forEach((element) {
-          if (element.nameUser!.contains(searchKey, 0)
+          if (element.nameUser!.toLowerCase().contains(searchKey.toLowerCase(), 0)
               // || element.mobile!.contains(searchKey,0)
               ) listuserfilter.add(element);
         });
@@ -268,7 +268,8 @@ class user_vm_provider extends ChangeNotifier {
 
     userall = await UserService().usersServices();
 
-    final List<UserModel> activeUsers = List<UserModel>.of(userall).where((element) => element.isActive == '1').toList();
+    final List<UserModel> activeUsers =
+        List<UserModel>.of(userall).where((element) => element.isActive == '1').toList();
 
     usersHigherManagement = List.of(activeUsers)
         .where((element) => element.typeAdministration == UserType.HigherManagement.type.toString())

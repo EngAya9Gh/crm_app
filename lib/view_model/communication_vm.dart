@@ -178,12 +178,12 @@ class communication_vm extends ChangeNotifier {
 
   List<CommunicationModel> listCommunicationWelcome_temp = [];
 
-  void getcommtype_filter(String? filter, String? regoin, String myClientsParam) async {
+  void getcommtype_filter(String? filter, String? regoin, [String? myClientsParam]) async {
     listCommunicationWelcome = [];
     isloading = true;
     notifyListeners();
-    if (listCommunicationWelcome_temp.isEmpty || myClientsParam.isNotEmpty)
-      await getCommunicationWelcome(myClientsParam);
+    if (listCommunicationWelcome_temp.isEmpty || myClientsParam != null)
+      await getCommunicationWelcome(myClientsParam ?? '');
     listCommunicationWelcome = List.from(listCommunicationWelcome_temp);
 
     List<CommunicationModel> _listInvoicesAccept = [];
@@ -243,16 +243,16 @@ class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunicationInstall_temp = [];
   List<CommunicationModel> listCommunicationInstall2_temp = [];
 
-  void getinstalltype_filter(
-      String? filter, String? regoin, int typefilter, String? employeeId, String myClientsParam) async {
+  void getinstalltype_filter(String? filter, String? regoin, int typefilter, String? employeeId,
+      [String? myClientsParam]) async {
     listCommunicationInstall = [];
     isloading = true;
     notifyListeners();
 
-    if ((listCommunicationInstall_temp.isEmpty && typefilter == 1) || (myClientsParam.isNotEmpty && typefilter == 1))
-      await getCommunicationInstall(typefilter, myClientsParam);
-    if ((listCommunicationInstall2_temp.isEmpty && typefilter == 2) || (myClientsParam.isNotEmpty && typefilter == 2))
-      await getCommunicationInstall(typefilter, myClientsParam);
+    if ((listCommunicationInstall_temp.isEmpty && typefilter == 1) || (myClientsParam != null && typefilter == 1))
+      await getCommunicationInstall(typefilter, myClientsParam ?? '');
+    if ((listCommunicationInstall2_temp.isEmpty && typefilter == 2) || (myClientsParam != null && typefilter == 2))
+      await getCommunicationInstall(typefilter, myClientsParam ?? '');
     if (typefilter == 1) listCommunicationInstall = List.from(listCommunicationInstall_temp);
     if (typefilter == 2) listCommunicationInstall = List.from(listCommunicationInstall2_temp);
 
@@ -309,7 +309,8 @@ class communication_vm extends ChangeNotifier {
 
     listCommunicationInstall = List.from(_listInvoicesAccept);
     if (employeeId != null) {
-      listCommunicationInstall = listCommunicationInstall.where((element) => element.fkUser == employeeId).toList();
+      listCommunicationInstall =
+          listCommunicationInstall.where((element) => element.userinstall == employeeId).toList();
     }
     isloading = false;
     notifyListeners();
