@@ -1395,7 +1395,7 @@ class _addinvoiceState extends State<addinvoice> {
                                           /////////////////////////////////////////////////////////////////////
                                           "amount_paid": amount_paidController.text.toString(),
                                           'fk_regoin': widget.invoice!.fk_regoin.toString(),
-                                          'fk_regoin_invoice': widget.invoice!.fk_regoin.toString(),
+                                          'fk_regoin_invoice': widget.invoice?.fk_regoin_invoice,
                                           'region_invoice_name': widget.invoice!.name_regoin_invoice,
                                           'fkcountry': widget.invoice!.fk_country.toString(),
                                           "fk_idClient": widget.itemClient.idClients.toString(),
