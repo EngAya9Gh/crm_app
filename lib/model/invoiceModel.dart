@@ -101,6 +101,7 @@ class InvoiceModel extends CacheRepository {
   String? fileAttach;
   AttachFileStatus? attachFileStatus;
   AttachFileStatus? deleteAttachFileStatus;
+  String? renew_agent;
 
   //endregion
 
@@ -195,6 +196,7 @@ class InvoiceModel extends CacheRepository {
     this.agent_distibutor,
     this.participal,
     this.renew2year,
+    this.renew_agent,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -297,6 +299,7 @@ class InvoiceModel extends CacheRepository {
     type_seller = jsondata['type_seller'];
     fk_regoin_invoice = jsondata['fk_regoin_invoice'];
     name_regoin_invoice = jsondata['name_regoin_invoice'];
+    renew_agent = jsondata['renew_agent'];
 
     participal = jsondata['participal_info'] == null ? null : getParticipateModel(jsondata['participal_info']);
     agent_distibutor =
@@ -418,6 +421,7 @@ class InvoiceModel extends CacheRepository {
     _data['fk_regoin_invoice'] = fk_regoin_invoice;
     _data['name_regoin_invoice'] = name_regoin_invoice;
     _data['rate_participate'] = rate_participate;
+    _data['renew_agent'] = renew_agent;
 
     _data['products'] = products!.map((e) => e.toJson()).toList();
     return _data;

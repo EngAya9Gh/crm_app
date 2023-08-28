@@ -12,6 +12,8 @@ import 'package:tuple/tuple.dart';
 
 import '../../../constants.dart';
 import '../../../model/countrymodel.dart';
+import '../../../model/maincitymodel.dart';
+import '../../../view_model/user_vm_provider.dart';
 import '../../../view_model/vm.dart';
 import '../../widgets/container_boxShadows.dart';
 import '../../widgets/custom_widget/custombutton.dart';
@@ -38,6 +40,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
   late File? _myfilelogo = null;
 
   AgentDistributorModel? get agentDistributorModel => widget.agentDistributorModel;
+  late final String fkCountry;
 
   @override
   void initState() {
@@ -49,10 +52,15 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
       descriptionController.text = agentDistributorModel!.description;
     }
 
+    fkCountry = context.read<user_vm_provider>().currentUser.fkCountry!;
+
     scheduleMicrotask(() {
       viewmodel.resetAgentDistributorActionParams();
 
-      viewmodel.getCountries(countryId: agentDistributorModel?.fkCountry);
+      viewmodel.getMainCity(
+        fkCountry: fkCountry,
+        id_maincity: agentDistributorModel?.fkCountry,
+      );
 
       if (agentDistributorModel != null) {
         viewmodel.onSelectADType(
@@ -112,8 +120,8 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                   SizedBox(height: 15),
                                   RowEdit(name: 'البلد', des: '*'),
                                   Selector<AgentDistributorViewModel,
-                                      Tuple2<PageState<List<CountryModel>>, CountryModel?>>(
-                                    selector: (_, vm) => Tuple2(vm.countriesState, vm.selectedCountry),
+                                      Tuple2<PageState<List<MainCityModel>>, MainCityModel?>>(
+                                    selector: (_, vm) => Tuple2(vm.citiesState, vm.selectedCountry),
                                     builder: (_, values, child) {
                                       final countries = values.item1;
                                       final selectedCountry = values.item2;
@@ -126,7 +134,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                       if (countries.isLoading) {
                                         return Center(
                                           child: IconButton(
-                                            onPressed: viewmodel.getCountries,
+                                            onPressed: () => viewmodel.getMainCity(fkCountry: fkCountry),
                                             icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
                                           ),
                                         );
@@ -136,7 +144,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                           textDirection: TextDirection.rtl,
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(10),
-                                            child: DropdownButtonFormField<CountryModel?>(
+                                            child: DropdownButtonFormField<MainCityModel?>(
                                               isExpanded: true,
                                               validator: (value) {
                                                 if (value == null) {
@@ -155,9 +163,9 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                                 focusedErrorBorder: InputBorder.none,
                                               ),
                                               hint: Text("حدد البلد"),
-                                              items: (countries.data ?? []).map((CountryModel? country) {
-                                                return DropdownMenuItem<CountryModel?>(
-                                                  child: Text(country?.nameCountry ?? '',
+                                              items: (countries.data ?? []).map((MainCityModel? country) {
+                                                return DropdownMenuItem<MainCityModel?>(
+                                                  child: Text(country?.namemaincity ?? '',
                                                       textDirection: TextDirection.rtl),
                                                   value: country,
                                                 );

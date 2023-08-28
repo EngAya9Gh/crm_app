@@ -33,8 +33,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   List<DataRow> rowsdata=[];
 
   bool loading = true;
-  String type = 'dateyear';
-  String typeproduct = 'الكل';
+  String type = 'datemonth';
+  String typeproduct = 'برامج';
   double totalval=0;
   DateTime _selectedDate = DateTime.now();
   DateTime _selectedDatemonth = DateTime.now();
@@ -47,9 +47,9 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<selected_button_provider>(context, listen: false)
-          .selectValuebarsalestype(0);
+          .selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false)
-          .selectValuebarsales(0);
+          .selectValuebarsales(1);
     });
     privilegeVm = Provider.of<privilge_vm>(context, listen: false);
     super.initState();
