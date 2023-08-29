@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
+import '../api/api.dart';
+import '../constants.dart';
 import 'country_vm.dart';
 
 const CACHE_ClientByUser_KEY = "CACHE_Client_KEY";
@@ -467,10 +469,8 @@ class client_vm extends ChangeNotifier {
         listClient.add(inv);
         currentClientModel = currentClientModel.changeToLoaded(inv);
       } else {
-        currentClientModel =
-            currentClientModel.changeToLoaded(listClient.firstWhereOrNull((element) => element.idClients == idClient));
+        currentClientModel = currentClientModel.changeToLoaded(inv);
       }
-
       isloading = false;
       notifyListeners();
       return inv;
@@ -753,5 +753,34 @@ class client_vm extends ChangeNotifier {
     }).toList();
 
     notifyListeners();
+  }
+
+  Status tagStatus = Status.init;
+
+  Future<void> setTagClient() async {
+    tagStatus = Status.loading;
+    notifyListeners();
+
+    final client = currentClientModel.data!;
+    client.tag = !(client.tag ?? false);
+
+    try {
+      var data = await Api().post(
+        url: url + "client/set_tag_client.php?id_clients=${client.idClients}",
+        body: {"tag": client.tag.toString()},
+      );
+      tagStatus = Status.loaded;
+      listClient = listClient.map((e) {
+        if (e.idClients == client.idClients) {
+          return client;
+        }
+        return e;
+      }).toList();
+      currentClientModel = currentClientModel.changeToLoaded(client);
+      notifyListeners();
+    } catch (e) {
+      tagStatus = Status.failed;
+      notifyListeners();
+    }
   }
 }

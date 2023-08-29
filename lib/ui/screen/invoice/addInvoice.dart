@@ -704,6 +704,15 @@ class _addinvoiceState extends State<addinvoice> {
                                   hintText: '',
                                   obscureText: false,
                                   controller: numTaxController,
+                                  vaild: (value) {
+                                    if (value?.trim().isNotEmpty ?? false) {
+                                      if (value!.length < 15) {
+                                        return "يجب إدخال 15 محرف.";
+                                      }
+                                      return null;
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ],
                             ),
@@ -1285,11 +1294,12 @@ class _addinvoiceState extends State<addinvoice> {
                                 builder: (context, selectedSellerType, _) {
                                   return Column(
                                     children: [
-                                      RowEdit(name:  selectedSellerType == SellerType.agent ?
-                                          "نسبة عمولة الوكيل"
-                                          :selectedSellerType == SellerType.collaborator
-                                          ? "نسبة عمولة المتعاون"
-                                          : "نسبة عمولة الموزع"),
+                                      RowEdit(
+                                          name: selectedSellerType == SellerType.agent
+                                              ? "نسبة عمولة الوكيل"
+                                              : selectedSellerType == SellerType.collaborator
+                                                  ? "نسبة عمولة المتعاون"
+                                                  : "نسبة عمولة الموزع"),
                                       SizedBox(height: 5),
                                       TextFormField(
                                         controller: sellerCommissionRate,
@@ -1338,57 +1348,56 @@ class _addinvoiceState extends State<addinvoice> {
                                         ),
                                       ),
                                       SizedBox(height: 10),
-                                      if (selectedSellerType == SellerType.agent)
-                                        ...{
-                                          RowEdit(name: "نسبة الوكيل من التجديد"),
-                                          SizedBox(height: 5),
-                                          TextFormField(
-                                            controller: renewAgentController,
-                                            obscureText: false,
-                                            cursorColor: Colors.black,
-                                            readOnly: false,
-                                            validator: (text) {
-                                              if (text?.trim().isEmpty ?? true) {
-                                                if (selectedSellerType != SellerType.agent) {
-                                                  return null;
-                                                }
-                                                return "هذا الحقل مطلوب.";
+                                      if (selectedSellerType == SellerType.agent) ...{
+                                        RowEdit(name: "نسبة الوكيل من التجديد"),
+                                        SizedBox(height: 5),
+                                        TextFormField(
+                                          controller: renewAgentController,
+                                          obscureText: false,
+                                          cursorColor: Colors.black,
+                                          readOnly: false,
+                                          validator: (text) {
+                                            if (text?.trim().isEmpty ?? true) {
+                                              if (selectedSellerType != SellerType.agent) {
+                                                return null;
                                               }
+                                              return "هذا الحقل مطلوب.";
+                                            }
 
-                                              if (num.tryParse(text ?? "0") == null) return "أدخل رقم صحيح.";
+                                            if (num.tryParse(text ?? "0") == null) return "أدخل رقم صحيح.";
 
-                                              if (num.parse(text!) <= 0) {
-                                                return "يجب إدخال قيمة أكبر من 0.";
-                                              }
-                                              if (num.parse(text) > 100) {
-                                                return "النسبة يجب أن تكون أصغر أو تساوي 100";
-                                              }
-                                              return null;
-                                            },
-                                            keyboardType: TextInputType.number,
-                                            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                            decoration: InputDecoration(
-                                              contentPadding: EdgeInsets.all(10),
-                                              hintStyle: const TextStyle(
-                                                  color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                              hintText: '',
-                                              filled: true,
-                                              fillColor: Colors.grey.shade200,
-                                              enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  borderSide: const BorderSide(color: Colors.white)),
-                                              focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  borderSide: const BorderSide(color: Colors.white)),
-                                              errorBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  borderSide: const BorderSide(color: Colors.white)),
-                                              focusedErrorBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  borderSide: const BorderSide(color: Colors.white)),
-                                            ),
+                                            if (num.parse(text!) <= 0) {
+                                              return "يجب إدخال قيمة أكبر من 0.";
+                                            }
+                                            if (num.parse(text) > 100) {
+                                              return "النسبة يجب أن تكون أصغر أو تساوي 100";
+                                            }
+                                            return null;
+                                          },
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                          decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.all(10),
+                                            hintStyle: const TextStyle(
+                                                color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                            hintText: '',
+                                            filled: true,
+                                            fillColor: Colors.grey.shade200,
+                                            enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: const BorderSide(color: Colors.white)),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: const BorderSide(color: Colors.white)),
+                                            errorBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: const BorderSide(color: Colors.white)),
+                                            focusedErrorBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: const BorderSide(color: Colors.white)),
                                           ),
-                                        },
+                                        ),
+                                      },
                                     ],
                                   );
                                 },

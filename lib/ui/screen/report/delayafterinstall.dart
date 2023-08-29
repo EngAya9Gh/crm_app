@@ -21,6 +21,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import '../../widgets/custom_widget/row_edit.dart';
 
 class delayafterinstall extends StatefulWidget {
   const delayafterinstall({Key? key}) : super(key: key);
@@ -309,7 +310,11 @@ print(type);
                       child: Column(
                         // scrollDirection: Axis.horizontal,
                           children:[
-
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: RowEdit(name: "عدد العملاء",des: listInvoicesAccept.length.toString(),
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                            ),
                             Container(
                               height: MediaQuery.of(context).size.height*0.65,
                               child: Padding(
