@@ -83,6 +83,10 @@ String showtext(String typeNotify){
       return "إعادة جدولة العميل  ";
       case "TransferTicket":
       return "تحويل تذكرة العميل";
+      case "AddPayment":
+      return "اضافة دفعة للفاتورة";
+      case "NotReady":
+      return "العميل غير جاهز";
   }
   return "";
 }
@@ -118,6 +122,27 @@ void route_notifyto(typeNotify,context,
               )
           ));
       break;
+      case "AddPayment" :
+      Navigator.push(context,
+          CupertinoPageRoute(
+              builder: (context) => ProfileClient(
+                tabIndex: 1,
+                idClient: data==null?datanotify:data['idclient'],
+               // idclient:data==null?datanotify: data['idclient'],
+              )
+          ));
+      break;
+      case "NotReady" :
+      Navigator.push(context,
+          CupertinoPageRoute(
+              builder: (context) => ProfileClient(
+                tabIndex: 3,
+                idClient: data==null?datanotify:data['idclient'],
+               // idclient:data==null?datanotify: data['idclient'],
+              )
+          ));
+      break;
+
     case "ApproveDone":
       Navigator.push(context,
           CupertinoPageRoute(
@@ -154,6 +179,7 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           CupertinoPageRoute(
               builder: (context) => ProfileClient(
+                tabIndex:2,
                 //idinvoice: data==null?datanotify:  data['id_invoice'],
                 idClient: data==null?datanotify: data['idclient'],
               )

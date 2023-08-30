@@ -77,7 +77,8 @@ class add_payement extends StatelessWidget {
                   onTap: () async {
                     if (_globalKey.currentState!.validate()) {
                       Provider.of<invoice_vm>(context, listen: false)
-                          .update_invoiceclient_vm({
+                          .add_payment({
+                        "fk_client":invoiceModel.fkIdClient.toString(),
                         "name_enterprise": invoiceModel.name_enterprise,
                         "name_client": invoiceModel.nameClient.toString(),
 
@@ -105,7 +106,7 @@ class add_payement extends StatelessWidget {
 
                         'date_lastuserupdate': DateTime.now().toString(),
                         //"date_changetype":,
-                      }, invoiceModel.idInvoice, null, null).then(
+                      }, invoiceModel.idInvoice).then(
                               (value) => value != false ? clear(context ) : error());
                     }
                     ;

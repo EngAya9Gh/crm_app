@@ -1170,6 +1170,34 @@ class invoice_vm extends ChangeNotifier {
     return true;
   }
 
+  Future<bool> add_payment(
+      Map<String, dynamic?> body, String? idInvoice) async {
+    isloadingdone = true;
+    notifyListeners();
+    InvoiceModel data = await Invoice_Service().addPayment(body, idInvoice.toString());
+    final index = listinvoiceClient.indexWhere((element) => element.idInvoice == idInvoice);
+    // body.addAll({
+    //   "id_invoice":idInvoice,
+    //   "date_create":listinvoiceClient[index].dateCreate.toString(),
+    //
+    //   "products":listproductinvoic.map((e)=>e.toJson()).toList()
+    // });
+    if (index != -1) listinvoiceClient[index] = data; //InvoiceModel.fromJson(body);
+    final index1 = listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
+    if (index1 != -1) listinvoices[index1] = data;
+
+    int index2 = listInvoicesAccept.indexWhere((element) => element.idInvoice == idInvoice);
+    if (index2 != -1) listInvoicesAccept[index2] = data;
+
+    //InvoiceModel.fromJson(body);
+    //listProduct.insert(0, ProductModel.fromJson(body));
+    isloadingdone = false;
+    currentInvoice = data;
+    notifyListeners();
+
+    return true;
+  }
+
   Future<String> delete_invoice(Map<String, String> body, String? id_invoice) async {
     int index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
     listinvoiceClient.removeAt(index);
