@@ -17,6 +17,7 @@ import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +28,8 @@ import 'package:get/get.dart';
 
 import '../../../function_global.dart';
 import '../../../labeltext.dart';
+import '../../../model/maincitymodel.dart';
+import '../../../view_model/maincity_vm.dart';
 
 class addUser extends StatefulWidget {
   const addUser({Key? key}) : super(key: key);
@@ -78,6 +81,9 @@ class _addUserState extends State<addUser> {
     // Provider.of<regoin_vm>(context,listen: false).getregoin();
     // Provider.of<level_vm>(context,listen: false).getlevel();
     //
+    context.read<maincity_vm>()
+      ..changeitemlist([], isInit: true)
+      ..getmaincity();
 
     super.initState();
   }
@@ -122,7 +128,7 @@ class _addUserState extends State<addUser> {
                       hintText: 'Name',
                       obscureText: false,
                       controller: nameController,
-                      vaild: (value){
+                      vaild: (value) {
                         if (value?.trim() == null || value?.trim() == '') {
                           return "هذا الحقل مطلوب.";
                         }
@@ -175,8 +181,8 @@ class _addUserState extends State<addUser> {
                           namemanage = value.toString();
                           mangelist.changevalue(value.toString());
                         },
-                        validator: (value){
-                          if(value == null){
+                        validator: (value) {
+                          if (value == null) {
                             return "هذا الحقل مطلوب.";
                           }
 
@@ -229,8 +235,8 @@ class _addUserState extends State<addUser> {
                             cart.changeVal(value.toString());
                             // });
                           },
-                          validator: (value){
-                            if(value == null){
+                          validator: (value) {
+                            if (value == null) {
                               return "هذا الحقل مطلوب.";
                             }
 
@@ -270,8 +276,8 @@ class _addUserState extends State<addUser> {
                             cart.changeValuser(value.toString());
                             // });
                           },
-                          validator: (value){
-                            if(value == null){
+                          validator: (value) {
+                            if (value == null) {
                               return "هذا الحقل مطلوب.";
                             }
 
@@ -284,12 +290,39 @@ class _addUserState extends State<addUser> {
                     SizedBox(
                       height: 15,
                     ),
+                    RowEdit(name: 'المناطق', des: ''),
+                    Consumer<maincity_vm>(
+                      builder: (context, cart, child) {
+                        return DropdownSearch<MainCityModel>.multiSelection(
+                          mode: Mode.DIALOG,
+                          filterFn: (user, filter) => user!.getfilteruser(filter!),
+                          compareFn: (item, selectedItem) => item?.id_maincity == selectedItem?.id_maincity,
+                          items: cart.listmaincityfilter,
+                          showSelectedItems: true,
+                          selectedItems: cart.selecteditemmaincity,
+                          itemAsString: (u) => u!.userAsString(),
+                          onChanged: (data) {
+                            cart.changeitemlist(data);
+                          },
+                          showSearchBox: true,
+                          dropdownSearchDecoration: InputDecoration(
+                            isCollapsed: true,
+                            hintText: 'المنطقة',
+                            alignLabelWithHint: true,
+                            fillColor: Colors.grey.withOpacity(0.2),
+                            contentPadding: EdgeInsets.all(0),
+                            border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                          ),
+                        );
+                      },
+                    ),
+                    SizedBox(height: 20),
                     RowEdit(name: label_mobile, des: '*'),
                     EditTextFormField(
                       hintText: '+966000000000',
                       obscureText: false,
                       controller: mobileController,
-                      vaild: (value){
+                      vaild: (value) {
                         if (value?.trim() == null || value?.trim() == '') {
                           return "هذا الحقل مطلوب.";
                         }
@@ -308,12 +341,15 @@ class _addUserState extends State<addUser> {
                       child: custom_button_new(
                         // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),
                         onpress: () {
-
                           _formKey.currentState!.save();
                           final validate = _formKey.currentState!.validate();
-                          if(!validate){
+                          if (!validate) {
                             return;
                           }
+
+                          final selectedRegion = context.read<maincity_vm>().selecteditemmaincity;
+                          final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
+                          bool hasChanges = selectedMainCityIds.isNotEmpty;
 
                           String? regoin = Provider.of<regoin_vm>(context, listen: false).selectedValueuser;
                           String? regoinname = regoin == null
@@ -353,10 +389,11 @@ class _addUserState extends State<addUser> {
                               'fk_regoin': regoin != null ? regoin : "null",
                             };
                             Provider.of<user_vm_provider>(context, listen: false)
-                                .adduser_vm(body)
+                                .adduser_vm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "")
                                 .then((value) => value != "repeat" ? clear() : error());
                           } else {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('تأكد من الخيارات من فضلك')));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(SnackBar(content: Text('تأكد من الخيارات من فضلك')));
                           }
                         },
                         text:
@@ -374,6 +411,17 @@ class _addUserState extends State<addUser> {
         ),
       ),
     );
+  }
+
+  String _getMainCityParams(List<String> regionFks) {
+    final StringBuffer stringBuffer = StringBuffer();
+    regionFks.forEach((element) {
+      stringBuffer.write("maincity_fks[]=$element");
+      if (element != regionFks.last) {
+        stringBuffer.write("&");
+      }
+    });
+    return stringBuffer.toString();
   }
 
   void error() {

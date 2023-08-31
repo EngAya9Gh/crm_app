@@ -26,6 +26,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
   bool repeat = false;
   bool isRecommendation = false;
   bool isVisit = false;
+  bool isSuspend = false;
   late ConfigModel peroid;
 
   @override
@@ -36,6 +37,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
     repeat = widget.communicationModel.clientRepeat.toString() != 'false';
     isRecommendation = widget.communicationModel.isRecommendation.toString() == 'true';
     isVisit = widget.communicationModel.is_visit.toString() == 'true';
+    isSuspend = widget.communicationModel.is_suspend.toString() == 'true';
     super.initState();
   }
 
@@ -107,6 +109,17 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                       onChanged: (bool? value) {
                         setState(() {
                           isVisit = value!;
+                        });
+                      },
+                    )
+                  : Container(),
+              widget.communicationModel.typeCommuncation == 'دوري'
+                  ? CheckboxListTile(
+                      title: new Text('معلق'),
+                      value: isSuspend, // as bool,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isSuspend = value!;
                         });
                       },
                     )

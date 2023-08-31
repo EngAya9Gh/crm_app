@@ -34,6 +34,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
   late ConfigModel peroid;
   bool isRecommendation = false;
   bool isVisit = false;
+  bool isSuspend = false;
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +125,12 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 value: 'يحتاج زيارة ميدانية',
                               )
                             : Container(),
+                        widget.element.typeCommuncation == 'دوري' && widget.element.is_suspend.toString() == 'true'
+                            ? cardRow(
+                          title: ' نتيجة التواصل',
+                          value: 'معلق',
+                        )
+                            : Container(),
                         widget.element.typeCommuncation == 'تركيب'
                             ? cardRow(
                                 title: ' نوع التركيب',
@@ -154,8 +161,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                               )
                             : Container(),
 
-                        if (context.read<privilge_vm>().checkprivlge('125') == true &&
-                            widget.element.typeCommuncation != 'ترحيب')
+                        // if (context.read<privilge_vm>().checkprivlge('125') == true &&
+                        //     widget.element.typeCommuncation != 'ترحيب')
                         ElevatedButton(
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                             onPressed: () async {
@@ -248,6 +255,19 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                   });
                                 },
                               )
+                            : Container(),
+                        widget.element.typeCommuncation == 'دوري'
+                            ? CheckboxListTile(
+                          title: new Text('معلق'),
+                          value: isSuspend, // as bool,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              print(value);
+                              isSuspend = value!;
+                              //values[key] = value;
+                            });
+                          },
+                        )
                             : Container(),
                         widget.element.typeCommuncation == 'تركيب' || widget.element.typeCommuncation == 'دوري'
                             ? Row(
@@ -342,6 +362,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                     'date_next': datanext.toString(),
                                     'isRecommendation': isRecommendation.toString(),
                                     'is_visit': isVisit.toString(),
+                                    'is_suspend': isSuspend.toString(),
                                   }, widget.element.idCommunication);
                                   // clear(val);
                                 }

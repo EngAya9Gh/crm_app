@@ -1,3 +1,4 @@
+import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
 
 import '../constants.dart';
@@ -27,6 +28,9 @@ class UserModel {
   String? img_image = '';
   String? img_thumbnail = '';
   String? path = '';
+  List<UserRegion>? maincitylist_user;
+
+  // List<> maincitylist_user;
 
   // List<PrivilgeModel>? privilgelist = [];
 
@@ -55,6 +59,7 @@ class UserModel {
     this.img_image,
     this.img_thumbnail,
     this.path,
+    this.maincitylist_user,
     // this.privilgelist,
   });
 
@@ -118,6 +123,7 @@ class UserModel {
       fkuserupdate: jsonData['fkuserupdate'],
       updated_at: jsonData['updated_at'],
       nameuserupdate: jsonData['nameuserupdate'],
+      maincitylist_user: List.of(jsonData['maincitylist_user'] ?? []).map((e) => UserRegion.fromMap(e)).toList(),
       // privilgelist: getproud(jsonData['privilgelist'])
     );
   }
@@ -173,5 +179,49 @@ class UserModel {
   ///this method will prevent the override of toString
   bool getfilteruser(String filter) {
     return this.nameUser?.toLowerCase().toString().contains(filter.toLowerCase()) ?? false;
+  }
+}
+
+class UserRegion {
+  final String? iduser_maincity;
+  final String? fk_maincity;
+  final String? fk_user;
+  final String? namemaincity;
+  final String? fk_country;
+
+  UserRegion({
+    required this.iduser_maincity,
+    required this.fk_maincity,
+    required this.fk_user,
+    required this.namemaincity,
+    required this.fk_country,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'iduser_maincity': this.iduser_maincity,
+      'fk_maincity': this.fk_maincity,
+      'fk_user': this.fk_user,
+      'namemaincity': this.namemaincity,
+      'fk_country': this.fk_country,
+    };
+  }
+
+  factory UserRegion.fromMap(Map<String, dynamic> map) {
+    return UserRegion(
+      iduser_maincity: map['iduser_maincity'] as String?,
+      fk_maincity: map['fk_maincity'] as String?,
+      fk_user: map['fk_user'] as String?,
+      namemaincity: map['namemaincity'] as String?,
+      fk_country: map['fk_country'] as String?,
+    );
+  }
+
+  MainCityModel get asMainCity {
+    return MainCityModel(
+      id_maincity: fk_maincity!,
+      namemaincity: namemaincity!,
+      fk_country: fk_country!,
+    );
   }
 }

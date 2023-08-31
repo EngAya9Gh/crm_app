@@ -24,6 +24,7 @@ class CommunicationModel {
      this.name_regoin,
      this.fk_regoin,
      this.nameClient,
+     this.is_suspend,
   });
   late final String idCommunication;
   late final String fkClient;
@@ -51,6 +52,7 @@ class CommunicationModel {
   late  String? hoursdelaylabel;
   late  String? isRecommendation;
   late  String? is_visit;
+  String? is_suspend;
   late  String? userinstall;
 
   CommunicationModel.fromJson(Map<String, dynamic> json){
@@ -80,6 +82,7 @@ class CommunicationModel {
     date_last_com_install = json['date_last_com_install'];
     isRecommendation = json['isRecommendation'];
     is_visit = json['is_visit'];
+    is_visit = json['is_suspend'];
     userinstall = json['userinstall'];
   }
 
@@ -110,6 +113,7 @@ class CommunicationModel {
     _data['type_install'] = type_install;
     _data['date_last_com_install'] = date_last_com_install;
     _data['userinstall'] = userinstall;
+    _data['is_suspend'] = userinstall;
     return _data;
   }
 

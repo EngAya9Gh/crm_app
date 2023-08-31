@@ -2,6 +2,7 @@
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
+import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
@@ -146,7 +147,7 @@ class _support_install_reportState extends State<support_install_report> {
                   color: Colors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.normal,
-                  textstring: tempdata[i].y.toInt().toString(),
+                  textstring: formatNumber(tempdata[i].y),
                   underline: TextDecoration.none,
                 )),
                 DataCell( TextUtilis(
@@ -491,9 +492,7 @@ class _support_install_reportState extends State<support_install_report> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text('الإجمالي '),
-                                  Text(
-                                      totalval.toInt().toString()
-                                  ),
+                                  Text(formatNumber(totalval)),
                                 ],
                               ),
                               Container(

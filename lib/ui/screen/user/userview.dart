@@ -211,7 +211,7 @@ class _UserScreenState extends State<UserScreen> {
                                             :
                                         //controllerUser.userall![widget.index]
                                         useredit.nameRegoin.toString(),
-                                        name: 'المنطقة',
+                                        name: 'الفرع',
                                       ),
                                     )),
 

@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import '../../../helper/number_formatter.dart';
 import 'is_marketing_chekbox.dart';
 
 class BarChartregoinsales extends StatefulWidget {
@@ -154,7 +155,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                 color: Colors.black,
                 fontSize: 25,
                 fontWeight: FontWeight.normal,
-                textstring: tempdata[i].y.toStringAsFixed(2),
+                textstring: formatNumber(tempdata[i].y),
                 underline: TextDecoration.none,
               )),
               DataCell( TextUtilis(
@@ -553,8 +554,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text('إجمالي المبيعات'),
-                                  Text(
-                                      totalval.toStringAsFixed(2)),
+                                  Text(formatNumber(totalval)),
                                 ],
                               ),
                               Container(

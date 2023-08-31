@@ -595,6 +595,9 @@ class client_vm extends ChangeNotifier {
       index = listClientAccept.indexWhere((element) => element.idClients == idClient);
       if (index != -1) listClientAccept[index] = data;
 
+      if(currentClientModel.isSuccess){
+        currentClientModel = currentClientModel.changeToLoaded(data);
+      }
       isloading = false;
       notifyListeners();
       onSuccess?.call(data);

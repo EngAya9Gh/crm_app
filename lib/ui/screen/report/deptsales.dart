@@ -2,6 +2,7 @@
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
+import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -176,7 +177,7 @@ class _deptsalesState extends State<deptsales> {
                   color: Colors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.normal,
-                  textstring: tempdata[i].y.toStringAsFixed(2),
+                  textstring: formatNumber(tempdata[i].y),
                   underline: TextDecoration.none,
                 )),
                 DataCell( TextUtilis(
@@ -358,8 +359,7 @@ class _deptsalesState extends State<deptsales> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text('إجمالي الديون'),
-                              Text(
-                                  totalval.toStringAsFixed(2)),
+                              Text(formatNumber(totalval)),
                             ],
                           ),
                           // Container(

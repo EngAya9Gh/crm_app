@@ -1,5 +1,6 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
+import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
@@ -160,7 +161,7 @@ class _salesproductState extends State<salesproduct> {
               color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.normal,
-              textstring: tempData[i].y.toStringAsFixed(2),
+              textstring: formatNumber(tempData[i].y),
               underline: TextDecoration.none,
             )),
             DataCell(TextUtilis(
@@ -619,7 +620,7 @@ class _salesproductState extends State<salesproduct> {
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text('إجمالي المبيعات'),
-                                        Text(totalval.toStringAsFixed(2)),
+                                        Text(formatNumber(totalval)),
                                       ],
                                     ),
                                     Container(
