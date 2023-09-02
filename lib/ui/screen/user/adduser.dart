@@ -389,7 +389,7 @@ class _addUserState extends State<addUser> {
                               'fk_regoin': regoin != null ? regoin : "null",
                             };
                             Provider.of<user_vm_provider>(context, listen: false)
-                                .adduser_vm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "")
+                                .adduser_vm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "",selectedRegion.map((e) => e.asUserRegion()).toList())
                                 .then((value) => value != "repeat" ? clear() : error());
                           } else {
                             ScaffoldMessenger.of(context)

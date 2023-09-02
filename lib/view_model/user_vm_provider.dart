@@ -119,12 +119,15 @@ class user_vm_provider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateuser_vm(Map<String, dynamic> body, String? iduser, File? file , [String params = '']) async {
+  Future<void> updateuser_vm(Map<String, dynamic> body, String? iduser, File? file,
+      [List<UserRegion> mainCityList = const [], String params = '']) async {
     isupdate = true;
     notifyListeners();
     int index = userall.indexWhere((element) => element.idUser == iduser);
-    UserModel ustemp = await UserService().UpdateUser(body: body, idUser: iduser, file: file,params: params);
+    UserModel ustemp = await UserService().UpdateUser(body: body, idUser: iduser, file: file, params: params);
     //if(ustemp.idUser!='0'){
+
+    ustemp.maincitylist_user = mainCityList;
     userall[index] = ustemp;
     updateUserList(ustemp);
     getcurrentuser();
@@ -137,13 +140,14 @@ class user_vm_provider extends ChangeNotifier {
     // return result;
   }
 
-  Future<String> adduser_vm(Map<String, String?> body ,String params) async {
-    try{
-      UserModel us = await UserService().addUser(body,params);
+  Future<String> adduser_vm(Map<String, String?> body, String params, List<UserRegion> mainCityList) async {
+    try {
+      UserModel us = await UserService().addUser(body, params);
       String result = '';
       if (us.idUser == '0') {
         result = 'repeat';
       } else {
+        us.maincitylist_user = mainCityList;
         userall.insert(0, us);
         addUserList(us);
         listuserfilter.insert(0, us);
@@ -151,8 +155,7 @@ class user_vm_provider extends ChangeNotifier {
         result = 'done';
       }
       return result;
-    }catch(e){
-
+    } catch (e) {
       return "repeat";
     }
   }

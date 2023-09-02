@@ -136,29 +136,45 @@ class _delayinstallState extends State<delayinstall> {
                 ),
                 child: Consumer<user_vm_provider>(
                   builder: (context, cart, child) {
-                    return DropdownSearch<UserModel>(
-                      mode: Mode.DIALOG,
-                      filterFn: (user, filter) => user!.getfilteruser(filter!),
-                      items: cart.usersSupportManagement,
-                      itemAsString: (u) => u!.userAsString(),
-                      onChanged: (data) {
-                        iduser = data!.idUser!;
-                        // idregoin='';
-                        cart.changevalueuser(data);
-                        getData();
-                        //filtershow();
-                      },
-                      selectedItem: cart.selecteduser,
-                      showSearchBox: true,
-                      dropdownSearchDecoration: InputDecoration(
-                        isCollapsed: true,
-                        hintText: 'الموظف',
-                        alignLabelWithHint: true,
-                        fillColor: Colors.grey.withOpacity(0.2),
-                        //labelText: "choose a user",
-                        contentPadding: EdgeInsets.all(0),
-                        border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                      ),
+                    return Row(
+                      children: [
+                        if(cart.selecteduser != null)
+                          ...{
+                            IconButton(
+                                onPressed: () {
+                                  iduser = '';
+                                  cart.changevalueuser(null);
+                                  getData();
+                                },
+                                icon: Icon(Icons.highlight_off)),
+                            SizedBox(width: 10),
+                          },
+                        Expanded(
+                          child: DropdownSearch<UserModel>(
+                            mode: Mode.DIALOG,
+                            filterFn: (user, filter) => user!.getfilteruser(filter!),
+                            compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                            items: cart.usersSupportManagement,
+                            itemAsString: (u) => u!.userAsString(),
+                            onChanged: (data) {
+                              iduser = data!.idUser!;
+                              cart.changevalueuser(data);
+                              getData();
+                            },
+                            selectedItem: cart.selecteduser,
+                            showSearchBox: true,
+                            dropdownSearchDecoration: InputDecoration(
+                              isCollapsed: true,
+                              hintText: 'الموظف',
+                              alignLabelWithHint: true,
+                              fillColor: Colors.grey.withOpacity(0.2),
+                              //labelText: "choose a user",
+                              contentPadding: EdgeInsets.all(0),
+                              border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                            ),
+                          ),
+                        ),
+                      ],
                     );
                   },
                 ),

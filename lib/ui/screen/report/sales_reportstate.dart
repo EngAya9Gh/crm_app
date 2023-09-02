@@ -327,33 +327,52 @@ class _sales_reportstateState extends State<sales_reportstate> {
                         child:
                         Consumer<user_vm_provider>(
                           builder: (context, cart, child){
-                            return  DropdownSearch<UserModel>(
+                            return  Row(
+                              children: [
+                                if(cart.selecteduser != null)
+                                  ...{
+                                    IconButton(
+                                        onPressed: () {
+                                          iduser = '0';
+                                          idregoin='0';
+                                          cart.changevalueuser(null);
+                                          getData();
+                                        },
+                                        icon: Icon(Icons.highlight_off)),
+                                    SizedBox(width: 10),
+                                  },
+                                Expanded(
+                                  child: DropdownSearch<UserModel>(
+                                    mode: Mode.DIALOG,
+                                    filterFn: (user, filter) => user!.getfilteruser(filter!),
+                                    compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
 
-                              mode: Mode.DIALOG,
-                              filterFn: (user, filter) => user!.getfilteruser(filter!),
-                              items: cart.usersSalesManagement,
-                              itemAsString: (u) => u!.userAsString(),
-                              onChanged: (data) {
-                                iduser=data!.idUser!;
-                                idregoin='';
-                                cart.changevalueuser(data);
-                                getData();
-                                //filtershow();
-                              } ,
-                              selectedItem: cart.selecteduser,
-                              showSearchBox: true,
-                              dropdownSearchDecoration:
-                              InputDecoration(
-                                isCollapsed: true,
-                                hintText: 'الموظف',
-                                alignLabelWithHint: true,
-                                fillColor:  Colors.grey.withOpacity(0.2),
-                                contentPadding: EdgeInsets.all(0),
-                                border:
-                                UnderlineInputBorder(
-                                    borderSide: const BorderSide(  color: Colors.grey)
+                                    items: cart.usersSalesManagement,
+                                    itemAsString: (u) => u!.userAsString(),
+                                    onChanged: (data) {
+                                      iduser=data!.idUser!;
+                                      idregoin='';
+                                      cart.changevalueuser(data);
+                                      getData();
+                                      //filtershow();
+                                    } ,
+                                    selectedItem: cart.selecteduser,
+                                    showSearchBox: true,
+                                    dropdownSearchDecoration:
+                                    InputDecoration(
+                                      isCollapsed: true,
+                                      hintText: 'الموظف',
+                                      alignLabelWithHint: true,
+                                      fillColor:  Colors.grey.withOpacity(0.2),
+                                      contentPadding: EdgeInsets.all(0),
+                                      border:
+                                      UnderlineInputBorder(
+                                          borderSide: const BorderSide(  color: Colors.grey)
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              ],
                             );
 
                           },
@@ -662,62 +681,58 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                   //     ])
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: SingleChildScrollView(
-                                    child:
-                                    DataTable(
-
-                                      columns: const <DataColumn>[
-                                        DataColumn(
-                                          label: Text(
-                                            '',
-                                            style: TextStyle(fontStyle: FontStyle.normal),
-                                          ),
+                              SingleChildScrollView(
+                                  child:
+                                  DataTable(
+                                    columns: const <DataColumn>[
+                                      DataColumn(
+                                        label: Text(
+                                          '',
+                                          style: TextStyle(fontStyle: FontStyle.normal),
                                         ),
-                                        DataColumn(
-                                          label: Text(
-                                            'الحالة',
-                                            style: TextStyle(fontStyle: FontStyle.normal),
-                                          ),
+                                      ),
+                                      DataColumn(
+                                        label: Text(
+                                          'الحالة',
+                                          style: TextStyle(fontStyle: FontStyle.normal),
                                         ),
-                                        DataColumn(
-                                          label: Text(
-                                            'العدد',
-                                            style: TextStyle(fontStyle: FontStyle.normal),
-                                          ),
+                                      ),
+                                      DataColumn(
+                                        label: Text(
+                                          'العدد',
+                                          style: TextStyle(fontStyle: FontStyle.normal),
                                         ),
-                                        // DataColumn(
-                                        //   label: Text(
-                                        //     'العدد ',
-                                        //     style: TextStyle(fontStyle: FontStyle.normal),
-                                        //   ),
-                                        // ),
-                                      ],
-                                      rows:rowsdata,dividerThickness: 3,
-                                      horizontalMargin: 2,columnSpacing: 50,
-                                      //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
-                                      //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
-                                      //     <DataRow>[
-                                      //   DataRow(
-                                      //     cells: <DataCell>[
-                                      //       DataCell(Text('Sarah')),
-                                      //       DataCell(Text('19')),
-                                      //       DataCell(Text('Student')),
-                                      //       DataCell(Text('Student')),
-                                      //     ],
+                                      ),
+                                      // DataColumn(
+                                      //   label: Text(
+                                      //     'العدد ',
+                                      //     style: TextStyle(fontStyle: FontStyle.normal),
                                       //   ),
-                                      // ],
-                                    )
-                                  // Column(
-                                  //   children: [
-                                  //     RowEditTitle(color: null,name: 'الموظف', des2: ' مبيعاته', des: 'عدد العملاء',),
-                                  //     for(int i=0;i<salesresult.length;i++)
-                                  //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
-                                  //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
-                                  //   ],
-                                  // ),
-                                ),
+                                      // ),
+                                    ],
+                                    rows:rowsdata,dividerThickness: 3,
+                                    horizontalMargin: 2,columnSpacing: MediaQuery.of(context).size.width * 0.3,
+                                    //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
+                                    //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
+                                    //     <DataRow>[
+                                    //   DataRow(
+                                    //     cells: <DataCell>[
+                                    //       DataCell(Text('Sarah')),
+                                    //       DataCell(Text('19')),
+                                    //       DataCell(Text('Student')),
+                                    //       DataCell(Text('Student')),
+                                    //     ],
+                                    //   ),
+                                    // ],
+                                  )
+                                // Column(
+                                //   children: [
+                                //     RowEditTitle(color: null,name: 'الموظف', des2: ' مبيعاته', des: 'عدد العملاء',),
+                                //     for(int i=0;i<salesresult.length;i++)
+                                //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
+                                //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
+                                //   ],
+                                // ),
                               )
 
                             ] ),

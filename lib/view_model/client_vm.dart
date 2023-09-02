@@ -772,6 +772,7 @@ class client_vm extends ChangeNotifier {
         url: url + "client/set_tag_client.php?id_clients=${client.idClients}",
         body: {"tag": client.tag.toString()},
       );
+
       tagStatus = Status.loaded;
       listClient = listClient.map((e) {
         if (e.idClients == client.idClients) {
@@ -779,6 +780,9 @@ class client_vm extends ChangeNotifier {
         }
         return e;
       }).toList();
+
+      currentClientModel = currentClientModel.changeToLoading;
+      notifyListeners();
       currentClientModel = currentClientModel.changeToLoaded(client);
       notifyListeners();
     } catch (e) {

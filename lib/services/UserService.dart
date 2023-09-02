@@ -2,16 +2,16 @@
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:flutter/material.dart';
 import 'dart:io';
 import '../constants.dart';
 
 class UserService{
 
-Future<UserModel> addUser(body , String params) async {
+Future<UserModel> addUser(body , String params ) async {
   var data = await Api().post(
     url:url+'users/addUser.php?$params',
-    // body:body,
-    //token: '',
+    body:body,
   );
    if(data=='repeatuser'){
      UserModel usermodel=UserModel(

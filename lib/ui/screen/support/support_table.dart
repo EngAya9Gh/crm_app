@@ -32,6 +32,8 @@ late EventProvider _eventProvider;
 class _support_tableState extends State<support_table> {
   @override
   Future<void> didChangeDependencies() async {
+    context.read<maincity_vm>().changeitemlist([], isInit: true);
+
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       _eventProvider = context.read<EventProvider>();
       Provider.of<user_vm_provider>(context, listen: false)

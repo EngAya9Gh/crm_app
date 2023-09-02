@@ -112,27 +112,45 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                   ),
                   child: Consumer<user_vm_provider>(
                     builder: (context, cart, child) {
-                      return DropdownSearch<UserModel>(
-                        mode: Mode.DIALOG,
-                        filterFn: (user, filter) => user!.getfilteruser(filter!),
-                        items: cart.usersMarketingManagement,
-                        itemAsString: (u) => u!.userAsString(),
-                        onChanged: (data) {
-                          idUser = data!.idUser;
-                          cart.changevalueuser(data);
-                          Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
-                        },
-                        selectedItem: cart.selecteduser,
-                        showSearchBox: true,
-                        dropdownSearchDecoration: InputDecoration(
-                          isCollapsed: true,
-                          hintText: 'الموظف',
-                          alignLabelWithHint: true,
-                          fillColor: Colors.grey.withOpacity(0.2),
-                          contentPadding: EdgeInsets.all(0),
-                          border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                        ),
-                        // InputDecoration(border: InputBorder.none),
+                      return Row(
+                        children: [
+                          if(cart.selecteduser != null)
+                            ...{
+                              IconButton(
+                                  onPressed: () {
+                                    idUser = '';
+                                    cart.changevalueuser(null);
+                                    Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
+                                  },
+                                  icon: Icon(Icons.highlight_off)),
+                              SizedBox(width: 10),
+                            },
+                          Expanded(
+                            child: DropdownSearch<UserModel>(
+                              mode: Mode.DIALOG,
+                              filterFn: (user, filter) => user!.getfilteruser(filter!),
+                              compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                              items: cart.usersMarketingManagement,
+                              itemAsString: (u) => u!.userAsString(),
+                              onChanged: (data) {
+                                idUser = data!.idUser;
+                                cart.changevalueuser(data);
+                                Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
+                              },
+                              selectedItem: cart.selecteduser,
+                              showSearchBox: true,
+                              dropdownSearchDecoration: InputDecoration(
+                                isCollapsed: true,
+                                hintText: 'الموظف',
+                                alignLabelWithHint: true,
+                                fillColor: Colors.grey.withOpacity(0.2),
+                                contentPadding: EdgeInsets.all(0),
+                                border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                              ),
+                              // InputDecoration(border: InputBorder.none),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),

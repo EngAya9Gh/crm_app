@@ -53,11 +53,13 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
   // late ClientModel _clientModel = ClientModel();
   late TabController _tabController;
+  late ValueNotifier<int> _currentTabIndex;
   int indexTab = 0;
 
   @override
   void initState() {
     indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
+    _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false).getComment(widget.idClient.toString());
 
@@ -77,9 +79,25 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
     super.initState();
     _tabController = TabController(length: 6, vsync: this, initialIndex: indexTab);
+    _tabController.addListener(onChangeTab);
   }
 
   final appBarSize = AppBar().preferredSize;
+
+  onChangeTab() {
+    if (!_tabController.indexIsChanging) {
+      _currentTabIndex.value = _tabController.index;
+    }
+  }
+
+  @override
+  void dispose() {
+    _tabController
+      ..removeListener(onChangeTab)
+      ..dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,10 +122,11 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
         } else if (state.currentClientModel.isFailure) {
           return Scaffold(
             body: Center(
-                child: IconButton(
-              onPressed: () => context.read<client_vm>().get_byIdClient(widget.idClient.toString()),
-              icon: Icon(Icons.refresh),
-            )),
+              child: IconButton(
+                onPressed: () => context.read<client_vm>().get_byIdClient(widget.idClient.toString()),
+                icon: Icon(Icons.refresh),
+              ),
+            ),
           );
         }
 
@@ -161,6 +180,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
               indicatorWeight: 6,
               labelColor: Colors.white,
               unselectedLabelColor: kWhiteColor,
+              onTap: (value) => _currentTabIndex.value = value,
               tabs: <Widget>[
                 Text('البيانات ', style: TextStyle(fontFamily: kfontfamily2)),
                 Text('الفواتير ', style: TextStyle(fontFamily: kfontfamily2)),
@@ -172,33 +192,50 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             ),
             // toolbarHeight: 75,
           ),
-          body: Container(
-            margin: EdgeInsets.only(bottom: 1),
-            padding: const EdgeInsets.only(top: 25, left: 5, right: 5),
-            height: MediaQuery.of(context).size.height * 0.85,
-            child: TabBarView(
-              controller: _tabController,
-              children: <Widget>[
-                ClientView(
-                  client: client,
-                  clienttransfer: widget.clientTransfer,
-                  idclient: client!.idClients.toString(),
-                  invoice: null, //widget.invoiceModel,
-                ),
-                invoices(itemClient: client, fkclient: client.idClients.toString(), fkuser: ''),
-                commentView(client: client, event: widget.event),
-                support_view_invoices(itemClient: client),
-                care_client_view(
-                  fk_client: client.idClients.toString(),
-                  tabCareIndex: widget.tabCareIndex,
-                  idCommunication: widget.idCommunication,
-                ),
-                ticketprofile(itemClient: client),
-                //InvoiceView(invoice: _invoiceModel,),
-                //Icon(Icons.add),
-              ],
-            ),
-          ),
+          body: ValueListenableBuilder<int>(
+              valueListenable: _currentTabIndex,
+              builder: (context, currentIndex, _) {
+                return Column(
+                  children: [
+                    if ((client!.tag ?? false) && currentIndex != 0) ...{
+                      SizedBox(height: 20),
+                      Icon(
+                        CupertinoIcons.checkmark_seal_fill,
+                        color: Colors.amber,
+                      ),
+                    },
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 1),
+                        padding: const EdgeInsets.only(top: 25, left: 5, right: 5),
+                        height: MediaQuery.of(context).size.height * 0.85,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: <Widget>[
+                            ClientView(
+                              client: client,
+                              clienttransfer: widget.clientTransfer,
+                              idclient: client.idClients.toString(),
+                              invoice: null, //widget.invoiceModel,
+                            ),
+                            invoices(itemClient: client, fkclient: client.idClients.toString(), fkuser: ''),
+                            commentView(client: client, event: widget.event),
+                            support_view_invoices(itemClient: client),
+                            care_client_view(
+                              fk_client: client.idClients.toString(),
+                              tabCareIndex: widget.tabCareIndex,
+                              idCommunication: widget.idCommunication,
+                            ),
+                            ticketprofile(itemClient: client),
+                            //InvoiceView(invoice: _invoiceModel,),
+                            //Icon(Icons.add),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
         );
       },
     );

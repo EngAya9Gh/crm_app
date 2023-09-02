@@ -46,6 +46,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
     super.didChangeDependencies();
   }
   @override void initState() {
+    context.read<maincity_vm>().changeitemlist([], isInit: true);
 
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();

@@ -173,7 +173,7 @@ class _EditUserState extends State<EditUser> {
                 if ((userMainCityIds?.isEmpty ?? true) && selectedMainCityIds.isNotEmpty) {
                   hasChanges = true;
                 } else {
-                  hasChanges = const DeepCollectionEquality.unordered().equals(selectedMainCityIds, userMainCityIds);
+                  hasChanges = !const DeepCollectionEquality.unordered().equals(selectedMainCityIds, userMainCityIds);
                 }
 
                 fkregoin = Provider.of<regoin_vm>(context, listen: false).selectedValueuser;
@@ -215,6 +215,7 @@ class _EditUserState extends State<EditUser> {
                       // controllerUsers[widget.index]
                       widget.userModel.idUser,
                       null,
+                      hasChanges ? selectedRegion.map((e) => e.asUserRegion()).toList() : [],
                       hasChanges ? _getMainCityParams(selectedMainCityIds) : ""
                       // Provider.of<user_vm_provider>(context,listen: false)
                       //     .currentUser!.path!.isNotEmpty?
