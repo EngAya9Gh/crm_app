@@ -390,19 +390,17 @@ class invoice_vm extends ChangeNotifier {
 
   CancelableOperation<List<InvoiceModel>>? _cancelableFuture;
 
-  Future<void> getfilter_maincity(List<MainCityModel>? listparam, String? state) async {
-    print(state);
+  Future<void> getfilter_maincity(List<MainCityModel>? listSelectedMainCity, String? state) async {
     String type = '';
     List<int> listval = [];
     isloading = true;
     notifyListeners();
     int idexist = -1;
-    print('allllllllllllllllllll');
-    print(listparam?.length.toString());
+   
 
     await _cancelableFuture?.cancel();
 
-    if (listparam!.isEmpty && state == 'الكل') {
+    if (listSelectedMainCity!.isEmpty && state == 'الكل') {
       _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
           'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'}));
 
@@ -410,10 +408,10 @@ class invoice_vm extends ChangeNotifier {
     } else {
       String params = '';
       // if (listparam.toString().isNotEmpty)
-      if (listparam.length != 0) {
-        idexist = listparam.indexWhere((element) => element.id_maincity == '0');
+      if (listSelectedMainCity.length != 0) {
+        idexist = listSelectedMainCity.indexWhere((element) => element.id_maincity == '0');
         if (idexist == -1) {
-          for (int i = 0; i < listparam.length; i++) listval.add(int.parse(listparam[i].id_maincity));
+          for (int i = 0; i < listSelectedMainCity.length; i++) listval.add(int.parse(listSelectedMainCity[i].id_maincity));
 
           for (int i = 0; i < listval.length; i++) {
             params += '&maincity_fks[]=${listval[i]}';

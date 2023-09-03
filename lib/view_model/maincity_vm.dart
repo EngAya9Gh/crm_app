@@ -9,6 +9,7 @@ import '../constants.dart';
 class maincity_vm extends ChangeNotifier {
   List<MainCityModel> listmaincity = [];
   List<MainCityModel> listmaincityfilter = [];
+  List<MainCityModel> listCurrentUserMainCityFilter = [];
   List<CityModel> listcity = [];
 
   late String? selectedValuemanag = null;
@@ -23,6 +24,14 @@ class maincity_vm extends ChangeNotifier {
   void changeitemlist(List<MainCityModel> s, {bool isInit = false}) {
     selecteditemmaincity = s;
     if (!isInit) notifyListeners();
+  }
+
+  filterMainCityByCurrentUserMainCityList(UserModel user) {
+    final list = List.of(listmaincity);
+    final listMainCityUser = user.maincitylist_user?.map((e) => e.fk_maincity!).toList() ?? [];
+
+    listCurrentUserMainCityFilter = list.where((element) => listMainCityUser.contains(element.id_maincity)).toList();
+    selecteditemmaincity = listCurrentUserMainCityFilter;
   }
 
   UserModel? usercurrent;
@@ -47,6 +56,8 @@ class maincity_vm extends ChangeNotifier {
       }
       listmaincityfilter = List.from(listmaincity); // [...listregoin];listregoin.tolist();
       listmaincityfilter.insert(0, MainCityModel(id_maincity: '0', namemaincity: 'الكل', fk_country: ''));
+      listCurrentUserMainCityFilter = List.from(listmaincity);
+
       selectedValuemanag = '1';
       notifyListeners();
     }
@@ -70,6 +81,7 @@ class maincity_vm extends ChangeNotifier {
       });
       //listoflevel=[];
       listmaincity.add(MainCityModel.fromJson(body));
+      listCurrentUserMainCityFilter.add(MainCityModel.fromJson(body));
       isloading = false;
       notifyListeners();
     }
@@ -87,8 +99,11 @@ class maincity_vm extends ChangeNotifier {
       'id_maincity': id_maincity,
     });
     final index = listmaincity.indexWhere((element) => element.id_maincity == id_maincity);
+    final indexListCurrentUser =
+        listCurrentUserMainCityFilter.indexWhere((element) => element.id_maincity == id_maincity);
     listmaincity[index] = MainCityModel.fromJson(body);
 
+    if (indexListCurrentUser != -1) listCurrentUserMainCityFilter[indexListCurrentUser] = MainCityModel.fromJson(body);
     isloading = false;
     notifyListeners();
 
