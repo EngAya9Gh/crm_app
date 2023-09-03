@@ -42,9 +42,11 @@ class _deptsalesState extends State<deptsales> {
   String typeproduct = 'الكل';
   double totalval = 0;
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
+    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
@@ -62,6 +64,8 @@ class _deptsalesState extends State<deptsales> {
     //       .checkprivlge('89')==true)
     //    type='userSum';
     // });
+
+    if(!haveMarketingPrivilege)
     getData();
   }
 

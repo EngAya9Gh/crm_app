@@ -43,9 +43,11 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   DateTime _selectedDateto = DateTime.now();
   late privilge_vm privilegeVm;
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
+    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(2);
@@ -54,6 +56,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     });
     privilegeVm = Provider.of<privilge_vm>(context, listen: false);
     super.initState();
+    if(!haveMarketingPrivilege)
     getData();
   }
 

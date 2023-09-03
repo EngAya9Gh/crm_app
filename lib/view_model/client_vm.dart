@@ -424,31 +424,34 @@ class client_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclient_vm() async {
+  Future<void> getclient_vm(bool isMarketing) async {
     clear();
     listClientfilter = [];
     isloading = true;
     notifyListeners();
-    // if(listClient.isEmpty)
-    //main list
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '8').isCheck == '1' ? true : false;
+
+    final String allClientPrivilege = isMarketing ? '127': '8';
+    final String allClientByRegionPrivilege = isMarketing ? '128': '15';
+    final String allClientByUserPrivilege = isMarketing ? '129': '16';
+
+    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientPrivilege).isCheck == '1' ? true : false;
     if (res) {
       listClient = await ClientService().getAllClient(usercurrent!.fkCountry.toString());
       listClientfilter = List.from(listClient);
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == '15').isCheck == '1' ? true : false;
+      res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByRegionPrivilege).isCheck == '1' ? true : false;
       if (res) {
         listClient = await ClientService().getAllClientByRegoin(usercurrent!.fkRegoin.toString());
         listClientfilter = List.from(listClient);
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == '16').isCheck == '1' ? true : false;
+        res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByUserPrivilege).isCheck == '1' ? true : false;
         if (res) {
           listClient = await ClientService().getClientbyuser(usercurrent!.idUser.toString());
           listClientfilter = List.from(listClient);
         }
       }
     }
-    //listClient.where((element) => false)
+
     isloading = false;
     notifyListeners();
   }
@@ -481,16 +484,10 @@ class client_vm extends ChangeNotifier {
   }
 
   Future<void> getclientMarketing() async {
-    //عملائي
-    // await get
     listClientMarketing = [];
     isloading_marketing = true;
     notifyListeners();
-    await getclient_vm();
-    //listClient= List.from(listClientfilter);
-    // await ClientService()
-    //     .getAllClientmarket(usercurrent!.fkCountry.toString());
-    // listClientMarketing=List.from(listClient);
+    await getclient_vm(true);
     if (listClient.isNotEmpty) {
       listClient.forEach((element) {
         if (element.ismarketing == '1') {
@@ -498,9 +495,10 @@ class client_vm extends ChangeNotifier {
           listClientMarketingFilter.add(element);
         }
       });
-      isloading_marketing = false;
-      notifyListeners();
     }
+
+    isloading_marketing = false;
+    notifyListeners();
   }
 
   Future<void> getclientByIdUser_vm(List<ClientModel> list) async {
@@ -684,7 +682,7 @@ class client_vm extends ChangeNotifier {
       //     });
       //   }
     } else
-      getclient_vm();
+      getclient_vm(false);
 
     notifyListeners();
     //return clientlistsearch;

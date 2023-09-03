@@ -38,7 +38,6 @@ class tabclients extends StatefulWidget {
 }
 
 class _tabclientsState extends State<tabclients> {
-  // final controllerUsers = Get.find<AllUserVMController>();
   List<ClientModel> _list = [];
   String? iduser;
   String? regoin;
@@ -55,19 +54,13 @@ class _tabclientsState extends State<tabclients> {
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // Provider.of<user_vm_provider>(context,listen: false)
-      //     .getuser_vm();
-      // print(Provider.of<user_vm_provider>(context,listen: false)
-      //     .userall.length);
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);
       Provider.of<user_vm_provider>(context, listen: false).changevalueuser(null);
       Provider.of<typeclient>(context, listen: false).changevaluefilter(null);
-      // Add Your Code here.
-      // Provider.of<regoin_vm>(context,listen: false).getregoin();
       Provider.of<client_vm>(context, listen: false).clear();
       List<PrivilgeModel> list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-      Provider.of<client_vm>(context, listen: false).getclient_vm();
+      Provider.of<client_vm>(context, listen: false).getclient_vm(false);
       context.read<activity_vm>()
         ..initValueOut()
         ..getactv();
@@ -120,322 +113,262 @@ class _tabclientsState extends State<tabclients> {
               )
             : Container(),
         body: Consumer<privilge_vm>(builder: (context, privilge, child) {
-          return RefreshIndicator(
-            onRefresh: () async {
-              ///setstat
-              //  Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-              //  Provider.of<typeclient>(context,listen: false).changevaluefilter(null);
-              //  Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
-              // await    Provider.of<client_vm>(context, listen: false)
-              //     .getclient_vm(
-              //   // Provider.of<privilge_vm>(context,listen: false)
-              //   //     .privilgelist
-              // );
-              // setState(() {
-              //   Provider.of<user_vm_provider>(context,listen: false).changevalueuser();
-              // });
-            },
-            child: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 2),
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: ListView(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          privilge.checkprivlge('8') == true
-                              ? //regoin
-                              Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                    child: Consumer<regoin_vm>(
-                                      builder: (context, cart, child) {
-                                        return
-                                            //   Container(
-                                            //   height: 57,
-                                            //   decoration: BoxDecoration(
-                                            //
-                                            //        border:Border.all(
-                                            //
-                                            //          color: Colors.grey.withOpacity(0.9)
-                                            //          //width: 1,
-                                            //        ),
-                                            //     borderRadius: BorderRadius.all(
-                                            //       Radius.circular(6.0) //                 <--- border radius here
-                                            // ),
-                                            //   ),
-                                            //   child:
-                                            //   Container(
-                                            //     height: 57,
-                                            //     child:
-                                            //     DropdownButtonFormField(
-                                            //
-                                            //       decoration:InputDecoration(
-                                            //           enabledBorder: OutlineInputBorder(
-                                            //               borderRadius: BorderRadius.circular(10),
-                                            //               borderSide: BorderSide(
-                                            //                   width: 1,
-                                            //                   color: Colors.grey)
-                                            //           )
-                                            //       ) ,
-                                            DropdownButton(
-                                          isExpanded: true,
-                                          hint: Text("الفرع"),
-                                          items: cart.listregoinfilter.map((level_one) {
-                                            return DropdownMenuItem(
-                                              child: Text(level_one.name_regoin), //label of item
-                                              value: level_one.id_regoin, //value of item
-                                            );
-                                          }).toList(),
-                                          value: cart.selectedValueLevel,
-                                          onChanged: (value) {
-                                            //  setState(() {
-                                            cart.changeVal(value.toString());
-                                            regoin = value.toString();
-                                            filtershow();
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 20.0, right: 8),
-                              child: Consumer<typeclient>(builder: (context, cart, child) {
-                                return DropdownButton(
-                                  isExpanded: true,
-                                  hint: Text('الحالة'),
-                                  //hint: Text("حدد حالة العميل"),
-                                  items: cart.type_of_client_filter.map((level_one) {
-                                    return DropdownMenuItem(
-                                      child: Text(level_one), //label of item
-                                      value: level_one, //value of item
-                                    );
-                                  }).toList(),
-                                  value: cart.selectedValufilter,
-                                  onChanged: (value) {
-                                    //namemanage=value.toString();
-                                    cart.changevaluefilter(value.toString());
-                                    typeclientvalue = value.toString();
-                                    print(typeclientvalue);
-                                    filtershow();
-                                  },
-                                );
-                              }),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      //SizedBox(height: 2,),
-                      privilge.checkprivlge('15') == true || privilge.checkprivlge('8') == true
-                          ? //user
-                          Padding(
-                              padding: const EdgeInsets.only(
-                                left: 8.0,
-                                right: 8,
-                              ),
-                              child: Consumer<user_vm_provider>(
-                                builder: (context, cart, child) {
-                                  return Row(
-                                    children: [
-                                      if(cart.selecteduser != null)
-                                        ...{
-                                          IconButton(
-                                              onPressed: () {
-                                                iduser = null;
-                                                cart.changevalueuser(null);
-                                                filtershow();
-                                              },
-                                              icon: Icon(Icons.highlight_off)),
-                                          SizedBox(width: 10),
-                                        },
-                                      Expanded(
-                                        child: DropdownSearch<UserModel>(
-                                          mode: Mode.DIALOG,
-                                          // label: " الموظف ",
-                                          //hint: 'الموظف',
-                                          //onFind: (String filter) => cart.getfilteruser(filter),
-                                          filterFn: (user, filter) => user!.getfilteruser(filter!),
-                                          compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
-                                          // itemAsString: (UserModel u) => u.userAsStringByName(),
-                                          items: cart.usersSalesManagement,
-                                          itemAsString: (u) => u!.userAsString(),
-                                          onChanged: (data) {
-                                            iduser = data!.idUser;
-                                            cart.changevalueuser(data);
-                                            filtershow();
-                                          },
-                                          selectedItem: cart.selecteduser,
-                                          showSearchBox: true,
-                                          dropdownSearchDecoration: InputDecoration(
-                                            //filled: true,
-                                            isCollapsed: true,
-                                            hintText: 'الموظف',
-                                            alignLabelWithHint: true,
-                                            fillColor: Colors.grey.withOpacity(0.2),
-                                            //labelText: "choose a user",
-                                            contentPadding: EdgeInsets.all(0),
-                                            //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                            // focusedBorder: OutlineInputBorder(
-                                            //     borderRadius: BorderRadius.circular(10),
-                                            //     borderSide: const BorderSide(color: Colors.white)),
-                                            border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                                            // OutlineInputBorder(
-                                            //     borderRadius: BorderRadius.circular(10),
-                                            //     borderSide: const BorderSide( color: Colors.white)),
-                                          ),
-                                          // InputDecoration(border: InputBorder.none),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            )
-                          : Container(),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 8.0,
-                          right: 8,
-                        ),
-                        child: Consumer<activity_vm>(
-                          builder: (context, cart, child) {
-                            return Row(
-                              children: [
-                                if(cart.selectedValueOut != null)
-                                  ...{
-                                    IconButton(
-                                        onPressed: () {
-                                          cart.changevalueOut(null);
-                                          activity = null;
+          return SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 2),
+              child: Directionality(
+                textDirection: TextDirection.rtl,
+                child: ListView(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        privilge.checkprivlge('8') == true
+                            ? //regoin
+                            Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0, right: 8),
+                                  child: Consumer<regoin_vm>(
+                                    builder: (context, cart, child) {
+                                      return DropdownButton(
+                                        isExpanded: true,
+                                        hint: Text("الفرع"),
+                                        items: cart.listregoinfilter.map((level_one) {
+                                          return DropdownMenuItem(
+                                            child: Text(level_one.name_regoin), //label of item
+                                            value: level_one.id_regoin, //value of item
+                                          );
+                                        }).toList(),
+                                        value: cart.selectedValueLevel,
+                                        onChanged: (value) {
+                                          //  setState(() {
+                                          cart.changeVal(value.toString());
+                                          regoin = value.toString();
                                           filtershow();
                                         },
-                                        icon: Icon(Icons.highlight_off)),
-                                    SizedBox(width: 10),
-                                  },
-                                Expanded(
-                                  child: DropdownButton(
-                                    isExpanded: true,
-                                    hint: Text("النشاط"),
-                                    items: cart.list_activity.map((level_one) {
-                                      return DropdownMenuItem(
-                                        child: Text(level_one.name_activity_type), //label of item
-                                        value: level_one.id_activity_type, //value of item
                                       );
-                                    }).toList(),
-                                    value: cart.selectedValueOut,
-                                    onChanged: (value) {
-                                      //  setState(() {
-                                      cart.changevalueOut(value.toString());
-                                      activity = value.toString();
-                                      filtershow();
                                     },
                                   ),
                                 ),
-                              ],
-                            );
-                          },
+                              )
+                            : Container(),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20.0, right: 8),
+                            child: Consumer<typeclient>(builder: (context, cart, child) {
+                              return DropdownButton(
+                                isExpanded: true,
+                                hint: Text('الحالة'),
+                                items: cart.type_of_client_filter.map((level_one) {
+                                  return DropdownMenuItem(
+                                    child: Text(level_one), //label of item
+                                    value: level_one, //value of item
+                                  );
+                                }).toList(),
+                                value: cart.selectedValufilter,
+                                onChanged: (value) {
+                                  cart.changevaluefilter(value.toString());
+                                  typeclientvalue = value.toString();
+                                  print(typeclientvalue);
+                                  filtershow();
+                                },
+                              );
+                            }),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(5),
-                            )),
-                        height: 50,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(10),
+                      ],
+                    ),
+
+                    //SizedBox(height: 2,),
+                    privilge.checkprivlge('15') == true || privilge.checkprivlge('8') == true
+                        ? //user
+                        Padding(
+                            padding: const EdgeInsets.only(
+                              left: 8.0,
+                              right: 8,
                             ),
-                            child: TextField(
-                              controller: _searchTextField,
-                              textInputAction: TextInputAction.search,
-                              decoration: InputDecoration(
-                                hintText: hintnamefilter,
-                                border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: Colors.black,
+                            child: Consumer<user_vm_provider>(
+                              builder: (context, cart, child) {
+                                return Row(
+                                  children: [
+                                    if (cart.selecteduser != null) ...{
+                                      IconButton(
+                                          onPressed: () {
+                                            iduser = null;
+                                            cart.changevalueuser(null);
+                                            filtershow();
+                                          },
+                                          icon: Icon(Icons.highlight_off)),
+                                      SizedBox(width: 10),
+                                    },
+                                    Expanded(
+                                      child: DropdownSearch<UserModel>(
+                                        mode: Mode.DIALOG,
+                                        filterFn: (user, filter) => user!.getfilteruser(filter!),
+                                        compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                                        items: cart.usersSalesManagement,
+                                        itemAsString: (u) => u!.userAsString(),
+                                        onChanged: (data) {
+                                          iduser = data!.idUser;
+                                          cart.changevalueuser(data);
+                                          filtershow();
+                                        },
+                                        selectedItem: cart.selecteduser,
+                                        showSearchBox: true,
+                                        dropdownSearchDecoration: InputDecoration(
+                                          isCollapsed: true,
+                                          hintText: 'الموظف',
+                                          alignLabelWithHint: true,
+                                          fillColor: Colors.grey.withOpacity(0.2),
+                                          contentPadding: EdgeInsets.all(0),
+                                          border:
+                                              UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                        ),
+                                        // InputDecoration(border: InputBorder.none),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          )
+                        : Container(),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8.0,
+                        right: 8,
+                      ),
+                      child: Consumer<activity_vm>(
+                        builder: (context, cart, child) {
+                          return Row(
+                            children: [
+                              if (cart.selectedValueOut != null) ...{
+                                IconButton(
+                                    onPressed: () {
+                                      cart.changevalueOut(null);
+                                      activity = null;
+                                      filtershow();
+                                    },
+                                    icon: Icon(Icons.highlight_off)),
+                                SizedBox(width: 10),
+                              },
+                              Expanded(
+                                child: DropdownButton(
+                                  isExpanded: true,
+                                  hint: Text("النشاط"),
+                                  items: cart.list_activity.map((level_one) {
+                                    return DropdownMenuItem(
+                                      child: Text(level_one.name_activity_type), //label of item
+                                      value: level_one.id_activity_type, //value of item
+                                    );
+                                  }).toList(),
+                                  value: cart.selectedValueOut,
+                                  onChanged: (value) {
+                                    //  setState(() {
+                                    cart.changevalueOut(value.toString());
+                                    activity = value.toString();
+                                    filtershow();
+                                  },
                                 ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5),
+                          )),
+                      height: 50,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextField(
+                            controller: _searchTextField,
+                            textInputAction: TextInputAction.search,
+                            decoration: InputDecoration(
+                              hintText: hintnamefilter,
+                              border: InputBorder.none,
+                              prefixIcon: Icon(
+                                Icons.search,
+                                color: Colors.black,
                               ),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0, right: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'عدد العملاء',
-                              style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
-                            ),
-                            Consumer<client_vm>(builder: (context, value, child) {
-                              final list =
-                                  _searchTextField.text.isEmpty ? value.listClientfilter : value.listClientFilterSearch;
-
-                              return Text(
-                                list.length.toString(),
-                                style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
-                              );
-                            })
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.73,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8, top: 8.0, bottom: 40),
-                          child: Consumer<client_vm>(builder: (context, value, child) {
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30.0, right: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'عدد العملاء',
+                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          ),
+                          Consumer<client_vm>(builder: (context, value, child) {
                             final list =
                                 _searchTextField.text.isEmpty ? value.listClientfilter : value.listClientFilterSearch;
 
-                            return value.isloading == true
-                                ? Center(child: CircularProgressIndicator())
-                                : list.length == 0
-                                    ? Center(child: Text(messageNoData))
-                                    : Column(
-                                        children: [
-                                          Expanded(
-                                            child: ListView.builder(
-                                                scrollDirection: Axis.vertical,
-                                                itemCount: list.length,
-                                                // padding: const EdgeInsets.all(2),
-                                                itemBuilder: (context, index) {
-                                                  return Padding(
-                                                    padding: const EdgeInsets.all(2.0),
-                                                    child: cardAllClient(
-                                                      clientModel: list[index],
-                                                    ),
-                                                  );
-                                                }),
-                                          ),
-                                        ],
-                                      );
-                          }),
-                        ),
+                            return Text(
+                              list.length.toString(),
+                              style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                            );
+                          })
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.73,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 8, top: 8.0, bottom: 40),
+                        child: Consumer<client_vm>(builder: (context, value, child) {
+                          final list =
+                              _searchTextField.text.isEmpty ? value.listClientfilter : value.listClientFilterSearch;
+
+                          return value.isloading == true
+                              ? Center(child: CircularProgressIndicator())
+                              : list.length == 0
+                                  ? Center(child: Text(messageNoData))
+                                  : Column(
+                                      children: [
+                                        Expanded(
+                                          child: ListView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              itemCount: list.length,
+                                              // padding: const EdgeInsets.all(2),
+                                              itemBuilder: (context, index) {
+                                                return Padding(
+                                                  padding: const EdgeInsets.all(2.0),
+                                                  child: cardAllClient(
+                                                    clientModel: list[index],
+                                                  ),
+                                                );
+                                              }),
+                                        ),
+                                      ],
+                                    );
+                        }),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

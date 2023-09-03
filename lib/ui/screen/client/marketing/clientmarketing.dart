@@ -38,15 +38,11 @@ class clientmarketing extends StatefulWidget {
 }
 
 class _clientmarketingState extends State<clientmarketing> {
-  // final controllerUsers = Get.find<AllUserVMController>();
-  List<ClientModel> _list = [];
   String? iduser;
   String? regoin;
   String? activity = '';
-
   String? typeclientvalue;
   UserModel? user;
-  bool _isLoading = false;
   int isSelectedtypeinstall = 0;
 
   @override
@@ -55,45 +51,18 @@ class _clientmarketingState extends State<clientmarketing> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<user_vm_provider>(context, listen: false).getuser_vm();
-      print(Provider.of<user_vm_provider>(context, listen: false).userall.length);
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);
       Provider.of<user_vm_provider>(context, listen: false).changevalueuser(null);
       Provider.of<typeclient>(context, listen: false).changevaluefilter(null);
-      // Add Your Code here.
-      // Provider.of<regoin_vm>(context,listen: false).getregoin();
-
-      List<PrivilgeModel> list = await Provider.of<privilge_vm>(context, listen: false).privilgelist;
+      List<PrivilgeModel> list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
       await Provider.of<client_vm>(context, listen: false).getclientMarketing();
       await Provider.of<activity_vm>(context, listen: false).getactv();
     });
-
-    //  WidgetsBinding.instance.addPostFrameCallback((_) {
-  }
-
-  @override
-  void didChangeDependencies() {
-    // List<ClientModel> list= Provider.of<client_vm>(context, listen: false)
-    // .listClientbyRegoin;
-    // Future.delayed(Duration(milliseconds: 30)).then((_) async {
-    //
-    // }
-    // );
-
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    // Provider.of<typeclient>(context,listen: false).changevalue(null);
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //  Provider.of<client_vm>(context, listen: false).getudate();
-
-    print('build tabview');
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -116,20 +85,7 @@ class _clientmarketingState extends State<clientmarketing> {
             : Container(),
         body: Consumer<privilge_vm>(builder: (context, privilge, child) {
           return RefreshIndicator(
-            onRefresh: () async {
-              ///setstat
-              // Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-              // Provider.of<typeclient>(context,listen: false).changevaluefilter(null);
-              // Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
-              // await    Provider.of<client_vm>(context, listen: false)
-              //     .getclientMarketing(
-              //   // Provider.of<privilge_vm>(context,listen: false)
-              //   //     .privilgelist
-              // );
-              // setState(() {
-              //   Provider.of<user_vm_provider>(context,listen: false).changevalueuser();
-              // });
-            },
+            onRefresh: () async {},
             child: SafeArea(
               child: Padding(
                 padding: EdgeInsets.only(left: 5, right: 5, top: 10, bottom: 2),
@@ -147,35 +103,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                     padding: const EdgeInsets.only(left: 8.0, right: 8),
                                     child: Consumer<regoin_vm>(
                                       builder: (context, cart, child) {
-                                        return
-                                            //   Container(
-                                            //   height: 57,
-                                            //   decoration: BoxDecoration(
-                                            //
-                                            //        border:Border.all(
-                                            //
-                                            //          color: Colors.grey.withOpacity(0.9)
-                                            //          //width: 1,
-                                            //        ),
-                                            //     borderRadius: BorderRadius.all(
-                                            //       Radius.circular(6.0) //                 <--- border radius here
-                                            // ),
-                                            //   ),
-                                            //   child:
-                                            //   Container(
-                                            //     height: 57,
-                                            //     child:
-                                            //     DropdownButtonFormField(
-                                            //
-                                            //       decoration:InputDecoration(
-                                            //           enabledBorder: OutlineInputBorder(
-                                            //               borderRadius: BorderRadius.circular(10),
-                                            //               borderSide: BorderSide(
-                                            //                   width: 1,
-                                            //                   color: Colors.grey)
-                                            //           )
-                                            //       ) ,
-                                            DropdownButton(
+                                        return DropdownButton(
                                           isExpanded: true,
                                           hint: Text("الفرع"),
                                           items: cart.listregoinfilter.map((level_one) {
@@ -190,10 +118,6 @@ class _clientmarketingState extends State<clientmarketing> {
                                             cart.changeVal(value.toString());
                                             regoin = value.toString();
                                             filtershow();
-                                            // Provider.of<client_vm>(context, listen: false)
-                                            //     .getclientfilter_Local(value.toString(),"regoin",
-                                            //     Provider.of<typeclient>(context,listen: false).selectedValuemanag);
-                                            // // });
                                           },
                                         );
                                         //);
@@ -212,7 +136,6 @@ class _clientmarketingState extends State<clientmarketing> {
                                 return DropdownButton(
                                   isExpanded: true,
                                   hint: Text('الحالة'),
-                                  //hint: Text("حدد حالة العميل"),
                                   items: cart.type_of_client_filter.map((level_one) {
                                     return DropdownMenuItem(
                                       child: Text(level_one), //label of item
@@ -221,10 +144,8 @@ class _clientmarketingState extends State<clientmarketing> {
                                   }).toList(),
                                   value: cart.selectedValufilter,
                                   onChanged: (value) {
-                                    //namemanage=value.toString();
                                     cart.changevaluefilter(value.toString());
                                     typeclientvalue = value.toString();
-                                    print(typeclientvalue);
                                     filtershow();
                                   },
                                 );
@@ -246,17 +167,16 @@ class _clientmarketingState extends State<clientmarketing> {
                                 builder: (context, cart, child) {
                                   return Row(
                                     children: [
-                                      if(cart.selecteduser != null)
-                                        ...{
-                                          IconButton(
-                                              onPressed: () {
-                                                iduser = null;
-                                                cart.changevalueuser(null);
-                                                filtershow();
-                                              },
-                                              icon: Icon(Icons.highlight_off)),
-                                          SizedBox(width: 10),
-                                        },
+                                      if (cart.selecteduser != null) ...{
+                                        IconButton(
+                                            onPressed: () {
+                                              iduser = null;
+                                              cart.changevalueuser(null);
+                                              filtershow();
+                                            },
+                                            icon: Icon(Icons.highlight_off)),
+                                        SizedBox(width: 10),
+                                      },
                                       Expanded(
                                         child: DropdownSearch<UserModel>(
                                           mode: Mode.DIALOG,
@@ -277,7 +197,8 @@ class _clientmarketingState extends State<clientmarketing> {
                                             alignLabelWithHint: true,
                                             fillColor: Colors.grey.withOpacity(0.2),
                                             contentPadding: EdgeInsets.all(0),
-                                            border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                            border:
+                                                UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
                                           ),
                                         ),
                                       ),
@@ -300,17 +221,16 @@ class _clientmarketingState extends State<clientmarketing> {
                           builder: (context, cart, child) {
                             return Row(
                               children: [
-                                if(cart.selectedValueOut != null)
-                                  ...{
-                                    IconButton(
-                                        onPressed: () {
-                                          activity = '';
-                                          cart.changevalueOut(null);
-                                          filtershow();
-                                        },
-                                        icon: Icon(Icons.highlight_off)),
-                                    SizedBox(width: 10),
-                                  },
+                                if (cart.selectedValueOut != null) ...{
+                                  IconButton(
+                                      onPressed: () {
+                                        activity = '';
+                                        cart.changevalueOut(null);
+                                        filtershow();
+                                      },
+                                      icon: Icon(Icons.highlight_off)),
+                                  SizedBox(width: 10),
+                                },
                                 Expanded(
                                   child: DropdownButton(
                                     isExpanded: true,
@@ -323,7 +243,6 @@ class _clientmarketingState extends State<clientmarketing> {
                                     }).toList(),
                                     value: cart.selectedValueOut,
                                     onChanged: (value) {
-                                      //  setState(() {
                                       cart.changevalueOut(value.toString());
                                       activity = value.toString();
                                       filtershow();
@@ -377,12 +296,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                                   padding: const EdgeInsets.all(2),
                                                   child: cardAllClient(
                                                     clientModel: value.listClientMarketing[index],
-                                                  )
-                                                  //cardClientAccept(iteminvoice: null,)
-                                                  // cardClientnew(
-                                                  //     itemClient: value.listClientfilter[index],
-                                                  //     iduser: iduser.toString()),
-                                                  );
+                                                  ));
                                             }),
                                       ),
                                     ],

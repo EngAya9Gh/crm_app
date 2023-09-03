@@ -45,9 +45,11 @@ class _salesproductState extends State<salesproduct> {
   DateTime _selectedDateto = DateTime.now();
   late privilge_vm privilegeVm;
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
+    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
@@ -66,7 +68,7 @@ class _salesproductState extends State<salesproduct> {
     //       .checkprivlge('89')==true)
     //    type='userSum';
     // });
-
+    if(!haveMarketingPrivilege)
     getData();
   }
 

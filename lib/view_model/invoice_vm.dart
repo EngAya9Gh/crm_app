@@ -192,14 +192,6 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
     await getinvoiceswithprev_marketing();
     list_temp = List.from(listInvoicesAccept);
-    // await  Invoice_Service()
-    //     .getinvoiceMarketing(usercurrent!.fkCountry.toString());
-
-    // list_temp.forEach((element) {
-    //   if (element.ismarketing == '1')
-    //     //&& element.isApprove == "1")
-    //     listinvoicesMarketing.add(element);
-    // });
     listinvoicesMarketing = List.from(list_temp);
     isloading_marketing = false;
     notifyListeners();
@@ -991,18 +983,17 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> getinvoiceswithprev_marketing() async {
-    // if(listClient.isEmpty)
     //main list
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '1').isCheck == '1' ? true : false;
+    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '130').isCheck == '1' ? true : false;
     if (res) {
       listinvoices = await Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
       print('indddddd');
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == '38').isCheck == '1' ? true : false;
+      res = privilgelist.firstWhere((element) => element.fkPrivileg == '131').isCheck == '1' ? true : false;
       if (res) {
         listinvoices = await Invoice_Service().getinvoicebyregoin_marketing(usercurrent!.fkRegoin!);
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == '6').isCheck == '1' ? true : false;
+        res = privilgelist.firstWhere((element) => element.fkPrivileg == '132').isCheck == '1' ? true : false;
         if (res) {
           listinvoices = await Invoice_Service().getinvoicebyiduser_marketing(usercurrent!.idUser.toString());
         }

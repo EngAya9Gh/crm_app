@@ -44,10 +44,12 @@ class _sales_reportstateState extends State<sales_reportstate> {
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
 
   @override
   void initState() {
+    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsalestype(0);
@@ -68,6 +70,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
     //       .checkprivlge('89')==true)
     //    type='userSum';
     // });
+    if(!haveMarketingPrivilege)
     getData();
   }
 

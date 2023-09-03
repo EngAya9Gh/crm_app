@@ -43,9 +43,11 @@ class _support_install_reportState extends State<support_install_report> {
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
+    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsalestype(0);
@@ -53,6 +55,7 @@ class _support_install_reportState extends State<support_install_report> {
           .selectValuebarsales(0);
     });
     super.initState();
+    if(!haveMarketingPrivilege)
     getData();
   }
 
