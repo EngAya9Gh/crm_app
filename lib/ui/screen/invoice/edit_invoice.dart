@@ -29,6 +29,7 @@ class _edit_invoiceState extends State<edit_invoice> {
   String? iduser;
 
   String? regoin;
+  String? regoininvoice;
   DateTime? _currentDateApprove;
   DateTime _currentDateCreate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
@@ -74,6 +75,7 @@ class _edit_invoiceState extends State<edit_invoice> {
     // TODO: implement initState
     iduser = widget.invoiceModel.fkIdUser.toString();
     regoin = widget.invoiceModel.fk_regoin.toString();
+    regoininvoice = widget.invoiceModel.fk_regoin_invoice.toString();
 
     if (widget.invoiceModel.date_approve != null) {
       _currentDateApprove = DateTime.parse(widget.invoiceModel.date_approve.toString());
@@ -184,7 +186,7 @@ class _edit_invoiceState extends State<edit_invoice> {
                         onChanged: (value) {
                           //  setState(() {
                           cart.changeVal(value.toString());
-                          regoin = value.toString();
+                          regoininvoice = value.toString();
                         },
                       );
                     },
@@ -253,13 +255,14 @@ class _edit_invoiceState extends State<edit_invoice> {
                     onTap: () async {
                       if (_globalKey.currentState!.validate()) {
                         Provider.of<invoice_vm>(context, listen: false)
-                            .update_invoiceclient_vm({
+                            .edit_invoice({
                           "name_enterprise": widget.invoiceModel.name_enterprise,
                           "name_client": widget.invoiceModel.nameClient.toString(),
+                          "fk_client": widget.invoiceModel.fkIdClient.toString(),
                           'date_create': _currentDateCreate.toString(),
                           'date_approve': _currentDateApprove.toString(),
                           'fk_idUser': iduser.toString(),
-                          'fk_regoin_invoice': regoin.toString(),
+                          'fk_regoin_invoice': regoininvoice.toString(),
                           'fk_regoin': regoin.toString(),
                           'fkcountry': widget.invoiceModel.fk_country.toString(),
 
@@ -272,7 +275,7 @@ class _edit_invoiceState extends State<edit_invoice> {
 
                           'date_lastuserupdate': DateTime.now().toString(),
                           //"date_changetype":,
-                        }, widget.invoiceModel.idInvoice, null, null).then((value) => value != false ? clear() : error());
+                        }, widget.invoiceModel.idInvoice).then((value) => value != false ? clear() : error());
                       }
                       ;
                     },

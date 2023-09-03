@@ -92,17 +92,17 @@ class user_vm_provider extends ChangeNotifier {
   late SharedPreferences prefs;
 
   late UserModel currentUser = UserModel(
-      nameUser: "aya",
+      nameUser: "user test",
       fkCountry: "1",
       fkRegoin: "1",
       idUser: "1",
-      email: "aya.ghoury@gmail.com",
+      email: "user.test@gmail.com",
       nameuserAdd: '',
       created_at: '',
       nameuserupdate: '',
       fkuserupdate: '',
       updated_at: '',
-      isActive: '',
+      isActive: '1',
       fkuserAdd: '');
 
   Future<void> getuser_vm() async {

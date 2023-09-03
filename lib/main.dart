@@ -106,7 +106,11 @@ void main() async {
       create: (_) => config_vm(),
       update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
     ),
-    ChangeNotifierProvider<level_vm>(create: (_) => level_vm()),
+    // ChangeNotifierProvider<level_vm>(create: (_) => level_vm()),//
+    ChangeNotifierProxyProvider<user_vm_provider, level_vm>(
+      create: (_) => level_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
     //ChangeNotifierProvider<regoin_vm>(create: (_) => regoin_vm()),
     ChangeNotifierProvider<LoadProvider>(create: (_) => LoadProvider()),
     //ChangeNotifierProvider<product_vm>(create: (_) => product_vm()),

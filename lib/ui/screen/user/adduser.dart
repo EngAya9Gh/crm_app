@@ -58,6 +58,7 @@ class _addUserState extends State<addUser> {
       // controllerUsers= Provider.of<user_vm_provider>
       //   (context,listen: false).userall!;
       Provider.of<level_vm>(context, listen: false).getlevel();
+      // Provider.of<level_vm>(context, listen: false).get_periorty();
       Provider.of<manage_provider>(context, listen: false).getmanage();
 
       //Provider.of<regoin_vm>(context,listen: false).getregoin();
@@ -81,6 +82,7 @@ class _addUserState extends State<addUser> {
     // Provider.of<regoin_vm>(context,listen: false).getregoin();
     // Provider.of<level_vm>(context,listen: false).getlevel();
     //
+    // context.read<user_vm_provider>() .
     context.read<maincity_vm>()
       ..changeitemlist([], isInit: true)
       ..getmaincity();
@@ -223,7 +225,7 @@ class _addUserState extends State<addUser> {
                         return DropdownButtonFormField(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),
-                          items: cart.listoflevel.map((level_one) {
+                          items: cart.listoflevel_periorty.map((level_one) {
                             return DropdownMenuItem(
                               child: Text(level_one.nameLevel), //label of item
                               value: level_one.idLevel, //value of item

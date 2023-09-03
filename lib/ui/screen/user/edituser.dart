@@ -312,7 +312,7 @@ class _EditUserState extends State<EditUser> {
                         return DropdownButtonFormField(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),
-                          items: cart.listoflevel.map((level_one) {
+                          items: cart.listoflevel_periorty.map((level_one) {
                             return DropdownMenuItem(
                               child: Text(level_one.nameLevel), //label of item
                               value: level_one.idLevel, //value of item

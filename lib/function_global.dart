@@ -87,6 +87,9 @@ String showtext(String typeNotify){
       return "اضافة دفعة للفاتورة";
       case "NotReady":
       return "العميل غير جاهز";
+
+      case "EditInvoice":
+      return "تغيير بيانات الفاتورة";
   }
   return "";
 }
@@ -123,6 +126,16 @@ void route_notifyto(typeNotify,context,
           ));
       break;
       case "AddPayment" :
+      Navigator.push(context,
+          CupertinoPageRoute(
+              builder: (context) => ProfileClient(
+                tabIndex: 1,
+                idClient: data==null?datanotify:data['idclient'],
+               // idclient:data==null?datanotify: data['idclient'],
+              )
+          ));
+      break;
+      case "EditInvoice" :
       Navigator.push(context,
           CupertinoPageRoute(
               builder: (context) => ProfileClient(

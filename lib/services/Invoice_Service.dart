@@ -241,6 +241,11 @@ class Invoice_Service {
         await Api().post(url:  url + "client/invoice/add_payment.php",body:  body);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
+  Future<InvoiceModel> editinvoice(Map<String, dynamic> body, String idInvoice) async {
+    var result =
+        await Api().post(url:  url + "client/invoice/edit_invoices.php",body:  body);
+    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
+  }
 
   Future<bool> updateProductInvoice(Map<String, dynamic> body, String idInvoiceProduct) async {
     String result = await Api().post(url: url + "client/invoice/updateinvoice_product.php", body: body);
