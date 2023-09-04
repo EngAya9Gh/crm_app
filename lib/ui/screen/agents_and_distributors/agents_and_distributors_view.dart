@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
@@ -124,7 +125,7 @@ class _AgentsAndDistributorsViewState extends State<AgentsAndDistributorsView>
 
   Future<T?> goToAgentsActionPage<T>(
       {AgentDistributorModel? agentDistributorModel}) {
-    return Navigator.of(context).push<T>(MaterialPageRoute(
+    return Navigator.of(context).push<T>(CupertinoPageRoute(
       builder: (context) => AgentAndDistributorsAction(
           agentDistributorModel: agentDistributorModel),
     ));

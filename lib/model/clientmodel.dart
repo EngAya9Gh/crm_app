@@ -1,26 +1,25 @@
 import 'package:crm_smart/Repository/cache_repo.dart';
 
-class ClientModel extends CacheRepository{
+class ClientModel extends CacheRepository {
   ClientModel({
-     this.idClients,
-     this.nameClient,
-     this.nameEnterprise,
-     this.typeJob,
-     this.city,
-     this.location,
-     this.fkRegoin,
-     this.fkcountry,
-     this.dateCreate,
-     this.typeClient,
-     this.fkUser,
-     this.dateTransfer,
-     this.mobile,
-     this.dateChangetype,
-     this.reasonChange,
-     this.reasonTransfer,
-     this.nameCountry,
-
-     this.nameUser,
+    this.idClients,
+    this.nameClient,
+    this.nameEnterprise,
+    this.typeJob,
+    this.city,
+    this.location,
+    this.fkRegoin,
+    this.fkcountry,
+    this.dateCreate,
+    this.typeClient,
+    this.fkUser,
+    this.dateTransfer,
+    this.mobile,
+    this.dateChangetype,
+    this.reasonChange,
+    this.reasonTransfer,
+    this.nameCountry,
+    this.nameUser,
     this.name_regoin,
     this.total,
     this.amount_paid,
@@ -30,7 +29,7 @@ class ClientModel extends CacheRepository{
     this.user_do,
     // this.value_back,
     // this.iduser_approve,
-    this.	isApprove,
+    this.isApprove,
     // this.nameuserApprove,
     this.nameuserdoning,
     // this.date_approve,
@@ -52,7 +51,10 @@ class ClientModel extends CacheRepository{
     this.activity_type_title,
     this.user_add,
     this.nameAdduser,
+    this.reason_change,
+    this.tag,
   });
+
   late final String? idClients;
   late final String? nameClient;
   late final String? nameEnterprise;
@@ -73,18 +75,20 @@ class ClientModel extends CacheRepository{
 
   late final String? nameUser;
   late final String? name_regoin;
-  late  String? total;
-  late  String? amount_paid;
+  late String? total;
+  late String? amount_paid;
 
   late final String? offer_price;
   late final String? date_price;
 
   late final String? user_do;
+
   // late final String? desc_reason;//منسحب
   // late final String? value_back;
   // late final String? iduser_approve;
-   String? 	isApprove;
-  late final String? 	nameuserdoning;
+  String? isApprove;
+  late final String? nameuserdoning;
+
   // late final String? 	nameuserApprove;
   // late final String? 	date_approve;
   //late  String? 	id_invoice;
@@ -92,25 +96,24 @@ class ClientModel extends CacheRepository{
   late final String? nameusertransfer;
   late final String? fkusertrasfer;
   late final String? mobileuser;
-  late  String? total_paid;
-  late  String? ismarketing;
-  late  String? address_client;
-  late  String? descActivController;
-  late  String? presystem;
-  late  String? presystemtitle;
-  late  String? sourcclient;
-  late  String? activity_type_fk;
-  late  String? activity_type_title;
-  late  String? phone='';
-  late  String?  user_add;
-  late  String? nameAdduser;
+  late String? total_paid;
+  late String? ismarketing;
+  late String? address_client;
+  late String? descActivController;
+  late String? presystem;
+  late String? presystemtitle;
+  late String? sourcclient;
+  late String? activity_type_fk;
+  late String? activity_type_title;
+  late String? phone = '';
+  late String? user_add;
+  late String? nameAdduser;
   String? date_visit_Client;
-  String?
-      name_city,
-      namemaincity,
-      id_maincity;
+  String? reason_change;
+  bool? tag;
+  String? name_city, namemaincity, id_maincity;
 
-  ClientModel.fromJson(Map<String, dynamic> json){
+  ClientModel.fromJson(Map<String, dynamic> json) {
     idClients = json['id_clients'];
     nameClient = json['name_client'];
     nameEnterprise = json['name_enterprise'];
@@ -133,15 +136,15 @@ class ClientModel extends CacheRepository{
     total = json['total'];
     amount_paid = json['amount_paid'];
     /////////////////////////////
-    offer_price=json['offer_price'];
-    date_price=json['date_price'];
+    offer_price = json['offer_price'];
+    date_price = json['date_price'];
 
     user_do = json['user_do'];
     // desc_reason=json['desc_reason'];
     // value_back=json['value_back'];
     // iduser_approve=json['iduser_approve'];
-    isApprove=json['isApprove'];
-    nameuserdoning=json['nameuserdoning'];//الموظف الي حول العميل
+    isApprove = json['isApprove'];
+    nameuserdoning = json['nameuserdoning']; //الموظف الي حول العميل
     //nameuserApprove=json['nameuserApprove'];//الموظف الي وافق على العميل معتمد الاشتراك
     //date_approve=json['date_approve'];  //
     //id_invoice=json['id_invoice'];  //
@@ -165,11 +168,12 @@ class ClientModel extends CacheRepository{
     user_add = json['user_add'];
     nameAdduser = json['nameAdduser'];
     date_visit_Client = json['date_visit_Client'];
-
+    reason_change = json['reason_change'];
+    tag = json['tag'] == "true";
   }
 
   Map<String, dynamic> toJson() {
-     final _data = <String, dynamic>{};
+    final _data = <String, dynamic>{};
     _data['id_clients'] = idClients;
     _data['name_client'] = nameClient;
     _data['name_enterprise'] = nameEnterprise;
@@ -191,38 +195,38 @@ class ClientModel extends CacheRepository{
     _data['total'] = total;
     _data['amount_paid'] = amount_paid;
     _data['nameUser'] = nameUser;
-     _data['offer_price'] = offer_price;
-     _data['date_price'] = date_price;
-     _data['user_do'] = user_do;
-     // _data['desc_reason'] = desc_reason;
-     // _data['value_back'] = value_back;
-     // _data['iduser_approve'] = iduser_approve;
-     _data['isApprove'] = 	isApprove;
-     _data['nameuserdoning'] = 	nameuserdoning;
-     // _data['nameuserApprove'] = 	nameuserApprove;
-     // _data['date_approve'] = 	date_approve;
-     //_data['id_invoice'] = 	id_invoice;
+    _data['offer_price'] = offer_price;
+    _data['date_price'] = date_price;
+    _data['user_do'] = user_do;
+    // _data['desc_reason'] = desc_reason;
+    // _data['value_back'] = value_back;
+    // _data['iduser_approve'] = iduser_approve;
+    _data['isApprove'] = isApprove;
+    _data['nameuserdoning'] = nameuserdoning;
+    // _data['nameuserApprove'] = 	nameuserApprove;
+    // _data['date_approve'] = 	date_approve;
+    //_data['id_invoice'] = 	id_invoice;
 
-     _data['nameusertransfer'] = nameusertransfer;
-     _data['fkusertrasfer'] = fkusertrasfer;
-     _data['mobileuser'] = mobileuser;
-     _data['total_paid'] = total_paid;
-     _data['ismarketing'] = ismarketing;
-     _data['city'] = city;
-     _data['name_city'] = name_city;
-     _data['namemaincity'] = namemaincity;
-     _data['id_maincity'] = id_maincity;
-     _data['address_client'] = address_client;
-     _data['descActivController'] = descActivController;
-     _data['presystem'] = presystem.toString().trim().isEmpty ?
-     null:presystem;
-     _data['presystemtitle'] = presystemtitle;
-     _data['sourcclient'] = sourcclient;
-     _data['activity_type_fk'] = activity_type_fk;
-     _data['activity_type_title'] = activity_type_title;
-     _data['phone'] = phone;
-     _data['user_add'] = user_add;
-     _data['nameAdduser'] = nameAdduser;
+    _data['nameusertransfer'] = nameusertransfer;
+    _data['fkusertrasfer'] = fkusertrasfer;
+    _data['mobileuser'] = mobileuser;
+    _data['total_paid'] = total_paid;
+    _data['ismarketing'] = ismarketing;
+    _data['city'] = city;
+    _data['name_city'] = name_city;
+    _data['namemaincity'] = namemaincity;
+    _data['id_maincity'] = id_maincity;
+    _data['address_client'] = address_client;
+    _data['descActivController'] = descActivController;
+    _data['presystem'] = presystem.toString().trim().isEmpty ? null : presystem;
+    _data['presystemtitle'] = presystemtitle;
+    _data['sourcclient'] = sourcclient;
+    _data['activity_type_fk'] = activity_type_fk;
+    _data['activity_type_title'] = activity_type_title;
+    _data['phone'] = phone;
+    _data['user_add'] = user_add;
+    _data['nameAdduser'] = nameAdduser;
+    _data['reason_change'] = reason_change;
     return _data;
   }
 

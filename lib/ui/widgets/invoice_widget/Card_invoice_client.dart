@@ -1,3 +1,4 @@
+import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
@@ -60,7 +61,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) => widget.type == 'profile'
                     ? ProfileClient(tabIndex: 1, idClient: widget.itemProd.fkIdClient.toString())
                     : InvoiceView(invoice: widget.itemProd),
@@ -105,10 +106,10 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        if(widget.itemProd.idInvoice != null)
+                        if (widget.itemProd.idInvoice != null)
                           Text(
                             "${widget.itemProd.idInvoice}#  ",
-                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold,color: Ktoast),
+                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold, color: Ktoast),
                           ),
                         if (widget.itemProd.address_invoice != null)
                           Expanded(
@@ -129,6 +130,25 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                           SizedBox.shrink(),
                       ],
                     ),
+                    SizedBox(height: 3),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "اسم المؤسسة: ",
+                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold, color: kMainColor),
+                        ),
+                        Expanded(
+                          child: Text(
+                            "${widget.itemProd.name_enterprise.toString()}",
+                            maxLines: 3,
+                            style: TextStyle(
+                                fontFamily: kfontfamily2, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 3),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -140,7 +160,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              widget.itemProd.total.toString(),
+                              formatNumber(num.tryParse(widget.itemProd.total ?? '0') ?? 0),
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
@@ -162,9 +182,8 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             SizedBox(width: 4),
                             if (widget.itemProd.total != null && widget.itemProd.amountPaid != null)
                               Text(
-                                ((num.tryParse(widget.itemProd.total?.toString() ?? '0') ?? 0) -
-                                        (num.tryParse(widget.itemProd.amountPaid?.toString() ?? '0') ?? 0))
-                                    .toStringAsFixed(2),
+                                formatNumber(((num.tryParse(widget.itemProd.total?.toString() ?? '0') ?? 0) -
+                                    (num.tryParse(widget.itemProd.amountPaid?.toString() ?? '0') ?? 0))),
                                 style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                               ),
                             Text(
@@ -190,7 +209,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              (widget.itemProd.amountPaid.toString()),
+                              formatNumber(num.tryParse(widget.itemProd.amountPaid ?? '0') ?? 0),
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
@@ -212,7 +231,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              widget.itemProd.renewYear.toString(),
+                                formatNumber(num.tryParse(widget.itemProd.renewYear ?? '0') ?? 0),
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
@@ -238,7 +257,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     //       onPressed: () {
                     //         Navigator.push(
                     //             context,
-                    //             MaterialPageRoute(
+                    //             CupertinoPageRoute(
                     //                 builder: (context) => addinvoice(
                     //                       //edit invoice
                     //                       itemClient: widget.itemClient,

@@ -2,6 +2,7 @@
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/invoiceModel.dart';
@@ -26,7 +27,7 @@ class card_deleted extends StatelessWidget {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
+              CupertinoPageRoute(
                 builder: (context) =>
                     view_deleted(
                          invoice: card),

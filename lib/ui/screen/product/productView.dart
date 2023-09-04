@@ -48,7 +48,7 @@ void initState() {
         backgroundColor: kMainColor,
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => addProduct()));
+              context, CupertinoPageRoute(builder: (context) => addProduct()));
         },
         tooltip: 'إضافة منتج',
         child: Icon(Icons.add),

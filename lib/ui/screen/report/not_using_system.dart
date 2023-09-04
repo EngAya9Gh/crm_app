@@ -85,7 +85,7 @@ class _not_using_systemState extends State<not_using_system> {
                                             child: InkWell(
                                               onTap: (){//pushReplacement
                                                 Navigator.push(context,
-                                                    MaterialPageRoute(builder:
+                                                    CupertinoPageRoute(builder:
                                                         (context) =>
                                                         ProfileClient(
                                                           idClient: value.

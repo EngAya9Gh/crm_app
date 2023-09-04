@@ -75,7 +75,7 @@ class _managmentpageState extends State<managmentpage> {
                         colorarrow: Colors.black,
                         onTap: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context) =>
+                              CupertinoPageRoute(builder: (context) =>
                                   AllUserScreen()));
                         },
                         title: 'إدارة المستخدمين')
@@ -86,7 +86,7 @@ class _managmentpageState extends State<managmentpage> {
                         colortitle: Colors.black,
                         colorarrow: Colors.black,
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => check_level()));
+                          Navigator.push(context, CupertinoPageRoute(builder: (context) => check_level()));
                         },
                         title: 'ادارة الصلاحيات')
                     : Container(),
@@ -98,7 +98,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => ProductView(),
                               fullscreenDialog: true,
                             ),
@@ -114,7 +114,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => config_view(),
                             ),
                           );
@@ -130,7 +130,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => change_country(),
                             ),
                           );
@@ -145,7 +145,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => regoinview(),
                             ),
                           );
@@ -160,7 +160,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => managview(),
                             ),
                           );
@@ -175,7 +175,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => resoan_view(type: 'client'),
                             ),
                           );
@@ -190,7 +190,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => maincityview(),
                             ),
                           );
@@ -205,7 +205,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => resoan_view(type: 'ticket'),
                             ),
                           );
@@ -219,7 +219,7 @@ class _managmentpageState extends State<managmentpage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute<void>(
+                        CupertinoPageRoute<void>(
                           builder: (BuildContext context) => activity_view(type: 'ticket'),
                         ),
                       );
@@ -232,7 +232,7 @@ class _managmentpageState extends State<managmentpage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute<void>(
+                        CupertinoPageRoute<void>(
                           builder: (BuildContext context) => company_view(type: 'ticket'),
                         ),
                       );
@@ -246,7 +246,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => participate_view(),
                             ),
                           );
@@ -261,7 +261,7 @@ class _managmentpageState extends State<managmentpage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute<void>(
+                            CupertinoPageRoute<void>(
                               builder: (BuildContext context) => AgentsAndDistributorsView(),
                             ),
                           );
@@ -277,7 +277,7 @@ class _managmentpageState extends State<managmentpage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute<void>(
+                      CupertinoPageRoute<void>(
                         builder: (BuildContext context) => BranchRaceManagementView(),
                       ),
                     );

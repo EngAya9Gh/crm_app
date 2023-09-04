@@ -1,5 +1,6 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +55,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                         onDeleteSucceed: () {
                           Navigator.of(context).pop();
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => login()),
+                            CupertinoPageRoute(builder: (context) => login()),
                             (route) => false,
                           );
                         },

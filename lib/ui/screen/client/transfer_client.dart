@@ -147,7 +147,7 @@ class _transferClientState extends State<transferClient> {
                             );
                             // Navigator.pop(context);
                             Navigator.pushAndRemoveUntil(context,
-                                MaterialPageRoute(
+                                CupertinoPageRoute(
                                     builder: (context) => ticketclientview()),
                                     (route) => false
                             );
@@ -182,7 +182,7 @@ class _transferClientState extends State<transferClient> {
 
                              Navigator.pop(context);
                             // Navigator.pushAndRemoveUntil(context,
-                            //     MaterialPageRoute(builder: (context)=>ticketclientview()),
+                            //     CupertinoPageRoute(builder: (context)=>ticketclientview()),
                             //         (route) => false
                             // );
                           }

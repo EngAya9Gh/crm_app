@@ -162,7 +162,7 @@ class _careViewState extends State<careView> {
                                   kMainColor)),
                           onPressed: () async{
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=>
+                                CupertinoPageRoute(builder: (context)=>
                             ticketall()
                                     // TicketView(
                                     //     ticketModel:
@@ -177,7 +177,7 @@ class _careViewState extends State<careView> {
                                   kMainColor)),
                           onPressed: () async{
                             Navigator.push(context,
-                                MaterialPageRoute(builder: (context)=>
+                                CupertinoPageRoute(builder: (context)=>
                                     ticketAdd(fk_client: widget.fk_client.toString(),)));
                           },
                           child: Text(' فتح تذكرة دعم ')) ,

@@ -15,7 +15,23 @@ class lastcommentclient_vm extends ChangeNotifier {
     isload = true;
     notifyListeners();
     final response = await Api().get(url: url + 'reports/get_lastcomment.php');
-    final list = List<LastcommentClientModel>.from((response ?? []).map((x) => LastcommentClientModel.fromJson(x)));
+    final list = List<LastcommentClientModel>.from((response ?? []).map((x) => LastcommentClientModel.fromJson(x)))
+      ..sort(
+        (a, b) =>
+            (num.tryParse(b.hoursLastComment ?? '0') ?? 0).compareTo(int.tryParse(a.hoursLastComment ?? '0') ?? 0),
+      );
+    final noCommentList = <LastcommentClientModel>[];
+    list.removeWhere((element) {
+      final isNoComment = num.parse(element.hoursLastComment.toString()) < 0;
+      if(isNoComment){
+        noCommentList.add(element);
+      }
+
+      return isNoComment;
+    });
+
+    list.insertAll(0, noCommentList);
+
     list_LastcommentClientModel = List.from(list);
     list_LastcommentClientModel_temp = List.from(list);
     isload = false;

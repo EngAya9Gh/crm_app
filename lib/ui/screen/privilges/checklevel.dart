@@ -42,7 +42,7 @@ class _check_levelState extends State<check_level> {
          onPressed: (){
            Navigator.push(
              context,
-             MaterialPageRoute<void>(
+             CupertinoPageRoute<void>(
                builder: (BuildContext context)
                => addLevel(),
                fullscreenDialog: true,
@@ -71,7 +71,7 @@ class _check_levelState extends State<check_level> {
                               child: InkWell(
                                 onTap: (){
                                   Navigator.push(context,
-                                      MaterialPageRoute(
+                                      CupertinoPageRoute(
                                           builder: (context)=>privilge_page(
                                             namelevel:_listlevel[index].nameLevel,
                                             fk_level: _listlevel[index].idLevel,

@@ -49,7 +49,7 @@ class _regoinviewState extends State<regoinview> {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            CupertinoPageRoute<void>(
               builder: (BuildContext context)
               => addregoin(
                 fk_country: null,
@@ -83,7 +83,7 @@ class _regoinviewState extends State<regoinview> {
                             child: InkWell(
                               onTap: (){
                                 Navigator.push(context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context)=>addregoin(
                                           fk_country: _listlevel[index].fk_country,
                                           nameregoin:

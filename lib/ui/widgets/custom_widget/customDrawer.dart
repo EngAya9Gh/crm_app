@@ -100,7 +100,7 @@ class CustomDrawer extends StatelessWidget {
             //   onTap: (){
             //     Navigator.push(
             //       context,
-            //       MaterialPageRoute<void>(
+            //       CupertinoPageRoute<void>(
             //         builder: (BuildContext context)
             //         => select_country(),
             //         fullscreenDialog: true,
@@ -121,7 +121,7 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute<void>(
+                  CupertinoPageRoute<void>(
                       builder: (BuildContext context) => UserScreen(
                           ismyprofile: 'yes',
                           userModel: Provider.of<user_vm_provider>(context, listen: false).currentUser
@@ -143,12 +143,13 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute<void>(builder: (BuildContext context) => usertest_view()),
+                  CupertinoPageRoute<void>(builder: (BuildContext context) => usertest_view()),
                 );
                 // ProductView();
               },
             ),
-            ListTile(
+            Provider.of<privilge_vm>(context, listen: true).checkprivlge('117') == true
+                ? ListTile(
               title: Text(
                 'سباق الفروع',
                 style: TextStyle(fontFamily: kfontfamily2),
@@ -160,11 +161,11 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
+                  CupertinoPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
                 );
                 // ProductView();
               },
-            ),
+            ):Container(),
             Provider.of<privilge_vm>(context, listen: true).checkprivlge('118') == true
                 ? ListTile(
                     title: Text(
@@ -178,7 +179,7 @@ class CustomDrawer extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
+                        CupertinoPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
                       );
                       // ProductView();
                     },
@@ -198,7 +199,7 @@ class CustomDrawer extends StatelessWidget {
                 await preferences.clear();
                 if (context.mounted) {
                   Navigator.pushAndRemoveUntil(
-                      context, MaterialPageRoute(builder: (context) => login()), (route) => false);
+                      context, CupertinoPageRoute(builder: (context) => login()), (route) => false);
                 }
 
                 // preferences.setBool(kKeepMeLoggedIn, false);

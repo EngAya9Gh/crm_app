@@ -26,7 +26,7 @@ class cardticket extends StatelessWidget {
       child: Center(
         child: InkWell(
           onTap: (){
-            Navigator.push(context, MaterialPageRoute(
+            Navigator.push(context, CupertinoPageRoute(
                 builder: (context)=>
                     ticketdetail(
                       type: '1',

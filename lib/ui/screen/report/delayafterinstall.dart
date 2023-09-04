@@ -1,6 +1,6 @@
 //
 
-import 'package:charts_flutter/flutter.dart' as fl;
+
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
@@ -14,13 +14,14 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import '../../widgets/custom_widget/row_edit.dart';
 
 class delayafterinstall extends StatefulWidget {
   const delayafterinstall({Key? key}) : super(key: key);
@@ -146,48 +147,48 @@ print(type);
                     child:
                     Consumer<user_vm_provider>(
                       builder: (context, cart, child){
-                        return  DropdownSearch<UserModel>(
-                          mode: Mode.DIALOG,
-                          // label: " الموظف ",
-                          //hint: 'الموظف',
-                          //onFind: (String filter) => cart.getfilteruser(filter),
-                          filterFn: (user, filter) => user!.getfilteruser(filter!),
-                          //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                          // itemAsString: (UserModel u) => u.userAsStringByName(),
-                          items: cart.userall,
-                          itemAsString: (u) => u!.userAsString(),
-                          onChanged: (data) {
-                            iduser=data!.idUser!;
-                            // idregoin='';
-                            cart.changevalueuser(data);
-                            getData();
-                            //filtershow();
-                          } ,
-                          selectedItem: cart.selecteduser,
-                          showSearchBox: true,
-                          dropdownSearchDecoration:
-                          InputDecoration(
-                            //filled: true,
-                            isCollapsed: true,
-                            hintText: 'الموظف',
-                            alignLabelWithHint: true,
-                            fillColor:  Colors.grey.withOpacity(0.2),
-                            //labelText: "choose a user",
-                            contentPadding: EdgeInsets.all(0),
-                            //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                            // focusedBorder: OutlineInputBorder(
-                            //     borderRadius: BorderRadius.circular(10),
-                            //     borderSide: const BorderSide(color: Colors.white)),
-                            border:
-                            UnderlineInputBorder(
-                                borderSide: const BorderSide(  color: Colors.grey)
+                        return  Row(
+                          children: [
+                            if(cart.selecteduser != null)
+                              ...{
+                                IconButton(
+                                    onPressed: () {
+                                      iduser = '';
+                                      cart.changevalueuser(null);
+                                      getData();
+                                    },
+                                    icon: Icon(Icons.highlight_off)),
+                                SizedBox(width: 10),
+                              },
+                            Expanded(
+                              child: DropdownSearch<UserModel>(
+                                mode: Mode.DIALOG,
+                                filterFn: (user, filter) => user!.getfilteruser(filter!),
+                                compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                                items: cart.usersSupportManagement,
+                                itemAsString: (u) => u!.userAsString(),
+                                onChanged: (data) {
+                                  iduser=data!.idUser!;
+                                  cart.changevalueuser(data);
+                                  getData();
+                                } ,
+                                selectedItem: cart.selecteduser,
+                                showSearchBox: true,
+                                dropdownSearchDecoration:
+                                InputDecoration(
+                                  isCollapsed: true,
+                                  hintText: 'الموظف',
+                                  alignLabelWithHint: true,
+                                  fillColor:  Colors.grey.withOpacity(0.2),
+                                  contentPadding: EdgeInsets.all(0),
+                                  border:
+                                  UnderlineInputBorder(
+                                      borderSide: const BorderSide(  color: Colors.grey)
+                                  ),
+                                ),
+                              ),
                             ),
-                            // OutlineInputBorder(
-                            //     borderRadius: BorderRadius.circular(10),
-                            //     borderSide: const BorderSide( color: Colors.white)),
-                          ),
-                          // InputDecoration(border: InputBorder.none),
-
+                          ],
                         );
 
                       },
@@ -326,7 +327,11 @@ print(type);
                       child: Column(
                         // scrollDirection: Axis.horizontal,
                           children:[
-
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: RowEdit(name: "عدد العملاء",des: listInvoicesAccept.length.toString(),
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                            ),
                             Container(
                               height: MediaQuery.of(context).size.height*0.65,
                               child: Padding(
@@ -355,7 +360,7 @@ print(type);
                                               child: InkWell(
                                                 onTap: (){//pushReplacement
                                                   Navigator.push(context,
-                                                      MaterialPageRoute(builder:
+                                                      CupertinoPageRoute(builder:
                                                           (context) =>
                                                           ProfileClient(
                                                             idClient: listInvoicesAccept[index].fkIdClient,)));

@@ -2,16 +2,16 @@
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:flutter/material.dart';
 import 'dart:io';
 import '../constants.dart';
 
 class UserService{
 
-Future<UserModel> addUser(body) async {
+Future<UserModel> addUser(body , String params ) async {
   var data = await Api().post(
-    url:url+'users/addUser.php',
+    url:url+'users/addUser.php?$params',
     body:body,
-    //token: '',
   );
    if(data=='repeatuser'){
      UserModel usermodel=UserModel(
@@ -26,11 +26,12 @@ Future<UserModel> addUser(body) async {
 Future<UserModel> UpdateUser({
   required String? idUser,
   required Map<String, dynamic> body,
-  File? file
+  File? file,
+  String params = ''
 }) async {
 
 var data = await Api().postRequestWithFile('array',
-   url+'users/updateuser_patch.php?id_user=$idUser',
+   url+'users/updateuser_patch.php?id_user=$idUser$params',
    body,
    file,null,
   );

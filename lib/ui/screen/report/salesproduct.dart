@@ -1,9 +1,10 @@
-import 'package:charts_flutter/flutter.dart' as fl;
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
+import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
+import 'package:crm_smart/ui/screen/report/is_marketing_chekbox.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/rowtitle.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
@@ -43,9 +44,12 @@ class _salesproductState extends State<salesproduct> {
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   late privilge_vm privilegeVm;
+  bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
+    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
@@ -64,7 +68,7 @@ class _salesproductState extends State<salesproduct> {
     //       .checkprivlge('89')==true)
     //    type='userSum';
     // });
-
+    if(!haveMarketingPrivilege)
     getData();
   }
 
@@ -93,23 +97,29 @@ class _salesproductState extends State<salesproduct> {
       String params = '';
       if (typeproduct == 'أجهزة') params = '&product=0';
       if (typeproduct == 'برامج') params = '&product=1';
+      String isMarketingParams = '';
+      if(isMarketing){
+        isMarketingParams = '&ismarketing=1';
+      }else{
+        isMarketingParams = '';
+      }
       var data;
       var endPoint;
       switch (type) {
         case "userSum":
-          endPoint = "reports/sales_product.php?fk_country=$fkCountry$paramPrivilege$params";
+          endPoint = "reports/sales_product.php?fk_country=$fkCountry$paramPrivilege$params$isMarketingParams";
           break;
         case "dateyear":
           endPoint =
-              "reports/sales_product.php?fk_country=$fkCountry&year=${_selectedDate.year.toString()}$paramPrivilege$params";
+              "reports/sales_product.php?fk_country=$fkCountry&year=${_selectedDate.year.toString()}$paramPrivilege$params$isMarketingParams";
           break;
         case "datemonth":
           endPoint =
-              "reports/sales_product.php?fk_country=$fkCountry&month=${_selectedDatemonth.toString()}$paramPrivilege$params";
+              "reports/sales_product.php?fk_country=$fkCountry&month=${_selectedDatemonth.toString()}$paramPrivilege$params$isMarketingParams";
           break;
         case "datedays":
           endPoint =
-              "reports/sales_product.php?fk_country=$fkCountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramPrivilege$params";
+              "reports/sales_product.php?fk_country=$fkCountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramPrivilege$params$isMarketingParams";
           break;
       }
 
@@ -153,7 +163,7 @@ class _salesproductState extends State<salesproduct> {
               color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.normal,
-              textstring: tempData[i].y.toStringAsFixed(2),
+              textstring: formatNumber(tempData[i].y),
               underline: TextDecoration.none,
             )),
             DataCell(TextUtilis(
@@ -307,43 +317,44 @@ class _salesproductState extends State<salesproduct> {
                           ),
                           child: Consumer<user_vm_provider>(
                             builder: (context, cart, child) {
-                              return DropdownSearch<UserModel>(
-                                mode: Mode.DIALOG,
-                                // label: " الموظف ",
-                                //hint: 'الموظف',
-                                //onFind: (String filter) => cart.getfilteruser(filter),
-                                filterFn: (user, filter) => user!.getfilteruser(filter!),
-                                //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                                // itemAsString: (UserModel u) => u.userAsStringByName(),
-                                items: cart.userall,
-                                itemAsString: (u) => u!.userAsString(),
-                                onChanged: (data) {
-                                  iduser = data!.idUser!;
-                                  // idregoin='';
-                                  cart.changevalueuser(data);
-                                  getData();
-                                  //filtershow();
-                                },
-                                selectedItem: cart.selecteduser,
-                                showSearchBox: true,
-                                dropdownSearchDecoration: InputDecoration(
-                                  //filled: true,
-                                  isCollapsed: true,
-                                  hintText: 'الموظف',
-                                  alignLabelWithHint: true,
-                                  fillColor: Colors.grey.withOpacity(0.2),
-                                  //labelText: "choose a user",
-                                  contentPadding: EdgeInsets.all(0),
-                                  //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                  // focusedBorder: OutlineInputBorder(
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //     borderSide: const BorderSide(color: Colors.white)),
-                                  border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                                  // OutlineInputBorder(
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //     borderSide: const BorderSide( color: Colors.white)),
-                                ),
-                                // InputDecoration(border: InputBorder.none),
+                              return Row(
+                                children: [
+                                  if(cart.selecteduser != null)
+                                    ...{
+                                      IconButton(
+                                          onPressed: () {
+                                            iduser = '0';
+                                            cart.changevalueuser(null);
+                                            getData();
+                                          },
+                                          icon: Icon(Icons.highlight_off)),
+                                      SizedBox(width: 10),
+                                    },
+                                  Expanded(
+                                    child: DropdownSearch<UserModel>(
+                                      mode: Mode.DIALOG,
+                                      filterFn: (user, filter) => user!.getfilteruser(filter!),
+                                      compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                                      items: cart.usersSalesManagement,
+                                      itemAsString: (u) => u!.userAsString(),
+                                      onChanged: (data) {
+                                        iduser = data!.idUser!;
+                                        cart.changevalueuser(data);
+                                        getData();
+                                      },
+                                      selectedItem: cart.selecteduser,
+                                      showSearchBox: true,
+                                      dropdownSearchDecoration: InputDecoration(
+                                        isCollapsed: true,
+                                        hintText: 'الموظف',
+                                        alignLabelWithHint: true,
+                                        fillColor: Colors.grey.withOpacity(0.2),
+                                        contentPadding: EdgeInsets.all(0),
+                                        border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           ),
@@ -351,6 +362,12 @@ class _salesproductState extends State<salesproduct> {
                       : Container(),
                 ),
               ],
+            ),
+            IsMarketingCheckbox(
+              onChange: (value) {
+                isMarketing = value;
+                getData();
+              },
             ),
             Provider.of<selected_button_provider>(context, listen: true).isbarsales == 0
                 ? TextFormField(
@@ -568,7 +585,9 @@ class _salesproductState extends State<salesproduct> {
                         controller: GroupButtonController(
                           selectedIndex: selectedProvider.isbarsalestype,
                         ),
-                        options: GroupButtonOptions(buttonWidth: (MediaQuery.of(context).size.width / 3) - 16, borderRadius: BorderRadius.circular(10)),
+                        options: GroupButtonOptions(
+                            buttonWidth: (MediaQuery.of(context).size.width / 3) - 16,
+                            borderRadius: BorderRadius.circular(10)),
                         buttons: ['الكل', 'أجهزة', 'برامج'],
                         onSelected: (_, index, isselected) {
                           print(index);
@@ -619,7 +638,7 @@ class _salesproductState extends State<salesproduct> {
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text('إجمالي المبيعات'),
-                                        Text(totalval.toStringAsFixed(2)),
+                                        Text(formatNumber(totalval)),
                                       ],
                                     ),
                                     Container(

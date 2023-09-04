@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:ffi';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +33,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-
+      context.read<user_vm_provider>().changevalueuser(null,true);
       Provider.of<lastcommentclient_vm>(context, listen: false)
         .getLastcommentClientModel();
 
@@ -111,41 +112,45 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                   ),
                   child: Consumer<user_vm_provider>(
                     builder: (context, cart, child) {
-                      return DropdownSearch<UserModel>(
-                        mode: Mode.DIALOG,
-                        // label: " الموظف ",
-                        //hint: 'الموظف',
-                        //onFind: (String filter) => cart.getfilteruser(filter),
-                        filterFn: (user, filter) => user!.getfilteruser(filter!),
-                        //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                        // itemAsString: (UserModel u) => u.userAsStringByName(),
-                        items: cart.userall,
-                        itemAsString: (u) => u!.userAsString(),
-                        onChanged: (data) {
-                          idUser = data!.idUser;
-                          cart.changevalueuser(data);
-                          Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
-                        },
-                        selectedItem: cart.selecteduser,
-                        showSearchBox: true,
-                        dropdownSearchDecoration: InputDecoration(
-                          //filled: true,
-                          isCollapsed: true,
-                          hintText: 'الموظف',
-                          alignLabelWithHint: true,
-                          fillColor: Colors.grey.withOpacity(0.2),
-                          //labelText: "choose a user",
-                          contentPadding: EdgeInsets.all(0),
-                          //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                          // focusedBorder: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: const BorderSide(color: Colors.white)),
-                          border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                          // OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: const BorderSide( color: Colors.white)),
-                        ),
-                        // InputDecoration(border: InputBorder.none),
+                      return Row(
+                        children: [
+                          if(cart.selecteduser != null)
+                            ...{
+                              IconButton(
+                                  onPressed: () {
+                                    idUser = '';
+                                    cart.changevalueuser(null);
+                                    Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
+                                  },
+                                  icon: Icon(Icons.highlight_off)),
+                              SizedBox(width: 10),
+                            },
+                          Expanded(
+                            child: DropdownSearch<UserModel>(
+                              mode: Mode.DIALOG,
+                              filterFn: (user, filter) => user!.getfilteruser(filter!),
+                              compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                              items: cart.usersMarketingManagement,
+                              itemAsString: (u) => u!.userAsString(),
+                              onChanged: (data) {
+                                idUser = data!.idUser;
+                                cart.changevalueuser(data);
+                                Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
+                              },
+                              selectedItem: cart.selecteduser,
+                              showSearchBox: true,
+                              dropdownSearchDecoration: InputDecoration(
+                                isCollapsed: true,
+                                hintText: 'الموظف',
+                                alignLabelWithHint: true,
+                                fillColor: Colors.grey.withOpacity(0.2),
+                                contentPadding: EdgeInsets.all(0),
+                                border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                              ),
+                              // InputDecoration(border: InputBorder.none),
+                            ),
+                          ),
+                        ],
                       );
                     },
                   ),
@@ -192,7 +197,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                       onTap: () {
                                         Navigator.push(
                                             context,
-                                            MaterialPageRoute(
+                                            CupertinoPageRoute(
                                                 builder: (context) => ProfileClient(
                                                     tabIndex: 2,
                                                     client: Provider.of<lastcommentclient_vm>(context, listen: false)
@@ -204,7 +209,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                         .idClients)));
                                         // Navigator.push(
                                         //     context,
-                                        //     MaterialPageRoute(
+                                        //     CupertinoPageRoute(
                                         //         builder: (context) =>
                                         //         lastcomment_page(
                                         //           LastcommentClient:
@@ -251,7 +256,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                                       .hoursLastComment
                                                                       .toString()) <
                                                                   0
-                                                              ? '0'
+                                                              ? 'لا يوجد اي تعليق'
                                                               : Provider.of<lastcommentclient_vm>(context, listen: false)
                                                                       .list_LastcommentClientModel[index]
                                                                       .hoursLastComment

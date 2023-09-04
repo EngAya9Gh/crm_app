@@ -37,7 +37,7 @@ class marketingpage extends StatelessWidget {
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         clientmarketing()));
           }, title: 'عملاء التسويق الإلكتروني'):Container(),
@@ -48,31 +48,31 @@ class marketingpage extends StatelessWidget {
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         invoice_marketing()));
               },
               title: 'فواتير عملاء التسويق الإلكتروني'):Container(),
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('55')==true ?
-          buildSelectCategory(
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                // Navigator.push(context, MaterialPageRoute(
-                //     builder: (context)=>
-                //         invoice_marketing()
-                // ));
-              },
-              title: 'تقرير التسويق الإلكتروني'):Container(),
+          // Provider.of<privilge_vm>(context,listen: true)
+          //     .checkprivlge('55')==true ?
+          // buildSelectCategory(
+          //     colorbag: Colors.white,
+          //     colortitle: Colors.black,
+          //     colorarrow: Colors.black,
+          //     onTap: () {
+          //       // Navigator.push(context, CupertinoPageRoute(
+          //       //     builder: (context)=>
+          //       //         invoice_marketing()
+          //       // ));
+          //     },
+          //     title: 'تقرير التسويق الإلكتروني'):Container(),
           Provider.of<privilge_vm>(context,listen: true).checkprivlge('119') == true?
           buildSelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         getLastCommentClient()
                 ));

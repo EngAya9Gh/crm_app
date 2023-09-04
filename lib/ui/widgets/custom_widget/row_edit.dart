@@ -5,13 +5,20 @@ import 'package:flutter/material.dart';
 class RowEdit extends StatelessWidget {
   final String name;
   final String? des;
+  final MainAxisAlignment mainAxisAlignment;
 
-  const RowEdit({required this.name, this.des, Key? key}) : super(key: key);
+  const RowEdit({
+    required this.name,
+    this.des,
+    Key? key,
+    this.mainAxisAlignment = MainAxisAlignment.start,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: mainAxisAlignment,
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         TextUtilis(
           color: Colors.black,

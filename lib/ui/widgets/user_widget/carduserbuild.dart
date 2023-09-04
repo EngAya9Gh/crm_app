@@ -23,7 +23,7 @@ class buildCardUsers extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context,
-              MaterialPageRoute(
+              CupertinoPageRoute(
                   builder: (context) => UserScreen(
                       userModel: usermodell
                     //index: index,

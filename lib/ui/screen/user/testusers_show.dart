@@ -24,7 +24,7 @@ class testuser_show extends StatelessWidget {
     onPressed: () {
 
       Navigator.push(context,
-          MaterialPageRoute(
+          CupertinoPageRoute(
               builder: (context)=> addusertest(idregoin: userTestModel.id_usertest,
                 nameusertest: userTestModel.nameusertest,des_usertest: userTestModel.des_usertest,)));
 

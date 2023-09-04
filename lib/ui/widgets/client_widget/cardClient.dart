@@ -48,7 +48,7 @@ class cardClient extends StatelessWidget {
             //splashColor: Colors.blue.withAlpha(30),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) =>
+                  CupertinoPageRoute(builder: (context) =>
                       editclient(
                     itemClient: itemClient, fkclient: itemClient.idClients.toString(),
                   fkuser: itemClient.fkUser.toString(),)
@@ -104,7 +104,7 @@ ${itemClient.nameEnterprise.toString().substring(45,itemClient.nameEnterprise.to
                             //       onPressed: () {
                             //
                             //         Navigator.push(context,
-                            //             MaterialPageRoute(
+                            //             CupertinoPageRoute(
                             //                 builder: (context)=>
                             //                     editclient(
                             //                       itemClient:itemClient,
@@ -142,7 +142,7 @@ ${itemClient.nameEnterprise.toString().substring(45,itemClient.nameEnterprise.to
                             onpress: () {
                               //iduser
                               Navigator.push(context,
-                                  MaterialPageRoute(
+                                  CupertinoPageRoute(
                                       builder: (context)=>
                                           invoices(
                                             itemClient:itemClient,

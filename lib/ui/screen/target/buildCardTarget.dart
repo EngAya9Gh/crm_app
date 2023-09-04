@@ -25,7 +25,7 @@ class buildCardTarget extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context,
-              MaterialPageRoute(
+              CupertinoPageRoute(
                   builder: (context) => TargetUser(
                         target: target,
                       )));

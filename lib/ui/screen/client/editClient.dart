@@ -126,12 +126,14 @@ class _editclientState extends State<editclient> {
     regoinController.text = widget.itemClient.name_regoin!.toString();
     usernameclientController.text =
         widget.itemClient.address_client == null ? '' : widget.itemClient.address_client.toString();
+
+    resaonController.text =
+        widget.itemClient.reason_change == null ? '' : widget.itemClient.reason_change.toString();
     //////////////////////////////////////////////////////////
 
     offerpriceController.text = widget.itemClient.offer_price == null || widget.itemClient.offer_price == ""
         ? ""
         : widget.itemClient.offer_price!;
-    print(offerpriceController.text);
     // resaonController.text=widget.itemClient.reasonChange==null||widget.itemClient.reasonChange==""
     //     ? null:widget.itemClient.reasonChange!.toString();//
 
@@ -176,7 +178,6 @@ class _editclientState extends State<editclient> {
                   widget.itemClient.typeClient == "مستبعد"
               ? ['تفاوض', 'عرض سعر', 'مستبعد']
               : [];
-      print(widget.itemClient.typeClient);
       // widget.itemClient.typeClient=="مشترك"?
       // ['منسحب','مشترك']//'مستبعد'
       //     :
@@ -184,17 +185,13 @@ class _editclientState extends State<editclient> {
       // ['مشترك','منسحب']
       //     :['تفاوض','عرض سعر','مستبعد'];
       // widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
-    if(   widget.itemClient.typeClient == "تفاوض" ||
-              widget.itemClient.typeClient == "عرض سعر" ||
-              widget.itemClient.typeClient == "مستبعد")
-          typeclient_provider.selectedValuemanag = widget.itemClient.typeClient.toString();
-           if(widget.itemClient.typeClient == "مشترك")
-             typeclient_provider.selectedValuemanag =null;
+      if (widget.itemClient.typeClient == "تفاوض" ||
+          widget.itemClient.typeClient == "عرض سعر" ||
+          widget.itemClient.typeClient == "مستبعد")
+        typeclient_provider.selectedValuemanag = widget.itemClient.typeClient.toString();
+      if (widget.itemClient.typeClient == "مشترك") typeclient_provider.selectedValuemanag = null;
       typeclient_provider.changevalue(typeclient_provider.selectedValuemanag);
-      print('typeclient_provider.selectedValuemanag ');
-      print( typeclient_provider.selectedValuemanag );
-      print('widget.itemClient.typeClient ' );
-      print( widget.itemClient.typeClient   );
+
       //typeclient_provider.getreasons('client');
       // typeclient_provider.selectedValuemanag=
       //     widget.itemClient.typeClient.toString();
@@ -673,9 +670,10 @@ class _editclientState extends State<editclient> {
                     Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == false
                         ? Container()
                         : typeclient_provider.selectedValuemanag == "عرض سعر"
-                            ?  Row(
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Flexible(
+                                  Expanded(
                                     flex: 3,
                                     child: EditTextFormField(
                                       hintText: 'عرض سعر',
@@ -685,6 +683,7 @@ class _editclientState extends State<editclient> {
                                       inputType: TextInputType.number,
                                     ),
                                   ),
+                                  SizedBox(width: 10),
                                   Expanded(
                                     flex: 5,
                                     child: TextFormField(
@@ -713,7 +712,7 @@ class _editclientState extends State<editclient> {
                                   ),
                                 ],
                               )
-                            :  Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
+                            : Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') ==  false
                                 ? Container()
                                 : typeclient_provider.selectedValuemanag == "مستبعد"
                                     ? EditTextFormField(
@@ -737,7 +736,7 @@ class _editclientState extends State<editclient> {
                     //               kMainColor)),
                     //       onPressed: () {
                     //
-                    //         Navigator.push(context,MaterialPageRoute(
+                    //         Navigator.push(context,CupertinoPageRoute(
                     //             builder: (context)=>transferClient(
                     //            name_enterprise:  widget.itemClient.nameEnterprise.toString(),
                     //              idclient:   widget.itemClient.idClients.toString(),

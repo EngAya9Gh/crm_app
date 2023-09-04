@@ -256,7 +256,7 @@ class _careAddState extends State<careAdd> {
                                 kMainColor)),
                         onPressed: () async{
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (context)=>
+                              CupertinoPageRoute(builder: (context)=>
                                   ProfileClient(
                                     idClient: widget.com.fkClient ,
                                   )));
@@ -334,7 +334,7 @@ class _careAddState extends State<careAdd> {
     Navigator.pop(context);
 
     // Navigator.push(context,
-    //     MaterialPageRoute(builder: (context)=>
+    //     CupertinoPageRoute(builder: (context)=>
     //         care_page_view()),
     //        // (route) => false
     // );

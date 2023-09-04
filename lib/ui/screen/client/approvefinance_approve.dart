@@ -11,8 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+
 class ApproveFinancePage extends StatefulWidget {
-  ApproveFinancePage({ Key? key}) : super(key: key);
+  ApproveFinancePage({Key? key}) : super(key: key);
 
   @override
   _ApproveFinancePageState createState() => _ApproveFinancePageState();
@@ -20,10 +21,16 @@ class ApproveFinancePage extends StatefulWidget {
 
 class _ApproveFinancePageState extends State<ApproveFinancePage> {
   String? regoin;
+  late TextEditingController _searchTextField;
+  late invoice_vm _invoiceViewModel;
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_)async{
-      Provider.of<regoin_vm>(context,listen: false).changeVal(null);
+    _searchTextField = TextEditingController();
+    _searchTextField.addListener(onSearch);
+    _invoiceViewModel = context.read<invoice_vm>();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
       // if( Provider.of<privilge_vm>(context,listen: false)
       //     .checkprivlge('7'))
       //   await Provider.of<invoice_vm>(context, listen: false)
@@ -34,27 +41,22 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
       // await   Provider.of<invoice_vm>(context, listen: false)
       //        .getinvoices();
 ///////////////////////////////////////////////////////
-      if( Provider.of<privilge_vm>(context,listen: false)
-          .checkprivlge('111')==true)
-        Provider.of<invoice_vm>(context, listen: false)
-            .getinvoice_Local('مشترك','not approved','finance');
+      if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('111') == true)
+        _invoiceViewModel.getinvoice_Local('مشترك', 'not approved', 'finance');
       // else{
       //   if( Provider.of<privilge_vm>(context,listen: false)
       //       .checkprivlge('7')==true)
       //     Provider.of<invoice_vm>(context, listen: false)
       //         .getinvoice_Local('مشترك','not approved','regoin');
       // }
-
     });
     //Provider.of<notifyvm>(context,listen: false).getNotification();
     super.initState();
   }
+
   @override
   void didChangeDependencies() {
-
     Future.delayed(Duration(milliseconds: 10)).then((_) async {
-
-
       // if( Provider.of<privilge_vm>(context,listen: false)
       //      .checkprivlge('7'))
       //  await    Provider.of<approve_vm>(context, listen: false)
@@ -68,21 +70,44 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void dispose() {
+    _searchTextField
+      ..removeListener(onSearch)
+      ..dispose();
+    super.dispose();
+  }
 
+  void onSearch() {
+    _invoiceViewModel.onSearch(_searchTextField.text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,title:Text( 'طلبات اعتماد المالية',
-        style:
-        TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),),
+        centerTitle: true,
+        title: Text(
+          'طلبات اعتماد المالية',
+          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+        ),
       ),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: Padding(
-            padding: const EdgeInsets.only(top: 10,bottom: 2),
+            padding: const EdgeInsets.only(top: 10, bottom: 2),
             child: ListView(
               children: [
-
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: TextField(
+                    controller: _searchTextField,
+                    decoration: InputDecoration(
+                      isDense: true,
+                      hintText: "ابحث هنا...",
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 //
@@ -128,53 +153,43 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                 //     hintnamefilter,''
                 // ),
                 Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.9,
-                  child:
-                  Consumer<invoice_vm> (
-                      builder: (context,value,child) {
-                        return
-                          value.isloading==true?
-                          Center(child: CircularProgressIndicator()):
-                          value.listInvoicesAccept.length==0?
-                          Center(
-                              child: Text(messageNoData)):
-                          Column(
-                            children: [
-                              Expanded(
-                                //flex: 1,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.vertical,
-                                    itemCount: value.listInvoicesAccept.length,
-                                    itemBuilder: (context, index) {
-                                      return SingleChildScrollView(
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(2),
-                                            child: cardapprove1(
-                                              type: 'f',
-                                              itemapprove :
-                                              value.listInvoicesAccept[index],
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  child: Consumer<invoice_vm>(
+                    builder: (context, value, child) {
+                      final list =
+                          _searchTextField.text.isEmpty ? value.listInvoicesAccept : value.listApproveFinanceFilter;
 
-                                              //data: widget.data,
-                                            ),
-                                          ));
-                                    }),
-                              ),
-                            ],
-                          );
-                      } ),
+                      return value.isloading == true
+                          ? Center(child: CircularProgressIndicator())
+                          : list.length == 0
+                              ? Center(child: Text(messageNoData))
+                              : Column(
+                                  children: [
+                                    Expanded(
+                                      child: ListView.builder(
+                                          scrollDirection: Axis.vertical,
+                                          itemCount: list.length,
+                                          itemBuilder: (context, index) {
+                                            return SingleChildScrollView(
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(2),
+                                                child: cardapprove1(type: 'f', itemapprove: list[index]),
+                                              ),
+                                            );
+                                          }),
+                                    ),
+                                  ],
+                                );
+                    },
+                  ),
                 ),
               ],
-            )  ),
+            )),
       ),
     );
   }
 
   void filtershow() {
-    Provider.of<invoice_vm>(context,listen: false).
-    getfilterview(regoin,'not');
-
+    Provider.of<invoice_vm>(context, listen: false).getfilterview(regoin, 'not');
   }
 }

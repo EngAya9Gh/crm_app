@@ -99,7 +99,7 @@ class _TransferPageState extends State<TransferPage> {
                                             child: InkWell(
                                             onTap: (){//pushReplacement
                                             Navigator.push(context,
-                                            MaterialPageRoute(builder:
+                                            CupertinoPageRoute(builder:
                                             (context) =>
                                                 ProfileClient(
                                                   clientTransfer: 'transfer',

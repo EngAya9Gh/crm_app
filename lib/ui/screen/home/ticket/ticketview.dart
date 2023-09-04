@@ -134,7 +134,7 @@ class _TicketViewState extends State<TicketView> {
                               kMainColor)),
                       onPressed: () {
 
-                        Navigator.push(context,MaterialPageRoute(
+                        Navigator.push(context,CupertinoPageRoute(
                             builder: (context)=>transferClient(
                               name_enterprise:   widget.ticketModel.nameEnterprise.toString(),
                               idclient:    widget.ticketModel.fkClient.toString(),
@@ -153,7 +153,7 @@ class _TicketViewState extends State<TicketView> {
                             kMainColor)),
                     onPressed: () {
 
-                      Navigator.push(context,MaterialPageRoute(
+                      Navigator.push(context,CupertinoPageRoute(
                           builder: (context)=>ProfileClient(
                          idClient:    widget.ticketModel.fkClient.toString(),
                           )

@@ -10,8 +10,15 @@ import 'communcation_view_widget.dart';
 import 'package:collection/collection.dart';
 
 class care_client_view extends StatefulWidget {
-  care_client_view({required this.fk_client, Key? key}) : super(key: key);
+  care_client_view({
+    required this.fk_client,
+    Key? key,
+    this.tabCareIndex = 0,
+    required this.idCommunication,
+  }) : super(key: key);
   String fk_client;
+  int tabCareIndex;
+  String idCommunication;
 
   @override
   _care_client_viewState createState() => _care_client_viewState();
@@ -21,6 +28,12 @@ class _care_client_viewState extends State<care_client_view> {
   // List<CommunicationModel> listCommunication = [];
   // List<TicketModel> listticket_client = [];
   // TicketModel? ttc;
+
+  Map tabsToIndex = {
+    0: "ترحيب",
+    1: "تركيب",
+    2: "دوري",
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -39,11 +52,16 @@ class _care_client_viewState extends State<care_client_view> {
     return Consumer<communication_vm>(builder: (context, communicationVm, _) {
       final carteClientState = communicationVm.careClientState;
       final isLoading = communicationVm.isLoadingCareClient;
+
+      final initialIndex = carteClientState.keys.toList().indexOf(tabsToIndex[widget.tabCareIndex]) == -1
+          ? 0
+          : carteClientState.keys.toList().indexOf(tabsToIndex[widget.tabCareIndex]);
       if (isLoading) {
         return Center(child: CircularProgressIndicator.adaptive());
       }
       return DefaultTabController(
         length: carteClientState.keys.length,
+        initialIndex: initialIndex,
         child: Builder(builder: (context) {
           return Column(
             children: [
@@ -51,8 +69,10 @@ class _care_client_viewState extends State<care_client_view> {
                 controller: DefaultTabController.of(context),
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
                 indicator: _CustomIndicator(color: kMainColor),
-                unselectedLabelStyle: context.textTheme.titleMedium?.copyWith(color: Colors.grey.shade700,fontFamily: kfontfamily2),
-                labelStyle: context.textTheme.titleMedium?.copyWith(color: kMainColor,fontWeight: FontWeight.w800,fontFamily: kfontfamily2),
+                unselectedLabelStyle:
+                    context.textTheme.titleMedium?.copyWith(color: Colors.grey.shade700, fontFamily: kfontfamily2),
+                labelStyle: context.textTheme.titleMedium
+                    ?.copyWith(color: kMainColor, fontWeight: FontWeight.w800, fontFamily: kfontfamily2),
                 labelColor: kMainColor,
                 unselectedLabelColor: Colors.grey.shade700,
                 splashBorderRadius: BorderRadius.circular(15),
@@ -65,7 +85,10 @@ class _care_client_viewState extends State<care_client_view> {
                     final list = carteClientState.values.toList()[i];
 
                     return ListView.separated(
-                      itemBuilder: (context, index) => communcation_view_widget(element: list[index]),
+                      itemBuilder: (context, index) => communcation_view_widget(
+                        element: list[index],
+                        initiallyExpanded: list[index].idCommunication == widget.idCommunication,
+                      ),
                       separatorBuilder: (context, index) => SizedBox(height: 10),
                       itemCount: list.length,
                     );
@@ -117,7 +140,7 @@ class _care_client_viewState extends State<care_client_view> {
               children: [
                 // for(int i=0;i<listCommunication.length;i++)
                 // if(listCommunication[i].typeCommuncation!='دوري')
-                communcation_view_widget(element: element),
+                // communcation_view_widget(element: element),
 
                 // else commview(listCommunication[i])
                 //  listCommunication.isNotEmpty?

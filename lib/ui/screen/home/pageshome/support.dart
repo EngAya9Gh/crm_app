@@ -63,7 +63,7 @@ class _supportpageState extends State<supportpage> {
          return Column(children: [
 
             // buildSelectCategory(onTap: () {
-            //   Navigator.push(context, MaterialPageRoute(
+            //   Navigator.push(context, CupertinoPageRoute(
             //       builder: (context)=>
             //           TaskWidget()));
             //
@@ -76,7 +76,7 @@ class _supportpageState extends State<supportpage> {
                colorarrow: Colors.black,
                onTap: () {
               //
-               Navigator.push(context, MaterialPageRoute(
+               Navigator.push(context, CupertinoPageRoute(
                    builder: (context)=>
                    ClientAccept() // support_view(type: 'only',)
                ));
@@ -87,7 +87,7 @@ class _supportpageState extends State<supportpage> {
                colortitle: Colors.black,
                colorarrow: Colors.black,
                onTap: () {
-               Navigator.push(context, MaterialPageRoute(
+               Navigator.push(context, CupertinoPageRoute(
                    builder: (context)=>
                        ClientWaiting(type_card: 'support',) // support_view(type: 'only',)
                ));
@@ -98,7 +98,7 @@ class _supportpageState extends State<supportpage> {
                colortitle: Colors.black,
                colorarrow: Colors.black,
                onTap: () {
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.push(context, CupertinoPageRoute(
                   builder: (context)=>
                       support_table()));
             }, title: 'جدول التركيب للعملاء'):Container(),
@@ -108,7 +108,7 @@ class _supportpageState extends State<supportpage> {
                colortitle: Colors.black,
                colorarrow: Colors.black,
                onTap: () {
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.push(context, CupertinoPageRoute(
                   builder: (context)=>
                       support_install_report()));
             }, title: 'تقرير التركيب للعملاء'):Container(),
@@ -118,7 +118,7 @@ class _supportpageState extends State<supportpage> {
            //     colortitle: Colors.black,
            //     colorarrow: Colors.black,
            //     onTap: () {
-           //    Navigator.push(context, MaterialPageRoute(
+           //    Navigator.push(context, CupertinoPageRoute(
            //        builder: (context)=>
            //            waiting_report()));
            //  }, title: 'تقرير عملاء الانتظار') ,
@@ -128,7 +128,7 @@ class _supportpageState extends State<supportpage> {
                colortitle: Colors.black,
                colorarrow: Colors.black,
                onTap: () {
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.push(context, CupertinoPageRoute(
                   builder: (context)=>
                       delayinstall()));
             }, title: 'تقرير التأخير عن الجدولة للعملاء'):Container(),
@@ -139,13 +139,13 @@ class _supportpageState extends State<supportpage> {
                colortitle: Colors.black,
                colorarrow: Colors.black,
                onTap: () {
-              Navigator.push(context, MaterialPageRoute(
+              Navigator.push(context, CupertinoPageRoute(
                   builder: (context)=>
                       delayafterinstall()));
             }, title: 'تقرير التأخير عن التركيب للعملاء'):Container(),
             // buildSelectCategory(onTap: () {
             //   //
-            //   Navigator.push(context, MaterialPageRoute(
+            //   Navigator.push(context, CupertinoPageRoute(
             //       builder: (context)=>
             //           support_table()));
             // }, title: 'جدول العملاء'),

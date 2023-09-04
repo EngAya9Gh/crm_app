@@ -10,8 +10,10 @@ class DateInstallationService {
   }) async {
     List<dynamic> data = [];
 
+    final mainCityParams = _getMainCityParams(mainCityFks);
+
     data = await Api().get(
-        url: url + 'client/invoice/get_dateinstall_all_maincity.php?fk_country=$fkCountry&maincity_fks[]=$mainCityFks');
+        url: url + 'client/invoice/get_dateinstall_all_user.php?fk_country=$fkCountry$mainCityParams');
 
     return _mapJsonToList(data);
   }
@@ -21,7 +23,7 @@ class DateInstallationService {
     List<dynamic> data = [];
 
     data =
-        await Api().get(url: url + 'client/invoice/get_dateinstall_all_user.php?fk_country=$fkCountry&fk_user=$fkUser');
+        await Api().get(url: url + 'client/invoice/get_dateinstall_all_maincity.php?fk_country=$fkCountry&fk_user=$fkUser');
 
     return _mapJsonToList(data);
   }
@@ -40,10 +42,10 @@ class DateInstallationService {
     required List<int> mainCityFks,
   }) async {
     List<dynamic> data = [];
-
+    final mainCityParams = _getMainCityParams(mainCityFks);
     data = await Api().get(
         url: url +
-            'client/invoice/get_dateinstall_mix.php?fk_country=$fkCountry&fk_user=$fkUser&maincity_fks[]=$mainCityFks');
+            'client/invoice/get_dateinstall_mix.php?fk_country=$fkCountry&fk_user=$fkUser$mainCityParams');
 
     return _mapJsonToList(data);
   }
@@ -56,5 +58,14 @@ class DateInstallationService {
 
   static List<AppointmentModel> _convertToEvents(List<dynamic> list) {
     return List<Map<String, dynamic>>.from(list).map<AppointmentModel>((e) => AppointmentModel.fromJson(e)).toList();
+  }
+
+
+ static String _getMainCityParams(List<int> regionFks){
+    final StringBuffer stringBuffer = StringBuffer();
+    regionFks.forEach((element) {
+      stringBuffer.write("&maincity_fks[]=$element");
+    });
+    return stringBuffer.toString();
   }
 }

@@ -3,25 +3,15 @@ import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/calendar/Event_editing_page.dart';
-import 'package:crm_smart/ui/screen/support/support_add.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/separatorLine.dart';
 import 'package:crm_smart/ui/widgets/user_installation_calendar.dart';
-import 'package:crm_smart/ui/widgets/widgetcalendar/calendar_widget.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:group_button/group_button.dart';
-
-import '../../../view_model/invoice_vm.dart';
-import '../../widgets/widgetcalendar/calender_install.dart';
 
 class support_table extends StatefulWidget {
   const support_table({Key? key}) : super(key: key);
@@ -42,6 +32,8 @@ late EventProvider _eventProvider;
 class _support_tableState extends State<support_table> {
   @override
   Future<void> didChangeDependencies() async {
+    context.read<maincity_vm>().changeitemlist([], isInit: true);
+
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       _eventProvider = context.read<EventProvider>();
       Provider.of<user_vm_provider>(context, listen: false)
@@ -75,7 +67,7 @@ class _support_tableState extends State<support_table> {
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: kMainColor,
       //   onPressed: () {
-      //     Navigator.push(context, MaterialPageRoute(
+      //     Navigator.push(context, CupertinoPageRoute(
       //         builder: (context)=>
       //             EventEditingPage()));
       //     //Get.to(EventEditingPage());
@@ -141,9 +133,17 @@ class _support_tableState extends State<support_table> {
                           for (int i = 0; i < data.length; i++) print(data[i].id_maincity);
                           print(data);
                           // selecteditemmaincity=data;
+
                           cart.changeitemlist(data);
 
-                          _eventProvider.onChangeFkMainCity(data.map((e) => e.id_maincity).toList());
+                          if (data.any((element) => element.id_maincity == '0')) {
+                            _eventProvider.onChangeFkMainCity(cart.listmaincityfilter
+                                .where((element) => element.id_maincity != "0")
+                                .map((e) => e.id_maincity)
+                                .toList());
+                          } else {
+                            _eventProvider.onChangeFkMainCity(data.map((e) => e.id_maincity).toList());
+                          }
                           // Provider.of<EventProvider>(context, listen: false).getevents('', data, "regoin");
                         },
                         //selectedItem: cart.selecteduser,
@@ -196,7 +196,7 @@ class _support_tableState extends State<support_table> {
                               compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
                               showSelectedItems: true,
                               // itemAsString: (UserModel u) => u.userAsStringByName(),
-                              items: user.userall,
+                              items: user.usersSupportManagement,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 iduser = data!.idUser!;

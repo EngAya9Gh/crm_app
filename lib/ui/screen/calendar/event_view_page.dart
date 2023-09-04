@@ -1,6 +1,7 @@
 import 'package:crm_smart/model/calendar/event.dart';
 import 'package:crm_smart/ui/screen/calendar/Event_editing_page.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ class EventViewingPage extends StatelessWidget {
           IconButton(
               onPressed: () {
                 //navigator push
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         EventEditingPage(
                           event: event,
@@ -35,7 +36,7 @@ class EventViewingPage extends StatelessWidget {
                     Provider.of<EventProvider>(
                         context, listen: false);
                 provider.deleteEvent(event);
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         EventEditingPage(
                           event: event,

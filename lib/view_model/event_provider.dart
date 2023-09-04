@@ -77,7 +77,7 @@ class EventProvider extends ChangeNotifier {
         list = await DateInstallationService.getDateInstallationMix(
           fkCountry: fkCountry,
           fkUser: selectedFkUser!,
-          mainCityFks: selectedMainCityFks!.where((element) => element != '0').map((e) => int.parse(e)).toList(),
+          mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
         );
       } else if (selectedFkUser != null && selectedMainCityFks == null) {
         /// user
@@ -89,7 +89,7 @@ class EventProvider extends ChangeNotifier {
         /// main city
         list = await DateInstallationService.getDateInstallationMainCity(
           fkCountry: fkCountry,
-          mainCityFks: selectedMainCityFks!.where((element) => element != '0').map((e) => int.parse(e)).toList(),
+          mainCityFks: selectedMainCityFks!.map((e) => int.parse(e)).toList(),
         );
       } else {
         /// all
@@ -379,11 +379,8 @@ class EventProvider extends ChangeNotifier {
       onLoading();
       const isDone = 1;
       var data = await Api().post(
-        url: url + "client/invoice/update_date_install.php",
-        body: {
-          "is_done": isDone.toString(),
-          "idclients_date": event.idClientsDate,
-        },
+        url: url + "client/invoice/update_date_install.php?idclients_date=${event.idClientsDate}",
+        body: {"is_done": isDone.toString()},
       );
       final list = eventDataSource[event.from] ?? [];
       final index = list.indexOf(event);
@@ -398,5 +395,43 @@ class EventProvider extends ChangeNotifier {
     } catch (e) {
       onFailure();
     }
+  }
+
+  addEvent(Event event) {
+    _events.add(event);
+
+    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+      events,
+      key: (item) => (item as Event).from,
+      value: (item) => events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+    );
+
+    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(mapEvents);
+
+    notifyListeners();
+  }
+
+  checkAndActionEvent(Event event) {
+    if (events.any((element) => element.fkIdClient == event.fkIdClient)) {
+      _events = _events.map((e) => e.fkIdClient == event.fkIdClient ? event : e).toList();
+    } else {
+      _events.add(event);
+    }
+
+    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+      events,
+      key: (item) => (item as Event).from,
+      value: (item) => events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+    );
+
+    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(mapEvents);
+
+    notifyListeners();
   }
 }

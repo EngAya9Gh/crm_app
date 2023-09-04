@@ -48,7 +48,7 @@ class cardClientAccept extends StatelessWidget {
         child: InkWell(
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>
+                CupertinoPageRoute(builder: (context) =>
                     ProfileClient(
                         idClient:
                         iteminvoice.fkIdClient.toString())

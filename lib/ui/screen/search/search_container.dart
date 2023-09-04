@@ -16,11 +16,13 @@ class search_widget extends StatelessWidget {
     this.type, {
     Key? key,
     this.onChange,
+    this.myClientsParams = '1',
   }) : super(key: key);
   String hint = '';
   String serch;
   String? type;
   ValueChanged<String>? onChange;
+  String myClientsParams;
 
   //List<dynamic> list;
   @override
@@ -47,7 +49,7 @@ class search_widget extends StatelessWidget {
             title: TextField(
               textInputAction: TextInputAction.search,
               onChanged: (pattern) async {
-                // await Navigator.of(context).push(MaterialPageRoute(
+                // await Navigator.of(context).push(CupertinoPageRoute(
                 //     builder: (context) => productSearchView(
                 //         pattern, list)));
 
@@ -84,7 +86,7 @@ class search_widget extends StatelessWidget {
                     Provider.of<invoice_vm>(context, listen: false).searchmarketing(pattern);
                     break;
                   case 'welcome':
-                    Provider.of<communication_vm>(context, listen: false).searchwelcome(pattern, type);
+                    Provider.of<communication_vm>(context, listen: false).searchwelcome(pattern, type,myClientsParams);
                     break;
                   // case 'invoice':
                   //   Provider.of<invoice_vm>(context,listen: false)

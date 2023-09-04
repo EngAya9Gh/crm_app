@@ -1,5 +1,3 @@
-
-
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/notificationModel.dart';
@@ -18,15 +16,11 @@ class cardAllClient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return
-      Container(
+    return Container(
       //color: itemNotify.isread==0?Colors.black12: Colors.white30,
 
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(0)
-        ),
+        borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
         boxShadow: <BoxShadow>[
           BoxShadow(
             offset: Offset(1.0, 1.0),
@@ -34,30 +28,26 @@ class cardAllClient extends StatelessWidget {
             color: Colors.black87.withOpacity(0.2),
           ),
         ],
-        color:  Colors.white30,
+        color: Colors.white30,
       ),
       child: Center(
         child: InkWell(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>
-                    ProfileClient(
-                        idClient:
-                        clientModel.idClients.toString())
-                  //   editclient(
-                  // itemClient: itemClient,
-                  // fkclient: itemClient.idClients.toString(),
-                  // fkuser: itemClient.fkUser.toString(),)
-                ));
+            Navigator.push(
+                context,
+                CupertinoPageRoute(builder: (context) => ProfileClient(idClient: clientModel.idClients.toString())
+                    //   editclient(
+                    // itemClient: itemClient,
+                    // fkclient: itemClient.idClients.toString(),
+                    // fkuser: itemClient.fkUser.toString(),)
+                    ));
           },
           child: Container(
             decoration: BoxDecoration(
-
               color: Colors.white,
 
               //borderRadius: BorderRadius.all( Radius.circular(5)),
             ),
-
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -68,9 +58,8 @@ class cardAllClient extends StatelessWidget {
                     children: [
                       Text(
                         clientModel.dateCreate.toString(),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontFamily: kfontfamily2,color: kMainColor),),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                      ),
                     ],
                   ),
 
@@ -102,16 +91,19 @@ class cardAllClient extends StatelessWidget {
                   //     ),
                   //   ],
                   // ),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(clientModel.nameEnterprise.toString(),
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: kfontfamily2),),
-                        ),
-                      ]),
+                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                    Expanded(
+                      child: Text(
+                        clientModel.nameEnterprise.toString(),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                      ),
+                    ),
+                    if (clientModel.tag ?? false)
+                      Icon(
+                        CupertinoIcons.checkmark_seal_fill,
+                        color: Colors.amber,
+                      )
+                  ]),
                   //Row(),
                 ],
               ),

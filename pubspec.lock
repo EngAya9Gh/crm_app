@@ -33,14 +33,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  back_button_interceptor:
-    dependency: transitive
-    description:
-      name: back_button_interceptor
-      sha256: e47660f2178a4392eb72001f9594d3fdcb5efde93e59d2819d61fda499e781c8
-      url: "https://pub.dev"
-    source: hosted
-    version: "6.0.2"
   boolean_selector:
     dependency: transitive
     description:
@@ -122,7 +114,7 @@ packages:
     source: hosted
     version: "2.8.10"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       sha256: "4a07be6cb69c84d677a6c3096fcf960cc3285a8330b4603e0d463d15d9bd934c"
@@ -177,14 +169,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
-  fading_edge_scrollview:
-    dependency: transitive
-    description:
-      name: fading_edge_scrollview
-      sha256: c25c2231652ce774cc31824d0112f11f653881f43d7f5302c05af11942052031
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -327,7 +311,7 @@ packages:
     source: hosted
     version: "4.0.1"
   flutter_test:
-    dependency: "direct dev"
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -448,14 +432,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.7"
-  loader_overlay:
-    dependency: "direct main"
-    description:
-      name: loader_overlay
-      sha256: "5d712eb5dc0b8618797d39306227a6c3805e2b198f5361e18ec9e325f215e9a4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.0"
   logging:
     dependency: transitive
     description:
@@ -464,14 +440,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  marquee:
-    dependency: "direct main"
-    description:
-      name: marquee
-      sha256: "4b5243d2804373bdc25fc93d42c3b402d6ec1f4ee8d0bb72276edd04ae7addb8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.3"
   matcher:
     dependency: transitive
     description:
@@ -765,30 +733,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  syncfusion_flutter_calendar:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_calendar
-      sha256: "98fa7afad776db25680046cd56826c174bcfd967053d95c73039ac0366238fd0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "20.2.43"
-  syncfusion_flutter_core:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_core
-      sha256: "3979f0b1c5a97422cadae52d476c21fa3e0fb671ef51de6cae1d646d8b99fe1f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "20.4.54"
-  syncfusion_flutter_datepicker:
-    dependency: "direct overridden"
-    description:
-      name: syncfusion_flutter_datepicker
-      sha256: "84f6dce915dfceb74c63b2f7b43a572a31c49f82deb79bab690c6c964a6e1f5c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "20.2.43"
   synchronized:
     dependency: transitive
     description:
@@ -829,14 +773,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.2"
-  timezone:
-    dependency: transitive
-    description:
-      name: timezone
-      sha256: "57b35f6e8ef731f18529695bffc62f92c6189fac2e52c12d478dec1931afb66e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.8.0"
   transparent_image:
     dependency: "direct main"
     description:

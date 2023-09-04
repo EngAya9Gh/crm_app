@@ -55,7 +55,7 @@ class _resoan_viewState extends State<company_view> {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            CupertinoPageRoute<void>(
               builder: (BuildContext context)
               => addcompany(
               ),
@@ -86,7 +86,7 @@ class _resoan_viewState extends State<company_view> {
                             child: InkWell(
                               onTap: (){
                                 Navigator.push(context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context)=>updatecompany(
                                            idCompany: _listlevel[index].id_Company.toString(),
                                           nameCompany: _listlevel[index].name_company.toString(),

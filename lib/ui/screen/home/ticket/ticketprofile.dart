@@ -71,7 +71,7 @@ class ticketprofileState extends State<ticketprofile> {
                     colortitle: kWhiteColor,
                     onTap: () async{
                       // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context)=>
+                      //     CupertinoPageRoute(builder: (context)=>
                       //         ticketall()));
                     },
                     title:

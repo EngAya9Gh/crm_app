@@ -58,7 +58,7 @@ class cityview extends StatefulWidget {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            CupertinoPageRoute<void>(
               builder: (BuildContext context)
               => addcity(
                 fkmain: widget.fkmain,
@@ -91,7 +91,7 @@ class cityview extends StatefulWidget {
                             child: InkWell(
                               onTap: (){
                                 Navigator.push(context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context)=>addcity(
                                           fkmain: widget.fkmain,
                                           nameregoin:

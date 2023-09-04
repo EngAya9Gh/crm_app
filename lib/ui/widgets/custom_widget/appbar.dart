@@ -46,7 +46,7 @@ class customAppbar extends StatelessWidget implements PreferredSizeWidget{
                    notify.setRead_notify_vm();
                    //notify.clearcounter();
                    Navigator.push(context,
-                    MaterialPageRoute(
+                    CupertinoPageRoute(
                         builder: (context)=>
                             notify_pageview()
                       // ,fullscreenDialog:true

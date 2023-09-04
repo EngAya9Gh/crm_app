@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-typedef PickFileCallback = Function(BuildContext context, File? file);
+typedef PickFileCallback = Function(BuildContext context, File file);
 
 class PickImageBottomSheet extends StatefulWidget {
   const PickImageBottomSheet({

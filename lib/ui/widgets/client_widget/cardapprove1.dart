@@ -40,7 +40,7 @@ class cardapprove1 extends StatelessWidget {
         child: InkWell(
           onTap: (){//pushReplacement
             Navigator.push(context,
-                MaterialPageRoute(builder:
+                CupertinoPageRoute(builder:
                     (context) =>
                         client_dashboard(
                           typeinvoice: type,

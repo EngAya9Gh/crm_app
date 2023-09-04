@@ -207,7 +207,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                         cardRow(title: 'فرع الفاتورة', value: invoice.name_regoin_invoice.toString()),
 
                         cardRow(title: 'اسم الموظف', value: invoice.nameUser.toString()),
-                        cardRow(title: 'فرع الموظف', value: invoice.name_regoin.toString()),
+                        cardRow(title: 'فرع الموظف', value: invoice.name_regoin_invoice.toString()),
                         //cardRow(title: 'حالة الفاتورة', value: invoice.amountPaid.toString()),
 
                         invoice.date_approve.toString() == null
@@ -349,7 +349,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 onTap: () async {
                                   Navigator.push(
                                       context,
-                                      MaterialPageRoute(
+                                      CupertinoPageRoute(
                                           builder: (context) =>
                                               addinvoice(invoice: invoice, itemClient: clientmodel)));
                                 },
@@ -705,7 +705,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                               onTap: () async {
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context) => add_payement(
                                           invoiceModel: invoice,
                                         ) // support_view(type: 'only',)
@@ -721,7 +721,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                               onTap: () async {
                                 Navigator.push(
                                     context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context) => edit_invoice(
                                           invoiceModel: invoice,
                                         ) // support_view(type: 'only',)
@@ -796,11 +796,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                   //Navigator.of(context,rootNavigator: true).pop();
                                                   // Navigator.pop(context);
                                                   // Navigator.pushAndRemoveUntil(context,
-                                                  //     MaterialPageRoute(builder: (context)=>Home()),
+                                                  //     CupertinoPageRoute(builder: (context)=>Home()),
                                                   //         (route) => true
                                                   // );//this is active
                                                   //  Navigator.pushReplacement(context,
-                                                  //      MaterialPageRoute(builder:
+                                                  //      CupertinoPageRoute(builder:
                                                   //          (context)=>ApprovePage()));
                                                 },
                                                 child: Text('نعم'),
@@ -846,7 +846,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       // )
                                     );
                                     // Navigator.pushAndRemoveUntil(context,
-                                    //     MaterialPageRoute(builder: (context)=>Home()),
+                                    //     CupertinoPageRoute(builder: (context)=>Home()),
                                     //         (route) => true
                                     // );
                                     // bool result = await showDialog(
@@ -880,11 +880,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     //             Navigator.of(context,rootNavigator: true).pop();
                                     //
                                     //             // Navigator.pushReplacement(context,
-                                    //             //     MaterialPageRoute(builder:
+                                    //             //     CupertinoPageRoute(builder:
                                     //             //         (context)=>ApprovePage()));
                                     //
                                     //             Navigator.pushAndRemoveUntil(context,
-                                    //                 MaterialPageRoute(builder: (context)=>Home()),
+                                    //                 CupertinoPageRoute(builder: (context)=>Home()),
                                     //                     (route) => false
                                     //             );
                                     //           },

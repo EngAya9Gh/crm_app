@@ -47,7 +47,7 @@ class cardClientnew extends StatelessWidget {
           //splashColor: Colors.blue.withAlpha(30),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>
+                CupertinoPageRoute(builder: (context) =>
                     ProfileClient(
                         idClient:
                         itemClient.idClients.toString())

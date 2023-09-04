@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/countrymodel.dart';
+import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/services/Invoice_Service.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
@@ -14,12 +15,12 @@ enum ADType { distributor, agent }
 
 class AgentDistributorViewModel extends ChangeNotifier {
   PageState<List<AgentDistributorModel>> agentDistributorsState = PageState();
-  PageState<List<CountryModel>> countriesState = PageState();
+  PageState<List<MainCityModel>> citiesState = PageState();
 
   AgentDistributorActionParams agentDistributorActionParams =
       AgentDistributorActionParams.init();
 
-  CountryModel? selectedCountry;
+  MainCityModel? selectedCountry;
   bool isLoadingAction = false;
 
   void resetAgentDistributorActionParams() {
@@ -45,27 +46,27 @@ class AgentDistributorViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getCountries({String? countryId}) async {
+  Future<void> getMainCity({required String fkCountry, String? id_maincity}) async {
     try {
-      if (!countriesState.isLoading) {
-        countriesState = countriesState.changeToLoading;
+      if (!citiesState.isLoading) {
+        citiesState = citiesState.changeToLoading;
         notifyListeners();
       }
 
-      final response = await Api().get(url: url + 'country/getcountry.php');
-      final list = List<CountryModel>.from(
-          (response ?? []).map((x) => CountryModel.fromJson(x)));
-      countriesState = countriesState.changeToLoaded(list);
-      if (countryId != null) {
+      final response = await Api().get(url: url + 'config/getmaincity.php?fk_country=$fkCountry');
+      final list = List<MainCityModel>.from(
+          (response ?? []).map((x) => MainCityModel.fromJson(x)));
+      citiesState = citiesState.changeToLoaded(list);
+      if (id_maincity != null) {
         final country =
-            list.firstWhereOrNull((element) => element.idCountry == countryId);
+            list.firstWhereOrNull((element) => element.id_maincity == id_maincity);
         if (country != null) {
           selectedCountry = country;
         }
       }
       notifyListeners();
     } catch (e) {
-      countriesState = countriesState.changeToFailed;
+      citiesState = citiesState.changeToFailed;
       notifyListeners();
     }
   }
@@ -119,9 +120,9 @@ class AgentDistributorViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  onSelectCountry(CountryModel countryModel) {
+  onSelectCountry(MainCityModel countryModel) {
     agentDistributorActionParams = agentDistributorActionParams.copyWith(
-        countryId: countryModel.idCountry);
+        countryId: countryModel.id_maincity);
   }
 
   onSaveName(String name) {

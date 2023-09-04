@@ -68,6 +68,8 @@ class _loginState extends State<login> {
                     read: false,
                     radius: 10,
                     con: _textcontroller,
+                    maxline: 1,
+                    inputType: !val.sendcode ? TextInputType.phone : null,
                     vaild: (data) {
                       if (data!.isEmpty) {
                         return message_empty;
@@ -98,7 +100,7 @@ class _loginState extends State<login> {
                           _textcontroller!.text="";
                           val.changeboolValue();
                           Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
-
+                          FocusScope.of(context).unfocus();
                         }
                         else{
                           Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(false);
@@ -128,7 +130,7 @@ class _loginState extends State<login> {
                           val.changeboolValue();
                           Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(
+                              CupertinoPageRoute(
                                   builder: (context) => Home()),
                                  (rouets)=>false);
 

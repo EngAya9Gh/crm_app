@@ -39,7 +39,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -107,7 +106,11 @@ void main() async {
       create: (_) => config_vm(),
       update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
     ),
-    ChangeNotifierProvider<level_vm>(create: (_) => level_vm()),
+    // ChangeNotifierProvider<level_vm>(create: (_) => level_vm()),//
+    ChangeNotifierProxyProvider<user_vm_provider, level_vm>(
+      create: (_) => level_vm(),
+      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+    ),
     //ChangeNotifierProvider<regoin_vm>(create: (_) => regoin_vm()),
     ChangeNotifierProvider<LoadProvider>(create: (_) => LoadProvider()),
     //ChangeNotifierProvider<product_vm>(create: (_) => product_vm()),
@@ -195,7 +198,7 @@ void main() async {
     ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
     ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
     //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
-  ], child: GlobalLoaderOverlay(child: MyApp())));
+  ], child:  MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -255,9 +258,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 home: Directionality(
                   textDirection: TextDirection.rtl,
-                  child: LoaderOverlay(
-                      useDefaultLoading: false,
-                      child: isUserLoggedIn ? Home() : login()),
+                  child: isUserLoggedIn ? Home() : login(),
                 ),
               );
             }

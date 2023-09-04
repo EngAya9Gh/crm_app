@@ -57,7 +57,7 @@ class _maincityviewState extends State<maincityview> {
         onPressed: (){
           Navigator.push(
             context,
-            MaterialPageRoute<void>(
+            CupertinoPageRoute<void>(
               builder: (BuildContext context)
               => addmaincity(
                 fkcountry: null,
@@ -90,7 +90,7 @@ class _maincityviewState extends State<maincityview> {
                               onTap: (){
 
                                 Navigator.push(context,
-                                    MaterialPageRoute(
+                                    CupertinoPageRoute(
                                         builder: (context)=>
                                             cityview(
                                           fkmain: _listlevel[index].id_maincity,
@@ -142,7 +142,7 @@ class _maincityviewState extends State<maincityview> {
                                               onPressed: () {
                                                 Navigator.push(
                                                   context,
-                                                  MaterialPageRoute<void>(
+                                                  CupertinoPageRoute<void>(
                                                     builder: (BuildContext context)
                                                     => addmaincity(
                                                       fkcountry: _listlevel[index].fk_country,

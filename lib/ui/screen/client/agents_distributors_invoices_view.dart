@@ -45,12 +45,15 @@ class AgentsDistributorsInvoicesView extends StatefulWidget {
 
 class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoicesView>
     with StateViewModelMixin<AgentsDistributorsInvoicesView, AgentsCollaboratorsInvoicesViewmodel> {
-    late privilge_vm privilegeVm;
+  late privilge_vm privilegeVm;
+  late TextEditingController _searchTextField;
 
   @override
   void initState() {
     super.initState();
     privilegeVm = context.read<privilge_vm>();
+    _searchTextField = TextEditingController();
+    _searchTextField.addListener(onSearch);
     final privilegeList = privilegeVm.privilgelist;
     scheduleMicrotask(() {
       viewmodel.init();
@@ -63,6 +66,18 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
   }
 
   @override
+  void dispose() {
+    _searchTextField
+      ..removeListener(onSearch)
+      ..dispose();
+    super.dispose();
+  }
+
+  void onSearch() {
+    viewmodel.onSearch(_searchTextField.text);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -72,8 +87,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
         ),
         centerTitle: true,
       ),
-      body:
-      Directionality(
+      body: Directionality(
         textDirection: TextDirection.rtl,
         child: Column(
           children: [
@@ -81,8 +95,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             Row(
               children: [
                 SizedBox(width: 15),
-                Selector<AgentsCollaboratorsInvoicesViewmodel,
-                    SellerTypeFilter>(
+                Selector<AgentsCollaboratorsInvoicesViewmodel, SellerTypeFilter>(
                     selector: (_, vm) => vm.selectedSellerTypeFilter,
                     builder: (context, selectedSellerTypeFilter, _) {
                       return Expanded(
@@ -141,6 +154,16 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   },
                 ),
               ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: TextField(
+                controller: _searchTextField,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: "ابحث هنا...",
+                ),
+              ),
+            ),
             SizedBox(height: 10),
             Padding(
               padding: const EdgeInsets.only(left: 30.0, right: 30),
@@ -154,6 +177,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
                       builder: (context, value, agentCollaboratorsVm, child) {
                     final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                            _searchTextField.text.trim().isEmpty &&
                             (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
                         ? value.listInvoicesAccept
                         : agentCollaboratorsVm.invoicesFiltered;
@@ -170,6 +194,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
               builder: (context, value, agentCollaboratorsVm, child) {
                 final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                        _searchTextField.text.trim().isEmpty &&
                         (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
                     ? value.listInvoicesAccept
                     : agentCollaboratorsVm.invoicesFiltered;
@@ -234,12 +259,12 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   child: Text((item as ParticipateModel).name_participate, textDirection: TextDirection.rtl),
                   value: item,
                 );
-              } else if(T == AgentDistributorModel){
+              } else if (T == AgentDistributorModel) {
                 return DropdownMenuItem(
                   child: Text((item as AgentDistributorModel).nameAgent, textDirection: TextDirection.rtl),
                   value: item,
                 );
-              }else {
+              } else {
                 return DropdownMenuItem(
                   child: Text((item as UserModel).nameUser!, textDirection: TextDirection.rtl),
                   value: item,
@@ -254,9 +279,9 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
 
               if (T == ParticipateModel) {
                 viewmodel.onChangeSelectedCollaborator(seller as ParticipateModel);
-              } else if(T == AgentDistributorModel) {
+              } else if (T == AgentDistributorModel) {
                 viewmodel.onChangeSelectedAgentDistributor(seller as AgentDistributorModel);
-              }else{
+              } else {
                 viewmodel.onChangeEmployee(seller as UserModel);
               }
             },
@@ -292,25 +317,23 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
           selectedValue: selectedCollaborator,
         ),
       );
-
     else if (isEmp)
-      return  Consumer<user_vm_provider>(
+      return Consumer<user_vm_provider>(
         builder: (context, value, child) => Expanded(
           flex: 5,
           child: sellerDropdown<UserModel>(
-            value.userall,
+            value.usersSalesManagement,
             selectedValue: selectedEmployee,
           ),
         ),
       );
-    else if (selectedSellerTypeFilter != SellerTypeFilter.all){
-      List<AgentDistributorModel> agentsListtemp= [];
+    else if (selectedSellerTypeFilter != SellerTypeFilter.all) {
+      List<AgentDistributorModel> agentsListtemp = [];
 
       agentsDistributorsList.forEach((element) {
-      if( element.typeAgent==viewmodel.selectedSellerTypeFilter!.index.toString())
-        agentsListtemp.add(element);
-    });
-      agentsDistributorsList=List.from(agentsListtemp);
+        if (element.typeAgent == viewmodel.selectedSellerTypeFilter!.index.toString()) agentsListtemp.add(element);
+      });
+      agentsDistributorsList = List.from(agentsListtemp);
       // return Container(color: Colors.blue);
       return Expanded(
         flex: 5,
@@ -318,8 +341,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
           agentsDistributorsList,
           selectedValue: selectedAgentDistributor,
         ),
-      );}
-    else
+      );
+    } else
       return SizedBox.shrink();
   }
 }

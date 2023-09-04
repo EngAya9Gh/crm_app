@@ -1,25 +1,17 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/calendar/Event_editing_page.dart';
-import 'package:crm_smart/ui/screen/support/support_add.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/separatorLine.dart';
-import 'package:crm_smart/ui/widgets/widgetcalendar/calendar_widget.dart';
+import 'package:crm_smart/ui/widgets/animated_dialog.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
-import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:group_button/group_button.dart';
-
+import '../../../model/calendar/event.dart';
+import '../../../view_model/datetime_vm.dart';
+import '../../widgets/custom_widget/row_edit.dart';
 import 'calendar_of_customer_visit_schedule.dart';
 
 class calender_client extends StatefulWidget {
@@ -36,23 +28,22 @@ List<InvoiceModel> listfilter = [];
 
 List<int> listval = [];
 int idexist = -1;
+DateTime _currentDate = DateTime.now();
 
 class _calender_clientState extends State<calender_client> {
   @override
   Future<void> didChangeDependencies() async {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
+      context.read<client_vm>().changevalueclient(null);
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(DateTime(1,1,1));
       await Provider.of<user_vm_provider>(context, listen: false).getuser_vm();
       print(Provider.of<user_vm_provider>(context, listen: false).userall.length);
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);
-
-     await Provider.of<client_vm>(context,listen: false).getClientDateTable_vm();
-      Provider.of<EventProvider>(context,listen: false).setvalueClient(
-          Provider.of<client_vm>(context,listen: false)
-              .listClientAccept);
-      Provider.of<EventProvider>(context,listen: false)
-          . getevent_AllClient();
-    }
-    );
+      await Provider.of<client_vm>(context, listen: false).getClientDateTable_vm();
+      Provider.of<EventProvider>(context, listen: false)
+          .setvalueClient(Provider.of<client_vm>(context, listen: false).listClientAccept);
+      Provider.of<EventProvider>(context, listen: false).getevent_AllClient();
+    });
 
     super.didChangeDependencies();
   }
@@ -68,7 +59,7 @@ class _calender_clientState extends State<calender_client> {
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: kMainColor,
       //   onPressed: () {
-      //     Navigator.push(context, MaterialPageRoute(
+      //     Navigator.push(context, CupertinoPageRoute(
       //         builder: (context)=>
       //             EventEditingPage()));
       //     //Get.to(EventEditingPage());
@@ -122,8 +113,8 @@ class _calender_clientState extends State<calender_client> {
                                   filterFn: (user, filter) => user!.getfilteruser(filter!),
                                   //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                                   // itemAsString: (UserModel u) => u.userAsStringByName(),
-                        items: cart.listClientAccept,
-                                 // items: cart.listClient,
+                                  items: cart.listClientAccept,
+                                  // items: cart.listClient,
                                   compareFn: (item, selectedItem) => item?.idClients == selectedItem?.idClients,
                                   showSelectedItems: true,
                                   itemAsString: (u) => u!.userAsString(),
@@ -238,6 +229,123 @@ class _calender_clientState extends State<calender_client> {
           ),
         ),
       ),
+      floatingActionButton: Consumer<client_vm>(
+        builder: (context, clientVm, _) {
+          if (clientVm.selectedclient == null) {
+            return const SizedBox.shrink();
+          }
+          return FloatingActionButton(
+            onPressed: () =>
+                AnimatedDialog.show(context, child: SizedBox(height: 250, child: dialog(clientVm.selectedclient!))),
+            child: Icon(Icons.schedule_send_rounded),
+          );
+        },
+      ),
     );
+  }
+
+  Widget dialog(
+    ClientModel client,
+  ) {
+    return SimpleDialog(
+      elevation: 0,
+      titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
+      insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      title: Center(child: Text('جدولة زيارات العميل', style: TextStyle(fontFamily: kfontfamily2))),
+      children: [
+        Directionality(
+          textDirection: TextDirection.rtl,
+          child: StatefulBuilder(
+            builder: (BuildContext context, void Function(void Function()) setState) {
+              return Form(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RowEdit(name: " تاريخ الزيارة ", des: '*'),
+                    SizedBox(height: 10),
+                    TextField(
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.date_range,
+                          color: kMainColor,
+                        ),
+                        hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                        hintText: Provider.of<datetime_vm>(context, listen: true).valuedateTime.toString(),
+                        filled: true,
+                        fillColor: Colors.grey.shade200,
+                      ),
+                      readOnly: true,
+                      onTap: () {
+                        setState(() {
+                          selectDate(context, _currentDate);
+                        });
+                      },
+                    ),
+                    SizedBox(height: 30),
+                    SizedBox(
+                      child: Center(
+                        child: Consumer<client_vm>(builder: (context, clientVm, _) {
+                          if (clientVm.isloading) {
+                            return CircularProgressIndicator();
+                          }
+
+                          return ElevatedButton(
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                            onPressed: () async {
+                              Provider.of<client_vm>(context, listen: false).updateclient_vm(
+                                {
+                                  "date_visit_Client": _currentDate.toString(), //DateTime.now().toString(),
+                                },
+                                client.idClients.toString(),
+                                onSuccess: (value) {
+                                  DateTime temp = DateTime.parse(value.date_visit_Client.toString()).hour >= 21
+                                      ? DateTime.parse(value.date_visit_Client.toString()).subtract(Duration(hours: 3))
+                                      : DateTime.parse(value.date_visit_Client.toString());
+
+                                  final event = Event(
+                                      fkIdClient: value.idClients,
+                                      title: value.nameEnterprise.toString(),
+                                      description: 'description',
+                                      from: temp,
+                                      to: temp.add(Duration(hours: 2)),
+                                      idinvoice: null);
+
+                                  Provider.of<EventProvider>(context, listen: false)
+                                    ..setvalue_save()
+                                    ..checkAndActionEvent(event);
+                                  Navigator.of(context, rootNavigator: true).pop(false);
+                                },
+                              );
+                            },
+                            child: Text('حفظ موعد الزيارة'),
+                          );
+                        }),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Future<void> selectDate(BuildContext context, DateTime currentDate) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      currentDate: currentDate,
+      initialDate: currentDate,
+      firstDate: DateTime(2015),
+      lastDate: DateTime(3000),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        _currentDate = pickedDate;
+      });
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDate);
+    }
   }
 }

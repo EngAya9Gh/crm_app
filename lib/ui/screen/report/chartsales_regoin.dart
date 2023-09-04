@@ -1,5 +1,5 @@
 
-import 'package:charts_flutter/flutter.dart' as fl;
+
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
@@ -16,6 +16,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import '../../../helper/number_formatter.dart';
+import 'is_marketing_chekbox.dart';
 
 class BarChartregoinsales extends StatefulWidget {
   const BarChartregoinsales({Key? key}) : super(key: key);
@@ -32,25 +34,29 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   List<DataRow> rowsdata=[];
 
   bool loading = true;
-  String type = 'dateyear';
-  String typeproduct = 'الكل';
+  String type = 'datemonth';
+  String typeproduct = 'برامج';
   double totalval=0;
   DateTime _selectedDate = DateTime.now();
   DateTime _selectedDatemonth = DateTime.now();
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   late privilge_vm privilegeVm;
+  bool isMarketing = false;
+  late bool haveMarketingPrivilege;
 
   @override
   void initState() {
+    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<selected_button_provider>(context, listen: false)
-          .selectValuebarsalestype(0);
+          .selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false)
-          .selectValuebarsales(0);
+          .selectValuebarsales(1);
     });
     privilegeVm = Provider.of<privilge_vm>(context, listen: false);
     super.initState();
+    if(!haveMarketingPrivilege)
     getData();
   }
 
@@ -89,18 +95,24 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       //   type='userSum';
       //   paramprivilge='';
       // }
+      String isMarketingParams = '';
+      if(isMarketing){
+        isMarketingParams = '&ismarketing=1';
+      }else{
+        isMarketingParams = '';
+      }
     switch (type) {
       case "userSum":
-        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry$params$paramprivilge";
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry$params$paramprivilge$isMarketingParams";
         break;
       case "dateyear":
-        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge";
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$paramprivilge$isMarketingParams";
         break;
       case "datemonth":
-        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge";
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$paramprivilge$isMarketingParams";
         break;
       case "datedays":
-        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge";
+        endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$paramprivilge$isMarketingParams";
         break;
     }
 
@@ -146,7 +158,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                 color: Colors.black,
                 fontSize: 25,
                 fontWeight: FontWeight.normal,
-                textstring: tempdata[i].y.toStringAsFixed(2),
+                textstring: formatNumber(tempdata[i].y),
                 underline: TextDecoration.none,
               )),
               DataCell( TextUtilis(
@@ -306,6 +318,12 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                           }),
                     ],
                   ),
+                ),
+                IsMarketingCheckbox(
+                  onChange: (value) {
+                    isMarketing = value;
+                    getData();
+                  },
                 ),
                 Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 0 ?
@@ -539,8 +557,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text('إجمالي المبيعات'),
-                                  Text(
-                                      totalval.toStringAsFixed(2)),
+                                  Text(formatNumber(totalval)),
                                 ],
                               ),
                               Container(

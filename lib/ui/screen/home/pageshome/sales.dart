@@ -80,7 +80,7 @@ class _salesState extends State<sales> {
                 colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                           builder: (context)=>
                               tabclients()));
                 }, title: ' قائمة العملاء') :Container(),
@@ -92,7 +92,7 @@ class _salesState extends State<sales> {
                     colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                           builder: (context)=>
                               AgentsDistributorsInvoicesView()
                       ));
@@ -105,7 +105,7 @@ class _salesState extends State<sales> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
+                      Navigator.push(context, CupertinoPageRoute(
                           builder: (context)=>
                               invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
                       ));
@@ -114,7 +114,7 @@ class _salesState extends State<sales> {
                     .checkprivlge('120')==true?
                 buildSelectCategory(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, CupertinoPageRoute(
                         builder: (context)=>
                             calender_client()));
                   }, title:  'جدول زيارات العميل ',
@@ -127,7 +127,7 @@ class _salesState extends State<sales> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
+                      Navigator.push(context, CupertinoPageRoute(
                           builder: (context)=>
                               TransferPage() //AcceptPage()   // support_view(type: 'client',)
                       ));
@@ -141,7 +141,7 @@ class _salesState extends State<sales> {
           colortitle: Colors.black,
           colorarrow: Colors.black,
           onTap: () {
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         ApprovePage()));
               }, title:  ' طلبات موافقة المشرفين '):Container(),
@@ -153,7 +153,7 @@ class _salesState extends State<sales> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
+                      Navigator.push(context, CupertinoPageRoute(
                           builder: (context)=>
                               ApproveFinancePage()));
                     }, title:  ' طلبات اعتماد المالية '):Container(),
@@ -163,7 +163,7 @@ class _salesState extends State<sales> {
                     .checkprivlge('85')==true?
                 buildSelectCategory(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, CupertinoPageRoute(
                         builder: (context)=>
                             BarChartAPI()));
                   }, title:  'تقارير مبيعات الموظفين ',
@@ -175,7 +175,7 @@ class _salesState extends State<sales> {
                     .checkprivlge('86')==true?
                 buildSelectCategory(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, CupertinoPageRoute(
                         builder: (context)=>
                             BarChartregoinsales()));
                   }, title:  ' تقارير مبيعات الفروع ',
@@ -186,7 +186,7 @@ class _salesState extends State<sales> {
                     .checkprivlge('88')==true?
                 buildSelectCategory(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, CupertinoPageRoute(
                         builder: (context)=>
                             salesproduct()));
                   }, title:  ' تقارير مبيعات المنتجات ',
@@ -197,7 +197,7 @@ class _salesState extends State<sales> {
                     .checkprivlge('91')==true?
                 buildSelectCategory(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, CupertinoPageRoute(
                         builder: (context)=>
                             deptsales()));
                   }, title:  ' تقارير ديون العملاء ',
@@ -208,7 +208,7 @@ class _salesState extends State<sales> {
                     .checkprivlge('95')==true?
                 buildSelectCategory(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, CupertinoPageRoute(
                         builder: (context)=>
                             sales_reportstate()));
                   }, title:  ' تقارير حالات العملاء ',
@@ -225,7 +225,7 @@ class _salesState extends State<sales> {
           colortitle: Colors.black,
           colorarrow: Colors.black,
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(
+                    Navigator.push(context, CupertinoPageRoute(
                         builder: (context)=>
                        deletedinvoice()));
                        },
@@ -238,7 +238,7 @@ class _salesState extends State<sales> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
+                      Navigator.push(context, CupertinoPageRoute(
                           builder: (context)=>
                               OutClient() //AcceptPage()   // support_view(type: 'client',)
                       ));
