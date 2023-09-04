@@ -29,31 +29,31 @@ class financepage extends StatelessWidget {
         padding: EdgeInsets.only(top: 50),
         child:
         Column(children: [
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('118')==true?
-          buildSelectCategory(
-              colorbag:   Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
-                );
-              }, title:  'سباق الموظفين' ):Container(),
-
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('117')==true?
-          buildSelectCategory(
-              colorbag:   Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
-                );
-              }, title:'سباق الفروع'  ):Container(),
+          // Provider.of<privilge_vm>(context,listen: true)
+          //     .checkprivlge('118')==true?
+          // buildSelectCategory(
+          //     colorbag:   Colors.white,
+          //     colortitle: Colors.black,
+          //     colorarrow: Colors.black,
+          //     onTap: () {
+          //       Navigator.push(
+          //         context,
+          //         CupertinoPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
+          //       );
+          //     }, title:  'سباق الموظفين' ):Container(),
+          //
+          // Provider.of<privilge_vm>(context,listen: true)
+          //     .checkprivlge('117')==true?
+          // buildSelectCategory(
+          //     colorbag:   Colors.white,
+          //     colortitle: Colors.black,
+          //     colorarrow: Colors.black,
+          //     onTap: () {
+          //       Navigator.push(
+          //         context,
+          //         CupertinoPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
+          //       );
+          //     }, title:'سباق الفروع'  ):Container(),
 
         ],),
 
