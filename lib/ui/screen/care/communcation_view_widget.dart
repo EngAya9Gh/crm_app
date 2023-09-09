@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
@@ -92,7 +93,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                               )
                             : Container(),
 
-                        widget.element.typeCommuncation == 'دوري'
+                        widget.element.typeCommuncation == 'دوري'&& widget.element.result.toString() != 'false'
                             ? cardRow(
                                 title: ' نتيجة التواصل',
                                 value: widget.element.result.toString() == 'true' ? 'لايستخدم النظام' : 'يستخدم النظام',
@@ -182,7 +183,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                       ],
                     ),
                   )
-                : Padding(
+                : Provider.of<communication_vm>(context,listen: true).isload?
+                   Center(child: CircularProgressIndicator()) :Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
@@ -299,6 +301,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                             onPressed: () async {
                               if (widget.element.typeCommuncation != 'دوري') {
+                                Provider.of<communication_vm>(context,listen: false).setload(true);
                                 Provider.of<communication_vm>(context, listen: false).addcommmuncation(
                                     {
                                       //'fk_client':widget.com.fkClient.toString(),
@@ -322,7 +325,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                         ? 1
                                         : int.parse(widget.element.type_install.toString())).then(
                                     (value) => clear(value));
-                              } else {
+                              }
+                              else {
                                 Provider.of<communication_vm>(context, listen: false).isloadval(true);
                                 await Provider.of<config_vm>(context, listen: false).getAllConfig();
                                 List<ConfigModel> _listconfg =
@@ -347,6 +351,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                   // print(datanext.toString());
                                   // datanext.add(Duration(days: peroidtime));
                                   // print(datanext);
+                                  if(isSuspend.toString()=='true')
+                                    rate=0.0;
 
                                   await Provider.of<communication_vm>(context, listen: false).updatecarecommuncation({
                                     'type': 'دوري',
@@ -355,7 +361,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                         .idUser
                                         .toString(),
                                     'date_communication': DateTime.now().toString(),
-                                    'result': typepayController.toString(), //
+                                    'result': typepayController.toString(), //use or not using
                                     'rate': rate.toString(),
                                     'number_wrong': numberwrong.toString(),
                                     'client_repeat': repeat.toString(),
@@ -367,6 +373,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                   // clear(val);
                                 }
                               }
+                              Provider.of<communication_vm>(context,listen: false).setload(false);
+
                             },
                             child: Text(
                               ' تم التواصل ',

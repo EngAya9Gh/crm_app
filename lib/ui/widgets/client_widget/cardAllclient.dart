@@ -35,7 +35,9 @@ class cardAllClient extends StatelessWidget {
           onTap: () {
             Navigator.push(
                 context,
-                CupertinoPageRoute(builder: (context) => ProfileClient(idClient: clientModel.idClients.toString())
+                CupertinoPageRoute(
+                    builder: (context) =>
+                        ProfileClient(idClient: clientModel.idClients.toString())
                     //   editclient(
                     // itemClient: itemClient,
                     // fkclient: itemClient.idClients.toString(),

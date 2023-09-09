@@ -231,7 +231,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                             ),
                           ],),
                         search_widget(
-                            'waitwithprev',
+                            'debt',
                             hintnamefilter,''
                         ),
                         Padding(

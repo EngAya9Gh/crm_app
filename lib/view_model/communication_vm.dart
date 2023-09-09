@@ -474,6 +474,12 @@ class communication_vm extends ChangeNotifier {
   }
 
   bool isload = false;
+
+  void setload(bool val){
+    isload=val;
+    notifyListeners();
+
+  }
   bool valuebutton = false;
 
   CancelableOperation<dynamic>? _cancelableFuture;
@@ -488,7 +494,7 @@ class communication_vm extends ChangeNotifier {
     _cancelableFuture?.cancel();
 
     _cancelableFuture = CancelableOperation.fromFuture(
-        Api().get(url: url + 'care/getcomm_repeat.php?fk_country=$country${param + queryParams}'));
+        Api().get(url: url + 'care/getcomm_repeat.php?fk_country=$country${ queryParams}'));
 
     data = await _cancelableFuture?.value;
 
@@ -737,7 +743,7 @@ class communication_vm extends ChangeNotifier {
 
     _cancelableCommunicationInstall2Future?.cancel();
     _cancelableCommunicationInstall2Future = CancelableOperation.fromFuture(
-        Api().get(url: url + 'care/get_install2.php?fk_country=${usercurrent!.fkCountry}$param$myClientsParams'));
+        Api().get(url: url + 'care/get_install2.php?fk_country=${usercurrent!.fkCountry}$myClientsParams'));
 
     data = await _cancelableCommunicationInstall2Future?.value;
 
@@ -760,7 +766,7 @@ class communication_vm extends ChangeNotifier {
     _cancelableCommunicationInstall1Future?.cancel();
 
     _cancelableCommunicationInstall1Future = CancelableOperation.fromFuture(
-        Api().get(url: url + 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}$param$myClientsParams'));
+        Api().get(url: url + 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}$myClientsParams'));
 
     data = await _cancelableCommunicationInstall1Future?.value;
     print('data.length');

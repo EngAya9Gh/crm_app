@@ -81,7 +81,8 @@ class _ClientViewState extends State<ClientView> {
                             color: kWhiteColor,
                           ),
                         ),
-                        if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('133') == true)
+                        (Provider.of<privilge_vm>(context, listen: false)
+                            .checkprivlge('133') == true)?
                           IconButton(
                             onPressed: () {
                               context.read<client_vm>().setTagClient();
@@ -93,7 +94,7 @@ class _ClientViewState extends State<ClientView> {
                               color: (clientModel.tag ?? false) ? Colors.amber : null,
                             ),
                             tooltip: (clientModel.tag ?? false) ? "مميز" : "غير مميز",
-                          ),
+                          ):Container(),
                       ],
                     ),
                     TextButton(

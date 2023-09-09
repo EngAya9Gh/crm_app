@@ -116,7 +116,7 @@ class _carepageState extends State<carepage> {
                 Navigator.push(context, CupertinoPageRoute(
                     builder: (context)=>
                         care_page_view()));
-          }, title: 'العناية بالعملاء'):Container(),
+          }, title: 'التواصل الدوري'):Container(),
 
           Provider.of<privilge_vm>(context,listen: true)
               .checkprivlge('29')==true?
