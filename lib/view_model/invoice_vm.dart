@@ -113,9 +113,10 @@ class invoice_vm extends ChangeNotifier {
     //getinvoice_Local("مشترك",'approved client',null);
     notifyListeners();
   }
-
+   // List<InvoiceModel> temp_listInvoicesAccept= [];
   Future<void> searchwaitsupport(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
+    // temp_listInvoicesAccept=List.from(listInvoicesAccept);
     // code to convert the first character to uppercase
     String searchKey = productName; //
     if (productName.isNotEmpty) {
@@ -128,7 +129,8 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else
-      getinvoice_Local("مشترك", 'approved only', null);
+      listInvoicesAccept =List.from(listinvoices);
+      //getinvoice_Local("مشترك", 'approved only', null);
     notifyListeners();
   }
 
