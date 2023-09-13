@@ -500,8 +500,10 @@ class client_vm extends ChangeNotifier {
       // inv = listClient.firstWhereOrNull((element) => element.idClients == idClient);
 
         // if (inv == null) {
-      currentClientModel!.data  = await ClientService().getclientid(idClient);
-        // listClient.add(inv);
+      inv  = await ClientService().getclientid(idClient);
+      // currentClientModel = currentClientModel.changeToLoading;
+
+      // listClient.add(inv);
         currentClientModel = currentClientModel.changeToLoaded(inv);
       // } else {
       //   currentClientModel = currentClientModel.changeToLoaded(inv);
