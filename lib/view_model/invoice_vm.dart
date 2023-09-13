@@ -262,7 +262,8 @@ class invoice_vm extends ChangeNotifier {
             }
           });
       }
-    } else {
+    }
+    else {
       if (listforme.isNotEmpty) {
         if (filter == 'الكل' || filter == null) {
           if (regoin != '0') {
