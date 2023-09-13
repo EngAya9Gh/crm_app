@@ -12,7 +12,7 @@ class PageState<T> {
   });
 
   final Status status;
-  final T? data;
+  late final T? data;
 
   @override
   bool operator ==(Object other) =>

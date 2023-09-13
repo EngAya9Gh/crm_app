@@ -306,6 +306,7 @@ class user_vm_provider extends ChangeNotifier {
     usersMarketingManagement = List.of(activeUsers)
         .where((element) => element.typeAdministration == UserType.MarketingManagement.type.toString())
         .toList();
+    usersMarketingManagement.addAll(usersSalesManagement);
   }
 
   void updateUserList(UserModel user) {

@@ -88,11 +88,15 @@ class client_dashboard extends StatefulWidget {
     void initState()  {
       _tabcontroller = TabController(length: 3, vsync: this);
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        _clientModel =
-        await  Provider.of<client_vm>
-          (context, listen: false)
-            .get_byIdClient(widget.invoiceModel.fkIdClient.toString()
-        );
+        await Provider.of<client_vm>(context, listen: false).get_byIdClient(widget.invoiceModel.fkIdClient.toString());
+
+        _clientModel=Provider.of<client_vm>
+            (context, listen: false).currentClientModel.data;
+        // _clientModel =
+        // await  Provider.of<client_vm>
+        //   (context, listen: false)
+        //     .get_byIdClient(widget.invoiceModel.fkIdClient.toString()
+        // );
         // final list = Provider.of<client_vm>(context,listen: true).listClient;
         // if(list.any((element) =>
         // element.idClients==widget.invoiceModel.fkIdClient))
