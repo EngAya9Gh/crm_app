@@ -1540,11 +1540,22 @@ class invoice_vm extends ChangeNotifier {
   }
 
   List<InvoiceModel> listApproveFinanceFilter = [];
+  List<InvoiceModel> listdeletedFilterSearch = [];
 
   void onSearch(String query) {
     final list = List.of(listInvoicesAccept);
 
     listApproveFinanceFilter = list.where((element) {
+      return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false);
+    }).toList();
+
+    notifyListeners();
+  }
+  void onSearch_deleted(String query) {
+    final list = List.of(listdeletedinvoice);
+
+    listdeletedFilterSearch = list.where((element) {
       return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
           (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false);
     }).toList();
