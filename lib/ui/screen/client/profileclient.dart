@@ -17,7 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:text_scroll/text_scroll.dart';
+  import 'package:text_scroll/text_scroll.dart';
 import '../../../constants.dart';
 import '../../../model/calendar/event.dart';
 import 'clientView.dart';

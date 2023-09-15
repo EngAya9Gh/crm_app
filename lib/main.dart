@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/di/di_container.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
 import 'package:crm_smart/provider/config_vm.dart';
@@ -7,6 +8,7 @@ import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/manage_provider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/provider/switch_provider.dart';
+import 'package:crm_smart/services/service_provider.dart';
 import 'package:crm_smart/ui/screen/home/home.dart';
 import 'package:crm_smart/ui/screen/login.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
@@ -68,6 +70,8 @@ void main() async {
   await Firebase.initializeApp(
     // name: "crm_smart",
   );
+
+  await configureDependencies();
   // }
 
   // Set the background messaging handler early on, as a named top-level function
@@ -94,111 +98,113 @@ void main() async {
   //await Firebase.initializeApp();
   await initializeDateFormatting();
 
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<user_vm_provider>(create: (_) => user_vm_provider()),
-    ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
-    ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
-    ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
-    ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
-    ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
-    // ChangeNotifierProvider<config_vm>(create: (_) => config_vm()),
-    ChangeNotifierProxyProvider<user_vm_provider, config_vm>(
-      create: (_) => config_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
-    // ChangeNotifierProvider<level_vm>(create: (_) => level_vm()),//
-    ChangeNotifierProxyProvider<user_vm_provider, level_vm>(
-      create: (_) => level_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
-    //ChangeNotifierProvider<regoin_vm>(create: (_) => regoin_vm()),
-    ChangeNotifierProvider<LoadProvider>(create: (_) => LoadProvider()),
-    //ChangeNotifierProvider<product_vm>(create: (_) => product_vm()),
-    ChangeNotifierProxyProvider<user_vm_provider, product_vm>(
-      create: (_) => product_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
-    ChangeNotifierProvider<manage_provider>(create: (_) => manage_provider()),
-    // ChangeNotifierProvider<privilge_vm>(create: (_) => privilge_vm()),
-    ChangeNotifierProxyProvider<user_vm_provider, privilge_vm>(
-      create: (_) => privilge_vm(),
-      //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-      //  client_vm(value.currentUser)
-    ),
-    ChangeNotifierProxyProvider<user_vm_provider, regoin_vm>(
-      create: (_) => regoin_vm(),
-      //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-      //  client_vm(value.currentUser)
-    ),
+  runApp(ServiceProvider(
+    child: MultiProvider(providers: [
+      ChangeNotifierProvider<user_vm_provider>(create: (_) => user_vm_provider()),
+      ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
+      ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
+      ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
+      ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
+      ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
+      // ChangeNotifierProvider<config_vm>(create: (_) => config_vm()),
+      ChangeNotifierProxyProvider<user_vm_provider, config_vm>(
+        create: (_) => config_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
+      // ChangeNotifierProvider<level_vm>(create: (_) => level_vm()),//
+      ChangeNotifierProxyProvider<user_vm_provider, level_vm>(
+        create: (_) => level_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
+      //ChangeNotifierProvider<regoin_vm>(create: (_) => regoin_vm()),
+      ChangeNotifierProvider<LoadProvider>(create: (_) => LoadProvider()),
+      //ChangeNotifierProvider<product_vm>(create: (_) => product_vm()),
+      ChangeNotifierProxyProvider<user_vm_provider, product_vm>(
+        create: (_) => product_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
+      ChangeNotifierProvider<manage_provider>(create: (_) => manage_provider()),
+      // ChangeNotifierProvider<privilge_vm>(create: (_) => privilge_vm()),
+      ChangeNotifierProxyProvider<user_vm_provider, privilge_vm>(
+        create: (_) => privilge_vm(),
+        //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+        //  client_vm(value.currentUser)
+      ),
+      ChangeNotifierProxyProvider<user_vm_provider, regoin_vm>(
+        create: (_) => regoin_vm(),
+        //   Provider.of<user_vm_provider>(_, listen: false).currentUser),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+        //  client_vm(value.currentUser)
+      ),
 
-    ChangeNotifierProxyProvider<user_vm_provider, client_vm>(
-      create: (_) => client_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
-    ChangeNotifierProxyProvider<user_vm_provider, usertest_vm>(
-      create: (_) => usertest_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
+      ChangeNotifierProxyProvider<user_vm_provider, client_vm>(
+        create: (_) => client_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
+      ChangeNotifierProxyProvider<user_vm_provider, usertest_vm>(
+        create: (_) => usertest_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
 
-    // ChangeNotifierProxyProvider<privilge_vm,client_vm>(
-    //   create: (_)=> client_vm(),
-    //   update: (ctx,value,prev)=>prev!..setvaluepriv( value.privilgelist),
-    //
-    // ),
+      // ChangeNotifierProxyProvider<privilge_vm,client_vm>(
+      //   create: (_)=> client_vm(),
+      //   update: (ctx,value,prev)=>prev!..setvaluepriv( value.privilgelist),
+      //
+      // ),
 
-    ChangeNotifierProxyProvider<user_vm_provider, notifyvm>(
-      create: (_) => notifyvm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
+      ChangeNotifierProxyProvider<user_vm_provider, notifyvm>(
+        create: (_) => notifyvm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
 
-    ChangeNotifierProxyProvider<user_vm_provider, approve_vm>(
-      create: (_) => approve_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
-    ChangeNotifierProxyProvider<user_vm_provider, invoice_vm>(
-      create: (_) => invoice_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
-    ChangeNotifierProxyProvider<user_vm_provider, maincity_vm>(
-      create: (_) => maincity_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
-    //ChangeNotifierProvider<invoice_vm>(create: (_) => invoice_vm()),
-    ChangeNotifierProvider<typeclient>(create: (_) => typeclient()),
+      ChangeNotifierProxyProvider<user_vm_provider, approve_vm>(
+        create: (_) => approve_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
+      ChangeNotifierProxyProvider<user_vm_provider, invoice_vm>(
+        create: (_) => invoice_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
+      ChangeNotifierProxyProvider<user_vm_provider, maincity_vm>(
+        create: (_) => maincity_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
+      //ChangeNotifierProvider<invoice_vm>(create: (_) => invoice_vm()),
+      ChangeNotifierProvider<typeclient>(create: (_) => typeclient()),
 
-    ChangeNotifierProvider<EventProvider>(
-      create: (_) => EventProvider(),
-      // update: (ctx, value, prev) => prev!..setvalue(value.listInvoicesAccept),
-    ),
-    ChangeNotifierProxyProvider<user_vm_provider, ticket_vm>(
-      create: (_) => ticket_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
-    ChangeNotifierProvider<comment_vm>(create: (_) => comment_vm()),
-    ChangeNotifierProxyProvider<user_vm_provider, communication_vm>(
-      create: (_) => communication_vm(),
-      update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-    ),
+      ChangeNotifierProvider<EventProvider>(
+        create: (_) => EventProvider(),
+        // update: (ctx, value, prev) => prev!..setvalue(value.listInvoicesAccept),
+      ),
+      ChangeNotifierProxyProvider<user_vm_provider, ticket_vm>(
+        create: (_) => ticket_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
+      ChangeNotifierProvider<comment_vm>(create: (_) => comment_vm()),
+      ChangeNotifierProxyProvider<user_vm_provider, communication_vm>(
+        create: (_) => communication_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
 
-    ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
-    ChangeNotifierProvider<activity_vm>(create: (_) => activity_vm()),
-    ChangeNotifierProvider<company_vm>(create: (_) => company_vm()),
-    ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
-    ChangeNotifierProvider<AgentDistributorViewModel>(create: (_) => AgentDistributorViewModel()),
-    ChangeNotifierProxyProvider<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
-      update: (context, invoiceVm, agentCollaborateVm) {
-        agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
-        return agentCollaborateVm!;
-      },
-      create: (_) => AgentsCollaboratorsInvoicesViewmodel(),
-    ),
-    ChangeNotifierProvider<lastcommentclient_vm>(create: (_) => lastcommentclient_vm()),
-    ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
-    ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
-    //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
-  ], child:  MyApp()));
+      ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
+      ChangeNotifierProvider<activity_vm>(create: (_) => activity_vm()),
+      ChangeNotifierProvider<company_vm>(create: (_) => company_vm()),
+      ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
+      ChangeNotifierProvider<AgentDistributorViewModel>(create: (_) => AgentDistributorViewModel()),
+      ChangeNotifierProxyProvider<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
+        update: (context, invoiceVm, agentCollaborateVm) {
+          agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
+          return agentCollaborateVm!;
+        },
+        create: (_) => AgentsCollaboratorsInvoicesViewmodel(),
+      ),
+      ChangeNotifierProvider<lastcommentclient_vm>(create: (_) => lastcommentclient_vm()),
+      ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
+      ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
+      //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
+    ], child:  MyApp()),
+  ));
 }
 
 class MyApp extends StatefulWidget {
