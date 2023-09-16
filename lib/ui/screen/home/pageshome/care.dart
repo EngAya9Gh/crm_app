@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/communication_list/presentation/pages/communication_list_page.dart';
 import 'package:crm_smart/ui/screen/care/care_clientaccept.dart';
 import 'package:crm_smart/ui/screen/care/care_page_view.dart';
 import 'package:crm_smart/ui/screen/care/view_installed.dart';
@@ -65,13 +66,12 @@ class _carepageState extends State<carepage> {
     super.initState();
   }
 
-  @override void didChangeDependencies() {
-    Future.delayed(Duration(milliseconds: 60)).then((_) async {
-
-
-    });
+  @override
+  void didChangeDependencies() {
+    Future.delayed(Duration(milliseconds: 60)).then((_) async {});
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
 
@@ -80,8 +80,7 @@ class _carepageState extends State<carepage> {
       appBar: AppBar(
         title: Text(
           'العناية بالعملاء',
-          style: TextStyle(color: kWhiteColor,
-              fontFamily: kfontfamily2),
+          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
         ),
         centerTitle: true,
         backgroundColor: kMainColor,
@@ -89,22 +88,20 @@ class _carepageState extends State<carepage> {
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 50),
-        child:
-        Column(
-
-          children: [
-            Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('44')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  //
-                  Navigator.push(context, CupertinoPageRoute(
-                      builder: (context)=>
-                          Care_ClientAccept()));
-                }, title: 'العملاء المشتركين'):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('44') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        //
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => Care_ClientAccept()));
+                      },
+                      title: 'العملاء المشتركين')
+                  : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
             Provider.of<privilge_vm>(context,listen: true)
               .checkprivlge('9')==true?
@@ -148,81 +145,85 @@ class _carepageState extends State<carepage> {
 
                 //الاتصال الثاني للجودة جديد
 //View_installedClient
-          }, title: ' جودة التركيب والتدريب'):Container(),
+                      },
+                      title: ' جودة التركيب والتدريب')
+                  : Container(),
 
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('33')==true?
-          buildSelectCategory(
-            // subtitle: Provider.of<ticket_vm>(context,listen: true)
-            //     .listticket_clientfilter.length.toString(),
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(context, CupertinoPageRoute(
-                    builder: (context)=>
-                        ticketclientview()));
-              }, title: 'تذاكر العملاء  '
-              ):Container(),
-            Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('102')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context, CupertinoPageRoute(
-                      builder: (context)=>
-                          care_report()));
-                }, title: 'تقرير العناية بالعملاء'):Container(),
-            Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('103')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context, CupertinoPageRoute(
-                      builder: (context)=>
-                          report_rate()));
-                }, title: 'تقرير مستوى التقييم'):Container(),
-      Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('104')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context, CupertinoPageRoute(
-                      builder: (context)=>
-                          repeat_report()));
-                }, title: label_repeat_comm):Container(),//'تقرير الاتصال الدوري '
-     Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('105')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context, CupertinoPageRoute(
-                      builder: (context)=>
-                          not_using_system()));
-                }, title: label_not_use):Container(),//' عملاء لا يستخدمون النظام '
-     Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('106')==true?
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context, CupertinoPageRoute(
-                      builder: (context)=>
-                          wrong_number()));
-                }, title: label_wrong_number):Container(),//' عملاء أرقامهم خاطئة '
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('33') == true
+                  ? buildSelectCategory(
+                      // subtitle: Provider.of<ticket_vm>(context,listen: true)
+                      //     .listticket_clientfilter.length.toString(),
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => ticketclientview()));
+                      },
+                      title: 'تذاكر العملاء  ')
+                  : Container(),
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('102') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => care_report()));
+                      },
+                      title: 'تقرير العناية بالعملاء')
+                  : Container(),
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('103') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => report_rate()));
+                      },
+                      title: 'تقرير مستوى التقييم')
+                  : Container(),
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('104') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => repeat_report()));
+                      },
+                      title: label_repeat_comm)
+                  : Container(), //'تقرير الاتصال الدوري '
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('105') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => not_using_system()));
+                      },
+                      title: label_not_use)
+                  : Container(), //' عملاء لا يستخدمون النظام '
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('106') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => wrong_number()));
+                      },
+                      title: label_wrong_number)
+                  : Container(), //' عملاء أرقامهم خاطئة '
 
-
-          ],),
-
+              buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(context, CupertinoPageRoute(builder: (context) => CommunicationListPage()));
+                },
+                title: 'قائمة التواصل',
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
