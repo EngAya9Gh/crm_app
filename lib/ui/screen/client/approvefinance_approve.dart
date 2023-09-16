@@ -78,7 +78,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
   }
 
   void onSearch() {
-    _invoiceViewModel.onSearch(_searchTextField.text);
+    _invoiceViewModel.onSearch_finance(_searchTextField.text);
   }
 
   @override
@@ -157,7 +157,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                   child: Consumer<invoice_vm>(
                     builder: (context, value, child) {
                       final list =
-                          _searchTextField.text.isEmpty ? value.listInvoicesAccept : value.listApproveFinanceFilter;
+                          _searchTextField.text.isEmpty ? value.listInvoicesAccept_admin : value.listApproveFinanceFilter;
 
                       return value.isloading == true
                           ? Center(child: CircularProgressIndicator())

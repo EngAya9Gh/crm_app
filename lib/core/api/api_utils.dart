@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:crm_smart/core/api/result.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'exceptions.dart';
 
 Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
@@ -33,14 +33,14 @@ Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
 }
 
 void showMessage(String message, {bool isSuccess = false}) {
-  Fluttertoast.showToast(
-      msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 1,
-      backgroundColor: isSuccess ? Colors.greenAccent : Colors.red,
-      textColor: Colors.white,
-      fontSize: 16.0);
+  // Fluttertoast.showToast(
+  //     msg: message,
+  //     toastLength: Toast.LENGTH_SHORT,
+  //     gravity: ToastGravity.BOTTOM,
+  //     timeInSecForIosWeb: 1,
+  //     backgroundColor: isSuccess ? Colors.greenAccent : Colors.red,
+  //     textColor: Colors.white,
+  //     fontSize: 16.0);
 }
 
 Future<Result<T>> toApiResult<T>(FutureOr<T> Function() call) async {
