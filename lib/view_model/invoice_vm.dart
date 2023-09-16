@@ -113,9 +113,10 @@ class invoice_vm extends ChangeNotifier {
     //getinvoice_Local("مشترك",'approved client',null);
     notifyListeners();
   }
-
+   // List<InvoiceModel> temp_listInvoicesAccept= [];
   Future<void> searchwaitsupport(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
+    // temp_listInvoicesAccept=List.from(listInvoicesAccept);
     // code to convert the first character to uppercase
     String searchKey = productName; //
     if (productName.isNotEmpty) {
@@ -128,7 +129,8 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else
-      getinvoice_Local("مشترك", 'approved only', null);
+      listInvoicesAccept =List.from(listinvoices);
+      //getinvoice_Local("مشترك", 'approved only', null);
     notifyListeners();
   }
 
@@ -260,7 +262,8 @@ class invoice_vm extends ChangeNotifier {
             }
           });
       }
-    } else {
+    }
+    else {
       if (listforme.isNotEmpty) {
         if (filter == 'الكل' || filter == null) {
           if (regoin != '0') {
@@ -741,29 +744,29 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '94').isCheck == '1' ? true : false;
     if (res) {
-      listinvoices = await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
+      listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(),"all",'');
       print('indddddd');
     } else {
       res = privilgelist.firstWhere((element) => element.fkPrivileg == '93').isCheck == '1' ? true : false;
       if (res) {
-        listinvoices = await Invoice_Service().getinvoicebyregoin(usercurrent!.fkRegoin!);
+        listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(),"regoin" ,usercurrent!.fkRegoin!.toString());
       } else {
         res = privilgelist.firstWhere((element) => element.fkPrivileg == '92').isCheck == '1' ? true : false;
         if (res) {
-          listinvoices = await Invoice_Service().getinvoicebyiduser(usercurrent!.idUser.toString());
+          listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(),'users',usercurrent!.idUser.toString());
         }
       }
     }
     listInvoicesAccept = List.from(listinvoices);
-    listInvoicesAccept.forEach((element) {
-      if (element.stateclient == 'مشترك' &&
-          element.isApprove == "1" &&
-          ((num.tryParse(element.total?.toString() ?? '0') ?? 0) -
-                  (num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) >
-              0) list.add(element);
-    });
-    listInvoicesAccept = list;
-    listforme = List.from(list);
+    // listInvoicesAccept.forEach((element) {
+    //   if (element.stateclient == 'مشترك' &&
+    //       element.isApprove == "1" &&
+    //       ((num.tryParse(element.total?.toString() ?? '0') ?? 0) -
+    //               (num.tryParse(element.amountPaid?.toString() ?? '0') ?? 0)) >
+    //           0) list.add(element);
+    // });
+    // listInvoicesAccept = list;
+    listforme = List.from(listInvoicesAccept);
     isloading = false;
     // if(listInvoicesAccept.isEmpty)listInvoicesAccept=listinvoices;
     notifyListeners();
@@ -1537,11 +1540,22 @@ class invoice_vm extends ChangeNotifier {
   }
 
   List<InvoiceModel> listApproveFinanceFilter = [];
+  List<InvoiceModel> listdeletedFilterSearch = [];
 
   void onSearch(String query) {
     final list = List.of(listInvoicesAccept);
 
     listApproveFinanceFilter = list.where((element) {
+      return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false);
+    }).toList();
+
+    notifyListeners();
+  }
+  void onSearch_deleted(String query) {
+    final list = List.of(listdeletedinvoice);
+
+    listdeletedFilterSearch = list.where((element) {
       return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
           (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false);
     }).toList();

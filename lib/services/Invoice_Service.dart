@@ -26,6 +26,40 @@ class Invoice_Service {
     //     List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
+  Future<List<InvoiceModel>> getinvoice_debt(String fk_country,String type,String param) async {
+    var data ;
+    switch (type) {
+      case "all":
+        data = await Api()
+            .post(url: url + "client/invoice/getinvoice_debt.php?fk_country=$fk_country", body: {'type': type});
+        break;
+      case "users":
+        data = await Api().post(
+            url: url + "client/invoice/getinvoice_debt.php?fk_country=$fk_country&id_user=$param",
+            body: {'type': type});
+        break;
+      case "regoin":
+        data = await Api().post(
+            url: url + "client/invoice/getinvoice_debt.php?fk_country=$fk_country&id_regoin=$param",
+            body: {'type': type});
+        break;
+    }
+    // await Api().get(url: url + 'client/invoice/getinvoice.php?fk_country=$fk_country');
+
+    List<InvoiceModel> prodlist = [];
+    // final json = "[" + data[i] + "]";
+    for (int i = 0; i < data.length; i++) {
+      print(i);
+
+      //print("data "+ "[" + data[i] + "]");
+      prodlist.add(InvoiceModel.fromJson(data[i]));
+    }
+    // List<InvoiceModel> invoices =
+    // await compute<List<dynamic>,
+    //     List<InvoiceModel>>(convertToInvoices, data);
+    return prodlist;
+  }
+
 
   List<InvoiceModel> convertToInvoices(List<dynamic> list) {
     return List<Map<String, dynamic>>.from(list).map<InvoiceModel>((e) => InvoiceModel.fromJson(e)).toList();

@@ -82,7 +82,7 @@ class CommunicationModel {
     date_last_com_install = json['date_last_com_install'];
     isRecommendation = json['isRecommendation'];
     is_visit = json['is_visit'];
-    is_visit = json['is_suspend'];
+    is_suspend = json['is_suspend'];
     userinstall = json['userinstall'];
   }
 

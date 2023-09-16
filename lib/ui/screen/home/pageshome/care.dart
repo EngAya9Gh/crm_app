@@ -31,24 +31,26 @@ class carepage extends StatefulWidget {
 }
 
 class _carepageState extends State<carepage> {
-  int lengthInstall = 0;
-  int lengthWelcome = 0;
+  int lengthInstall=0;
+  int lengthWelcome=0;
 
-  @override
-  void initState() {
+
+  @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
       Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
       //
       Provider.of<communication_vm>(context, listen: false)
-          .setvaluepriv(Provider.of<privilge_vm>(context, listen: false).privilgelist);
-      //  Provider.of<ticket_vm>(context,listen: false)
-      //      .getclientticket_filter('جديدة');
-      // await Provider.of<communication_vm>(context, listen: false)
-      //      .getCommunicationInstall(1);
-      // await Provider.of<communication_vm>(context, listen: false)
-      //      .getCommunicationWelcome();
+          .setvaluepriv(
+          Provider.of<privilge_vm>(context, listen: false).privilgelist);
+     //  Provider.of<ticket_vm>(context,listen: false)
+     //      .getclientticket_filter('جديدة');
+     // await Provider.of<communication_vm>(context, listen: false)
+     //      .getCommunicationInstall(1);
+     // await Provider.of<communication_vm>(context, listen: false)
+     //      .getCommunicationWelcome();
 
 //////////////////////////////////////////////
 //       Provider.of<communication_vm>(
@@ -58,6 +60,8 @@ class _carepageState extends State<carepage> {
 //       Provider.of<communication_vm>(
 //           context, listen: false)
 //           .getCommunicationwelcomenumber();
+
+
     });
     super.initState();
   }
@@ -70,7 +74,8 @@ class _carepageState extends State<carepage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return  Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(
@@ -98,42 +103,47 @@ class _carepageState extends State<carepage> {
                       title: 'العملاء المشتركين')
                   : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('9') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => care_page_view()));
-                      },
-                      title: 'العناية بالعملاء')
-                  : Container(),
+            Provider.of<privilge_vm>(context,listen: true)
+              .checkprivlge('9')==true?
+          buildSelectCategory(
+              colorbag: Colors.white,
+              colortitle: Colors.black,
+              colorarrow: Colors.black,
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(
+                    builder: (context)=>
+                        care_page_view()));
+          }, title: 'التواصل الدوري'):Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('29') == true
-                  ? buildSelectCategory(
-                      // subtitle:   Provider.of<communication_vm>(
-                      //     context, listen: true).listwelcomenumber.length.toString(),
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => View_welcomeClient()));
-                      },
-                      title: 'الترحيب بالعملاء')
-                  : Container(),
+          Provider.of<privilge_vm>(context,listen: true)
+              .checkprivlge('29')==true?
+          buildSelectCategory(
+            // subtitle:   Provider.of<communication_vm>(
+            //     context, listen: true).listwelcomenumber.length.toString(),
+              colorbag: Colors.white,
+              colortitle: Colors.black,
+              colorarrow: Colors.black,
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(
+                    builder: (context)=>
+                        View_welcomeClient()));
+          }, title: 'الترحيب بالعملاء'):Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('30') == true
-                  ? buildSelectCategory(
-                      // subtitle:
-                      // Provider.of<communication_vm>(
-                      //     context, listen: true).listinstallnumber.length.toString(),
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => View_installedClient()));
+          Provider.of<privilge_vm>(context,listen: true)
+              .checkprivlge('30')==true?
+          buildSelectCategory(
+            // subtitle:
+            // Provider.of<communication_vm>(
+            //     context, listen: true).listinstallnumber.length.toString(),
+              colorbag: Colors.white,
+              colortitle: Colors.black,
+              colorarrow: Colors.black,
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(
+                    builder: (context)=>
+                        View_installedClient()));
 
-                        //الاتصال الثاني للجودة جديد
+                //الاتصال الثاني للجودة جديد
 //View_installedClient
                       },
                       title: ' جودة التركيب والتدريب')

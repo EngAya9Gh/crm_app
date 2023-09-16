@@ -60,7 +60,7 @@ class _tabclientsState extends State<tabclients> {
       Provider.of<client_vm>(context, listen: false).clear();
       List<PrivilgeModel> list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
       Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-      Provider.of<client_vm>(context, listen: false).getclient_vm(false);
+      Provider.of<client_vm>(context, listen: false).getclient_vm();
       context.read<activity_vm>()
         ..initValueOut()
         ..getactv();

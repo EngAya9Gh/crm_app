@@ -69,8 +69,16 @@ class privilge_vm extends ChangeNotifier {
 
   bool checkprivlge(String id_privilge) {
     if (privilgelist.isNotEmpty) {
+    print( id_privilge );
+    print('id_privilge');
+     print(privilgelist[0].fkLevel);
+    print(privilgelist.length);
       bool res =
-          privilgelist.firstWhere((element) => element.fkPrivileg == id_privilge).isCheck == '1'
+          privilgelist.firstWhere(
+                  (element) =>
+          element.fkPrivileg == id_privilge
+
+          ).isCheck == '1'
               ? true
               : false;
       return res;

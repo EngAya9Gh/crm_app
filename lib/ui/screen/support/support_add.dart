@@ -329,8 +329,8 @@ class _support_addState extends State<support_add> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: buildcardExpansion(
-                'فاتورة  ' + _invoice!.date_approve.toString(),
-                '',
+                'فاتورة  ' + _invoice!.date_approve.toString()+ '      # '+ _invoice!.idInvoice.toString(),
+               '',
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
                   child: Column(
@@ -720,9 +720,11 @@ class _support_addState extends State<support_add> {
                       _invoice!.dateinstall_task != null
                           ? cardRow(title: ' قام بجدولة التركيب ', value: _invoice!.nameusertask.toString())
                           : Container(),
+
                       cardRow(
                           title: 'طريقة التركيب ',
                           value: _invoice!.typeInstallation.toString() == '0' ? 'ميداني' : 'اونلاين'),
+
                       _invoice!.ready_install == '0'
                           ? cardRow(title: 'هل تم التركيب للعميل ', value: 'معلق')
                           : cardRow(
@@ -1065,7 +1067,8 @@ class _support_addState extends State<support_add> {
                             ),
                     ],
                   ),
-                )),
+                )
+            ),
           ),
         ),
       ),

@@ -119,7 +119,30 @@ class ClientService {
     print(prodlist);
     return prodlist;
   }
+  Future<List<ClientModel>> getClientmarket_regoin(String regoin) async {
+    List<dynamic> data = [];
+    data = await Api().get(url: url + 'client/getclientmarket_regoin.php?fk_regoin=$regoin');
 
+    List<ClientModel> prodlist = [];
+
+    for (int i = 0; i < data.length; i++) {
+      prodlist.add(ClientModel.fromJson(data[i]));
+    }
+    print(prodlist);
+    return prodlist;
+  }
+  Future<List<ClientModel>> getClientmarket_user(String user) async {
+    List<dynamic> data = [];
+    data = await Api().get(url: url + 'client/getclientmarket_user.php?fk_user=$user');
+
+    List<ClientModel> prodlist = [];
+
+    for (int i = 0; i < data.length; i++) {
+      prodlist.add(ClientModel.fromJson(data[i]));
+    }
+    print(prodlist);
+    return prodlist;
+  }
   Future<ClientModel> getclientid(String? id_clients) async {
     var data = await Api().get(url: url + 'client/getclientid.php?id_clients=$id_clients');
 
