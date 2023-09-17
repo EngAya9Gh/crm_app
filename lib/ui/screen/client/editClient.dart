@@ -279,7 +279,8 @@ class _editclientState extends State<editclient> {
                       //     ? typeclient_provider.selectedValueOut
                       //     :
                       'activity_type_fk': Provider.of<activity_vm>
-                        (context, listen: false).selectedValueOut?.id_activity_type.toString(),
+                        (context, listen: false)
+                          .selectedValueOut?.id_activity_type.toString(),
                       // "mobile": mobileController.text,
                       "ismarketing": sourclient == 'ميداني' ? '0' : '1',
                       "user_do": Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),

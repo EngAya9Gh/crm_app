@@ -376,7 +376,8 @@ class _addClientState extends State<addClient> {
                               'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
                               'sourcclient': sourclient,
                               'activity_type_fk':
-                                  Provider.of<activity_vm>(context, listen: false).selectedValueOut.toString(),
+                                  Provider.of<activity_vm>(context, listen: false)
+                                      .selectedValueOut!.id_activity_type.toString(),
                               "mobile": mobileController.text,
                               "phone": phoneController.text,
                               "ismarketing": sourclient == 'ميداني' ? '0' : '1',
