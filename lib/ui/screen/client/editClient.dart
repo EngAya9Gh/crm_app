@@ -1,3 +1,4 @@
+import 'package:crm_smart/model/ActivityModel.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -149,7 +150,8 @@ class _editclientState extends State<editclient> {
       Provider.of<maincity_vm>(context, listen: false).changevalue(widget.itemClient.city.toString());
 
       await Provider.of<activity_vm>(context, listen: false).getactv();
-      Provider.of<activity_vm>(context, listen: false).changevalueOut(widget.itemClient.activity_type_fk);
+      Provider.of<activity_vm>(context, listen: false)
+          .changesValue_idact(widget.itemClient.activity_type_fk);
 
       await Provider.of<company_vm>(context, listen: false).getcompany();
 
@@ -276,7 +278,8 @@ class _editclientState extends State<editclient> {
                       // typeclient_provider.selectedValuemanag == "منسحب"
                       //     ? typeclient_provider.selectedValueOut
                       //     :
-                      'activity_type_fk': Provider.of<activity_vm>(context, listen: false).selectedValueOut.toString(),
+                      'activity_type_fk': Provider.of<activity_vm>
+                        (context, listen: false).selectedValueOut?.id_activity_type.toString(),
                       // "mobile": mobileController.text,
                       "ismarketing": sourclient == 'ميداني' ? '0' : '1',
                       "user_do": Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
@@ -394,29 +397,54 @@ class _editclientState extends State<editclient> {
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,
-                          child: DropdownButtonFormField(
-                            decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
-
-                            isExpanded: true,
-                            //hint: Text("حدد حالة العميل"),
-                            items: cart.list_activity.map((level_one) {
-                              return DropdownMenuItem(
-                                child: Text(level_one.name_activity_type), //label of item
-
-                                value: level_one.id_activity_type, //value of item
-                              );
-                            }).toList(),
-                            value: cart.selectedValueOut,
-                            onChanged: (value) {
-                              //  setState(() {
-                              cart.changevalueOut(value.toString());
-                              typejobController = value.toString();
-                              // });
+                          child:
+                          DropdownSearch<ActivityModel>(
+                            mode: Mode.DIALOG,
+                            filterFn: (user, filter) => user!.getfilter_actv(filter!),
+                            compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
+                            items: cart.list_activity,
+                            itemAsString: (u) => u!.userAsString(),
+                            onChanged: (data) {
+                              // iduser = data!.id_activity_type;
+                              cart.changevalueOut(data);
+                              // filtershow();
                             },
+                            selectedItem: cart.selectedValueOut,
+                            showSearchBox: true,
+                            dropdownSearchDecoration: InputDecoration(
+                              isCollapsed: true,
+                              hintText: 'النشاط',
+                              alignLabelWithHint: true,
+                              fillColor: Colors.grey.withOpacity(0.2),
+                              contentPadding: EdgeInsets.all(0),
+                              border:
+                              UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                            ),
+                            // InputDecoration(border: InputBorder.none),
                           ),
+                          // DropdownButtonFormField(
+                          //   decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(12),
+                          //           borderSide: BorderSide(width: 2, color: Colors.grey))),
+                          //
+                          //   isExpanded: true,
+                          //   //hint: Text("حدد حالة العميل"),
+                          //   items: cart.list_activity.map((level_one) {
+                          //     return DropdownMenuItem(
+                          //       child: Text(level_one.name_activity_type), //label of item
+                          //
+                          //       value: level_one.id_activity_type, //value of item
+                          //     );
+                          //   }).toList(),
+                          //   value: cart.selectedValueOut,
+                          //   onChanged: (value) {
+                          //     //  setState(() {
+                          //     cart.changevalueOut(value.toString());
+                          //     typejobController = value.toString();
+                          //     // });
+                          //   },
+                          // ),
                         );
                       },
                     ),

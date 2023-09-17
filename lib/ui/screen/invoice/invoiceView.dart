@@ -93,9 +93,10 @@ class _InvoiceViewState extends State<InvoiceView> {
      await Provider.of<client_vm>(context,listen: false)
          .get_byIdClient(widget.invoice!.fkIdClient.toString());
 
-     clientmodel=Provider.of<client_vm>(context,listen: false)
-         .listClient.firstWhere(
-             (element) => element.idClients==widget.invoice!.fkIdClient);
+     clientmodel=
+         Provider.of<client_vm>(context,listen: false).currentClientModel.data!;
+         // .listClient.firstWhere(
+         //     (element) => element.idClients==widget.invoice!.fkIdClient);
 
 
       print('nameEEnter' + clientmodel.idClients.toString());
@@ -351,7 +352,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       context,
                                       CupertinoPageRoute(
                                           builder: (context) =>
-                                              addinvoice(invoice: invoice, itemClient: clientmodel)));
+                                              addinvoice(
+                                                  invoice: invoice,
+                                                  itemClient: clientmodel)));
                                 },
                               )
                                   : Container(),
