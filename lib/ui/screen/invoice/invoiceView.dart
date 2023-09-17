@@ -94,7 +94,8 @@ class _InvoiceViewState extends State<InvoiceView> {
          .get_byIdClient(widget.invoice!.fkIdClient.toString());
 
      clientmodel=
-         Provider.of<client_vm>(context,listen: false).currentClientModel.data!;
+         Provider.of<client_vm>(context,listen: false)
+             .currentClientModel.data!;
          // .listClient.firstWhere(
          //     (element) => element.idClients==widget.invoice!.fkIdClient);
 
