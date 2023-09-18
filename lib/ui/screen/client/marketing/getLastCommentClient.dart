@@ -155,21 +155,43 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                     },
                   ),
                 ),
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: TextField(
-                    controller: searchController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      filled: true,
-                      fillColor: Colors.grey.shade100,
-                      border: InputBorder.none,
-                      focusedBorder: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                      hintText: "المؤسسة, العميل, الهاتف,....",
+                Row(
+                  children: [
+                    Flexible(
+
+                      child: Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: TextField(
+                          controller: searchController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            hintText: "المؤسسة, العميل, الهاتف,....",
+                          ),
+                          onChanged: Provider.of<lastcommentclient_vm>(context, listen: false).onSearch,
+                        ),
+                      ),
                     ),
-                    onChanged: Provider.of<lastcommentclient_vm>(context, listen: false).onSearch,
-                  ),
+                    IconButton(
+                        onPressed: () {
+
+                          Provider.of<lastcommentclient_vm>(context, listen: false)
+                              .getLastcommentClientModel();
+                        }
+
+                        , icon:Icon(
+                        Provider.of<lastcommentclient_vm>(context, listen: false)
+                            .order=='ASC'?
+                          Icons.account_tree_rounded
+                          :Icons.account_tree_outlined
+
+
+                    ) )
+                  ],
                 ),
                 Expanded(
                   child: ListView.builder(

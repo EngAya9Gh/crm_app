@@ -10,16 +10,19 @@ class lastcommentclient_vm extends ChangeNotifier {
   List<LastcommentClientModel> list_LastcommentClientModel = [];
   List<LastcommentClientModel> list_LastcommentClientModel_temp = [];
   bool isload = false;
-
-  Future<void> getLastcommentClientModel() async {
+  String order='ASC';
+  Future<void> getLastcommentClientModel( ) async {
     isload = true;
+
     notifyListeners();
-    final response = await Api().get(url: url + 'reports/get_lastcomment.php');
-    final list = List<LastcommentClientModel>.from((response ?? []).map((x) => LastcommentClientModel.fromJson(x)))
+    final response = await Api().get(url: url + 'reports/get_lastcomment.php?order=$order');
+    var list = List<LastcommentClientModel>.from((response ?? []).map((x) => LastcommentClientModel.fromJson(x)))
       ..sort(
         (a, b) =>
             (num.tryParse(b.hoursLastComment ?? '0') ?? 0).compareTo(int.tryParse(a.hoursLastComment ?? '0') ?? 0),
       );
+    if(order!='ASC')
+      list=list.reversed.toList();
     final noCommentList = <LastcommentClientModel>[];
     list.removeWhere((element) {
       final isNoComment = num.parse(element.hoursLastComment.toString()) < 0;
@@ -35,6 +38,11 @@ class lastcommentclient_vm extends ChangeNotifier {
     list_LastcommentClientModel = List.from(list);
     list_LastcommentClientModel_temp = List.from(list);
     isload = false;
+
+    if(order=='ASC')
+      order='desc';
+    else
+      order='ASC';
     notifyListeners();
   }
 

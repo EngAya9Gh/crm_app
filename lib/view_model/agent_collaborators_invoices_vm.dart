@@ -25,6 +25,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   AgentDistributorModel? selectedAgentDistributor;
   String? selectedRegion;
 
+  DateTime from=DateTime.now();
+  DateTime to=DateTime.now() ;
   init() {
     invoicesList = [];
     invoicesFiltered = [];
@@ -36,6 +38,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     selectedEmployee = null;
     selectedAgentDistributor = null;
     selectedRegion = null;
+    from=  DateTime.now();
+    to=  DateTime.now();
     notifyListeners();
   }
 
@@ -157,6 +161,13 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     onFilter();
   }
 
+  onChange_date(DateTime from_param, DateTime to_param) {
+    // selectedRegion = region;
+    from=from_param;
+    to=to_param;
+    onFilter();
+  }
+
   onSearch(String query) {
     final list = List<InvoiceModel>.from(invoicesList);
     invoicesFiltered = list.where((element) {
@@ -208,7 +219,15 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
         return isSelectedSellerTypeFilterEqualInvoice(element) || element.type_seller == null;
       }
     }).toList();
+    List<InvoiceModel> invoicesFiltered_temp = [];
+    invoicesFiltered.forEach((element) {
+      if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+          DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+        invoicesFiltered_temp.add(element);
+      }
+    });
 
+    invoicesFiltered=List.from(invoicesFiltered_temp);
     notifyListeners();
   }
 

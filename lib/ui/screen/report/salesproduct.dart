@@ -465,7 +465,7 @@ class _salesproductState extends State<salesproduct> {
                                         width: 300,
                                         height: 300,
                                         child: CalendarDatePicker(
-                                          initialDate: DateTime(DateTime.now().year, 1),
+                                          initialDate: DateTime(DateTime.now().year, DateTime.now().month),
                                           firstDate: DateTime(DateTime.now().year - 100, 1),
                                           lastDate: DateTime(DateTime.now().year + 100, 1),
                                           // : DateTime.now(),
