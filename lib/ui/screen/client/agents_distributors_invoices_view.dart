@@ -94,10 +94,11 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        print('_selectedDatefrom '+_selectedDatefrom.toString());
+        print('_selectedDateto '+_selectedDateto.toString());
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-          // Provider.of<invoice_vm>(context,listen: false)
-          //     .onChange_date( _selectedDatefrom,_selectedDateto);
+          Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,listen: false)
+              .onChange_date( _selectedDatefrom,_selectedDateto);
 
       });
   }
@@ -114,10 +115,10 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        print('_selectedDateto '+_selectedDateto.toString());
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-          // Provider.of<invoice_vm>(context,listen: false)
-          //     .onChange_date( _selectedDatefrom,_selectedDateto);
+          Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,listen: false)
+              .onChange_date( _selectedDatefrom,_selectedDateto);
 
       });
   }
@@ -230,9 +231,12 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                         ),
                         readOnly: true,
                         onTap: () {
-                          _selectDatefrom(context, DateTime.now());
+                          setState(() {
+                            _selectDatefrom(context, DateTime.now());
 
-                          viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
+                            // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
+
+                          });
 
 
                           // _selectDate(context, DateTime.now());
@@ -269,8 +273,10 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                         ),
                         readOnly: true,
                         onTap: () {
-                          _selectDateto(context, DateTime.now());
-                          viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
+                         setState(() {
+                           _selectDateto(context, DateTime.now());
+                           // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
+                         });
                           // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
                           //   getData();
                           // _selectDate(context, DateTime.now());
@@ -302,9 +308,15 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   ),
                   Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
                       builder: (context, value, agentCollaboratorsVm, child) {
-                    final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                    final list =
+                    (   agentCollaboratorsVm.from!=DateTime(1,1,1) &&
+                        agentCollaboratorsVm.to!=DateTime(1,1,1) )
+                        ||
+                        ( agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
                             _searchTextField.text.trim().isEmpty &&
                             (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
+                        )
+
                         ? value.listInvoicesAccept
                         : agentCollaboratorsVm.invoicesFiltered;
 
@@ -319,11 +331,19 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             SizedBox(height: 10),
             Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
               builder: (context, value, agentCollaboratorsVm, child) {
-                final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                final list =
+                (   agentCollaboratorsVm.from!=DateTime(1,1,1) &&
+                    agentCollaboratorsVm.to!=DateTime(1,1,1)  )
+                ||
+                    (  agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
                         _searchTextField.text.trim().isEmpty &&
-                        (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
-                    ? value.listInvoicesAccept
+                        (agentCollaboratorsVm.selectedRegion == null ||
+                            agentCollaboratorsVm.selectedRegion == '0')  )
+
+
+                    ? agentCollaboratorsVm.invoicesFiltered//value.listInvoicesAccept
                     : agentCollaboratorsVm.invoicesFiltered;
+
 
                 if (value.isloading) {
                   return loadingWidget;

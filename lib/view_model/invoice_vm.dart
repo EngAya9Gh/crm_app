@@ -1086,7 +1086,8 @@ class invoice_vm extends ChangeNotifier {
     switch (type) {
       case 'r':
         listinvoicebyregoin =
-            await Invoice_Service().getinvoaicebyregoin_accept_requst({'fk_regoin': usercurrent!.fkRegoin.toString()});
+            await Invoice_Service().getinvoaicebyregoin_accept_requst(
+                {'fk_regoin': usercurrent!.fkRegoin.toString()});
         break;
 
       // else
