@@ -124,7 +124,7 @@ class _ApprovePageState extends State<ApprovePage> {
                   ],
                 ),
                 search_widget(
-                  'wait',
+                  'accept_invoice',
                   hintnamefilter,''
                 ),
                 Container(
@@ -138,7 +138,7 @@ class _ApprovePageState extends State<ApprovePage> {
                         return
                           value.isloading==true?
                           Center(child: CircularProgressIndicator()):
-                          value.listInvoicesAccept.length==0?
+                          value.listInvoicesAccept_admin.length==0?
                           Center(
                               child: Text(messageNoData)):
                           Column(
@@ -147,14 +147,14 @@ class _ApprovePageState extends State<ApprovePage> {
                                  //flex: 1,
                                   child: ListView.builder(
                                   scrollDirection: Axis.vertical,
-                                  itemCount: value.listInvoicesAccept.length,
+                                  itemCount: value.listInvoicesAccept_admin.length,
                                   itemBuilder: (context, index) {
                                     return SingleChildScrollView(
                                         child: Padding(
                                           padding: const EdgeInsets.all(2),
                                           child: cardapprove1(
                                             itemapprove :
-                                            value.listInvoicesAccept[index],
+                                            value.listInvoicesAccept_admin[index],
                                             type: '',
                                             //data: widget.data,
                                           ),

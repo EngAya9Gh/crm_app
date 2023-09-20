@@ -88,7 +88,8 @@ class client_dashboard extends StatefulWidget {
     void initState()  {
       _tabcontroller = TabController(length: 3, vsync: this);
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await Provider.of<client_vm>(context, listen: false).get_byIdClient(widget.invoiceModel.fkIdClient.toString());
+        await Provider.of<client_vm>(context, listen: false)
+            .get_byIdClient(widget.invoiceModel.fkIdClient.toString());
 
         _clientModel=Provider.of<client_vm>
             (context, listen: false).currentClientModel.data;

@@ -22,4 +22,11 @@ class ActivityModel {
     // _data['type'] = type;
     return _data;
   }
+  String userAsString() {
+    return "${this.name_activity_type}";
+    // return '#${this.idUser} ${this.nameUser}';
+  }
+  bool getfilter_actv(String filter) {
+    return this.name_activity_type?.toLowerCase().toString().contains(filter.toLowerCase()) ?? false;
+  }
 }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../model/agent_distributor_model.dart';
@@ -14,6 +15,7 @@ import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../../view_model/vm.dart';
 import '../../widgets/invoice_widget/Card_invoice_client.dart';
+import 'dart:ui' as myui;
 
 enum SellerTypeFilter { distributor, agent, collaborator, employee, all }
 
@@ -39,6 +41,7 @@ extension SellerExt on SellerTypeFilter {
 class AgentsDistributorsInvoicesView extends StatefulWidget {
   const AgentsDistributorsInvoicesView({Key? key}) : super(key: key);
 
+
   @override
   State<AgentsDistributorsInvoicesView> createState() => _AgentsDistributorsInvoicesViewState();
 }
@@ -47,6 +50,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     with StateViewModelMixin<AgentsDistributorsInvoicesView, AgentsCollaboratorsInvoicesViewmodel> {
   late privilge_vm privilegeVm;
   late TextEditingController _searchTextField;
+  DateTime _selectedDatefrom = DateTime.now();
+  DateTime _selectedDateto = DateTime.now();
 
   @override
   void initState() {
@@ -77,6 +82,47 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     viewmodel.onSearch(_searchTextField.text);
   }
 
+  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+    DateTime? pickedDate = await showDatePicker(
+
+        context: context,
+        currentDate: currentDate,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(3010));
+    if (pickedDate != null)
+      setState(() {
+        // Navigator.pop(context);
+        _selectedDatefrom = pickedDate;
+        print('_selectedDatefrom '+_selectedDatefrom.toString());
+        print('_selectedDateto '+_selectedDateto.toString());
+        // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,listen: false)
+              .onChange_date( _selectedDatefrom,_selectedDateto);
+
+      });
+  }
+  Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
+    DateTime? pickedDate = await showDatePicker(
+      // initialEntryMode: DatePickerEntryMode.calendarOnly,
+      // initialDatePickerMode: DatePickerMode.year,
+        context: context,
+        currentDate: currentDate,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(3010));
+    if (pickedDate != null)
+      setState(() {
+        // Navigator.pop(context);
+        _selectedDateto = pickedDate;
+        print('_selectedDateto '+_selectedDateto.toString());
+        // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+          Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,listen: false)
+              .onChange_date( _selectedDatefrom,_selectedDateto);
+
+      });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +134,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
         centerTitle: true,
       ),
       body: Directionality(
-        textDirection: TextDirection.rtl,
+        textDirection:myui. TextDirection.rtl,
         child: Column(
           children: [
             SizedBox(height: 10),
@@ -105,7 +151,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                           hint: Text("النوع"),
                           items: (SellerTypeFilter.values).map((type) {
                             return DropdownMenuItem<SellerTypeFilter>(
-                              child: Text(type.text, textDirection: TextDirection.rtl),
+                              child: Text(type.text, textDirection: myui.TextDirection.rtl),
                               value: type,
                             );
                           }).toList(),
@@ -154,6 +200,92 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   },
                 ),
               ),
+            Row (
+              children: [
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('from'),
+                      TextFormField(
+                        validator: (value) {
+                          if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                            return 'يرجى تعيين التاريخ ';
+                          }
+                        },
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: kMainColor,
+                          ),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                              ? 'from' //_currentDate.toString()
+                              : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                          //_invoice!.dateinstall_task.toString(),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          setState(() {
+                            _selectDatefrom(context, DateTime.now());
+
+                            // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
+
+                          });
+
+
+                          // _selectDate(context, DateTime.now());
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Flexible(
+                  child: Column(
+                    children: [
+                      Text('to'),
+                      TextFormField(
+                        validator: (value) {
+                          if (_selectedDateto == DateTime(1, 1, 1)) {
+                            return 'يرجى تعيين التاريخ ';
+                          }
+                        },
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: kMainColor,
+                          ),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          hintText: _selectedDateto == DateTime(1, 1, 1)
+                              ? 'to' //_currentDate.toString()
+                              : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                          //_invoice!.dateinstall_task.toString(),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                         setState(() {
+                           _selectDateto(context, DateTime.now());
+                           // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
+                         });
+                          // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
+                          //   getData();
+                          // _selectDate(context, DateTime.now());
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(
@@ -176,9 +308,15 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   ),
                   Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
                       builder: (context, value, agentCollaboratorsVm, child) {
-                    final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                    final list =
+                    (   agentCollaboratorsVm.from!=DateTime(1,1,1) &&
+                        agentCollaboratorsVm.to!=DateTime(1,1,1) )
+                        ||
+                        ( agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
                             _searchTextField.text.trim().isEmpty &&
                             (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
+                        )
+
                         ? value.listInvoicesAccept
                         : agentCollaboratorsVm.invoicesFiltered;
 
@@ -193,11 +331,19 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             SizedBox(height: 10),
             Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
               builder: (context, value, agentCollaboratorsVm, child) {
-                final list = agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                final list =
+                (   agentCollaboratorsVm.from!=DateTime(1,1,1) &&
+                    agentCollaboratorsVm.to!=DateTime(1,1,1)  )
+                ||
+                    (  agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
                         _searchTextField.text.trim().isEmpty &&
-                        (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
-                    ? value.listInvoicesAccept
+                        (agentCollaboratorsVm.selectedRegion == null ||
+                            agentCollaboratorsVm.selectedRegion == '0')  )
+
+
+                    ? agentCollaboratorsVm.invoicesFiltered//value.listInvoicesAccept
                     : agentCollaboratorsVm.invoicesFiltered;
+
 
                 if (value.isloading) {
                   return loadingWidget;
@@ -256,17 +402,17 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             items: sellerNames.map((item) {
               if (T == ParticipateModel) {
                 return DropdownMenuItem(
-                  child: Text((item as ParticipateModel).name_participate, textDirection: TextDirection.rtl),
+                  child: Text((item as ParticipateModel).name_participate, textDirection: myui.TextDirection.rtl),
                   value: item,
                 );
               } else if (T == AgentDistributorModel) {
                 return DropdownMenuItem(
-                  child: Text((item as AgentDistributorModel).nameAgent, textDirection: TextDirection.rtl),
+                  child: Text((item as AgentDistributorModel).nameAgent, textDirection: myui.TextDirection.rtl),
                   value: item,
                 );
               } else {
                 return DropdownMenuItem(
-                  child: Text((item as UserModel).nameUser!, textDirection: TextDirection.rtl),
+                  child: Text((item as UserModel).nameUser!, textDirection: myui.TextDirection.rtl),
                   value: item,
                 );
               }

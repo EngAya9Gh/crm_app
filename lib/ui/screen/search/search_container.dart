@@ -93,7 +93,8 @@ class search_widget extends StatelessWidget {
                   //       .searchProducts(pattern);
                   //   break;
                   case 'wait':
-                    Provider.of<invoice_vm>(context, listen: false).searchwait(pattern);
+                    Provider.of<invoice_vm>(context, listen: false)
+                        .searchwait(pattern);
                     break;
                   case 'waitcare':
                     Provider.of<communication_vm>(context, listen: false).searchwaitcare(pattern);
@@ -109,6 +110,9 @@ class search_widget extends StatelessWidget {
                     break;
                     case 'debt':
                     Provider.of<invoice_vm>(context, listen: false).searchwaitsupport(pattern);
+                    break;
+                    case 'accept_invoice':
+                    Provider.of<invoice_vm>(context, listen: false).search_accept_invoice_admin(pattern);
                     break;
                 }
                 //.search(productName: pattern);

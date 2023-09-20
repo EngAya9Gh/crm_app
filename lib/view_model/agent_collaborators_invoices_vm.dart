@@ -25,6 +25,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   AgentDistributorModel? selectedAgentDistributor;
   String? selectedRegion;
 
+  DateTime from=DateTime(1,1,1);
+  DateTime to=DateTime(1,1,1) ;
   init() {
     invoicesList = [];
     invoicesFiltered = [];
@@ -36,6 +38,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     selectedEmployee = null;
     selectedAgentDistributor = null;
     selectedRegion = null;
+     from=DateTime(1,1,1);
+     to=DateTime(1,1,1) ;
     notifyListeners();
   }
 
@@ -157,6 +161,16 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     onFilter();
   }
 
+  onChange_date(DateTime from_param, DateTime to_param) {
+    // selectedRegion = region;
+    from=from_param;
+    to=to_param;
+    notifyListeners();
+    print('from '+from.toString());
+    print('to '+to.toString());
+    onFilter();
+  }
+
   onSearch(String query) {
     final list = List<InvoiceModel>.from(invoicesList);
     invoicesFiltered = list.where((element) {
@@ -168,7 +182,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
   onFilter() {
     final list = List<InvoiceModel>.from(invoicesList);
-
+    invoicesFiltered=[];
     invoicesFiltered = list.where((element) {
       if (isSelectedSellerTypeFilterEqualAll) {
         if (isSelectedRegionEqualAll) {
@@ -205,11 +219,34 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
           return isSelectedEmployeeEqualInvoice(element) && isSelectedRegionEqualInvoice(element);
         }
 
-        return isSelectedSellerTypeFilterEqualInvoice(element) || element.type_seller == null;
+        return isSelectedSellerTypeFilterEqualInvoice(element) || element.type_seller == null ;
       }
     }).toList();
+    List<InvoiceModel> invoicesFiltered_temp = [];
+    print('invoicesFiltered.length');
 
+    print(invoicesFiltered.length);
+     if(invoicesFiltered.isEmpty)
+      list.forEach((element) {
+      if (  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+          DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+        invoicesFiltered_temp.add(element);
+      }
+    });
+    else
+    invoicesFiltered.forEach((element) {
+      if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+          DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+        invoicesFiltered_temp.add(element);
+      }
+    });
+    print(invoicesFiltered.length);
+
+    invoicesFiltered=List.from(invoicesFiltered_temp);
+    print('nb '+invoicesFiltered.length.toString());
     notifyListeners();
+
+
   }
 
   bool get isSelectedRegionNotEqualAll => selectedRegion != "0" && selectedRegion != null;

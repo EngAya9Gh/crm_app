@@ -93,12 +93,13 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                               )
                             : Container(),
 
-                        widget.element.typeCommuncation == 'دوري'&& widget.element.result.toString() != 'false'
+                        widget.element.typeCommuncation == 'دوري'&& widget.element.result.toString() == 'true'
                             ? cardRow(
                                 title: ' نتيجة التواصل',
                                 value: widget.element.result.toString() == 'true' ? 'لايستخدم النظام' : 'يستخدم النظام',
                               )
                             : Container(),
+
                         widget.element.typeCommuncation == 'دوري' && widget.element.clientRepeat.toString() != 'false'
                             ? cardRow(
                                 title: ' نتيجة التواصل',

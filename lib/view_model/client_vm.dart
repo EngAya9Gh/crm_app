@@ -614,9 +614,10 @@ class client_vm extends ChangeNotifier {
   Future<bool> updateclient_vm(Map<String, dynamic?> body, String? idClient,
       {ValueChanged<ClientModel>? onSuccess}) async {
     try {
-      ClientModel data = await ClientService().updateClient(body, idClient!);
       isloading = true;
       notifyListeners();
+      ClientModel data = await ClientService().updateClient(body, idClient!);
+
       int index = listClient.indexWhere((element) => element.idClients == idClient);
 
       if (index != -1) listClient[index] = data;
@@ -627,6 +628,12 @@ class client_vm extends ChangeNotifier {
       index = listClientAccept.indexWhere((element) => element.idClients == idClient);
       if (index != -1) listClientAccept[index] = data;
 
+       // get_byIdClient(idClient.toString());
+      data  = await ClientService().getclientid(idClient);
+      // currentClientModel = currentClientModel.changeToLoading;
+
+      // listClient.add(inv);
+      // currentClientModel = currentClientModel.changeToLoaded(inv);
       if(currentClientModel.isSuccess){
         currentClientModel = currentClientModel.changeToLoaded(data);
       }

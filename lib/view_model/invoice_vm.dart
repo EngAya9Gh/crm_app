@@ -71,6 +71,7 @@ class invoice_vm extends ChangeNotifier {
   List<InvoiceModel> listinvoicesMarketing = [];
   List<InvoiceModel> listinvoicesApproved = [];
   List<InvoiceModel> listInvoicesAccept = []; //مشتركين
+  List<InvoiceModel> listInvoicesAccept_admin = []; //مشتركين
   Future<void> searchProducts(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
@@ -130,6 +131,25 @@ class invoice_vm extends ChangeNotifier {
       }
     } else
       listInvoicesAccept =List.from(listinvoices);
+      //getinvoice_Local("مشترك", 'approved only', null);
+    notifyListeners();
+  }
+  Future<void> search_accept_invoice_admin(String productName) async {
+    List<InvoiceModel> _listInvoicesAccept = [];
+    // temp_listInvoicesAccept=List.from(listInvoicesAccept);
+    // code to convert the first character to uppercase
+    String searchKey = productName; //
+    if (productName.isNotEmpty) {
+      if (listInvoicesAccept_admin.isNotEmpty) {
+        listInvoicesAccept_admin.forEach((element) {
+          if (element.name_enterprise!.contains(searchKey, 0) ||
+              element.mobile.toString().contains(searchKey, 0) ||
+              element.nameClient.toString().contains(searchKey, 0)) _listInvoicesAccept.add(element);
+        });
+        listInvoicesAccept_admin = _listInvoicesAccept;
+      }
+    } else
+      listInvoicesAccept_admin =List.from(listinvoicebyregoin);
       //getinvoice_Local("مشترك", 'approved only', null);
     notifyListeners();
   }
@@ -696,28 +716,28 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> getfilterview(String? regoin, String tyype) async {
-    listInvoicesAccept = [];
+    listInvoicesAccept_admin = [];
     notifyListeners();
     if (tyype == 'only') await getinvoice_Local("مشترك", 'approved only', null);
     if (tyype == 'client') await getinvoice_Local("مشترك", 'approved client', null);
     if (tyype == 'not') await getinvoice_Local("مشترك", 'not approved', null); //طلبات الموافقة الفلتر
     List<InvoiceModel> _listInvoicesAccept = [];
     if (regoin != '0')
-      listInvoicesAccept.forEach((element) {
+      listInvoicesAccept_admin.forEach((element) {
         if (element.fk_regoin_invoice == regoin) {
           _listInvoicesAccept.add(element);
           print('regoin الكل');
         }
       });
     else {
-      listInvoicesAccept.forEach((element) {
+      listInvoicesAccept_admin.forEach((element) {
         if (element.fk_country == usercurrent!.fkCountry) {
           _listInvoicesAccept.add(element);
           print('regoin الكل');
         }
       });
     }
-    listInvoicesAccept = _listInvoicesAccept;
+    listInvoicesAccept_admin = _listInvoicesAccept;
     notifyListeners();
   }
 
@@ -815,7 +835,7 @@ class invoice_vm extends ChangeNotifier {
     } else {
       print('0000000000000000000000000000000');
       if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
-      if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
+      if (approvetype == 'regoin')  await get_invoicesbyRegoin_accept_requst('r');
       if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
     }
 
@@ -1066,7 +1086,8 @@ class invoice_vm extends ChangeNotifier {
     switch (type) {
       case 'r':
         listinvoicebyregoin =
-            await Invoice_Service().getinvoaicebyregoin_accept_requst({'fk_regoin': usercurrent!.fkRegoin.toString()});
+            await Invoice_Service().getinvoaicebyregoin_accept_requst(
+                {'fk_regoin': usercurrent!.fkRegoin.toString()});
         break;
 
       // else
@@ -1077,7 +1098,7 @@ class invoice_vm extends ChangeNotifier {
       case 'f':
         listinvoicebyregoin = await Invoice_Service().getinvoaicebyregoin_accept_requst({'FApprove': 'f'});
     }
-    listInvoicesAccept = List.from(listinvoicebyregoin);
+    listInvoicesAccept_admin = List.from(listinvoicebyregoin);
     notifyListeners();
   }
 
@@ -1544,6 +1565,17 @@ class invoice_vm extends ChangeNotifier {
 
   void onSearch(String query) {
     final list = List.of(listInvoicesAccept);
+
+    listApproveFinanceFilter = list.where((element) {
+      return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false);
+    }).toList();
+
+    notifyListeners();
+  }
+
+  void onSearch_finance(String query) {
+    final list = List.of(listInvoicesAccept_admin);
 
     listApproveFinanceFilter = list.where((element) {
       return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||

@@ -62,7 +62,8 @@ class _care_page_viewState extends State<care_page_view> {
     }
 
     if (type == 'wait') {
-      Provider.of<communication_vm>(context, listen: false).getCommunicationallrepeatpage(fkCountry, myClientsParam);
+      Provider.of<communication_vm>(context, listen: false)
+          .getCommunicationallrepeatpage(fkCountry, myClientsParam);
     } else {
       if (type == 'done') {
         String parmater =
@@ -92,6 +93,9 @@ class _care_page_viewState extends State<care_page_view> {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(5);
       // Provider.of<client_vm>(context, listen: false)
       //   .getallclient();
+
+      // await Provider.of<client_vm>(context, listen: false)
+      //     .get_byIdClient(widget..toString());
 
       await Provider.of<client_vm>(context, listen: false).getclient_Local('مشترك');
       getData();
@@ -355,14 +359,16 @@ class _care_page_viewState extends State<care_page_view> {
                                                             onTap: () {
                                                               Navigator.of(context).push(
                                                                 CupertinoPageRoute(
-                                                                  builder: (context) => ProfileClient(
-                                                                    idClient:
-                                                                        Provider.of<client_vm>(context, listen: true)
-                                                                            .listClient
-                                                                            .firstWhere((element) =>
-                                                                                element.idClients ==
-                                                                                listCommunication[index].fkClient)
-                                                                            .idClients,
+                                                                  builder: (context) =>
+                                                                      ProfileClient(
+                                                                    idClient: listCommunication[index].fkClient,
+                                                                    //     Provider.of<client_vm>(context, listen: true)
+                                                                    // .currentClientModel.data!.idClients.toString(),
+                                                                            // .listClient
+                                                                            // .firstWhere((element) =>
+                                                                            //     element.idClients ==
+                                                                            //     listCommunication[index].fkClient)
+                                                                            // .idClients,
                                                                     tabIndex: 4,
                                                                     tabCareIndex: 2,
                                                                     idCommunication:

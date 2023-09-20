@@ -29,6 +29,8 @@ import '../../../labeltext.dart';
 import 'dart:ui' as myui;
 import 'package:intl/intl.dart';
 
+import '../../../model/ActivityModel.dart';
+
 class addClient extends StatefulWidget {
   addClient({Key? key}) : super(key: key);
 
@@ -168,28 +170,52 @@ class _addClientState extends State<addClient> {
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,
-                          child: DropdownButtonFormField(
-                            decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
-
-                            isExpanded: true,
-                            //hint: Text("حدد حالة العميل"),
-                            items: cart.list_activity.map((level_one) {
-                              return DropdownMenuItem(
-                                child: Text(level_one.name_activity_type), //label of item
-
-                                value: level_one.id_activity_type, //value of item
-                              );
-                            }).toList(),
-                            value: cart.selectedValueOut,
-                            onChanged: (value) {
-                              //  setState(() {
-                              cart.changevalueOut(value.toString());
-                              // });
+                          child:   DropdownSearch<ActivityModel>(
+                            mode: Mode.DIALOG,
+                            filterFn: (user, filter) => user!.getfilter_actv(filter!),
+                            compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
+                            items: cart.list_activity,
+                            itemAsString: (u) => u!.userAsString(),
+                            onChanged: (data) {
+                              // iduser = data!.id_activity_type;
+                              cart.changevalueOut(data);
+                              // filtershow();
                             },
+                            selectedItem: cart.selectedValueOut,
+                            showSearchBox: true,
+                            dropdownSearchDecoration: InputDecoration(
+                              isCollapsed: true,
+                              hintText: 'النشاط',
+                              alignLabelWithHint: true,
+                              fillColor: Colors.grey.withOpacity(0.2),
+                              contentPadding: EdgeInsets.all(0),
+                              border:
+                              UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                            ),
+                            // InputDecoration(border: InputBorder.none),
                           ),
+                          // DropdownButtonFormField(
+                          //   decoration: InputDecoration(
+                          //       enabledBorder: OutlineInputBorder(
+                          //           borderRadius: BorderRadius.circular(12),
+                          //           borderSide: BorderSide(width: 2, color: Colors.grey))),
+                          //
+                          //   isExpanded: true,
+                          //   //hint: Text("حدد حالة العميل"),
+                          //   items: cart.list_activity.map((level_one) {
+                          //     return DropdownMenuItem(
+                          //       child: Text(level_one.name_activity_type), //label of item
+                          //
+                          //       value: level_one.id_activity_type, //value of item
+                          //     );
+                          //   }).toList(),
+                          //   value: cart.selectedValueOut,
+                          //   onChanged: (value) {
+                          //     //  setState(() {
+                          //     cart.changevalueOut(value.toString());
+                          //     // });
+                          //   },
+                          // ),
                         );
                       },
                     ),
@@ -350,7 +376,8 @@ class _addClientState extends State<addClient> {
                               'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
                               'sourcclient': sourclient,
                               'activity_type_fk':
-                                  Provider.of<activity_vm>(context, listen: false).selectedValueOut.toString(),
+                                  Provider.of<activity_vm>(context, listen: false)
+                                      .selectedValueOut!.id_activity_type.toString(),
                               "mobile": mobileController.text,
                               "phone": phoneController.text,
                               "ismarketing": sourclient == 'ميداني' ? '0' : '1',

@@ -18,13 +18,30 @@ class activity_vm extends ChangeNotifier {
   notifyListeners();
 }
 
-  late String? selectedValueOut=null;
+  late ActivityModel? selectedValueOut=null;
+  late String? selectedValue_idact =null;
 
   initValueOut() => selectedValueOut=null;
 
-  void changevalueOut(String? s){
+  void changevalueOut(ActivityModel? s){
     selectedValueOut=s;
     notifyListeners();
+  }
+  void changesValue_idact(String? s){
+    selectedValue_idact=s;
+    int index = list_activity.indexWhere((element) => element.id_activity_type == s);
+    ActivityModel? dataa;
+    if (index != -1)
+      dataa=
+      list_activity[index] ;
+
+
+    // list_activity.firstOrNull(
+    //     (element) => element.id_activity_type==s ,
+    //     orElse: () =>null
+    // );
+    changevalueOut(dataa);
+    // notifyListeners();
   }
 
 bool isloading=false;

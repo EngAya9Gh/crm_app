@@ -67,7 +67,7 @@ class cardapprove1 extends StatelessWidget {
                           Text(
                            type=='f'?
                            itemapprove.name_regoin_invoice.toString():
-                           itemapprove.name_regoin.toString(),
+                           itemapprove.name_regoin_invoice.toString(),
                             style: TextStyle(
                                 //fontWeight: FontWeight.bold,
                                 fontSize: 12,
