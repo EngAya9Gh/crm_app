@@ -90,10 +90,10 @@ class _InvoiceViewState extends State<InvoiceView> {
         WidgetsBinding.instance.addPostFrameCallback((_)async {
 
      // await Provider.of<invoice_vm>(context,listen: false).getinvoices();
-     await Provider.of<client_vm>(context,listen: false)
-         .get_byIdClient(widget.invoice!.fkIdClient.toString());
+     // await Provider.of<client_vm>(context,listen: false)
+     //     .get_byIdClient(widget.invoice!.fkIdClient.toString());
 
-     clientmodel=
+       clientmodel=
          Provider.of<client_vm>(context,listen: false)
              .currentClientModel.data!;
          // .listClient.firstWhere(
