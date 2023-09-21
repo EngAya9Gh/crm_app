@@ -68,8 +68,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // if (Firebase.apps.isEmpty) {
   await Firebase.initializeApp(
-    // name: "crm_smart",
-  );
+      // name: "crm_smart",
+      );
 
   await configureDependencies();
   // }
@@ -194,7 +194,8 @@ void main() async {
       ChangeNotifierProvider<AgentDistributorViewModel>(create: (_) => AgentDistributorViewModel()),
       ChangeNotifierProxyProvider<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
         update: (context, invoiceVm, agentCollaborateVm) {
-          agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
+          if (agentCollaborateVm?.invoicesList.isEmpty ?? true)
+            agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
           return agentCollaborateVm!;
         },
         create: (_) => AgentsCollaboratorsInvoicesViewmodel(),
@@ -203,7 +204,7 @@ void main() async {
       ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
       ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
       //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
-    ], child:  MyApp()),
+    ], child: MyApp()),
   ));
 }
 
