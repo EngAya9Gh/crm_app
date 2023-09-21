@@ -148,43 +148,43 @@ class CustomDrawer extends StatelessWidget {
                 // ProductView();
               },
             ),
-            Provider.of<privilge_vm>(context, listen: true).checkprivlge('117') == true
-                ? ListTile(
-              title: Text(
-                'سباق الفروع',
-                style: TextStyle(fontFamily: kfontfamily2),
-              ),
-              leading: Icon(
-                Icons.account_tree_rounded,
-                color: kMainColor,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
-                );
-                // ProductView();
-              },
-            ):Container(),
-            Provider.of<privilge_vm>(context, listen: true).checkprivlge('118') == true
-                ? ListTile(
-                    title: Text(
-                      'سباق الموظفين',
-                      style: TextStyle(fontFamily: kfontfamily2),
-                    ),
-                    leading: Icon(
-                      Icons.bar_chart,
-                      color: kMainColor,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
-                      );
-                      // ProductView();
-                    },
-                  )
-                : Container(),
+            // Provider.of<privilge_vm>(context, listen: true).checkprivlge('117') == true
+            //     ? ListTile(
+            //   title: Text(
+            //     'سباق الفروع',
+            //     style: TextStyle(fontFamily: kfontfamily2),
+            //   ),
+            //   leading: Icon(
+            //     Icons.account_tree_rounded,
+            //     color: kMainColor,
+            //   ),
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       CupertinoPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
+            //     );
+            //     // ProductView();
+            //   },
+            // ):Container(),
+            // Provider.of<privilge_vm>(context, listen: true).checkprivlge('118') == true
+            //     ? ListTile(
+            //         title: Text(
+            //           'سباق الموظفين',
+            //           style: TextStyle(fontFamily: kfontfamily2),
+            //         ),
+            //         leading: Icon(
+            //           Icons.bar_chart,
+            //           color: kMainColor,
+            //         ),
+            //         onTap: () {
+            //           Navigator.push(
+            //             context,
+            //             CupertinoPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
+            //           );
+            //           // ProductView();
+            //         },
+            //       )
+            //     : Container(),
             ListTile(
               title: Text(
                 'تسجيل الخروج',

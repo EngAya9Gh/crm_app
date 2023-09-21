@@ -116,6 +116,8 @@ class _MonthlyPageState extends State<MonthlyPage> {
                       DateTime datemonth=
                       DateTime(int.parse(selectedYear),
                           int.parse(getMonthNumber(month!).toString()),01);
+                      print('datemonth');
+                      print(datemonth);
                       vm.onChangeMonth(datemonth,month, Provider.of<user_vm_provider>
                         (context,listen: false).currentUser.fkCountry.toString());
                     },

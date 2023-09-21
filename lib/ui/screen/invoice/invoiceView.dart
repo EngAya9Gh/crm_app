@@ -85,22 +85,14 @@ class _InvoiceViewState extends State<InvoiceView> {
 
 
       @override void initState() {
+
         context.read<invoice_vm>().setCurrentInvoice(widget.invoice);
 
         WidgetsBinding.instance.addPostFrameCallback((_)async {
 
      // await Provider.of<invoice_vm>(context,listen: false).getinvoices();
      await Provider.of<client_vm>(context,listen: false)
-         .get_byIdClient(widget.invoice!.fkIdClient.toString());
-
-     clientmodel=
-         Provider.of<client_vm>(context,listen: false)
-             .currentClientModel.data!;
-         // .listClient.firstWhere(
-         //     (element) => element.idClients==widget.invoice!.fkIdClient);
-
-
-      print('nameEEnter' + clientmodel.idClients.toString());
+         .get_byIdClient(widget.invoice!.fkIdClient.toString(),(value) => clientmodel = value,);
 
       typeclient_provider = Provider.of<typeclient>(context, listen: false);
       typeclient_provider.getreasons('client');
@@ -142,6 +134,8 @@ class _InvoiceViewState extends State<InvoiceView> {
     Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDate);
   }
 
+  final _globalKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
 
@@ -151,9 +145,6 @@ class _InvoiceViewState extends State<InvoiceView> {
          widget.invoice= list.firstWhereOrNull((element) =>
          element.idInvoice==widget.invoice!.idInvoice) ??
              widget.invoice;
-
-    final _globalKey = GlobalKey<FormState>();
-
 
         return Scaffold(
           appBar: widget.type == 'approved'

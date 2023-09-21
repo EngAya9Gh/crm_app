@@ -41,7 +41,6 @@ extension SellerExt on SellerTypeFilter {
 class AgentsDistributorsInvoicesView extends StatefulWidget {
   const AgentsDistributorsInvoicesView({Key? key}) : super(key: key);
 
-
   @override
   State<AgentsDistributorsInvoicesView> createState() => _AgentsDistributorsInvoicesViewState();
 }
@@ -84,7 +83,6 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
 
   Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
-
         context: context,
         currentDate: currentDate,
         initialDate: currentDate,
@@ -94,18 +92,18 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print('_selectedDatefrom '+_selectedDatefrom.toString());
-        print('_selectedDateto '+_selectedDateto.toString());
+        print('_selectedDatefrom ' + _selectedDatefrom.toString());
+        print('_selectedDateto ' + _selectedDateto.toString());
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-          Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,listen: false)
-              .onChange_date( _selectedDatefrom,_selectedDateto);
-
+        Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
+            .onChange_date(_selectedDatefrom, _selectedDateto);
       });
   }
+
   Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
-      // initialEntryMode: DatePickerEntryMode.calendarOnly,
-      // initialDatePickerMode: DatePickerMode.year,
+        // initialEntryMode: DatePickerEntryMode.calendarOnly,
+        // initialDatePickerMode: DatePickerMode.year,
         context: context,
         currentDate: currentDate,
         initialDate: currentDate,
@@ -115,11 +113,10 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print('_selectedDateto '+_selectedDateto.toString());
+        print('_selectedDateto ' + _selectedDateto.toString());
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-          Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,listen: false)
-              .onChange_date( _selectedDatefrom,_selectedDateto);
-
+        Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
+            .onChange_date(_selectedDatefrom, _selectedDateto);
       });
   }
 
@@ -134,7 +131,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
         centerTitle: true,
       ),
       body: Directionality(
-        textDirection:myui. TextDirection.rtl,
+        textDirection: myui.TextDirection.rtl,
         child: Column(
           children: [
             SizedBox(height: 10),
@@ -200,7 +197,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   },
                 ),
               ),
-            Row (
+            Row(
               children: [
                 Flexible(
                   child: Column(
@@ -218,10 +215,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                             Icons.date_range,
                             color: kMainColor,
                           ),
-                          hintStyle: const TextStyle(
-                              color: Colors.black45,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                          hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
                           hintText: _selectedDatefrom == DateTime(1, 1, 1)
                               ? 'from' //_currentDate.toString()
                               : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
@@ -235,9 +229,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                             _selectDatefrom(context, DateTime.now());
 
                             // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
-
                           });
-
 
                           // _selectDate(context, DateTime.now());
                         },
@@ -260,10 +252,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                             Icons.date_range,
                             color: kMainColor,
                           ),
-                          hintStyle: const TextStyle(
-                              color: Colors.black45,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
+                          hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
                           hintText: _selectedDateto == DateTime(1, 1, 1)
                               ? 'to' //_currentDate.toString()
                               : DateFormat('yyyy-MM-dd').format(_selectedDateto),
@@ -273,10 +262,10 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                         ),
                         readOnly: true,
                         onTap: () {
-                         setState(() {
-                           _selectDateto(context, DateTime.now());
-                           // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
-                         });
+                          setState(() {
+                            _selectDateto(context, DateTime.now());
+                            // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
+                          });
                           // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
                           //   getData();
                           // _selectDate(context, DateTime.now());
@@ -285,7 +274,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                     ],
                   ),
                 ),
-              ],),
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(
@@ -308,15 +298,12 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   ),
                   Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
                       builder: (context, value, agentCollaboratorsVm, child) {
-                    final list =
-                    (   agentCollaboratorsVm.from!=DateTime(1,1,1) &&
-                        agentCollaboratorsVm.to!=DateTime(1,1,1) )
-                        ||
-                        ( agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
-                            _searchTextField.text.trim().isEmpty &&
-                            (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0')
-                        )
-
+                    final list = (agentCollaboratorsVm.from == DateTime(1, 1, 1) ||
+                                agentCollaboratorsVm.to == DateTime(1, 1, 1)) &&
+                            (agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                                _searchTextField.text.trim().isEmpty &&
+                                (agentCollaboratorsVm.selectedRegion == null ||
+                                    agentCollaboratorsVm.selectedRegion == '0'))
                         ? value.listInvoicesAccept
                         : agentCollaboratorsVm.invoicesFiltered;
 
@@ -331,19 +318,13 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             SizedBox(height: 10),
             Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
               builder: (context, value, agentCollaboratorsVm, child) {
-                final list =
-                (   agentCollaboratorsVm.from!=DateTime(1,1,1) &&
-                    agentCollaboratorsVm.to!=DateTime(1,1,1)  )
-                ||
-                    (  agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
-                        _searchTextField.text.trim().isEmpty &&
-                        (agentCollaboratorsVm.selectedRegion == null ||
-                            agentCollaboratorsVm.selectedRegion == '0')  )
-
-
-                    ? agentCollaboratorsVm.invoicesFiltered//value.listInvoicesAccept
+                final list = (agentCollaboratorsVm.from == DateTime(1, 1, 1) ||
+                            agentCollaboratorsVm.to == DateTime(1, 1, 1)) &&
+                        (agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                            _searchTextField.text.trim().isEmpty &&
+                            (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0'))
+                    ? value.listInvoicesAccept //
                     : agentCollaboratorsVm.invoicesFiltered;
-
 
                 if (value.isloading) {
                   return loadingWidget;

@@ -490,11 +490,10 @@ class client_vm extends ChangeNotifier {
 
   PageState<ClientModel?> currentClientModel = PageState();
 
-  Future<void> get_byIdClient(String idClient) async {
+  Future<void> get_byIdClient(String idClient, [ValueChanged<ClientModel>? onData]) async {
     ClientModel? inv;
     try {
       currentClientModel = currentClientModel.changeToLoading;
-      isloading = true;
       notifyListeners();
 
       // inv = listClient.firstWhereOrNull((element) => element.idClients == idClient);
@@ -505,10 +504,10 @@ class client_vm extends ChangeNotifier {
 
       // listClient.add(inv);
         currentClientModel = currentClientModel.changeToLoaded(inv);
+      onData?.call(inv);
       // } else {
       //   currentClientModel = currentClientModel.changeToLoaded(inv);
       // }
-      isloading = false;
       notifyListeners();
       // return inv;
     } catch (e) {
