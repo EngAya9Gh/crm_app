@@ -174,8 +174,11 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   onSearch(String query) {
     final list = List<InvoiceModel>.from(invoicesList);
     invoicesFiltered = list.where((element) {
-      return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
-          (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false);
+      return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false)
+          ||
+          (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false)
+          ||
+          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ?? false);
     }).toList();
     notifyListeners();
   }

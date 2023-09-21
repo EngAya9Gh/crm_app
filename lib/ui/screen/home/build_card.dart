@@ -67,11 +67,18 @@ class BuildCard extends StatelessWidget {
               children: [
                 // Image(image: AssetImage('assest/images/bill.png')),
 
+                image=='assest/images/race.png'? SizedBox(
+                  height: 50,
+                  child: Image.asset(
+                    image,
+                   color: Colors.blue,
+                  ),
+                ):
                 SizedBox(
                   height: 50,
                   child: Image.asset(
                     image,
-                   // color: Colors.amber,
+                    //color: Colors.lightBlueAccent,
                   ),
                 ),
                 SizedBox(
