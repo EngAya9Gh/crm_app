@@ -31,7 +31,7 @@ class BranchCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: 150,
+                  height: 50,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("assest/images/default_branch.jpg"),

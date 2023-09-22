@@ -2,6 +2,7 @@ import 'package:crm_smart/ui/screen/home/pageshome/Emarketing.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/care.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/finance.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/managment.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/race_all.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/sales.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/support.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,6 +28,7 @@ final List<String> itemCategory = [
   'التسويق الإلكتروني',
   'إدارة',
   'التحصيل',
+  'السباقات',
 ];
 
 final List<String> listSelectCategory = [
@@ -44,7 +46,8 @@ final List<Widget> listwidget=[
   carepage(),
   marketingpage(),
   managmentpage(),
-  financepage()
+  financepage(),
+  race_page(),
 ];
 List<String> list_sourcclient=['ميداني','فيسبوك','غوغل','تويتر','الموقع','الرقم الموحد','واتس كنترول','انستغرام'];
 final List<dynamic> listHome = [
@@ -98,5 +101,7 @@ List<String> imageList = [
   'assest/images/social-care.png',
   'assest/images/digitalmarketing.png',
   'assest/images/administrator.png',
-  'assest/images/money.png'
+  'assest/images/money.png',
+  'assest/images/race.png',
+
 ];

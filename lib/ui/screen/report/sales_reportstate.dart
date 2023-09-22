@@ -457,72 +457,77 @@ class _sales_reportstateState extends State<sales_reportstate> {
                 )
                     : Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 1
-                    ? Flexible(
-                  child: TextFormField(
-                    validator: (value) {
-                      if (_selectedDatemonth == DateTime(1, 1, 1)) {
-                        return 'يرجى تعيين التاريخ ';
-                      }
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.date_range,
-                        color: kMainColor,
-                      ),
-                      hintStyle: const TextStyle(
-                          color: Colors.black45,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500),
-                      hintText: _selectedDatemonth == DateTime(1, 1, 1)
-                          ? 'الشهر' //_currentDate.toString()
-                          : DateFormat('yyyy-MM').format(_selectedDatemonth),
-                      //_invoice!.dateinstall_task.toString(),
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                    ),
-                    readOnly: true,
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Select month"),
-                            content: Container(
-                              // Need to use container to add size constraint.
-                              width: 300,
-                              height: 300,
-                              child: CalendarDatePicker(
-                                initialDate: DateTime(DateTime.now().year ,DateTime.now().month),
-                                firstDate: DateTime(DateTime.now().year-100, 1),
-                                lastDate:
-                                DateTime(DateTime.now().year+100,1),
-                                // : DateTime.now(),
-                                // save the selected date to _selectedDate DateTime variable.
-                                // It's used to set the previous selected date when
-                                // re-showing the dialog.
-                                currentDate:DateTime.now(), //_selectedDatemonth,
-                                onDateChanged: (DateTime dateTime) {
-                                  setState(() {
-                                    _selectedDatemonth = dateTime;
-                                  });
-
-                                  print(_selectedDatemonth);
-                                  // close the dialog when year is selected.
-                                  Navigator.pop(context);
-                                  getData();
-
-                                  // Do something with the dateTime selected.
-                                  // Remember that you need to use dateTime.year to get the year
-                                },
-                              ),
-                            ),
-                          );
+                    ?
+                Row(
+                  children: [
+                    Flexible(
+                      child: TextFormField(
+                        validator: (value) {
+                          if (_selectedDatemonth == DateTime(1, 1, 1)) {
+                            return 'يرجى تعيين التاريخ ';
+                          }
                         },
-                      );
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: kMainColor,
+                          ),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          hintText: _selectedDatemonth == DateTime(1, 1, 1)
+                              ? 'الشهر' //_currentDate.toString()
+                              : DateFormat('yyyy-MM').format(_selectedDatemonth),
+                          //_invoice!.dateinstall_task.toString(),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Select month"),
+                                content: Container(
+                                  // Need to use container to add size constraint.
+                                  width: 300,
+                                  height: 300,
+                                  child: CalendarDatePicker(
+                                    initialDate: DateTime(DateTime.now().year ,DateTime.now().month),
+                                    firstDate: DateTime(DateTime.now().year-100, 1),
+                                    lastDate:
+                                    DateTime(DateTime.now().year+100,1),
+                                    // : DateTime.now(),
+                                    // save the selected date to _selectedDate DateTime variable.
+                                    // It's used to set the previous selected date when
+                                    // re-showing the dialog.
+                                    currentDate:DateTime.now(), //_selectedDatemonth,
+                                    onDateChanged: (DateTime dateTime) {
+                                      setState(() {
+                                        _selectedDatemonth = dateTime;
+                                      });
 
-                      // _selectDate(context, DateTime.now());
-                    },
-                  ),
+                                      print(_selectedDatemonth);
+                                      // close the dialog when year is selected.
+                                      Navigator.pop(context);
+                                      getData();
+
+                                      // Do something with the dateTime selected.
+                                      // Remember that you need to use dateTime.year to get the year
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+
+                          // _selectDate(context, DateTime.now());
+                        },
+                      ),
+                    ),
+                  ],
                 ): Provider.of<selected_button_provider>(context, listen: true)
                     .isbarsales == 2
                     ? Row (
@@ -609,19 +614,12 @@ class _sales_reportstateState extends State<sales_reportstate> {
                     child: loading
                         ? CircularProgressIndicator()
                         : Padding(
-                      padding: const EdgeInsets.only(top: 35.0),
+                      padding: const EdgeInsets.only(top: 10.0),
                       child: SingleChildScrollView(
                         child: Column(
                           // scrollDirection: Axis.horizontal,
                             children:[
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              //   children: [
-                              //     Text('العدد '),
-                              //     Text(
-                              //         totalval.toInt().toString()),
-                              //   ],
-                              // ),
+
                               Container(
                                 height: 300, //BarChart
                                 child: charts.BarChart(
@@ -629,19 +627,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                   // barRendererDecorator: new charts.BarLabelDecorator<String>(),
                                   barGroupingType: charts.BarGroupingType.grouped,
                                   animate: true,
-                                  // barRendererDecorator: (
-                                  //     charts.BarLabelDecorator<String>(
-                                  //       insideLabelStyleSpec: fl.TextStyleSpec(
-                                  //           fontSize: 12, color: fl.Color.black),
-                                  //       labelPosition: fl.BarLabelPosition.inside,
-                                  //       labelAnchor:fl. BarLabelAnchor.middle,
-                                  //     )),
-                                  // vertical: false,
-                                  // barGroupingType: charts.BarGroupingType.grouped,
-                                  // defaultRenderer: charts.BarRendererConfig(
-                                  //   groupingType: charts.BarGroupingType.grouped,
-                                  //   strokeWidthPx: 1.0,
-                                  // ),
+
                                   domainAxis: charts.OrdinalAxisSpec(
                                     renderSpec: charts.GridlineRendererSpec(),
                                   ),
@@ -714,7 +700,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                       // ),
                                     ],
                                     rows:rowsdata,dividerThickness: 3,
-                                    horizontalMargin: 2,columnSpacing: MediaQuery.of(context).size.width * 0.3,
+                                    horizontalMargin: 2,
+                                    columnSpacing: MediaQuery.of(context).size.width * 0.3,
                                     //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
                                     //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
                                     //     <DataRow>[

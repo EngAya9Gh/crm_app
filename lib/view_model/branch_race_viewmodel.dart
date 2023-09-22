@@ -142,11 +142,13 @@ class BranchRaceViewmodel extends ChangeNotifier {
         url: url + "target/get_sales_target.php?fk_country=$fkcountry&month=${monthdate.toString()}",
         body: {'type': 'datemonth'});
     List<BranchRaceModel> list = [];
-    for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
+    for (int i = 0; i < data.length; i++)
+      list.add(BranchRaceModel.fromJson(data[i]));
 
     targetsState = targetsState.copyWith(data: list);
-
-    notifyListeners();
+    for (int i = 0; i < targetsState.data!.length; i++)
+      print(targetsState.data![i].y);
+      notifyListeners();
   }
 
   onChangeYear(String year, String fkcountry) async {
