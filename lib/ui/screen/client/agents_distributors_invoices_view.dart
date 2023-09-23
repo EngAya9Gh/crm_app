@@ -84,7 +84,6 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
 
   Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
-
         context: context,
         currentDate: currentDate,
         initialDate: currentDate,

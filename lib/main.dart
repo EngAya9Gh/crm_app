@@ -231,6 +231,9 @@ class _MyAppState extends State<MyApp> {
           if (!snapshot.hasData) {
             //Center(child: CircularProgressIndicator(),)
             return MaterialApp(
+              theme: ThemeData(
+                fontFamily: kfontfamily2
+              ),
               home: Scaffold(
                 body: Center(
                   child: Text('Loading....'),
@@ -258,6 +261,10 @@ class _MyAppState extends State<MyApp> {
                 debugShowCheckedModeBanner: false,
                 title: 'Flutter Demo',
                 theme: ThemeData(
+                  fontFamily: kfontfamily2,
+                  appBarTheme: AppBarTheme(
+                    centerTitle: true
+                  ),
                   primaryColor: kMainColor,
                   backgroundColor: Colors.white,
                   brightness: Brightness.light,

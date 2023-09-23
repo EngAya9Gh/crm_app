@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/invoices/presentation/pages/customer_invoices_page.dart';
 import 'package:crm_smart/ui/screen/client/Acceptpage.dart';
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
 import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
@@ -93,8 +94,9 @@ class _salesState extends State<sales> {
                     onTap: () {
                       Navigator.push(context,
                           CupertinoPageRoute(
-                          builder: (context)=>
-                              AgentsDistributorsInvoicesView()
+                          builder: (context)=> CustomerInvoicesPage()
+                          // builder: (context)=> AgentsDistributorsInvoicesView()
+
                       ));
                     }, title:'فواتير العملاء' ):Container(),
 

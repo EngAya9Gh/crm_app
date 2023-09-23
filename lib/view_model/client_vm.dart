@@ -495,12 +495,13 @@ class client_vm extends ChangeNotifier {
     try {
       currentClientModel = currentClientModel.changeToLoading;
       isloading = true;
-      notifyListeners();
+      // notifyListeners();
 
       // inv = listClient.firstWhereOrNull((element) => element.idClients == idClient);
 
         // if (inv == null) {
       inv  = await ClientService().getclientid(idClient);
+
       // currentClientModel = currentClientModel.changeToLoading;
 
       // listClient.add(inv);
@@ -509,7 +510,7 @@ class client_vm extends ChangeNotifier {
       //   currentClientModel = currentClientModel.changeToLoaded(inv);
       // }
       isloading = false;
-      notifyListeners();
+      // notifyListeners();
       // return inv;
     } catch (e) {
       currentClientModel = currentClientModel.changeToFailed;
