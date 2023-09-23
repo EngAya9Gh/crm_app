@@ -64,8 +64,8 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>The app needs gallery access for select image.</string>
+    <string>The app needs gallery access for select image to set company logo or user picture.</string>
     <key>NSCameraUsageDescription</key>
-  	<string>This app needs camera access for take photo.</string>
+  	<string>This app needs camera access for take photo to set company logo or user picture.</string>
 </dict>
 </plist>
