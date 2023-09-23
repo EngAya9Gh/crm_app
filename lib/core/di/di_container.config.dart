@@ -15,18 +15,32 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:logger/logger.dart' as _i4;
 import 'package:shared_preferences/shared_preferences.dart' as _i5;
 
-import '../../features/communication_list/data/data_sources/communication_list_datasource.dart'
+import '../../features/clients_list/data/data_sources/clients_list_datasource.dart'
     as _i7;
-import '../../features/communication_list/data/repositories/communication_list_repository_impl.dart'
+import '../../features/clients_list/data/repositories/client_list_repository_impl.dart'
     as _i9;
-import '../../features/communication_list/domain/repositories/communication_list_repository.dart'
+import '../../features/clients_list/domain/repositories/clients_list_repository.dart'
     as _i8;
-import '../../features/communication_list/domain/use_cases/get_communication_list_usecase.dart'
+import '../../features/clients_list/domain/use_cases/get_all_clients_list_usecase.dart'
+    as _i13;
+import '../../features/clients_list/domain/use_cases/get_clients_by_region_usecase.dart'
+    as _i14;
+import '../../features/clients_list/domain/use_cases/get_clients_by_user_usecase.dart'
+    as _i15;
+import '../../features/clients_list/presentation/manager/clients_list_bloc.dart'
+    as _i17;
+import '../../features/communication_list/data/data_sources/communication_list_datasource.dart'
     as _i10;
-import '../../features/communication_list/presentation/manager/communication_list_bloc.dart'
+import '../../features/communication_list/data/repositories/communication_list_repository_impl.dart'
+    as _i12;
+import '../../features/communication_list/domain/repositories/communication_list_repository.dart'
     as _i11;
+import '../../features/communication_list/domain/use_cases/get_communication_list_usecase.dart'
+    as _i16;
+import '../../features/communication_list/presentation/manager/communication_list_bloc.dart'
+    as _i18;
 import '../api/client.dart' as _i6;
-import 'di_container.dart' as _i12;
+import 'di_container.dart' as _i19;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -51,16 +65,31 @@ Future<_i1.GetIt> $initGetIt(
         gh<_i4.Logger>(),
       ));
   gh.factory<_i6.ClientApi>(() => _i6.ClientApi(gh<_i3.Dio>()));
-  gh.factory<_i7.CommunicationListDatasource>(
-      () => _i7.CommunicationListDatasource(gh<_i6.ClientApi>()));
-  gh.factory<_i8.CommunicationListRepository>(() =>
-      _i9.CommunicationListRepositoryImpl(
-          gh<_i7.CommunicationListDatasource>()));
-  gh.factory<_i10.GetCommunicationListUsecase>(() =>
-      _i10.GetCommunicationListUsecase(gh<_i8.CommunicationListRepository>()));
-  gh.factory<_i11.CommunicationListBloc>(
-      () => _i11.CommunicationListBloc(gh<_i10.GetCommunicationListUsecase>()));
+  gh.factory<_i7.ClientsListDatasource>(
+      () => _i7.ClientsListDatasource(gh<_i6.ClientApi>()));
+  gh.factory<_i8.ClientsListRepository>(
+      () => _i9.ClientsListRepositoryImpl(gh<_i7.ClientsListDatasource>()));
+  gh.factory<_i10.CommunicationListDatasource>(
+      () => _i10.CommunicationListDatasource(gh<_i6.ClientApi>()));
+  gh.factory<_i11.CommunicationListRepository>(() =>
+      _i12.CommunicationListRepositoryImpl(
+          gh<_i10.CommunicationListDatasource>()));
+  gh.factory<_i13.GetAllClientsListUseCase>(
+      () => _i13.GetAllClientsListUseCase(gh<_i8.ClientsListRepository>()));
+  gh.factory<_i14.GetClientsListByRegionUseCase>(() =>
+      _i14.GetClientsListByRegionUseCase(gh<_i8.ClientsListRepository>()));
+  gh.factory<_i15.GetClientsListByUserUseCase>(
+      () => _i15.GetClientsListByUserUseCase(gh<_i8.ClientsListRepository>()));
+  gh.factory<_i16.GetCommunicationListUsecase>(() =>
+      _i16.GetCommunicationListUsecase(gh<_i11.CommunicationListRepository>()));
+  gh.factory<_i17.ClientsListBloc>(() => _i17.ClientsListBloc(
+        gh<_i13.GetAllClientsListUseCase>(),
+        gh<_i15.GetClientsListByUserUseCase>(),
+        gh<_i14.GetClientsListByRegionUseCase>(),
+      ));
+  gh.factory<_i18.CommunicationListBloc>(
+      () => _i18.CommunicationListBloc(gh<_i16.GetCommunicationListUsecase>()));
   return getIt;
 }
 
-class _$AppModule extends _i12.AppModule {}
+class _$AppModule extends _i19.AppModule {}
