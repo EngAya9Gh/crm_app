@@ -1,6 +1,7 @@
 import 'package:crm_smart/features/invoices/presentation/constants/invoices_string.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../../../../ui/widgets/invoice_widget/Card_invoice_client.dart';
 
@@ -133,7 +134,17 @@ class _CustomerInvoicesState extends State<CustomerInvoicesPage> {
                     ),
                     controller: _fromDateController,
                     readOnly: true,
-                    onTap: () {},
+                    onTap: () async{
+                      DateTime? picker = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(3100)
+                      );
+                      if(picker != null){
+                        _fromDateController.text = intl.DateFormat.yMd().format(picker);
+                      }
+                    },
                   )),
                   SizedBox(
                     width: 10,
@@ -146,7 +157,17 @@ class _CustomerInvoicesState extends State<CustomerInvoicesPage> {
                     ),
                     controller: _toDateController,
                     readOnly: true,
-                    onTap: () {},
+                        onTap: () async{
+                          DateTime? picker = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(3100)
+                          );
+                          if(picker != null){
+                            _toDateController.text = intl.DateFormat.yMd().format(picker);
+                          }
+                        },
                   )),
                 ],
               ),
