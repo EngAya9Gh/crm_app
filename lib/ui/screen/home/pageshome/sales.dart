@@ -21,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/clients_list/presentation/pages/clients_list_page.dart';
 import '../../client/calender_client.dart';
 import '../../client/agents_distributors_invoices_view.dart';
 
@@ -79,10 +80,14 @@ class _salesState extends State<sales> {
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
                     onTap: () {
+                      // Navigator.push(context,
+                      //     CupertinoPageRoute(
+                      //     builder: (context)=>
+                      //         tabclients()));
                       Navigator.push(context,
                           CupertinoPageRoute(
                           builder: (context)=>
-                              tabclients()));
+                              ClientsListPage()));
                 }, title: ' قائمة العملاء') :Container(),
                 Provider.of<privilge_vm>(context,listen: true)
                     .checkprivlge('39')==true?

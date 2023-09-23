@@ -1,0 +1,105 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'clients_list_response.freezed.dart';
+part 'clients_list_response.g.dart';
+@freezed
+class ClientModel with _$ClientModel {
+  const factory ClientModel({
+  @JsonKey(name: "id_clients")
+  String? idClients,
+  @JsonKey(name: "nameClient")
+  String? nameClient,
+  @JsonKey(name: "nameEnterprise")
+  String? nameEnterprise,
+  @JsonKey(name: "typeJob")
+  String? typeJob,
+  @JsonKey(name: "city")
+  String? city,
+  @JsonKey(name: "location")
+  String? location,
+  @JsonKey(name: "fkRegoin")
+  String? fkRegoin,
+  @JsonKey(name: "fkcountry")
+  String? fkcountry,
+  @JsonKey(name: "dateCreate")
+  String? dateCreate,
+  @JsonKey(name: "typeClient")
+  String? typeClient,
+  @JsonKey(name: "fkUser")
+  String? fkUser,
+  @JsonKey(name: "dateTransfer")
+  String? dateTransfer,
+  @JsonKey(name: "mobile")
+  String? mobile,
+  @JsonKey(name: "dateChangetype")
+  String? dateChangetype,
+  @JsonKey(name: "reasonChange")
+  String? reasonChange,
+  @JsonKey(name: "reasonTransfer")
+  String? reasonTransfer,
+  @JsonKey(name: "nameCountry")
+  String? nameCountry,
+  @JsonKey(name: "nameUser")
+  String? nameUser,
+  @JsonKey(name: "name_regoin")
+  String? name_regoin,
+  @JsonKey(name: "total")
+  String? total,
+  @JsonKey(name: "amount_paid")
+  String? amount_paid,
+  @JsonKey(name: "offer_price")
+  String? offer_price,
+  @JsonKey(name: "date_price")
+  String? date_price,
+  @JsonKey(name: "user_do")
+  String? user_do,
+  @JsonKey(name: "isApprove")
+  String? isApprove,
+  @JsonKey(name: "nameuserdoning")
+  String? nameuserdoning,
+  @JsonKey(name: "nameusertransfer")
+  String? nameusertransfer,
+  @JsonKey(name: "fkusertrasfer")
+  String? fkusertrasfer,
+  @JsonKey(name: "mobileuser")
+  String? mobileuser,
+  @JsonKey(name: "total_paid")
+  String? total_paid,
+  @JsonKey(name: "ismarketing")
+  String? ismarketing,
+  @JsonKey(name: "address_client")
+  String? address_client,
+  @JsonKey(name: "descActivController")
+  String? descActivController,
+  @JsonKey(name: "presystem")
+  String? presystem,
+  @JsonKey(name: "presystemtitle")
+  String? presystemtitle,
+  @JsonKey(name: "sourcclient")
+  String? sourcclient,
+  @JsonKey(name: "activity_type_fk")
+  String? activity_type_fk,
+  @JsonKey(name: "activity_type_title")
+  String? activity_type_title,
+  @JsonKey(name: "phone")
+  String? phone,
+  @JsonKey(name: "user_add")
+  String? user_add,
+  @JsonKey(name: "nameAdduser")
+  String? nameAdduser,
+  @JsonKey(name: "date_visit_Client")
+  String? date_visit_Client,
+  @JsonKey(name: "reason_change")
+  String? reason_change,
+  @JsonKey(name: "tag")
+  bool? tag,
+  @JsonKey(name: "name_city")
+  String? name_city,
+  @JsonKey(name: "namemaincity")
+  String? nameMainCity,
+  @JsonKey(name: "id_maincity")
+  String? idMainCity
+  }) = _ClientModel;
+
+  factory ClientModel.fromJson(Map<String, dynamic> json) => _$ClientModelFromJson(json);
+}
