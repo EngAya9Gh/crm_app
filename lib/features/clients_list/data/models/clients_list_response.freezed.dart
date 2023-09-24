@@ -22,35 +22,35 @@ ClientModel _$ClientModelFromJson(Map<String, dynamic> json) {
 mixin _$ClientModel {
   @JsonKey(name: "id_clients")
   String? get idClients => throw _privateConstructorUsedError;
-  @JsonKey(name: "nameClient")
+  @JsonKey(name: "name_client")
   String? get nameClient => throw _privateConstructorUsedError;
-  @JsonKey(name: "nameEnterprise")
+  @JsonKey(name: "name_enterprise")
   String? get nameEnterprise => throw _privateConstructorUsedError;
-  @JsonKey(name: "typeJob")
+  @JsonKey(name: "type_job")
   String? get typeJob => throw _privateConstructorUsedError;
   @JsonKey(name: "city")
   String? get city => throw _privateConstructorUsedError;
   @JsonKey(name: "location")
   String? get location => throw _privateConstructorUsedError;
-  @JsonKey(name: "fkRegoin")
+  @JsonKey(name: "fk_regoin")
   String? get fkRegoin => throw _privateConstructorUsedError;
   @JsonKey(name: "fkcountry")
   String? get fkcountry => throw _privateConstructorUsedError;
-  @JsonKey(name: "dateCreate")
+  @JsonKey(name: "date_create")
   String? get dateCreate => throw _privateConstructorUsedError;
-  @JsonKey(name: "typeClient")
+  @JsonKey(name: "type_client")
   String? get typeClient => throw _privateConstructorUsedError;
-  @JsonKey(name: "fkUser")
+  @JsonKey(name: "fk_user")
   String? get fkUser => throw _privateConstructorUsedError;
-  @JsonKey(name: "dateTransfer")
+  @JsonKey(name: "date_transfer")
   String? get dateTransfer => throw _privateConstructorUsedError;
   @JsonKey(name: "mobile")
   String? get mobile => throw _privateConstructorUsedError;
-  @JsonKey(name: "dateChangetype")
+  @JsonKey(name: "date_changetype")
   String? get dateChangetype => throw _privateConstructorUsedError;
-  @JsonKey(name: "reasonChange")
+  @JsonKey(name: "reason_change")
   String? get reasonChange => throw _privateConstructorUsedError;
-  @JsonKey(name: "reasonTransfer")
+  @JsonKey(name: "reason_transfer")
   String? get reasonTransfer => throw _privateConstructorUsedError;
   @JsonKey(name: "nameCountry")
   String? get nameCountry => throw _privateConstructorUsedError;
@@ -104,16 +104,24 @@ mixin _$ClientModel {
   String? get nameAdduser => throw _privateConstructorUsedError;
   @JsonKey(name: "date_visit_Client")
   String? get date_visit_Client => throw _privateConstructorUsedError;
-  @JsonKey(name: "reason_change")
-  String? get reason_change => throw _privateConstructorUsedError;
   @JsonKey(name: "tag")
-  bool? get tag => throw _privateConstructorUsedError;
+  String? get tag => throw _privateConstructorUsedError;
+  @JsonKey(name: "done_visit")
+  String? get doneVisit => throw _privateConstructorUsedError;
+  @JsonKey(name: "done_transfer")
+  String? get doneTransfer => throw _privateConstructorUsedError;
   @JsonKey(name: "name_city")
   String? get name_city => throw _privateConstructorUsedError;
   @JsonKey(name: "namemaincity")
   String? get nameMainCity => throw _privateConstructorUsedError;
   @JsonKey(name: "id_maincity")
   String? get idMainCity => throw _privateConstructorUsedError;
+  @JsonKey(name: "IDcustomer")
+  String? get IdCustomer => throw _privateConstructorUsedError;
+  @JsonKey(name: "userAdd_email")
+  String? get userAddEmail => throw _privateConstructorUsedError;
+  @JsonKey(name: "date_recive")
+  String? get dateRecive => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -129,21 +137,21 @@ abstract class $ClientModelCopyWith<$Res> {
   @useResult
   $Res call(
       {@JsonKey(name: "id_clients") String? idClients,
-      @JsonKey(name: "nameClient") String? nameClient,
-      @JsonKey(name: "nameEnterprise") String? nameEnterprise,
-      @JsonKey(name: "typeJob") String? typeJob,
+      @JsonKey(name: "name_client") String? nameClient,
+      @JsonKey(name: "name_enterprise") String? nameEnterprise,
+      @JsonKey(name: "type_job") String? typeJob,
       @JsonKey(name: "city") String? city,
       @JsonKey(name: "location") String? location,
-      @JsonKey(name: "fkRegoin") String? fkRegoin,
+      @JsonKey(name: "fk_regoin") String? fkRegoin,
       @JsonKey(name: "fkcountry") String? fkcountry,
-      @JsonKey(name: "dateCreate") String? dateCreate,
-      @JsonKey(name: "typeClient") String? typeClient,
-      @JsonKey(name: "fkUser") String? fkUser,
-      @JsonKey(name: "dateTransfer") String? dateTransfer,
+      @JsonKey(name: "date_create") String? dateCreate,
+      @JsonKey(name: "type_client") String? typeClient,
+      @JsonKey(name: "fk_user") String? fkUser,
+      @JsonKey(name: "date_transfer") String? dateTransfer,
       @JsonKey(name: "mobile") String? mobile,
-      @JsonKey(name: "dateChangetype") String? dateChangetype,
-      @JsonKey(name: "reasonChange") String? reasonChange,
-      @JsonKey(name: "reasonTransfer") String? reasonTransfer,
+      @JsonKey(name: "date_changetype") String? dateChangetype,
+      @JsonKey(name: "reason_change") String? reasonChange,
+      @JsonKey(name: "reason_transfer") String? reasonTransfer,
       @JsonKey(name: "nameCountry") String? nameCountry,
       @JsonKey(name: "nameUser") String? nameUser,
       @JsonKey(name: "name_regoin") String? name_regoin,
@@ -170,11 +178,15 @@ abstract class $ClientModelCopyWith<$Res> {
       @JsonKey(name: "user_add") String? user_add,
       @JsonKey(name: "nameAdduser") String? nameAdduser,
       @JsonKey(name: "date_visit_Client") String? date_visit_Client,
-      @JsonKey(name: "reason_change") String? reason_change,
-      @JsonKey(name: "tag") bool? tag,
+      @JsonKey(name: "tag") String? tag,
+      @JsonKey(name: "done_visit") String? doneVisit,
+      @JsonKey(name: "done_transfer") String? doneTransfer,
       @JsonKey(name: "name_city") String? name_city,
       @JsonKey(name: "namemaincity") String? nameMainCity,
-      @JsonKey(name: "id_maincity") String? idMainCity});
+      @JsonKey(name: "id_maincity") String? idMainCity,
+      @JsonKey(name: "IDcustomer") String? IdCustomer,
+      @JsonKey(name: "userAdd_email") String? userAddEmail,
+      @JsonKey(name: "date_recive") String? dateRecive});
 }
 
 /// @nodoc
@@ -232,11 +244,15 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
     Object? user_add = freezed,
     Object? nameAdduser = freezed,
     Object? date_visit_Client = freezed,
-    Object? reason_change = freezed,
     Object? tag = freezed,
+    Object? doneVisit = freezed,
+    Object? doneTransfer = freezed,
     Object? name_city = freezed,
     Object? nameMainCity = freezed,
     Object? idMainCity = freezed,
+    Object? IdCustomer = freezed,
+    Object? userAddEmail = freezed,
+    Object? dateRecive = freezed,
   }) {
     return _then(_value.copyWith(
       idClients: freezed == idClients
@@ -407,14 +423,18 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.date_visit_Client
           : date_visit_Client // ignore: cast_nullable_to_non_nullable
               as String?,
-      reason_change: freezed == reason_change
-          ? _value.reason_change
-          : reason_change // ignore: cast_nullable_to_non_nullable
-              as String?,
       tag: freezed == tag
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as String?,
+      doneVisit: freezed == doneVisit
+          ? _value.doneVisit
+          : doneVisit // ignore: cast_nullable_to_non_nullable
+              as String?,
+      doneTransfer: freezed == doneTransfer
+          ? _value.doneTransfer
+          : doneTransfer // ignore: cast_nullable_to_non_nullable
+              as String?,
       name_city: freezed == name_city
           ? _value.name_city
           : name_city // ignore: cast_nullable_to_non_nullable
@@ -426,6 +446,18 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
       idMainCity: freezed == idMainCity
           ? _value.idMainCity
           : idMainCity // ignore: cast_nullable_to_non_nullable
+              as String?,
+      IdCustomer: freezed == IdCustomer
+          ? _value.IdCustomer
+          : IdCustomer // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userAddEmail: freezed == userAddEmail
+          ? _value.userAddEmail
+          : userAddEmail // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dateRecive: freezed == dateRecive
+          ? _value.dateRecive
+          : dateRecive // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -441,21 +473,21 @@ abstract class _$$_ClientModelCopyWith<$Res>
   @useResult
   $Res call(
       {@JsonKey(name: "id_clients") String? idClients,
-      @JsonKey(name: "nameClient") String? nameClient,
-      @JsonKey(name: "nameEnterprise") String? nameEnterprise,
-      @JsonKey(name: "typeJob") String? typeJob,
+      @JsonKey(name: "name_client") String? nameClient,
+      @JsonKey(name: "name_enterprise") String? nameEnterprise,
+      @JsonKey(name: "type_job") String? typeJob,
       @JsonKey(name: "city") String? city,
       @JsonKey(name: "location") String? location,
-      @JsonKey(name: "fkRegoin") String? fkRegoin,
+      @JsonKey(name: "fk_regoin") String? fkRegoin,
       @JsonKey(name: "fkcountry") String? fkcountry,
-      @JsonKey(name: "dateCreate") String? dateCreate,
-      @JsonKey(name: "typeClient") String? typeClient,
-      @JsonKey(name: "fkUser") String? fkUser,
-      @JsonKey(name: "dateTransfer") String? dateTransfer,
+      @JsonKey(name: "date_create") String? dateCreate,
+      @JsonKey(name: "type_client") String? typeClient,
+      @JsonKey(name: "fk_user") String? fkUser,
+      @JsonKey(name: "date_transfer") String? dateTransfer,
       @JsonKey(name: "mobile") String? mobile,
-      @JsonKey(name: "dateChangetype") String? dateChangetype,
-      @JsonKey(name: "reasonChange") String? reasonChange,
-      @JsonKey(name: "reasonTransfer") String? reasonTransfer,
+      @JsonKey(name: "date_changetype") String? dateChangetype,
+      @JsonKey(name: "reason_change") String? reasonChange,
+      @JsonKey(name: "reason_transfer") String? reasonTransfer,
       @JsonKey(name: "nameCountry") String? nameCountry,
       @JsonKey(name: "nameUser") String? nameUser,
       @JsonKey(name: "name_regoin") String? name_regoin,
@@ -482,11 +514,15 @@ abstract class _$$_ClientModelCopyWith<$Res>
       @JsonKey(name: "user_add") String? user_add,
       @JsonKey(name: "nameAdduser") String? nameAdduser,
       @JsonKey(name: "date_visit_Client") String? date_visit_Client,
-      @JsonKey(name: "reason_change") String? reason_change,
-      @JsonKey(name: "tag") bool? tag,
+      @JsonKey(name: "tag") String? tag,
+      @JsonKey(name: "done_visit") String? doneVisit,
+      @JsonKey(name: "done_transfer") String? doneTransfer,
       @JsonKey(name: "name_city") String? name_city,
       @JsonKey(name: "namemaincity") String? nameMainCity,
-      @JsonKey(name: "id_maincity") String? idMainCity});
+      @JsonKey(name: "id_maincity") String? idMainCity,
+      @JsonKey(name: "IDcustomer") String? IdCustomer,
+      @JsonKey(name: "userAdd_email") String? userAddEmail,
+      @JsonKey(name: "date_recive") String? dateRecive});
 }
 
 /// @nodoc
@@ -542,11 +578,15 @@ class __$$_ClientModelCopyWithImpl<$Res>
     Object? user_add = freezed,
     Object? nameAdduser = freezed,
     Object? date_visit_Client = freezed,
-    Object? reason_change = freezed,
     Object? tag = freezed,
+    Object? doneVisit = freezed,
+    Object? doneTransfer = freezed,
     Object? name_city = freezed,
     Object? nameMainCity = freezed,
     Object? idMainCity = freezed,
+    Object? IdCustomer = freezed,
+    Object? userAddEmail = freezed,
+    Object? dateRecive = freezed,
   }) {
     return _then(_$_ClientModel(
       idClients: freezed == idClients
@@ -717,14 +757,18 @@ class __$$_ClientModelCopyWithImpl<$Res>
           ? _value.date_visit_Client
           : date_visit_Client // ignore: cast_nullable_to_non_nullable
               as String?,
-      reason_change: freezed == reason_change
-          ? _value.reason_change
-          : reason_change // ignore: cast_nullable_to_non_nullable
-              as String?,
       tag: freezed == tag
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
-              as bool?,
+              as String?,
+      doneVisit: freezed == doneVisit
+          ? _value.doneVisit
+          : doneVisit // ignore: cast_nullable_to_non_nullable
+              as String?,
+      doneTransfer: freezed == doneTransfer
+          ? _value.doneTransfer
+          : doneTransfer // ignore: cast_nullable_to_non_nullable
+              as String?,
       name_city: freezed == name_city
           ? _value.name_city
           : name_city // ignore: cast_nullable_to_non_nullable
@@ -737,6 +781,18 @@ class __$$_ClientModelCopyWithImpl<$Res>
           ? _value.idMainCity
           : idMainCity // ignore: cast_nullable_to_non_nullable
               as String?,
+      IdCustomer: freezed == IdCustomer
+          ? _value.IdCustomer
+          : IdCustomer // ignore: cast_nullable_to_non_nullable
+              as String?,
+      userAddEmail: freezed == userAddEmail
+          ? _value.userAddEmail
+          : userAddEmail // ignore: cast_nullable_to_non_nullable
+              as String?,
+      dateRecive: freezed == dateRecive
+          ? _value.dateRecive
+          : dateRecive // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -746,21 +802,21 @@ class __$$_ClientModelCopyWithImpl<$Res>
 class _$_ClientModel implements _ClientModel {
   const _$_ClientModel(
       {@JsonKey(name: "id_clients") this.idClients,
-      @JsonKey(name: "nameClient") this.nameClient,
-      @JsonKey(name: "nameEnterprise") this.nameEnterprise,
-      @JsonKey(name: "typeJob") this.typeJob,
+      @JsonKey(name: "name_client") this.nameClient,
+      @JsonKey(name: "name_enterprise") this.nameEnterprise,
+      @JsonKey(name: "type_job") this.typeJob,
       @JsonKey(name: "city") this.city,
       @JsonKey(name: "location") this.location,
-      @JsonKey(name: "fkRegoin") this.fkRegoin,
+      @JsonKey(name: "fk_regoin") this.fkRegoin,
       @JsonKey(name: "fkcountry") this.fkcountry,
-      @JsonKey(name: "dateCreate") this.dateCreate,
-      @JsonKey(name: "typeClient") this.typeClient,
-      @JsonKey(name: "fkUser") this.fkUser,
-      @JsonKey(name: "dateTransfer") this.dateTransfer,
+      @JsonKey(name: "date_create") this.dateCreate,
+      @JsonKey(name: "type_client") this.typeClient,
+      @JsonKey(name: "fk_user") this.fkUser,
+      @JsonKey(name: "date_transfer") this.dateTransfer,
       @JsonKey(name: "mobile") this.mobile,
-      @JsonKey(name: "dateChangetype") this.dateChangetype,
-      @JsonKey(name: "reasonChange") this.reasonChange,
-      @JsonKey(name: "reasonTransfer") this.reasonTransfer,
+      @JsonKey(name: "date_changetype") this.dateChangetype,
+      @JsonKey(name: "reason_change") this.reasonChange,
+      @JsonKey(name: "reason_transfer") this.reasonTransfer,
       @JsonKey(name: "nameCountry") this.nameCountry,
       @JsonKey(name: "nameUser") this.nameUser,
       @JsonKey(name: "name_regoin") this.name_regoin,
@@ -787,11 +843,15 @@ class _$_ClientModel implements _ClientModel {
       @JsonKey(name: "user_add") this.user_add,
       @JsonKey(name: "nameAdduser") this.nameAdduser,
       @JsonKey(name: "date_visit_Client") this.date_visit_Client,
-      @JsonKey(name: "reason_change") this.reason_change,
       @JsonKey(name: "tag") this.tag,
+      @JsonKey(name: "done_visit") this.doneVisit,
+      @JsonKey(name: "done_transfer") this.doneTransfer,
       @JsonKey(name: "name_city") this.name_city,
       @JsonKey(name: "namemaincity") this.nameMainCity,
-      @JsonKey(name: "id_maincity") this.idMainCity});
+      @JsonKey(name: "id_maincity") this.idMainCity,
+      @JsonKey(name: "IDcustomer") this.IdCustomer,
+      @JsonKey(name: "userAdd_email") this.userAddEmail,
+      @JsonKey(name: "date_recive") this.dateRecive});
 
   factory _$_ClientModel.fromJson(Map<String, dynamic> json) =>
       _$$_ClientModelFromJson(json);
@@ -800,13 +860,13 @@ class _$_ClientModel implements _ClientModel {
   @JsonKey(name: "id_clients")
   final String? idClients;
   @override
-  @JsonKey(name: "nameClient")
+  @JsonKey(name: "name_client")
   final String? nameClient;
   @override
-  @JsonKey(name: "nameEnterprise")
+  @JsonKey(name: "name_enterprise")
   final String? nameEnterprise;
   @override
-  @JsonKey(name: "typeJob")
+  @JsonKey(name: "type_job")
   final String? typeJob;
   @override
   @JsonKey(name: "city")
@@ -815,34 +875,34 @@ class _$_ClientModel implements _ClientModel {
   @JsonKey(name: "location")
   final String? location;
   @override
-  @JsonKey(name: "fkRegoin")
+  @JsonKey(name: "fk_regoin")
   final String? fkRegoin;
   @override
   @JsonKey(name: "fkcountry")
   final String? fkcountry;
   @override
-  @JsonKey(name: "dateCreate")
+  @JsonKey(name: "date_create")
   final String? dateCreate;
   @override
-  @JsonKey(name: "typeClient")
+  @JsonKey(name: "type_client")
   final String? typeClient;
   @override
-  @JsonKey(name: "fkUser")
+  @JsonKey(name: "fk_user")
   final String? fkUser;
   @override
-  @JsonKey(name: "dateTransfer")
+  @JsonKey(name: "date_transfer")
   final String? dateTransfer;
   @override
   @JsonKey(name: "mobile")
   final String? mobile;
   @override
-  @JsonKey(name: "dateChangetype")
+  @JsonKey(name: "date_changetype")
   final String? dateChangetype;
   @override
-  @JsonKey(name: "reasonChange")
+  @JsonKey(name: "reason_change")
   final String? reasonChange;
   @override
-  @JsonKey(name: "reasonTransfer")
+  @JsonKey(name: "reason_transfer")
   final String? reasonTransfer;
   @override
   @JsonKey(name: "nameCountry")
@@ -923,11 +983,14 @@ class _$_ClientModel implements _ClientModel {
   @JsonKey(name: "date_visit_Client")
   final String? date_visit_Client;
   @override
-  @JsonKey(name: "reason_change")
-  final String? reason_change;
-  @override
   @JsonKey(name: "tag")
-  final bool? tag;
+  final String? tag;
+  @override
+  @JsonKey(name: "done_visit")
+  final String? doneVisit;
+  @override
+  @JsonKey(name: "done_transfer")
+  final String? doneTransfer;
   @override
   @JsonKey(name: "name_city")
   final String? name_city;
@@ -937,10 +1000,19 @@ class _$_ClientModel implements _ClientModel {
   @override
   @JsonKey(name: "id_maincity")
   final String? idMainCity;
+  @override
+  @JsonKey(name: "IDcustomer")
+  final String? IdCustomer;
+  @override
+  @JsonKey(name: "userAdd_email")
+  final String? userAddEmail;
+  @override
+  @JsonKey(name: "date_recive")
+  final String? dateRecive;
 
   @override
   String toString() {
-    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegoin: $fkRegoin, fkcountry: $fkcountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangetype: $dateChangetype, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, name_regoin: $name_regoin, total: $total, amount_paid: $amount_paid, offer_price: $offer_price, date_price: $date_price, user_do: $user_do, isApprove: $isApprove, nameuserdoning: $nameuserdoning, nameusertransfer: $nameusertransfer, fkusertrasfer: $fkusertrasfer, mobileuser: $mobileuser, total_paid: $total_paid, ismarketing: $ismarketing, address_client: $address_client, descActivController: $descActivController, presystem: $presystem, presystemtitle: $presystemtitle, sourcclient: $sourcclient, activity_type_fk: $activity_type_fk, activity_type_title: $activity_type_title, phone: $phone, user_add: $user_add, nameAdduser: $nameAdduser, date_visit_Client: $date_visit_Client, reason_change: $reason_change, tag: $tag, name_city: $name_city, nameMainCity: $nameMainCity, idMainCity: $idMainCity)';
+    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegoin: $fkRegoin, fkcountry: $fkcountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangetype: $dateChangetype, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, name_regoin: $name_regoin, total: $total, amount_paid: $amount_paid, offer_price: $offer_price, date_price: $date_price, user_do: $user_do, isApprove: $isApprove, nameuserdoning: $nameuserdoning, nameusertransfer: $nameusertransfer, fkusertrasfer: $fkusertrasfer, mobileuser: $mobileuser, total_paid: $total_paid, ismarketing: $ismarketing, address_client: $address_client, descActivController: $descActivController, presystem: $presystem, presystemtitle: $presystemtitle, sourcclient: $sourcclient, activity_type_fk: $activity_type_fk, activity_type_title: $activity_type_title, phone: $phone, user_add: $user_add, nameAdduser: $nameAdduser, date_visit_Client: $date_visit_Client, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, name_city: $name_city, nameMainCity: $nameMainCity, idMainCity: $idMainCity, IdCustomer: $IdCustomer, userAddEmail: $userAddEmail, dateRecive: $dateRecive)';
   }
 
   @override
@@ -1025,15 +1097,23 @@ class _$_ClientModel implements _ClientModel {
                 other.nameAdduser == nameAdduser) &&
             (identical(other.date_visit_Client, date_visit_Client) ||
                 other.date_visit_Client == date_visit_Client) &&
-            (identical(other.reason_change, reason_change) ||
-                other.reason_change == reason_change) &&
             (identical(other.tag, tag) || other.tag == tag) &&
+            (identical(other.doneVisit, doneVisit) ||
+                other.doneVisit == doneVisit) &&
+            (identical(other.doneTransfer, doneTransfer) ||
+                other.doneTransfer == doneTransfer) &&
             (identical(other.name_city, name_city) ||
                 other.name_city == name_city) &&
             (identical(other.nameMainCity, nameMainCity) ||
                 other.nameMainCity == nameMainCity) &&
             (identical(other.idMainCity, idMainCity) ||
-                other.idMainCity == idMainCity));
+                other.idMainCity == idMainCity) &&
+            (identical(other.IdCustomer, IdCustomer) ||
+                other.IdCustomer == IdCustomer) &&
+            (identical(other.userAddEmail, userAddEmail) ||
+                other.userAddEmail == userAddEmail) &&
+            (identical(other.dateRecive, dateRecive) ||
+                other.dateRecive == dateRecive));
   }
 
   @JsonKey(ignore: true)
@@ -1082,11 +1162,15 @@ class _$_ClientModel implements _ClientModel {
         user_add,
         nameAdduser,
         date_visit_Client,
-        reason_change,
         tag,
+        doneVisit,
+        doneTransfer,
         name_city,
         nameMainCity,
-        idMainCity
+        idMainCity,
+        IdCustomer,
+        userAddEmail,
+        dateRecive
       ]);
 
   @JsonKey(ignore: true)
@@ -1106,21 +1190,21 @@ class _$_ClientModel implements _ClientModel {
 abstract class _ClientModel implements ClientModel {
   const factory _ClientModel(
       {@JsonKey(name: "id_clients") final String? idClients,
-      @JsonKey(name: "nameClient") final String? nameClient,
-      @JsonKey(name: "nameEnterprise") final String? nameEnterprise,
-      @JsonKey(name: "typeJob") final String? typeJob,
+      @JsonKey(name: "name_client") final String? nameClient,
+      @JsonKey(name: "name_enterprise") final String? nameEnterprise,
+      @JsonKey(name: "type_job") final String? typeJob,
       @JsonKey(name: "city") final String? city,
       @JsonKey(name: "location") final String? location,
-      @JsonKey(name: "fkRegoin") final String? fkRegoin,
+      @JsonKey(name: "fk_regoin") final String? fkRegoin,
       @JsonKey(name: "fkcountry") final String? fkcountry,
-      @JsonKey(name: "dateCreate") final String? dateCreate,
-      @JsonKey(name: "typeClient") final String? typeClient,
-      @JsonKey(name: "fkUser") final String? fkUser,
-      @JsonKey(name: "dateTransfer") final String? dateTransfer,
+      @JsonKey(name: "date_create") final String? dateCreate,
+      @JsonKey(name: "type_client") final String? typeClient,
+      @JsonKey(name: "fk_user") final String? fkUser,
+      @JsonKey(name: "date_transfer") final String? dateTransfer,
       @JsonKey(name: "mobile") final String? mobile,
-      @JsonKey(name: "dateChangetype") final String? dateChangetype,
-      @JsonKey(name: "reasonChange") final String? reasonChange,
-      @JsonKey(name: "reasonTransfer") final String? reasonTransfer,
+      @JsonKey(name: "date_changetype") final String? dateChangetype,
+      @JsonKey(name: "reason_change") final String? reasonChange,
+      @JsonKey(name: "reason_transfer") final String? reasonTransfer,
       @JsonKey(name: "nameCountry") final String? nameCountry,
       @JsonKey(name: "nameUser") final String? nameUser,
       @JsonKey(name: "name_regoin") final String? name_regoin,
@@ -1147,11 +1231,15 @@ abstract class _ClientModel implements ClientModel {
       @JsonKey(name: "user_add") final String? user_add,
       @JsonKey(name: "nameAdduser") final String? nameAdduser,
       @JsonKey(name: "date_visit_Client") final String? date_visit_Client,
-      @JsonKey(name: "reason_change") final String? reason_change,
-      @JsonKey(name: "tag") final bool? tag,
+      @JsonKey(name: "tag") final String? tag,
+      @JsonKey(name: "done_visit") final String? doneVisit,
+      @JsonKey(name: "done_transfer") final String? doneTransfer,
       @JsonKey(name: "name_city") final String? name_city,
       @JsonKey(name: "namemaincity") final String? nameMainCity,
-      @JsonKey(name: "id_maincity") final String? idMainCity}) = _$_ClientModel;
+      @JsonKey(name: "id_maincity") final String? idMainCity,
+      @JsonKey(name: "IDcustomer") final String? IdCustomer,
+      @JsonKey(name: "userAdd_email") final String? userAddEmail,
+      @JsonKey(name: "date_recive") final String? dateRecive}) = _$_ClientModel;
 
   factory _ClientModel.fromJson(Map<String, dynamic> json) =
       _$_ClientModel.fromJson;
@@ -1160,13 +1248,13 @@ abstract class _ClientModel implements ClientModel {
   @JsonKey(name: "id_clients")
   String? get idClients;
   @override
-  @JsonKey(name: "nameClient")
+  @JsonKey(name: "name_client")
   String? get nameClient;
   @override
-  @JsonKey(name: "nameEnterprise")
+  @JsonKey(name: "name_enterprise")
   String? get nameEnterprise;
   @override
-  @JsonKey(name: "typeJob")
+  @JsonKey(name: "type_job")
   String? get typeJob;
   @override
   @JsonKey(name: "city")
@@ -1175,34 +1263,34 @@ abstract class _ClientModel implements ClientModel {
   @JsonKey(name: "location")
   String? get location;
   @override
-  @JsonKey(name: "fkRegoin")
+  @JsonKey(name: "fk_regoin")
   String? get fkRegoin;
   @override
   @JsonKey(name: "fkcountry")
   String? get fkcountry;
   @override
-  @JsonKey(name: "dateCreate")
+  @JsonKey(name: "date_create")
   String? get dateCreate;
   @override
-  @JsonKey(name: "typeClient")
+  @JsonKey(name: "type_client")
   String? get typeClient;
   @override
-  @JsonKey(name: "fkUser")
+  @JsonKey(name: "fk_user")
   String? get fkUser;
   @override
-  @JsonKey(name: "dateTransfer")
+  @JsonKey(name: "date_transfer")
   String? get dateTransfer;
   @override
   @JsonKey(name: "mobile")
   String? get mobile;
   @override
-  @JsonKey(name: "dateChangetype")
+  @JsonKey(name: "date_changetype")
   String? get dateChangetype;
   @override
-  @JsonKey(name: "reasonChange")
+  @JsonKey(name: "reason_change")
   String? get reasonChange;
   @override
-  @JsonKey(name: "reasonTransfer")
+  @JsonKey(name: "reason_transfer")
   String? get reasonTransfer;
   @override
   @JsonKey(name: "nameCountry")
@@ -1283,11 +1371,14 @@ abstract class _ClientModel implements ClientModel {
   @JsonKey(name: "date_visit_Client")
   String? get date_visit_Client;
   @override
-  @JsonKey(name: "reason_change")
-  String? get reason_change;
-  @override
   @JsonKey(name: "tag")
-  bool? get tag;
+  String? get tag;
+  @override
+  @JsonKey(name: "done_visit")
+  String? get doneVisit;
+  @override
+  @JsonKey(name: "done_transfer")
+  String? get doneTransfer;
   @override
   @JsonKey(name: "name_city")
   String? get name_city;
@@ -1297,6 +1388,15 @@ abstract class _ClientModel implements ClientModel {
   @override
   @JsonKey(name: "id_maincity")
   String? get idMainCity;
+  @override
+  @JsonKey(name: "IDcustomer")
+  String? get IdCustomer;
+  @override
+  @JsonKey(name: "userAdd_email")
+  String? get userAddEmail;
+  @override
+  @JsonKey(name: "date_recive")
+  String? get dateRecive;
   @override
   @JsonKey(ignore: true)
   _$$_ClientModelCopyWith<_$_ClientModel> get copyWith =>

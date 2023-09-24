@@ -30,13 +30,23 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
-    emit(state.copyWith(clientsListState: PageState.loading()));
-
-    final response = await _getAllClientsListUseCase(GetAllClientsListParams(country: event.fkCountry,page: 0,perPage: 10));
+    List<ClientModel> currentList = [];
+    if(event.page==1){
+      emit(state.copyWith(clientsListState: PageState.loading()));
+    }else{
+      currentList = state.clientsListState.data.toList();
+    }
+    final response = await _getAllClientsListUseCase(GetAllClientsListParams(country: event.fkCountry,page: event.page,perPage: event.perPage));
 
     response.fold(
           (exception, message) => emit(state.copyWith(clientsListState:PageState.error())),
-          (value) => emit(state.copyWith(clientsListState: PageState.loaded(data: value.data ?? []))),
+          (value) {
+            if(event.page>1){
+              currentList.addAll(value.data??[]);
+              emit(state.copyWith(clientsListState: PageState.loaded(data:currentList ?? [])));
+            }else
+              emit(state.copyWith(clientsListState: PageState.loaded(data: value.data ?? [])));
+          }
     );
   }
 

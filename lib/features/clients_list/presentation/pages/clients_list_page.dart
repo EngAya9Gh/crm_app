@@ -36,7 +36,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
   @override
   void initState() {
     fkCountry = context.read<client_vm>().usercurrent!.fkCountry.toString();
-    _clientsListBloc = context.read<ClientsListBloc>()..add(GetAllClientsListEvent(fkCountry: fkCountry!,perPage: 10,page: 0));
+    _clientsListBloc = context.read<ClientsListBloc>()..add(GetAllClientsListEvent(fkCountry: fkCountry!,perPage: 20,page: 1));
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -369,24 +369,27 @@ class _ClientsListPageState extends State<ClientsListPage> {
                             init: () => Center(child: CircularProgressIndicator()),
                             loading: () => Center(child: CircularProgressIndicator()),
                             loaded: (data) => RefreshIndicator(
-                              onRefresh: () async => _clientsListBloc.add(GetAllClientsListEvent(fkCountry: fkCountry!,page: 0,perPage: 10)),
+                              onRefresh: () async => _clientsListBloc.add(GetAllClientsListEvent(fkCountry: fkCountry!,page: 1,perPage: 20)),
                               child: ListView.separated(
                                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                itemBuilder: (BuildContext context, int index) =>
-                                    clientCardWidget(
-                                  clientModel: state.clientsListState.data[index],
-                                ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  if(index==(state.clientsListState.data.length-1)){
+                                    _clientsListBloc.add(GetAllClientsListEvent(fkCountry: fkCountry!,page: 2,perPage: 20));
+                                  }
+                                  return clientCardWidget(clientModel: state.clientsListState.data[index]);
+                                  },
                                 separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
                                 itemCount: state.clientsListState.data.length,
                               ),
                             ),
                             empty: () => Center(child: Text("لايوجد عملاء")),
-                            error: (exception) => Center(child: Text("Exception")),
+                            error: (exception) => Center(child: Text("sorry, something went wrong")),
                           );
                         },
                       ),
                     ),
-                  ),                ],
+                  ),
+                ],
               ),
             ),
           ),
@@ -437,7 +440,7 @@ class _ClientsListPageState extends State<ClientsListPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        clientModel.mobile.toString(),
+                        clientModel.dateCreate.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
                       ),
                     ],
@@ -474,11 +477,11 @@ class _ClientsListPageState extends State<ClientsListPage> {
                   Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                     Expanded(
                       child: Text(
-                        clientModel.nameCountry.toString(),
+                        clientModel.nameEnterprise.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
                       ),
                     ),
-                    if (clientModel.tag ?? false)
+                    if (clientModel.tag=="true" ?true: false)
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,

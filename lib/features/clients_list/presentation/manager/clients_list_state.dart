@@ -8,9 +8,6 @@ class ClientsListState {
 
   final PageState<List<ClientModel>> clientsListState;
 
-  // @override
-  // List<Object?> get props => [clientsListState];
-
   ClientsListState copyWith({
     PageState<List<ClientModel>>? clientsListState,
   }) {
