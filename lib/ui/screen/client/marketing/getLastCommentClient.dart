@@ -10,9 +10,11 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../model/privilgemodel.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/selected_button_provider.dart';
 import '../../../../view_model/lastcommentclient_vm.dart';
+import '../../../../view_model/privilge_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../profileclient.dart';
 import 'LastcommentPage.dart';
@@ -34,6 +36,8 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       context.read<user_vm_provider>().changevalueuser(null,true);
+      List<PrivilgeModel> list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
+      Provider.of<lastcommentclient_vm>(context, listen: false).setvaluepriv(list);
       Provider.of<lastcommentclient_vm>(context, listen: false)
         .getLastcommentClientModel();
 
