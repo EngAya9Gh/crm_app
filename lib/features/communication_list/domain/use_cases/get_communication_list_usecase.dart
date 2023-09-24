@@ -20,8 +20,12 @@ class GetCommunicationListUsecase
 
 class GetCommunicationListParams {
   final String country;
+  final String? userId;
 
-  GetCommunicationListParams({required this.country});
+  GetCommunicationListParams({required this.country, this.userId});
 
-  Map<String, dynamic> toMap() => {'fk_country': this.country};
+  Map<String, dynamic> toMap() => {
+        'fk_country': this.country,
+        if (userId != null) "fk_user": "$userId",
+      };
 }
