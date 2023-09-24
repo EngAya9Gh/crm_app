@@ -1,7 +1,7 @@
 abstract class EndPoints {
   EndPoints._();
 
-  static const baseUrl = "http://smartcrm.ws/test/api/";
+  static const baseUrl = "http://smartcrm.ws/crm/api/";
   static const care = _Care();
   static const client= _Client();
 }

@@ -7,35 +7,35 @@ class ClientModel with _$ClientModel {
   const factory ClientModel({
   @JsonKey(name: "id_clients")
   String? idClients,
-  @JsonKey(name: "nameClient")
+  @JsonKey(name: "name_client")
   String? nameClient,
-  @JsonKey(name: "nameEnterprise")
+  @JsonKey(name: "name_enterprise")
   String? nameEnterprise,
-  @JsonKey(name: "typeJob")
+  @JsonKey(name: "type_job")
   String? typeJob,
   @JsonKey(name: "city")
   String? city,
   @JsonKey(name: "location")
   String? location,
-  @JsonKey(name: "fkRegoin")
+  @JsonKey(name: "fk_regoin")
   String? fkRegoin,
   @JsonKey(name: "fkcountry")
   String? fkcountry,
-  @JsonKey(name: "dateCreate")
+  @JsonKey(name: "date_create")
   String? dateCreate,
-  @JsonKey(name: "typeClient")
+  @JsonKey(name: "type_client")
   String? typeClient,
-  @JsonKey(name: "fkUser")
+  @JsonKey(name: "fk_user")
   String? fkUser,
-  @JsonKey(name: "dateTransfer")
+  @JsonKey(name: "date_transfer")
   String? dateTransfer,
   @JsonKey(name: "mobile")
   String? mobile,
-  @JsonKey(name: "dateChangetype")
+  @JsonKey(name: "date_changetype")
   String? dateChangetype,
-  @JsonKey(name: "reasonChange")
+  @JsonKey(name: "reason_change")
   String? reasonChange,
-  @JsonKey(name: "reasonTransfer")
+  @JsonKey(name: "reason_transfer")
   String? reasonTransfer,
   @JsonKey(name: "nameCountry")
   String? nameCountry,
@@ -89,16 +89,24 @@ class ClientModel with _$ClientModel {
   String? nameAdduser,
   @JsonKey(name: "date_visit_Client")
   String? date_visit_Client,
-  @JsonKey(name: "reason_change")
-  String? reason_change,
   @JsonKey(name: "tag")
-  bool? tag,
+  String? tag,
+  @JsonKey(name: "done_visit")
+  String? doneVisit,
+  @JsonKey(name: "done_transfer")
+  String? doneTransfer,
   @JsonKey(name: "name_city")
   String? name_city,
   @JsonKey(name: "namemaincity")
   String? nameMainCity,
   @JsonKey(name: "id_maincity")
-  String? idMainCity
+  String? idMainCity,
+  @JsonKey(name: "IDcustomer")
+  String? IdCustomer,
+  @JsonKey(name: "userAdd_email")
+  String? userAddEmail,
+  @JsonKey(name: "date_recive")
+  String? dateRecive
   }) = _ClientModel;
 
   factory ClientModel.fromJson(Map<String, dynamic> json) => _$ClientModelFromJson(json);
