@@ -369,12 +369,16 @@ class _ClientsListPageState extends State<ClientsListPage> {
                             init: () => Center(child: CircularProgressIndicator()),
                             loading: () => Center(child: CircularProgressIndicator()),
                             loaded: (data) => RefreshIndicator(
-                              onRefresh: () async => _clientsListBloc.add(GetAllClientsListEvent(fkCountry: fkCountry!,page: 1,perPage: 20)),
+                              onRefresh: () async{
+                                state.currentPage=1;
+                                _clientsListBloc.add(GetAllClientsListEvent(fkCountry: fkCountry!,page: 1,perPage: 20));
+                              },
                               child: ListView.separated(
                                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                                 itemBuilder: (BuildContext context, int index) {
                                   if(index==(state.clientsListState.data.length-1)){
-                                    _clientsListBloc.add(GetAllClientsListEvent(fkCountry: fkCountry!,page: 2,perPage: 20));
+                                    state.currentPage++;
+                                    _clientsListBloc.add(GetAllClientsListEvent(fkCountry: fkCountry!,page: state.currentPage,perPage: 20));
                                   }
                                   return clientCardWidget(clientModel: state.clientsListState.data[index]);
                                   },
