@@ -40,6 +40,7 @@ import 'package:crm_smart/view_model/usertest_vm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -100,11 +101,14 @@ void main() async {
 
   runApp(ServiceProvider(
     child: MultiProvider(providers: [
-      ChangeNotifierProvider<user_vm_provider>(create: (_) => user_vm_provider()),
-      ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
+      ChangeNotifierProvider<user_vm_provider>(
+          create: (_) => user_vm_provider()),
+      ChangeNotifierProvider<navigatorProvider>(
+          create: (_) => navigatorProvider()),
       ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
       ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
-      ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
+      ChangeNotifierProvider<selected_button_provider>(
+          create: (_) => selected_button_provider()),
       ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
       // ChangeNotifierProvider<config_vm>(create: (_) => config_vm()),
       ChangeNotifierProxyProvider<user_vm_provider, config_vm>(
@@ -191,8 +195,10 @@ void main() async {
       ChangeNotifierProvider<activity_vm>(create: (_) => activity_vm()),
       ChangeNotifierProvider<company_vm>(create: (_) => company_vm()),
       ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
-      ChangeNotifierProvider<AgentDistributorViewModel>(create: (_) => AgentDistributorViewModel()),
-      ChangeNotifierProxyProvider<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
+      ChangeNotifierProvider<AgentDistributorViewModel>(
+          create: (_) => AgentDistributorViewModel()),
+      ChangeNotifierProxyProvider<invoice_vm,
+          AgentsCollaboratorsInvoicesViewmodel>(
         update: (context, invoiceVm, agentCollaborateVm) {
           if (agentCollaborateVm?.invoicesList.isEmpty ?? true)
             agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
@@ -200,9 +206,12 @@ void main() async {
         },
         create: (_) => AgentsCollaboratorsInvoicesViewmodel(),
       ),
-      ChangeNotifierProvider<lastcommentclient_vm>(create: (_) => lastcommentclient_vm()),
-      ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
-      ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
+      ChangeNotifierProvider<lastcommentclient_vm>(
+          create: (_) => lastcommentclient_vm()),
+      ChangeNotifierProvider<BranchRaceViewmodel>(
+          create: (_) => BranchRaceViewmodel()),
+      ChangeNotifierProvider<EmployeeRaceViewmodel>(
+          create: (_) => EmployeeRaceViewmodel()),
       //ChangeNotifierProvider<ticket_vm>(create: (_)=> ticket_vm()),
     ], child: MyApp()),
   ));
@@ -219,7 +228,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    currentUser = Provider.of<user_vm_provider>(context, listen: false).getcurrentuser();
+    currentUser =
+        Provider.of<user_vm_provider>(context, listen: false).getcurrentuser();
     super.initState();
   }
 
@@ -265,7 +275,10 @@ class _MyAppState extends State<MyApp> {
                 ),
                 home: Directionality(
                   textDirection: TextDirection.rtl,
-                  child: isUserLoggedIn ? Home() : login(),
+                  child: ScreenUtilInit(
+                    useInheritedMediaQuery: true,
+                    child: isUserLoggedIn ? Home() : login(),
+                  ),
                 ),
               );
             }

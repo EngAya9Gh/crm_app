@@ -24,9 +24,21 @@ import '../../features/communication_list/domain/repositories/communication_list
 import '../../features/communication_list/domain/use_cases/get_communication_list_usecase.dart'
     as _i10;
 import '../../features/communication_list/presentation/manager/communication_list_bloc.dart'
+    as _i15;
+import '../../features/manage_users/data/data_sources/users_datasource.dart'
     as _i11;
+import '../../features/manage_users/data/repositories/users_repository_impl.dart'
+    as _i13;
+import '../../features/manage_users/domain/repositories/users_repository.dart'
+    as _i12;
+import '../../features/manage_users/domain/use_cases/action_user_usecase.dart'
+    as _i14;
+import '../../features/manage_users/domain/use_cases/get_allusers_usecase.dart'
+    as _i16;
+import '../../features/manage_users/presentation/manager/users_cubit.dart'
+    as _i17;
 import '../api/client.dart' as _i6;
-import 'di_container.dart' as _i12;
+import 'di_container.dart' as _i18;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -58,9 +70,21 @@ Future<_i1.GetIt> $initGetIt(
           gh<_i7.CommunicationListDatasource>()));
   gh.factory<_i10.GetCommunicationListUsecase>(() =>
       _i10.GetCommunicationListUsecase(gh<_i8.CommunicationListRepository>()));
-  gh.factory<_i11.CommunicationListBloc>(
-      () => _i11.CommunicationListBloc(gh<_i10.GetCommunicationListUsecase>()));
+  gh.factory<_i11.UsersDatasource>(
+      () => _i11.UsersDatasource(gh<_i6.ClientApi>()));
+  gh.factory<_i12.UsersRepository>(
+      () => _i13.UsersRepositoryImpl(gh<_i11.UsersDatasource>()));
+  gh.factory<_i14.ActionUserUsecase>(
+      () => _i14.ActionUserUsecase(gh<_i12.UsersRepository>()));
+  gh.factory<_i15.CommunicationListBloc>(
+      () => _i15.CommunicationListBloc(gh<_i10.GetCommunicationListUsecase>()));
+  gh.factory<_i16.GetAllUsersUsecase>(
+      () => _i16.GetAllUsersUsecase(gh<_i12.UsersRepository>()));
+  gh.factory<_i17.UsersCubit>(() => _i17.UsersCubit(
+        gh<_i16.GetAllUsersUsecase>(),
+        gh<_i14.ActionUserUsecase>(),
+      ));
   return getIt;
 }
 
-class _$AppModule extends _i12.AppModule {}
+class _$AppModule extends _i18.AppModule {}

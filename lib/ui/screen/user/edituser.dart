@@ -102,42 +102,23 @@ class _EditUserState extends State<EditUser> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
       namemanage =
-          // controllerUsers[widget.index]
           widget.userModel.typeAdministration.toString();
       Provider.of<manage_provider>(context, listen: false).changevalue(namemanage!);
 
       context.read<maincity_vm>().getmaincity(regions: widget.userModel.maincitylist_user);
-      //
-      // Provider.of<manage_provider>(context,listen: false)
-      //     .changevalue(widget.userModel.typeAdministration.toString());
-      // namemanage=widget.userModel.typeAdministration.toString();
-
-      print("after manage provider in main");
       emailController.text =
-          //controllerUsers[widget.index]
           widget.userModel.email.toString();
 
       mobileController.text =
-          //controllerUsers[widget.index]
           widget.userModel.mobile.toString();
       regoinname = widget.userModel.nameRegoin;
       levelname = widget.userModel.name_level;
       Provider.of<level_vm>(context, listen: false).changeVal(widget.userModel.typeLevel.toString());
-      print("level inside build main screen" + widget.userModel.typeLevel.toString());
-      // Provider.of<level_vm>(context,listen: false).selectedValueLevel =
-      // //controllerUsers[widget.index]
-      // widget.userModel.typeLevel.toString();
       Provider.of<regoin_vm>(context, listen: false).changeValuser(widget.userModel.fkRegoin);
-
-      print(widget.userModel.fkRegoin.toString());
-
-      print('ddjksnsjncmdn');
-      //print(widget.index);
 
       setState(() {
         isAcive = widget.userModel.isActive!;
       });
-      print("init");
     });
 
     super.initState();
@@ -205,6 +186,8 @@ class _EditUserState extends State<EditUser> {
                     'fk_regoin': fkregoin != null ? fkregoin : "null",
                     'name_regoin': regoinname,
                     'name_level': levelname,
+
+
                     'isActive': isAcive,
                     "updated_at": DateTime.now().toString(),
                     "fkuserupdate": Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
