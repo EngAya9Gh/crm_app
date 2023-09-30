@@ -638,7 +638,6 @@ class RejectDialog extends StatefulWidget {
 }
 
 class _RejectDialogState extends State<RejectDialog> {
-  final TextEditingController resaonController = TextEditingController();
   final TextEditingController valueBackController = TextEditingController();
   final TextEditingController descresaonController = TextEditingController();
   late typeclient typeclient_provider;
@@ -648,6 +647,9 @@ class _RejectDialogState extends State<RejectDialog> {
   @override
   void initState() {
     _invoice = widget.invoice;
+    descresaonController.text = _invoice.desc_reason_back.toString();
+    valueBackController.text = _invoice.reason_back.toString();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       typeclient_provider = Provider.of<typeclient>(context, listen: false);
       typeclient_provider.getreasons('client');
@@ -664,7 +666,6 @@ class _RejectDialogState extends State<RejectDialog> {
 
   @override
   void dispose() {
-    resaonController.dispose();
     valueBackController.dispose();
     descresaonController.dispose();
     super.dispose();
@@ -953,7 +954,7 @@ class _RejectDialogState extends State<RejectDialog> {
                               ElevatedButton(
                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                 onPressed: () async {
-                                  if (selectedFile == null) {
+                                  if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
                                     ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
                                     return;
                                   }
@@ -991,7 +992,7 @@ class _RejectDialogState extends State<RejectDialog> {
                               ElevatedButton(
                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                 onPressed: () async {
-                                  if (selectedFile == null) {
+                                  if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
                                     ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
                                     return;
                                   }
@@ -1049,7 +1050,7 @@ class _RejectDialogState extends State<RejectDialog> {
 
   void deleteImageReject() {
     setState(() {
-      _invoice = _invoice.copyWith(rejectFile: null);
+      _invoice = _invoice.copyWith(deleteRejectImage: true);
     });
   }
 }
