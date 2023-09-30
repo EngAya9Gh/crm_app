@@ -1238,7 +1238,7 @@ class invoice_vm extends ChangeNotifier {
     return true;
   }
 
-  Future<String> delete_invoice(Map<String, String> body, String? id_invoice) async {
+  Future<String> delete_invoice(Map<String, dynamic> body, String? id_invoice) async {
     int index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
     listinvoiceClient.removeAt(index);
     notifyListeners();
@@ -1302,14 +1302,24 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> set_state_back(Map<String, dynamic?> body, String? id_invoice) async {
+  Future<void> set_state_back(Map<String, dynamic> body, String? id_invoice, File? file) async {
     isloading = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!);
+    InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!,file);
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-    listinvoices[index] = data;
+    if(index != -1) {
+      listinvoices[index] = data;
+    }
     index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
-    listinvoiceClient[index] = data;
+    if(index != -1) {
+      listinvoiceClient[index] = data;
+    }
+    currentInvoice = data;
+    index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
+    if(index != -1){
+      listInvoicesAccept[index] = data;
+    }
+
     // listinvoiceClient
     // body.addAll(
     //     InvoiceModel.fromJson(listinvoices[index]));

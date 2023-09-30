@@ -102,6 +102,7 @@ class InvoiceModel extends CacheRepository {
   AttachFileStatus? attachFileStatus;
   AttachFileStatus? deleteAttachFileStatus;
   String? renew_agent;
+  String? file_reject;
 
   //endregion
 
@@ -197,6 +198,7 @@ class InvoiceModel extends CacheRepository {
     this.participal,
     this.renew2year,
     this.renew_agent,
+    this.file_reject,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -308,6 +310,7 @@ class InvoiceModel extends CacheRepository {
     datesInstallationClient =
         List.from(jsondata['dates_install_client'] ?? []).map((e) => DateInstallationClient.fromJson(e)).toList();
     fileAttach = jsondata['file_attach'];
+    file_reject = jsondata['file_reject'];
     attachFileStatus = AttachFileStatus.init;
     deleteAttachFileStatus = AttachFileStatus.init;
     //  json.decode(
@@ -557,9 +560,11 @@ class InvoiceModel extends CacheRepository {
     AgentDistributorModel? agent_distibutor,
     List<DateInstallationClient>? datesInstallationClient,
     String? fileAttach,
+    String? rejectFile,
     AttachFileStatus? attachFileStatus,
     AttachFileStatus? deleteAttachFileStatus,
     bool deleteImage = false,
+    bool deleteRejectImage = false,
   }) {
     return InvoiceModel(
       idInvoice: idInvoice ?? this.idInvoice,
@@ -649,6 +654,7 @@ class InvoiceModel extends CacheRepository {
       agent_distibutor: agent_distibutor ?? this.agent_distibutor,
       datesInstallationClient: datesInstallationClient ?? this.datesInstallationClient,
       fileAttach: deleteImage ? null :fileAttach ?? this.fileAttach,
+      file_reject: deleteRejectImage ? null :file_reject ?? this.file_reject,
       attachFileStatus: attachFileStatus ?? this.attachFileStatus,
       deleteAttachFileStatus: deleteAttachFileStatus ?? this.deleteAttachFileStatus,
     );

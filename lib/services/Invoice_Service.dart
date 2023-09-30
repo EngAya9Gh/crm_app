@@ -167,8 +167,13 @@ class Invoice_Service {
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
-  Future<InvoiceModel> setstate(Map<String, dynamic> body, String id_invoice) async {
-    var result = await Api().post(url: url + "client/invoice/update_stateback.php?id_invoice=$id_invoice", body: body);
+  Future<InvoiceModel> setstate(Map<String, dynamic> body, String id_invoice , File? file) async {
+
+    var result = await Api().postRequestWithFile('array',
+      url+"client/invoice/update_stateback.php?id_invoice=$id_invoice",
+      body,
+      file,null,
+    );
     //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
@@ -286,7 +291,7 @@ class Invoice_Service {
     return result == "done" ? true : false;
   }
 
-  Future<String> deleteInvoiceById(Map<String, String> body) async {
+  Future<String> deleteInvoiceById(Map<String, dynamic> body) async {
     try {
       String res = await Api().post(url: url + 'client/invoice/deleteinvoice.php', body: body);
 
