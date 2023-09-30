@@ -6,7 +6,7 @@ import '../helper/get_month_name.dart';
 import '../model/branch_race_model.dart';
 import '../ui/screen/target/target_data.dart';
 
-enum DateFilterType { monthly, quarterly, yearly }
+enum DateFilterType { monthly, quarterly, yearly,daily }
 
 extension DateFilterExt on DateFilterType {
   String get type {
@@ -14,6 +14,8 @@ extension DateFilterExt on DateFilterType {
       case DateFilterType.monthly:
         return "datemonth";
       case DateFilterType.quarterly:
+        return "datedays";
+        case DateFilterType.daily:
         return "datedays";
       case DateFilterType.yearly:
         return "dateyear";

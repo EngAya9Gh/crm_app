@@ -51,7 +51,8 @@ class _View_installedClientState extends State<View_installedClient> {
       Provider.of<regoin_vm>(context, listen: false).changeVal(null);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
       context.read<user_vm_provider>().changevalueuser(null, true);
-      await Provider.of<communication_vm>(context, listen: false).getCommunicationInstall(1, '');
+      await Provider.of<communication_vm>(context, listen: false)
+          .getCommunicationInstall(1, '');
     });
     super.initState();
   }

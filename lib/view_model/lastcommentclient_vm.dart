@@ -4,6 +4,8 @@ import '../api/api.dart';
 import '../constants.dart';
 import '../model/ActivityModel.dart';
 import '../model/lastCommentClientModel.dart';
+import '../model/privilgemodel.dart';
+import '../model/usermodel.dart';
 import '../services/configService.dart';
 
 class lastcommentclient_vm extends ChangeNotifier {
@@ -11,11 +13,48 @@ class lastcommentclient_vm extends ChangeNotifier {
   List<LastcommentClientModel> list_LastcommentClientModel_temp = [];
   bool isload = false;
   String order='ASC';
-  Future<void> getLastcommentClientModel( ) async {
-    isload = true;
+  List<PrivilgeModel> privilgelist = [];
+  UserModel? usercurrent;
+  String param = '';
+
+  void setvalue(user) {
+    usercurrent = user;
+    notifyListeners();
+  }
+  void setvaluepriv(privilgelistparam) {
+    print('in set privilge client vm');
+    privilgelist = privilgelistparam;
+    param=get_privilgelist();
 
     notifyListeners();
-    final response = await Api().get(url: url + 'reports/get_lastcomment.php?order=$order');
+  }
+  String get_privilgelist() {
+    // if(listClient.isEmpty)
+    //main list
+    String param = '';
+    bool res = privilgelist?.firstWhere((element) => element.fkPrivileg == '138').isCheck == '1' ? true : false;
+    if (res) {
+      param = 'fk_country'+usercurrent!.fkCountry.toString();
+    } else {
+      res = privilgelist?.firstWhere((element) => element.fkPrivileg == '139').isCheck == '1' ? true : false;
+      if (res) {
+        param = 'fk_regoin=' + usercurrent!.fkRegoin.toString();
+      } else {
+        res = privilgelist?.firstWhere((element) => element.fkPrivileg == '140').isCheck == '1' ? true : false;
+        if (res) {
+          param = 'fk_user=' + usercurrent!.idUser.toString();
+        }
+      }
+    }
+    return param;
+  }
+  Future<void> getLastcommentClientModel( ) async {
+    isload = true;
+    notifyListeners();
+   print('param');
+   print(param);
+    final response = await Api().get(url: url + 'reports/get_lastcomment.php?${param}');
+
     var list = List<LastcommentClientModel>.from((response ?? []).map((x) => LastcommentClientModel.fromJson(x)))
       ..sort(
         (a, b) =>

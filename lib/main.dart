@@ -206,8 +206,12 @@ void main() async {
         },
         create: (_) => AgentsCollaboratorsInvoicesViewmodel(),
       ),
-      ChangeNotifierProvider<lastcommentclient_vm>(
+      //ChangeNotifierProvider<lastcommentclient_vm>(
           create: (_) => lastcommentclient_vm()),
+      ChangeNotifierProxyProvider<user_vm_provider, lastcommentclient_vm>(
+        create: (_) => lastcommentclient_vm(),
+        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
+      ),
       ChangeNotifierProvider<BranchRaceViewmodel>(
           create: (_) => BranchRaceViewmodel()),
       ChangeNotifierProvider<EmployeeRaceViewmodel>(

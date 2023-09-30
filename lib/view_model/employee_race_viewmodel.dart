@@ -14,6 +14,10 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
   int? selectedYear;
   int? selectedQuarterYear;
   int? selectedQuarter;
+  int? selectedDaily;
+  int? selectedDaily_from_month;
+  int? selectedDaily_to_month;
+
   int? selectedMonthYear;
   int? selectedMonth;
   late String fkCountry;
@@ -49,6 +53,10 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         (selectedQuarter == null || selectedQuarterYear == null || employeeQuarterReportState.isSuccess)) {
       return;
     }
+    if (selectedDateFilterType == DateFilterType.daily &&
+        (selectedDaily == null || selectedDaily == null || employeeQuarterReportState.isSuccess)) {
+      return;
+    }
     if (selectedDateFilterType == DateFilterType.monthly &&
         (selectedMonth == null || selectedMonthYear == null || employeeMonthReportState.isSuccess)) {
       return;
@@ -70,7 +78,14 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         "from": getFromQuarter,
         "to": getToQuarter,
       };
-    } else {
+    }
+    else if (selectedDateFilterType == DateFilterType.daily) {
+      queryParams = {
+        "from": DateTime(selectedMonthYear!, selectedDaily_from_month!).toIso8601String(),
+        "to": DateTime(selectedMonthYear!, selectedDaily_to_month!).toIso8601String(),
+      };
+    }
+    else {
       queryParams = {
         "month": DateTime(selectedMonthYear!, selectedMonth!).toIso8601String(),
       };

@@ -292,8 +292,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         //crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('31') == true
-                              ? CustomButton(
+Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true
+                                  && invoice.isApprove ==null ||                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('31') == true
+                              && invoice.isApprove !=null? CustomButton(
                                   text: 'تعديل الفاتورة',
                                   onTap: () async {
                                     if (clientmodel != null)
@@ -304,7 +305,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                   addinvoice(invoice: invoice, itemClient: clientmodel!)));
                                   },
                                 )
-                              : Container(),
+                              : Container(),// widget.type == 'approved'
+                              //     ? invoice.isApprove == null
                           Provider.of<privilge_vm>(context, listen: true).checkprivlge('41') == true
                               ? invoice.isApprove != null
                                   ? CustomButton(
