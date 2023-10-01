@@ -6,7 +6,7 @@ import '../helper/get_month_name.dart';
 import '../model/branch_race_model.dart';
 import '../ui/screen/target/target_data.dart';
 
-enum DateFilterType { monthly, quarterly, yearly,daily }
+enum DateFilterType { monthly, quarterly, yearly, daily }
 
 extension DateFilterExt on DateFilterType {
   String get type {
@@ -14,8 +14,7 @@ extension DateFilterExt on DateFilterType {
       case DateFilterType.monthly:
         return "datemonth";
       case DateFilterType.quarterly:
-        return "datedays";
-        case DateFilterType.daily:
+      case DateFilterType.daily:
         return "datedays";
       case DateFilterType.yearly:
         return "dateyear";
@@ -144,13 +143,11 @@ class BranchRaceViewmodel extends ChangeNotifier {
         url: url + "target/get_sales_target.php?fk_country=$fkcountry&month=${monthdate.toString()}",
         body: {'type': 'datemonth'});
     List<BranchRaceModel> list = [];
-    for (int i = 0; i < data.length; i++)
-      list.add(BranchRaceModel.fromJson(data[i]));
+    for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
 
     targetsState = targetsState.copyWith(data: list);
-    for (int i = 0; i < targetsState.data!.length; i++)
-      print(targetsState.data![i].y);
-      notifyListeners();
+    for (int i = 0; i < targetsState.data!.length; i++) print(targetsState.data![i].y);
+    notifyListeners();
   }
 
   onChangeYear(String year, String fkcountry) async {

@@ -1,140 +1,231 @@
+import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
+import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:in_date_utils/in_date_utils.dart';
+import 'package:intl/intl.dart' as intl;
+import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../view_model/employee_race_viewmodel.dart';
+import '../../../../view_model/vm.dart';
+import '../widgets/employee_list.dart';
 
-class dailyEmployeePage extends StatefulWidget {
-    dailyEmployeePage({Key? key}) : super(key: key);
+class DailyEmployeePage extends StatefulWidget {
+  DailyEmployeePage({Key? key}) : super(key: key);
 
   @override
-  State<dailyEmployeePage> createState() => _dailyEmployeePageState();
+  State<DailyEmployeePage> createState() => _DailyEmployeePageState();
 }
 
-class _dailyEmployeePageState extends State<dailyEmployeePage> {
-    DateTime _selectedDatefrom = DateTime.now();
+class _DailyEmployeePageState extends State<DailyEmployeePage>
+    with StateViewModelMixin<DailyEmployeePage, EmployeeRaceViewmodel> {
+  DateTime? _selectedDateFrom;
+  DateTime? _selectedDateTo;
 
-    DateTime _selectedDateto = DateTime.now();
-
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDateFrom(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3010));
-    if (pickedDate != null)
+      context: context,
+      currentDate: currentDate,
+      initialDate: currentDate,
+      firstDate: DateTime(2015),
+      lastDate: DateTime(3010),
+    );
+    if (pickedDate != null) {
+      if (_selectedDateTo != null) {
+        if (_selectedDateTo!.isBefore(pickedDate) || _selectedDateFrom!.isAtSameMomentAs(pickedDate)) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "اختر تاريخ قبل ${intl.DateFormat("yyyy dd MMM").format(_selectedDateTo!)}",
+              textDirection: TextDirection.rtl,
+            ),
+            backgroundColor: Colors.red,
+          ));
+          return;
+        }
+      }
+      viewmodel.onChangeFrom(pickedDate);
       setState(() {
-        // Navigator.pop(context);
-        _selectedDatefrom = pickedDate;
-        print('_selectedDatefrom ' + _selectedDatefrom.toString());
-        print('_selectedDateto ' + _selectedDateto.toString());
-        // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-        // Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
-        //     .onChange_date(_selectedDatefrom, _selectedDateto);
+        _selectedDateFrom = pickedDate;
       });
+
+      var lastDay = DTU.lastDayOfMonth(_selectedDateFrom!);
+      var firstDay = DTU.firstDayOfMonth(_selectedDateFrom!);
+
+      if ((_selectedDateTo?.isAfter(lastDay) ?? false) || (_selectedDateTo?.isBefore(firstDay) ?? false)) {
+        viewmodel.onChangeTo(null);
+        setState(() {
+          _selectedDateTo = null;
+        });
+      }
+    }
   }
 
-  Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDateTo(
+    BuildContext context,
+    DateTime currentDate,
+    DateTime firstDate,
+    DateTime lastDate,
+  ) async {
     DateTime? pickedDate = await showDatePicker(
-      // initialEntryMode: DatePickerEntryMode.calendarOnly,
-      // initialDatePickerMode: DatePickerMode.year,
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3010));
-    if (pickedDate != null)
+      context: context,
+      currentDate: currentDate,
+      initialDate: currentDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
+    );
+    if (pickedDate != null) {
+      if (_selectedDateFrom!.isAfter(pickedDate) || _selectedDateFrom!.isAtSameMomentAs(pickedDate)) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            "اختر تاريخ بعد ${intl.DateFormat("yyyy dd MMM").format(_selectedDateFrom!)}",
+            textDirection: TextDirection.rtl,
+          ),
+          backgroundColor: Colors.red,
+        ));
+
+        return;
+      }
+
+      viewmodel.onChangeTo(pickedDate);
       setState(() {
-        // Navigator.pop(context);
-        _selectedDateto = pickedDate;
-        print('_selectedDateto ' + _selectedDateto.toString());
-        // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-        // Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
-        //     .onChange_date(_selectedDatefrom, _selectedDateto);
+        _selectedDateTo = pickedDate;
       });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return     Row(
-      children: [
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('from'),
-              TextFormField(
-                validator: (value) {
-                  if (_selectedDatefrom == DateTime(1, 1, 1)) {
-                    return 'يرجى تعيين التاريخ ';
-                  }
-                },
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.date_range,
-                    color: kMainColor,
-                  ),
-                  hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                  hintText: _selectedDatefrom == DateTime(1, 1, 1)
-                      ? 'from' //_currentDate.toString()
-                      : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
-                  //_invoice!.dateinstall_task.toString(),
-                  filled: true,
-                  fillColor: Colors.grey.shade200,
-                ),
-                readOnly: true,
-                onTap: () {
-                  setState(() {
-                    _selectDatefrom(context, DateTime.now());
+    return Consumer<EmployeeRaceViewmodel>(
+      builder: (context, value, child) {
+        final employeeDayReportState = value.employeeDailyReportState;
 
-                    // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
-                  });
+        final list = employeeDayReportState.data ?? [];
 
-                  // _selectDate(context, DateTime.now());
-                },
-              ),
-            ],
-          ),
-        ),
-        Flexible(
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
           child: Column(
             children: [
-              Text('to'),
-              TextFormField(
-                validator: (value) {
-                  if (_selectedDateto == DateTime(1, 1, 1)) {
-                    return 'يرجى تعيين التاريخ ';
-                  }
-                },
-                decoration: InputDecoration(
-                  prefixIcon: Icon(
-                    Icons.date_range,
-                    color: kMainColor,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('From:'),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          validator: (value) {
+                            if (_selectedDateFrom == null) {
+                              return 'يرجى تعيين التاريخ ';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            prefixIcon: Icon(
+                              Icons.date_range,
+                              color: kMainColor,
+                            ),
+                            hintStyle:
+                                const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                            hintText: _selectedDateFrom == null
+                                ? 'from'
+                                : intl.DateFormat('yyyy-MM-dd').format(_selectedDateFrom!),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                          ),
+                          readOnly: true,
+                          onTap: () {
+                            _selectDateFrom(context, _selectedDateFrom ?? DateTime.now());
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                  hintText: _selectedDateto == DateTime(1, 1, 1)
-                      ? 'to' //_currentDate.toString()
-                      : DateFormat('yyyy-MM-dd').format(_selectedDateto),
-                  //_invoice!.dateinstall_task.toString(),
-                  filled: true,
-                  fillColor: Colors.grey.shade200,
-                ),
-                readOnly: true,
-                onTap: () {
-                  setState(() {
-                    _selectDateto(context, DateTime.now());
-                    // viewmodel.onChange_date( _selectedDatefrom,_selectedDateto);
-                  });
-                  // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-                  //   getData();
-                  // _selectDate(context, DateTime.now());
-                },
+                  5.horizontalSpace,
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text('To:'),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          validator: (value) {
+                            if (_selectedDateTo == null) {
+                              return 'يرجى تعيين التاريخ ';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            prefixIcon: Icon(
+                              Icons.date_range,
+                              color: kMainColor,
+                            ),
+                            hintStyle:
+                                const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                            hintText:
+                                _selectedDateTo == null ? 'to' : intl.DateFormat('yyyy-MM-dd').format(_selectedDateTo!),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                          ),
+                          readOnly: true,
+                          onTap: () {
+                            if (_selectedDateFrom == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text("اخنر From أولاً.", textDirection: TextDirection.rtl),
+                                backgroundColor: Colors.red,
+                              ));
+                              return;
+                            }
+
+                            var lastDay = DTU.lastDayOfMonth(_selectedDateFrom!);
+                            var firstDay = DTU.firstDayOfMonth(_selectedDateFrom!);
+
+                            _selectDateTo(
+                                context,
+                                (_selectedDateTo?.isAfter(lastDay) ?? false) ? lastDay : _selectedDateTo ?? lastDay,
+                                firstDay,
+                                lastDay);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: value.employeeDailyReportState.isLoading
+                        ? SizedBox(height: 25, width: 25)
+                        : IconButton(
+                            onPressed:
+                                _selectedDateFrom == null || _selectedDateTo == null ? null : value.getEmployeeReport,
+                            icon: Icon(Icons.filter_alt_rounded, color: kMainColor),
+                          ),
+                  ),
+                ],
               ),
+              if (employeeDayReportState.isInit)
+                SizedBox.shrink()
+              else if (employeeDayReportState.isLoading)
+                Center(child: CircularProgressIndicator.adaptive())
+              else if (employeeDayReportState.isFailure)
+                Center(child: IconButton(onPressed: value.getEmployeeReport, icon: Icon(Icons.refresh)))
+              else
+                list.isEmpty
+                    ? Center(heightFactor: 20, child: Text("لايوجد بيانات لهذا التاريخ!"))
+                    : Expanded(child: EmployeeList(list: list)),
             ],
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

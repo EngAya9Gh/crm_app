@@ -78,7 +78,7 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
                 return Expanded(child: QuarterlyEmployeePage());
               }
               else if (selectedDateFilter == DateFilterType.daily) {
-                return Expanded(child: dailyEmployeePage());
+                return Expanded(child: DailyEmployeePage());
               }
                 return Expanded(child: MonthlyEmployeePage());
             },

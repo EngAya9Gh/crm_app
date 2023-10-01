@@ -23,7 +23,10 @@ class EmployeeCard extends StatelessWidget {
           ? vm.selectedYear.toString()
           : vm.selectedDateFilterType == DateFilterType.quarterly
               ? "${getQuarterName(vm.selectedQuarter!)}-${vm.selectedQuarterYear}"
-              : "${getMonthName(vm.selectedMonth!)}-${vm.selectedMonthYear}";
+              : vm.selectedDateFilterType == DateFilterType.monthly
+                  ? "${getMonthName(vm.selectedMonth!)}-${vm.selectedMonthYear}"
+                  : "${getMonthName(vm.selectedDailyFrom!.month)}, من ${vm.selectedDailyFrom!.day} إلى ${vm.selectedDailyTo!.day}";
+
       return Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -45,25 +48,25 @@ class EmployeeCard extends StatelessWidget {
                 // ),
                 CircleAvatar(
                   radius: 30,
-                  child:
-                  employeeReportModel.img_image.toString().trim().length==0
-                  // ||usermodell.img_thumbnail.toString().trim().isEmpty
-                      ? employeeReportModel.name.toString().isEmpty||employeeReportModel.name==null
-                      ? Icon(
-                    Icons.person,
-                    size: 50,
-                    color: Colors.lightBlueAccent,
-                  ) : Text(employeeReportModel.name.toString().substring(0, 1))
+                  child: employeeReportModel.img_image.toString().trim().length == 0
+                      // ||usermodell.img_thumbnail.toString().trim().isEmpty
+                      ? employeeReportModel.name.toString().isEmpty || employeeReportModel.name == null
+                          ? Icon(
+                              Icons.person,
+                              size: 50,
+                              color: Colors.lightBlueAccent,
+                            )
+                          : Text(employeeReportModel.name.toString().substring(0, 1))
                       : ClipRRect(
-                    borderRadius: BorderRadius.circular(45),
-
-                    child: CachedNetworkImage(
-                      width: 500,height: 500,fit: BoxFit.fill,
-                      placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                      imageUrl: employeeReportModel.img_image!,
-                    ),
-                  ),
+                          borderRadius: BorderRadius.circular(45),
+                          child: CachedNetworkImage(
+                            width: 500,
+                            height: 500,
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => const CircularProgressIndicator(),
+                            imageUrl: employeeReportModel.img_image!,
+                          ),
+                        ),
                   // CachedNetworkImage(
                   //   progressIndicatorBuilder: (context, url, progress) => Center(
                   //     child: CircularProgressIndicator(
