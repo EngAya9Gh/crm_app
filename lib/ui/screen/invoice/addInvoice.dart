@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as myui;
 
+import 'package:collection/collection.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -15,6 +16,7 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:dartz/dartz_unsafe.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,6 +36,7 @@ import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 import 'add_invoice_product.dart';
+import 'invoice_images_file.dart';
 
 class addinvoice extends StatefulWidget {
   addinvoice(
@@ -104,6 +107,7 @@ class _addinvoiceState extends State<addinvoice> {
   ValueNotifier<bool> isDeleteRecordCommercialImageNetworkImage = ValueNotifier(false);
 
   ValueNotifier<bool> isNumberOfBranchesBiggerThanOne = ValueNotifier(false);
+  List<String> deletedFiles = [];
 
   @override
   void dispose() async {
@@ -148,7 +152,7 @@ class _addinvoiceState extends State<addinvoice> {
       });
 
       if (_invoice != null) {
-        print('in if invoice');
+        invoiceViewmodel.initAttachFiles(_invoice!.filesAttach ?? []);
         //in mode edit
         totalController = _invoice!.total.toString();
         // Provider.of<invoice_vm>(context,listen: false).set_total(totalController.toString());
@@ -188,6 +192,8 @@ class _addinvoiceState extends State<addinvoice> {
         // Provider.of<invoice_vm>(context,listen: false)
         //     .listinvoiceClient.add(
         print('in else invoice');
+        invoiceViewmodel.initAttachFiles([]);
+
         _invoice = InvoiceModel(
           products: [],
           renewYear: renewController.text,
@@ -877,117 +883,8 @@ class _addinvoiceState extends State<addinvoice> {
                                 });
                           }),
                       SizedBox(height: 20),
-
-                      // TextFormField(
-                      //   controller: logoController,
-                      //   obscureText: false,
-                      //   cursorColor: Colors.black,
-                      //   onTap: () async {
-                      //     ImagePicker imagePicker = ImagePicker();
-                      //     final pickedImage = await imagePicker.pickImage(
-                      //       source: ImageSource.gallery,
-                      //       imageQuality: 100,
-                      //     );
-                      //     File? pickedFile = File(pickedImage!.path);
-                      //     setState(() {
-                      //       print(pickedFile.path);
-                      //       _myfilelogo = pickedFile;
-                      //       logoController.text = pickedFile.path;
-                      //     });
-                      //
-                      //     // _invoice!.path=pickedFile.path;
-                      //   },
-                      //   readOnly: true,
-                      //   decoration: InputDecoration(
-                      //     contentPadding: EdgeInsets.all(2),
-                      //     prefixIcon: Icon(
-                      //       Icons.add_photo_alternate,
-                      //       color: kMainColor,
-                      //     ),
-                      //     hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                      //     hintText: '',
-                      //     filled: true,
-                      //     fillColor: Colors.grey.shade200,
-                      //     enabledBorder: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         borderSide: const BorderSide(color: Colors.white)),
-                      //     focusedBorder: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         borderSide: const BorderSide(color: Colors.white)),
-                      //     errorBorder: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         borderSide: const BorderSide(color: Colors.white)),
-                      //     focusedErrorBorder: OutlineInputBorder(
-                      //         borderRadius: BorderRadius.circular(10),
-                      //         borderSide: const BorderSide(color: Colors.white)),
-                      //   ),
-                      // ),
-                      // _invoice!.imagelogo != null && widget.invoice!.imagelogo.toString().isNotEmpty
-                      //     ? Padding(
-                      //         padding: const EdgeInsets.all(10),
-                      //         child: Container(
-                      //           height: 40,
-                      //           width: 50,
-                      //           child: Stack(
-                      //             alignment: Alignment.center,
-                      //             children: [
-                      //               Image.network(_invoice!.imagelogo.toString()),
-                      //               // Positioned(
-                      //               //     bottom: 0,
-                      //               //     child: Text(
-                      //               //       'smart life',
-                      //               //       style: TextStyle(fontSize: 15,color: Colors.black,fontFamily: 'Pacifico'),)
-                      //               // )
-                      //             ],
-                      //           ),
-                      //         ),
-                      //       )
-                      //     : Container(),
                       RowEdit(name: label_image, des: ''),
                       SizedBox(width: 20),
-                      //show chose image
-                      // EditTextFormField(
-                      //   read: true,
-                      //   icon: Icons.camera,
-                      //   hintText: label_image,
-                      //   ontap: () async {
-                      //     ImagePicker imagePicker = ImagePicker();
-                      //     final pickedImage = await imagePicker.pickImage(
-                      //       source: ImageSource.gallery,
-                      //       imageQuality: 100,
-                      //     );
-                      //     File? pickedFile = File(pickedImage!.path);
-                      //     print(pickedFile.path);
-                      //     // _myfile = pickedFile;
-                      //
-                      //     _invoice!.path = pickedFile.path;
-                      //
-                      //     // imageController.text = _myfile!.path;
-                      //
-                      //     //Navigator.of(context).pop();
-                      //     //  FilePickerResult? result
-                      //     //  = await FilePicker.platform.pickFiles(
-                      //     //   // allowedExtensions: ['pdf'],
-                      //     //  );
-                      //     // //
-                      //     //  if (result != null) {
-                      //     //   File? file = File(result.files.single.path.toString());
-                      //     //  _myfile=file;
-                      //     //   imageController.text=file.path;
-                      //     //   _invoice!.path=file.path;
-                      //     //   //   _pickFiles();
-                      //     // //   _saveFile();
-                      //     // } else {
-                      //     //   // User canceled the picker
-                      //     // }
-                      //     //  setState(() {
-                      //     //
-                      //     //  });
-                      //   },
-                      //   obscureText: false,
-                      //   controller: imageController,
-                      // ),
-
                       ValueListenableBuilder<File?>(
                           valueListenable: recordCommercialImageNotifier,
                           builder: (context, recordCommercialImage, _) {
@@ -1144,59 +1041,12 @@ class _addinvoiceState extends State<addinvoice> {
                                   );
                                 });
                           }),
-
-                      // SizedBox(height: 20),
-                      // _invoice!.imageRecord.toString().isNotEmpty
-                      //     ? Center(
-                      //         child: Row(
-                      //           mainAxisAlignment: MainAxisAlignment.center,
-                      //           children: [
-                      //             IconButton(
-                      //                 iconSize: 50,
-                      //                 onPressed: () async {
-                      //                   Navigator.push(
-                      //                       context,
-                      //                       CupertinoPageRoute(
-                      //                           builder: (context) => photoviewcustom(
-                      //                                 urlimagecon: _invoice!.imageRecord.toString(),
-                      //                               ) // support_view(type: 'only',)
-                      //                           ));
-                      //                 },
-                      //                 icon: Icon(
-                      //                   Icons.image,
-                      //                   color: kMainColor,
-                      //                 ))
-                      //             // Text('فتح الملف'),
-                      //             // IconButton(
-                      //             //   iconSize: 50,
-                      //             //      onPressed: ()async {
-                      //             //   //await FilePicker.platform.
-                      //             //   if( _invoice!.imageRecord.toString().isNotEmpty){
-                      //             //     Provider.of<LoadProvider>(context, listen: false)
-                      //             //         .changebooladdinvoice(true);
-                      //             //   File? filee=await  createFileOfPdfUrl(_invoice!.imageRecord.toString());
-                      //             //     Provider.of<LoadProvider>(context, listen: false)
-                      //             //         .changebooladdinvoice(false);
-                      //             //       Navigator.push(
-                      //             //         context,
-                      //             //         CupertinoPageRoute(
-                      //             //           builder: (context) => PDFScreen(
-                      //             //               path: filee.path),
-                      //             //         ),
-                      //             //       );
-                      //             //     //   String url =_invoice!.imageRecord.toString();
-                      //             //     //   if (await canLaunch(url)) {
-                      //             //     //     await launch(url);
-                      //             //     //   } else {
-                      //             //     //     throw 'Could not launch $url';
-                      //             //        }
-                      //             //
-                      //             // }, icon:Icon( Icons.image)),
-                      //           ],
-                      //         ),
-                      //       )
-                      //     : Container(),
-
+                      SizedBox(width: 20),
+                      InvoiceImagesFiles(
+                        onDeleteFileAttach: (value) {
+                          deletedFiles.add(value.id!);
+                        },
+                      ),
                       Divider(),
                       Text(
                         "تفاصيل إضافية",
@@ -1448,105 +1298,118 @@ class _addinvoiceState extends State<addinvoice> {
                                     List<ProductsInvoice>? _products = [];
                                     _products = _invoice!.products;
 
+                                    Map<String, String> deleteFilesMap = {};
+
+                                    deletedFiles.forEachIndexed((i, e) {
+                                      deleteFilesMap["id_files[$i]"] = e;
+                                    });
                                     final user = context.read<user_vm_provider>();
                                     if (_invoice?.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
-                                      invoiceViewmodel.update_invoiceclient_vm(
-                                        {
-                                          "name_enterprise": widget.itemClient.nameEnterprise,
-                                          "name_client": widget.itemClient.nameClient.toString(),
-                                          "nameUser": user.currentUser.nameUser,
-                                          "renew_year": renewController.text.toString(),
-                                          "renew2year": renew2Controller.text.toString(),
-                                          "type_pay": typepayController.toString(),
-                                          // "date_create": DateTime.now().toString(),
-                                          "type_installation": typeinstallController.toString(),
-                                          "ready_install": _invoice!.ready_install,
-                                          // "user_not_ready_install": Provider.of<user_vm_provider>(context, listen: false)
-                                          //     .currentUser
-                                          //     .idUser
-                                          //     .toString(),
-                                          "currency_name": currencyController.toString(),
+                                      final body = {
+                                        "name_enterprise": widget.itemClient.nameEnterprise,
+                                        "name_client": widget.itemClient.nameClient.toString(),
+                                        "nameUser": user.currentUser.nameUser,
+                                        "renew_year": renewController.text.toString(),
+                                        "renew2year": renew2Controller.text.toString(),
+                                        "type_pay": typepayController.toString(),
+                                        // "date_create": DateTime.now().toString(),
+                                        "type_installation": typeinstallController.toString(),
+                                        "ready_install": _invoice!.ready_install,
+                                        // "user_not_ready_install": Provider.of<user_vm_provider>(context, listen: false)
+                                        //     .currentUser
+                                        //     .idUser
+                                        //     .toString(),
+                                        "currency_name": currencyController.toString(),
 
-                                          /////////////////////////////////////////////////////////////////////
-                                          "amount_paid": amount_paidController.text.toString(),
-                                          'fk_regoin': widget.invoice!.fk_regoin.toString(),
-                                          'fk_regoin_invoice': widget.invoice?.fk_regoin_invoice,
-                                          'region_invoice_name': widget.invoice!.name_regoin_invoice,
-                                          'fkcountry': widget.invoice!.fk_country.toString(),
-                                          "fk_idClient": widget.itemClient.idClients.toString(),
-                                          "fk_idUser": user.currentUser.idUser,
-                                          "image_record": widget.invoice!.imageRecord.toString(),
-                                          "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
-                                              .currentUser
-                                              .idUser
-                                              .toString(),
-                                          "lastnameuser": Provider.of<user_vm_provider>(context, listen: false)
-                                              .currentUser
-                                              .nameUser
-                                              .toString(),
-                                          "total": totalController,
-                                          "notes": noteController.text.toString(),
-                                          "id_invoice": invoiceID,
-                                          'imagelogo': widget.invoice!.imagelogo.toString(),
-                                          'numbarnch': numbranchController.text.toString(),
-                                          'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
-                                          'nummostda': nummostawdaController.text.toString(),
-                                          'numusers': numuserController.text.toString(),
-                                          'numTax': numTaxController.text.toString(),
-                                          'address_invoice': addressController.text.toString(),
-                                          'clientusername': userclientController.text.toString(),
-                                          'date_lastuserupdate': DateTime.now().toString(),
+                                        /////////////////////////////////////////////////////////////////////
+                                        "amount_paid": amount_paidController.text.toString(),
+                                        'fk_regoin': widget.invoice!.fk_regoin.toString(),
+                                        'fk_regoin_invoice': widget.invoice?.fk_regoin_invoice,
+                                        'region_invoice_name': widget.invoice!.name_regoin_invoice,
+                                        'fkcountry': widget.invoice!.fk_country.toString(),
+                                        "fk_idClient": widget.itemClient.idClients.toString(),
+                                        "fk_idUser": user.currentUser.idUser,
+                                        "image_record": widget.invoice!.imageRecord.toString(),
+                                        "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
+                                            .currentUser
+                                            .idUser
+                                            .toString(),
+                                        "lastnameuser": Provider.of<user_vm_provider>(context, listen: false)
+                                            .currentUser
+                                            .nameUser
+                                            .toString(),
+                                        "total": totalController,
+                                        "notes": noteController.text.toString(),
+                                        "id_invoice": invoiceID,
+                                        'imagelogo': widget.invoice!.imagelogo.toString(),
+                                        'numbarnch': numbranchController.text.toString(),
+                                        'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
+                                        'nummostda': nummostawdaController.text.toString(),
+                                        'numusers': numuserController.text.toString(),
+                                        'numTax': numTaxController.text.toString(),
+                                        'address_invoice': addressController.text.toString(),
+                                        'clientusername': userclientController.text.toString(),
+                                        'date_lastuserupdate': DateTime.now().toString(),
 
-                                          if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
-                                              invoiceViewmodel.selectedCollaborator?.id_participate != null)
-                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                          else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
-                                              invoiceViewmodel.selectedAgent != null)
-                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                          else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
-                                              invoiceViewmodel.selectedDistributor != null)
-                                            'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                          else
-                                            'type_seller': "3",
-                                          // widget.invoice?.type_seller != "3" ? null.toString() : '3',
-                                          // type seller is employee,
+                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
+                                            invoiceViewmodel.selectedCollaborator?.id_participate != null)
+                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                        else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
+                                            invoiceViewmodel.selectedAgent != null)
+                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
+                                            invoiceViewmodel.selectedDistributor != null)
+                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                        else
+                                          'type_seller': "3",
+                                        // widget.invoice?.type_seller != "3" ? null.toString() : '3',
+                                        // type seller is employee,
 
-                                          if (sellerCommissionRate.text.isNotEmpty &&
-                                              invoiceViewmodel.selectedSellerType != SellerType.employee)
-                                            'rate_participate': sellerCommissionRate.text,
+                                        if (sellerCommissionRate.text.isNotEmpty &&
+                                            invoiceViewmodel.selectedSellerType != SellerType.employee)
+                                          'rate_participate': sellerCommissionRate.text,
 
-                                          if (renewAgentController.text.isNotEmpty &&
-                                              invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                            'renew_agent': renewAgentController.text,
+                                        if (renewAgentController.text.isNotEmpty &&
+                                            invoiceViewmodel.selectedSellerType == SellerType.agent)
+                                          'renew_agent': renewAgentController.text,
 
-                                          if (invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                            'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-                                          else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-                                            'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+                                        if (invoiceViewmodel.selectedSellerType == SellerType.agent)
+                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
+                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
+                                          'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
 
-                                          if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                            'participate_fk':
-                                                invoiceViewmodel.selectedCollaborator?.id_participate.toString()
-                                          else
-                                            'participate_fk': null.toString(),
+                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+                                          'participate_fk':
+                                              invoiceViewmodel.selectedCollaborator?.id_participate.toString()
+                                        else
+                                          'participate_fk': null.toString(),
 
-                                          if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||
-                                              invoiceViewmodel.selectedSellerType == SellerType.employee)
-                                            'fk_agent': null.toString()
+                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||
+                                            invoiceViewmodel.selectedSellerType == SellerType.employee)
+                                          'fk_agent': null.toString(),
 
-                                          // 'type_seller':
-                                          // 'rate_participate':
+                                        ...deleteFilesMap,
+                                        // 'type_seller':
+                                        // 'rate_participate':
 
-                                          // 'fk_agent':
-                                          // 'participate_fk':
-                                        },
-                                        invoiceID,
-                                        recordCommercialImageNotifier.value,
-                                        companyLogoNotifier.value,
-                                      ).then((value) => value != false
-                                          ? clear(context, invoiceID.toString(), _products)
-                                          : error(context));
+                                        // 'fk_agent':
+                                        // 'participate_fk':
+                                      };
+                                      invoiceViewmodel
+                                          .update_invoiceclient_vm(
+                                            body,
+                                            invoiceID,
+                                            recordCommercialImageNotifier.value,
+                                            companyLogoNotifier.value,
+                                            invoiceViewmodel.filesAttach
+                                                .where((element) => element.file != null)
+                                                .map((e) => File(e.file!.path))
+                                                .toList(),
+                                          )
+                                          .then((value) => value != false
+                                              ? clear(context, invoiceID.toString(), _products)
+                                              : error(context));
                                     } else {
                                       var body = {
                                         "name_enterprise": widget.itemClient.nameEnterprise,
@@ -1607,6 +1470,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
                                           'participate_fk':
                                               invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
+                                        ...deleteFilesMap,
                                       };
                                       if (readyinstallController == '0')
                                         body.addAll({
@@ -1631,6 +1495,10 @@ class _addinvoiceState extends State<addinvoice> {
                                             body,
                                             recordCommercialImageNotifier.value,
                                             companyLogoNotifier.value,
+                                            invoiceViewmodel.filesAttach
+                                                .where((element) => element.file != null)
+                                                .map((e) => File(e.file!.path))
+                                                .toList(),
                                           )
                                           .then((value) =>
                                               value != "false" ? clear(context, value, _products) : error(context));

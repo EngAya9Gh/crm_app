@@ -114,17 +114,21 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicebyclient(String fk_idClient) async {
     //not called because get local
-    var data = await Api().get(url: url + 'client/invoice/get_invoice_ByIdClient.php?fk_idClient=$fk_idClient');
-    print(data);
-    List<InvoiceModel> prodlist = [];
-    // final json = "[" + data[i] + "]";
-    for (int i = 0; i < data.length; i++) {
-      print(i);
+   try{
+     var data = await Api().get(url: url + 'client/invoice/get_invoice_ByIdClient.php?fk_idClient=$fk_idClient');
+     print(data);
+     List<InvoiceModel> prodlist = [];
+     // final json = "[" + data[i] + "]";
+     for (int i = 0; i < data.length; i++) {
+       print(i);
 
-      prodlist.add(InvoiceModel.fromJson(data[i]));
-    }
-    print(prodlist);
-    return prodlist;
+       prodlist.add(InvoiceModel.fromJson(data[i]));
+     }
+     print(prodlist);
+     return prodlist;
+   }catch(e){
+     return [];
+   }
   }
 
   Future<InvoiceModel> setdate(Map<String, dynamic> body, String id_invoice) async {
@@ -246,9 +250,9 @@ class Invoice_Service {
     return prodlist;
   }
 
-  Future<InvoiceModel> addInvoice(Map<String, dynamic?> body, File? file, File? filelogo) async {
+  Future<InvoiceModel> addInvoice(Map<String, dynamic?> body, File? file, File? filelogo, List<File> files) async {
     try {
-      var data = await Api().postRequestWithFile('array', url + "client/invoice/addinvoice.php", body, file, filelogo);
+      var data = await Api().postRequestWithFile('array', url + "client/invoice/addinvoice.php", body, file, filelogo,files: files);
 
       return InvoiceModel.fromJson(data[0]);
     } catch (e) {
@@ -270,9 +274,9 @@ class Invoice_Service {
     }
   }
 
-  Future<InvoiceModel> updateInvoice(Map<String, dynamic> body, String idInvoice, File? file, File? filelogo) async {
+  Future<InvoiceModel> updateInvoice(Map<String, dynamic> body, String idInvoice, File? file, File? filelogo,List<File> files) async {
     var result =
-        await Api().postRequestWithFile('array', url + "client/invoice/updateinvoice.php", body, file, filelogo);
+        await Api().postRequestWithFile('array', url + "client/invoice/updateinvoice.php", body, file, filelogo,files: files);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
   Future<InvoiceModel> addPayment(Map<String, dynamic> body, String idInvoice) async {

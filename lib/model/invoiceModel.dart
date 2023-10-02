@@ -1,5 +1,6 @@
 import 'package:crm_smart/Repository/cache_repo.dart';
 import 'package:crm_smart/model/participatModel.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../constants.dart';
 import 'agent_distributor_model.dart';
@@ -103,6 +104,7 @@ class InvoiceModel extends CacheRepository {
   AttachFileStatus? deleteAttachFileStatus;
   String? renew_agent;
   String? file_reject;
+  List<FileAttach>? filesAttach;
 
   //endregion
 
@@ -199,6 +201,7 @@ class InvoiceModel extends CacheRepository {
     this.renew2year,
     this.renew_agent,
     this.file_reject,
+    this.filesAttach,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -309,6 +312,7 @@ class InvoiceModel extends CacheRepository {
     products = getproud(jsondata['products']);
     datesInstallationClient =
         List.from(jsondata['dates_install_client'] ?? []).map((e) => DateInstallationClient.fromJson(e)).toList();
+    filesAttach = List.from(jsondata['files_attach'] ?? []).map((e) => FileAttach.fromMap(e)).toList();
     fileAttach = jsondata['file_attach'];
     file_reject = jsondata['file_reject'];
     attachFileStatus = AttachFileStatus.init;
@@ -559,6 +563,7 @@ class InvoiceModel extends CacheRepository {
     ParticipateModel? participal,
     AgentDistributorModel? agent_distibutor,
     List<DateInstallationClient>? datesInstallationClient,
+    List<FileAttach>? filesAttach,
     String? fileAttach,
     String? rejectFile,
     AttachFileStatus? attachFileStatus,
@@ -653,10 +658,12 @@ class InvoiceModel extends CacheRepository {
       participal: participal ?? this.participal,
       agent_distibutor: agent_distibutor ?? this.agent_distibutor,
       datesInstallationClient: datesInstallationClient ?? this.datesInstallationClient,
-      fileAttach: deleteImage ? null :fileAttach ?? this.fileAttach,
-      file_reject: deleteRejectImage ? null :file_reject ?? this.file_reject,
+      fileAttach: deleteImage ? null : fileAttach ?? this.fileAttach,
+      file_reject: deleteRejectImage ? null : file_reject ?? this.file_reject,
       attachFileStatus: attachFileStatus ?? this.attachFileStatus,
       deleteAttachFileStatus: deleteAttachFileStatus ?? this.deleteAttachFileStatus,
+      filesAttach: filesAttach ?? this.filesAttach,
+      renew_agent: renew_agent ?? this.renew_agent,
     );
   }
 //endregion
@@ -749,6 +756,44 @@ class ProductsInvoice extends CacheRepository {
     return _data;
   }
 //endregion
+}
+
+class FileAttach {
+  final String? fileAttach;
+  final String? id;
+  final XFile? file;
+
+  FileAttach({
+    this.fileAttach,
+    this.id,
+    this.file,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'file_attach_invoice': this.fileAttach,
+      'id': this.id,
+    };
+  }
+
+  factory FileAttach.fromMap(Map<String, dynamic> map) {
+    return FileAttach(
+      fileAttach: map['file_attach_invoice'] as String,
+      id: map['id'] as String,
+    );
+  }
+
+  FileAttach copyWith({
+    String? fileAttach,
+    String? id,
+    XFile? file,
+  }) {
+    return FileAttach(
+      fileAttach: fileAttach ?? this.fileAttach,
+      id: id ?? this.id,
+      file: file ?? this.file,
+    );
+  }
 }
 
 class DateInstallationClient {
