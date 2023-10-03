@@ -1,16 +1,13 @@
+import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 
 class YearlyPage extends StatelessWidget {
-  const YearlyPage({Key? key, required this.targetList}) : super(key: key);
-
-  final List<BranchRaceModel> targetList;
+  const YearlyPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +28,7 @@ class YearlyPage extends StatelessWidget {
                 final years = vm.yearsFilter;
                 final selectedYear = vm.selectedYearFilter;
 
-                return
-                  DropdownButtonFormField<String>(
+                return DropdownButtonFormField<String>(
                   isExpanded: true,
                   validator: (value) {
                     if (value == null) {
@@ -62,8 +58,7 @@ class YearlyPage extends StatelessWidget {
                     if (year == null) {
                       return;
                     }
-                    vm.onChangeYear(year, Provider.of<user_vm_provider>
-                      (context,listen: false).currentUser.fkCountry.toString());
+                    vm.onChangeYear(year);
                   },
                   onSaved: (country) {
                     if (country == null) {
@@ -76,9 +71,22 @@ class YearlyPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 5),
-        Expanded(child: BranchList(
-            targetList: Provider.of<BranchRaceViewmodel>
-            (context,listen: true).targetsState.data!)),
+        Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
+          final yearlyState = vm.yearlyState;
+
+          if (yearlyState.isLoading) {
+            return Center(child: CircularProgressIndicator.adaptive());
+          } else if (yearlyState.isFailure) {
+            return Center(
+              child: IconButton(
+                  onPressed: () {}, // viewmodel.getTargets,
+                  icon: Icon(Icons.refresh)),
+            );
+          }
+
+          final list = yearlyState.data ?? [];
+          return Expanded(child: BranchList(targetList: list));
+        }),
       ],
     );
   }

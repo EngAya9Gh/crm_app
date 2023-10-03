@@ -56,7 +56,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
       return;
     }
     if (selectedDateFilterType == DateFilterType.daily &&
-        (selectedDaily == null || selectedDaily == null || employeeQuarterReportState.isSuccess)) {
+        (selectedDailyFrom == null || selectedDailyTo == null || employeeDailyReportState.isSuccess)) {
       return;
     }
     if (selectedDateFilterType == DateFilterType.monthly &&
@@ -317,17 +317,35 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
   }
 
   init() {
+    var lastDay = DTU.lastDayOfMonth(DateTime.now());
+    var firstDay = DTU.firstDayOfMonth(DateTime.now());
+
     selectedDateFilterType = DateFilterType.yearly;
-    selectedYear = null;
-    selectedQuarterYear = null;
-    selectedQuarter = null;
-    selectedMonthYear = null;
-    selectedMonth = null;
+    selectedYear = DateTime.now().year;
+    selectedQuarterYear = DateTime.now().year;
+    selectedQuarter = _getCurrentQuarter;
+    selectedMonthYear = DateTime.now().year;
+    selectedMonth = DateTime.now().month;
+    selectedDailyFrom = firstDay;
+    selectedDailyTo = lastDay;
 
     employeeMonthReportState = PageState.init();
     employeeQuarterReportState = PageState.init();
     employeeYearReportState = PageState.init();
     _cancelableFuture = null;
     notifyListeners();
+  }
+
+  int get _getCurrentQuarter {
+    final int month = DateTime.now().month;
+    if (month >= 1 && month <= 3) {
+      return 1;
+    } else if (month > 3 && month <= 6) {
+      return 2;
+    } else if (month > 6 && month <= 9) {
+      return 3;
+    } else {
+      return 4;
+    }
   }
 }
