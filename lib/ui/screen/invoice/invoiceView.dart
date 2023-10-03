@@ -657,6 +657,7 @@ class _RejectDialogState extends State<RejectDialog> {
       typeclient_provider.getreasons('client');
 
       typeclient_provider.selectedValueOut = _invoice.reason_back == null ? null : _invoice.reason_back.toString();
+      // typeclient_provider.changevalueOut(typeclient_provider.selectedValueOut.toString());
       String val = _invoice.stateclient.toString() == "منسحب"
           ? _invoice.date_change_back.toString()
           : formatter.format(DateTime.now());
