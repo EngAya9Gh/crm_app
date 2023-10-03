@@ -672,7 +672,12 @@ class _RejectDialogState extends State<RejectDialog> {
     descresaonController.dispose();
     super.dispose();
   }
+  clear_back(){
 
+    descresaonController.text = '';
+    valueBackController.text = '';
+
+  }
   DateTime _currentDate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
@@ -949,7 +954,31 @@ class _RejectDialogState extends State<RejectDialog> {
                         if(value.isloading){
                           return Center(child: CircularProgressIndicator());
                         }
-                        return Center(
+                        return
+                          _invoice.file_reject!.isNotEmpty?
+                          Center(
+                            child:  ElevatedButton(
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                              onPressed: () async {
+                                // if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
+                                //   ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                //   return;
+                                // }
+                                if (_globalKey.currentState!.validate()) {
+                                  _globalKey.currentState!.save();
+
+                                  await Provider.of<invoice_vm>(context, listen: false)
+                                      .delete_back(_invoice.idInvoice.toString(), _invoice.file_reject.toString());
+
+                                   clear_back();
+
+                                  Navigator.of(context, rootNavigator: true).pop(false);
+                                }
+                              },
+                              child: Text('حذف الطلب'),
+                            ),
+                          )
+                          :Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

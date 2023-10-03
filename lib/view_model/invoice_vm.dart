@@ -1331,6 +1331,28 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> delete_back(  String  id_invoice,String file_reject ) async {
+    isloading = true;
+    notifyListeners();
+    InvoiceModel data = await Invoice_Service().delete_back( id_invoice,file_reject);
+    int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
+    if (index != -1) {
+      listinvoices[index] = data;
+    }
+    index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
+    if (index != -1) {
+      listinvoiceClient[index] = data;
+    }
+    currentInvoice = data;
+    index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
+    if (index != -1) {
+      listInvoicesAccept[index] = data;
+    }
+
+    isloading = false;
+    notifyListeners();
+  }
+
   bool isloadingdone = false;
 
   Future<bool> setdatedone_vm(Map<String, dynamic?> body, String? id_invoice) async {
@@ -1561,7 +1583,7 @@ class invoice_vm extends ChangeNotifier {
     try {
       onLoading();
       var data = await Api().post(
-        url: url + "client/invoice/delete_file_attach.php",
+        url: url + "FilesInvoice/delete_file_attach.php",
         body: {'id_invoice': idInvoice},
       );
 

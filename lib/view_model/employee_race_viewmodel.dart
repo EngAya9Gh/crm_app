@@ -92,7 +92,10 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
     }
 
     body = body..addAll({"type": selectedDateFilterType.type});
-    queryParams = queryParams..addAll({"fk_country": fkCountry});
+    queryParams = queryParams..addAll({
+      "fk_country": fkCountry,
+      "product": '1',
+    });
 
     await _cancelableFuture?.cancel();
 
@@ -187,7 +190,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      employeeMonthReportState = employeeMonthReportState.changeToFailed;
+      // employeeMonthReportState = employeeMonthReportState.changeToFailed;
       notifyListeners();
     }
   }
