@@ -9,6 +9,7 @@ import '../../../../constants.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../model/targetmodel.dart';
 import '../../../../view_model/page_state.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import '../widgets/branch_management_list.dart';
 import 'add_target_page.dart';
 
@@ -124,7 +125,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
     super.initState();
 
     scheduleMicrotask(() => viewmodel
-      ..init()
+      ..init(context.read<user_vm_provider>().currentUser.fkCountry.toString())
       ..getTargets());
   }
 }

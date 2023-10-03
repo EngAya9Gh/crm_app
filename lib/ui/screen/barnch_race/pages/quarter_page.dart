@@ -1,3 +1,4 @@
+import 'package:crm_smart/view_model/page_state.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,11 +9,10 @@ import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 
 class QuarterPage extends StatelessWidget {
-    QuarterPage({Key? key, required this.targetList}) : super(key: key);
+  QuarterPage({Key? key}) : super(key: key);
 
-  final List<BranchRaceModel> targetList;
-  DateTime datefrom=DateTime(1,1,1);
-  DateTime dateto=DateTime(1,1,3);
+  DateTime datefrom = DateTime(1, 1, 1);
+  DateTime dateto = DateTime(1, 1, 3);
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class QuarterPage extends StatelessWidget {
                   }).toList(),
                   value: selectedYear,
                   onChanged: (quarterYear) {
-                    if(quarterYear == null){
+                    if (quarterYear == null) {
                       return;
                     }
 
@@ -118,35 +118,34 @@ class QuarterPage extends StatelessWidget {
                   }).toList(),
                   value: selectedQuarter,
                   onChanged: (quarter) {
-                    if(quarter == null){
+                    if (quarter == null) {
                       return;
                     }
 
-                    switch(quarter){
+                    switch (quarter) {
                       case 'Q1':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),01,01);
-                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),03,31);
+                        datefrom = DateTime(int.parse(vm.selectedQuarterYearFilter.toString()), 01, 01);
+                        dateto = DateTime(int.parse(vm.selectedQuarterYearFilter.toString()), 03, 31);
 
                         break;
-                        case 'Q2':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),04,01);
-                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),06,30);
+                      case 'Q2':
+                        datefrom = DateTime(int.parse(vm.selectedQuarterYearFilter.toString()), 04, 01);
+                        dateto = DateTime(int.parse(vm.selectedQuarterYearFilter.toString()), 06, 30);
 
                         break;
-                        case 'Q3':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),07,01);
-                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),09,30);
+                      case 'Q3':
+                        datefrom = DateTime(int.parse(vm.selectedQuarterYearFilter.toString()), 07, 01);
+                        dateto = DateTime(int.parse(vm.selectedQuarterYearFilter.toString()), 09, 30);
 
                         break;
-                        case 'Q4':
-                          datefrom=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),10,01);
-                          dateto=DateTime(int.parse(vm.selectedQuarterYearFilter.toString()),12,31);
+                      case 'Q4':
+                        datefrom = DateTime(int.parse(vm.selectedQuarterYearFilter.toString()), 10, 01);
+                        dateto = DateTime(int.parse(vm.selectedQuarterYearFilter.toString()), 12, 31);
                         break;
                     }
-                    vm.onChangeQuarter(quarter,
-                        Provider.of<user_vm_provider>
-                      (context,listen: false).currentUser.fkCountry.toString(),datefrom,dateto);
-                  },                  onSaved: (country) {
+                    vm.onChangeQuarter(quarter);
+                  },
+                  onSaved: (country) {
                     if (country == null) {
                       return;
                     }
@@ -157,8 +156,22 @@ class QuarterPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 5),
-        Expanded(child: BranchList(targetList:  Provider.of<BranchRaceViewmodel>
-          (context,listen: true).targetsState.data!)),
+        Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
+          final quarterState = vm.quarterState;
+
+          if (quarterState.isLoading) {
+            return Center(child: CircularProgressIndicator.adaptive());
+          } else if (quarterState.isFailure) {
+            return Center(
+              child: IconButton(
+                  onPressed: () {}, // viewmodel.getTargets,
+                  icon: Icon(Icons.refresh)),
+            );
+          }
+
+          final list = quarterState.data ?? [];
+          return Expanded(child: BranchList(targetList: list));
+        }),
       ],
     );
   }

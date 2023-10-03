@@ -21,10 +21,8 @@ class DailyEmployeePage extends StatefulWidget {
 
 class _DailyEmployeePageState extends State<DailyEmployeePage>
     with StateViewModelMixin<DailyEmployeePage, EmployeeRaceViewmodel> {
-  DateTime? _selectedDateFrom;
-  DateTime? _selectedDateTo;
-
-  Future<void> _selectDateFrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDateFrom(
+      BuildContext context, DateTime currentDate, DateTime? _selectedDateFrom, DateTime? _selectedDateTo) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       currentDate: currentDate,
@@ -34,10 +32,10 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
     );
     if (pickedDate != null) {
       if (_selectedDateTo != null) {
-        if (_selectedDateTo!.isBefore(pickedDate) || _selectedDateFrom!.isAtSameMomentAs(pickedDate)) {
+        if (_selectedDateTo.isBefore(pickedDate) || _selectedDateFrom!.isAtSameMomentAs(pickedDate)) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-              "اختر تاريخ قبل ${intl.DateFormat("yyyy dd MMM").format(_selectedDateTo!)}",
+              "اختر تاريخ قبل ${intl.DateFormat("yyyy dd MMM").format(_selectedDateTo)}",
               textDirection: TextDirection.rtl,
             ),
             backgroundColor: Colors.red,
@@ -55,19 +53,12 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
 
       if ((_selectedDateTo?.isAfter(lastDay) ?? false) || (_selectedDateTo?.isBefore(firstDay) ?? false)) {
         viewmodel.onChangeTo(null);
-        setState(() {
-          _selectedDateTo = null;
-        });
       }
     }
   }
 
-  Future<void> _selectDateTo(
-    BuildContext context,
-    DateTime currentDate,
-    DateTime firstDate,
-    DateTime lastDate,
-  ) async {
+  Future<void> _selectDateTo(BuildContext context, DateTime currentDate, DateTime firstDate, DateTime lastDate,
+      {DateTime? selectedDateFrom}) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       currentDate: currentDate,
@@ -76,10 +67,10 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
       lastDate: lastDate,
     );
     if (pickedDate != null) {
-      if (_selectedDateFrom!.isAfter(pickedDate) || _selectedDateFrom!.isAtSameMomentAs(pickedDate)) {
+      if (selectedDateFrom!.isAfter(pickedDate) || selectedDateFrom.isAtSameMomentAs(pickedDate)) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
-            "اختر تاريخ بعد ${intl.DateFormat("yyyy dd MMM").format(_selectedDateFrom!)}",
+            "اختر تاريخ بعد ${intl.DateFormat("yyyy dd MMM").format(selectedDateFrom)}",
             textDirection: TextDirection.rtl,
           ),
           backgroundColor: Colors.red,
@@ -89,9 +80,6 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
       }
 
       viewmodel.onChangeTo(pickedDate);
-      setState(() {
-        _selectedDateTo = pickedDate;
-      });
     }
   }
 
@@ -100,7 +88,8 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
     return Consumer<EmployeeRaceViewmodel>(
       builder: (context, value, child) {
         final employeeDayReportState = value.employeeDailyReportState;
-
+        final _selectedDateFrom = value.selectedDailyFrom;
+        final _selectedDateTo = value.selectedDailyTo;
         final list = employeeDayReportState.data ?? [];
 
         return Padding(
@@ -135,13 +124,14 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                                 const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
                             hintText: _selectedDateFrom == null
                                 ? 'from'
-                                : intl.DateFormat('yyyy-MM-dd').format(_selectedDateFrom!),
+                                : intl.DateFormat('yyyy-MM-dd').format(_selectedDateFrom),
                             filled: true,
                             fillColor: Colors.grey.shade200,
                           ),
                           readOnly: true,
                           onTap: () {
-                            _selectDateFrom(context, _selectedDateFrom ?? DateTime.now());
+                            _selectDateFrom(
+                                context, _selectedDateFrom ?? DateTime.now(), _selectedDateFrom, _selectedDateTo);
                           },
                         ),
                       ],
@@ -173,7 +163,7 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                             hintStyle:
                                 const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
                             hintText:
-                                _selectedDateTo == null ? 'to' : intl.DateFormat('yyyy-MM-dd').format(_selectedDateTo!),
+                                _selectedDateTo == null ? 'to' : intl.DateFormat('yyyy-MM-dd').format(_selectedDateTo),
                             filled: true,
                             fillColor: Colors.grey.shade200,
                           ),
@@ -187,14 +177,15 @@ class _DailyEmployeePageState extends State<DailyEmployeePage>
                               return;
                             }
 
-                            var lastDay = DTU.lastDayOfMonth(_selectedDateFrom!);
-                            var firstDay = DTU.firstDayOfMonth(_selectedDateFrom!);
+                            var lastDay = DTU.lastDayOfMonth(_selectedDateFrom);
+                            var firstDay = DTU.firstDayOfMonth(_selectedDateFrom);
 
                             _selectDateTo(
                                 context,
                                 (_selectedDateTo?.isAfter(lastDay) ?? false) ? lastDay : _selectedDateTo ?? lastDay,
                                 firstDay,
-                                lastDay);
+                                lastDay,
+                                selectedDateFrom: _selectedDateFrom);
                           },
                         ),
                       ],

@@ -7,6 +7,20 @@ List<String> getYearList({int fromYear = 2022}) {
 
 final List<String> quarterList = List.generate(4, (index) => "Q${index + 1}");
 
+List<String> getYears({int fromYear = 2020}) {
+  if (fromYear > DateTime.now().year) {
+    fromYear = DateTime.now().year;
+  }
+  return List.generate(DateTime.now().year - fromYear + 1, (index) => (fromYear + index).toString());
+}
+
+const List<String> QuarterList = [
+  "Q1",
+  "Q2",
+  "Q3",
+  "Q4",
+];
+
 const List<String> monthList = [
   "يناير",
   "فبراير",

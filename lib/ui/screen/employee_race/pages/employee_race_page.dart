@@ -25,7 +25,10 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
   @override
   initState() {
     super.initState();
-    scheduleMicrotask(() => viewmodel..init()..setFkCountry(context.read<user_vm_provider>().currentUser.fkCountry!));
+    scheduleMicrotask(() => viewmodel
+      ..init()
+      ..setFkCountry(context.read<user_vm_provider>().currentUser.fkCountry!)
+      ..onChangeYear(DateTime.now().year));
   }
 
   @override
@@ -61,7 +64,7 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
                       selectedColor: kMainColor,
                       buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
                       borderRadius: BorderRadius.circular(10)),
-                  buttons: ["شهري", "ربعي", 'سنوي','يومي'],
+                  buttons: ["شهري", "ربعي", 'سنوي', 'يومي'],
                   onSelected: (_, index, isselected) => viewmodel.onChangeSelectedDateFilterType(index),
                 );
               },
@@ -73,14 +76,12 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
               final selectedDateFilter = vm.selectedDateFilterType;
               if (selectedDateFilter == DateFilterType.yearly) {
                 return Expanded(child: YearlyEmployeePage());
-
               } else if (selectedDateFilter == DateFilterType.quarterly) {
                 return Expanded(child: QuarterlyEmployeePage());
-              }
-              else if (selectedDateFilter == DateFilterType.daily) {
+              } else if (selectedDateFilter == DateFilterType.daily) {
                 return Expanded(child: DailyEmployeePage());
               }
-                return Expanded(child: MonthlyEmployeePage());
+              return Expanded(child: MonthlyEmployeePage());
             },
           )
         ],
