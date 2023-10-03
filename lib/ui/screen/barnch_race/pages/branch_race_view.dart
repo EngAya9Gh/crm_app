@@ -9,6 +9,7 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import 'mothly_page.dart';
 
 class BranchRaceView extends StatefulWidget {
@@ -54,7 +55,7 @@ class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixi
                       borderRadius: BorderRadius.circular(10)),
                   buttons: ["شهري", "ربعي", 'سنوي'],
                   onSelected: (_, index, isselected) =>
-                      viewmodel.onChangeSelectedFilterType(index),
+                      viewmodel.onChangeSelectedFilterType(index, isFromBranchManage: false),
                 );
               },
             ),
@@ -63,26 +64,13 @@ class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixi
           Consumer<BranchRaceViewmodel>(
             builder: (_, vm, __) {
               final selectedDateFilter = vm.selectedDateFilter;
-              final targetsState = vm.targetsState;
-
-              if (targetsState.isLoading) {
-                return Center(child: CircularProgressIndicator.adaptive());
-              } else if (targetsState.isFailure) {
-                return Center(
-                  child: IconButton(
-                      onPressed:() {},// viewmodel.getTargets,
-                      icon: Icon(Icons.refresh)),
-                );
-              }
-
-              final list = targetsState.data ?? [];
 
               if (selectedDateFilter == DateFilterType.yearly) {
-                return Expanded(child: YearlyPage(targetList: list));
+                return Expanded(child: YearlyPage());
               } else if (selectedDateFilter == DateFilterType.quarterly) {
-                return Expanded(child: QuarterPage(targetList: list));
+                return Expanded(child: QuarterPage());
               }
-              return Expanded(child: MonthlyPage(targetList: list));
+              return Expanded(child: MonthlyPage());
             },
           )
         ],
@@ -95,11 +83,12 @@ class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixi
     super.initState();
 
     scheduleMicrotask(() {
-       viewmodel
-        ..init()
+      viewmodel
+        ..init(context.read<user_vm_provider>().currentUser.fkCountry.toString())
         // ..
-        ..getTargets();
-       viewmodel.onChangeSelectedFilterType(2);
+        // ..getTargets()
+        ..onChangeYear(DateTime.now().year.toString());
+      // viewmodel.onChangeSelectedFilterType(2);
     });
   }
 }

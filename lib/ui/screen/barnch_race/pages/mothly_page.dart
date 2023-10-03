@@ -1,22 +1,22 @@
 import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
+import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../helper/get_month_name.dart';
-import '../../../../model/branch_race_model.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 
 class MonthlyPage extends StatefulWidget {
-  const MonthlyPage({Key? key, required this.targetList}) : super(key: key);
-  final List<BranchRaceModel> targetList;
+  const MonthlyPage({Key? key}) : super(key: key);
 
   @override
   State<MonthlyPage> createState() => _MonthlyPageState();
 }
+
 class _MonthlyPageState extends State<MonthlyPage> {
-  late String selectedYear='2020';
+  late String selectedYear = '2020';
 
   @override
   Widget build(BuildContext context) {
@@ -29,45 +29,50 @@ class _MonthlyPageState extends State<MonthlyPage> {
         SizedBox(height: 5),
         Padding(
           padding: const EdgeInsets.all(13.0),
-          child: DropdownButtonFormField<String>(
-            isExpanded: true,
-            validator: (value) {
-              if (value == null) {
-                return "هذا الحقل مطلوب";
-              }
-            },
-            icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.grey.shade300,
-              border: InputBorder.none,
-              enabledBorder: InputBorder.none,
-              disabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              focusedBorder: InputBorder.none,
-              focusedErrorBorder: InputBorder.none,
-            ),
-            hint: Text("حدد السنة"),
-            items: [2020,2021,2022,2023,2024,2025,2026,2027].map((int str) {
-              return DropdownMenuItem<String>(
-                child: Text(str.toString(), textDirection: TextDirection.rtl),
-                value: str.toString(),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
+              final selectedMonthYearFilter = vm.selectedMonthYearFilter;
+
+              return DropdownButtonFormField<String>(
+                isExpanded: true,
+                validator: (value) {
+                  if (value == null) {
+                    return "هذا الحقل مطلوب";
+                  }
+                },
+                icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey.shade300,
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  focusedErrorBorder: InputBorder.none,
+                ),
+                hint: Text("حدد السنة"),
+                items: getYears().map((String str) {
+                  return DropdownMenuItem<String>(
+                    child: Text(str, textDirection: TextDirection.rtl),
+                    value: str,
+                  );
+                }).toList(),
+                value: selectedMonthYearFilter,
+                onChanged: (year) {
+                  if (year == null) {
+                    return;
+                  }
+                  vm.onChangeMonthYear(year);
+                },
+                onSaved: (country) {
+                  if (country == null) {
+                    return;
+                  }
+                },
               );
-            }).toList(),
-            value: selectedYear,
-            onChanged: (year) {
-              if (year == null) {
-                return;
-              }
-              setState(() {
-                selectedYear=year;
-              });
-            },
-            onSaved: (country) {
-              if (country == null) {
-                return;
-              }
-            },
+            }),
           ),
         ),
         SizedBox(height: 5),
@@ -113,13 +118,7 @@ class _MonthlyPageState extends State<MonthlyPage> {
                         return;
                       }
 
-                      DateTime datemonth=
-                      DateTime(int.parse(selectedYear),
-                          int.parse(getMonthNumber(month!).toString()),01);
-                      print('datemonth');
-                      print(datemonth);
-                      vm.onChangeMonth(datemonth,month, Provider.of<user_vm_provider>
-                        (context,listen: false).currentUser.fkCountry.toString());
+                      vm.onChangeMonth(month);
                     },
                     onSaved: (country) {
                       if (country == null) {
@@ -133,9 +132,22 @@ class _MonthlyPageState extends State<MonthlyPage> {
           ),
         ),
         SizedBox(height: 5),
-        Expanded(
-            child: BranchList(targetList: Provider.of<BranchRaceViewmodel>
-            (context,listen: true).targetsState.data!)),
+        Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
+          final monthlyState = vm.monthlyState;
+
+          if (monthlyState.isLoading) {
+            return Center(child: CircularProgressIndicator.adaptive());
+          } else if (monthlyState.isFailure) {
+            return Center(
+              child: IconButton(
+                  onPressed: () {}, // viewmodel.getTargets,
+                  icon: Icon(Icons.refresh)),
+            );
+          }
+
+          final list = monthlyState.data ?? [];
+          return Expanded(child: BranchList(targetList: list));
+        }),
       ],
     );
   }

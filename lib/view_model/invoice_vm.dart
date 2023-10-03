@@ -114,7 +114,8 @@ class invoice_vm extends ChangeNotifier {
     //getinvoice_Local("مشترك",'approved client',null);
     notifyListeners();
   }
-   // List<InvoiceModel> temp_listInvoicesAccept= [];
+
+  // List<InvoiceModel> temp_listInvoicesAccept= [];
   Future<void> searchwaitsupport(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // temp_listInvoicesAccept=List.from(listInvoicesAccept);
@@ -130,10 +131,11 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else
-      listInvoicesAccept =List.from(listinvoices);
-      //getinvoice_Local("مشترك", 'approved only', null);
+      listInvoicesAccept = List.from(listinvoices);
+    //getinvoice_Local("مشترك", 'approved only', null);
     notifyListeners();
   }
+
   Future<void> search_accept_invoice_admin(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // temp_listInvoicesAccept=List.from(listInvoicesAccept);
@@ -149,8 +151,8 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept_admin = _listInvoicesAccept;
       }
     } else
-      listInvoicesAccept_admin =List.from(listinvoicebyregoin);
-      //getinvoice_Local("مشترك", 'approved only', null);
+      listInvoicesAccept_admin = List.from(listinvoicebyregoin);
+    //getinvoice_Local("مشترك", 'approved only', null);
     notifyListeners();
   }
 
@@ -282,8 +284,7 @@ class invoice_vm extends ChangeNotifier {
             }
           });
       }
-    }
-    else {
+    } else {
       if (listforme.isNotEmpty) {
         if (filter == 'الكل' || filter == null) {
           if (regoin != '0') {
@@ -411,7 +412,6 @@ class invoice_vm extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     int idexist = -1;
-   
 
     await _cancelableFuture?.cancel();
 
@@ -426,7 +426,8 @@ class invoice_vm extends ChangeNotifier {
       if (listSelectedMainCity.length != 0) {
         idexist = listSelectedMainCity.indexWhere((element) => element.id_maincity == '0');
         if (idexist == -1) {
-          for (int i = 0; i < listSelectedMainCity.length; i++) listval.add(int.parse(listSelectedMainCity[i].id_maincity));
+          for (int i = 0; i < listSelectedMainCity.length; i++)
+            listval.add(int.parse(listSelectedMainCity[i].id_maincity));
 
           for (int i = 0; i < listval.length; i++) {
             params += '&maincity_fks[]=${listval[i]}';
@@ -764,16 +765,18 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '94').isCheck == '1' ? true : false;
     if (res) {
-      listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(),"all",'');
+      listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(), "all", '');
       print('indddddd');
     } else {
       res = privilgelist.firstWhere((element) => element.fkPrivileg == '93').isCheck == '1' ? true : false;
       if (res) {
-        listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(),"regoin" ,usercurrent!.fkRegoin!.toString());
+        listinvoices = await Invoice_Service()
+            .getinvoice_debt(usercurrent!.fkCountry.toString(), "regoin", usercurrent!.fkRegoin!.toString());
       } else {
         res = privilgelist.firstWhere((element) => element.fkPrivileg == '92').isCheck == '1' ? true : false;
         if (res) {
-          listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(),'users',usercurrent!.idUser.toString());
+          listinvoices = await Invoice_Service()
+              .getinvoice_debt(usercurrent!.fkCountry.toString(), 'users', usercurrent!.idUser.toString());
         }
       }
     }
@@ -835,7 +838,7 @@ class invoice_vm extends ChangeNotifier {
     } else {
       print('0000000000000000000000000000000');
       if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
-      if (approvetype == 'regoin')  await get_invoicesbyRegoin_accept_requst('r');
+      if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
       if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
     }
 
@@ -1086,8 +1089,7 @@ class invoice_vm extends ChangeNotifier {
     switch (type) {
       case 'r':
         listinvoicebyregoin =
-            await Invoice_Service().getinvoaicebyregoin_accept_requst(
-                {'fk_regoin': usercurrent!.fkRegoin.toString()});
+            await Invoice_Service().getinvoaicebyregoin_accept_requst({'fk_regoin': usercurrent!.fkRegoin.toString()});
         break;
 
       // else
@@ -1118,9 +1120,9 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> add_invoiceclient_vm(Map<String, dynamic?> body, File? file, File? myfilelogo) async {
+  Future<String> add_invoiceclient_vm(Map<String, dynamic?> body, File? file, File? myfilelogo,List<File> files) async {
     String res = 'done';
-    InvoiceModel data = await Invoice_Service().addInvoice(body, file, myfilelogo);
+    InvoiceModel data = await Invoice_Service().addInvoice(body, file, myfilelogo,files);
     //  if(data !=null){
     print('resssssssssssssss');
     listinvoices.insert(0, data);
@@ -1157,10 +1159,10 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<bool> update_invoiceclient_vm(
-      Map<String, dynamic?> body, String? idInvoice, File? file, File? myfilelogo) async {
+      Map<String, dynamic?> body, String? idInvoice, File? file, File? myfilelogo,List<File> files) async {
     isloadingdone = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service().updateInvoice(body, idInvoice!, file, myfilelogo);
+    InvoiceModel data = await Invoice_Service().updateInvoice(body, idInvoice!, file, myfilelogo,files);
     final index = listinvoiceClient.indexWhere((element) => element.idInvoice == idInvoice);
     // body.addAll({
     //   "id_invoice":idInvoice,
@@ -1183,8 +1185,8 @@ class invoice_vm extends ChangeNotifier {
 
     return true;
   }
-  Future<bool> edit_invoice(
-      Map<String, dynamic?> body, String? idInvoice) async {
+
+  Future<bool> edit_invoice(Map<String, dynamic?> body, String? idInvoice) async {
     isloadingdone = true;
     notifyListeners();
     InvoiceModel data = await Invoice_Service().editinvoice(body, idInvoice.toString());
@@ -1210,8 +1212,8 @@ class invoice_vm extends ChangeNotifier {
 
     return true;
   }
-  Future<bool> add_payment(
-      Map<String, dynamic?> body, String? idInvoice) async {
+
+  Future<bool> add_payment(Map<String, dynamic?> body, String? idInvoice) async {
     isloadingdone = true;
     notifyListeners();
     InvoiceModel data = await Invoice_Service().addPayment(body, idInvoice.toString());
@@ -1238,7 +1240,7 @@ class invoice_vm extends ChangeNotifier {
     return true;
   }
 
-  Future<String> delete_invoice(Map<String, String> body, String? id_invoice) async {
+  Future<String> delete_invoice(Map<String, dynamic> body, String? id_invoice) async {
     int index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
     listinvoiceClient.removeAt(index);
     notifyListeners();
@@ -1302,19 +1304,51 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> set_state_back(Map<String, dynamic?> body, String? id_invoice) async {
+  Future<void> set_state_back(Map<String, dynamic> body, String? id_invoice, File? file) async {
     isloading = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!);
+    InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!, file);
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-    listinvoices[index] = data;
+    if (index != -1) {
+      listinvoices[index] = data;
+    }
     index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
-    listinvoiceClient[index] = data;
+    if (index != -1) {
+      listinvoiceClient[index] = data;
+    }
+    currentInvoice = data;
+    index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
+    if (index != -1) {
+      listInvoicesAccept[index] = data;
+    }
+
     // listinvoiceClient
     // body.addAll(
     //     InvoiceModel.fromJson(listinvoices[index]));
     // listinvoices[index]= InvoiceModel.fromJson(body);
     // //listClient.removeAt(index);
+    isloading = false;
+    notifyListeners();
+  }
+
+  Future<void> delete_back(  String  id_invoice,String file_reject ) async {
+    isloading = true;
+    notifyListeners();
+    InvoiceModel data = await Invoice_Service().delete_back( id_invoice,file_reject);
+    int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
+    if (index != -1) {
+      listinvoices[index] = data;
+    }
+    index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
+    if (index != -1) {
+      listinvoiceClient[index] = data;
+    }
+    currentInvoice = data;
+    index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
+    if (index != -1) {
+      listInvoicesAccept[index] = data;
+    }
+
     isloading = false;
     notifyListeners();
   }
@@ -1549,7 +1583,7 @@ class invoice_vm extends ChangeNotifier {
     try {
       onLoading();
       var data = await Api().post(
-        url: url + "client/invoice/delete_file_attach.php",
+        url: url + "FilesInvoice/delete_file_attach.php",
         body: {'id_invoice': idInvoice},
       );
 
@@ -1584,6 +1618,7 @@ class invoice_vm extends ChangeNotifier {
 
     notifyListeners();
   }
+
   void onSearch_deleted(String query) {
     final list = List.of(listdeletedinvoice);
 
@@ -1594,4 +1629,29 @@ class invoice_vm extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  List<FileAttach> filesAttach = [];
+
+  initAttachFiles(List<FileAttach> filesAttach) {
+    this.filesAttach = filesAttach;
+  }
+
+  addOnFilesAttach(List<FileAttach> files, VoidCallback onLimitExceeded) {
+    final count = maxFilesAttach - filesAttach.length;
+    if (count <= 0) {
+      onLimitExceeded();
+      return;
+    } else {
+      final attaches = files.take(count);
+      filesAttach.addAll(attaches);
+      notifyListeners();
+    }
+  }
+
+  deleteFileAttach(int index) {
+    filesAttach.removeAt(index);
+    notifyListeners();
+  }
+
+  final int maxFilesAttach = 20;
 }

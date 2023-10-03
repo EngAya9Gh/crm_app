@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:collection/collection.dart';
 import 'package:http/retry.dart';
 import 'package:path/path.dart';
 
@@ -9,9 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
+  static final http.Client _client = http.Client();
 
- static final http.Client _client = http.Client();
- // final client = RetryClient(http.Client());
+  // final client = RetryClient(http.Client());
   // headers: {
   // "Accept": "application/json",
   // "Access-Control-Allow-Origin": "*"}
@@ -27,23 +28,16 @@ class Api {
     // );
     //http.Response response = await RetryClient(http.Client()).get( Uri.parse(url));
 //private, max-age=3600
-  // "Cache-Control": "no-cache"
-  //   http.Response response = await _client.get(
-    http.Response response = await _client.get(
-      Uri.parse(url),
-      headers: {
-
-         "Cache-Control": "no-cache"
-      }
-    );
+    // "Cache-Control": "no-cache"
+    //   http.Response response = await _client.get(
+    http.Response response = await _client.get(Uri.parse(url), headers: {"Cache-Control": "no-cache"});
     log(json.decode(response.body).toString());
     if (json.decode(response.body)["code"] == "200") {
       print(jsonDecode(response.body)["message"]);
       return jsonDecode(response.body)["message"];
     } else {
       print("ex is ${json.decode(response.body)["code"] == "200"}");
-      throw Exception(
-          '${json.decode(response.body)["code"] == "200"}');
+      throw Exception('${json.decode(response.body)["code"] == "200"}');
     }
   }
 
@@ -58,17 +52,17 @@ class Api {
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
-    http.Response response = await  _client.post(
+    http.Response response = await _client.post(
       Uri.parse(url),
       body: body,
       headers: headers,
     );
-    String result= response.body;
+    String result = response.body;
     print('before');
     log(result.toString());
     int idx = result.indexOf("{");
-    int length=result.length;
-    result=result.substring(idx,length);//run for login and update client and set date task
+    int length = result.length;
+    result = result.substring(idx, length); //run for login and update client and set date task
     // // String result= response.body;
     // int idx = result.indexOf("{");
     // int idxEnd = result.indexOf("}");
@@ -79,75 +73,68 @@ class Api {
     print(json.decode(result)["code"]);
 
     if (json.decode(result)["code"] == "200") {
-
       return jsonDecode(result)["message"];
     } else {
-
-      throw Exception(
-          '${json.decode(result)["message"]}');
+      throw Exception('${json.decode(result)["message"]}');
     }
-
   }
 
-
-  Future<dynamic> postRequestWithFile(
-      String type,
-      String url ,Map<String,dynamic> data,File? file,File? filelogo) async{
-    var reguest=http.MultipartRequest("POST",  Uri.parse(url));
-    if(file !=null){
-      var length=await file.length();
-      var stream=http.ByteStream(file.openRead());
-      var multipartFile=http.MultipartFile(
-          "file",stream,length,
-          filename:basename(file.path)
-      );
+  Future<dynamic> postRequestWithFile(String type, String url, Map<String, dynamic> data, File? file, File? filelogo,
+      {List<File>? files}) async {
+    var reguest = http.MultipartRequest("POST", Uri.parse(url));
+    if (file != null) {
+      var length = await file.length();
+      var stream = http.ByteStream(file.openRead());
+      var multipartFile = http.MultipartFile("file", stream, length, filename: basename(file.path));
       reguest.files.add(multipartFile);
     }
-    if(filelogo !=null){
-      var length=await filelogo.length();
-      var stream=http.ByteStream(filelogo.openRead());
-      var multipartFile=http.MultipartFile(
-          "filelogo",stream,length,
-          filename:basename(filelogo.path)
-      );
+    if (filelogo != null) {
+      var length = await filelogo.length();
+      var stream = http.ByteStream(filelogo.openRead());
+      var multipartFile = http.MultipartFile("filelogo", stream, length, filename: basename(filelogo.path));
       reguest.files.add(multipartFile);
+    }
+
+    if (files != null) {
+      for (int i = 0; i < files.length; i++) {
+        final element = files[i];
+        var length = await element.length();
+        var stream = http.ByteStream(element.openRead());
+        var multipartFile = http.MultipartFile("uploadfiles[$i]", stream, length, filename: basename(element.path));
+        reguest.files.add(multipartFile);
+      }
     }
 
     data.forEach((key, value) {
-      reguest.fields[key]=value;
+      reguest.fields[key] = value;
     });
-    var myrequest=await reguest.send();
-    var response=await http.Response.fromStream(myrequest);
-    String result='';
-    if(type=='array'){
-      result= response.body;
-       print('result');
-       print(result);
+    var myrequest = await reguest.send();
+    var response = await http.Response.fromStream(myrequest);
+    String result = '';
+    if (type == 'array') {
+      result = response.body;
+      print('result');
+      print(result);
       int idx = result.indexOf("{");
-      int length=result.length;
-      result=result.substring(idx,length);
-    }
-    else {
+      int length = result.length;
+      result = result.substring(idx, length);
+    } else {
       result = response.body;
       print(result);
       int idx = result.indexOf("{");
       int idxEnd = result.indexOf("}");
-      result = result.substring(
-          idx, idxEnd + 1); //user update not run but run invoice
+      result = result.substring(idx, idxEnd + 1); //user update not run but run invoice
     } //
 
     print(result);
     if (json.decode(result)["code"] == "200") {
-
       return jsonDecode(result)["message"];
     } else {
-
-      throw Exception(
-          '${json.decode(result)["message"]}');
+      throw Exception('${json.decode(result)["message"]}');
     }
   }
-  Future<dynamic> delete({
 
+  Future<dynamic> delete({
     required String url,
     @required dynamic? body,
     @required String? token,
@@ -157,35 +144,35 @@ class Api {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
 
-   // var response = await Dio().delete(
-   //      url,queryParameters: {'fk_product':1,},
+    // var response = await Dio().delete(
+    //      url,queryParameters: {'fk_product':1,},
     http.Response response = await _client.delete(
       Uri.parse(url),
-     //   headers:   {
-     //    "Accept": "application/json",
-     //    "Access-Control-Allow-Origin": "*", // Required for CORS support to work
-     //
-     // "Access-Control-Allow-Credentials": 'true', // Required for cookies, authorization headers with HTTPS
-     //   'Content-Type': 'application/json; charset=UTF-8',
-     //  //  "Access-Control-Allow-Headers":
-     //  // "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
-     // // "Access-Control-Allow-Methods": "*"
-     // },
+      //   headers:   {
+      //    "Accept": "application/json",
+      //    "Access-Control-Allow-Origin": "*", // Required for CORS support to work
+      //
+      // "Access-Control-Allow-Credentials": 'true', // Required for cookies, authorization headers with HTTPS
+      //   'Content-Type': 'application/json; charset=UTF-8',
+      //  //  "Access-Control-Allow-Headers":
+      //  // "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,locale",
+      // // "Access-Control-Allow-Methods": "*"
+      // },
     );
 
-    String result= response.body;
+    String result = response.body;
     int idx = result.indexOf("{");
-    int length=result.length;
-    result=result.substring(idx,length);
+    int length = result.length;
+    result = result.substring(idx, length);
     print(result);
     print(json.decode(result)["code"]);
     //if (json.decode(result)["code"] == "200") {
-      /*String data="";
+    /*String data="";
       if(jsonDecode(result)["message"]=="done")
         data =jsonDecode(result)["message"] ;
       else
         Map<String, dynamic>  jsonDecode(result)["message"];*/
-      //print("in json data is $data");
+    //print("in json data is $data");
     //   return jsonDecode(result)["message"];
     // } else {
     //
@@ -193,6 +180,5 @@ class Api {
     //       '${json.decode(result)["message"]}');
     // }
     return jsonDecode(result)["message"];
-
   }
 }

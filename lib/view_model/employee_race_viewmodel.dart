@@ -2,6 +2,7 @@ import 'package:async/async.dart';
 import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
+import 'package:in_date_utils/in_date_utils.dart';
 
 import '../api/api.dart';
 import '../constants.dart';
@@ -14,13 +15,18 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
   int? selectedYear;
   int? selectedQuarterYear;
   int? selectedQuarter;
+  int? selectedDaily;
   int? selectedMonthYear;
   int? selectedMonth;
   late String fkCountry;
 
+  DateTime? selectedDailyFrom;
+  DateTime? selectedDailyTo;
+
   PageState<List<EmployeeReportModel>> employeeMonthReportState = PageState.init();
   PageState<List<EmployeeReportModel>> employeeQuarterReportState = PageState.init();
   PageState<List<EmployeeReportModel>> employeeYearReportState = PageState.init();
+  PageState<List<EmployeeReportModel>> employeeDailyReportState = PageState.init();
   CancelableOperation<List<EmployeeReportModel>>? _cancelableFuture;
 
   //endregion
@@ -49,6 +55,10 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         (selectedQuarter == null || selectedQuarterYear == null || employeeQuarterReportState.isSuccess)) {
       return;
     }
+    if (selectedDateFilterType == DateFilterType.daily &&
+        (selectedDailyFrom == null || selectedDailyTo == null || employeeDailyReportState.isSuccess)) {
+      return;
+    }
     if (selectedDateFilterType == DateFilterType.monthly &&
         (selectedMonth == null || selectedMonthYear == null || employeeMonthReportState.isSuccess)) {
       return;
@@ -70,6 +80,11 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         "from": getFromQuarter,
         "to": getToQuarter,
       };
+    } else if (selectedDateFilterType == DateFilterType.daily) {
+      queryParams = {
+        "from": selectedDailyFrom!.toIso8601String(),
+        "to": selectedDailyTo!.toIso8601String(),
+      };
     } else {
       queryParams = {
         "month": DateTime(selectedMonthYear!, selectedMonth!).toIso8601String(),
@@ -77,7 +92,10 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
     }
 
     body = body..addAll({"type": selectedDateFilterType.type});
-    queryParams = queryParams..addAll({"fk_country": fkCountry});
+    queryParams = queryParams..addAll({
+      "fk_country": fkCountry,
+      "product": '1',
+    });
 
     await _cancelableFuture?.cancel();
 
@@ -102,8 +120,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : ((num.parse(e.sales!) * 100) / ((num.parse(e.salary!) * 6 * 12)))
-                      .toStringAsFixed(2)))
+                  : ((num.parse(e.sales!) * 100) / ((num.parse(e.salary!) * 6 * 12))).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
@@ -134,8 +151,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : ((num.parse(e.sales!) * 100) / (((num.parse(e.salary!) * 6 * 3))))
-                      .toStringAsFixed(2)))
+                  : ((num.parse(e.sales!) * 100) / (((num.parse(e.salary!) * 6 * 3)))).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
@@ -166,8 +182,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : (((num.parse(e.sales!)) * 100) / (num.parse(e.salary!) * 6))
-                      .toStringAsFixed(2)))
+                  : (((num.parse(e.sales!)) * 100) / (num.parse(e.salary!) * 6)).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0.0").compareTo(num.parse(a.percentage ?? "0.0")));
 
@@ -175,7 +190,43 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      employeeMonthReportState = employeeMonthReportState.changeToFailed;
+      // employeeMonthReportState = employeeMonthReportState.changeToFailed;
+      notifyListeners();
+    }
+  }
+
+  fetchDaily({
+    required Map<String, dynamic> queryParams,
+    required Map<String, dynamic> body,
+  }) async {
+    try {
+      if (!employeeDailyReportState.isLoading) {
+        employeeDailyReportState = employeeDailyReportState.changeToLoading;
+        notifyListeners();
+      }
+
+      _cancelableFuture = CancelableOperation.fromFuture(_getReportApi(body: body, queryParams: queryParams));
+
+      List<EmployeeReportModel> list = await _cancelableFuture?.value ?? [];
+
+      list = list.map((e) {
+        final target = num.parse(e.salary ?? '0') * 6;
+        final numOfFilterDay = selectedDailyTo!.difference(selectedDailyFrom!).inDays;
+        final numOfDayInMonth = DTU.getDaysInMonth(selectedDailyFrom!.year, selectedDailyFrom!.month);
+
+        return e.copyWith(
+            percentage: e.salary == null || e.sales == null
+                ? null
+                : ((num.parse(e.sales!) * 100) / ((target / numOfDayInMonth) * numOfFilterDay)).toStringAsFixed(2));
+      }).toList()
+        ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
+
+      employeeDailyReportState = employeeDailyReportState.changeToLoaded(list ?? []);
+
+      notifyListeners();
+    } catch (e) {
+      print("e $e");
+      employeeDailyReportState = employeeDailyReportState.changeToFailed;
       notifyListeners();
     }
   }
@@ -218,6 +269,9 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
       case DateFilterType.yearly:
         fetchYearly(queryParams: queryParams, body: body);
         break;
+      case DateFilterType.daily:
+        fetchDaily(queryParams: queryParams, body: body);
+        break;
     }
   }
 
@@ -252,18 +306,46 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
     getEmployeeReport();
   }
 
+  onChangeFrom(DateTime from) {
+    selectedDailyFrom = from;
+    notifyListeners();
+  }
+
+  onChangeTo(DateTime? to) {
+    selectedDailyTo = to;
+    notifyListeners();
+  }
+
   init() {
+    var lastDay = DTU.lastDayOfMonth(DateTime.now());
+    var firstDay = DTU.firstDayOfMonth(DateTime.now());
+
     selectedDateFilterType = DateFilterType.yearly;
-    selectedYear = null;
-    selectedQuarterYear = null;
-    selectedQuarter = null;
-    selectedMonthYear = null;
-    selectedMonth = null;
+    selectedYear = DateTime.now().year;
+    selectedQuarterYear = DateTime.now().year;
+    selectedQuarter = _getCurrentQuarter;
+    selectedMonthYear = DateTime.now().year;
+    selectedMonth = DateTime.now().month;
+    selectedDailyFrom = firstDay;
+    selectedDailyTo = lastDay;
 
     employeeMonthReportState = PageState.init();
     employeeQuarterReportState = PageState.init();
     employeeYearReportState = PageState.init();
     _cancelableFuture = null;
     notifyListeners();
+  }
+
+  int get _getCurrentQuarter {
+    final int month = DateTime.now().month;
+    if (month >= 1 && month <= 3) {
+      return 1;
+    } else if (month > 3 && month <= 6) {
+      return 2;
+    } else if (month > 6 && month <= 9) {
+      return 3;
+    } else {
+      return 4;
+    }
   }
 }

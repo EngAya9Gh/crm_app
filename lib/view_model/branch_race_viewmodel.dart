@@ -6,7 +6,7 @@ import '../helper/get_month_name.dart';
 import '../model/branch_race_model.dart';
 import '../ui/screen/target/target_data.dart';
 
-enum DateFilterType { monthly, quarterly, yearly }
+enum DateFilterType { monthly, quarterly, yearly, daily }
 
 extension DateFilterExt on DateFilterType {
   String get type {
@@ -14,6 +14,8 @@ extension DateFilterExt on DateFilterType {
       case DateFilterType.monthly:
         return "datemonth";
       case DateFilterType.quarterly:
+        // return "datedays";
+      case DateFilterType.daily:
         return "datedays";
       case DateFilterType.yearly:
         return "dateyear";
@@ -26,12 +28,14 @@ class BranchRaceViewmodel extends ChangeNotifier {
   List<BranchRaceModel> _allTargetsList = [];
   DateFilterType selectedDateFilter = DateFilterType.yearly;
   DateFilterType selectedDateFilterAddTarget = DateFilterType.yearly;
-  List<String> monthsFilter = [];
-  List<String> quartersFilter = [];
-  List<String> quarterYearsFilter = [];
-  List<String> yearsFilter = [];
+  List<String> monthsFilter = monthList;
+  List<String> quartersFilter = QuarterList;
+  List<String> quarterYearsFilter = getYears();
+  List<String> yearsFilter = getYears();
+  String? fkCountry;
 
   String? selectedMonthFilter;
+  String? selectedMonthYearFilter;
   String? selectedQuarterFilter;
   String? selectedQuarterYearFilter;
   String? selectedYearFilter;
@@ -46,11 +50,23 @@ class BranchRaceViewmodel extends ChangeNotifier {
 
   String? updateBranchTarget;
 
-  init() {
+  PageState<List<BranchRaceModel>> yearlyState = PageState();
+  PageState<List<BranchRaceModel>> quarterState = PageState();
+  PageState<List<BranchRaceModel>> monthlyState = PageState();
+
+  init(String fkCountry) {
     targetsState = PageState();
     _allTargetsList = [];
     selectedDateFilter = DateFilterType.yearly;
     _querySearch = '';
+    yearlyState = PageState();
+    quarterState = PageState();
+    monthlyState = PageState();
+    selectedQuarterFilter = _getCurrentQuarter;
+    selectedQuarterYearFilter = DateTime.now().year.toString();
+    selectedMonthFilter = getMonthName(DateTime.now().month);
+    selectedMonthYearFilter = DateTime.now().year.toString();
+    this.fkCountry = fkCountry;
     notifyListeners();
   }
 
@@ -87,8 +103,22 @@ class BranchRaceViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  onChangeSelectedFilterType(int index) {
+  onChangeSelectedFilterType(int index, {bool isFromBranchManage = true}) {
     selectedDateFilter = DateFilterType.values[index];
+    if (!isFromBranchManage) {
+      notifyListeners();
+      if (selectedDateFilter == DateFilterType.quarterly &&
+          (selectedQuarterFilter != null && selectedQuarterYearFilter != null && !quarterState.isSuccess)) {
+        onChangeQuarter(null);
+      }
+
+      if (selectedDateFilter == DateFilterType.monthly &&
+          (selectedMonthFilter != null && selectedMonthYearFilter != null && !monthlyState.isSuccess)) {
+        onChangeMonth(null);
+      }
+
+      return;
+    }
     selectedMonthFilter = null;
     selectedQuarterFilter = null;
     selectedQuarterYearFilter = null;
@@ -128,88 +158,20 @@ class BranchRaceViewmodel extends ChangeNotifier {
         .toList();
   }
 
-  onChangeMonth(DateTime monthdate, String month, String fkcountry) async {
-    selectedMonthFilter = month;
-
+  onChangeMonthYear(String monthYear) {
+    selectedMonthYearFilter = monthYear;
+    onChangeMonth(null);
     // List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
     //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
     //     .toList();
     //
-    // list = list.where((element) => element.nameTarget == getMonthIndex(selectedMonthFilter!).toString()).toList();
-
-    // list = list.where((element) => element.nameTarget == getMonthNumber(selectedMonthFilter!).toString()).toList();
-    var data = await Api().post(
-        url: url + "target/get_sales_target.php?fk_country=$fkcountry&month=${monthdate.toString()}",
-        body: {'type': 'datemonth'});
-    List<BranchRaceModel> list = [];
-    for (int i = 0; i < data.length; i++)
-      list.add(BranchRaceModel.fromJson(data[i]));
-
-    targetsState = targetsState.copyWith(data: list);
-    for (int i = 0; i < targetsState.data!.length; i++)
-      print(targetsState.data![i].y);
-      notifyListeners();
-  }
-
-  onChangeYear(String year, String fkcountry) async {
-    selectedYearFilter = year;
-
-    // List<BranchRaceModel> list = List<>.from(_allTargetsList)
-    //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+    // quartersFilter = list
+    //     .where((element) =>
+    //         element.typeTarget == DateFilterType.quarterly.index.toString() &&
+    //         element.yearTarget == selectedQuarterYearFilter)
+    //     .map((e) => e.nameTarget!)
+    //     .toSet()
     //     .toList();
-    //
-    // list = list.where((element) => element.yearTarget == selectedYearFilter).toList();
-    var data = await Api()
-        .post(url: url + "target/get_sales_target.php?fk_country=$fkcountry&year=${year}", body: {'type': 'dateyear'});
-    List<BranchRaceModel> list = [];
-    for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
-
-    targetsState = targetsState.copyWith(data: list);
-
-    notifyListeners();
-  }
-
-  onChangeQuarter(String quarter, String fkcountry, DateTime Datefrom, DateTime Dateto) async {
-    selectedQuarterFilter = quarter;
-
-    if (selectedQuarterYearFilter == null) {
-      return;
-    }
-    //
-    // List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
-    //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
-    //     .toList();
-    //
-    // list = list
-    //     .where(
-    //         (element) => element.yearTarget == selectedQuarterYearFilter && element.nameTarget == selectedQuarterFilter)
-    //     .toList();
-
-    var data = await Api().post(
-        url: url +
-            "target/get_sales_target.php?fk_country=$fkcountry&from=${Datefrom.toString()}&to=${Dateto.toString()}&Q=$quarter",
-        body: {'type': 'datedays'});
-    List<BranchRaceModel> list = [];
-    for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
-
-    targetsState = targetsState.copyWith(data: list);
-
-    notifyListeners();
-  }
-
-  onChangeQuarterYear(String quarterYear) async {
-    selectedQuarterYearFilter = quarterYear;
-    List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
-        .where((element) => element.typeTarget == selectedDateFilter.index.toString())
-        .toList();
-
-    quartersFilter = list
-        .where((element) =>
-            element.typeTarget == DateFilterType.quarterly.index.toString() &&
-            element.yearTarget == selectedQuarterYearFilter)
-        .map((e) => e.nameTarget!)
-        .toSet()
-        .toList();
     // var data  = await Api().post(
     //     url: url +
     //         "target/get_sales_target.php?fk_country=$fkcountry&year=${year}",
@@ -218,7 +180,137 @@ class BranchRaceViewmodel extends ChangeNotifier {
     // for (int i = 0; i < data.length; i++)
     //   list.add(BranchRaceModel.fromJson(data[i]));
 
-    selectedQuarterFilter = null;
+    // selectedQuarterFilter = null;
+    notifyListeners();
+  }
+
+  onChangeMonth(String? month) async {
+    try {
+      if (month != null) {
+        selectedMonthFilter = month;
+      }
+
+      if (selectedMonthYearFilter == null) {
+        return;
+      }
+
+      DateTime date = DateTime(int.parse(selectedMonthYearFilter!), getMonthNumber(selectedMonthFilter!), 01);
+
+      monthlyState = monthlyState.changeToLoading;
+      notifyListeners();
+
+      // List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
+      //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+      //     .toList();
+      //
+      // list = list.where((element) => element.nameTarget == getMonthIndex(selectedMonthFilter!).toString()).toList();
+
+      // list = list.where((element) => element.nameTarget == getMonthNumber(selectedMonthFilter!).toString()).toList();
+      var data = await Api().post(
+          url: url + "target/get_sales_target.php?fk_country=$fkCountry&month=${date.toIso8601String()}",
+          body: {'type': 'datemonth'});
+      List<BranchRaceModel> list = [];
+      for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
+
+      monthlyState = monthlyState.changeToLoaded(list);
+      notifyListeners();
+    } catch (e) {
+      monthlyState = monthlyState.changeToFailed;
+      notifyListeners();
+    }
+  }
+
+  onChangeYear(String year) async {
+    selectedYearFilter = year;
+
+    // List<BranchRaceModel> list = List<>.from(_allTargetsList)
+    //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+    //     .toList();
+    //
+    // list = list.where((element) => element.yearTarget == selectedYearFilter).toList();
+
+    try {
+      yearlyState = yearlyState.changeToLoading;
+      notifyListeners();
+
+      var data = await Api()
+          .post(url: url + "target/get_sales_target.php?fk_country=$fkCountry&year=$year", body: {'type': 'dateyear'});
+      List<BranchRaceModel> list = [];
+      for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
+
+      yearlyState = yearlyState.changeToLoaded(list);
+
+      notifyListeners();
+    } catch (e) {
+      yearlyState = yearlyState.changeToFailed;
+      notifyListeners();
+    }
+  }
+
+  onChangeQuarter(String? quarter) async {
+    if (quarter != null) {
+      selectedQuarterFilter = quarter;
+    }
+
+    if (selectedQuarterYearFilter == null) {
+      return;
+    }
+
+    try {
+      quarterState = quarterState.changeToLoading;
+      notifyListeners();
+
+      //
+      // List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
+      //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+      //     .toList();
+      //
+      // list = list
+      //     .where(
+      //         (element) => element.yearTarget == selectedQuarterYearFilter && element.nameTarget == selectedQuarterFilter)
+      //     .toList();
+
+      final params =
+          "target/get_sales_target.php?fk_country=$fkCountry&from=$getFromQuarter&to=$getToQuarter&Q=$selectedQuarterFilter";
+
+      print("params $params");
+
+      var data = await Api().post(url: url + params, body: {'type': 'datedays'});
+      List<BranchRaceModel> list = [];
+      for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
+
+      quarterState = quarterState.changeToLoaded(list);
+
+      notifyListeners();
+    } catch (e) {
+      quarterState = quarterState.changeToLoading;
+      notifyListeners();
+    }
+  }
+
+  onChangeQuarterYear(String quarterYear) async {
+    selectedQuarterYearFilter = quarterYear;
+    onChangeQuarter(null);
+    // List<BranchRaceModel> list = List<BranchRaceModel>.from(_allTargetsList)
+    //     .where((element) => element.typeTarget == selectedDateFilter.index.toString())
+    //     .toList();
+    //
+    // quartersFilter = list
+    //     .where((element) =>
+    //         element.typeTarget == DateFilterType.quarterly.index.toString() &&
+    //         element.yearTarget == selectedQuarterYearFilter)
+    //     .map((e) => e.nameTarget!)
+    //     .toSet()
+    //     .toList();
+    // var data  = await Api().post(
+    //     url: url +
+    //         "target/get_sales_target.php?fk_country=$fkcountry&year=${year}",
+    //     body: {'type': 'dateyear'});
+    // List<BranchRaceModel> list=[];
+    // for (int i = 0; i < data.length; i++)
+    //   list.add(BranchRaceModel.fromJson(data[i]));
+
+    // selectedQuarterFilter = null;
     notifyListeners();
   }
 
@@ -247,13 +339,30 @@ class BranchRaceViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  onAddTarget({required VoidCallback onSuccess, BranchRaceModel? branchRaceModel}) async {
-    print("selectedMonthAddTarget: $selectedMonthAddTarget");
-    print("selectedYearAddTarget: $selectedYearAddTarget");
-    print("selectedQuarterAddTarget: $selectedQuarterAddTarget");
-    print("selectedRegionId: $selectedRegionId");
-    print("branchTarget: $branchTarget");
+  String get getFromQuarter {
+    return DateTime(int.parse(selectedQuarterYearFilter!), (getQuarterNumber(selectedQuarterFilter!) - 1) * 3 + 1)
+        .toIso8601String();
+  }
 
+  String get getToQuarter {
+    return DateTime(int.parse(selectedQuarterYearFilter!), (getQuarterNumber(selectedQuarterFilter!) - 1) * 3 + 3)
+        .toIso8601String();
+  }
+
+  String get _getCurrentQuarter {
+    final int month = DateTime.now().month;
+    if (month >= 1 && month <= 3) {
+      return "Q1";
+    } else if (month > 3 && month <= 6) {
+      return "Q2";
+    } else if (month > 6 && month <= 9) {
+      return "Q3";
+    } else {
+      return "Q4";
+    }
+  }
+
+  onAddTarget({required VoidCallback onSuccess, BranchRaceModel? branchRaceModel}) async {
     try {
       isLoadingAction = true;
       notifyListeners();

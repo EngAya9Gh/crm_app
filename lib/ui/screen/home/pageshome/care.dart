@@ -122,7 +122,9 @@ class _carepageState extends State<carepage> {
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
                 onTap: () {
-                  Navigator.push(context, CupertinoPageRoute(builder: (context) => CommunicationListPage()));
+                  Navigator.push(context,
+                      CupertinoPageRoute(builder: (context) =>
+                          CommunicationListPage()));
                 },
                 title: 'قائمة العملاء المميزين',
               ):Container() ,

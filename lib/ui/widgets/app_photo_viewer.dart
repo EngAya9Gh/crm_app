@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +9,14 @@ import 'package:photo_view/photo_view.dart';
 enum ImageSourceViewer {
   network,
   asset,
+  file,
 }
 
 class AppPhotoViewer extends StatelessWidget {
   const AppPhotoViewer({
     Key? key,
-    required this.urls,
+    this.urls = const [],
+    this.files = const [],
     this.imageSource = ImageSourceViewer.network,
     this.loadingBuilder,
     this.backgroundDecoration,
@@ -47,6 +51,7 @@ class AppPhotoViewer extends StatelessWidget {
   final ImageSourceViewer imageSource;
 
   final List<String> urls;
+  final List<File> files;
 
   /// While [imageProvider] is not resolved, [loadingBuilder] is called by [PhotoView]
   /// into the screen, by default it is a centered [CircularProgressIndicator]
@@ -139,11 +144,13 @@ class AppPhotoViewer extends StatelessWidget {
       body: Stack(
         children: [
           PageView.builder(
-            itemCount: urls.length,
+            itemCount: urls.isNotEmpty ? urls.length : files.length,
             itemBuilder: (context, index) => PhotoView(
               imageProvider: imageSource == ImageSourceViewer.network
-                  ? CachedNetworkImageProvider(urls[index]) as ImageProvider
-                  : AssetImage(urls[index]),
+                  ? CachedNetworkImageProvider(urls[index])
+                  : imageSource == ImageSourceViewer.asset
+                      ? AssetImage(urls[index]) as ImageProvider
+                      : FileImage(files[index]),
               loadingBuilder: loadingBuilder,
               backgroundDecoration: backgroundDecoration,
               wantKeepAlive: wantKeepAlive,

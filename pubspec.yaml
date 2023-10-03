@@ -61,6 +61,7 @@ dependencies:
   table_calendar: ^3.0.8
   fancy_shimmer_image: ^2.0.2
   collection: ^1.17.1
+  in_date_utils: ^1.2.0+2
 
   # DI
   get_it: ^7.6.4
