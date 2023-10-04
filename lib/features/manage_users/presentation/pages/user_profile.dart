@@ -44,16 +44,18 @@ class _UserProfileState extends State<UserProfile> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             actions: [
-              isMyProfile
-                  ? IconButton(
-                      onPressed: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => edit_profile()));
-                      },
-                      icon: const Icon(
-                        Icons.edit,
-                        color: kWhiteColor,
-                      ))
-                  : Provider.of<privilge_vm>(context, listen: true).checkprivlge('50') == true
+              // isMyProfile
+              //     ?
+              // IconButton(
+              //         onPressed: () {
+              //           Navigator.push(context, CupertinoPageRoute(builder: (context) => edit_profile()));
+              //         },
+              //         icon: const Icon(
+              //           Icons.edit,
+              //           color: kWhiteColor,
+              //         ))
+              //     :
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('50') == true
                       ? IconButton(
                           onPressed: () {
                             Navigator.push(
