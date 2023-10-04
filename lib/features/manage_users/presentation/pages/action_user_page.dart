@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/features/manage_users/domain/use_cases/action_user_usecase.dart';
@@ -11,6 +12,7 @@ import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
+import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,9 +55,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
       Provider.of<level_vm>(context, listen: false).getlevel();
       Provider.of<manage_provider>(context, listen: false).getmanage();
       Provider.of<regoin_vm>(context, listen: false).changeValuser(null, true);
-      context.read<maincity_vm>()
-        ..changeitemlist([], isInit: true)
-        ..getmaincity();
+      context.read<maincity_vm>().changeitemlist([], isInit: true);
+      if (user == null)
+        context.read<maincity_vm>().getmaincity();
     });
 
     if (user != null) {
@@ -165,6 +167,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 RowEdit(name: label_level, des: '*'),
                 Consumer<level_vm>(
                   builder: (context, cart, child) {
+                    print("cart.selectedValueLevel ${cart.selectedValueLevel}");
+                    print("cart.listoflevel_periorty ${cart.listoflevel_periorty}");
                     return DropdownButtonFormField(
                       isExpanded: true,
                       items: cart.listoflevel_periorty.map((level) {
@@ -216,26 +220,45 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 RowEdit(name: 'المناطق', des: ''),
                 Consumer<maincity_vm>(
                   builder: (context, cart, child) {
-                    return DropdownSearch<MainCityModel>.multiSelection(
-                      mode: Mode.DIALOG,
-                      filterFn: (user, filter) => user!.getfilteruser(filter!),
-                      compareFn: (item, selectedItem) => item?.id_maincity == selectedItem?.id_maincity,
-                      items: cart.listmaincityfilter,
-                      showSelectedItems: true,
-                      selectedItems: cart.selecteditemmaincity,
-                      itemAsString: (u) => u!.userAsString(),
-                      onChanged: (data) {
-                        cart.changeitemlist(data);
-                      },
-                      showSearchBox: true,
-                      dropdownSearchDecoration: InputDecoration(
-                        isCollapsed: true,
-                        hintText: 'المنطقة',
-                        alignLabelWithHint: true,
-                        fillColor: Colors.grey.withOpacity(0.2),
-                        contentPadding: EdgeInsets.all(0),
-                        border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                    print(cart.selecteditemmaincity.length);
+
+                    final items = cart.listmaincityfilter
+                        .where((element) => element.id_maincity != '0')
+                        .map((e) => e.toMap())
+                        .toList();
+
+                    final selectedItems = cart.selecteditemmaincity.map((e) => e.toMap()).toList();
+                    selectedItems.forEachIndexed((index, element) {
+                      selectedItems[index]['value'] = element['id_maincity'];
+                      selectedItems[index]['parameter'] = 'id_maincity';
+                    });
+
+
+                    return CustomSearchableDropDown(
+                      dropdownHintText: 'ابحث هنا... ',
+                      showLabelInMenu: true,
+                      primaryColor: kMainColor,
+                      labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      items: items,
+                      multiSelectValuesAsWidget: true,
+                      label: 'اختر المناطق',
+                      initialValue: selectedItems,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: Icon(Icons.search),
                       ),
+                      dropDownMenuItems: items.map((item) {
+                        return item['namemaincity'];
+                      }).toList(),
+                      multiSelect: true,
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+
+                        final list = jsonDecode(value).map<MainCityModel>((e) => MainCityModel.fromJson(e)).toList();
+                        cart.changeitemlist(list);
+                      },
                     );
                   },
                 ),
@@ -259,16 +282,16 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 if (isEdit) ...{
                   Center(
                       child: GroupButton(
-                    controller: GroupButtonController(selectedIndex: int.parse(isActive)),
-                    options: GroupButtonOptions(
-                        buttonWidth: 110, selectedColor: kMainColor, borderRadius: BorderRadius.circular(10)),
-                    buttons: ['غير نشط', 'نشط'],
-                    onSelected: (_, index, isselected) {
-                      setState(() {
-                        isActive = index.toString();
-                      });
-                    },
-                  )),
+                        controller: GroupButtonController(selectedIndex: int.parse(isActive)),
+                        options: GroupButtonOptions(
+                            buttonWidth: 110, selectedColor: kMainColor, borderRadius: BorderRadius.circular(10)),
+                        buttons: ['غير نشط', 'نشط'],
+                        onSelected: (_, index, isselected) {
+                          setState(() {
+                            isActive = index.toString();
+                          });
+                        },
+                      )),
                   20.verticalSpace,
                 },
                 Center(
@@ -300,7 +323,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
     if (!validate) {
       return;
     }
-    final selectedRegion = context.read<maincity_vm>().selecteditemmaincity;
+    final selectedRegion = context
+        .read<maincity_vm>()
+        .selecteditemmaincity;
     final oldRegion = user?.maincitylist_user?.map((e) => e.asMainCity).toList();
 
     final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
@@ -316,13 +341,19 @@ class _ActionUserPageState extends State<ActionUserPage> {
     final regionVm = context.read<regoin_vm>();
     String? region = regionVm.selectedValueuser;
     String? regionName =
-        region == null ? "" : regionVm.listregoin.firstWhere((element) => element.id_regoin == region).name_regoin;
+    region == null ? "" : regionVm.listregoin
+        .firstWhere((element) => element.id_regoin == region)
+        .name_regoin;
 
     final levelVm = context.read<level_vm>();
     String? level = levelVm.selectedValueLevel;
-    String levelName = levelVm.listoflevel.firstWhere((element) => element.idLevel == level).nameLevel;
+    String levelName = levelVm.listoflevel
+        .firstWhere((element) => element.idLevel == level)
+        .nameLevel;
 
-    final currentUser = context.read<user_vm_provider>().currentUser;
+    final currentUser = context
+        .read<user_vm_provider>()
+        .currentUser;
     final fkCountry = currentUser.fkCountry;
     final userID = currentUser.idUser;
 

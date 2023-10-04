@@ -89,6 +89,7 @@ dependencies:
   #ui
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.7
+  custom_searchable_dropdown: ^2.1.1
 
 
 dependency_overrides:
