@@ -72,7 +72,15 @@ class _UserProfileState extends State<UserProfile> {
                             Icons.edit,
                             color: kWhiteColor,
                           ))
-                      : Container(),
+                      :
+              IconButton(
+                      onPressed: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => edit_profile()));
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                        color: kWhiteColor,
+                      )),
             ],
             title: TextUtilis(
               color: Colors.white,
