@@ -39,6 +39,20 @@ class MainCityModel {
       fk_country: fk_country,
     );
   }
+
+
+  @override
+  String toString() {
+    return 'MainCityModel{id_maincity: $id_maincity, fk_country: $fk_country, namemaincity: $namemaincity}';
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id_maincity': this.id_maincity,
+      'fk_country': this.fk_country,
+      'namemaincity': this.namemaincity,
+    };
+  }
 }
 
 class CityModel {
