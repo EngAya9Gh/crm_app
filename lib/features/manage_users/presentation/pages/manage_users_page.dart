@@ -107,7 +107,8 @@ class _ManageUserPageState extends State<ManageUserPage> {
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
-                                        builder: (context) => BlocProvider.value(
+                                        builder: (context) =>
+                                          BlocProvider.value(
                                           value: _usersCubit,
                                           child: UserProfile(userModel: user),
                                         ),

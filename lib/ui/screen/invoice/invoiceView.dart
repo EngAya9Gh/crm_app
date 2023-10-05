@@ -673,7 +673,7 @@ class _RejectDialogState extends State<RejectDialog> {
     descresaonController.dispose();
     super.dispose();
   }
-  clear_back(){
+  clear_back() {
 
     descresaonController.text = '';
     valueBackController.text = '';

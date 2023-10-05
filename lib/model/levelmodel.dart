@@ -21,4 +21,9 @@ class LevelModel {
     _data['periorty'] = periorty;
     return _data;
   }
+
+  @override
+  String toString() {
+    return 'LevelModel{idLevel: $idLevel, nameLevel: $nameLevel, periorty: $periorty}';
+  }
 }
