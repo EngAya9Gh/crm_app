@@ -268,8 +268,9 @@ class Invoice_Service {
       print('result idproduct invoice');
       print(result);
       return result != "error" ? result : "false";
-    } catch (e) {
+    } catch (e,st) {
       print(e);
+      print("st $st");
       return "false";
     }
   }

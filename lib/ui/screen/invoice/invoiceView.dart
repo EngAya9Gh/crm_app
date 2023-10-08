@@ -32,6 +32,7 @@ import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 import 'add_payement.dart';
 import 'edit_invoice.dart';
+import 'invoice_file_gallery_page.dart';
 
 class InvoiceView extends StatefulWidget {
   InvoiceView({
@@ -98,9 +99,9 @@ class _InvoiceViewState extends State<InvoiceView> {
   Widget build(BuildContext context) {
     final list = Provider.of<invoice_vm>(context, listen: true).listInvoicesAccept;
 
-    if (list.any((element) => element.idInvoice == widget.invoice!.idInvoice))
+    if (list.any((element) => element.idInvoice == widget.invoice.idInvoice))
       widget.invoice =
-          list.firstWhereOrNull((element) => element.idInvoice == widget.invoice!.idInvoice) ?? widget.invoice;
+          list.firstWhereOrNull((element) => element.idInvoice == widget.invoice.idInvoice) ?? widget.invoice;
 
     return Scaffold(
       appBar: widget.type == 'approved'
@@ -292,9 +293,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         //crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true
-                                  && invoice.isApprove ==null ||                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('31') == true
-                              && invoice.isApprove !=null? CustomButton(
+                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true &&
+                                      invoice.isApprove == null ||
+                                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('31') == true &&
+                                      invoice.isApprove != null
+                              ? CustomButton(
                                   text: 'تعديل الفاتورة',
                                   onTap: () async {
                                     if (clientmodel != null)
@@ -304,9 +307,8 @@ Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true
                                               builder: (context) =>
                                                   addinvoice(invoice: invoice, itemClient: clientmodel!)));
                                   },
-                                )
-                              : Container(),// widget.type == 'approved'
-                              //     ? invoice.isApprove == null
+                                ) : Container(), // widget.type == 'approved'
+                          //     ? invoice.isApprove == null
                           Provider.of<privilge_vm>(context, listen: true).checkprivlge('41') == true
                               ? invoice.isApprove != null
                                   ? CustomButton(
@@ -604,6 +606,16 @@ Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true
                               )
                             : Container()
                         : Container(),
+
+                    SizedBox(height: 10),
+                    CustomButton(
+                      text: 'مرفقات الفاتورة',
+                      icon: Icons.file_present_rounded,
+                      onTap: () async {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => InvoiceFileGalleryPage()));
+                      },
+                    ),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),
@@ -946,7 +958,7 @@ class _RejectDialogState extends State<RejectDialog> {
                     SizedBox(height: 6),
                     Consumer<invoice_vm>(
                       builder: (context, value, child) {
-                        if(value.isloading){
+                        if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
                         }
                         return Center(
@@ -957,7 +969,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                 onPressed: () async {
                                   if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
-                                    ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(content: Text("من فضلك قم ياختيار ملف")));
                                     return;
                                   }
                                   if (_globalKey.currentState!.validate()) {
@@ -995,7 +1008,8 @@ class _RejectDialogState extends State<RejectDialog> {
                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                 onPressed: () async {
                                   if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
-                                    ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(content: Text("من فضلك قم ياختيار ملف")));
                                     return;
                                   }
                                   if (_globalKey.currentState!.validate()) {

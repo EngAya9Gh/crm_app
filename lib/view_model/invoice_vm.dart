@@ -7,10 +7,13 @@ import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/Invoice_Service.dart';
+import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import '../model/agent_distributor_model.dart';
 import '../model/calendar/event.dart';
@@ -1120,9 +1123,10 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> add_invoiceclient_vm(Map<String, dynamic?> body, File? file, File? myfilelogo,List<File> files) async {
+  Future<String> add_invoiceclient_vm(
+      Map<String, dynamic?> body, File? file, File? myfilelogo, List<File> files) async {
     String res = 'done';
-    InvoiceModel data = await Invoice_Service().addInvoice(body, file, myfilelogo,files);
+    InvoiceModel data = await Invoice_Service().addInvoice(body, file, myfilelogo, files);
     //  if(data !=null){
     print('resssssssssssssss');
     listinvoices.insert(0, data);
@@ -1133,6 +1137,57 @@ class invoice_vm extends ChangeNotifier {
     // } else res='false';
     notifyListeners();
     return res;
+  }
+
+  openFile(FileAttach attachFile) async {
+    try {
+      if (attachFile.file != null) {
+        final check = await Permission.manageExternalStorage.request();
+        if (check == PermissionStatus.denied) {
+          return;
+        }
+
+        final result = await OpenFile.open(attachFile.file!.path);
+
+        return;
+      }
+      final filename = attachFile.fileAttach!.name;
+      final check = await Permission.manageExternalStorage.request();
+      if (check == PermissionStatus.denied) {
+        return;
+      }
+      final checkFile = await Api().checkExist(filename);
+      if (checkFile != null) {
+        final result = await OpenFile.open(checkFile.path);
+        return;
+      }
+
+      filesAttach = filesAttach
+          .map((e) => e.id == attachFile.id ? e.copyWith(fileStatus: DownloadFileStatus.loading) : e)
+          .toList();
+      notifyListeners();
+
+      File file;
+      file = await Api().downloadFile(urlfile + attachFile.fileAttach!, filename);
+
+      if (file.existsSync()) {
+        filesAttach = filesAttach
+            .map((e) => e.id == attachFile.id ? e.copyWith(fileStatus: DownloadFileStatus.downloaded) : e)
+            .toList();
+        await OpenFile.open(file.path);
+      } else {
+        filesAttach = filesAttach
+            .map((e) => e.id == attachFile.id ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded) : e)
+            .toList();
+      }
+
+      notifyListeners();
+    } catch (e) {
+      filesAttach = filesAttach
+          .map((e) => e.id == attachFile.id ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded) : e)
+          .toList();
+      notifyListeners();
+    }
   }
 
   Future<String> add_invoiceProduct_vm(Map<String, dynamic?>? body) async {
@@ -1159,10 +1214,10 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<bool> update_invoiceclient_vm(
-      Map<String, dynamic?> body, String? idInvoice, File? file, File? myfilelogo,List<File> files) async {
+      Map<String, dynamic?> body, String? idInvoice, File? file, File? myfilelogo, List<File> files) async {
     isloadingdone = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service().updateInvoice(body, idInvoice!, file, myfilelogo,files);
+    InvoiceModel data = await Invoice_Service().updateInvoice(body, idInvoice!, file, myfilelogo, files);
     final index = listinvoiceClient.indexWhere((element) => element.idInvoice == idInvoice);
     // body.addAll({
     //   "id_invoice":idInvoice,
@@ -1611,7 +1666,7 @@ class invoice_vm extends ChangeNotifier {
   List<FileAttach> filesAttach = [];
 
   initAttachFiles(List<FileAttach> filesAttach) {
-    this.filesAttach = filesAttach;
+    this.filesAttach = List.of(filesAttach);
   }
 
   addOnFilesAttach(List<FileAttach> files, VoidCallback onLimitExceeded) {

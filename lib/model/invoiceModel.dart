@@ -758,15 +758,23 @@ class ProductsInvoice extends CacheRepository {
 //endregion
 }
 
+enum DownloadFileStatus {
+  loading,
+  downloaded,
+  unDownloaded,
+}
+
 class FileAttach {
   final String? fileAttach;
   final String? id;
   final XFile? file;
+  final DownloadFileStatus fileStatus;
 
   FileAttach({
     this.fileAttach,
     this.id,
     this.file,
+    this.fileStatus = DownloadFileStatus.unDownloaded
   });
 
   Map<String, dynamic> toMap() {
@@ -787,11 +795,13 @@ class FileAttach {
     String? fileAttach,
     String? id,
     XFile? file,
+    DownloadFileStatus? fileStatus,
   }) {
     return FileAttach(
       fileAttach: fileAttach ?? this.fileAttach,
       id: id ?? this.id,
       file: file ?? this.file,
+      fileStatus: fileStatus ?? this.fileStatus,
     );
   }
 }

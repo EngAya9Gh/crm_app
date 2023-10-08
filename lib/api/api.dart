@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/retry.dart';
 import 'package:path/path.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class Api {
   static final http.Client _client = http.Client();
@@ -79,20 +81,40 @@ class Api {
     }
   }
 
+  Future<File?> checkExist(String filename) async {
+    String dir = (await getDownloadsDirectory())!.path;
+    File file = File('$dir/$filename');
+    final isExist = file.existsSync();
+    if (isExist) return file;
+    return null;
+  }
+
+
+  Future<File> downloadFile(String url, String filename) async {
+    HttpClient httpClient = new HttpClient();
+    var request = await httpClient.getUrl(Uri.parse(url));
+    var response = await request.close();
+    var bytes = await consolidateHttpClientResponseBytes(response);
+    String dir = (await getDownloadsDirectory())!.path;
+    File file = new File('$dir/$filename');
+    await file.writeAsBytes(bytes);
+    return file;
+  }
+
   Future<dynamic> postRequestWithFile(String type, String url, Map<String, dynamic> data, File? file, File? filelogo,
       {List<File>? files}) async {
-    var reguest = http.MultipartRequest("POST", Uri.parse(url));
+    var request = http.MultipartRequest("POST", Uri.parse(url));
     if (file != null) {
       var length = await file.length();
       var stream = http.ByteStream(file.openRead());
       var multipartFile = http.MultipartFile("file", stream, length, filename: basename(file.path));
-      reguest.files.add(multipartFile);
+      request.files.add(multipartFile);
     }
     if (filelogo != null) {
       var length = await filelogo.length();
       var stream = http.ByteStream(filelogo.openRead());
       var multipartFile = http.MultipartFile("filelogo", stream, length, filename: basename(filelogo.path));
-      reguest.files.add(multipartFile);
+      request.files.add(multipartFile);
     }
 
     if (files != null) {
@@ -101,15 +123,17 @@ class Api {
         var length = await element.length();
         var stream = http.ByteStream(element.openRead());
         var multipartFile = http.MultipartFile("uploadfiles[$i]", stream, length, filename: basename(element.path));
-        reguest.files.add(multipartFile);
+        request.files.add(multipartFile);
       }
     }
 
     data.forEach((key, value) {
-      reguest.fields[key] = value;
+      request.fields[key] = value;
     });
-    var myrequest = await reguest.send();
+    var myrequest = await request.send();
     var response = await http.Response.fromStream(myrequest);
+    print('body:: ${response.body}');
+
     String result = '';
     if (type == 'array') {
       result = response.body;
