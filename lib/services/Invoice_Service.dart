@@ -181,6 +181,15 @@ class Invoice_Service {
     //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
+  Future<InvoiceModel> delete_back( String id_invoice,String file_reject ) async {
+
+    var result = await Api().postRequestWithFile('array',
+      url+"series/delete_demand_out.php?id_invoice=$id_invoice",
+       {'file_reject':file_reject},null,null
+    );
+    //client/setApproveClient.php
+    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
+  }
 
   Future<List<InvoiceModel>> getinvoicebyiduser(String fk_idUser) async {
     var data = await Api().get(url: url + 'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
