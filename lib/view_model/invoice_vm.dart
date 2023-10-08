@@ -1360,30 +1360,35 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> set_state_back(Map<String, dynamic> body, String? id_invoice, File? file) async {
-    isloading = true;
-    notifyListeners();
-    InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!, file);
-    int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listinvoices[index] = data;
-    }
-    index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listinvoiceClient[index] = data;
-    }
-    currentInvoice = data;
-    index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listInvoicesAccept[index] = data;
-    }
+   try{
+     isloading = true;
+     notifyListeners();
+     InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!, file);
+     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
+     if (index != -1) {
+       listinvoices[index] = data;
+     }
+     index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
+     if (index != -1) {
+       listinvoiceClient[index] = data;
+     }
+     currentInvoice = data;
+     index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
+     if (index != -1) {
+       listInvoicesAccept[index] = data;
+     }
 
-    // listinvoiceClient
-    // body.addAll(
-    //     InvoiceModel.fromJson(listinvoices[index]));
-    // listinvoices[index]= InvoiceModel.fromJson(body);
-    // //listClient.removeAt(index);
-    isloading = false;
-    notifyListeners();
+     // listinvoiceClient
+     // body.addAll(
+     //     InvoiceModel.fromJson(listinvoices[index]));
+     // listinvoices[index]= InvoiceModel.fromJson(body);
+     // //listClient.removeAt(index);
+     isloading = false;
+     notifyListeners();
+   }catch(e){
+     isloading = false;
+     notifyListeners();
+   }
   }
 
   bool isloadingdone = false;

@@ -662,7 +662,7 @@ class _RejectDialogState extends State<RejectDialog> {
   void initState() {
     _invoice = widget.invoice;
     descresaonController.text = _invoice.desc_reason_back.toString();
-    valueBackController.text = _invoice.reason_back.toString();
+    valueBackController.text = _invoice.value_back.toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       typeclient_provider = Provider.of<typeclient>(context, listen: false);
