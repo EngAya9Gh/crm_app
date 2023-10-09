@@ -7,10 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' hide context;
 import 'package:provider/provider.dart';
-import 'package:text_scroll/text_scroll.dart';
+import '../../../view_model/privilge_vm.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 
@@ -189,26 +188,27 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                 ),
               ),
             ),
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.topRight,
-              child: InkWell(
-                onTap: onDelete,
-                borderRadius: BorderRadius.circular(90),
-                child: Container(
-                  height: 30,
-                  width: 30,
-                  margin: EdgeInsets.only(top: 5, right: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade50,
-                    shape: BoxShape.circle,
+          if (Provider.of<privilge_vm>(context, listen: true).checkprivlge('146') == true)
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: onDelete,
+                  borderRadius: BorderRadius.circular(90),
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    margin: EdgeInsets.only(top: 5, right: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade50,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: Icon(Icons.delete_rounded, color: Colors.red, size: 17),
                   ),
-                  alignment: Alignment.center,
-                  child: Icon(Icons.delete_rounded, color: Colors.red, size: 17),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

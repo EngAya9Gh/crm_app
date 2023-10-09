@@ -120,8 +120,6 @@ class _addinvoiceState extends State<addinvoice> {
 
   late invoice_vm invoiceViewmodel;
 
-
-
   @override
   void initState() {
     invoiceViewmodel = context.read<invoice_vm>();
@@ -963,51 +961,54 @@ class _addinvoiceState extends State<addinvoice> {
                                                         ),
                                                       ),
                                                     ),
-                                                    Positioned.fill(
-                                                      child: Align(
-                                                        alignment: Alignment.topRight,
-                                                        child: Row(
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () => pickImage(
-                                                                  (context, file) => onPickCommercialRecordImage(file)),
-                                                              borderRadius: BorderRadius.circular(90),
-                                                              child: Container(
-                                                                height: 40,
-                                                                width: 40,
-                                                                margin: EdgeInsets.only(top: 10, right: 15),
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.grey.shade50,
-                                                                  shape: BoxShape.circle,
-                                                                ),
-                                                                alignment: Alignment.center,
-                                                                child: Icon(Icons.attachment_rounded,
-                                                                    color: Colors.grey.shade700, size: 20),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () => onDeleteCommercialRecordImage(),
-                                                              borderRadius: BorderRadius.circular(90),
-                                                              child: Container(
-                                                                height: 40,
-                                                                width: 40,
-                                                                margin: EdgeInsets.only(top: 10, right: 15),
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.grey.shade50,
-                                                                  shape: BoxShape.circle,
-                                                                ),
-                                                                alignment: Alignment.center,
-                                                                child: Icon(
-                                                                  Icons.delete_rounded,
-                                                                  color: Colors.red,
-                                                                  size: 20,
+                                                    if (Provider.of<privilge_vm>(context, listen: true)
+                                                            .checkprivlge('146') ==
+                                                        true)
+                                                      Positioned.fill(
+                                                        child: Align(
+                                                          alignment: Alignment.topRight,
+                                                          child: Row(
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () => pickImage((context, file) =>
+                                                                    onPickCommercialRecordImage(file)),
+                                                                borderRadius: BorderRadius.circular(90),
+                                                                child: Container(
+                                                                  height: 40,
+                                                                  width: 40,
+                                                                  margin: EdgeInsets.only(top: 10, right: 15),
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.grey.shade50,
+                                                                    shape: BoxShape.circle,
+                                                                  ),
+                                                                  alignment: Alignment.center,
+                                                                  child: Icon(Icons.attachment_rounded,
+                                                                      color: Colors.grey.shade700, size: 20),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                              InkWell(
+                                                                onTap: () => onDeleteCommercialRecordImage(),
+                                                                borderRadius: BorderRadius.circular(90),
+                                                                child: Container(
+                                                                  height: 40,
+                                                                  width: 40,
+                                                                  margin: EdgeInsets.only(top: 10, right: 15),
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.grey.shade50,
+                                                                    shape: BoxShape.circle,
+                                                                  ),
+                                                                  alignment: Alignment.center,
+                                                                  child: Icon(
+                                                                    Icons.delete_rounded,
+                                                                    color: Colors.red,
+                                                                    size: 20,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    )
+                                                      )
                                                   ],
                                                 ),
                                               )
@@ -1603,10 +1604,8 @@ class _addinvoiceState extends State<addinvoice> {
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
   }
+
   final intl.DateFormat formatter = intl.DateFormat('yyyy-MM-dd');
-
-
-
 
   Future<File> createFileOfPdfUrl(String urlparam) async {
     Completer<File> completer = Completer();
