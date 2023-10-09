@@ -307,7 +307,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                               builder: (context) =>
                                                   addinvoice(invoice: invoice, itemClient: clientmodel!)));
                                   },
-                                ) : Container(), // widget.type == 'approved'
+                                )
+                              : Container(), // widget.type == 'approved'
                           //     ? invoice.isApprove == null
                           Provider.of<privilge_vm>(context, listen: true).checkprivlge('41') == true
                               ? invoice.isApprove != null
@@ -661,7 +662,9 @@ class _RejectDialogState extends State<RejectDialog> {
   @override
   void initState() {
     _invoice = widget.invoice;
-    descresaonController.text = _invoice.desc_reason_back.toString();
+    if (_invoice.desc_reason_back?.isNotEmpty ?? false)
+      descresaonController.text = _invoice.desc_reason_back.toString();
+    if (_invoice.value_back?.isNotEmpty ?? false)
     valueBackController.text = _invoice.value_back.toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -685,12 +688,12 @@ class _RejectDialogState extends State<RejectDialog> {
     descresaonController.dispose();
     super.dispose();
   }
-  clear_back() {
 
+  clear_back() {
     descresaonController.text = '';
     valueBackController.text = '';
-
   }
+
   DateTime _currentDate = DateTime.now();
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
@@ -747,6 +750,8 @@ class _RejectDialogState extends State<RejectDialog> {
                     RowEdit(name: "اسباب الإنسحاب", des: '*'),
                     Consumer<typeclient>(
                       builder: (context, cart, child) {
+                        print("cart.type_of_out ${cart.type_of_out}");
+                        print("cart.selectedValueOut ${cart.selectedValueOut}");
                         return DropdownButton(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),
@@ -967,115 +972,114 @@ class _RejectDialogState extends State<RejectDialog> {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        return
-                          _invoice.file_reject!.isNotEmpty?
-                          Center(
-                            child:  ElevatedButton(
-                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
-                              onPressed: () async {
-                                // if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
-                                //   ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
-                                //   return;
-                                // }
-                                if (_globalKey.currentState!.validate()) {
-                                  _globalKey.currentState!.save();
+                        return (_invoice.file_reject?.isNotEmpty ?? false)
+                            ? Center(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                                  onPressed: () async {
+                                    // if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
+                                    //   ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                    //   return;
+                                    // }
+                                    if (_globalKey.currentState!.validate()) {
+                                      _globalKey.currentState!.save();
 
-                                  await Provider.of<invoice_vm>(context, listen: false)
-                                      .delete_back(_invoice.idInvoice.toString(), _invoice.file_reject.toString());
+                                      await Provider.of<invoice_vm>(context, listen: false)
+                                          .delete_back(_invoice.idInvoice.toString(), _invoice.file_reject.toString());
 
-                                   clear_back();
+                                      clear_back();
 
-                                  Navigator.of(context, rootNavigator: true).pop(false);
-                                }
-                              },
-                              child: Text('حذف الطلب'),
-                            ),
-                          )
-                          :Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                onPressed: () async {
-                                  if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(content: Text("من فضلك قم ياختيار ملف")));
-                                    return;
-                                  }
-                                  if (_globalKey.currentState!.validate()) {
-                                    _globalKey.currentState!.save();
+                                      Navigator.of(context, rootNavigator: true).pop(false);
+                                    }
+                                  },
+                                  child: Text('حذف الطلب'),
+                                ),
+                              )
+                            : Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                      onPressed: () async {
+                                        if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                          return;
+                                        }
+                                        if (_globalKey.currentState!.validate()) {
+                                          _globalKey.currentState!.save();
 
-                                    await Provider.of<invoice_vm>(context, listen: false).set_state_back({
-                                      'type_back': 'back',
-                                      'fk_regoin': _invoice.fk_regoin.toString(),
-                                      'fkcountry': _invoice.fk_country.toString(),
-                                      "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
-                                          .currentUser
-                                          .idUser
-                                          .toString(),
-                                      "name_enterprise": widget.clientModel.nameEnterprise.toString(),
-                                      "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
-                                          .currentUser
-                                          .nameUser
-                                          .toString(),
-                                      "fk_client": _invoice.fkIdClient.toString(),
-                                      "reason_back": typeclient_provider.selectedValueOut.toString(),
-                                      "fkuser_back": Provider.of<user_vm_provider>(context, listen: false)
-                                          .currentUser
-                                          .idUser
-                                          .toString(),
-                                      "desc_reason_back": descresaonController.text.toString(),
-                                      "date_change_back": _currentDate.toString(),
-                                      "value_back": valueBackController.text.toString(),
-                                    }, _invoice.idInvoice.toString(), selectedFile);
-                                    Navigator.of(context, rootNavigator: true).pop(false);
-                                  }
-                                },
-                                child: Text('انسحاب'),
-                              ),
-                              ElevatedButton(
-                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                onPressed: () async {
-                                  if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(content: Text("من فضلك قم ياختيار ملف")));
-                                    return;
-                                  }
-                                  if (_globalKey.currentState!.validate()) {
-                                    _globalKey.currentState!.save();
+                                          await Provider.of<invoice_vm>(context, listen: false).set_state_back({
+                                            'type_back': 'back',
+                                            'fk_regoin': _invoice.fk_regoin.toString(),
+                                            'fkcountry': _invoice.fk_country.toString(),
+                                            "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                            "name_enterprise": widget.clientModel.nameEnterprise.toString(),
+                                            "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                                .currentUser
+                                                .nameUser
+                                                .toString(),
+                                            "fk_client": _invoice.fkIdClient.toString(),
+                                            "reason_back": typeclient_provider.selectedValueOut.toString(),
+                                            "fkuser_back": Provider.of<user_vm_provider>(context, listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                            "desc_reason_back": descresaonController.text.toString(),
+                                            "date_change_back": _currentDate.toString(),
+                                            "value_back": valueBackController.text.toString(),
+                                          }, _invoice.idInvoice.toString(), selectedFile);
+                                          Navigator.of(context, rootNavigator: true).pop(false);
+                                        }
+                                      },
+                                      child: Text('انسحاب'),
+                                    ),
+                                    ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                      onPressed: () async {
+                                        if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                          return;
+                                        }
+                                        if (_globalKey.currentState!.validate()) {
+                                          _globalKey.currentState!.save();
 
-                                    await Provider.of<invoice_vm>(context, listen: false).set_state_back({
-                                      'type_back': 'return',
-                                      'fk_regoin': _invoice.fk_regoin.toString(),
-                                      'fkcountry': _invoice.fk_country.toString(),
-                                      "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
-                                          .currentUser
-                                          .idUser
-                                          .toString(),
-                                      "name_enterprise": widget.clientModel.nameEnterprise.toString(),
-                                      "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
-                                          .currentUser
-                                          .nameUser
-                                          .toString(),
-                                      "fk_client": _invoice.fkIdClient.toString(),
-                                      "reason_back": typeclient_provider.selectedValueOut.toString(),
-                                      "fkuser_back": Provider.of<user_vm_provider>(context, listen: false)
-                                          .currentUser
-                                          .idUser
-                                          .toString(),
-                                      "desc_reason_back": descresaonController.text.toString(),
-                                      "date_change_back": _currentDate.toString(),
-                                      "value_back": valueBackController.text.toString(),
-                                    }, _invoice.idInvoice.toString(), selectedFile);
-                                    Navigator.of(context, rootNavigator: true).pop(false);
-                                  }
-                                },
-                                child: Text('ارجاع'),
-                              ),
-                            ],
-                          ),
-                        );
+                                          await Provider.of<invoice_vm>(context, listen: false).set_state_back({
+                                            'type_back': 'return',
+                                            'fk_regoin': _invoice.fk_regoin.toString(),
+                                            'fkcountry': _invoice.fk_country.toString(),
+                                            "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                            "name_enterprise": widget.clientModel.nameEnterprise.toString(),
+                                            "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                                .currentUser
+                                                .nameUser
+                                                .toString(),
+                                            "fk_client": _invoice.fkIdClient.toString(),
+                                            "reason_back": typeclient_provider.selectedValueOut.toString(),
+                                            "fkuser_back": Provider.of<user_vm_provider>(context, listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                            "desc_reason_back": descresaonController.text.toString(),
+                                            "date_change_back": _currentDate.toString(),
+                                            "value_back": valueBackController.text.toString(),
+                                          }, _invoice.idInvoice.toString(), selectedFile);
+                                          Navigator.of(context, rootNavigator: true).pop(false);
+                                        }
+                                      },
+                                      child: Text('ارجاع'),
+                                    ),
+                                  ],
+                                ),
+                              );
                       },
                     ),
                   ],

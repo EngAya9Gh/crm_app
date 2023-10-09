@@ -7,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 import '../../../constants.dart';
+import '../../../labeltext.dart';
 import '../../../model/invoiceModel.dart';
+import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 
 class InvoiceFileGalleryPage extends StatefulWidget {
@@ -26,31 +28,65 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
       builder: (context, value, child) {
         invoiceVm = value;
         final files = value.currentInvoice?.filesAttach ?? [];
-
+        final imageRecord = value.currentInvoice?.imageRecord;
         return Scaffold(
           appBar: AppBar(
             title: Text("مرفقات الفاتورة"),
             centerTitle: true,
             backgroundColor: kMainColor,
           ),
-          body: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 1 / 1.5,
-              crossAxisSpacing: 15.r,
-              mainAxisSpacing: 10.r,
-            ),
-            padding: REdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            itemBuilder: (context, index) {
-              final attachFile = files[index];
-              if (attachFile.file != null) {
-                return fileImage(attachFile);
-              } else {
-                return networkImage(attachFile);
-              }
-            },
-            itemCount: files.length,
-            scrollDirection: Axis.vertical,
+          body: Column(
+            children: [
+              if (imageRecord?.isNotEmpty ?? false) ...{
+                SizedBox(height: 10),
+                Directionality(
+                  child: Padding(
+                    padding: REdgeInsetsDirectional.only(start: 10.0),
+                    child: RowEdit(name: label_image, des: ''),
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+                SizedBox(height: 10),
+                Container(
+                  height: 200,
+                  margin: REdgeInsetsDirectional.only(end: 10.0,start: 10),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                  alignment: AlignmentDirectional.centerEnd,
+                  child: InkWell(
+                    onTap: () => AppPhotoViewer(urls: [imageRecord!]).show(context),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: FancyImageShimmerViewer(
+                        imageUrl: imageRecord!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
+                    ),
+                  ),
+                ),
+              },
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1 / 1.5,
+                    crossAxisSpacing: 15.r,
+                    mainAxisSpacing: 10.r,
+                  ),
+                  padding: REdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                  itemBuilder: (context, index) {
+                    final attachFile = files[index];
+                    if (attachFile.file != null) {
+                      return fileImage(attachFile);
+                    } else {
+                      return networkImage(attachFile);
+                    }
+                  },
+                  itemCount: files.length,
+                  scrollDirection: Axis.vertical,
+                ),
+              ),
+            ],
           ),
         );
       },

@@ -22,4 +22,9 @@ class ReasonModel {
     _data['type'] = type;
     return _data;
   }
+
+  @override
+  String toString() {
+    return 'ReasonModel{idReason: $idReason, nameReason: $nameReason, type: $type}';
+  }
 }
