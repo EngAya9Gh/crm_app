@@ -804,6 +804,11 @@ class FileAttach {
       fileStatus: fileStatus ?? this.fileStatus,
     );
   }
+
+  @override
+  String toString() {
+    return 'FileAttach{fileAttach: $fileAttach, id: $id, file: $file, fileStatus: $fileStatus}';
+  }
 }
 
 class DateInstallationClient {

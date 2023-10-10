@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import '../constants.dart';
 import 'dart:io';
 
+import '../model/attachement_invoice_files.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
@@ -26,8 +27,9 @@ class Invoice_Service {
     //     List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
-  Future<List<InvoiceModel>> getinvoice_debt(String fk_country,String type,String param) async {
-    var data ;
+
+  Future<List<InvoiceModel>> getinvoice_debt(String fk_country, String type, String param) async {
+    var data;
     switch (type) {
       case "all":
         data = await Api()
@@ -59,7 +61,6 @@ class Invoice_Service {
     //     List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
-
 
   List<InvoiceModel> convertToInvoices(List<dynamic> list) {
     return List<Map<String, dynamic>>.from(list).map<InvoiceModel>((e) => InvoiceModel.fromJson(e)).toList();
@@ -114,21 +115,21 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicebyclient(String fk_idClient) async {
     //not called because get local
-   try{
-     var data = await Api().get(url: url + 'client/invoice/get_invoice_ByIdClient.php?fk_idClient=$fk_idClient');
-     print(data);
-     List<InvoiceModel> prodlist = [];
-     // final json = "[" + data[i] + "]";
-     for (int i = 0; i < data.length; i++) {
-       print(i);
+    try {
+      var data = await Api().get(url: url + 'client/invoice/get_invoice_ByIdClient.php?fk_idClient=$fk_idClient');
+      print(data);
+      List<InvoiceModel> prodlist = [];
+      // final json = "[" + data[i] + "]";
+      for (int i = 0; i < data.length; i++) {
+        print(i);
 
-       prodlist.add(InvoiceModel.fromJson(data[i]));
-     }
-     print(prodlist);
-     return prodlist;
-   }catch(e){
-     return [];
-   }
+        prodlist.add(InvoiceModel.fromJson(data[i]));
+      }
+      print(prodlist);
+      return prodlist;
+    } catch (e) {
+      return [];
+    }
   }
 
   Future<InvoiceModel> setdate(Map<String, dynamic> body, String id_invoice) async {
@@ -143,18 +144,13 @@ class Invoice_Service {
     required String fk_user,
     required String fk_client,
   }) async {
-    var result = await Api().post(
-        url: url +
-            "client/invoice/add_date_install.php",
-        body:{
-          'date_client_visit':date_client_visit,
-          'fk_user':fk_user,
-          'is_done':'0',
-          'fk_invoice':id_invoice,
-          'fk_client':fk_client.toString()
-
-
-        } );
+    var result = await Api().post(url: url + "client/invoice/add_date_install.php", body: {
+      'date_client_visit': date_client_visit,
+      'fk_user': fk_user,
+      'is_done': '0',
+      'fk_invoice': id_invoice,
+      'fk_client': fk_client.toString()
+    });
 
     return result;
   }
@@ -171,22 +167,21 @@ class Invoice_Service {
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
-  Future<InvoiceModel> setstate(Map<String, dynamic> body, String id_invoice , File? file) async {
-
-    var result = await Api().postRequestWithFile('array',
-      url+"client/invoice/update_stateback.php?id_invoice=$id_invoice",
+  Future<InvoiceModel> setstate(Map<String, dynamic> body, String id_invoice, File? file) async {
+    var result = await Api().postRequestWithFile(
+      'array',
+      url + "client/invoice/update_stateback.php?id_invoice=$id_invoice",
       body,
-      file,null,
+      file,
+      null,
     );
     //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
-  Future<InvoiceModel> delete_back( String id_invoice,String file_reject ) async {
 
-    var result = await Api().postRequestWithFile('array',
-      url+"series/delete_demand_out.php?id_invoice=$id_invoice",
-       {'file_reject':file_reject},null,null
-    );
+  Future<InvoiceModel> delete_back(String id_invoice, String file_reject) async {
+    var result = await Api().postRequestWithFile(
+        'array', url + "series/delete_demand_out.php?id_invoice=$id_invoice", {'file_reject': file_reject}, null, null);
     //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
@@ -216,10 +211,9 @@ class Invoice_Service {
     print(prodlist);
     return prodlist;
   }
+
   Future<List<InvoiceModel>> getinvoicebyiduser_marketing(String iduser) async {
-    var
-    data=await Api()
-        .get(url:url+ 'client/invoice/getinvoiceMarkting_user.php?iduser=$iduser');
+    var data = await Api().get(url: url + 'client/invoice/getinvoiceMarkting_user.php?iduser=$iduser');
     print(data);
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
@@ -229,10 +223,9 @@ class Invoice_Service {
     print(prodlist);
     return prodlist;
   }
+
   Future<List<InvoiceModel>> getinvoicebyregoin_marketing(String regoin) async {
-    var
-    data=await Api()
-        .get(url:url+ 'client/invoice/getclientMarketing_regoin.php?regoin=$regoin');
+    var data = await Api().get(url: url + 'client/invoice/getclientMarketing_regoin.php?regoin=$regoin');
     print(data);
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
@@ -242,13 +235,9 @@ class Invoice_Service {
     print(prodlist);
     return prodlist;
   }
-  Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst( Map<String,dynamic> body) async {
-    var
-    data=await Api()
-        .post(
-        url:url+ 'client/accept_requsts.php',
-    body: body
-    );
+
+  Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst(Map<String, dynamic> body) async {
+    var data = await Api().post(url: url + 'client/accept_requsts.php', body: body);
     print(data);
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
@@ -261,12 +250,30 @@ class Invoice_Service {
 
   Future<InvoiceModel> addInvoice(Map<String, dynamic?> body, File? file, File? filelogo, List<File> files) async {
     try {
-      var data = await Api().postRequestWithFile('array', url + "client/invoice/addinvoice.php", body, file, filelogo,files: files);
+      var data = await Api()
+          .postRequestWithFile('array', url + "client/invoice/addinvoice.php", body, file, filelogo, files: files);
 
       return InvoiceModel.fromJson(data[0]);
     } catch (e) {
       print(e.toString());
       return InvoiceModel(products: []);
+    }
+  }
+
+  Future<AttachmentInvoiceResponse> crudFilesInvoice({
+    required Map<String, dynamic> body,
+    required List<File> files,
+    File? file,
+    required String invoiceId,
+  }) async {
+    try {
+      final data = await Api().postCrudInvoiceFile(
+          'array', url + "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId", body, file,
+          files: files);
+
+      return AttachmentInvoiceResponse.fromJson(data[0]);
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -277,26 +284,27 @@ class Invoice_Service {
       print('result idproduct invoice');
       print(result);
       return result != "error" ? result : "false";
-    } catch (e,st) {
+    } catch (e, st) {
       print(e);
       print("st $st");
       return "false";
     }
   }
 
-  Future<InvoiceModel> updateInvoice(Map<String, dynamic> body, String idInvoice, File? file, File? filelogo,List<File> files) async {
-    var result =
-        await Api().postRequestWithFile('array', url + "client/invoice/updateinvoice.php", body, file, filelogo,files: files);
+  Future<InvoiceModel> updateInvoice(
+      Map<String, dynamic> body, String idInvoice, File? file, File? filelogo, List<File> files) async {
+    var result = await Api()
+        .postRequestWithFile('array', url + "client/invoice/updateinvoice.php", body, file, filelogo, files: files);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
+
   Future<InvoiceModel> addPayment(Map<String, dynamic> body, String idInvoice) async {
-    var result =
-        await Api().post(url:  url + "client/invoice/add_payment.php",body:  body);
+    var result = await Api().post(url: url + "client/invoice/add_payment.php", body: body);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
+
   Future<InvoiceModel> editinvoice(Map<String, dynamic> body, String idInvoice) async {
-    var result =
-        await Api().post(url:  url + "client/invoice/edit_invoices.php",body:  body);
+    var result = await Api().post(url: url + "client/invoice/edit_invoices.php", body: body);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 

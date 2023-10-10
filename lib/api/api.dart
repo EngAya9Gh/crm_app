@@ -89,7 +89,6 @@ class Api {
     return null;
   }
 
-
   Future<File> downloadFile(String url, String filename) async {
     HttpClient httpClient = new HttpClient();
     var request = await httpClient.getUrl(Uri.parse(url));
@@ -99,6 +98,51 @@ class Api {
     File file = new File('$dir/$filename');
     await file.writeAsBytes(bytes);
     return file;
+  }
+
+  Future<dynamic> postCrudInvoiceFile(String type, String url, Map<String, dynamic> data, File? file,
+      {List<File>? files}) async {
+    var request = http.MultipartRequest("POST", Uri.parse(url));
+    if (file != null) {
+      var length = await file.length();
+      var stream = http.ByteStream(file.openRead());
+      var multipartFile = http.MultipartFile("file", stream, length, filename: basename(file.path));
+      request.files.add(multipartFile);
+    }
+
+    if (files != null) {
+      for (int i = 0; i < files.length; i++) {
+        final element = files[i];
+        var length = await element.length();
+        var stream = http.ByteStream(element.openRead());
+        var multipartFile = http.MultipartFile("uploadfiles[$i]", stream, length, filename: basename(element.path));
+        request.files.add(multipartFile);
+      }
+    }
+
+    data.forEach((key, value) {
+      request.fields[key] = value;
+    });
+    var myRequest = await request.send();
+    var response = await http.Response.fromStream(myRequest);
+
+    String result = '';
+    if (type == 'array') {
+      result = response.body;
+      int idx = result.indexOf("{");
+      int length = result.length;
+      result = result.substring(idx, length);
+    } else {
+      result = response.body;
+      int idx = result.indexOf("{");
+      int idxEnd = result.indexOf("}");
+      result = result.substring(idx, idxEnd + 1); //user update not run but run invoice
+    }
+    if (json.decode(result)["code"] == "200") {
+      return jsonDecode(result)["message"];
+    } else {
+      throw Exception('${json.decode(result)["message"]}');
+    }
   }
 
   Future<dynamic> postRequestWithFile(String type, String url, Map<String, dynamic> data, File? file, File? filelogo,

@@ -1360,41 +1360,41 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> set_state_back(Map<String, dynamic> body, String? id_invoice, File? file) async {
-   try{
-     isloading = true;
-     notifyListeners();
-     InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!, file);
-     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-     if (index != -1) {
-       listinvoices[index] = data;
-     }
-     index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
-     if (index != -1) {
-       listinvoiceClient[index] = data;
-     }
-     currentInvoice = data;
-     index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
-     if (index != -1) {
-       listInvoicesAccept[index] = data;
-     }
+    try {
+      isloading = true;
+      notifyListeners();
+      InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!, file);
+      int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
+      if (index != -1) {
+        listinvoices[index] = data;
+      }
+      index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
+      if (index != -1) {
+        listinvoiceClient[index] = data;
+      }
+      currentInvoice = data;
+      index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
+      if (index != -1) {
+        listInvoicesAccept[index] = data;
+      }
 
-     // listinvoiceClient
-     // body.addAll(
-     //     InvoiceModel.fromJson(listinvoices[index]));
-     // listinvoices[index]= InvoiceModel.fromJson(body);
-     // //listClient.removeAt(index);
-     isloading = false;
-     notifyListeners();
-   }catch(e){
-     isloading = false;
-     notifyListeners();
-   }
+      // listinvoiceClient
+      // body.addAll(
+      //     InvoiceModel.fromJson(listinvoices[index]));
+      // listinvoices[index]= InvoiceModel.fromJson(body);
+      // //listClient.removeAt(index);
+      isloading = false;
+      notifyListeners();
+    } catch (e) {
+      isloading = false;
+      notifyListeners();
+    }
   }
 
-  Future<void> delete_back(  String  id_invoice,String file_reject ) async {
+  Future<void> delete_back(String id_invoice, String file_reject) async {
     isloading = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service().delete_back( id_invoice,file_reject);
+    InvoiceModel data = await Invoice_Service().delete_back(id_invoice, file_reject);
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
     if (index != -1) {
       listinvoices[index] = data;
@@ -1714,4 +1714,40 @@ class invoice_vm extends ChangeNotifier {
   }
 
   final int maxFilesAttach = 20;
+
+  bool isLoadingCrudFiles = false;
+
+  curdInvoiceFiles({
+    required Map<String, dynamic> body,
+    required List<File> files,
+    File? file,
+    required String invoiceId,
+    VoidCallback? onSucess,
+  }) async {
+    try {
+      isLoadingCrudFiles = true;
+      notifyListeners();
+      final data = await Invoice_Service().crudFilesInvoice(files: files, body: body, invoiceId: invoiceId, file: file);
+
+      final invoice = currentInvoice!.copyWith(
+        filesAttach: data.filesAttach,
+        imageRecord: (data.imageRecord?.isNotEmpty ?? false) ? urlfile + data.imageRecord! : null,
+      );
+
+      final index = listinvoiceClient.indexWhere((element) => element.idInvoice == invoiceId);
+      if (index != -1) listinvoiceClient[index] = invoice;
+      final index1 = listinvoices.indexWhere((element) => element.idInvoice == invoiceId);
+      if (index1 != -1) listinvoices[index1] = invoice;
+      int index2 = listInvoicesAccept.indexWhere((element) => element.idInvoice == invoiceId);
+      if (index2 != -1) listInvoicesAccept[index2] = invoice;
+
+      currentInvoice = invoice;
+      isLoadingCrudFiles = false;
+      notifyListeners();
+      onSucess?.call();
+    } catch (e) {
+      isLoadingCrudFiles = false;
+      notifyListeners();
+    }
+  }
 }
