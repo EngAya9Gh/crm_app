@@ -20,6 +20,7 @@ import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -28,6 +29,10 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
+import '../../../core/utils/responsive_padding.dart';
+import '../../../features/clients_list/presentation/pages/filter_clients_sheet.dart';
+import '../../widgets/client_widget/app_bottom_sheet.dart';
 import 'addClient.dart';
 
 class tabclients extends StatefulWidget {
@@ -120,227 +125,286 @@ class _tabclientsState extends State<tabclients> {
                 textDirection: TextDirection.rtl,
                 child: ListView(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        privilge.checkprivlge('8') == true
-                            ? //regoin
-                            Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                  child: Consumer<regoin_vm>(
-                                    builder: (context, cart, child) {
-                                      return DropdownButton(
-                                        isExpanded: true,
-                                        hint: Text("الفرع"),
-                                        items: cart.listregoinfilter.map((level_one) {
-                                          return DropdownMenuItem(
-                                            child: Text(level_one.name_regoin), //label of item
-                                            value: level_one.id_regoin, //value of item
-                                          );
-                                        }).toList(),
-                                        value: cart.selectedValueLevel,
-                                        onChanged: (value) {
-                                          //  setState(() {
-                                          cart.changeVal(value.toString());
-                                          regoin = value.toString();
-                                          filtershow();
-                                        },
-                                      );
-                                    },
-                                  ),
-                                ),
-                              )
-                            : Container(),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20.0, right: 8),
-                            child: Consumer<typeclient>(builder: (context, cart, child) {
-                              return DropdownButton(
-                                isExpanded: true,
-                                hint: Text('الحالة'),
-                                items: cart.type_of_client_filter.map((level_one) {
-                                  return DropdownMenuItem(
-                                    child: Text(level_one), //label of item
-                                    value: level_one, //value of item
-                                  );
-                                }).toList(),
-                                value: cart.selectedValufilter,
-                                onChanged: (value) {
-                                  cart.changevaluefilter(value.toString());
-                                  typeclientvalue = value.toString();
-                                  print(typeclientvalue);
-                                  filtershow();
-                                },
-                              );
-                            }),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    //SizedBox(height: 2,),
-                    privilge.checkprivlge('15') == true || privilge.checkprivlge('8') == true
-                        ? //user
-                        Padding(
-                            padding: const EdgeInsets.only(
-                              left: 8.0,
-                              right: 8,
-                            ),
-                            child: Consumer<user_vm_provider>(
-                              builder: (context, cart, child) {
-                                return Row(
-                                  children: [
-                                    if (cart.selecteduser != null) ...{
-                                      IconButton(
-                                          onPressed: () {
-                                            iduser = null;
-                                            cart.changevalueuser(null);
-                                            filtershow();
-                                          },
-                                          icon: Icon(Icons.highlight_off)),
-                                      SizedBox(width: 10),
-                                    },
-                                    Expanded(
-                                      child:
-                                      DropdownSearch<UserModel>(
-                                        mode: Mode.DIALOG,
-                                        filterFn: (user, filter) => user!.getfilteruser(filter!),
-                                        compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
-                                        items: cart.usersSalesManagement,
-                                        itemAsString: (u) => u!.userAsString(),
-                                        onChanged: (data) {
-                                          iduser = data!.idUser;
-                                          cart.changevalueuser(data);
-                                          filtershow();
-                                        },
-                                        selectedItem: cart.selecteduser,
-                                        showSearchBox: true,
-                                        dropdownSearchDecoration: InputDecoration(
-                                          isCollapsed: true,
-                                          hintText: 'الموظف',
-                                          alignLabelWithHint: true,
-                                          fillColor: Colors.grey.withOpacity(0.2),
-                                          contentPadding: EdgeInsets.all(0),
-                                          border:
-                                              UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                                        ),
-                                        // InputDecoration(border: InputBorder.none),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                          )
-                        : Container(),
-                    SizedBox(
-                      height: 2,
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //   children: [
+                    //     privilge.checkprivlge('8') == true
+                    //         ? //regoin
+                    //         Expanded(
+                    //             child: Padding(
+                    //               padding: const EdgeInsets.only(left: 8.0, right: 8),
+                    //               child: Consumer<regoin_vm>(
+                    //                 builder: (context, cart, child) {
+                    //                   return DropdownButton(
+                    //                     isExpanded: true,
+                    //                     hint: Text("الفرع"),
+                    //                     items: cart.listregoinfilter.map((level_one) {
+                    //                       return DropdownMenuItem(
+                    //                         child: Text(level_one.name_regoin), //label of item
+                    //                         value: level_one.id_regoin, //value of item
+                    //                       );
+                    //                     }).toList(),
+                    //                     value: cart.selectedValueLevel,
+                    //                     onChanged: (value) {
+                    //                       //  setState(() {
+                    //                       cart.changeVal(value.toString());
+                    //                       regoin = value.toString();
+                    //                       filtershow();
+                    //                     },
+                    //                   );
+                    //                 },
+                    //               ),
+                    //             ),
+                    //           )
+                    //         : Container(),
+                    //     Expanded(
+                    //       child: Padding(
+                    //         padding: const EdgeInsets.only(left: 20.0, right: 8),
+                    //         child: Consumer<typeclient>(builder: (context, cart, child) {
+                    //           return DropdownButton(
+                    //             isExpanded: true,
+                    //             hint: Text('الحالة'),
+                    //             items: cart.type_of_client_filter.map((level_one) {
+                    //               return DropdownMenuItem(
+                    //                 child: Text(level_one), //label of item
+                    //                 value: level_one, //value of item
+                    //               );
+                    //             }).toList(),
+                    //             value: cart.selectedValufilter,
+                    //             onChanged: (value) {
+                    //               cart.changevaluefilter(value.toString());
+                    //               typeclientvalue = value.toString();
+                    //               print(typeclientvalue);
+                    //               filtershow();
+                    //             },
+                    //           );
+                    //         }),
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    //
+                    // //SizedBox(height: 2,),
+                    // privilge.checkprivlge('15') == true || privilge.checkprivlge('8') == true
+                    //     ? //user
+                    //     Padding(
+                    //         padding: const EdgeInsets.only(
+                    //           left: 8.0,
+                    //           right: 8,
+                    //         ),
+                    //         child: Consumer<user_vm_provider>(
+                    //           builder: (context, cart, child) {
+                    //             return Row(
+                    //               children: [
+                    //                 if (cart.selecteduser != null) ...{
+                    //                   IconButton(
+                    //                       onPressed: () {
+                    //                         iduser = null;
+                    //                         cart.changevalueuser(null);
+                    //                         filtershow();
+                    //                       },
+                    //                       icon: Icon(Icons.highlight_off)),
+                    //                   SizedBox(width: 10),
+                    //                 },
+                    //                 Expanded(
+                    //                   child:
+                    //                   DropdownSearch<UserModel>(
+                    //                     mode: Mode.DIALOG,
+                    //                     filterFn: (user, filter) => user!.getfilteruser(filter!),
+                    //                     compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                    //                     items: cart.usersSalesManagement,
+                    //                     itemAsString: (u) => u!.userAsString(),
+                    //                     onChanged: (data) {
+                    //                       iduser = data!.idUser;
+                    //                       cart.changevalueuser(data);
+                    //                       filtershow();
+                    //                     },
+                    //                     selectedItem: cart.selecteduser,
+                    //                     showSearchBox: true,
+                    //                     dropdownSearchDecoration: InputDecoration(
+                    //                       isCollapsed: true,
+                    //                       hintText: 'الموظف',
+                    //                       alignLabelWithHint: true,
+                    //                       fillColor: Colors.grey.withOpacity(0.2),
+                    //                       contentPadding: EdgeInsets.all(0),
+                    //                       border:
+                    //                           UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                    //                     ),
+                    //                     // InputDecoration(border: InputBorder.none),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             );
+                    //           },
+                    //         ),
+                    //       )
+                    //     : Container(),
+                    // SizedBox(
+                    //   height: 2,
+                    // ),
+                    // Padding(
+                    //   padding: const EdgeInsets.only(
+                    //     left: 8.0,
+                    //     right: 8,
+                    //   ),
+                    //   child:
+                    //   Consumer<activity_vm>(
+                    //     builder: (context, cart, child) {
+                    //       return Row(
+                    //         children: [
+                    //           if (cart.selectedValueOut?.id_activity_type != null) ...{
+                    //             IconButton(
+                    //                 onPressed: () {
+                    //                   cart.changevalueOut(null);
+                    //                   activity = null;
+                    //                   filtershow();
+                    //                 },
+                    //                 icon: Icon(Icons.highlight_off)),
+                    //             SizedBox(width: 10),
+                    //           },
+                    //           Expanded(
+                    //             child:
+                    //             DropdownSearch<ActivityModel>(
+                    //               mode: Mode.DIALOG,
+                    //               filterFn: (user, filter) => user!.getfilter_actv(filter!),
+                    //               compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
+                    //               items: cart.list_activity,
+                    //               itemAsString: (u) => u!.userAsString(),
+                    //               onChanged: (data) {
+                    //                 // iduser = data!.id_activity_type;
+                    //                 cart.changevalueOut(data);
+                    //                     activity = data?.id_activity_type.toString();
+                    //                     filtershow();
+                    //               },
+                    //               selectedItem: cart.selectedValueOut,
+                    //               showSearchBox: true,
+                    //               dropdownSearchDecoration: InputDecoration(
+                    //                 isCollapsed: true,
+                    //                 hintText: 'النشاط',
+                    //                 alignLabelWithHint: true,
+                    //                 fillColor: Colors.grey.withOpacity(0.2),
+                    //                 contentPadding: EdgeInsets.all(0),
+                    //                 border:
+                    //                 UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                    //               ),
+                    //               // InputDecoration(border: InputBorder.none),
+                    //             ),
+                    //             // DropdownButton(
+                    //             //   isExpanded: true,
+                    //             //   hint: Text("النشاط"),
+                    //             //   items: cart.list_activity.map((level_one) {
+                    //             //     return DropdownMenuItem(
+                    //             //       child: Text(level_one.name_activity_type), //label of item
+                    //             //       value: level_one.id_activity_type, //value of item
+                    //             //     );
+                    //             //   }).toList(),
+                    //             //   value: cart.selectedValueOut,
+                    //             //   onChanged: (value) {
+                    //             //     //  setState(() {
+                    //             //     cart.changevalueOut(value.toString());
+                    //             //     activity = value.toString();
+                    //             //     filtershow();
+                    //             //   },
+                    //             // ),
+                    //           ),
+                    //         ],
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 2,
+                    // ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //       color: Colors.white,
+                    //       borderRadius: BorderRadius.all(
+                    //         Radius.circular(5),
+                    //       )),
+                    //   height: 50,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                    //     child: Container(
+                    //       decoration: BoxDecoration(
+                    //         color: Colors.grey.withOpacity(0.2),
+                    //         borderRadius: BorderRadius.circular(10),
+                    //       ),
+                    //       child: TextField(
+                    //         controller: _searchTextField,
+                    //         textInputAction: TextInputAction.search,
+                    //         decoration: InputDecoration(
+                    //           hintText: hintnamefilter,
+                    //           border: InputBorder.none,
+                    //           prefixIcon: Icon(
+                    //             Icons.search,
+                    //             color: Colors.black,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 5,
+                    // ),
+                    15.verticalSpace,
                     Padding(
-                      padding: const EdgeInsets.only(
-                        left: 8.0,
-                        right: 8,
-                      ),
+                      padding: HWEdgeInsets.symmetric(horizontal: 10.0),
                       child:
-                      Consumer<activity_vm>(
-                        builder: (context, cart, child) {
-                          return Row(
-                            children: [
-                              if (cart.selectedValueOut?.id_activity_type != null) ...{
-                                IconButton(
-                                    onPressed: () {
-                                      cart.changevalueOut(null);
-                                      activity = null;
-                                      filtershow();
-                                    },
-                                    icon: Icon(Icons.highlight_off)),
-                                SizedBox(width: 10),
-                              },
-                              Expanded(
-                                child:
-                                DropdownSearch<ActivityModel>(
-                                  mode: Mode.DIALOG,
-                                  filterFn: (user, filter) => user!.getfilter_actv(filter!),
-                                  compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
-                                  items: cart.list_activity,
-                                  itemAsString: (u) => u!.userAsString(),
-                                  onChanged: (data) {
-                                    // iduser = data!.id_activity_type;
-                                    cart.changevalueOut(data);
-                                        activity = data?.id_activity_type.toString();
-                                        filtershow();
-                                  },
-                                  selectedItem: cart.selectedValueOut,
-                                  showSearchBox: true,
-                                  dropdownSearchDecoration: InputDecoration(
-                                    isCollapsed: true,
-                                    hintText: 'النشاط',
-                                    alignLabelWithHint: true,
-                                    fillColor: Colors.grey.withOpacity(0.2),
-                                    contentPadding: EdgeInsets.all(0),
-                                    border:
-                                    UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
-                                  ),
-                                  // InputDecoration(border: InputBorder.none),
-                                ),
-                                // DropdownButton(
-                                //   isExpanded: true,
-                                //   hint: Text("النشاط"),
-                                //   items: cart.list_activity.map((level_one) {
-                                //     return DropdownMenuItem(
-                                //       child: Text(level_one.name_activity_type), //label of item
-                                //       value: level_one.id_activity_type, //value of item
-                                //     );
-                                //   }).toList(),
-                                //   value: cart.selectedValueOut,
-                                //   onChanged: (value) {
-                                //     //  setState(() {
-                                //     cart.changevalueOut(value.toString());
-                                //     activity = value.toString();
-                                //     filtershow();
-                                //   },
-                                // ),
-                              ),
-                            ],
-                          );
-                        },
-                      ),
+              Row(
+          children: [
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5),
+                )),
+            height: 50,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: TextField(
+                  controller: _searchTextField,
+                  textInputAction: TextInputAction.search,
+                  decoration: InputDecoration(
+                    hintText: hintnamefilter,
+                    border: InputBorder.none,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.black,
                     ),
-                    SizedBox(
-                      height: 2,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          )),
-                      height: 50,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: TextField(
-                            controller: _searchTextField,
-                            textInputAction: TextInputAction.search,
-                            decoration: InputDecoration(
-                              hintText: hintnamefilter,
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Tooltip(
+          message: "فلترة",
+          child: InkWell(
+          onTap:  ()=>
+          AppBottomSheet.show(
+                  context: context,
+                  child: FilterClientsSheet(),
+                ) ,
+          borderRadius: BorderRadius.circular(10).r,
+          child: Container(
+          height: 50.r,
+          width: 50.r,
+          decoration: BoxDecoration(
+          color: AppColors.grey.shade100.withAlpha(40),
+          borderRadius: BorderRadius.circular(10).r,
+          ),
+          child: Icon(Icons.filter_alt_rounded, color: AppColors.grey.shade600, size: 30.r),
+          ),
+          ),
+          ),
+          ],
+          ),
+
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 30.0, right: 30),

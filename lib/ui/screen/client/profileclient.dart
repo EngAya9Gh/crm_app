@@ -220,6 +220,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
                             ),
                             invoices(itemClient: client, fkclient: client.idClients.toString(), fkuser: ''),
                             commentView(client: client, event: widget.event),
+
                             support_view_invoices(itemClient: client),
                             care_client_view(
                               fk_client: client.idClients.toString(),
