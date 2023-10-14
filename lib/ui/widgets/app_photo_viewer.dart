@@ -44,7 +44,14 @@ class AppPhotoViewer extends StatelessWidget {
 
   show(BuildContext context) {
     Navigator.of(context).push(
-      CupertinoPageRoute(builder: (context) => AppPhotoViewer(urls: urls)),
+      CupertinoPageRoute(
+          builder: (context) => AppPhotoViewer(
+                urls: urls,
+                imageSource: imageSource,
+                files: files,
+                maxScale: maxScale,
+                minScale: minScale,
+              )),
     );
   }
 
