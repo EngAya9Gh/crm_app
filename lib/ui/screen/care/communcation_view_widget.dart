@@ -47,7 +47,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
             get_title_care(widget.element.typeCommuncation.toString()) + val,
             '',
             widget.element.dateCommunication != null
-                ? Padding(
+                ?
+            Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
@@ -185,7 +186,11 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                     ),
                   )
                 : Provider.of<communication_vm>(context,listen: true).isload?
-                   Center(child: CircularProgressIndicator()) :Padding(
+                   Center(child: CircularProgressIndicator())
+                :
+            Provider.of<communication_vm>(context,listen: true).isload?
+            Center(child: CircularProgressIndicator()):
+            Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
@@ -302,6 +307,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                             onPressed: () async {
                               if (widget.element.typeCommuncation != 'دوري') {
+
                                 Provider.of<communication_vm>(context,listen: false).setload(true);
                                 Provider.of<communication_vm>(context, listen: false).addcommmuncation(
                                     {
