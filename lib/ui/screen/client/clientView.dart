@@ -104,7 +104,9 @@ class _ClientViewState extends State<ClientView> {
                               .checkprivlge('133') == true)?
                             IconButton(
                               onPressed: () {
-                                context.read<client_vm>().setTagClient();
+                             if( (Provider.of<privilge_vm>(context, listen: false)
+                                 .checkprivlge('147') == true))
+                               context.read<client_vm>().setTagClient();
                               },
                               icon: Icon(
                                 (clientModel!.tag ?? false)

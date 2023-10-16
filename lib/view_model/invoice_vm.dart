@@ -118,7 +118,7 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  // List<InvoiceModel> temp_listInvoicesAccept= [];
+    List<InvoiceModel> temp_listInvoicesAccept= [];
   Future<void> searchwaitsupport(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // temp_listInvoicesAccept=List.from(listInvoicesAccept);
@@ -134,7 +134,7 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else
-      listInvoicesAccept = List.from(listinvoices);
+      listInvoicesAccept = List.from(temp_listInvoicesAccept);
     //getinvoice_Local("مشترك", 'approved only', null);
     notifyListeners();
   }
@@ -494,6 +494,7 @@ class invoice_vm extends ChangeNotifier {
           break;
       }
     }
+    temp_listInvoicesAccept= List.from(listInvoicesAccept);
     isloading = false;
     //listInvoicesAccept=//List.from(listinvoices);
     notifyListeners();
@@ -784,6 +785,7 @@ class invoice_vm extends ChangeNotifier {
       }
     }
     listInvoicesAccept = List.from(listinvoices);
+    temp_listInvoicesAccept= List.from(listinvoices);
     // listInvoicesAccept.forEach((element) {
     //   if (element.stateclient == 'مشترك' &&
     //       element.isApprove == "1" &&

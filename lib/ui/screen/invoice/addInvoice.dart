@@ -546,45 +546,46 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 15,
                       ),
-                      _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: '*') : Container(),
-                      _invoice!.idInvoice == null
-                          ? Container(
-                              padding: EdgeInsets.only(left: 2, right: 2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(12)),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 8.0,
-                                    color: Colors.black87.withOpacity(0.2),
-                                  ),
-                                ],
-                                color: Colors.white,
-                              ),
-                              child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
-                                return Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: GroupButton(
-                                      controller: GroupButtonController(
-                                        selectedIndex: selectedProvider.isSelectedreadyinstall,
-                                        // typeinstallController==null
-                                        //     ? 0 :
-                                        // int.tryParse( typeinstallController!)
-                                      ),
-                                      options:
-                                          GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
-                                      buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
-                                      onSelected: (_, index, isselected) {
-                                        print(index);
-                                        //setState(() {
-                                        readyinstallController = index.toString();
-                                        selectedProvider.selectValuereadyinstall(index);
-                                        //  });
-                                      }),
-                                );
-                              }),
-                            )
-                          : Container(),
+                      // _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: '*') : Container(),
+                      // _invoice!.idInvoice == null
+                      //     ?
+                      // Container(
+                      //         padding: EdgeInsets.only(left: 2, right: 2),
+                      //         decoration: BoxDecoration(
+                      //           borderRadius: BorderRadius.all(Radius.circular(12)),
+                      //           boxShadow: <BoxShadow>[
+                      //             BoxShadow(
+                      //               offset: Offset(1.0, 1.0),
+                      //               blurRadius: 8.0,
+                      //               color: Colors.black87.withOpacity(0.2),
+                      //             ),
+                      //           ],
+                      //           color: Colors.white,
+                      //         ),
+                      //         child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                      //           return Directionality(
+                      //             textDirection: TextDirection.ltr,
+                      //             child: GroupButton(
+                      //                 controller: GroupButtonController(
+                      //                   selectedIndex: selectedProvider.isSelectedreadyinstall,
+                      //                   // typeinstallController==null
+                      //                   //     ? 0 :
+                      //                   // int.tryParse( typeinstallController!)
+                      //                 ),
+                      //                 options:
+                      //                     GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                      //                 buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
+                      //                 onSelected: (_, index, isselected) {
+                      //                   print(index);
+                      //                   //setState(() {
+                      //                   readyinstallController = index.toString();
+                      //                   selectedProvider.selectValuereadyinstall(index);
+                      //                   //  });
+                      //                 }),
+                      //           );
+                      //         }),
+                      //       )
+                      //     : Container(),
                       SizedBox(
                         height: 15,
                       ),

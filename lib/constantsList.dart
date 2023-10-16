@@ -49,7 +49,7 @@ final List<Widget> listwidget=[
   financepage(),
   race_page(),
 ];
-List<String> list_sourcclient=['ميداني','فيسبوك','غوغل','تويتر','الموقع','الرقم الموحد','واتس كنترول','انستغرام'];
+List<String> list_sourcclient=['ميداني','فيسبوك','غوغل','تويتر','الموقع','الرقم الموحد','واتس كنترول','انستغرام','سناب','غوغل ماب','تيك توك'];
 final List<dynamic> listHome = [
   [
     'كل العملاء',

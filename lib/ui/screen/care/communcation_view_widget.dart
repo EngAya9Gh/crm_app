@@ -306,9 +306,11 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                         ElevatedButton(
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                             onPressed: () async {
+                              // Provider.of<communication_vm>(context,listen: false).setload(true);
+                              Provider.of<communication_vm>(context, listen: false).isloadval(true);
+
                               if (widget.element.typeCommuncation != 'دوري') {
 
-                                Provider.of<communication_vm>(context,listen: false).setload(true);
                                 Provider.of<communication_vm>(context, listen: false).addcommmuncation(
                                     {
                                       //'fk_client':widget.com.fkClient.toString(),
@@ -334,7 +336,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                     (value) => clear(value));
                               }
                               else {
-                                Provider.of<communication_vm>(context, listen: false).isloadval(true);
+                                // Provider.of<communication_vm>(context, listen: false).isloadval(true);
                                 await Provider.of<config_vm>(context, listen: false).getAllConfig();
                                 List<ConfigModel> _listconfg =
                                     Provider.of<config_vm>(context, listen: false).listofconfig;
