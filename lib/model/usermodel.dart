@@ -1,7 +1,9 @@
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
+import 'package:crm_smart/ui/screen/home/manage_withdrawals/data/models/user_series.dart';
 
 import '../constants.dart';
+import '../ui/screen/home/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 
 class UserModel {
   String? idUser;
@@ -159,6 +161,8 @@ class UserModel {
     _data['path'] = path;
     return _data;
   }
+
+  UserWithdrawalsManager get asUserWithdrawalsManager => UserWithdrawalsManager(idUser, nameUser);
 
   List<PrivilgeModel> getproud(data) {
     List<PrivilgeModel> prodlist = [];
