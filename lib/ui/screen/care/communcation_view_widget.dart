@@ -185,8 +185,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                       ],
                     ),
                   )
-                : Provider.of<communication_vm>(context,listen: true).isload?
-                   Center(child: CircularProgressIndicator())
+                // : Provider.of<communication_vm>(context,listen: true).isload?
+                //    Center(child: CircularProgressIndicator())
                 :
             Provider.of<communication_vm>(context,listen: true).isload?
             Center(child: CircularProgressIndicator()):
@@ -303,7 +303,9 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 ],
                               )
                             : Container(),
-                        ElevatedButton(
+                         Provider.of<communication_vm>(context, listen: false).isload?
+                         Container()
+                         :ElevatedButton(
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                             onPressed: () async {
                               // Provider.of<communication_vm>(context,listen: false).setload(true);
@@ -382,14 +384,14 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                   // clear(val);
                                 }
                               }
-                              Provider.of<communication_vm>(context,listen: false).setload(false);
+                              // Provider.of<communication_vm>(context,listen: false).setload(false);
 
                             },
                             child: Text(
                               ' تم التواصل ',
                               style:
                                   TextStyle(color: widget.element.dateCommunication == null ? kWhiteColor : kMainColor),
-                            )),
+                            )) ,
                       ],
                     ),
                   ),
