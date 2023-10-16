@@ -20,6 +20,7 @@ class _Series{
 
   final getUsersSeries = 'series/view_series_manag.php';
   final updateUsersSeries = 'series/update_series_manage.php';
+  final getWithdrawalsInvoices = 'series/getInvoice_Approve_back.php';
 }
 
 class _Care {

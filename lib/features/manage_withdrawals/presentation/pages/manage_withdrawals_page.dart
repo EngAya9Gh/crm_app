@@ -1,21 +1,21 @@
 import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/home/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import '../../../../../../constants.dart';
+import '../manager/manage_withdrawals_cubit.dart';
 
-class ManageWithdrawals extends StatefulWidget {
-  const ManageWithdrawals({Key? key}) : super(key: key);
+class ManageWithdrawalsPage extends StatefulWidget {
+  const ManageWithdrawalsPage({Key? key}) : super(key: key);
 
   @override
-  State<ManageWithdrawals> createState() => _ManageWithdrawalsState();
+  State<ManageWithdrawalsPage> createState() => _ManageWithdrawalsPageState();
 }
 
-class _ManageWithdrawalsState extends State<ManageWithdrawals> {
+class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
   late UserModel currentUser;
 
@@ -28,7 +28,6 @@ class _ManageWithdrawalsState extends State<ManageWithdrawals> {
 
   @override
   Widget build(BuildContext context) {
-    GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocProvider(
       create: (context) => _manageWithdrawalsCubit,
       child: Builder(
@@ -47,7 +46,6 @@ class _ManageWithdrawalsState extends State<ManageWithdrawals> {
                 !previous.updateUsersSeriesState.isSuccess() && current.updateUsersSeriesState.isSuccess(),
             builder: (context, state) {
               return Scaffold(
-                  key: scaffoldKey,
                   appBar: AppBar(
                     title: Text('إدارة الإنسحابات', style: TextStyle(color: kWhiteColor)),
                     centerTitle: true,

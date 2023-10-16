@@ -18,6 +18,7 @@ class UserWithdrawalsManager extends Equatable {
 class ManageWithdrawalsState {
   ManageWithdrawalsState({
     this.allUsersSeries = const PageState.init(),
+    this.withdrawalsInvoice = const PageState.init(),
     this.updateUsersSeriesState = const BlocStatus.initial(),
     this.allUsers = const [],
     this.handleAllUsers = const [],
@@ -25,6 +26,7 @@ class ManageWithdrawalsState {
   });
 
   final PageState<List<UserSeries>> allUsersSeries;
+  final PageState<List<InvoiceModel>> withdrawalsInvoice;
   final List<UserModel> allUsers;
   final List<UserWithdrawalsManager> handleAllUsers;
   final Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>> handleUsersSeries;
@@ -32,6 +34,7 @@ class ManageWithdrawalsState {
 
   ManageWithdrawalsState copyWith({
     PageState<List<UserSeries>>? allUsersSeries,
+    PageState<List<InvoiceModel>>? withdrawalsInvoice,
     List<UserModel>? allUsers,
     List<UserWithdrawalsManager>? handleAllUsers,
     Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>>? handleUsersSeries,
@@ -39,6 +42,7 @@ class ManageWithdrawalsState {
   }) {
     return ManageWithdrawalsState(
       allUsersSeries: allUsersSeries ?? this.allUsersSeries,
+      withdrawalsInvoice: withdrawalsInvoice ?? this.withdrawalsInvoice,
       allUsers: allUsers ?? this.allUsers,
       handleAllUsers: handleAllUsers ?? this.handleAllUsers,
       handleUsersSeries: handleUsersSeries ?? this.handleUsersSeries,

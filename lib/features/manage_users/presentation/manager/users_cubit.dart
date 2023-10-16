@@ -26,8 +26,8 @@ class UsersCubit extends Cubit<UsersState> {
       (exception, message) => emit(state.copyWith(allUsersList: const PageState.error())),
       (value) => emit(
         state.copyWith(
-          allUsersList: PageState.loaded(data: value.data ?? []),
-          allUsers: value.data,
+          allUsersList: PageState.loaded(data: value.message ?? []),
+          allUsers: value.message,
         ),
       ),
     );
@@ -60,7 +60,7 @@ class UsersCubit extends Cubit<UsersState> {
     response.fold(
       (exception, message) => emit(state.copyWith(actionUserState: BlocStatus.fail(error: message))),
       (value) {
-        final user = value.data!;
+        final user = value.message!;
 
         if (user.idUser == '0') {
           onSuccess.call("repeat");

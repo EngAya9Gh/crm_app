@@ -13,7 +13,8 @@ _$_ResponseWrapper<T> _$$_ResponseWrapperFromJson<T>(
     _$_ResponseWrapper<T>(
       status: json['status'] as String?,
       success: json['success'] as bool?,
-      data: _$nullableGenericFromJson(json['message'], fromJsonT),
+      message: _$nullableGenericFromJson(json['message'], fromJsonT),
+      data: _$nullableGenericFromJson(json['data'], fromJsonT),
     );
 
 Map<String, dynamic> _$$_ResponseWrapperToJson<T>(
@@ -23,7 +24,8 @@ Map<String, dynamic> _$$_ResponseWrapperToJson<T>(
     <String, dynamic>{
       'status': instance.status,
       'success': instance.success,
-      'message': _$nullableGenericToJson(instance.data, toJsonT),
+      'message': _$nullableGenericToJson(instance.message, toJsonT),
+      'data': _$nullableGenericToJson(instance.data, toJsonT),
     };
 
 T? _$nullableGenericFromJson<T>(

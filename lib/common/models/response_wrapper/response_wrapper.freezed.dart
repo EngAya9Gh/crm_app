@@ -24,6 +24,8 @@ mixin _$ResponseWrapper<T> {
   String? get status => throw _privateConstructorUsedError;
   bool? get success => throw _privateConstructorUsedError;
   @JsonKey(name: "message")
+  T? get message => throw _privateConstructorUsedError;
+  @JsonKey(name: "data")
   T? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) =>
@@ -39,7 +41,11 @@ abstract class $ResponseWrapperCopyWith<T, $Res> {
           ResponseWrapper<T> value, $Res Function(ResponseWrapper<T>) then) =
       _$ResponseWrapperCopyWithImpl<T, $Res, ResponseWrapper<T>>;
   @useResult
-  $Res call({String? status, bool? success, @JsonKey(name: "message") T? data});
+  $Res call(
+      {String? status,
+      bool? success,
+      @JsonKey(name: "message") T? message,
+      @JsonKey(name: "data") T? data});
 }
 
 /// @nodoc
@@ -57,6 +63,7 @@ class _$ResponseWrapperCopyWithImpl<T, $Res, $Val extends ResponseWrapper<T>>
   $Res call({
     Object? status = freezed,
     Object? success = freezed,
+    Object? message = freezed,
     Object? data = freezed,
   }) {
     return _then(_value.copyWith(
@@ -68,6 +75,10 @@ class _$ResponseWrapperCopyWithImpl<T, $Res, $Val extends ResponseWrapper<T>>
           ? _value.success
           : success // ignore: cast_nullable_to_non_nullable
               as bool?,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as T?,
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -84,7 +95,11 @@ abstract class _$$_ResponseWrapperCopyWith<T, $Res>
       __$$_ResponseWrapperCopyWithImpl<T, $Res>;
   @override
   @useResult
-  $Res call({String? status, bool? success, @JsonKey(name: "message") T? data});
+  $Res call(
+      {String? status,
+      bool? success,
+      @JsonKey(name: "message") T? message,
+      @JsonKey(name: "data") T? data});
 }
 
 /// @nodoc
@@ -100,6 +115,7 @@ class __$$_ResponseWrapperCopyWithImpl<T, $Res>
   $Res call({
     Object? status = freezed,
     Object? success = freezed,
+    Object? message = freezed,
     Object? data = freezed,
   }) {
     return _then(_$_ResponseWrapper<T>(
@@ -111,6 +127,10 @@ class __$$_ResponseWrapperCopyWithImpl<T, $Res>
           ? _value.success
           : success // ignore: cast_nullable_to_non_nullable
               as bool?,
+      message: freezed == message
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as T?,
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -125,7 +145,8 @@ class _$_ResponseWrapper<T> implements _ResponseWrapper<T> {
   const _$_ResponseWrapper(
       {this.status,
       this.success,
-      @JsonKey(name: "message") required this.data});
+      @JsonKey(name: "message") required this.message,
+      @JsonKey(name: "data") required this.data});
 
   factory _$_ResponseWrapper.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
@@ -137,11 +158,14 @@ class _$_ResponseWrapper<T> implements _ResponseWrapper<T> {
   final bool? success;
   @override
   @JsonKey(name: "message")
+  final T? message;
+  @override
+  @JsonKey(name: "data")
   final T? data;
 
   @override
   String toString() {
-    return 'ResponseWrapper<$T>(status: $status, success: $success, data: $data)';
+    return 'ResponseWrapper<$T>(status: $status, success: $success, message: $message, data: $data)';
   }
 
   @override
@@ -151,13 +175,18 @@ class _$_ResponseWrapper<T> implements _ResponseWrapper<T> {
             other is _$_ResponseWrapper<T> &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.success, success) || other.success == success) &&
+            const DeepCollectionEquality().equals(other.message, message) &&
             const DeepCollectionEquality().equals(other.data, data));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, status, success, const DeepCollectionEquality().hash(data));
+      runtimeType,
+      status,
+      success,
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(data));
 
   @JsonKey(ignore: true)
   @override
@@ -174,10 +203,10 @@ class _$_ResponseWrapper<T> implements _ResponseWrapper<T> {
 
 abstract class _ResponseWrapper<T> implements ResponseWrapper<T> {
   const factory _ResponseWrapper(
-          {final String? status,
-          final bool? success,
-          @JsonKey(name: "message") required final T? data}) =
-      _$_ResponseWrapper<T>;
+      {final String? status,
+      final bool? success,
+      @JsonKey(name: "message") required final T? message,
+      @JsonKey(name: "data") required final T? data}) = _$_ResponseWrapper<T>;
 
   factory _ResponseWrapper.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =
@@ -189,6 +218,9 @@ abstract class _ResponseWrapper<T> implements ResponseWrapper<T> {
   bool? get success;
   @override
   @JsonKey(name: "message")
+  T? get message;
+  @override
+  @JsonKey(name: "data")
   T? get data;
   @override
   @JsonKey(ignore: true)

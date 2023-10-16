@@ -22,10 +22,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../features/manage_users/presentation/pages/manage_users_page.dart';
+import '../../../../features/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
 import '../../agents_and_distributors/agents_and_distributors_view.dart';
 import '../../barnch_race/pages/branch_race_mangement_view.dart';
 import '../../partic_agent/participateView.dart';
-import '../manage_withdrawals/presentation/pages/manage_withdrawals.dart';
 import '../widgethomeitem.dart';
 
 class managmentpage extends StatefulWidget {
@@ -95,7 +95,7 @@ class _managmentpageState extends State<managmentpage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageWithdrawals()));
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageWithdrawalsPage()));
                     },
                     title: 'إدارة الإنسحابات'),
                 privilge.checkprivlge('4') == true

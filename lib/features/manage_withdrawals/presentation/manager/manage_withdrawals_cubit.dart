@@ -1,16 +1,17 @@
 import 'dart:ui';
-
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/ui/screen/home/manage_withdrawals/data/models/user_series.dart';
-import 'package:crm_smart/ui/screen/home/manage_withdrawals/domain/use_cases/get_user_series_usecase.dart';
-import 'package:crm_smart/ui/screen/home/manage_withdrawals/domain/use_cases/update_user_series_usecase.dart';
+import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../../common/models/page_state/bloc_status.dart';
 import '../../../../../../features/manage_users/domain/use_cases/get_allusers_usecase.dart';
 import '../../../../../../model/usermodel.dart';
+import '../../data/models/user_series.dart';
+import '../../domain/use_cases/get_user_series_usecase.dart';
+import '../../domain/use_cases/update_user_series_usecase.dart';
 
 part 'manage_withdrawals_state.dart';
 
@@ -20,10 +21,12 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     this._getUserSeriesUsecase,
     this._updateSeriesUsecase,
     this._getAllUsersUsecase,
+    this._getWithdrawalsInvoicesUsecase,
   ) : super(ManageWithdrawalsState());
   final GetUserSeriesUsecase _getUserSeriesUsecase;
   final UpdateSeriesUsecase _updateSeriesUsecase;
   final GetAllUsersUsecase _getAllUsersUsecase;
+  final GetWithdrawalsInvoicesUsecase _getWithdrawalsInvoicesUsecase;
 
   getUsersSeries(final String fkCountry) async {
     emit(state.copyWith(allUsersSeries: PageState.loading()));
@@ -38,7 +41,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     await response.fold(
       (exception, message) async => emit(state.copyWith(allUsersSeries: PageState.error())),
       (users) async {
-        emit(state.copyWith(allUsers: users.data));
+        emit(state.copyWith(allUsers: users.message));
         await _getUsers(fkCountry);
       },
     );
@@ -51,10 +54,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
       (exception, message) => emit(state.copyWith(allUsersSeries: PageState.error())),
       (usersSeries) {
         final maps = <UserWithdrawalsManager?, List<UserWithdrawalsManager>>{};
-        usersSeries.data!.forEachIndexed((index, userSeries) {
+        usersSeries.message!.forEachIndexed((index, userSeries) {
           final user = state.allUsers.firstWhere((element) => element.idUser == userSeries.fkUser);
           final userWithdrawalsManager = UserWithdrawalsManager(user.idUser, user.nameUser);
-          final list = usersSeries.data?.getRange(0, index).toList() ?? [];
+          final list = usersSeries.message?.getRange(0, index).toList() ?? [];
 
           maps[userWithdrawalsManager] = List.of(state.allUsers)
               .where((elementUser) => !list.any((elementFilterList) => elementFilterList.fkUser == elementUser.idUser))
@@ -64,7 +67,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
         emit(
           state.copyWith(
-            allUsersSeries: PageState.loaded(data: usersSeries.data ?? []),
+            allUsersSeries: PageState.loaded(data: usersSeries.message ?? []),
             allUsers: state.allUsers,
             handleUsersSeries: maps,
           ),
@@ -153,9 +156,23 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
           .where((element) => newValue.any((e) => element.idUser == e.idUser))
           .map((e) => e.asUserWithdrawalsManager)
           .toList();
+
       return MapEntry(key, list);
     });
 
     emit(state.copyWith(handleUsersSeries: maps));
+  }
+
+  getWithdrawalsInvoices() async {
+    emit(state.copyWith(withdrawalsInvoice: PageState.loading()));
+
+    final response = await _getWithdrawalsInvoicesUsecase();
+
+    response.fold(
+      (exception, message) => emit(state.copyWith(withdrawalsInvoice: PageState.error())),
+      (withdrawalsInvoice) {
+        emit(state.copyWith(withdrawalsInvoice: PageState.loaded(data: withdrawalsInvoice.data!)));
+      },
+    );
   }
 }
