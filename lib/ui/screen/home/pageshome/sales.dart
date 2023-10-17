@@ -18,9 +18,11 @@ import 'package:crm_smart/ui/screen/target/target_page.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../client/calender_client.dart';
 import '../../client/agents_distributors_invoices_view.dart';

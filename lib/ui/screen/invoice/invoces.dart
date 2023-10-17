@@ -56,7 +56,7 @@ class _InvoicesState extends State<invoices> {
                     itemBuilder: (BuildContext context, int index) => Builder(
                       builder: (context) => CardInvoiceClient(
                         type: '',
-                        itemProd: listInvoice[index],
+                        invoice: listInvoice[index],
                       ),
                     ),
                   );

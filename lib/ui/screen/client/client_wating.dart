@@ -190,7 +190,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                                                             )
                                                           : CardInvoiceClient(
                                                               type: 'profile',
-                                                              itemProd: value.listInvoicesAccept[index],
+                                                              invoice: value.listInvoicesAccept[index],
                                                               //itemClient :  itemClient,
                                                             )),
                                                 );

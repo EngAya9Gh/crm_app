@@ -19,6 +19,7 @@ class ManageWithdrawalsState {
   ManageWithdrawalsState({
     this.allUsersSeries = const PageState.init(),
     this.withdrawalsInvoice = const PageState.init(),
+    this.withdrawalInvoiceDetails = const PageState.init(),
     this.updateUsersSeriesState = const BlocStatus.initial(),
     this.allUsers = const [],
     this.handleAllUsers = const [],
@@ -27,6 +28,7 @@ class ManageWithdrawalsState {
 
   final PageState<List<UserSeries>> allUsersSeries;
   final PageState<List<InvoiceModel>> withdrawalsInvoice;
+  final PageState<List<InvoiceWithdrawalSeries>> withdrawalInvoiceDetails;
   final List<UserModel> allUsers;
   final List<UserWithdrawalsManager> handleAllUsers;
   final Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>> handleUsersSeries;
@@ -35,12 +37,14 @@ class ManageWithdrawalsState {
   ManageWithdrawalsState copyWith({
     PageState<List<UserSeries>>? allUsersSeries,
     PageState<List<InvoiceModel>>? withdrawalsInvoice,
+    PageState<List<InvoiceWithdrawalSeries>>? withdrawalInvoiceDetails,
     List<UserModel>? allUsers,
     List<UserWithdrawalsManager>? handleAllUsers,
     Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>>? handleUsersSeries,
     BlocStatus? updateUsersSeriesState,
   }) {
     return ManageWithdrawalsState(
+      withdrawalInvoiceDetails: withdrawalInvoiceDetails ?? this.withdrawalInvoiceDetails,
       allUsersSeries: allUsersSeries ?? this.allUsersSeries,
       withdrawalsInvoice: withdrawalsInvoice ?? this.withdrawalsInvoice,
       allUsers: allUsers ?? this.allUsers,

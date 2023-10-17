@@ -173,7 +173,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                                                       padding: const EdgeInsets.all(2),
                                                       child: CardInvoiceClient(
                                                         type: 'profile',
-                                                        itemProd: value.listinvoicesMarketing[index],
+                                                        invoice: value.listinvoicesMarketing[index],
                                                         //itemClient :  itemClient,
                                                       )),
                                                 );

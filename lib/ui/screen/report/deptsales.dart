@@ -509,7 +509,7 @@ class _deptsalesState extends State<deptsales> {
                                                       padding: const EdgeInsets.all(2),
                                                       child: CardInvoiceClient(
                                                         type: '',
-                                                        itemProd: listInvoicesAccept[index],
+                                                        invoice: listInvoicesAccept[index],
                                                         //itemClient :  itemClient,
                                                       ));
                                                 }),

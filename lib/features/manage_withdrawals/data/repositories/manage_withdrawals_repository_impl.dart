@@ -1,6 +1,7 @@
 import 'package:crm_smart/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/api/api_utils.dart';
 import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/features/manage_withdrawals/data/models/invoice_withdrawal_series_model.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../model/invoiceModel.dart';
 import '../../domain/repositories/manage_withdrawals_repository.dart';
@@ -26,5 +27,11 @@ class ManageWithdrawalsRepositoryImpl extends ManageWithdrawalsRepository {
   @override
   Future<Result<ResponseWrapper<List<InvoiceModel>>>> getWithdrawalsInvoice() {
     return toApiResult(_datasource.getWithdrawalsInvoice);
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<InvoiceWithdrawalSeries>>>> getWithdrawalInvoiceDetails(
+      Map<String, dynamic> params) {
+    return toApiResult(() => _datasource.getWithdrawalInvoiceDetails(params));
   }
 }

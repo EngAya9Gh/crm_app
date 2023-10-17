@@ -40,7 +40,7 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
               init: Center(child: CircularProgressIndicator()),
               success: (data) => ListView.separated(
                 padding: REdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                itemBuilder: (BuildContext context, int index) => CardInvoiceClient(type: '', itemProd: data[index]),
+                itemBuilder: (BuildContext context, int index) => CardInvoiceClient(type: 'withdrawn', invoice: data[index]),
                 separatorBuilder: (context, int index) => 10.verticalSpacingRadius,
                 itemCount: data.length,
               ),

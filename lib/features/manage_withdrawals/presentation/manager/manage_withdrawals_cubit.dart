@@ -5,28 +5,33 @@ import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../../common/models/page_state/bloc_status.dart';
 import '../../../../../../features/manage_users/domain/use_cases/get_allusers_usecase.dart';
 import '../../../../../../model/usermodel.dart';
+import '../../data/models/invoice_withdrawal_series_model.dart';
 import '../../data/models/user_series.dart';
 import '../../domain/use_cases/get_user_series_usecase.dart';
+import '../../domain/use_cases/get_withdrawal_invoice_details_usecase.dart';
 import '../../domain/use_cases/update_user_series_usecase.dart';
 
 part 'manage_withdrawals_state.dart';
 
-@injectable
+@lazySingleton
 class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   ManageWithdrawalsCubit(
     this._getUserSeriesUsecase,
     this._updateSeriesUsecase,
     this._getAllUsersUsecase,
     this._getWithdrawalsInvoicesUsecase,
+    this._getWithdrawalInvoiceDetailsUsecase,
   ) : super(ManageWithdrawalsState());
   final GetUserSeriesUsecase _getUserSeriesUsecase;
   final UpdateSeriesUsecase _updateSeriesUsecase;
   final GetAllUsersUsecase _getAllUsersUsecase;
   final GetWithdrawalsInvoicesUsecase _getWithdrawalsInvoicesUsecase;
+  final GetWithdrawalInvoiceDetailsUsecase _getWithdrawalInvoiceDetailsUsecase;
 
   getUsersSeries(final String fkCountry) async {
     emit(state.copyWith(allUsersSeries: PageState.loading()));
@@ -171,8 +176,27 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     response.fold(
       (exception, message) => emit(state.copyWith(withdrawalsInvoice: PageState.error())),
       (withdrawalsInvoice) {
-        emit(state.copyWith(withdrawalsInvoice: PageState.loaded(data: withdrawalsInvoice.data!)));
+        emit(state.copyWith(withdrawalsInvoice: PageState.loaded(data: withdrawalsInvoice.data ?? [])));
       },
     );
+  }
+
+  getWithdrawalInvoiceDetails(String fkInvoice) async {
+    emit(state.copyWith(withdrawalInvoiceDetails: PageState.loading()));
+
+    final response = await _getWithdrawalInvoiceDetailsUsecase(GetWithdrawalInvoiceDetailsParams(fkInvoice));
+
+    response.fold(
+      (exception, message) => emit(state.copyWith(withdrawalInvoiceDetails: PageState.error())),
+      (withdrawalInvoiceDetails) {
+        emit(state.copyWith(withdrawalInvoiceDetails: PageState.loaded(data: withdrawalInvoiceDetails.message ?? [])));
+      },
+    );
+  }
+
+  @override
+  Future<void> close() {
+    GetIt.I.resetLazySingleton<ManageWithdrawalsCubit>();
+    return super.close();
   }
 }

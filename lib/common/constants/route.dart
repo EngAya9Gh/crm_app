@@ -21,6 +21,7 @@ class _Series{
   final getUsersSeries = 'series/view_series_manag.php';
   final updateUsersSeries = 'series/update_series_manage.php';
   final getWithdrawalsInvoices = 'series/getInvoice_Approve_back.php';
+  final getWithdrawalInvoiceDetails = 'series/view_series_invoice.php';
 }
 
 class _Care {

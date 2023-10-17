@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/manage_withdrawals/presentation/pages/withdrawal_invoice_details_page.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -38,10 +39,10 @@ extension StatusClientExt on StatusClient {
 class CardInvoiceClient extends StatefulWidget {
   CardInvoiceClient({
     required this.type,
-    required this.itemProd,
+    required this.invoice,
     Key? key,
   }) : super(key: key);
-  final InvoiceModel itemProd;
+  final InvoiceModel invoice;
   final String type;
 
   @override
@@ -63,8 +64,10 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
               context,
               CupertinoPageRoute(
                 builder: (context) => widget.type == 'profile'
-                    ? ProfileClient(tabIndex: 1, idClient: widget.itemProd.fkIdClient.toString())
-                    : InvoiceView(invoice: widget.itemProd),
+                    ? ProfileClient(tabIndex: 1, idClient: widget.invoice.fkIdClient.toString())
+                    : widget.type == 'withdrawn'
+                        ? WithdrawalInvoiceDetailsPage(invoice: widget.invoice)
+                        : InvoiceView(invoice: widget.invoice),
               ),
             );
           },
@@ -92,13 +95,13 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          widget.itemProd.name_regoin_invoice.toString(),
+                          widget.invoice.name_regoin_invoice.toString(),
                           style: TextStyle(fontFamily: kfontfamily, color: kMainColor, fontSize: 12),
                         ),
                         Text(
-                          widget.itemProd.date_approve != null
-                              ? widget.itemProd.date_approve.toString()
-                              : widget.itemProd.dateCreate.toString(),
+                          widget.invoice.date_approve != null
+                              ? widget.invoice.date_approve.toString()
+                              : widget.invoice.dateCreate.toString(),
                           style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                         ),
                       ],
@@ -106,25 +109,25 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        if (widget.itemProd.idInvoice != null)
+                        if (widget.invoice.idInvoice != null)
                           Text(
-                            "${widget.itemProd.idInvoice}#  ",
+                            "${widget.invoice.idInvoice}#  ",
                             style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold, color: Ktoast),
                           ),
-                        if (widget.itemProd.address_invoice != null)
+                        if (widget.invoice.address_invoice != null)
                           Expanded(
                             child: Text(
-                              widget.itemProd.address_invoice.toString(),
+                              widget.invoice.address_invoice.toString(),
                               style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                             ),
                           )
                         else
                           Spacer(),
-                        if (widget.itemProd.isApprove == '1' && widget.itemProd.stateclient == 'مشترك')
+                        if (widget.invoice.isApprove == '1' && widget.invoice.stateclient == 'مشترك')
                           statusClientChip(StatusClient.subscriber)
-                        else if (widget.itemProd.isApprove != '1' && widget.itemProd.stateclient == 'مشترك')
+                        else if (widget.invoice.isApprove != '1' && widget.invoice.stateclient == 'مشترك')
                           statusClientChip(StatusClient.unsupported)
-                        else if (widget.itemProd.stateclient == 'منسحب')
+                        else if (widget.invoice.stateclient == 'منسحب')
                           statusClientChip(StatusClient.withdrawn)
                         else
                           SizedBox.shrink(),
@@ -140,7 +143,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                         ),
                         Expanded(
                           child: Text(
-                            "${widget.itemProd.name_enterprise.toString()}",
+                            "${widget.invoice.name_enterprise.toString()}",
                             maxLines: 3,
                             style: TextStyle(
                                 fontFamily: kfontfamily2, fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis),
@@ -160,13 +163,13 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              formatNumber(num.tryParse(widget.itemProd.total ?? '0') ?? 0),
+                              formatNumber(num.tryParse(widget.invoice.total ?? '0') ?? 0),
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                              widget.itemProd.currency_name == null
+                              widget.invoice.currency_name == null
                                   ? 'ريال'
-                                  : int.parse(widget.itemProd.currency_name.toString()) == 0
+                                  : int.parse(widget.invoice.currency_name.toString()) == 0
                                       ? ' USD '
                                       : ' ريال ',
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
@@ -180,16 +183,16 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             SizedBox(width: 4),
-                            if (widget.itemProd.total != null && widget.itemProd.amountPaid != null)
+                            if (widget.invoice.total != null && widget.invoice.amountPaid != null)
                               Text(
-                                formatNumber(((num.tryParse(widget.itemProd.total?.toString() ?? '0') ?? 0) -
-                                    (num.tryParse(widget.itemProd.amountPaid?.toString() ?? '0') ?? 0))),
+                                formatNumber(((num.tryParse(widget.invoice.total?.toString() ?? '0') ?? 0) -
+                                    (num.tryParse(widget.invoice.amountPaid?.toString() ?? '0') ?? 0))),
                                 style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                               ),
                             Text(
-                              widget.itemProd.currency_name == null
+                              widget.invoice.currency_name == null
                                   ? 'ريال'
-                                  : int.parse(widget.itemProd.currency_name.toString()) == 0
+                                  : int.parse(widget.invoice.currency_name.toString()) == 0
                                       ? ' USD '
                                       : ' ريال ',
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
@@ -209,13 +212,13 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                              formatNumber(num.tryParse(widget.itemProd.amountPaid ?? '0') ?? 0),
+                              formatNumber(num.tryParse(widget.invoice.amountPaid ?? '0') ?? 0),
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                              widget.itemProd.currency_name == null
+                              widget.invoice.currency_name == null
                                   ? 'ريال'
-                                  : int.parse(widget.itemProd.currency_name.toString()) == 0
+                                  : int.parse(widget.invoice.currency_name.toString()) == 0
                                       ? ' USD '
                                       : ' ريال ',
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
@@ -231,13 +234,13 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                             ),
                             SizedBox(width: 4),
                             Text(
-                                formatNumber(num.tryParse(widget.itemProd.renewYear ?? '0') ?? 0),
+                              formatNumber(num.tryParse(widget.invoice.renewYear ?? '0') ?? 0),
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
                             ),
                             Text(
-                              widget.itemProd.currency_name == null
+                              widget.invoice.currency_name == null
                                   ? 'ريال'
-                                  : int.parse(widget.itemProd.currency_name.toString()) == 0
+                                  : int.parse(widget.invoice.currency_name.toString()) == 0
                                       ? ' USD '
                                       : ' ريال ',
                               style: TextStyle(fontFamily: kfontfamily2, color: kMainColor, fontSize: 12),
