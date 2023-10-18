@@ -252,7 +252,7 @@ class _ClientViewState extends State<ClientView> {
                                       width: 5,
                                     )
                                   : Container(),
-                              // clientModel.reasonTransfer == null  ?
+                              clientModel.reasonTransfer == null  ?
                               ElevatedButton(
                                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                       onPressed: () {
@@ -268,8 +268,8 @@ class _ClientViewState extends State<ClientView> {
                                       },
                                       child: Text('تحويل العميل'),
                                     )
-                                  // : Container(),
-                              ,SizedBox(
+                                  : Container(),
+                               SizedBox(
                                 height: 3,
                               ),
                             ],

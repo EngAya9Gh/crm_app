@@ -185,20 +185,20 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       ],
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: kMainColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    margin: EdgeInsetsDirectional.only(start: 10),
-                    child: Center(
-                      child: Text(
-                        "دوري",
-                        style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: kMainColor,
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  //   margin: EdgeInsetsDirectional.only(start: 10),
+                  //   child: Center(
+                  //     child: Text(
+                  //       "دوري",
+                  //       style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 15),
@@ -213,7 +213,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                   ),
                   SizedBox(width: 15),
                   Text(
-                    DateFormat("yyyy MMM dd hh:mm a", "ar").format(communication.dateNext ?? DateTime.now()),
+                    DateFormat("yyyy MMM dd hh:mm a", "ar").format(communication.dateApprove ?? DateTime.now()),
                     style: TextStyle(color: Colors.grey, fontFamily: kfontfamily2),
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.start,

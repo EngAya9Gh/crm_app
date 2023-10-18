@@ -16,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
+import '../../../../features/communication_list/presentation/pages/communication_list_page.dart';
 import '../widgethomeitem.dart';
 
 class supportpage extends StatefulWidget {
@@ -92,6 +93,21 @@ class _supportpageState extends State<supportpage> {
                        ClientWaiting(type_card: 'support',) // support_view(type: 'only',)
                ));
             }, title: 'فواتير العملاء'):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
+
+           Provider.of<privilge_vm>(context,listen: true)
+               .checkprivlge('137')==true?
+           buildSelectCategory(
+             colorbag: Colors.white,
+             colortitle: Colors.black,
+             colorarrow: Colors.black,
+             onTap: () {
+               Navigator.push(context,
+                   CupertinoPageRoute(builder: (context) =>
+                       CommunicationListPage()));
+             },
+             title: 'قائمة العملاء المميزين',
+           ):Container() ,
+
            privilge.checkprivlge('18')==true?
            buildSelectCategory(
                colorbag: Colors.white,
