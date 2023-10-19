@@ -1,8 +1,5 @@
-import 'dart:ffi';
-
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/config/activity_view.dart';
-import 'package:crm_smart/ui/screen/config/addreson.dart';
 import 'package:crm_smart/ui/screen/config/chang_country.dart';
 import 'package:crm_smart/ui/screen/config/company_view.dart';
 import 'package:crm_smart/ui/screen/config/config_view.dart';
@@ -10,16 +7,14 @@ import 'package:crm_smart/ui/screen/config/maincityview.dart';
 import 'package:crm_smart/ui/screen/config/manageview.dart';
 import 'package:crm_smart/ui/screen/config/regoin_view.dart';
 import 'package:crm_smart/ui/screen/config/reson_view.dart';
-import 'package:crm_smart/ui/screen/privilges/addmanage.dart';
 import 'package:crm_smart/ui/screen/privilges/checklevel.dart';
 import 'package:crm_smart/ui/screen/product/productView.dart';
-import 'package:crm_smart/ui/screen/user/alluser.dart';
-import 'package:crm_smart/ui/screen/user/userview.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../constants.dart';
 import '../../../../features/manage_users/presentation/pages/manage_users_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
@@ -90,14 +85,16 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'ادارة الصلاحيات')
                     : Container(),
-                buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageWithdrawalsPage()));
-                    },
-                    title: 'إدارة الإنسحابات'),
+                privilge.checkprivlge('142') == true
+                    ? buildSelectCategory(
+                        colorbag: Colors.white,
+                        colortitle: Colors.black,
+                        colorarrow: Colors.black,
+                        onTap: () {
+                          Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageWithdrawalsPage()));
+                        },
+                        title: 'إدارة الإنسحابات')
+                    : SizedBox.shrink(),
                 privilge.checkprivlge('4') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,

@@ -1,8 +1,6 @@
 import 'package:crm_smart/ui/screen/client/Acceptpage.dart';
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
 import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
-import 'package:crm_smart/ui/screen/client/client_wating.dart';
-import 'package:crm_smart/ui/screen/client/myclient.dart';
 import 'package:crm_smart/ui/screen/client/outClient.dart';
 import 'package:crm_smart/ui/screen/client/tabclients.dart';
 import 'package:crm_smart/ui/screen/home/approvepage.dart';
@@ -13,19 +11,15 @@ import 'package:crm_smart/ui/screen/report/chartsales_user.dart';
 import 'package:crm_smart/ui/screen/report/deptsales.dart';
 import 'package:crm_smart/ui/screen/report/sales_reportstate.dart';
 import 'package:crm_smart/ui/screen/report/salesproduct.dart';
-import 'package:crm_smart/ui/screen/support/support_view.dart';
-import 'package:crm_smart/ui/screen/target/target_page.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
-import '../../client/calender_client.dart';
 import '../../client/agents_distributors_invoices_view.dart';
+import '../../client/calender_client.dart';
 
 class sales extends StatefulWidget {
   const sales({Key? key}) : super(key: key);
@@ -225,16 +219,17 @@ class _salesState extends State<sales> {
                       },
                       title: 'الفواتير المحذوفة')
                   : Container(),
-
-              buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context, CupertinoPageRoute(builder: (context) => WithdrawalsInvoicesPage()));
-                },
-                title: 'إدارة الفواتير المنسحبة',
-              ),
+              Provider.of<privilge_vm>(context, listen: true).checkprivlge('143') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => WithdrawalsInvoicesPage()));
+                      },
+                      title: 'إدارة الفواتير المنسحبة',
+                    )
+                  : SizedBox.shrink(),
 
               Provider.of<privilge_vm>(context, listen: true).checkprivlge('35') == true
                   ? buildSelectCategory(

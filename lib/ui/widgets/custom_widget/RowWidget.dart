@@ -9,12 +9,13 @@ import 'package:flutter/material.dart';
 class cardRow extends StatelessWidget {
   cardRow({
     this.alignment,required this.value,required this.title,
-    this.isExpanded = true,Key? key})
+    this.isExpanded = true,Key? key, this.withDivider = true})
       : super(key: key);
   var alignment;
   String title;
   String value;
   bool isExpanded;
+  final bool withDivider;
   // bool? isrow=true;
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class cardRow extends StatelessWidget {
         Row(
           mainAxisAlignment: alignment==null? MainAxisAlignment.spaceBetween:alignment,
          crossAxisAlignment: CrossAxisAlignment.center,
+          textDirection: TextDirection.rtl,
           children: [
             Flexible(
               child: Text(title,style: TextStyle(
@@ -43,9 +45,11 @@ class cardRow extends StatelessWidget {
         ),
         //Spacer(),
       //  isrow==true?
-        Divider(thickness: 1,color: Colors.grey,),//:Container(),
-        //const MySeparator(color: Colors.grey),
-        SizedBox(height: 5,),
+        if(withDivider) ...{
+          Divider(thickness: 1,color: Colors.grey,),//:Container(),
+          //const MySeparator(color: Colors.grey),
+          SizedBox(height: 5,),
+        }
 
       ],
     );

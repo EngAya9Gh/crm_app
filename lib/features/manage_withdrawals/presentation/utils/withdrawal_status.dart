@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 enum WithdrawalStatus {
@@ -30,4 +28,21 @@ extension WithdrawalStatusExt on WithdrawalStatus {
         return Colors.red;
     }
   }
+
+  String get text {
+    switch (this) {
+      case WithdrawalStatus.pending:
+        return "معلقة";
+      case WithdrawalStatus.approved:
+        return "تمت الموافقة";
+      case WithdrawalStatus.declined:
+        return "مرفوضة";
+    }
+  }
+
+  bool get isDeclined => this == WithdrawalStatus.declined;
+
+  bool get isPending => this == WithdrawalStatus.pending;
+
+  bool get isApproved => this == WithdrawalStatus.approved;
 }

@@ -12,7 +12,7 @@ class InvoiceWithdrawalSeries {
   String? idApproveSeries;
   String? fkUser;
   String? fkInvoice;
-  WithdrawalStatus isApprove;
+  WithdrawalStatus withdrawalStatus;
   DateTime? dateApprove;
   String? priorityApprove;
   String? nameUser;
@@ -21,7 +21,7 @@ class InvoiceWithdrawalSeries {
     this.idApproveSeries,
     this.fkUser,
     this.fkInvoice,
-    required this.isApprove,
+    required this.withdrawalStatus,
     this.dateApprove,
     this.priorityApprove,
     this.nameUser,
@@ -31,7 +31,7 @@ class InvoiceWithdrawalSeries {
         idApproveSeries: json["idApprove_series"],
         fkUser: json["fk_user"],
         fkInvoice: json["fk_invoice"],
-        isApprove: WithdrawalStatus.values.firstWhere((element) =>
+        withdrawalStatus: WithdrawalStatus.values.firstWhere((element) =>
             element.status ==
             (json["is_approve"].runtimeType == String ? int.tryParse(json["is_approve"]) : json["is_approve"])),
         dateApprove:json["date_approve"] != null ? DateTime.tryParse(json["date_approve"]) : null,
@@ -43,8 +43,51 @@ class InvoiceWithdrawalSeries {
         "idApprove_series": idApproveSeries,
         "fk_user": fkUser,
         "fk_invoice": fkInvoice,
-        "is_approve": isApprove.status,
+        "is_approve": withdrawalStatus.status,
         "date_approve": dateApprove?.toIso8601String(),
         "priority_approve": priorityApprove,
       };
+
+  InvoiceWithdrawalSeries copyWith({
+    String? idApproveSeries,
+    String? fkUser,
+    String? fkInvoice,
+    WithdrawalStatus? withdrawalStatus,
+    DateTime? dateApprove,
+    String? priorityApprove,
+    String? nameUser,
+  }) {
+    return InvoiceWithdrawalSeries(
+      idApproveSeries: idApproveSeries ?? this.idApproveSeries,
+      fkUser: fkUser ?? this.fkUser,
+      fkInvoice: fkInvoice ?? this.fkInvoice,
+      withdrawalStatus: withdrawalStatus ?? this.withdrawalStatus,
+      dateApprove: dateApprove ?? this.dateApprove,
+      priorityApprove: priorityApprove ?? this.priorityApprove,
+      nameUser: nameUser ?? this.nameUser,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is InvoiceWithdrawalSeries &&
+          runtimeType == other.runtimeType &&
+          idApproveSeries == other.idApproveSeries &&
+          fkUser == other.fkUser &&
+          fkInvoice == other.fkInvoice &&
+          withdrawalStatus == other.withdrawalStatus &&
+          dateApprove == other.dateApprove &&
+          priorityApprove == other.priorityApprove &&
+          nameUser == other.nameUser;
+
+  @override
+  int get hashCode =>
+      idApproveSeries.hashCode ^
+      fkUser.hashCode ^
+      fkInvoice.hashCode ^
+      withdrawalStatus.hashCode ^
+      dateApprove.hashCode ^
+      priorityApprove.hashCode ^
+      nameUser.hashCode;
 }
