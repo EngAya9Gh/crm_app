@@ -35,8 +35,8 @@ class CommunicationListBloc extends Bloc<CommunicationListEvent, CommunicationLi
         state.copyWith(
           communicationListState: event.query.isNotEmpty
               ? PageState.loaded(data: filterList(event.query))
-              : PageState.loaded(data: value.data ?? []),
-          allCommunicationsState: value.data,
+              : PageState.loaded(data: value.message ?? []),
+          allCommunicationsState: value.message,
         ),
       ),
     );

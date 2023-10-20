@@ -4,6 +4,7 @@ abstract class EndPoints {
   static const baseUrl = "http://smartcrm.ws/test/api/";
   static const care = _Care();
   static const users = _Users();
+  static const series = _Series();
 }
 
 class _Users {
@@ -12,6 +13,17 @@ class _Users {
   final allUsers = 'users/getUser.php';
   final addUser = 'users/addUser.php';
   final updateUser = 'users/updateuser_patch.php';
+}
+
+class _Series{
+  const _Series();
+
+  final getUsersSeries = 'series/view_series_manag.php';
+  final updateUsersSeries = 'series/update_series_manage.php';
+  final getWithdrawalsInvoices = 'series/getInvoice_Approve_back.php';
+  final getWithdrawalInvoiceDetails = 'series/view_series_invoice.php';
+  final setApproveSeries = 'series/set_approve_series.php';
+  final getWithdrawnDetails  = 'series/view_detail_demand.php';
 }
 
 class _Care {

@@ -105,6 +105,7 @@ class InvoiceModel extends CacheRepository {
   String? renew_agent;
   String? file_reject;
   List<FileAttach>? filesAttach;
+  String? approveBackDone;
 
   //endregion
 
@@ -202,6 +203,7 @@ class InvoiceModel extends CacheRepository {
     this.renew_agent,
     this.file_reject,
     this.filesAttach,
+    this.approveBackDone,
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -315,6 +317,7 @@ class InvoiceModel extends CacheRepository {
     filesAttach = List.from(jsondata['files_attach'] ?? []).map((e) => FileAttach.fromMap(e)).toList();
     fileAttach = jsondata['file_attach'];
     file_reject = jsondata['file_reject'];
+    approveBackDone = jsondata['approve_back_done'];
     attachFileStatus = AttachFileStatus.init;
     deleteAttachFileStatus = AttachFileStatus.init;
     //  json.decode(
@@ -568,6 +571,7 @@ class InvoiceModel extends CacheRepository {
     String? rejectFile,
     AttachFileStatus? attachFileStatus,
     AttachFileStatus? deleteAttachFileStatus,
+    String? approveBackDone,
     bool deleteImage = false,
     bool deleteRejectImage = false,
   }) {
@@ -664,6 +668,7 @@ class InvoiceModel extends CacheRepository {
       deleteAttachFileStatus: deleteAttachFileStatus ?? this.deleteAttachFileStatus,
       filesAttach: filesAttach ?? this.filesAttach,
       renew_agent: renew_agent ?? this.renew_agent,
+      approveBackDone: approveBackDone ?? this.approveBackDone,
     );
   }
 //endregion
@@ -770,12 +775,7 @@ class FileAttach {
   final XFile? file;
   final DownloadFileStatus fileStatus;
 
-  FileAttach({
-    this.fileAttach,
-    this.id,
-    this.file,
-    this.fileStatus = DownloadFileStatus.unDownloaded
-  });
+  FileAttach({this.fileAttach, this.id, this.file, this.fileStatus = DownloadFileStatus.unDownloaded});
 
   Map<String, dynamic> toMap() {
     return {

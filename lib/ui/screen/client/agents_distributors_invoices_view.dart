@@ -340,7 +340,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                     itemBuilder: (context, index) {
                       return CardInvoiceClient(
                         type: 'profile',
-                        itemProd: list[index],
+                        invoice: list[index],
                       );
                     },
                   ),

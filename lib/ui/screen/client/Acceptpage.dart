@@ -276,7 +276,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                                                     child:
                                                     CardInvoiceClient(
                                                       type:'profile',
-                                                      itemProd: value.listInvoicesAccept[index],
+                                                      invoice: value.listInvoicesAccept[index],
 
                                                     )) ,
                                               );

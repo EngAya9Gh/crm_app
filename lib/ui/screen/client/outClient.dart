@@ -154,7 +154,7 @@ class _OutClientState extends State<OutClient> {
                                                     child:
                                                       CardInvoiceClient(
                                                         type: 'profile',
-                                                      itemProd: value.listInvoicesAccept[index],
+                                                      invoice: value.listInvoicesAccept[index],
                                                       //itemClient :  itemClient,
                                                     )) ,
                                               );

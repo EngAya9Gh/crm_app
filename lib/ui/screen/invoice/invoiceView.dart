@@ -1,8 +1,7 @@
 import 'dart:io';
+import 'dart:ui' as myui;
 
-import 'package:crm_smart/core/api/api_utils.dart';
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
@@ -20,10 +19,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as rt;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart' as rt;
-import 'dart:ui' as myui;
+
 import '../../../constants.dart';
 import '../../../function_global.dart';
 import '../../../labeltext.dart';
@@ -37,12 +36,14 @@ import 'invoice_file_gallery_page.dart';
 class InvoiceView extends StatefulWidget {
   InvoiceView({
     this.type,
+    this.showActions = true,
     required this.invoice,
     Key? key,
   }) : super(key: key);
 
   InvoiceModel invoice;
   String? type;
+  bool showActions;
 
   @override
   _InvoiceViewState createState() => _InvoiceViewState();
@@ -287,336 +288,336 @@ class _InvoiceViewState extends State<InvoiceView> {
                     if (invoice.participal == null && invoice.agent_distibutor == null && invoice.type_seller == "3")
                       cardRow(value: "موظف", title: "نوع البائع"),
 
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        //crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true &&
-                                      invoice.isApprove == null ||
-                                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('31') == true &&
-                                      invoice.isApprove != null
-                              ? CustomButton(
-                                  text: 'تعديل الفاتورة',
-                                  onTap: () async {
-                                    if (clientmodel != null)
-                                      Navigator.push(
-                                          context,
-                                          CupertinoPageRoute(
-                                              builder: (context) =>
-                                                  addinvoice(invoice: invoice, itemClient: clientmodel!)));
-                                  },
-                                )
-                              : Container(), // widget.type == 'approved'
-                          //     ? invoice.isApprove == null
-                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('41') == true
-                              ? invoice.isApprove != null
-                                  ? CustomButton(
-                                      text: 'الاجراءات',
-                                      onTap: () async {
-                                        if (clientmodel != null)
-                                          showDialog<void>(
-                                            context: context,
-                                            builder: (context) => RejectDialog(
-                                              invoice: invoice,
-                                              clientModel: clientmodel!,
-                                            ),
+                    if (widget.showActions) ...{
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          //crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true &&
+                                        invoice.isApprove == null ||
+                                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('31') == true &&
+                                        invoice.isApprove != null
+                                ? CustomButton(
+                                    text: 'تعديل الفاتورة',
+                                    onTap: () async {
+                                      if (clientmodel != null)
+                                        Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    addinvoice(invoice: invoice, itemClient: clientmodel!)));
+                                    },
+                                  )
+                                : Container(), // widget.type == 'approved'
+                            //     ? invoice.isApprove == null
+                            Provider.of<privilge_vm>(context, listen: true).checkprivlge('41') == true
+                                ? invoice.isApprove != null
+                                    ? CustomButton(
+                                        text: 'الاجراءات',
+                                        onTap: () async {
+                                          if (clientmodel != null)
+                                            showDialog<void>(
+                                              context: context,
+                                              builder: (context) => RejectDialog(
+                                                invoice: invoice,
+                                                clientModel: clientmodel!,
+                                              ),
+                                            );
+                                        },
+                                      )
+                                    : Container()
+                                : Container(),
+                            Provider.of<privilge_vm>(context, listen: true).checkprivlge('32') == true
+                                ? CustomButton(
+                                    //width: MediaQuery.of(context).size.width * 0.2,
+                                    text: 'حذف الفاتورة',
+                                    onTap: () async {
+                                      bool result = await showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text('التأكيد'),
+                                            content: Text('هل تريد حذف الفاتورة'),
+                                            actions: <Widget>[
+                                              new TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context, rootNavigator: true)
+                                                      .pop(false); // dismisses only the dialog and returns false
+                                                },
+                                                child: Text('لا'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  Navigator.of(context, rootNavigator: true).pop(true);
+                                                  // dismisses only the dialog and returns true
+                                                  // if(itemProd.idInvoice!=null)
+                                                  print('das');
+                                                  DateTime _currentDate = DateTime.now();
+                                                  final rt.DateFormat formatter = rt.DateFormat('yyyy-MM-dd');
+                                                  // Provider.of<invoice_vm>(context, listen: false)
+                                                  //     .addlistinvoicedeleted(DeletedinvoiceModel(
+                                                  //   fkClient: invoice.fkIdClient.toString(),
+                                                  //   fkUser: Provider.of<user_vm_provider>(context, listen: false)
+                                                  //       .currentUser
+                                                  //       .idUser,
+                                                  //   //cuerrent user
+                                                  //   dateDelete: formatter.format(_currentDate),
+                                                  //   //city:itemProd.
+                                                  //   nameClient: invoice.nameClient.toString(),
+                                                  //   nameEnterprise: clientmodel.nameEnterprise,
+                                                  //   mobileclient: clientmodel.mobile,
+                                                  //   //mobileuser:widget.itemClient. ,
+                                                  //   // nameUser: widget.itemProd
+                                                  //   //     .nameUser, //موظف المبيعات
+                                                  //   nameUser: Provider.of<user_vm_provider>(context, listen: false)
+                                                  //       .currentUser
+                                                  //       .nameUser, //name user that doing delete
+                                                  // ));
+                                                  Provider.of<invoice_vm>(context, listen: false).delete_invoice({
+                                                    "id_invoice": invoice.idInvoice.toString(),
+                                                    'fk_regoin': invoice.fk_regoin.toString(),
+                                                    'fkcountry': invoice.fk_country.toString(),
+                                                    "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                                        .currentUser
+                                                        .idUser
+                                                        .toString(),
+                                                    "name_enterprise": clientmodel?.nameEnterprise.toString(),
+                                                    "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                                        .currentUser
+                                                        .nameUser
+                                                        .toString(),
+                                                  }, invoice.idInvoice);
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('نعم'),
+                                              ),
+                                            ],
                                           );
-                                      },
-                                    )
-                                  : Container()
-                              : Container(),
-                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('32') == true
+                                        },
+                                      );
+                                    })
+                                : Container(),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('116') == true
                               ? CustomButton(
                                   //width: MediaQuery.of(context).size.width * 0.2,
-                                  text: 'حذف الفاتورة',
+                                  text: 'اضافة دفعة للفاتورة',
                                   onTap: () async {
-                                    bool result = await showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text('التأكيد'),
-                                          content: Text('هل تريد حذف الفاتورة'),
-                                          actions: <Widget>[
-                                            new TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context, rootNavigator: true)
-                                                    .pop(false); // dismisses only the dialog and returns false
-                                              },
-                                              child: Text('لا'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                Navigator.of(context, rootNavigator: true).pop(true);
-                                                // dismisses only the dialog and returns true
-                                                // if(itemProd.idInvoice!=null)
-                                                print('das');
-                                                DateTime _currentDate = DateTime.now();
-                                                final rt.DateFormat formatter = rt.DateFormat('yyyy-MM-dd');
-                                                // Provider.of<invoice_vm>(context, listen: false)
-                                                //     .addlistinvoicedeleted(DeletedinvoiceModel(
-                                                //   fkClient: invoice.fkIdClient.toString(),
-                                                //   fkUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                //       .currentUser
-                                                //       .idUser,
-                                                //   //cuerrent user
-                                                //   dateDelete: formatter.format(_currentDate),
-                                                //   //city:itemProd.
-                                                //   nameClient: invoice.nameClient.toString(),
-                                                //   nameEnterprise: clientmodel.nameEnterprise,
-                                                //   mobileclient: clientmodel.mobile,
-                                                //   //mobileuser:widget.itemClient. ,
-                                                //   // nameUser: widget.itemProd
-                                                //   //     .nameUser, //موظف المبيعات
-                                                //   nameUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                //       .currentUser
-                                                //       .nameUser, //name user that doing delete
-                                                // ));
-                                                Provider.of<invoice_vm>(context, listen: false).delete_invoice({
-                                                  "id_invoice": invoice.idInvoice.toString(),
-                                                  'fk_regoin': invoice.fk_regoin.toString(),
-                                                  'fkcountry': invoice.fk_country.toString(),
-                                                  "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
-                                                      .currentUser
-                                                      .idUser
-                                                      .toString(),
-                                                  "name_enterprise": clientmodel?.nameEnterprise.toString(),
-                                                  "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
-                                                      .currentUser
-                                                      .nameUser
-                                                      .toString(),
-                                                }, invoice.idInvoice);
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('نعم'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  })
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => add_payement(
+                                                  invoiceModel: invoice,
+                                                ) // support_view(type: 'only',)
+                                            ));
+                                  },
+                                )
+                              : Container(),
+                          SizedBox(width: 5),
+                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('115') == true
+                              ? CustomButton(
+                                  //width: MediaQuery.of(context).size.width * 0.2,
+                                  text: 'تغيير بيانات الفاتورة',
+                                  onTap: () async {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => edit_invoice(
+                                                  invoiceModel: invoice,
+                                                ) // support_view(type: 'only',)
+                                            ));
+                                  },
+                                )
                               : Container(),
                         ],
                       ),
-                    ),
+                      widget.type == 'approved'
+                          ? invoice.isApprove == null
+                              ? Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                          onPressed: () async {
+                                            await showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return ModalProgressHUD(
+                                                  inAsyncCall: Provider.of<invoice_vm>(context).isapproved,
+                                                  child: AlertDialog(
+                                                    title: Text(''),
+                                                    content: Text('تأكيد العملية'),
+                                                    actions: <Widget>[
+                                                      new ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                        onPressed: () {
+                                                          Navigator.of(context, rootNavigator: true).pop(
+                                                              false); // dismisses only the dialog and returns false
+                                                        },
+                                                        child: Text('لا'),
+                                                      ),
+                                                      ElevatedButton(
+                                                        style: ButtonStyle(
+                                                            backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                        onPressed: () async {
+                                                          // Navigator.of(context,
+                                                          //     rootNavigator: true)
+                                                          //     .pop(true);
+                                                          // update client to approved client
+                                                          Provider.of<invoice_vm>(context, listen: false)
+                                                              .setApproveclient_vm({
+                                                            "id_clients": invoice.fkIdClient,
+                                                            'date_approve': DateTime.now().toString(),
+                                                            //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                            "fk_user": invoice.fkIdUser, //صاحب العميل
+                                                            "fk_regoin": invoice.fk_regoin,
+                                                            "regoin": invoice.name_regoin,
+                                                            "fk_country": invoice.fk_country,
+                                                            "isApprove": "1",
+                                                            "name_enterprise": invoice.name_enterprise,
+                                                            "fkusername": invoice.nameUser, //موظف المبيعات
+                                                            //"message":"",//
+                                                            "nameuserApproved":
+                                                                Provider.of<user_vm_provider>(context, listen: false)
+                                                                    .currentUser
+                                                                    .nameUser,
+                                                            "iduser_approve":
+                                                                Provider.of<user_vm_provider>(context, listen: false)
+                                                                    .currentUser
+                                                                    .idUser //معتمد الاشتراك
+                                                          }, invoice.idInvoice).then((value) =>
+                                                                      value != false ? clear() : error() // clear()
+                                                                  // _scaffoldKey.currentState!.showSnackBar(
+                                                                  //     SnackBar(content: Text('هناك مشكلة ما')))
+                                                                  );
+                                                          //Navigator.of(context,rootNavigator: true).pop();
+                                                          // Navigator.pop(context);
+                                                          // Navigator.pushAndRemoveUntil(context,
+                                                          //     CupertinoPageRoute(builder: (context)=>Home()),
+                                                          //         (route) => true
+                                                          // );//this is active
+                                                          //  Navigator.pushReplacement(context,
+                                                          //      CupertinoPageRoute(builder:
+                                                          //          (context)=>ApprovePage()));
+                                                        },
+                                                        child: Text('نعم'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                            );
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Provider.of<privilge_vm>(context, listen: true).checkprivlge('116') == true
-                            ? CustomButton(
-                                //width: MediaQuery.of(context).size.width * 0.2,
-                                text: 'اضافة دفعة للفاتورة',
-                                onTap: () async {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => add_payement(
-                                                invoiceModel: invoice,
-                                              ) // support_view(type: 'only',)
-                                          ));
-                                },
-                              )
-                            : Container(),
-                        SizedBox(width: 5),
-                        Provider.of<privilge_vm>(context, listen: true).checkprivlge('115') == true
-                            ? CustomButton(
-                                //width: MediaQuery.of(context).size.width * 0.2,
-                                text: 'تغيير بيانات الفاتورة',
-                                onTap: () async {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => edit_invoice(
-                                                invoiceModel: invoice,
-                                              ) // support_view(type: 'only',)
-                                          ));
-                                },
-                              )
-                            : Container(),
-                      ],
-                    ),
-                    widget.type == 'approved'
-                        ? invoice.isApprove == null
-                            ? Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton(
-                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                        onPressed: () async {
-                                          await showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return ModalProgressHUD(
-                                                inAsyncCall: Provider.of<invoice_vm>(context).isapproved,
-                                                child: AlertDialog(
-                                                  title: Text(''),
-                                                  content: Text('تأكيد العملية'),
-                                                  actions: <Widget>[
-                                                    new ElevatedButton(
-                                                      style: ButtonStyle(
-                                                          backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                                      onPressed: () {
-                                                        Navigator.of(context, rootNavigator: true)
-                                                            .pop(false); // dismisses only the dialog and returns false
-                                                      },
-                                                      child: Text('لا'),
-                                                    ),
-                                                    ElevatedButton(
-                                                      style: ButtonStyle(
-                                                          backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                                      onPressed: () async {
-                                                        // Navigator.of(context,
-                                                        //     rootNavigator: true)
-                                                        //     .pop(true);
-                                                        // update client to approved client
-                                                        Provider.of<invoice_vm>(context, listen: false)
-                                                            .setApproveclient_vm({
-                                                          "id_clients": invoice.fkIdClient,
-                                                          'date_approve': DateTime.now().toString(),
-                                                          //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                          "fk_user": invoice.fkIdUser, //صاحب العميل
-                                                          "fk_regoin": invoice.fk_regoin,
-                                                          "regoin": invoice.name_regoin,
-                                                          "fk_country": invoice.fk_country,
-                                                          "isApprove": "1",
-                                                          "name_enterprise": invoice.name_enterprise,
-                                                          "fkusername": invoice.nameUser, //موظف المبيعات
-                                                          //"message":"",//
-                                                          "nameuserApproved":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
-                                                                  .currentUser
-                                                                  .nameUser,
-                                                          "iduser_approve":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
-                                                                  .currentUser
-                                                                  .idUser //معتمد الاشتراك
-                                                        }, invoice.idInvoice).then(
-                                                                (value) => value != false ? clear() : error() // clear()
-                                                                // _scaffoldKey.currentState!.showSnackBar(
-                                                                //     SnackBar(content: Text('هناك مشكلة ما')))
-                                                                );
-                                                        //Navigator.of(context,rootNavigator: true).pop();
-                                                        // Navigator.pop(context);
-                                                        // Navigator.pushAndRemoveUntil(context,
-                                                        //     CupertinoPageRoute(builder: (context)=>Home()),
-                                                        //         (route) => true
-                                                        // );//this is active
-                                                        //  Navigator.pushReplacement(context,
-                                                        //      CupertinoPageRoute(builder:
-                                                        //          (context)=>ApprovePage()));
-                                                      },
-                                                      child: Text('نعم'),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          );
-
-                                          //Navigator.pop(context);
-                                        },
-                                        child: Text('Approve')),
-                                    SizedBox(
-                                      width: 4,
-                                    ),
-                                    ElevatedButton(
-                                        style:
-                                            ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
-                                        onPressed: () async {
-                                          Provider.of<invoice_vm>(context, listen: false).setApproveclient_vm({
-                                            "id_clients": invoice.fkIdClient,
-                                            //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                            "fk_user": invoice.fkIdUser,
-                                            "fk_regoin": invoice.fk_regoin,
-                                            "regoin": invoice.name_regoin,
-                                            "fk_country": invoice.fk_country,
-                                            "isApprove": "0",
-                                            "name_enterprise": invoice.name_enterprise,
-                                            "fkusername": invoice.nameUser, //موظف المبيعات
-                                            //"message":"",//
-                                            "nameuserApproved": Provider.of<user_vm_provider>(context, listen: false)
-                                                .currentUser
-                                                .nameUser,
-                                            "iduser_approve": Provider.of<user_vm_provider>(context, listen: false)
-                                                .currentUser
-                                                .idUser //معتمد الاشتراك
-                                          }, invoice.idInvoice).then(
-                                              (value) => value != false ? clear() : error() // clear()
-                                              // _scaffoldKey.currentState!.showSnackBar(
-                                              //     SnackBar(content: Text('هناك مشكلة ما'))
-                                              // )
-                                              );
-                                          // Navigator.pushAndRemoveUntil(context,
-                                          //     CupertinoPageRoute(builder: (context)=>Home()),
-                                          //         (route) => true
-                                          // );
-                                          // bool result = await showDialog(
-                                          //   context: context,
-                                          //   builder: (context) {
-                                          //     return AlertDialog(
-                                          //       title: Text(''),
-                                          //       content: Text('تأكيد العملية  '),
-                                          //       actions: <Widget>[
-                                          //         new ElevatedButton(
-                                          //           style: ButtonStyle(
-                                          //               backgroundColor: MaterialStateProperty.all(
-                                          //                   kMainColor)),
-                                          //           onPressed: () {
-                                          //             Navigator.of(context,
-                                          //                 rootNavigator: true)
-                                          //                 .pop(
-                                          //                 false); // dismisses only the dialog and returns false
-                                          //           },
-                                          //           child: Text('لا'),
-                                          //         ),
-                                          //         ElevatedButton(
-                                          //           style: ButtonStyle(
-                                          //               backgroundColor: MaterialStateProperty.all(
-                                          //                   kMainColor)),
-                                          //           onPressed: () async {
-                                          //
-                                          //             // Navigator.of(context,
-                                          //             //     rootNavigator: true)
-                                          //             //     .pop(true);
-                                          //             Navigator.of(context,rootNavigator: true).pop();
-                                          //
-                                          //             // Navigator.pushReplacement(context,
-                                          //             //     CupertinoPageRoute(builder:
-                                          //             //         (context)=>ApprovePage()));
-                                          //
-                                          //             Navigator.pushAndRemoveUntil(context,
-                                          //                 CupertinoPageRoute(builder: (context)=>Home()),
-                                          //                     (route) => false
-                                          //             );
-                                          //           },
-                                          //           child: Text('نعم'),
-                                          //         ),
-                                          //       ],
-                                          //     );
-                                          //   },
-                                          // );
-                                          //send notification
-                                          //Navigator.pop(context);
-                                        },
-                                        child: Text('Refuse')),
-                                  ],
-                                ),
-                              )
-                            : Container()
-                        : Container(),
-
-                    SizedBox(height: 10),
-                    CustomButton(
-                      text: 'مرفقات الفاتورة',
-                      icon: Icons.file_present_rounded,
-                      onTap: () async {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => InvoiceFileGalleryPage()));
-                      },
-                    ),
-                    SizedBox(height: 20),
+                                            //Navigator.pop(context);
+                                          },
+                                          child: Text('Approve')),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      ElevatedButton(
+                                          style:
+                                              ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
+                                          onPressed: () async {
+                                            Provider.of<invoice_vm>(context, listen: false).setApproveclient_vm({
+                                              "id_clients": invoice.fkIdClient,
+                                              //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                              "fk_user": invoice.fkIdUser,
+                                              "fk_regoin": invoice.fk_regoin,
+                                              "regoin": invoice.name_regoin,
+                                              "fk_country": invoice.fk_country,
+                                              "isApprove": "0",
+                                              "name_enterprise": invoice.name_enterprise,
+                                              "fkusername": invoice.nameUser, //موظف المبيعات
+                                              //"message":"",//
+                                              "nameuserApproved": Provider.of<user_vm_provider>(context, listen: false)
+                                                  .currentUser
+                                                  .nameUser,
+                                              "iduser_approve": Provider.of<user_vm_provider>(context, listen: false)
+                                                  .currentUser
+                                                  .idUser //معتمد الاشتراك
+                                            }, invoice.idInvoice).then(
+                                                (value) => value != false ? clear() : error() // clear()
+                                                // _scaffoldKey.currentState!.showSnackBar(
+                                                //     SnackBar(content: Text('هناك مشكلة ما'))
+                                                // )
+                                                );
+                                            // Navigator.pushAndRemoveUntil(context,
+                                            //     CupertinoPageRoute(builder: (context)=>Home()),
+                                            //         (route) => true
+                                            // );
+                                            // bool result = await showDialog(
+                                            //   context: context,
+                                            //   builder: (context) {
+                                            //     return AlertDialog(
+                                            //       title: Text(''),
+                                            //       content: Text('تأكيد العملية  '),
+                                            //       actions: <Widget>[
+                                            //         new ElevatedButton(
+                                            //           style: ButtonStyle(
+                                            //               backgroundColor: MaterialStateProperty.all(
+                                            //                   kMainColor)),
+                                            //           onPressed: () {
+                                            //             Navigator.of(context,
+                                            //                 rootNavigator: true)
+                                            //                 .pop(
+                                            //                 false); // dismisses only the dialog and returns false
+                                            //           },
+                                            //           child: Text('لا'),
+                                            //         ),
+                                            //         ElevatedButton(
+                                            //           style: ButtonStyle(
+                                            //               backgroundColor: MaterialStateProperty.all(
+                                            //                   kMainColor)),
+                                            //           onPressed: () async {
+                                            //
+                                            //             // Navigator.of(context,
+                                            //             //     rootNavigator: true)
+                                            //             //     .pop(true);
+                                            //             Navigator.of(context,rootNavigator: true).pop();
+                                            //
+                                            //             // Navigator.pushReplacement(context,
+                                            //             //     CupertinoPageRoute(builder:
+                                            //             //         (context)=>ApprovePage()));
+                                            //
+                                            //             Navigator.pushAndRemoveUntil(context,
+                                            //                 CupertinoPageRoute(builder: (context)=>Home()),
+                                            //                     (route) => false
+                                            //             );
+                                            //           },
+                                            //           child: Text('نعم'),
+                                            //         ),
+                                            //       ],
+                                            //     );
+                                            //   },
+                                            // );
+                                            //send notification
+                                            //Navigator.pop(context);
+                                          },
+                                          child: Text('Refuse')),
+                                    ],
+                                  ),
+                                )
+                              : Container()
+                          : Container(),
+                      SizedBox(height: 10),
+                      CustomButton(
+                        text: 'مرفقات الفاتورة',
+                        icon: Icons.file_present_rounded,
+                        onTap: () async {
+                          Navigator.push(context, CupertinoPageRoute(builder: (context) => InvoiceFileGalleryPage()));
+                        },
+                      ),
+                      SizedBox(height: 20),
+                    },
                   ],
                 ),
               ),
@@ -664,8 +665,7 @@ class _RejectDialogState extends State<RejectDialog> {
     _invoice = widget.invoice;
     if (_invoice.desc_reason_back?.isNotEmpty ?? false)
       descresaonController.text = _invoice.desc_reason_back.toString();
-    if (_invoice.value_back?.isNotEmpty ?? false)
-    valueBackController.text = _invoice.value_back.toString();
+    if (_invoice.value_back?.isNotEmpty ?? false) valueBackController.text = _invoice.value_back.toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       typeclient_provider = Provider.of<typeclient>(context, listen: false);
@@ -673,7 +673,7 @@ class _RejectDialogState extends State<RejectDialog> {
 
       typeclient_provider.selectedValueOut = _invoice.reason_back == null ? null : _invoice.reason_back.toString();
       // typeclient_provider.changevalueOut(typeclient_provider.selectedValueOut.toString());
-      String val = _invoice.stateclient.toString() == "منسحب"
+      String val = (_invoice.date_change_back?.isNotEmpty ?? false)
           ? _invoice.date_change_back.toString()
           : formatter.format(DateTime.now());
       _currentDate = DateTime.parse(val);
@@ -973,28 +973,30 @@ class _RejectDialogState extends State<RejectDialog> {
                           return Center(child: CircularProgressIndicator());
                         }
                         return (_invoice.file_reject?.isNotEmpty ?? false)
-                            ? Center(
-                                child: ElevatedButton(
-                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
-                                  onPressed: () async {
-                                    // if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
-                                    //   ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
-                                    //   return;
-                                    // }
-                                    if (_globalKey.currentState!.validate()) {
-                                      _globalKey.currentState!.save();
+                            ? (Provider.of<privilge_vm>(context, listen: true).checkprivlge('145') == true
+                                ? Center(
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                                      onPressed: () async {
+                                        // if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
+                                        //   ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                        //   return;
+                                        // }
+                                        if (_globalKey.currentState!.validate()) {
+                                          _globalKey.currentState!.save();
 
-                                      await Provider.of<invoice_vm>(context, listen: false)
-                                          .delete_back(_invoice.idInvoice.toString(), _invoice.file_reject.toString());
+                                          await Provider.of<invoice_vm>(context, listen: false).delete_back(
+                                              _invoice.idInvoice.toString(), _invoice.file_reject.toString());
 
-                                      clear_back();
+                                          clear_back();
 
-                                      Navigator.of(context, rootNavigator: true).pop(false);
-                                    }
-                                  },
-                                  child: Text('حذف الطلب'),
-                                ),
-                              )
+                                          Navigator.of(context, rootNavigator: true).pop(false);
+                                        }
+                                      },
+                                      child: Text('حذف الطلب'),
+                                    ),
+                                  )
+                                : SizedBox.shrink())
                             : Center(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
