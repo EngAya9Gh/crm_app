@@ -266,7 +266,7 @@ class _WithdrawalInvoiceDetailsPageState extends State<WithdrawalInvoiceDetailsP
         idApproveSeries: firstPendingEmployee.idApproveSeries!,
         invoiceId: firstPendingEmployee.fkInvoice!,
         withdrawalStatus: status,
-        clientId: currentUser.idUser!,
+        clientId: widget.invoice.fkIdClient.toString(),
         nameUserdo: currentUser.nameUser!,
         nameEnterprise: widget.invoice.name_enterprise!,
         fk_regoin: widget.invoice.fk_regoin_invoice!,
