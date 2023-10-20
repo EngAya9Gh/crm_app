@@ -216,7 +216,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         List<InvoiceWithdrawalSeries> list = state.withdrawalInvoiceDetails.getDataWhenSuccess ?? [];
         list = list
             .map((e) =>
-                e.fkUser == seriesParams.clientId ? e.copyWith(withdrawalStatus: seriesParams.withdrawalStatus) : e)
+                e.fkUser == seriesParams.id_user ? e.copyWith(withdrawalStatus: seriesParams.withdrawalStatus) : e)
             .toList();
 
         List<InvoiceModel> listInvoice = state.withdrawalsInvoice.getDataWhenSuccess ?? [];

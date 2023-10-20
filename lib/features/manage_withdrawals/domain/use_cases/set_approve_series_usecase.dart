@@ -27,6 +27,7 @@ class SetApproveSeriesParams {
     required this.nameUserdo,
     required this.fkcountry,
     required this.fk_regoin,
+    required this.id_user,
   });
 
   final String idApproveSeries;
@@ -34,6 +35,7 @@ class SetApproveSeriesParams {
 
   final WithdrawalStatus withdrawalStatus;
   final String clientId;
+  final String id_user;
   final String nameEnterprise;
   final String nameUserdo;
   final String fk_regoin;
