@@ -269,6 +269,10 @@ class _WithdrawalInvoiceDetailsPageState extends State<WithdrawalInvoiceDetailsP
         clientId: currentUser.idUser!,
         nameUserdo: currentUser.nameUser!,
         nameEnterprise: widget.invoice.name_enterprise!,
+        fk_regoin: widget.invoice.fk_regoin_invoice!,
+        fkcountry: widget.invoice.fk_country!,
+
+
       ),
       () {},
     );
