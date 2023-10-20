@@ -115,19 +115,7 @@ class _carepageState extends State<carepage> {
                         care_page_view()));
           }, title: 'التواصل الدوري'):Container(),
 
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('137')==true?
-              buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context,
-                      CupertinoPageRoute(builder: (context) =>
-                          CommunicationListPage()));
-                },
-                title: 'قائمة العملاء المميزين',
-              ):Container() ,
+
           Provider.of<privilge_vm>(context,listen: true)
               .checkprivlge('29')==true?
           buildSelectCategory(

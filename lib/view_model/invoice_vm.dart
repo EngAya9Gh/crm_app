@@ -7,10 +7,13 @@ import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/Invoice_Service.dart';
+import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import '../model/agent_distributor_model.dart';
 import '../model/calendar/event.dart';
@@ -115,7 +118,7 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  // List<InvoiceModel> temp_listInvoicesAccept= [];
+    List<InvoiceModel> temp_listInvoicesAccept= [];
   Future<void> searchwaitsupport(String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // temp_listInvoicesAccept=List.from(listInvoicesAccept);
@@ -131,7 +134,7 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else
-      listInvoicesAccept = List.from(listinvoices);
+      listInvoicesAccept = List.from(temp_listInvoicesAccept);
     //getinvoice_Local("مشترك", 'approved only', null);
     notifyListeners();
   }
@@ -491,6 +494,7 @@ class invoice_vm extends ChangeNotifier {
           break;
       }
     }
+    temp_listInvoicesAccept= List.from(listInvoicesAccept);
     isloading = false;
     //listInvoicesAccept=//List.from(listinvoices);
     notifyListeners();
@@ -781,6 +785,7 @@ class invoice_vm extends ChangeNotifier {
       }
     }
     listInvoicesAccept = List.from(listinvoices);
+    temp_listInvoicesAccept= List.from(listinvoices);
     // listInvoicesAccept.forEach((element) {
     //   if (element.stateclient == 'مشترك' &&
     //       element.isApprove == "1" &&
@@ -1120,9 +1125,10 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> add_invoiceclient_vm(Map<String, dynamic?> body, File? file, File? myfilelogo,List<File> files) async {
+  Future<String> add_invoiceclient_vm(
+      Map<String, dynamic?> body, File? file, File? myfilelogo, List<File> files) async {
     String res = 'done';
-    InvoiceModel data = await Invoice_Service().addInvoice(body, file, myfilelogo,files);
+    InvoiceModel data = await Invoice_Service().addInvoice(body, file, myfilelogo, files);
     //  if(data !=null){
     print('resssssssssssssss');
     listinvoices.insert(0, data);
@@ -1133,6 +1139,57 @@ class invoice_vm extends ChangeNotifier {
     // } else res='false';
     notifyListeners();
     return res;
+  }
+
+  openFile(FileAttach attachFile) async {
+    try {
+      if (attachFile.file != null) {
+        final check = await Permission.manageExternalStorage.request();
+        if (check == PermissionStatus.denied) {
+          return;
+        }
+
+        final result = await OpenFile.open(attachFile.file!.path);
+
+        return;
+      }
+      final filename = attachFile.fileAttach!.name;
+      final check = await Permission.manageExternalStorage.request();
+      if (check == PermissionStatus.denied) {
+        return;
+      }
+      final checkFile = await Api().checkExist(filename);
+      if (checkFile != null) {
+        final result = await OpenFile.open(checkFile.path);
+        return;
+      }
+
+      filesAttach = filesAttach
+          .map((e) => e.id == attachFile.id ? e.copyWith(fileStatus: DownloadFileStatus.loading) : e)
+          .toList();
+      notifyListeners();
+
+      File file;
+      file = await Api().downloadFile(urlfile + attachFile.fileAttach!, filename);
+
+      if (file.existsSync()) {
+        filesAttach = filesAttach
+            .map((e) => e.id == attachFile.id ? e.copyWith(fileStatus: DownloadFileStatus.downloaded) : e)
+            .toList();
+        await OpenFile.open(file.path);
+      } else {
+        filesAttach = filesAttach
+            .map((e) => e.id == attachFile.id ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded) : e)
+            .toList();
+      }
+
+      notifyListeners();
+    } catch (e) {
+      filesAttach = filesAttach
+          .map((e) => e.id == attachFile.id ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded) : e)
+          .toList();
+      notifyListeners();
+    }
   }
 
   Future<String> add_invoiceProduct_vm(Map<String, dynamic?>? body) async {
@@ -1159,10 +1216,10 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<bool> update_invoiceclient_vm(
-      Map<String, dynamic?> body, String? idInvoice, File? file, File? myfilelogo,List<File> files) async {
+      Map<String, dynamic?> body, String? idInvoice, File? file, File? myfilelogo, List<File> files) async {
     isloadingdone = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service().updateInvoice(body, idInvoice!, file, myfilelogo,files);
+    InvoiceModel data = await Invoice_Service().updateInvoice(body, idInvoice!, file, myfilelogo, files);
     final index = listinvoiceClient.indexWhere((element) => element.idInvoice == idInvoice);
     // body.addAll({
     //   "id_invoice":idInvoice,
@@ -1305,36 +1362,41 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> set_state_back(Map<String, dynamic> body, String? id_invoice, File? file) async {
-    isloading = true;
-    notifyListeners();
-    InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!, file);
-    int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listinvoices[index] = data;
-    }
-    index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listinvoiceClient[index] = data;
-    }
-    currentInvoice = data;
-    index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
-    if (index != -1) {
-      listInvoicesAccept[index] = data;
-    }
+    try {
+      isloading = true;
+      notifyListeners();
+      InvoiceModel data = await Invoice_Service().setstate(body, id_invoice!, file);
+      int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
+      if (index != -1) {
+        listinvoices[index] = data;
+      }
+      index = listinvoiceClient.indexWhere((element) => element.idInvoice == id_invoice);
+      if (index != -1) {
+        listinvoiceClient[index] = data;
+      }
+      currentInvoice = data;
+      index = listInvoicesAccept.indexWhere((element) => element.idInvoice == id_invoice);
+      if (index != -1) {
+        listInvoicesAccept[index] = data;
+      }
 
-    // listinvoiceClient
-    // body.addAll(
-    //     InvoiceModel.fromJson(listinvoices[index]));
-    // listinvoices[index]= InvoiceModel.fromJson(body);
-    // //listClient.removeAt(index);
-    isloading = false;
-    notifyListeners();
+      // listinvoiceClient
+      // body.addAll(
+      //     InvoiceModel.fromJson(listinvoices[index]));
+      // listinvoices[index]= InvoiceModel.fromJson(body);
+      // //listClient.removeAt(index);
+      isloading = false;
+      notifyListeners();
+    } catch (e) {
+      isloading = false;
+      notifyListeners();
+    }
   }
 
-  Future<void> delete_back(  String  id_invoice,String file_reject ) async {
+  Future<void> delete_back(String id_invoice, String file_reject) async {
     isloading = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service().delete_back( id_invoice,file_reject);
+    InvoiceModel data = await Invoice_Service().delete_back(id_invoice, file_reject);
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
     if (index != -1) {
       listinvoices[index] = data;
@@ -1633,7 +1695,7 @@ class invoice_vm extends ChangeNotifier {
   List<FileAttach> filesAttach = [];
 
   initAttachFiles(List<FileAttach> filesAttach) {
-    this.filesAttach = filesAttach;
+    this.filesAttach = List.of(filesAttach);
   }
 
   addOnFilesAttach(List<FileAttach> files, VoidCallback onLimitExceeded) {
@@ -1654,4 +1716,40 @@ class invoice_vm extends ChangeNotifier {
   }
 
   final int maxFilesAttach = 20;
+
+  bool isLoadingCrudFiles = false;
+
+  curdInvoiceFiles({
+    required Map<String, dynamic> body,
+    required List<File> files,
+    File? file,
+    required String invoiceId,
+    VoidCallback? onSucess,
+  }) async {
+    try {
+      isLoadingCrudFiles = true;
+      notifyListeners();
+      final data = await Invoice_Service().crudFilesInvoice(files: files, body: body, invoiceId: invoiceId, file: file);
+
+      final invoice = currentInvoice!.copyWith(
+        filesAttach: data.filesAttach,
+        imageRecord: (data.imageRecord?.isNotEmpty ?? false) ? urlfile + data.imageRecord! : null,
+      );
+
+      final index = listinvoiceClient.indexWhere((element) => element.idInvoice == invoiceId);
+      if (index != -1) listinvoiceClient[index] = invoice;
+      final index1 = listinvoices.indexWhere((element) => element.idInvoice == invoiceId);
+      if (index1 != -1) listinvoices[index1] = invoice;
+      int index2 = listInvoicesAccept.indexWhere((element) => element.idInvoice == invoiceId);
+      if (index2 != -1) listInvoicesAccept[index2] = invoice;
+
+      currentInvoice = invoice;
+      isLoadingCrudFiles = false;
+      notifyListeners();
+      onSucess?.call();
+    } catch (e) {
+      isLoadingCrudFiles = false;
+      notifyListeners();
+    }
+  }
 }

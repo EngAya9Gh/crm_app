@@ -104,7 +104,9 @@ class _ClientViewState extends State<ClientView> {
                               .checkprivlge('133') == true)?
                             IconButton(
                               onPressed: () {
-                                context.read<client_vm>().setTagClient();
+                             if( (Provider.of<privilge_vm>(context, listen: false)
+                                 .checkprivlge('147') == true))
+                               context.read<client_vm>().setTagClient();
                               },
                               icon: Icon(
                                 (clientModel!.tag ?? false)
@@ -250,8 +252,8 @@ class _ClientViewState extends State<ClientView> {
                                       width: 5,
                                     )
                                   : Container(),
-                              clientModel.reasonTransfer == null
-                                  ? ElevatedButton(
+                              clientModel.reasonTransfer == null  ?
+                              ElevatedButton(
                                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                       onPressed: () {
                                         Navigator.push(
@@ -267,7 +269,7 @@ class _ClientViewState extends State<ClientView> {
                                       child: Text('تحويل العميل'),
                                     )
                                   : Container(),
-                              SizedBox(
+                               SizedBox(
                                 height: 3,
                               ),
                             ],

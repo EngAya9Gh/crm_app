@@ -47,7 +47,8 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
             get_title_care(widget.element.typeCommuncation.toString()) + val,
             '',
             widget.element.dateCommunication != null
-                ? Padding(
+                ?
+            Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
@@ -184,8 +185,12 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                       ],
                     ),
                   )
-                : Provider.of<communication_vm>(context,listen: true).isload?
-                   Center(child: CircularProgressIndicator()) :Padding(
+                // : Provider.of<communication_vm>(context,listen: true).isload?
+                //    Center(child: CircularProgressIndicator())
+                :
+            Provider.of<communication_vm>(context,listen: true).isload?
+            Center(child: CircularProgressIndicator()):
+            Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
                       children: [
@@ -298,11 +303,16 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 ],
                               )
                             : Container(),
-                        ElevatedButton(
+                         Provider.of<communication_vm>(context, listen: false).isload?
+                         Container()
+                         :ElevatedButton(
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                             onPressed: () async {
+                              // Provider.of<communication_vm>(context,listen: false).setload(true);
+                              Provider.of<communication_vm>(context, listen: false).isloadval(true);
+
                               if (widget.element.typeCommuncation != 'دوري') {
-                                Provider.of<communication_vm>(context,listen: false).setload(true);
+
                                 Provider.of<communication_vm>(context, listen: false).addcommmuncation(
                                     {
                                       //'fk_client':widget.com.fkClient.toString(),
@@ -328,7 +338,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                     (value) => clear(value));
                               }
                               else {
-                                Provider.of<communication_vm>(context, listen: false).isloadval(true);
+                                // Provider.of<communication_vm>(context, listen: false).isloadval(true);
                                 await Provider.of<config_vm>(context, listen: false).getAllConfig();
                                 List<ConfigModel> _listconfg =
                                     Provider.of<config_vm>(context, listen: false).listofconfig;
@@ -374,14 +384,14 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                   // clear(val);
                                 }
                               }
-                              Provider.of<communication_vm>(context,listen: false).setload(false);
+                              // Provider.of<communication_vm>(context,listen: false).setload(false);
 
                             },
                             child: Text(
                               ' تم التواصل ',
                               style:
                                   TextStyle(color: widget.element.dateCommunication == null ? kWhiteColor : kMainColor),
-                            )),
+                            )) ,
                       ],
                     ),
                   ),

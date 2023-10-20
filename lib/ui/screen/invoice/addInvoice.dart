@@ -82,22 +82,13 @@ class _addinvoiceState extends State<addinvoice> {
   final TextEditingController numTaxController = TextEditingController();
   final TextEditingController renewAdditionalOfBranchesController = TextEditingController();
   final TextEditingController renewAgentController = TextEditingController();
-
-  // final TextEditingController numTaxController = TextEditingController();
-
   final TextEditingController imageController = TextEditingController();
   final TextEditingController logoController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController renew2Controller = TextEditingController();
   final TextEditingController sellerCommissionRate = TextEditingController();
-  final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-  String? _fileName;
-  String? _saveAsFileName;
   List<PlatformFile>? _paths;
-  String? _directoryPath;
   String? _extension;
-  bool _isLoading = false;
-  bool _userAborted = false;
   bool _multiPick = false;
   FileType _pickingType = FileType.any;
   ValueNotifier<File?> companyLogoNotifier = ValueNotifier(null);
@@ -555,45 +546,46 @@ class _addinvoiceState extends State<addinvoice> {
                       SizedBox(
                         height: 15,
                       ),
-                      _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: '*') : Container(),
-                      _invoice!.idInvoice == null
-                          ? Container(
-                              padding: EdgeInsets.only(left: 2, right: 2),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(12)),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                    offset: Offset(1.0, 1.0),
-                                    blurRadius: 8.0,
-                                    color: Colors.black87.withOpacity(0.2),
-                                  ),
-                                ],
-                                color: Colors.white,
-                              ),
-                              child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
-                                return Directionality(
-                                  textDirection: TextDirection.ltr,
-                                  child: GroupButton(
-                                      controller: GroupButtonController(
-                                        selectedIndex: selectedProvider.isSelectedreadyinstall,
-                                        // typeinstallController==null
-                                        //     ? 0 :
-                                        // int.tryParse( typeinstallController!)
-                                      ),
-                                      options:
-                                          GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
-                                      buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
-                                      onSelected: (_, index, isselected) {
-                                        print(index);
-                                        //setState(() {
-                                        readyinstallController = index.toString();
-                                        selectedProvider.selectValuereadyinstall(index);
-                                        //  });
-                                      }),
-                                );
-                              }),
-                            )
-                          : Container(),
+                      // _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: '*') : Container(),
+                      // _invoice!.idInvoice == null
+                      //     ?
+                      // Container(
+                      //         padding: EdgeInsets.only(left: 2, right: 2),
+                      //         decoration: BoxDecoration(
+                      //           borderRadius: BorderRadius.all(Radius.circular(12)),
+                      //           boxShadow: <BoxShadow>[
+                      //             BoxShadow(
+                      //               offset: Offset(1.0, 1.0),
+                      //               blurRadius: 8.0,
+                      //               color: Colors.black87.withOpacity(0.2),
+                      //             ),
+                      //           ],
+                      //           color: Colors.white,
+                      //         ),
+                      //         child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                      //           return Directionality(
+                      //             textDirection: TextDirection.ltr,
+                      //             child: GroupButton(
+                      //                 controller: GroupButtonController(
+                      //                   selectedIndex: selectedProvider.isSelectedreadyinstall,
+                      //                   // typeinstallController==null
+                      //                   //     ? 0 :
+                      //                   // int.tryParse( typeinstallController!)
+                      //                 ),
+                      //                 options:
+                      //                     GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                      //                 buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
+                      //                 onSelected: (_, index, isselected) {
+                      //                   print(index);
+                      //                   //setState(() {
+                      //                   readyinstallController = index.toString();
+                      //                   selectedProvider.selectValuereadyinstall(index);
+                      //                   //  });
+                      //                 }),
+                      //           );
+                      //         }),
+                      //       )
+                      //     : Container(),
                       SizedBox(
                         height: 15,
                       ),
@@ -970,51 +962,54 @@ class _addinvoiceState extends State<addinvoice> {
                                                         ),
                                                       ),
                                                     ),
-                                                    Positioned.fill(
-                                                      child: Align(
-                                                        alignment: Alignment.topRight,
-                                                        child: Row(
-                                                          children: [
-                                                            InkWell(
-                                                              onTap: () => pickImage(
-                                                                  (context, file) => onPickCommercialRecordImage(file)),
-                                                              borderRadius: BorderRadius.circular(90),
-                                                              child: Container(
-                                                                height: 40,
-                                                                width: 40,
-                                                                margin: EdgeInsets.only(top: 10, right: 15),
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.grey.shade50,
-                                                                  shape: BoxShape.circle,
-                                                                ),
-                                                                alignment: Alignment.center,
-                                                                child: Icon(Icons.attachment_rounded,
-                                                                    color: Colors.grey.shade700, size: 20),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () => onDeleteCommercialRecordImage(),
-                                                              borderRadius: BorderRadius.circular(90),
-                                                              child: Container(
-                                                                height: 40,
-                                                                width: 40,
-                                                                margin: EdgeInsets.only(top: 10, right: 15),
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.grey.shade50,
-                                                                  shape: BoxShape.circle,
-                                                                ),
-                                                                alignment: Alignment.center,
-                                                                child: Icon(
-                                                                  Icons.delete_rounded,
-                                                                  color: Colors.red,
-                                                                  size: 20,
+                                                    if (Provider.of<privilge_vm>(context, listen: true)
+                                                            .checkprivlge('146') ==
+                                                        true)
+                                                      Positioned.fill(
+                                                        child: Align(
+                                                          alignment: Alignment.topRight,
+                                                          child: Row(
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () => pickImage((context, file) =>
+                                                                    onPickCommercialRecordImage(file)),
+                                                                borderRadius: BorderRadius.circular(90),
+                                                                child: Container(
+                                                                  height: 40,
+                                                                  width: 40,
+                                                                  margin: EdgeInsets.only(top: 10, right: 15),
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.grey.shade50,
+                                                                    shape: BoxShape.circle,
+                                                                  ),
+                                                                  alignment: Alignment.center,
+                                                                  child: Icon(Icons.attachment_rounded,
+                                                                      color: Colors.grey.shade700, size: 20),
                                                                 ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                              InkWell(
+                                                                onTap: () => onDeleteCommercialRecordImage(),
+                                                                borderRadius: BorderRadius.circular(90),
+                                                                child: Container(
+                                                                  height: 40,
+                                                                  width: 40,
+                                                                  margin: EdgeInsets.only(top: 10, right: 15),
+                                                                  decoration: BoxDecoration(
+                                                                    color: Colors.grey.shade50,
+                                                                    shape: BoxShape.circle,
+                                                                  ),
+                                                                  alignment: Alignment.center,
+                                                                  child: Icon(
+                                                                    Icons.delete_rounded,
+                                                                    color: Colors.red,
+                                                                    size: 20,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    )
+                                                      )
                                                   ],
                                                 ),
                                               )
@@ -1603,11 +1598,6 @@ class _addinvoiceState extends State<addinvoice> {
     invoiceViewmodel.updatelistproducetInvoice();
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
     Navigator.pop(context);
-    // _scaffoldKey.currentState!.showSnackBar(
-    //     SnackBar(content: Text('تم الحفظ بنجاح'))
-    // );
-    // setState(() {
-    // });
   }
 
   error(context) {
@@ -1616,106 +1606,12 @@ class _addinvoiceState extends State<addinvoice> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
   }
 
-  DateTime _currentDate = DateTime.now();
   final intl.DateFormat formatter = intl.DateFormat('yyyy-MM-dd');
-
-  void _pickFiles() async {
-    _resetState();
-    try {
-      _directoryPath = null;
-      _paths = (await FilePicker.platform.pickFiles(
-        type: _pickingType,
-        allowMultiple: _multiPick,
-        onFileLoading: (FilePickerStatus status) => print(status),
-        allowedExtensions: (_extension?.isNotEmpty ?? false) ? _extension?.replaceAll(' ', '').split(',') : null,
-      ))
-          ?.files;
-    } on PlatformException catch (e) {
-      _logException('Unsupported operation' + e.toString());
-    } catch (e) {
-      _logException(e.toString());
-    }
-    if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-      _fileName = _paths != null ? _paths!.map((e) => e.name).toString() : '...';
-      _userAborted = _paths == null;
-    });
-  }
-
-  // Future<void> _saveFile() async {
-  //   _resetState();
-  //   try {
-  //     // String? fileName = await FilePicker.platform.toString(
-  //     //   allowedExtensions: (_extension?.isNotEmpty ?? false)
-  //     //       ? _extension?.replaceAll(' ', '').split(',')
-  //     //       : null,
-  //     //   type: _pickingType,
-  //     );
-  //     setState(() {
-  //       _saveAsFileName = fileName;
-  //       _userAborted = fileName == null;
-  //     });
-  //   } on PlatformException catch (e) {
-  //     _logException('Unsupported operation' + e.toString());
-  //   } catch (e) {
-  //     _logException(e.toString());
-  //   } finally {
-  //     setState(() => _isLoading = false);
-  //   }
-  // }
-
-  void _logException(String message) {
-    print(message);
-    // _scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
-    // _scaffoldMessengerKey.currentState?.showSnackBar(
-    //   SnackBar(
-    //     content: Text(message),
-    //   ),
-    // );
-  }
-
-  void _resetState() {
-    if (!mounted) {
-      return;
-    }
-    setState(() {
-      _isLoading = true;
-      _directoryPath = null;
-      _fileName = null;
-      _paths = null;
-      _saveAsFileName = null;
-      _userAborted = false;
-    });
-  }
-
-  Widget fileshow_widget() {
-    // String type='';
-    // type=  _invoice!.imageRecord.toString()
-    //     .substring(_invoice!.imageRecord.toString().length-4,
-    //     _invoice!.imageRecord.toString().length);
-    // return
-    //     _invoice!.path.toString().isNotEmpty
-    //     ?type=='.jpg'
-    //     ?Image.file(File(_invoice!.path.toString()))
-    //     CircleAvatar(radius: 80.0,
-    //     child: _invoice!.path.toString()!.isNotEmpty
-    //         ? CachedNetworkImage(progressIndicatorBuilder: (context, url, progress) => Center(
-    //           child: CircularProgressIndicator(value: progress.progress,),),
-    //         imageUrl: _invoice!.imageRecord.toString()!  )
-    // ): File(_invoice!.imageRecord.toString())
-    //  : File(_invoice!.imageRecord.toString())
-    //  :Container(),
-
-    return Container();
-  }
 
   Future<File> createFileOfPdfUrl(String urlparam) async {
     Completer<File> completer = Completer();
     print("Start download file from internet!");
     try {
-      // "https://berlin2017.droidcon.cod.newthinking.net/sites/global.droidcon.cod.newthinking.net/files/media/documents/Flutter%20-%2060FPS%20UI%20of%20the%20future%20%20-%20DroidconDE%2017.pdf";
-      // final url = "https://pdfkit.org/docs/guide.pdf";
       final url = urlparam;
       final filename = url.substring(url.lastIndexOf("/") + 1);
       var request = await HttpClient().getUrl(Uri.parse(url));
