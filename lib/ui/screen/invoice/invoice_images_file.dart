@@ -65,7 +65,8 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                         },
                       );
                     } else {
-                      return networkImage(
+                      return
+                        networkImage(
                         attachFile,
                         () {
                           invoiceVm.deleteFileAttach(index);
