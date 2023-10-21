@@ -230,17 +230,16 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
             .toList();
 
         List<InvoiceModel> listInvoice = state.withdrawalsInvoice.getDataWhenSuccess ?? [];
-        listInvoice = listInvoice
-            .map((e) => e.idInvoice == seriesParams.invoiceId
-                ? e.copyWith(
-                    approveBackDone: list.any((element) => element.withdrawalStatus.isDeclined)
-                        ? "2"
-                        : list.every((element) => element.withdrawalStatus.isApproved)
-                            ? "1"
-                            : "0",
-                  )
-                : e)
-            .toList();
+        listInvoice = listInvoice.map((e) {
+          final isDeclined = list.any((element) => element.withdrawalStatus.isDeclined);
+          final isApproveWithdrawn = list.every((element) => element.withdrawalStatus.isApproved);
+          return e.idInvoice == seriesParams.invoiceId
+              ? e.copyWith(
+                  approveBackDone: isDeclined ? "2" : (isApproveWithdrawn ? "1" : "0"),
+                  stateclient: isApproveWithdrawn ? "منسحب" : null,
+                )
+              : e;
+        }).toList();
         emit(state.copyWith(
           setApproveSeriesState: BlocStatus.success(),
           withdrawalInvoiceDetails: PageState.loaded(data: list),

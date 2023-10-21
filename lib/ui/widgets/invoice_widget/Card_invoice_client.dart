@@ -42,10 +42,12 @@ class CardInvoiceClient extends StatefulWidget {
   CardInvoiceClient({
     required this.type,
     required this.invoice,
+    this.isFromWithdrawalsInvoicesList = false,
     Key? key,
   }) : super(key: key);
   final InvoiceModel invoice;
   final String type;
+  final isFromWithdrawalsInvoicesList;
 
   @override
   _CardInvoiceClientState createState() => _CardInvoiceClientState();
@@ -88,7 +90,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                         color: Colors.black87.withOpacity(0.2),
                       ),
                     ],
-                    borderRadius: widget.invoice.approveBackDone != null
+                    borderRadius: widget.invoice.approveBackDone != null && widget.isFromWithdrawalsInvoicesList
                         ? BorderRadius.only(
                             topLeft: Radius.circular(10),
                             topRight: Radius.circular(10),
@@ -291,7 +293,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                     ),
                   ),
                 ),
-                if (widget.invoice.approveBackDone != null)
+                if (widget.invoice.approveBackDone != null && widget.isFromWithdrawalsInvoicesList)
                   Container(
                     width: double.infinity,
                     height: 30,

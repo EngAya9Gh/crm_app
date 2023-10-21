@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
+
 import '../../../../constants.dart';
 import '../../../../ui/widgets/invoice_widget/Card_invoice_client.dart';
 import '../manager/manage_withdrawals_cubit.dart';
@@ -40,7 +41,11 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
               init: Center(child: CircularProgressIndicator()),
               success: (data) => ListView.separated(
                 padding: REdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                itemBuilder: (BuildContext context, int index) => CardInvoiceClient(type: 'withdrawn', invoice: data[index]),
+                itemBuilder: (BuildContext context, int index) => CardInvoiceClient(
+                  type: 'withdrawn',
+                  invoice: data[index],
+                  isFromWithdrawalsInvoicesList: true,
+                ),
                 separatorBuilder: (context, int index) => 10.verticalSpacingRadius,
                 itemCount: data.length,
               ),
