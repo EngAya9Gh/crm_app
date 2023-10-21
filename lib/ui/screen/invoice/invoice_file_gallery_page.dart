@@ -436,7 +436,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           child: Stack(
             children: [
               Positioned.fill(
-                child: ClipRRect(
+                child:
+                ClipRRect(
                   borderRadius: BorderRadius.circular(15),
                   child: fileAttach.fileAttach!.mimeType?.contains("image") == true
                       ? InkWell(

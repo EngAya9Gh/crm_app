@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -55,6 +56,11 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
                   text: "المعرض",
                   iconData: Icons.image_rounded,
                 ),
+                imageSourceWidget(
+                  onTap: () async => await onSelectSourceFile(context ),
+                  text: "الملفات",
+                  iconData: Icons.image_rounded,
+                ),
                 SizedBox(height: 20),
               ],
             ),
@@ -66,6 +72,18 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
 
   Future<void> onSelectSource(BuildContext context, ImageSource source) async {
     final file = await pickImage(source);
+    if (!mounted) return;
+
+    if (file != null) {
+      Navigator.of(context).pop();
+    } else {
+      return;
+    }
+
+    widget.onPickFile(context, file);
+  }
+  Future<void> onSelectSourceFile(BuildContext context ) async {
+    final file = await pickSingleFile();
     if (!mounted) return;
 
     if (file != null) {
@@ -103,10 +121,24 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   Future<File?> pickImage(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
+
+
     if (pickedFile == null) {
       return null;
     }
 
     return File(pickedFile.path);
   }
-}
+
+  Future<File?> pickSingleFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'dng', 'heic', 'pdf'],
+      type: FileType.custom,
+    );
+    if (result == null) {
+      return null;
+    }
+    File file = File(result.files.single.path.toString());
+    return file;
+}}
