@@ -42,7 +42,7 @@ class _salesState extends State<sales> {
 
   @override
   void initState() {
-    Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
+    Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
 
     super.initState();
   }
@@ -68,7 +68,7 @@ class _salesState extends State<sales> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('36') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('36') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -78,7 +78,7 @@ class _salesState extends State<sales> {
                       },
                       title: ' قائمة العملاء')
                   : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('39') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -90,7 +90,7 @@ class _salesState extends State<sales> {
                       title: 'فواتير العملاء')
                   : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('39') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -105,7 +105,7 @@ class _salesState extends State<sales> {
                       },
                       title: 'ديون العملاء')
                   : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('120') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('120') == true
                   ? buildSelectCategory(
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(builder: (context) => calender_client()));
@@ -130,7 +130,7 @@ class _salesState extends State<sales> {
                   },
                   title: 'موافقات تحويل العملاء'), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('40') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('40') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -141,7 +141,7 @@ class _salesState extends State<sales> {
                       title: ' طلبات موافقة المشرفين ')
                   : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('111') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('111') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -152,7 +152,7 @@ class _salesState extends State<sales> {
                       title: ' طلبات اعتماد المالية ')
                   : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('85') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('85') == true
                   ? buildSelectCategory(
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartAPI()));
@@ -164,7 +164,7 @@ class _salesState extends State<sales> {
                     )
                   : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('86') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('86') == true
                   ? buildSelectCategory(
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartregoinsales()));
@@ -175,7 +175,7 @@ class _salesState extends State<sales> {
                       colorarrow: Colors.black,
                     )
                   : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('88') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('88') == true
                   ? buildSelectCategory(
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(builder: (context) => salesproduct()));
@@ -186,7 +186,7 @@ class _salesState extends State<sales> {
                       colorarrow: Colors.black,
                     )
                   : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('91') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('91') == true
                   ? buildSelectCategory(
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(builder: (context) => deptsales()));
@@ -197,7 +197,7 @@ class _salesState extends State<sales> {
                       colorarrow: Colors.black,
                     )
                   : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('95') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('95') == true
                   ? buildSelectCategory(
                       onTap: () {
                         Navigator.push(context, CupertinoPageRoute(builder: (context) => sales_reportstate()));
@@ -209,7 +209,7 @@ class _salesState extends State<sales> {
                     )
                   : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('14') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('14') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -219,7 +219,7 @@ class _salesState extends State<sales> {
                       },
                       title: 'الفواتير المحذوفة')
                   : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('143') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('143') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -231,7 +231,7 @@ class _salesState extends State<sales> {
                     )
                   : SizedBox.shrink(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('35') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('35') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,

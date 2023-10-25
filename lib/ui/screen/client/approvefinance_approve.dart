@@ -30,7 +30,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
     _searchTextField.addListener(onSearch);
     _invoiceViewModel = context.read<invoice_vm>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       // if( Provider.of<privilge_vm>(context,listen: false)
       //     .checkprivlge('7'))
       //   await Provider.of<invoice_vm>(context, listen: false)
@@ -41,7 +41,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
       // await   Provider.of<invoice_vm>(context, listen: false)
       //        .getinvoices();
 ///////////////////////////////////////////////////////
-      if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('111') == true)
+      if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('111') == true)
         _invoiceViewModel.getinvoice_Local('مشترك', 'not approved', 'finance');
       // else{
       //   if( Provider.of<privilge_vm>(context,listen: false)

@@ -50,8 +50,8 @@ class _maincityviewState extends State<maincityview> {
         centerTitle: true,
       ),
       floatingActionButton:
-      Provider.of<privilge_vm>(context,listen: true)
-          .checkprivlge('78')==true ?
+      Provider.of<PrivilegeProvider>(context,listen: true)
+          .checkPrivilege('78')==true ?
       FloatingActionButton(
         child:Icon(Icons.add),
         onPressed: (){

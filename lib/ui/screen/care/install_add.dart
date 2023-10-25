@@ -44,7 +44,7 @@ class _installAddState extends State<installAdd> {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.com.fkClient);
-      await Provider.of<client_vm>(context,listen: false)
+      await Provider.of<ClientProvider>(context,listen: false)
           .get_byIdClient(widget.com.fkClient.toString());
     });
     super.initState();
@@ -213,11 +213,11 @@ class _installAddState extends State<installAdd> {
                               Provider.of<communication_vm>
                             (context,listen: false).addcommmuncation({
                              //'fk_client':widget.com.fkClient.toString(),
-                            'fk_user':Provider.of<user_vm_provider>
+                            'fk_user':Provider.of<UserProvider>
                                (context,listen: false).currentUser.idUser.toString(),
                             'date_communication':DateTime.now().toString(),
                             'result':typepayController,//
-                            'nameUser':Provider.of<user_vm_provider>
+                            'nameUser':Provider.of<UserProvider>
                                   (context,listen: false).currentUser.nameUser.toString(),
                              'type_install':widget.com.type_install.toString(),
                              'id_invoice':widget.com.id_invoice.toString(),
@@ -296,7 +296,7 @@ class _installAddState extends State<installAdd> {
                                 .addComment_vm({
                               'content': _comment.text,
                               'fk_user': await Provider
-                                  .of<user_vm_provider>(context,
+                                  .of<UserProvider>(context,
                                   listen: false)
                                   .currentUser
                                   .idUser
@@ -309,14 +309,14 @@ class _installAddState extends State<installAdd> {
                               DateTime.now().toString(),
                               //),
                               'nameUser': Provider
-                                  .of<user_vm_provider>(context,
+                                  .of<UserProvider>(context,
                                   listen: false)
                                   .currentUser
                                   .nameUser,
                               'img_image': '',
                               'name_enterprise': widget.com.nameEnterprise
                             }, Provider
-                                .of<user_vm_provider>(context,
+                                .of<UserProvider>(context,
                                 listen: false)
                                 .currentUser
                                 .img_image,);

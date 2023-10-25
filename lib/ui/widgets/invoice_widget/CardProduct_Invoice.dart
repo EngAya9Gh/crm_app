@@ -166,7 +166,7 @@ bool isepmty=false;
                   //read: false,
                   controller: _textprice,
                   label: 'السعر',
-                  hintText: Provider.of<user_vm_provider>(context, listen: true)
+                  hintText: Provider.of<UserProvider>(context, listen: true)
                       .currentUser.currency.toString(),
                   //radius: 10
                 ),
@@ -283,7 +283,7 @@ SizedBox(width: 15,),
                       //"fk_idClient": widget.itemClient.idClients,
                       //"fk_idUser": widget.itemClient.fkUser,
                       //"image_record":imageController.text,
-                      "lastuserupdate":Provider.of<user_vm_provider>(
+                      "lastuserupdate":Provider.of<UserProvider>(
                           context,listen: false).currentUser.idUser.toString(),
                       "total": widget.invoice!.total.toString(),
                       //"notes": noteController.text,

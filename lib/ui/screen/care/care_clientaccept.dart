@@ -42,18 +42,18 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
-      Provider.of<client_vm>(context, listen: false).clear();
-      await Provider.of<privilge_vm>(context,listen: false)
-          .getprivlg_usercurrent();
+      Provider.of<ClientProvider>(context, listen: false).clear();
+      await Provider.of<PrivilegeProvider>(context,listen: false)
+          .getPrivilegeUserCurrent();
       List<PrivilgeModel> list=
-          Provider.of<privilge_vm>(context,listen: false).privilgelist;
-      Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
+          Provider.of<PrivilegeProvider>(context,listen: false).privilegeList;
+      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
-      Provider.of<regoin_vm>(context,listen: false).changeVal(null);
-      Provider.of<client_vm>(context, listen: false).listClientAccept=[];
+      Provider.of<RegionProvider>(context,listen: false).changeVal(null);
+      Provider.of<ClientProvider>(context, listen: false).listClientAccept=[];
       // Provider.of<client_vm>(context, listen: false)
       //   .getallclient();
-      Provider.of<client_vm>(context, listen: false)
+      Provider.of<ClientProvider>(context, listen: false)
           . getclient_Local('مشترك');
       // Provider.of<maincity_vm>
       //   (context,listen: false).changevalue(null);
@@ -69,7 +69,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
         title: Text('العملاء المشتركين',style: TextStyle(color: kWhiteColor),),
         centerTitle: true,
       ),
-      body: Consumer<privilge_vm>(
+      body: Consumer<PrivilegeProvider>(
           builder: (context, privilge, child) {
             return SafeArea(
               child: Directionality(
@@ -117,22 +117,22 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                child: Consumer<regoin_vm>(
+                                child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
                                     return
                                       DropdownButton(
                                         isExpanded: true,
                                         hint: Text("الفرع"),
-                                        items: cart.listregoinfilter.map((level_one) {
+                                        items: cart.listRegionFilter.map((level_one) {
                                           return DropdownMenuItem(
 
-                                            child: Text(level_one.name_regoin),
+                                            child: Text(level_one.regionName),
                                             //label of item
                                             value: level_one
-                                                .id_regoin, //value of item
+                                                .regionId, //value of item
                                           );
                                         }).toList(),
-                                        value: cart.selectedValueLevel,
+                                        value: cart.selectedRegionId,
                                         onChanged: (value) {
                                           //  setState(() {
                                           cart.changeVal(value.toString());
@@ -191,7 +191,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
                                   fontFamily: kfontfamily2,fontWeight: FontWeight.bold
                               ),),
                               Text(
-                                Provider.of<client_vm>(context,listen: true).listClientAccept.length.toString(),style: TextStyle(
+                                Provider.of<ClientProvider>(context,listen: true).listClientAccept.length.toString(),style: TextStyle(
                                   fontFamily: kfontfamily2,fontWeight: FontWeight.bold
                               ),),
                             ],),
@@ -205,7 +205,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
 
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Consumer<client_vm>(
+                            child: Consumer<ClientProvider>(
                                 builder: (context, value, child) {
                                   return value.isloading==true?
                                   Center(

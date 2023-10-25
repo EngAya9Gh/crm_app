@@ -44,7 +44,7 @@ class _care_reportState extends State<care_report> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
@@ -64,7 +64,7 @@ class _care_reportState extends State<care_report> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String paramprivilge='';
     // if(Provider.of<privilge_vm>(context,listen: false)

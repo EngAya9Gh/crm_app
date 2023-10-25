@@ -37,13 +37,13 @@ class _invoice_marketingState extends State<invoice_marketing> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      List<PrivilgeModel> list = await Provider.of<privilge_vm>(context, listen: false).privilgelist;
+      List<PrivilgeModel> list = await Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
       Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);
 
-      Provider.of<typeclient>(context, listen: false).changelisttype_install(null);
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
+      Provider.of<ClientType>(context, listen: false).changelisttype_install(null);
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<invoice_vm>(context, listen: false).getinvoice_marketing();
-      await Provider.of<client_vm>(context, listen: false).getclientMarketing();
+      await Provider.of<ClientProvider>(context, listen: false).getclientMarketing();
     });
     super.initState();
   }
@@ -58,7 +58,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
         ),
         centerTitle: true,
       ),
-      body: Consumer<privilge_vm>(builder: (context, privilge, child) {
+      body: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
         return SafeArea(
           child: Directionality(
             textDirection: TextDirection.rtl,
@@ -69,24 +69,24 @@ class _invoice_marketingState extends State<invoice_marketing> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        privilge.checkprivlge('8') == true
+                        privilge.checkPrivilege('8') == true
                             ? //regoin
                             Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                  child: Consumer<regoin_vm>(
+                                  child: Consumer<RegionProvider>(
                                     builder: (context, cart, child) {
                                       return DropdownButton(
                                         isExpanded: true,
                                         hint: Text("الفرع"),
-                                        items: cart.listregoinfilter.map((level_one) {
+                                        items: cart.listRegionFilter.map((level_one) {
                                           return DropdownMenuItem(
-                                            child: Text(level_one.name_regoin),
+                                            child: Text(level_one.regionName),
                                             //label of item
-                                            value: level_one.id_regoin, //value of item
+                                            value: level_one.regionId, //value of item
                                           );
                                         }).toList(),
-                                        value: cart.selectedValueLevel,
+                                        value: cart.selectedRegionId,
                                         onChanged: (value) {
                                           //  setState(() {
                                           cart.changeVal(value.toString());
@@ -103,7 +103,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20.0, right: 8),
-                            child: Consumer<typeclient>(builder: (context, cart, child) {
+                            child: Consumer<ClientType>(builder: (context, cart, child) {
                               return DropdownButton(
                                 isExpanded: true,
                                 hint: Text('الحالة'),

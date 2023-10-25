@@ -52,7 +52,7 @@ class _delayafterinstallState extends State<delayafterinstall> {
           .selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsales(0);
-      Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+      Provider.of<UserProvider>(context,listen: false).changevalueuser(null);
 
     });
     super.initState();
@@ -71,7 +71,7 @@ class _delayafterinstallState extends State<delayafterinstall> {
     List<BarModel> tempdata = [];
     rowsdata.clear();
     UserModel usermodel = Provider
-        .of<user_vm_provider>(context, listen: false)
+        .of<UserProvider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String iduser = usermodel.idUser.toString();
@@ -145,11 +145,11 @@ print(type);
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0,right: 8,),
                     child:
-                    Consumer<user_vm_provider>(
+                    Consumer<UserProvider>(
                       builder: (context, cart, child){
                         return  Row(
                           children: [
-                            if(cart.selecteduser != null)
+                            if(cart.selectedUser != null)
                               ...{
                                 IconButton(
                                     onPressed: () {
@@ -172,7 +172,7 @@ print(type);
                                   cart.changevalueuser(data);
                                   getData();
                                 } ,
-                                selectedItem: cart.selecteduser,
+                                selectedItem: cart.selectedUser,
                                 showSearchBox: true,
                                 dropdownSearchDecoration:
                                 InputDecoration(

@@ -19,7 +19,7 @@ class Invoice_Service {
     for (int i = 0; i < data.length; i++) {
       print(i);
 
-      //print("data "+ "[" + data[i] + "]");
+      
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
     // List<InvoiceModel> invoices =
@@ -53,7 +53,7 @@ class Invoice_Service {
     for (int i = 0; i < data.length; i++) {
       print(i);
 
-      //print("data "+ "[" + data[i] + "]");
+      
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
     // List<InvoiceModel> invoices =
@@ -74,7 +74,7 @@ class Invoice_Service {
     for (int i = 0; i < data.length; i++) {
       print(i);
 
-      //print("data "+ "[" + data[i] + "]");
+      
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
     print(prodlist);
@@ -179,7 +179,7 @@ class Invoice_Service {
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
-  Future<InvoiceModel> delete_back(String id_invoice, String file_reject) async {
+  Future<InvoiceModel> deleteBack(String id_invoice, String file_reject) async {
     var result = await Api().postRequestWithFile(
         'array', url + "series/delete_demand_out.php?id_invoice=$id_invoice", {'file_reject': file_reject}, null, null);
     //client/setApproveClient.php

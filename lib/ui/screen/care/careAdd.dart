@@ -228,7 +228,7 @@ class _careAddState extends State<careAdd> {
                           await  Provider.of<communication_vm>
                               (context,listen: false).updatecarecommuncation({
                                'type':'دوري',
-                               'fk_user':Provider.of<user_vm_provider>
+                               'fk_user':Provider.of<UserProvider>
                                 (context,listen: false).
                                  currentUser.idUser.toString(),
                                'date_communication':DateTime.now().toString(),

@@ -27,7 +27,7 @@ class _EmployeeRacePageState extends State<EmployeeRacePage>
     super.initState();
     scheduleMicrotask(() => viewmodel
       ..init()
-      ..setFkCountry(context.read<user_vm_provider>().currentUser.fkCountry!)
+      ..setFkCountry(context.read<UserProvider>().currentUser.fkCountry!)
       ..onChangeYear(DateTime.now().year));
   }
 

@@ -35,8 +35,8 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-      context.read<user_vm_provider>().changevalueuser(null,true);
-      List<PrivilgeModel> list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
+      context.read<UserProvider>().changevalueuser(null,true);
+      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
       Provider.of<lastcommentclient_vm>(context, listen: false).setvaluepriv(list);
       Provider.of<lastcommentclient_vm>(context, listen: false)
         .getLastcommentClientModel();
@@ -114,11 +114,11 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                     left: 8.0,
                     right: 8,
                   ),
-                  child: Consumer<user_vm_provider>(
+                  child: Consumer<UserProvider>(
                     builder: (context, cart, child) {
                       return Row(
                         children: [
-                          if(cart.selecteduser != null)
+                          if(cart.selectedUser != null)
                             ...{
                               IconButton(
                                   onPressed: () {
@@ -141,7 +141,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                 cart.changevalueuser(data);
                                 Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
                               },
-                              selectedItem: cart.selecteduser,
+                              selectedItem: cart.selectedUser,
                               showSearchBox: true,
                               dropdownSearchDecoration: InputDecoration(
                                 isCollapsed: true,

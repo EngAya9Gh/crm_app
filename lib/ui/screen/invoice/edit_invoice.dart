@@ -83,8 +83,8 @@ class _edit_invoiceState extends State<edit_invoice> {
     }
     _currentDateCreate = DateTime.parse(widget.invoiceModel.dateCreate.toString());
     Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateCreate);
-    Provider.of<regoin_vm>(context, listen: false).changeVal(regoin);
-    Provider.of<user_vm_provider>(context, listen: false).changeValUserID(iduser);
+    Provider.of<RegionProvider>(context, listen: false).changeVal(regoin);
+    Provider.of<UserProvider>(context, listen: false).changeValUserID(iduser);
     super.initState();
   }
   @override
@@ -114,7 +114,7 @@ class _edit_invoiceState extends State<edit_invoice> {
                       left: 8.0,
                       right: 8,
                     ),
-                    child: Consumer<user_vm_provider>(
+                    child: Consumer<UserProvider>(
                       builder: (context, cart, child) {
                         return DropdownSearch<UserModel>(
                           mode: Mode.DIALOG,
@@ -125,7 +125,7 @@ class _edit_invoiceState extends State<edit_invoice> {
                             iduser = data!.idUser;
                             cart.changeValUserID(data.idUser);
                           },
-                          selectedItem: cart.selecteduser,
+                          selectedItem: cart.selectedUser,
                           showSearchBox: true,
                           dropdownSearchDecoration: InputDecoration(
                             isCollapsed: true,
@@ -143,7 +143,7 @@ class _edit_invoiceState extends State<edit_invoice> {
                     height: 5,
                   ),
                   RowEdit(name: 'الفرع', des: ''),
-                  Consumer<regoin_vm>(
+                  Consumer<RegionProvider>(
                     builder: (context, cart, child) {
                       return
                           //   Container(
@@ -176,13 +176,13 @@ class _edit_invoiceState extends State<edit_invoice> {
                           DropdownButton(
                         isExpanded: true,
                         hint: Text("الفرع"),
-                        items: cart.listregoinfilter.map((level_one) {
+                        items: cart.listRegionFilter.map((level_one) {
                           return DropdownMenuItem(
-                            child: Text(level_one.name_regoin), //label of item
-                            value: level_one.id_regoin, //value of item
+                            child: Text(level_one.regionName), //label of item
+                            value: level_one.regionId, //value of item
                           );
                         }).toList(),
-                        value: cart.selectedValueLevel,
+                        value: cart.selectedRegionId,
                         onChanged: (value) {
                           //  setState(() {
                           cart.changeVal(value.toString());
@@ -267,9 +267,9 @@ class _edit_invoiceState extends State<edit_invoice> {
                           'fkcountry': widget.invoiceModel.fk_country.toString(),
 
                           "lastuserupdate":
-                              Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                              Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
                           "lastnameuser":
-                              Provider.of<user_vm_provider>(context, listen: false).currentUser.nameUser.toString(),
+                              Provider.of<UserProvider>(context, listen: false).currentUser.nameUser.toString(),
 
                           "id_invoice": widget.invoiceModel.idInvoice,
 

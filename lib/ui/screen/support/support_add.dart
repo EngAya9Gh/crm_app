@@ -274,7 +274,7 @@ class _support_addState extends State<support_add> {
                             DateTime datetask = DateTime(_currentDate.year, _currentDate.month, _currentDate.day,
                                 selectedTime.hour, selectedTime.minute);
 
-                            final idUser = Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser;
+                            final idUser = Provider.of<UserProvider>(context, listen: false).currentUser.idUser;
                             Provider.of<invoice_vm>(context, listen: false)
                                 .setdate_vm(
                               id_invoice: _invoice!.idInvoice!,
@@ -645,7 +645,7 @@ class _support_addState extends State<support_add> {
                         },
                       ),
                       SizedBox(height: 20),
-                      Provider.of<privilge_vm>(context, listen: true).checkprivlge('42') == true
+                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('42') == true
                           // ? _invoice!.dateinstall_task != null && _invoice!.dateinstall_done == null
                           ? ElevatedButton(
                               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
@@ -752,7 +752,7 @@ class _support_addState extends State<support_add> {
                           ? cardRow(title: ' قام بتعليق العميل ', value: _invoice!.nameuser_notready_install.toString())
                           : Container(),
 
-                      Provider.of<privilge_vm>(context, listen: true).checkprivlge('43') == true
+                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('43') == true
                           ? _invoice!.dateinstall_done == null
                               ? ElevatedButton(
                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
@@ -839,14 +839,14 @@ class _support_addState extends State<support_add> {
                                                                    'datanext': datanext.toString(),
                                                                    'datanext_install': datanext_install.toString(),
                                                                    'dateinstall_done': DateTime.now().toString(),
-                                                                   'userinstall': Provider.of<user_vm_provider>(context,
+                                                                   'userinstall': Provider.of<UserProvider>(context,
                                                                        listen: false)
                                                                        .currentUser
                                                                        .idUser
                                                                        .toString(),
                                                                    'isdoneinstall': '1',
                                                                    'fkIdClient': _invoice!.fkIdClient,
-                                                                   'nameuserinstall': Provider.of<user_vm_provider>(
+                                                                   'nameuserinstall': Provider.of<UserProvider>(
                                                                        context,
                                                                        listen: false)
                                                                        .currentUser
@@ -896,7 +896,7 @@ class _support_addState extends State<support_add> {
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Provider.of<privilge_vm>(context, listen: true).checkprivlge('110') == true
+                                Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('110') == true
                                     ? ElevatedButton(
                                         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                         onPressed: _invoice!.ready_install == '1'
@@ -948,7 +948,7 @@ class _support_addState extends State<support_add> {
                                                                           'date_readyinstall':
                                                                               DateTime.now().toString(),
                                                                           'user_ready_install':
-                                                                              Provider.of<user_vm_provider>(context,
+                                                                              Provider.of<UserProvider>(context,
                                                                                       listen: false)
                                                                                   .currentUser
                                                                                   .idUser
@@ -975,7 +975,7 @@ class _support_addState extends State<support_add> {
                                               },
                                         child: Text('جاهز للتركيب'))
                                     : Container(),
-                                Provider.of<privilge_vm>(context, listen: true).checkprivlge('109') == true
+                                Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('109') == true
                                     ? ElevatedButton(
                                         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                         onPressed: _invoice!.ready_install == '0'
@@ -1026,7 +1026,7 @@ class _support_addState extends State<support_add> {
                                                                           'date_not_readyinstall':
                                                                               DateTime.now().toString(),
                                                                           'user_not_ready_install':
-                                                                              Provider.of<user_vm_provider>(context,
+                                                                              Provider.of<UserProvider>(context,
                                                                                       listen: false)
                                                                                   .currentUser
                                                                                   .idUser

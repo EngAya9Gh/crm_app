@@ -28,15 +28,15 @@ class _resoan_viewState extends State<activity_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
 
-      await Provider.of<activity_vm>(context,listen: false).getactv( );
+      await Provider.of<ActivityVm>(context,listen: false).getActivities( );
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ActivityModel> _listlevel= Provider.of<activity_vm>
-      (context,listen: true).list_activity;
+    List<ActivityModel> _listlevel= Provider.of<ActivityVm>
+      (context,listen: true).activitiesList;
     return Scaffold(
       appBar: AppBar(
         title: Text('النشاط',style: TextStyle(color: kWhiteColor),),

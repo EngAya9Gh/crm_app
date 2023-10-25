@@ -30,17 +30,17 @@ class ImageProfile extends StatelessWidget {
               //clipBehavior: Clip.hardEdge,
               radius: 85.0,
               child:
-              Provider.of<user_vm_provider>(context,listen: true)
+              Provider.of<UserProvider>(context,listen: true)
                   .currentUser.path!.isNotEmpty
                   ? ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                     child: Image.file(
-                      File(Provider.of<user_vm_provider>(context,listen: true)
+                      File(Provider.of<UserProvider>(context,listen: true)
                     .currentUser.path!),width: 1000,height: 1000,fit: BoxFit.fill,
                 // fit: BoxFit.fill,
               ),
                   )
-                  : Provider.of<user_vm_provider>(context,listen: true)
+                  : Provider.of<UserProvider>(context,listen: true)
                   .currentUser.img_image!.isNotEmpty
                   ? ClipRRect(
                 borderRadius: BorderRadius.circular(100),
@@ -50,10 +50,10 @@ class ImageProfile extends StatelessWidget {
                     progressIndicatorBuilder: (context, url, progress) => Center(
                       child: CircularProgressIndicator(
                         value: progress.progress,),),
-                    imageUrl: Provider.of<user_vm_provider>(context,listen: true)
+                    imageUrl: Provider.of<UserProvider>(context,listen: true)
                         .currentUser.img_image!       ),
               )
-                  :Text(Provider.of<user_vm_provider>(context,listen: true)
+                  :Text(Provider.of<UserProvider>(context,listen: true)
                   .currentUser.nameUser
                   .toString()
                   .substring(0, 1))),
@@ -197,12 +197,12 @@ class ImageProfile extends StatelessWidget {
         source: source, imageQuality: 100,maxHeight:1000,maxWidth: 1000 );
     pickedFile = File(pickedImage!.path);
     print(pickedFile!.path);
-    Provider.of<user_vm_provider>(context,listen: false)
-        .setpath(pickedFile!.path);
+    Provider.of<UserProvider>(context,listen: false)
+        .setImagePath(pickedFile!.path);
         //.currentUser!.path=pickedFile!.path;
     // controllerUser.setProfileImagePath(pickedFile!.path);
     // Get.back();
-    print(Provider.of<user_vm_provider>(context,listen: false)
+    print(Provider.of<UserProvider>(context,listen: false)
         .currentUser.path.toString());
      Navigator.of(context).pop();
   }

@@ -29,7 +29,7 @@ class _supportpageState extends State<supportpage> {
   @override void didChangeDependencies() async{
 
     Future.delayed(Duration(milliseconds: 3)).then((_) async {
-      Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
+      Provider.of<PrivilegeProvider>(context,listen: false).getPrivilegeUserCurrent();
     });
     super.didChangeDependencies();
   }
@@ -58,7 +58,7 @@ class _supportpageState extends State<supportpage> {
       body: Padding(
         padding: EdgeInsets.only(top: 50),
         child:
-        Consumer<privilge_vm>(
+        Consumer<PrivilegeProvider>(
     builder: (context, privilge, child){
          return Column(children: [
 
@@ -69,7 +69,7 @@ class _supportpageState extends State<supportpage> {
             //
             // }, title: 'Task'),
 
-           privilge.checkprivlge('19')==true?
+           privilge.checkPrivilege('19')==true?
            buildSelectCategory(
                colorbag: Colors.white,
                colortitle: Colors.black,
@@ -81,7 +81,7 @@ class _supportpageState extends State<supportpage> {
                    ClientAccept() // support_view(type: 'only',)
                ));
             }, title: 'العملاء المشتركين'):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
-     privilge.checkprivlge('34')==true?
+     privilge.checkPrivilege('34')==true?
            buildSelectCategory(
                colorbag: Colors.white,
                colortitle: Colors.black,
@@ -92,7 +92,7 @@ class _supportpageState extends State<supportpage> {
                        ClientWaiting(type_card: 'support',) // support_view(type: 'only',)
                ));
             }, title: 'فواتير العملاء'):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
-           privilge.checkprivlge('18')==true?
+           privilge.checkPrivilege('18')==true?
            buildSelectCategory(
                colorbag: Colors.white,
                colortitle: Colors.black,
@@ -102,7 +102,7 @@ class _supportpageState extends State<supportpage> {
                   builder: (context)=>
                       support_table()));
             }, title: 'جدول التركيب للعملاء'):Container(),
-           privilge.checkprivlge('99')==true?
+           privilge.checkPrivilege('99')==true?
            buildSelectCategory(
                colorbag: Colors.white,
                colortitle: Colors.black,
@@ -122,7 +122,7 @@ class _supportpageState extends State<supportpage> {
            //        builder: (context)=>
            //            waiting_report()));
            //  }, title: 'تقرير عملاء الانتظار') ,
-           privilge.checkprivlge('100')==true?
+           privilge.checkPrivilege('100')==true?
            buildSelectCategory(
                colorbag: Colors.white,
                colortitle: Colors.black,
@@ -133,7 +133,7 @@ class _supportpageState extends State<supportpage> {
                       delayinstall()));
             }, title: 'تقرير التأخير عن الجدولة للعملاء'):Container(),
 
-               privilge.checkprivlge('101')==true?
+               privilge.checkPrivilege('101')==true?
            buildSelectCategory(
                colorbag: Colors.white,
                colortitle: Colors.black,

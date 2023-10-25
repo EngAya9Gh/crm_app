@@ -46,11 +46,11 @@ class _deptsalesState extends State<deptsales> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
-      Provider.of<user_vm_provider>(context, listen: false).changevalueuser(null);
+      Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
     super.initState();
     // WidgetsBinding.instance.addPostFrameCallback((_)async {
@@ -75,20 +75,20 @@ class _deptsalesState extends State<deptsales> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     String paramprivilge = '';
-    if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('92') == true) {
+    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('92') == true) {
       labelxx = 'user';
       iduser = usermodel.idUser.toString();
       paramprivilge = '&id_user=${iduser}';
     }
-    if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('93') == true) {
+    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('93') == true) {
       labelxx = 'regoin';
       idregoin = usermodel.fkRegoin.toString();
       paramprivilge = '&id_regoin=${idregoin}';
     }
-    if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('94') == true) {
+    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('94') == true) {
       if (iduser == '' && idregoin == '') {
         type = 'allregoin';
         labelxx = 'الفرع';
@@ -103,9 +103,9 @@ class _deptsalesState extends State<deptsales> {
       }
     }
 
-    if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('92') == true ||
-        Provider.of<privilge_vm>(context, listen: false).checkprivlge('93') == true ||
-        Provider.of<privilge_vm>(context, listen: false).checkprivlge('94') == true) {
+    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('92') == true ||
+        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('93') == true ||
+        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('94') == true) {
       print(type);
       if (idregoin == '0') {
         type = 'allregoin';
@@ -246,22 +246,22 @@ class _deptsalesState extends State<deptsales> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Provider.of<privilge_vm>(context, listen: true).checkprivlge('94') == true
+                Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('94') == true
                     ? Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: Consumer<regoin_vm>(
+                          child: Consumer<RegionProvider>(
                             builder: (context, cart, child) {
                               return DropdownButton(
                                 isExpanded: true,
                                 hint: Text("الفرع"),
-                                items: cart.listregoinfilter.map((level_one) {
+                                items: cart.listRegionFilter.map((level_one) {
                                   return DropdownMenuItem(
-                                    child: Text(level_one.name_regoin), //label of item
-                                    value: level_one.id_regoin, //value of item
+                                    child: Text(level_one.regionName), //label of item
+                                    value: level_one.regionId, //value of item
                                   );
                                 }).toList(),
-                                value: cart.selectedValueLevel,
+                                value: cart.selectedRegionId,
                                 onChanged: (value) {
                                   //  setState(() {
                                   cart.changeVal(value.toString());
@@ -277,19 +277,19 @@ class _deptsalesState extends State<deptsales> {
                       )
                     : Container(),
                 Expanded(
-                  child: Provider.of<privilge_vm>(context, listen: true).checkprivlge('94') == true ||
-                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('93') == true
+                  child: Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('94') == true ||
+                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('93') == true
                       ? //user
                       Padding(
                           padding: const EdgeInsets.only(
                             left: 8.0,
                             right: 8,
                           ),
-                          child: Consumer<user_vm_provider>(
+                          child: Consumer<UserProvider>(
                             builder: (context, cart, child) {
                               return Row(
                                 children: [
-                                  if(cart.selecteduser != null)
+                                  if(cart.selectedUser != null)
                                     ...{
                                       IconButton(
                                           onPressed: () {
@@ -316,7 +316,7 @@ class _deptsalesState extends State<deptsales> {
                                         getData();
                                         //filtershow();
                                       },
-                                      selectedItem: cart.selecteduser,
+                                      selectedItem: cart.selectedUser,
                                       showSearchBox: true,
                                       dropdownSearchDecoration: InputDecoration(
                                         isCollapsed: true,

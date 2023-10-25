@@ -101,7 +101,7 @@ return Text('');
           builder: (BuildContext context,
               AsyncSnapshot<List<dynamic>> _listProductFilter)  {
             if (_listProductFilter.hasData == true) {
-              //print("${pattern}");
+              
               return  Container(
                   height: MediaQuery
                       .of(context)
@@ -111,7 +111,7 @@ return Text('');
                       scrollDirection: Axis.vertical,
                       itemCount:_listProductFilter.data!.length,
                       itemBuilder: (context, index) {
-                        //print("i will print ${_ListProduct.data!.docs[index]}");
+                        
                         return
                           _widgetCard(_listProductFilter.data![index]);
                       }));

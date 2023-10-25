@@ -29,7 +29,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
   @override
   void initState() {
     _searchTextField = TextEditingController()..addListener(onSearch);
-    final currentUser = context.read<user_vm_provider>().currentUser;
+    final currentUser = context.read<UserProvider>().currentUser;
     fkCountry = currentUser.fkCountry;
     userId = currentUser.idUser;
     _communicationListBloc = context.read<CommunicationListBloc>()

@@ -25,7 +25,7 @@ class _CardUsersState extends State<CardUsers> {
   //final controllerUsers = Get.find<AllUserVMController>();
   @override
   void initState() {
-    Provider.of<user_vm_provider>(context, listen: false).getuser_vm();
+    Provider.of<UserProvider>(context, listen: false).getUsersVm();
     super.initState();
   }
 
@@ -33,12 +33,12 @@ class _CardUsersState extends State<CardUsers> {
   Widget build(BuildContext context) {
 
     final controllerUsers =
-    Provider.of<user_vm_provider>(context, listen: true);
+    Provider.of<UserProvider>(context, listen: true);
 
 
     //return Obx( () {
-    if (controllerUsers.userall.length == 0) {
-      return Consumer<user_vm_provider>(builder: (context, cart, child) {
+    if (controllerUsers.allUsers.length == 0) {
+      return Consumer<UserProvider>(builder: (context, cart, child) {
         return const Center(
           child: Text('لا يوجد مستخدمين'),
           // CircularProgressIndicator(
@@ -52,14 +52,14 @@ class _CardUsersState extends State<CardUsers> {
         textDirection: TextDirection.rtl,
         child: Expanded(
           child: ListView.separated(
-            itemCount: controllerUsers.userall.length,
+            itemCount: controllerUsers.allUsers.length,
             itemBuilder: (context, index) {
-              return Consumer<user_vm_provider>(
+              return Consumer<UserProvider>(
                   builder: (context, cart, child) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: buildCardUsers(
-                        usermodell: controllerUsers.userall[index],
+                        usermodell: controllerUsers.allUsers[index],
                       ),
                     );
                   });

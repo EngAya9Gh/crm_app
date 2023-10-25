@@ -49,13 +49,13 @@ class _sales_reportstateState extends State<sales_reportstate> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsales(0);
-      Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+      Provider.of<UserProvider>(context,listen: false).changevalueuser(null);
 
     });
     super.initState();
@@ -81,7 +81,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel=Provider.of<user_vm_provider>(context, listen: false)
+    UserModel usermodel=Provider.of<UserProvider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     if(iduser=='0')
@@ -91,14 +91,14 @@ class _sales_reportstateState extends State<sales_reportstate> {
       idregoin=usermodel.fkRegoin.toString();
 
     String paramprivilge='';
-    if(Provider.of<privilge_vm>(context,listen: false)
-        .checkprivlge('96')==true )
+    if(Provider.of<PrivilegeProvider>(context,listen: false)
+        .checkPrivilege('96')==true )
       paramprivilge='&id_user=${iduser}';
-    if(Provider.of<privilge_vm>(context,listen: false)
-        .checkprivlge('97')==true )
+    if(Provider.of<PrivilegeProvider>(context,listen: false)
+        .checkPrivilege('97')==true )
       paramprivilge='&id_regoin=${idregoin}';
-    if(Provider.of<privilge_vm>(context,listen: false)
-        .checkprivlge('98')==true ) {
+    if(Provider.of<PrivilegeProvider>(context,listen: false)
+        .checkPrivilege('98')==true ) {
       if(iduser==''&&idregoin!='')
         paramprivilge='&id_regoin=${idregoin}';
 
@@ -106,12 +106,12 @@ class _sales_reportstateState extends State<sales_reportstate> {
         paramprivilge='&id_user=${iduser}';
     }
 
-    if(Provider.of<privilge_vm>(context,listen: false)
-        .checkprivlge('96')==true ||
-        Provider.of<privilge_vm>(context,listen: false)
-            .checkprivlge('97')==true ||
-        Provider.of<privilge_vm>(context,listen: false)
-            .checkprivlge('98')==true ) {
+    if(Provider.of<PrivilegeProvider>(context,listen: false)
+        .checkPrivilege('96')==true ||
+        Provider.of<PrivilegeProvider>(context,listen: false)
+            .checkPrivilege('97')==true ||
+        Provider.of<PrivilegeProvider>(context,listen: false)
+            .checkPrivilege('98')==true ) {
       print(type);
       print(paramprivilge);
       if(idregoin=='0'){
@@ -286,26 +286,26 @@ class _sales_reportstateState extends State<sales_reportstate> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Provider.of<privilge_vm>(context,listen: true)
-                        .checkprivlge('98')==true?
+                    Provider.of<PrivilegeProvider>(context,listen: true)
+                        .checkPrivilege('98')==true?
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(
                             left: 8.0,right: 8),
-                        child: Consumer<regoin_vm>(
+                        child: Consumer<RegionProvider>(
                           builder: (context, cart, child){
                             return
                               DropdownButton(
                                 isExpanded: true,
                                 hint: Text("الفرع"),
-                                items: cart.listregoinfilter.map((level_one) {
+                                items: cart.listRegionFilter.map((level_one) {
                                   return DropdownMenuItem(
 
-                                    child: Text(level_one.name_regoin), //label of item
-                                    value: level_one.id_regoin, //value of item
+                                    child: Text(level_one.regionName), //label of item
+                                    value: level_one.regionId, //value of item
                                   );
                                 }).toList(),
-                                value:cart.selectedValueLevel,
+                                value:cart.selectedRegionId,
                                 onChanged:(value) {
                                   //  setState(() {
                                   cart.changeVal(value.toString());
@@ -321,18 +321,18 @@ class _sales_reportstateState extends State<sales_reportstate> {
                         :Container(),
                     Expanded(
                       child:
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('98')==true||
-                          Provider.of<privilge_vm>(context,listen: true)
-                              .checkprivlge('97')==true ? //user
+                      Provider.of<PrivilegeProvider>(context,listen: true)
+                          .checkPrivilege('98')==true||
+                          Provider.of<PrivilegeProvider>(context,listen: true)
+                              .checkPrivilege('97')==true ? //user
                       Padding(
                         padding: const EdgeInsets.only(left: 8.0,right: 8,),
                         child:
-                        Consumer<user_vm_provider>(
+                        Consumer<UserProvider>(
                           builder: (context, cart, child){
                             return  Row(
                               children: [
-                                if(cart.selecteduser != null)
+                                if(cart.selectedUser != null)
                                   ...{
                                     IconButton(
                                         onPressed: () {
@@ -359,7 +359,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                       getData();
                                       //filtershow();
                                     } ,
-                                    selectedItem: cart.selecteduser,
+                                    selectedItem: cart.selectedUser,
                                     showSearchBox: true,
                                     dropdownSearchDecoration:
                                     InputDecoration(

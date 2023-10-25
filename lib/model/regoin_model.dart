@@ -1,24 +1,18 @@
+class RegionModel {
+  late String regionId, countryId; //nameCountry,currency;
+  late String regionName;
 
+  RegionModel({
+    required this.regionId,
+    required this.regionName,
+    required this.countryId,
+  });
 
-
-class RegoinModel{
-  late   String id_regoin,fk_country;//nameCountry,currency;
- late   String name_regoin;
-  RegoinModel({
-    required this.id_regoin, required this.name_regoin,
-     required this.fk_country,
-    // this.nameCountry,this.currency
-  }
-      );
-
-  factory RegoinModel.fromJson(Map<String, dynamic> json){
-    return RegoinModel(
-      id_regoin:json["id_regoin"],
-        name_regoin: json["name_regoin"],
-         fk_country: json["fk_country"],
-        // nameCountry:json["nameCountry"],
-        // currency:json["currency"]
-
+  factory RegionModel.fromJson(Map<String, dynamic> json) {
+    return RegionModel(
+      regionId: json["id_regoin"],
+      regionName: json["name_regoin"],
+      countryId: json["fk_country"],
     );
   }
 }

@@ -306,14 +306,14 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 Provider.of<communication_vm>(context, listen: false).addcommmuncation(
                                     {
                                       //'fk_client':widget.com.fkClient.toString(),
-                                      'fk_user': Provider.of<user_vm_provider>(context, listen: false)
+                                      'fk_user': Provider.of<UserProvider>(context, listen: false)
                                           .currentUser
                                           .idUser
                                           .toString(),
                                       'date_communication': DateTime.now().toString(),
                                       'result': '0',
                                       //
-                                      'nameUser': Provider.of<user_vm_provider>(context, listen: false)
+                                      'nameUser': Provider.of<UserProvider>(context, listen: false)
                                           .currentUser
                                           .nameUser
                                           .toString(),
@@ -357,7 +357,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
 
                                   await Provider.of<communication_vm>(context, listen: false).updatecarecommuncation({
                                     'type': 'دوري',
-                                    'fk_user': Provider.of<user_vm_provider>(context, listen: false)
+                                    'fk_user': Provider.of<UserProvider>(context, listen: false)
                                         .currentUser
                                         .idUser
                                         .toString(),

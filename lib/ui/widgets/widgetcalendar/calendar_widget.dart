@@ -159,7 +159,7 @@
 //           initialSelectedDate: DateTime.now(),
 //           cellBorderColor: Colors.transparent,
 //           onLongPress: (longDetail) async{
-//             //print('sdsada'+widget.clientModel!.idClients.toString());
+//             
 //             if(widget.clientModel !=null) {
 //               print('iside if');
 //               await showDialog<void>(

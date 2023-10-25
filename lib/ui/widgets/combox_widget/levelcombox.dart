@@ -48,7 +48,7 @@ void initState()  {
   @override
   Widget build(BuildContext context) {
 
-      //print( Provider.of<level_vm>(context,listen: false).selectedValueLevel);
+      
 
   return
       Padding(
@@ -79,7 +79,7 @@ void initState()  {
       return Text("لا يوجد بيانات");
     else {
       print("inside else");
-      //print(Provider.of<level_vm>(context, listen: false).selectedValueLevel);
+      
 
       return Container(
         child: DropdownButton(
@@ -100,7 +100,7 @@ void initState()  {
             Provider.of<level_vm>(context, listen: false)
                 .changeVal(value.toString());
             //_list!.changeVal(value.toString());
-            //print(Provider.of<level_vm>(context, listen: false).selectedValueLevel);
+            
           },
         ),
 

@@ -125,7 +125,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
     super.initState();
 
     scheduleMicrotask(() => viewmodel
-      ..init(context.read<user_vm_provider>().currentUser.fkCountry.toString())
+      ..init(context.read<UserProvider>().currentUser.fkCountry.toString())
       ..getTargets());
   }
 }

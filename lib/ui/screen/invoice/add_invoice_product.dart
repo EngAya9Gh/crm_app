@@ -359,7 +359,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                     //read: false,
                                     controller: _textprice,
                                     label: 'السعر',
-                                    hintText: Provider.of<user_vm_provider>(context, listen: true)
+                                    hintText: Provider.of<UserProvider>(context, listen: true)
                                         .currentUser
                                         .currency
                                         .toString(),

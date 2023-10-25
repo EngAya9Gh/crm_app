@@ -49,7 +49,7 @@ class _ClientViewState extends State<ClientView> {
     //         .listClient
     //         .firstWhere((element) => element.idClients == widget.idclient);
 
-    return Consumer<client_vm>(
+    return Consumer<ClientProvider>(
         builder: (context, state, _) {
           if (state.currentClientModel.isLoading || state.currentClientModel.isInit) {
             return Scaffold(
@@ -59,7 +59,7 @@ class _ClientViewState extends State<ClientView> {
             return Scaffold(
               body: Center(
                 child: IconButton(
-                  onPressed: () => context.read<client_vm>().get_byIdClient(widget.idclient.toString()),
+                  onPressed: () => context.read<ClientProvider>().get_byIdClient(widget.idclient.toString()),
                   icon: Icon(Icons.refresh),
                 ),
               ),
@@ -100,11 +100,11 @@ class _ClientViewState extends State<ClientView> {
                               color: kWhiteColor,
                             ),
                           ),
-                          (Provider.of<privilge_vm>(context, listen: false)
-                              .checkprivlge('133') == true)?
+                          (Provider.of<PrivilegeProvider>(context, listen: false)
+                              .checkPrivilege('133') == true)?
                             IconButton(
                               onPressed: () {
-                                context.read<client_vm>().setTagClient();
+                                context.read<ClientProvider>().setTagClient();
                               },
                               icon: Icon(
                                 (clientModel!.tag ?? false)
@@ -294,7 +294,7 @@ class _ClientViewState extends State<ClientView> {
                                       context: context,
                                       builder: (context) {
                                         return ModalProgressHUD(
-                                          inAsyncCall: Provider.of<client_vm>(context).isapproved,
+                                          inAsyncCall: Provider.of<ClientProvider>(context).isapproved,
                                           child: Directionality(
                                             textDirection: TextDirection.rtl,
                                             child: AlertDialog(
@@ -310,10 +310,10 @@ class _ClientViewState extends State<ClientView> {
                                                   onPressed: () async {
                                                     String? reason_transfer = null;
                                                     //update fkuser to new user
-                                                    Provider.of<client_vm>(context, listen: false).setfkUserApprove({
+                                                    Provider.of<ClientProvider>(context, listen: false).setfkUserApprove({
                                                       'approve': '1',
                                                       'reason_transfer': reason_transfer.toString(),
-                                                      'fkuser': Provider.of<user_vm_provider>(context, listen: false)
+                                                      'fkuser': Provider.of<UserProvider>(context, listen: false)
                                                           .currentUser
                                                           .idUser
                                                           .toString(), //user reciept
@@ -321,7 +321,7 @@ class _ClientViewState extends State<ClientView> {
                                                       // Provider.of<user_vm_provider>(context,listen: false)
                                                       //     .currentUser.nameUser.toString(),//الموظف الذي حول العميل
                                                       'name_enterprise': clientModel.nameEnterprise,
-                                                      'fk_regoin': Provider.of<user_vm_provider>(context, listen: false)
+                                                      'fk_regoin': Provider.of<UserProvider>(context, listen: false)
                                                           .currentUser
                                                           .fkRegoin
                                                           .toString(),
@@ -365,7 +365,7 @@ class _ClientViewState extends State<ClientView> {
                                       context: context,
                                       builder: (context) {
                                         return ModalProgressHUD(
-                                          inAsyncCall: Provider.of<client_vm>(context).isapproved,
+                                          inAsyncCall: Provider.of<ClientProvider>(context).isapproved,
                                           child: Directionality(
                                             textDirection: TextDirection.rtl,
                                             child: AlertDialog(
@@ -379,8 +379,8 @@ class _ClientViewState extends State<ClientView> {
                                                   style:
                                                       ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                                   onPressed: () async {
-                                                    Provider.of<client_vm>(context, listen: false).setfkUserApprove({
-                                                      'userrefuse': Provider.of<user_vm_provider>(context, listen: false)
+                                                    Provider.of<ClientProvider>(context, listen: false).setfkUserApprove({
+                                                      'userrefuse': Provider.of<UserProvider>(context, listen: false)
                                                           .currentUser
                                                           .nameUser,
                                                       'fkuserclient': clientModel.fkUser.toString(), //صاحب العميل
@@ -462,11 +462,11 @@ class _ClientViewState extends State<ClientView> {
                                                           "fkusername": widget.invoice!.nameUser, //موظف المبيعات
                                                           //"message":"",//
                                                           "nameuserApproved":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .nameUser,
                                                           "iduser_approve":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .idUser //معتمد الاشتراك
                                                         }, widget.invoice!.idInvoice).then(
@@ -537,11 +537,11 @@ class _ClientViewState extends State<ClientView> {
                                                           "fkusername": widget.invoice!.nameUser, //موظف المبيعات
                                                           //"message":"",//
                                                           "nameuserApproved":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .nameUser,
                                                           "iduser_approve":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .idUser //معتمد الاشتراك
                                                         }, widget.invoice!.idInvoice).then(
@@ -582,7 +582,7 @@ class _ClientViewState extends State<ClientView> {
                   widget.invoice != null
                       ? widget.invoice!.isApprove != 1 &&
                               widget.invoice!.isApproveFinance == null &&
-                              Provider.of<privilge_vm>(context, listen: true).checkprivlge('111') == true &&
+                              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('111') == true &&
                               widget.typeinvoice == 'f'
                           ? Center(
                               child: Row(
@@ -627,11 +627,11 @@ class _ClientViewState extends State<ClientView> {
                                                           "fkusername": widget.invoice!.nameUser, //موظف المبيعات
                                                           //"message":"",//
                                                           "nameuserApproved":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .nameUser,
                                                           "iduser_FApprove":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .idUser //معتمد الاشتراك
                                                         }, widget.invoice!.idInvoice).then(

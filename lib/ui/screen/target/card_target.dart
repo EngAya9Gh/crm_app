@@ -186,7 +186,7 @@ class _CardTagetState extends State<CardTaget> {
                         maxCrossAxisExtent: 250,
                       ),
                       itemBuilder: (context, index) {
-                        return Consumer<user_vm_provider>(
+                        return Consumer<UserProvider>(
                             builder: (context, cart, child) {
                           return buildCardTarget(
                           target: list_target[index],

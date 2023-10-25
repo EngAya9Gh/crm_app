@@ -69,7 +69,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
       // Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
 
-      await Provider.of<client_vm>(context, listen: false).get_byIdClient(widget.idClient.toString());
+      await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(widget.idClient.toString());
 
       Provider.of<communication_vm>(context, listen: false)
           .getCommunicationclient(widget.idClient.toString(), widget.idCommunication);
@@ -113,7 +113,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
     // current = Provider.of<user_vm_provider>(context).currentUser;
 
-    return Consumer<client_vm>(
+    return Consumer<ClientProvider>(
       builder: (context, state, _) {
         if (state.currentClientModel.isLoading || state.currentClientModel.isInit) {
           return Scaffold(
@@ -123,7 +123,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
           return Scaffold(
             body: Center(
               child: IconButton(
-                onPressed: () => context.read<client_vm>().get_byIdClient(widget.idClient.toString()),
+                onPressed: () => context.read<ClientProvider>().get_byIdClient(widget.idClient.toString()),
                 icon: Icon(Icons.refresh),
               ),
             ),

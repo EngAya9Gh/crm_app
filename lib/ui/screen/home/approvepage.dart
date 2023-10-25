@@ -23,7 +23,7 @@ class _ApprovePageState extends State<ApprovePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-      Provider.of<regoin_vm>(context,listen: false).changeVal(null);
+      Provider.of<RegionProvider>(context,listen: false).changeVal(null);
       // if( Provider.of<privilge_vm>(context,listen: false)
       //     .checkprivlge('7'))
       //   await Provider.of<invoice_vm>(context, listen: false)
@@ -34,13 +34,13 @@ class _ApprovePageState extends State<ApprovePage> {
      // await   Provider.of<invoice_vm>(context, listen: false)
      //        .getinvoices();
 ///////////////////////////////////////////////////////
-      if( Provider.of<privilge_vm>(context,listen: false)
-          .checkprivlge('2')==true)
+      if( Provider.of<PrivilegeProvider>(context,listen: false)
+          .checkPrivilege('2')==true)
       Provider.of<invoice_vm>(context, listen: false)
           .getinvoice_Local('مشترك','not approved','country');
       else{
-        if( Provider.of<privilge_vm>(context,listen: false)
-            .checkprivlge('7')==true)
+        if( Provider.of<PrivilegeProvider>(context,listen: false)
+            .checkPrivilege('7')==true)
       Provider.of<invoice_vm>(context, listen: false)
            .getinvoice_Local('مشترك','not approved','regoin');
       }
@@ -88,27 +88,27 @@ class _ApprovePageState extends State<ApprovePage> {
 
                   children: [
                     // privilge.checkprivlge('1') == true ? //regoin
-                    Provider.of<privilge_vm>(context,listen: true)
-                        .checkprivlge('2')==true?
+                    Provider.of<PrivilegeProvider>(context,listen: true)
+                        .checkPrivilege('2')==true?
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0, right: 8),
-                        child: Consumer<regoin_vm>(
+                        child: Consumer<RegionProvider>(
                           builder: (context, cart, child) {
                             return
                               DropdownButton(
                                 isExpanded: true,
                                 hint: Text("الفرع"),
-                                items: cart.listregoinfilter.map((level_one) {
+                                items: cart.listRegionFilter.map((level_one) {
                                   return DropdownMenuItem(
 
-                                    child: Text(level_one.name_regoin),
+                                    child: Text(level_one.regionName),
                                     //label of item
                                     value: level_one
-                                        .id_regoin, //value of item
+                                        .regionId, //value of item
                                   );
                                 }).toList(),
-                                value: cart.selectedValueLevel,
+                                value: cart.selectedRegionId,
                                 onChanged: (value) {
                                   //  setState(() {
                                   cart.changeVal(value.toString());

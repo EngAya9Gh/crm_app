@@ -74,11 +74,11 @@ class _HomeState extends State<Home> {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       // Add Your Code here.
       //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
-      Provider.of<regoin_vm>(context,listen: false).getregoin();
+      Provider.of<RegionProvider>(context,listen: false).getRegions();
       Provider.of<notifyvm>(context,listen: false).getcounter();
       Provider.of<product_vm>(context, listen: false)
           .getproduct_vm();
-      Provider.of<typeclient>(context,listen: false).getreasons('ticket');
+      Provider.of<ClientType>(context,listen: false).getreasons('ticket');
 
       Provider.of<ticket_vm>(context, listen: false)
           .getticket();
@@ -86,15 +86,15 @@ class _HomeState extends State<Home> {
     // Provider.of<invoice_vm>(context, listen: false)
     //     .getfilter_maincity([],'الكل');
         // .getinvoices();
-    await Provider.of<privilge_vm>
-      (context,listen: false).getprivlg_usercurrent();
+    await Provider.of<PrivilegeProvider>
+      (context,listen: false).getPrivilegeUserCurrent();
 
      // Provider.of<notifyvm>(context, listen: false)
      //    .getNotification();
 
      List<PrivilgeModel> list=
-           Provider.of<privilge_vm>(context,listen: false).privilgelist;
-     Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
+           Provider.of<PrivilegeProvider>(context,listen: false).privilegeList;
+     Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       // await Provider.of<invoice_vm>(context, listen: false)
       //     .getfilter_maincity([],'الكل');
      // Provider.of<client_vm>(context, listen: false)

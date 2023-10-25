@@ -107,7 +107,7 @@ class _commentViewState extends State<commentView> {
                             Provider.of<comment_vm>(context, listen: false).addComment_vm(
                               {
                                 'content': _comment.text,
-                                'fk_user': await Provider.of<user_vm_provider>(context, listen: false)
+                                'fk_user': await Provider.of<UserProvider>(context, listen: false)
                                     .currentUser
                                     .idUser
                                     .toString(),
@@ -118,11 +118,11 @@ class _commentViewState extends State<commentView> {
                                     //Utils.toDateTime(
                                     DateTime.now().toString(),
                                 //),
-                                'nameUser': Provider.of<user_vm_provider>(context, listen: false).currentUser.nameUser,
+                                'nameUser': Provider.of<UserProvider>(context, listen: false).currentUser.nameUser,
                                 'img_image': '',
                                 'name_enterprise': widget.client!.nameEnterprise!
                               },
-                              Provider.of<user_vm_provider>(context, listen: false).currentUser.img_image,
+                              Provider.of<UserProvider>(context, listen: false).currentUser.img_image,
                             ).then((value) {
                               if (value != "error") {
                                 if (widget.event != null && isFirstComment) {

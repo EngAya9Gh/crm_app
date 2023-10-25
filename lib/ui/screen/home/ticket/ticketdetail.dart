@@ -103,7 +103,7 @@ class ticketdetail extends StatelessWidget {
                                 Provider.of<ticket_vm>(context,listen: false)
                                     .updateTicketvm({
                                   'notes_ticket':_textnotes.text,
-                                  'fk_user_close':Provider.of<user_vm_provider>
+                                  'fk_user_close':Provider.of<UserProvider>
                                     (context,listen: false).currentUser.idUser.toString(),
                                   'date_close':DateTime.now().toString(),
                                   'type_ticket':'مغلقة'
@@ -144,8 +144,8 @@ class ticketdetail extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ticketModel.dateRecive==null?
-                      Provider.of<privilge_vm>(context,listen: false)
-                          .checkprivlge('71') == true ?
+                      Provider.of<PrivilegeProvider>(context,listen: false)
+                          .checkPrivilege('71') == true ?
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
                         child: ElevatedButton(
@@ -155,7 +155,7 @@ class ticketdetail extends StatelessWidget {
                             onPressed: () async{
                               Provider.of<ticket_vm>(context,listen: false)
                                   .updateTicketvm({
-                                'fk_user_recive':Provider.of<user_vm_provider>
+                                'fk_user_recive':Provider.of<UserProvider>
                                   (context,listen: false).currentUser.idUser.toString(),
                                 'date_recive':DateTime.now().toString(),
                                 'type_ticket':'قيد التنفيذ'
@@ -165,8 +165,8 @@ class ticketdetail extends StatelessWidget {
                             child: Text('استلام التذكرة')),
                       ):Container():Container(),
                       ticketModel.dateClose==null?
-                      Provider.of<privilge_vm>(context,listen: false)
-                          .checkprivlge('72') == true ? //regoin
+                      Provider.of<PrivilegeProvider>(context,listen: false)
+                          .checkPrivilege('72') == true ? //regoin
                       Padding(
                         padding: const EdgeInsets.only(right: 5),
                         child: ElevatedButton(
@@ -184,8 +184,8 @@ class ticketdetail extends StatelessWidget {
                          // SizedBox(width: 2,),
                           ticketModel.dateRecive!=null &&
                           ticketModel.dateClose==null?
-                      Provider.of<privilge_vm>(context,listen: true)
-                          .checkprivlge('75')==true?
+                      Provider.of<PrivilegeProvider>(context,listen: true)
+                          .checkPrivilege('75')==true?
                       Padding(
                         padding: const EdgeInsets.only(right: 5.0),
                         child: ElevatedButton(

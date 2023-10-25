@@ -89,7 +89,7 @@ class _loginState extends State<login> {
                     text: val.sendcode? textbutton_code : textbutton_code2,
                     onTap: () async {
                     if(_globalKey.currentState!.validate()){
-                      //print('before ${_textcontroller!.text}');
+                      
                       _globalKey.currentState!.save();
                       // print('after ${_textcontroller!.text}');
                       if (val.sendcode) {
@@ -124,7 +124,7 @@ class _loginState extends State<login> {
                           preferences.setBool(kKeepMeLoggedIn, true);
                           preferences.setString("id_user",res!);
                           // preferences.set("map_clientlist",res!);
-                          await Provider.of<user_vm_provider>(context, listen: false).getcurrentuser();
+                          await Provider.of<UserProvider>(context, listen: false).getcurrentuser();
                           Provider.of<AuthProvider>(context,listen: false)
                               .changeboolValueisLoading(false);
                           val.changeboolValue();

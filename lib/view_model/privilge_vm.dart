@@ -5,18 +5,17 @@ import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
 
-class privilge_vm extends ChangeNotifier {
-  List<PrivilgeModel> privilgelist = [];
-  List<PrivilgeModel> privilgelistpage = [];
-  UserModel? usercurrent;
+class PrivilegeProvider extends ChangeNotifier {
+  List<PrivilgeModel> privilegeList = [];
+  List<PrivilgeModel> privilegeListPage = [];
+  UserModel? userCurrent;
 
-  void setvalue(user) {
-    print('in set usercurrent in privilge vm');
-    usercurrent = user;
+  void setCurrentUser(user) {
+    userCurrent = user;
     notifyListeners();
   }
 
-  Future<List<PrivilgeModel>> getPrivilge(String level) async {
+  Future<List<PrivilgeModel>> getPrivilege(String level) async {
     List<dynamic> data = [];
     data = await Api().get(url: url + 'privilge/privGet.php?fk_level=$level');
     List<PrivilgeModel> list = [];
@@ -24,13 +23,13 @@ class privilge_vm extends ChangeNotifier {
       list.add(PrivilgeModel.fromJson(data[i]));
       print(data[i]);
     }
-    privilgelist = list;
+    privilegeList = list;
 
     notifyListeners();
     return list;
   }
 
-  Future<List<PrivilgeModel>> getPrivilgepage(String level) async {
+  Future<List<PrivilgeModel>> getPrivilegePage(String level) async {
     List<dynamic> data = [];
     data = await Api().get(url: url + 'privilge/privGet.php?fk_level=$level');
     List<PrivilgeModel> list = [];
@@ -38,52 +37,29 @@ class privilge_vm extends ChangeNotifier {
       list.add(PrivilgeModel.fromJson(data[i]));
       print(data[i]);
     }
-    privilgelistpage = list;
+    privilegeListPage = list;
 
     notifyListeners();
     return list;
   }
 
-  Future<String> updatepriv_vm(String? fk_privileg, String is_check) async {
-    String res = await Api().post(
-        url: url + 'privilge/privUpdate.php?id_privg_user=$fk_privileg',
-        body: {'is_check': is_check});
-    //if (res) {
-    int index = privilgelistpage.indexWhere((element) => element.isCheck == is_check);
-    // body.addAll({
-    //
-    // });
-    //privilgelist[index]=PrivilgeModel.fromJson(body);
-    //listProduct.insert(0, ProductModel.fromJson(body));
+  Future<String> updatePrivilegeVm(String? privilegeId, String isCheck) async {
+    String res =
+        await Api().post(url: url + 'privilge/privUpdate.php?id_privg_user=$privilegeId', body: {'is_check': isCheck});
+    int index = privilegeListPage.indexWhere((element) => element.isCheck == isCheck);
     notifyListeners();
-    //}
     return res;
   }
 
-  Future<void> getprivlg_usercurrent() async {
-    print('usercurrent!.typeLevel.toStr');
-    print(usercurrent!.typeLevel.toString());
-    privilgelist = await getPrivilge(usercurrent!.typeLevel.toString());
+  Future<void> getPrivilegeUserCurrent() async {
+    privilegeList = await getPrivilege(userCurrent!.typeLevel.toString());
     notifyListeners();
   }
 
-  bool checkprivlge(String id_privilge) {
-    if (privilgelist.isNotEmpty) {
-    print( id_privilge );
-    print('id_privilge');
-     print(privilgelist[0].fkLevel);
-    print(privilgelist.length);
-      bool res =
-          privilgelist.firstWhere(
-                  (element) =>
-          element.fkPrivileg == id_privilge
-
-          ).isCheck == '1'
-              ? true
-              : false;
-      return res;
+  bool checkPrivilege(String privilegeId) {
+    if (privilegeList.isNotEmpty) {
+      return privilegeList.firstWhere((element) => element.fkPrivileg == privilegeId).isCheck == '1';
     }
-    //notifyListeners();
     return false;
   }
 }

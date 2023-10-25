@@ -41,20 +41,20 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   DateTime _selectedDatemonth = DateTime.now();
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
-  late privilge_vm privilegeVm;
+  late PrivilegeProvider privilegeVm;
   bool isMarketing = false;
   late bool haveMarketingPrivilege;
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsales(1);
     });
-    privilegeVm = Provider.of<privilge_vm>(context, listen: false);
+    privilegeVm = Provider.of<PrivilegeProvider>(context, listen: false);
     super.initState();
     if(!haveMarketingPrivilege)
     getData();
@@ -69,7 +69,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     setState(() {
       loading=true;
     });
-    UserModel usermodel=Provider.of<user_vm_provider>(context, listen: false)
+    UserModel usermodel=Provider.of<UserProvider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     String iduser = usermodel.idUser.toString();
@@ -77,13 +77,13 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     List<BarModel> tempdata = [];
     String paramprivilge='';
       if(privilegeVm
-          .checkprivlge('83')==true )
+          .checkPrivilege('83')==true )
         paramprivilge='&id_regoin=${idregoin}';
 
 
-    if(privilegeVm.checkprivlge('83')==true ||
+    if(privilegeVm.checkPrivilege('83')==true ||
         privilegeVm
-            .checkprivlge('84')==true){
+            .checkPrivilege('84')==true){
 
       var data;
       var endPoint;

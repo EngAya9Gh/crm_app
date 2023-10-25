@@ -82,7 +82,7 @@ class _EditProductState extends State<EditProduct> {
     _textprice.text=widget.productModel.priceProduct;
     price=double.parse(_textprice.text.toString());
     valtype_product=int.parse( widget.productModel.type);
-    idCountry=Provider.of<user_vm_provider>(context,listen: false)
+    idCountry=Provider.of<UserProvider>(context,listen: false)
     .currentUser.fkCountry.toString();
 
     //valtype_product == 0 ? 1 : 0;
@@ -268,8 +268,8 @@ class _EditProductState extends State<EditProduct> {
                           _isLoading
                               ? CircularProgressIndicator()
                               :
-                          Provider.of<privilge_vm>(context,listen: true)
-                              .checkprivlge('46')==true ?
+                          Provider.of<PrivilegeProvider>(context,listen: true)
+                              .checkPrivilege('46')==true ?
                           CustomButton(
                             width: MediaQuery.of(context).size.width * 0.2,
                             text: "تعديل",
@@ -298,7 +298,7 @@ class _EditProductState extends State<EditProduct> {
                                       "value_config":valtaxrate ?taxrate.value_config:"null",
                                       "id_product": widget.productModel.idProduct.toString(),
                                        "updated_at":DateTime.now().toString(),
-                                      "fkuserupdate":Provider.of<user_vm_provider>
+                                      "fkuserupdate":Provider.of<UserProvider>
                                     (context,listen: false).currentUser.idUser.toString(),
                                     },
                                     widget.productModel.idProduct.toString())
@@ -317,8 +317,8 @@ class _EditProductState extends State<EditProduct> {
                             },
                           ):Container(),
 
-                          Provider.of<privilge_vm>(context,listen: true)
-                              .checkprivlge('48')==true ?   CustomButton(
+                          Provider.of<PrivilegeProvider>(context,listen: true)
+                              .checkPrivilege('48')==true ?   CustomButton(
                               width: MediaQuery.of(context).size.width * 0.2,
 
                               onTap: ()async{

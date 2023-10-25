@@ -44,11 +44,11 @@ class _BarChartAPIState extends State<BarChartAPI> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(1);
-      Provider.of<user_vm_provider>(context, listen: false).changevalueuser(null);
+      Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
     super.initState();
     if (!haveMarketingPrivilege) getData();
@@ -60,21 +60,21 @@ class _BarChartAPIState extends State<BarChartAPI> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     String iduser = usermodel.idUser.toString();
     String idregoin = usermodel.fkRegoin.toString();
 
     String paramprivilge = '';
-    if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('80') == true)
+    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('80') == true)
       paramprivilge = '&id_user=${iduser}';
     else {
-      if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('81') == true)
+      if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('81') == true)
         paramprivilge = '&id_regoin=${idregoin}';
     }
-    if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('82') == true ||
-        Provider.of<privilge_vm>(context, listen: false).checkprivlge('80') == true ||
-        Provider.of<privilge_vm>(context, listen: false).checkprivlge('81') == true) {
+    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('82') == true ||
+        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('80') == true ||
+        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('81') == true) {
       var data;
       String params = '';
       if (typeproduct == 'أجهزة') params = '&product=0';

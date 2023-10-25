@@ -87,7 +87,7 @@ class _addmaincityState extends State<addmaincity> {
                             Provider.of<maincity_vm>(context,listen: false)
                                 .addmaincity_vm({
                               'namemaincity':namelevel.text,
-                              'fk_country':Provider.of<user_vm_provider>
+                              'fk_country':Provider.of<UserProvider>
                                 (context,listen: false).currentUser.fkCountry.toString(),
                             }).then(
                                     (value) =>  value!="error"

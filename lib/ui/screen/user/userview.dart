@@ -42,8 +42,8 @@ class _UserScreenState extends State<UserScreen> {
   late int index;
   late var controllerUser;
   @override void initState() {
-     index = Provider.of<user_vm_provider>(context,listen: false)
-         .userall.indexWhere(
+     index = Provider.of<UserProvider>(context,listen: false)
+         .allUsers.indexWhere(
             (element) =>
         element.idUser ==widget.userModel.idUser );
      //controllerUser =Provider.of<user_vm_provider>(context,listen: false);
@@ -55,8 +55,8 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     // bool isupdate=
-    UserModel useredit=  Provider.of<user_vm_provider>
-      (context,listen: true).userall[index];
+    UserModel useredit=  Provider.of<UserProvider>
+      (context,listen: true).allUsers[index];
     //return Obx(() {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -75,8 +75,8 @@ class _UserScreenState extends State<UserScreen> {
                 icon:
                 const Icon(Icons.edit,
                   color: kWhiteColor,)):
-            Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('50')==true ?
+            Provider.of<PrivilegeProvider>(context,listen: true)
+                .checkPrivilege('50')==true ?
             IconButton(
                 onPressed: () {
                   Navigator.push(context, CupertinoPageRoute(

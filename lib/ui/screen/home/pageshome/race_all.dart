@@ -29,8 +29,8 @@ class race_page extends StatelessWidget {
         padding: EdgeInsets.only(top: 50),
         child:
         Column(children: [
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('118')==true?
+          Provider.of<PrivilegeProvider>(context,listen: true)
+              .checkPrivilege('118')==true?
           buildSelectCategory(
               colorbag:   Colors.white,
               colortitle: Colors.black,
@@ -42,8 +42,8 @@ class race_page extends StatelessWidget {
                 );
               }, title:  'سباق الموظفين' ):Container(),
 
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('117')==true?
+          Provider.of<PrivilegeProvider>(context,listen: true)
+              .checkPrivilege('117')==true?
           buildSelectCategory(
               colorbag:   Colors.white,
               colortitle: Colors.black,

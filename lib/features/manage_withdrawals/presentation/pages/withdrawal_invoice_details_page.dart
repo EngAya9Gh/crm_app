@@ -36,7 +36,7 @@ class _WithdrawalInvoiceDetailsPageState extends State<WithdrawalInvoiceDetailsP
   @override
   void initState() {
     _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()..getWithdrawalInvoiceDetails(widget.invoice.idInvoice!);
-    currentUser = context.read<user_vm_provider>().currentUser;
+    currentUser = context.read<UserProvider>().currentUser;
 
     super.initState();
   }

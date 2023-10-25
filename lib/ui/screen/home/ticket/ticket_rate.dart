@@ -123,7 +123,7 @@ class _ticket_rateState extends State<ticket_rate> {
                           Provider.of<ticket_vm>(context,listen: false)
                               .updateTicketvm({
                             'notes_rate':_textnotes.text,
-                            'fkuser_rate':Provider.of<user_vm_provider>
+                            'fkuser_rate':Provider.of<UserProvider>
                               (context,listen: false).currentUser.idUser.toString(),
                             'date_rate':DateTime.now().toString(),
                             'rate':rate.toString(),

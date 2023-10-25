@@ -43,8 +43,8 @@ void initState() {
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButton:
-      Provider.of<privilge_vm>(context,listen: true)
-          .checkprivlge('45')==true ? FloatingActionButton(
+      Provider.of<PrivilegeProvider>(context,listen: true)
+          .checkPrivilege('45')==true ? FloatingActionButton(
         backgroundColor: kMainColor,
         onPressed: () {
           Navigator.push(

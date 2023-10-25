@@ -51,14 +51,14 @@ class _clientmarketingState extends State<clientmarketing> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<user_vm_provider>(context, listen: false).getuser_vm();
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
-      Provider.of<user_vm_provider>(context, listen: false).changevalueuser(null);
-      Provider.of<typeclient>(context, listen: false).changevaluefilter(null);
-      List<PrivilgeModel> list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
-      Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-      await Provider.of<client_vm>(context, listen: false).getclientMarketing();
-      await Provider.of<activity_vm>(context, listen: false).getactv();
+      Provider.of<UserProvider>(context, listen: false).getUsersVm();
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
+      Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
+      Provider.of<ClientType>(context, listen: false).changevaluefilter(null);
+      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
+      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
+      await Provider.of<ClientProvider>(context, listen: false).getclientMarketing();
+      await Provider.of<ActivityVm>(context, listen: false).getActivities();
     });
   }
 
@@ -73,7 +73,7 @@ class _clientmarketingState extends State<clientmarketing> {
             style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
           ),
         ),
-        floatingActionButton: Provider.of<privilge_vm>(context, listen: true).checkprivlge('47') == true
+        floatingActionButton: Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('47') == true
             ? FloatingActionButton(
                 backgroundColor: kMainColor,
                 onPressed: () {
@@ -84,7 +84,7 @@ class _clientmarketingState extends State<clientmarketing> {
                 heroTag: 'add clients',
               )
             : Container(),
-        body: Consumer<privilge_vm>(builder: (context, privilge, child) {
+        body: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
           return RefreshIndicator(
             onRefresh: () async {},
             child: SafeArea(
@@ -97,23 +97,23 @@ class _clientmarketingState extends State<clientmarketing> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          privilge.checkprivlge('8') == true
+                          privilge.checkPrivilege('8') == true
                               ? //regoin
                               Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                    child: Consumer<regoin_vm>(
+                                    child: Consumer<RegionProvider>(
                                       builder: (context, cart, child) {
                                         return DropdownButton(
                                           isExpanded: true,
                                           hint: Text("الفرع"),
-                                          items: cart.listregoinfilter.map((level_one) {
+                                          items: cart.listRegionFilter.map((level_one) {
                                             return DropdownMenuItem(
-                                              child: Text(level_one.name_regoin), //label of item
-                                              value: level_one.id_regoin, //value of item
+                                              child: Text(level_one.regionName), //label of item
+                                              value: level_one.regionId, //value of item
                                             );
                                           }).toList(),
-                                          value: cart.selectedValueLevel,
+                                          value: cart.selectedRegionId,
                                           onChanged: (value) {
                                             //  setState(() {
                                             cart.changeVal(value.toString());
@@ -133,11 +133,11 @@ class _clientmarketingState extends State<clientmarketing> {
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 20.0, right: 8),
-                              child: Consumer<typeclient>(builder: (context, cart, child) {
+                              child: Consumer<ClientType>(builder: (context, cart, child) {
                                 return DropdownButton(
                                   isExpanded: true,
                                   hint: Text('الحالة'),
-                                  items: cart.type_of_client_filter.map((level_one) {
+                                  items: cart.typeOfClientFilter.map((level_one) {
                                     return DropdownMenuItem(
                                       child: Text(level_one), //label of item
                                       value: level_one, //value of item
@@ -157,18 +157,18 @@ class _clientmarketingState extends State<clientmarketing> {
                       ),
 
                       //SizedBox(height: 2,),
-                      privilge.checkprivlge('15') == true || privilge.checkprivlge('8') == true
+                      privilge.checkPrivilege('15') == true || privilge.checkPrivilege('8') == true
                           ? //user
                           Padding(
                               padding: const EdgeInsets.only(
                                 left: 8.0,
                                 right: 8,
                               ),
-                              child: Consumer<user_vm_provider>(
+                              child: Consumer<UserProvider>(
                                 builder: (context, cart, child) {
                                   return Row(
                                     children: [
-                                      if (cart.selecteduser != null) ...{
+                                      if (cart.selectedUser != null) ...{
                                         IconButton(
                                             onPressed: () {
                                               iduser = null;
@@ -190,7 +190,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                             cart.changevalueuser(data);
                                             filtershow();
                                           },
-                                          selectedItem: cart.selecteduser,
+                                          selectedItem: cart.selectedUser,
                                           showSearchBox: true,
                                           dropdownSearchDecoration: InputDecoration(
                                             isCollapsed: true,
@@ -218,15 +218,15 @@ class _clientmarketingState extends State<clientmarketing> {
                           left: 8.0,
                           right: 8,
                         ),
-                        child: Consumer<activity_vm>(
+                        child: Consumer<ActivityVm>(
                           builder: (context, cart, child) {
                             return Row(
                               children: [
-                                if (cart.selectedValueOut != null) ...{
+                                if (cart.selectedActivity != null) ...{
                                   IconButton(
                                       onPressed: () {
                                         activity = '';
-                                        cart.changevalueOut(null);
+                                        cart.onChangeSelectedActivity(null);
                                         filtershow();
                                       },
                                       icon: Icon(Icons.highlight_off)),
@@ -237,15 +237,15 @@ class _clientmarketingState extends State<clientmarketing> {
                                     mode: Mode.DIALOG,
                                     filterFn: (user, filter) => user!.getfilter_actv(filter!),
                                     compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
-                                    items: cart.list_activity,
+                                    items: cart.activitiesList,
                                     itemAsString: (u) => u!.userAsString(),
                                     onChanged: (data) {
                                       // iduser = data!.id_activity_type;
-                                      cart.changevalueOut(data);
+                                      cart.onChangeSelectedActivity(data);
                                       activity = data?.id_activity_type.toString();
                                       filtershow();
                                     },
-                                    selectedItem: cart.selectedValueOut,
+                                    selectedItem: cart.selectedActivity,
                                     showSearchBox: true,
                                     dropdownSearchDecoration: InputDecoration(
                                       isCollapsed: true,
@@ -298,7 +298,7 @@ class _clientmarketingState extends State<clientmarketing> {
                               style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              Provider.of<client_vm>(context, listen: true).listClientMarketing.length.toString(),
+                              Provider.of<ClientProvider>(context, listen: true).listClientMarketing.length.toString(),
                               style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                             ),
                           ],
@@ -308,7 +308,7 @@ class _clientmarketingState extends State<clientmarketing> {
                         height: MediaQuery.of(context).size.height * 0.75,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8, right: 8, top: 8.0, bottom: 20),
-                          child: Consumer<client_vm>(builder: (context, value, child) {
+                          child: Consumer<ClientProvider>(builder: (context, value, child) {
                             return value.isloading_marketing
                                 ? Center(child: CircularProgressIndicator())
                                 : Column(
@@ -320,7 +320,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                             itemBuilder: (context, index) {
                                               return Padding(
                                                   padding: const EdgeInsets.all(2),
-                                                  child: cardAllClient(
+                                                  child: CardAllClient(
                                                     clientModel: value.listClientMarketing[index],
                                                   ));
                                             }),
@@ -344,7 +344,7 @@ class _clientmarketingState extends State<clientmarketing> {
 
   void filtershow() {
     print("******* filter ******** ");
-    context.read<client_vm>().filterClientMarketingSalesList(
+    context.read<ClientProvider>().filterClientMarketingSalesList(
           activity: activity,
           idUser: iduser,
           region: regoin,

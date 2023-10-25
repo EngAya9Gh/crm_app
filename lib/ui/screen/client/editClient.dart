@@ -68,7 +68,7 @@ class _editclientState extends State<editclient> {
 
   // final TextEditingController address_client = TextEditingController();
 
-  late typeclient typeclient_provider;
+  late ClientType typeclient_provider;
   late final UserModel currentUser;
   late String? namemanage = '';
   String? sourclient;
@@ -116,7 +116,7 @@ class _editclientState extends State<editclient> {
   @override
   void initState() {
     context.read<company_vm>().initValueOut();
-    currentUser = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    currentUser = Provider.of<UserProvider>(context, listen: false).currentUser;
     nameclientController.text = widget.itemClient.nameClient!.toString();
     nameEnterpriseController.text = widget.itemClient.nameEnterprise!.toString();
     mobileController.text = widget.itemClient.mobile!.toString();
@@ -149,9 +149,9 @@ class _editclientState extends State<editclient> {
 
       Provider.of<maincity_vm>(context, listen: false).changevalue(widget.itemClient.city.toString());
 
-      await Provider.of<activity_vm>(context, listen: false).getactv();
-      Provider.of<activity_vm>(context, listen: false)
-          .changesValue_idact(widget.itemClient.activity_type_fk);
+      await Provider.of<ActivityVm>(context, listen: false).getActivities();
+      Provider.of<ActivityVm>(context, listen: false)
+          .onChangeSelectedActivityTypeId(widget.itemClient.activity_type_fk);
 
       await Provider.of<company_vm>(context, listen: false).getcompany();
 
@@ -172,7 +172,7 @@ class _editclientState extends State<editclient> {
       // Add Your Code here.
       bool ism = widget.itemClient.ismarketing == '1' ? true : false;
       Provider.of<switch_provider>(context, listen: false).changeboolValue(ism);
-      typeclient_provider = Provider.of<typeclient>(context, listen: false);
+      typeclient_provider = Provider.of<ClientType>(context, listen: false);
       typeclient_provider.type_of_client =
           // widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
           widget.itemClient.typeClient == "تفاوض" ||
@@ -223,7 +223,7 @@ class _editclientState extends State<editclient> {
 
   @override
   Widget build(BuildContext context) {
-    typeclient_provider = Provider.of<typeclient>(context, listen: true);
+    typeclient_provider = Provider.of<ClientType>(context, listen: true);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -278,12 +278,12 @@ class _editclientState extends State<editclient> {
                       // typeclient_provider.selectedValuemanag == "منسحب"
                       //     ? typeclient_provider.selectedValueOut
                       //     :
-                      'activity_type_fk': Provider.of<activity_vm>
+                      'activity_type_fk': Provider.of<ActivityVm>
                         (context, listen: false)
-                          .selectedValueOut?.id_activity_type.toString(),
+                          .selectedActivity?.id_activity_type.toString(),
                       // "mobile": mobileController.text,
                       "ismarketing": sourclient == 'ميداني' ? '0' : '1',
-                      "user_do": Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                      "user_do": Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
                       'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
                       'sourcclient': sourclient,
                       'descActivController': desctypejobController.text,
@@ -294,7 +294,7 @@ class _editclientState extends State<editclient> {
                       //     ?valueBackController.text:"",
                     });
                     print('$body');
-                    Provider.of<client_vm>(context, listen: false)
+                    Provider.of<ClientProvider>(context, listen: false)
                         .updateclient_vm(body, widget.itemClient.idClients)
                         .then((value) => value != "false" ? clear(context) : error(context));
                   }
@@ -370,10 +370,10 @@ class _editclientState extends State<editclient> {
                       maxLength: 15,
                     ),
                     SizedBox(height: 5),
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
                         ? Container()
                         : RowEdit(name: label_client_typejob, des: '*'),
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
                         ? Container()
                         : EditTextFormField(
                             hintText: label_client_typejob,
@@ -394,7 +394,7 @@ class _editclientState extends State<editclient> {
                       height: 15,
                     ),
                     RowEdit(name: label_client_typejob, des: '*'),
-                    Consumer<activity_vm>(
+                    Consumer<ActivityVm>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,
@@ -403,14 +403,14 @@ class _editclientState extends State<editclient> {
                             mode: Mode.DIALOG,
                             filterFn: (user, filter) => user!.getfilter_actv(filter!),
                             compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
-                            items: cart.list_activity,
+                            items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
                               // iduser = data!.id_activity_type;
-                              cart.changevalueOut(data);
+                              cart.onChangeSelectedActivity(data);
                               // filtershow();
                             },
-                            selectedItem: cart.selectedValueOut,
+                            selectedItem: cart.selectedActivity,
                             showSearchBox: true,
                             dropdownSearchDecoration: InputDecoration(
                               isCollapsed: true,
@@ -484,7 +484,7 @@ class _editclientState extends State<editclient> {
                             items: cart.listcity,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) => cityController = data!.id_city,
-                            //print(data!.nameUser),
+                            
                             showSearchBox: true,
                             dropdownSearchDecoration: InputDecoration(
                               labelText: "حدد مدينة",
@@ -537,10 +537,10 @@ class _editclientState extends State<editclient> {
                       height: 15,
                     ),
 
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
                         ? Container()
                         : RowEdit(name: label_clientlocation, des: ''),
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
                         ? Container()
                         : EditTextFormField(
                             hintText: 'location',
@@ -648,12 +648,12 @@ class _editclientState extends State<editclient> {
                     // SizedBox(
                     //   height: 15,
                     // ),
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
                         ? widget.itemClient.typeClient != "مشترك" && widget.itemClient.typeClient != "منسحب"
                             ? RowEdit(name: label_clienttype, des: "")
                             : Container()
                         : Container(),
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == true
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
                         ? widget.itemClient.typeClient != "مشترك" && widget.itemClient.typeClient != "منسحب"
                             ? DropdownButton(
                                 isExpanded: true,
@@ -696,7 +696,7 @@ class _editclientState extends State<editclient> {
                     //   },
                     //   child: Text('خيارات الإنسحاب'),
                     // ):
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') == false
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == false
                         ? Container()
                         : typeclient_provider.selectedValuemanag == "عرض سعر"
                             ? Row(
@@ -741,7 +741,7 @@ class _editclientState extends State<editclient> {
                                   ),
                                 ],
                               )
-                            : Provider.of<privilge_vm>(context, listen: true).checkprivlge('27') ==  false
+                            : Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') ==  false
                                 ? Container()
                                 : typeclient_provider.selectedValuemanag == "مستبعد"
                                     ? EditTextFormField(

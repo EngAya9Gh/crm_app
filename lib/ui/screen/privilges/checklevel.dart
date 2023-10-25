@@ -35,8 +35,8 @@ class _check_levelState extends State<check_level> {
         centerTitle: true,
       ),
        floatingActionButton:
-       Provider.of<privilge_vm>(context,listen: true)
-           .checkprivlge('51')==true ?
+       Provider.of<PrivilegeProvider>(context,listen: true)
+           .checkPrivilege('51')==true ?
        FloatingActionButton(
          child:Icon(Icons.add),
          onPressed: (){

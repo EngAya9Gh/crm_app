@@ -43,19 +43,19 @@ class _salesproductState extends State<salesproduct> {
   DateTime _selectedDatemonth = DateTime.now();
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
-  late privilge_vm privilegeVm;
+  late PrivilegeProvider privilegeVm;
   bool isMarketing = false;
   late bool haveMarketingPrivilege;
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
-      Provider.of<user_vm_provider>(context, listen: false).changevalueuser(null);
+      Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
-    privilegeVm = Provider.of<privilge_vm>(context, listen: false);
+    privilegeVm = Provider.of<PrivilegeProvider>(context, listen: false);
     super.initState();
     // WidgetsBinding.instance.addPostFrameCallback((_)async {
     // if(  Provider.of<privilge_vm>(context,listen: false)
@@ -78,22 +78,22 @@ class _salesproductState extends State<salesproduct> {
     });
     List<BarModel> tempData = [];
     rowsdata.clear();
-    UserModel userModel = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    UserModel userModel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkCountry = userModel.fkCountry.toString();
     if (iduser == '0') iduser = userModel.idUser.toString();
     if (idregoin == '0') idregoin = userModel.fkRegoin.toString();
 
     String paramPrivilege = '';
-    if (privilegeVm.checkprivlge('87') == true) paramPrivilege = '&id_user=$iduser';
-    if (privilegeVm.checkprivlge('90') == true) paramPrivilege = '&id_regoin=$idregoin';
+    if (privilegeVm.checkPrivilege('87') == true) paramPrivilege = '&id_user=$iduser';
+    if (privilegeVm.checkPrivilege('90') == true) paramPrivilege = '&id_regoin=$idregoin';
 
-    if (privilegeVm.checkprivlge('89') == true) {
+    if (privilegeVm.checkPrivilege('89') == true) {
       if (iduser == '' && idregoin != '') paramPrivilege = '&id_regoin=$idregoin';
       if (iduser != '' && idregoin == '') paramPrivilege = '&id_user=$iduser';
     }
-    if (privilegeVm.checkprivlge('87') == true ||
-        privilegeVm.checkprivlge('89') == true ||
-        privilegeVm.checkprivlge('90') == true) {
+    if (privilegeVm.checkPrivilege('87') == true ||
+        privilegeVm.checkPrivilege('89') == true ||
+        privilegeVm.checkPrivilege('90') == true) {
       String params = '';
       if (typeproduct == 'أجهزة') params = '&product=0';
       if (typeproduct == 'برامج') params = '&product=1';
@@ -277,22 +277,22 @@ class _salesproductState extends State<salesproduct> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Provider.of<privilge_vm>(context, listen: true).checkprivlge('89') == true
+                Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('89') == true
                     ? Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: Consumer<regoin_vm>(
+                          child: Consumer<RegionProvider>(
                             builder: (context, cart, child) {
                               return DropdownButton(
                                 isExpanded: true,
                                 hint: Text("الفرع"),
-                                items: cart.listregoinfilter.map((level_one) {
+                                items: cart.listRegionFilter.map((level_one) {
                                   return DropdownMenuItem(
-                                    child: Text(level_one.name_regoin), //label of item
-                                    value: level_one.id_regoin, //value of item
+                                    child: Text(level_one.regionName), //label of item
+                                    value: level_one.regionId, //value of item
                                   );
                                 }).toList(),
-                                value: cart.selectedValueLevel,
+                                value: cart.selectedRegionId,
                                 onChanged: (value) {
                                   //  setState(() {
                                   cart.changeVal(value.toString());
@@ -307,19 +307,19 @@ class _salesproductState extends State<salesproduct> {
                       )
                     : Container(),
                 Expanded(
-                  child: Provider.of<privilge_vm>(context, listen: true).checkprivlge('89') == true ||
-                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('90') == true
+                  child: Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('89') == true ||
+                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('90') == true
                       ? //user
                       Padding(
                           padding: const EdgeInsets.only(
                             left: 8.0,
                             right: 8,
                           ),
-                          child: Consumer<user_vm_provider>(
+                          child: Consumer<UserProvider>(
                             builder: (context, cart, child) {
                               return Row(
                                 children: [
-                                  if(cart.selecteduser != null)
+                                  if(cart.selectedUser != null)
                                     ...{
                                       IconButton(
                                           onPressed: () {
@@ -342,7 +342,7 @@ class _salesproductState extends State<salesproduct> {
                                         cart.changevalueuser(data);
                                         getData();
                                       },
-                                      selectedItem: cart.selecteduser,
+                                      selectedItem: cart.selectedUser,
                                       showSearchBox: true,
                                       dropdownSearchDecoration: InputDecoration(
                                         isCollapsed: true,

@@ -325,9 +325,9 @@ class InvoiceModel extends CacheRepository {
     // )//  jsondata['products']
     // .map(
     //     (e) {
-    //print('eee'+json.decode(e));
+    
     //      ProductsInvoice.fromJson(e);
-    //print('eee'+e);
+    
     // }).toList();
     //     .add(
     //     ProductsInvoice.fromJson(
@@ -446,7 +446,7 @@ class InvoiceModel extends CacheRepository {
       for (int i = 0; i < data.length; i++) {
         print(i);
 
-        //print("data "+ "[" + data[i] + "]");
+        
         prodlist.add(ProductsInvoice.fromJson(data[i]));
       }
     }

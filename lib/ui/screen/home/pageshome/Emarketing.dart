@@ -30,8 +30,8 @@ class marketingpage extends StatelessWidget {
         padding: EdgeInsets.only(top: 50),
         child:
         Column(children: [
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('53')==true ?
+          Provider.of<PrivilegeProvider>(context,listen: true)
+              .checkPrivilege('53')==true ?
           buildSelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,
@@ -41,8 +41,8 @@ class marketingpage extends StatelessWidget {
                     builder: (context)=>
                         clientmarketing()));
           }, title: 'عملاء التسويق الإلكتروني'):Container(),
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('54')==true ?
+          Provider.of<PrivilegeProvider>(context,listen: true)
+              .checkPrivilege('54')==true ?
           buildSelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,
@@ -66,7 +66,7 @@ class marketingpage extends StatelessWidget {
           //       // ));
           //     },
           //     title: 'تقرير التسويق الإلكتروني'):Container(),
-          Provider.of<privilge_vm>(context,listen: true).checkprivlge('119') == true?
+          Provider.of<PrivilegeProvider>(context,listen: true).checkPrivilege('119') == true?
           buildSelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,

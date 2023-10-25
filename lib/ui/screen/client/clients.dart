@@ -88,10 +88,10 @@ class client_dashboard extends StatefulWidget {
     void initState()  {
       _tabcontroller = TabController(length: 3, vsync: this);
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await Provider.of<client_vm>(context, listen: false)
+        await Provider.of<ClientProvider>(context, listen: false)
             .get_byIdClient(widget.invoiceModel.fkIdClient.toString());
 
-        _clientModel=Provider.of<client_vm>
+        _clientModel=Provider.of<ClientProvider>
             (context, listen: false).currentClientModel.data;
         // _clientModel =
         // await  Provider.of<client_vm>
@@ -126,13 +126,13 @@ class client_dashboard extends StatefulWidget {
 
 
 
-      current = Provider.of<user_vm_provider>(context).currentUser;
+      current = Provider.of<UserProvider>(context).currentUser;
       int _tabBarIndex = 0;
 
       return DefaultTabController(
       length: 3,
       child:ModalProgressHUD(
-        inAsyncCall: Provider.of<client_vm>(context, listen: false)
+        inAsyncCall: Provider.of<ClientProvider>(context, listen: false)
             .isloading,
         child: Scaffold(
 
@@ -198,7 +198,7 @@ class client_dashboard extends StatefulWidget {
           ),
           ),
           body:
-          Provider.of<client_vm>(context, listen: true)
+          Provider.of<ClientProvider>(context, listen: true)
               .isloading==true?
           Container():
           Container(

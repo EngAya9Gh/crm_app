@@ -90,7 +90,7 @@ class _InvoiceViewState extends State<InvoiceView> {
   void initState() {
     context.read<invoice_vm>().setCurrentInvoice(widget.invoice);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<client_vm>(context, listen: false)
+      await Provider.of<ClientProvider>(context, listen: false)
           .get_byIdClient(widget.invoice.fkIdClient.toString(), (value) => clientmodel = value);
     });
     super.initState();
@@ -240,7 +240,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                         ? cardRow(title: 'عنوان الفاتورة', value: invoice.address_invoice.toString())
                         : Container(),
 
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true
                         ? invoice.clientusername != null && invoice.clientusername.toString().isNotEmpty
                             ? cardRow(
                                 title: 'يوزر العميل',
@@ -295,9 +295,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true &&
+                            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('141') == true &&
                                         invoice.isApprove == null ||
-                                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('31') == true &&
+                                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('31') == true &&
                                         invoice.isApprove != null
                                 ? CustomButton(
                                     text: 'تعديل الفاتورة',
@@ -312,7 +312,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   )
                                 : Container(), // widget.type == 'approved'
                             //     ? invoice.isApprove == null
-                            Provider.of<privilge_vm>(context, listen: true).checkprivlge('41') == true
+                            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('41') == true
                                 ? invoice.isApprove != null
                                     ? CustomButton(
                                         text: 'الاجراءات',
@@ -329,7 +329,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       )
                                     : Container()
                                 : Container(),
-                            Provider.of<privilge_vm>(context, listen: true).checkprivlge('32') == true
+                            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('32') == true
                                 ? CustomButton(
                                     //width: MediaQuery.of(context).size.width * 0.2,
                                     text: 'حذف الفاتورة',
@@ -379,12 +379,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                     "id_invoice": invoice.idInvoice.toString(),
                                                     'fk_regoin': invoice.fk_regoin.toString(),
                                                     'fkcountry': invoice.fk_country.toString(),
-                                                    "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                                    "fkUserdo": Provider.of<UserProvider>(context, listen: false)
                                                         .currentUser
                                                         .idUser
                                                         .toString(),
                                                     "name_enterprise": clientmodel?.nameEnterprise.toString(),
-                                                    "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                                    "nameUserdo": Provider.of<UserProvider>(context, listen: false)
                                                         .currentUser
                                                         .nameUser
                                                         .toString(),
@@ -405,7 +405,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('116') == true
+                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('116') == true
                               ? CustomButton(
                                   //width: MediaQuery.of(context).size.width * 0.2,
                                   text: 'اضافة دفعة للفاتورة',
@@ -421,7 +421,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 )
                               : Container(),
                           SizedBox(width: 5),
-                          Provider.of<privilge_vm>(context, listen: true).checkprivlge('115') == true
+                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('115') == true
                               ? CustomButton(
                                   //width: MediaQuery.of(context).size.width * 0.2,
                                   text: 'تغيير بيانات الفاتورة',
@@ -487,11 +487,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                             "fkusername": invoice.nameUser, //موظف المبيعات
                                                             //"message":"",//
                                                             "nameuserApproved":
-                                                                Provider.of<user_vm_provider>(context, listen: false)
+                                                                Provider.of<UserProvider>(context, listen: false)
                                                                     .currentUser
                                                                     .nameUser,
                                                             "iduser_approve":
-                                                                Provider.of<user_vm_provider>(context, listen: false)
+                                                                Provider.of<UserProvider>(context, listen: false)
                                                                     .currentUser
                                                                     .idUser //معتمد الاشتراك
                                                           }, invoice.idInvoice).then((value) =>
@@ -538,10 +538,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                                               "name_enterprise": invoice.name_enterprise,
                                               "fkusername": invoice.nameUser, //موظف المبيعات
                                               //"message":"",//
-                                              "nameuserApproved": Provider.of<user_vm_provider>(context, listen: false)
+                                              "nameuserApproved": Provider.of<UserProvider>(context, listen: false)
                                                   .currentUser
                                                   .nameUser,
-                                              "iduser_approve": Provider.of<user_vm_provider>(context, listen: false)
+                                              "iduser_approve": Provider.of<UserProvider>(context, listen: false)
                                                   .currentUser
                                                   .idUser //معتمد الاشتراك
                                             }, invoice.idInvoice).then(
@@ -656,7 +656,7 @@ class RejectDialog extends StatefulWidget {
 class _RejectDialogState extends State<RejectDialog> {
   final TextEditingController valueBackController = TextEditingController();
   final TextEditingController descresaonController = TextEditingController();
-  late typeclient typeclient_provider;
+  late ClientType typeclient_provider;
   late InvoiceModel _invoice;
   File? selectedFile;
 
@@ -668,7 +668,7 @@ class _RejectDialogState extends State<RejectDialog> {
     if (_invoice.value_back?.isNotEmpty ?? false) valueBackController.text = _invoice.value_back.toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      typeclient_provider = Provider.of<typeclient>(context, listen: false);
+      typeclient_provider = Provider.of<ClientType>(context, listen: false);
       typeclient_provider.getreasons('client');
 
       typeclient_provider.selectedValueOut = _invoice.reason_back == null ? null : _invoice.reason_back.toString();
@@ -748,7 +748,7 @@ class _RejectDialogState extends State<RejectDialog> {
                 child: Column(
                   children: [
                     RowEdit(name: "اسباب الإنسحاب", des: '*'),
-                    Consumer<typeclient>(
+                    Consumer<ClientType>(
                       builder: (context, cart, child) {
                         print("cart.type_of_out ${cart.type_of_out}");
                         print("cart.selectedValueOut ${cart.selectedValueOut}");
@@ -973,7 +973,7 @@ class _RejectDialogState extends State<RejectDialog> {
                           return Center(child: CircularProgressIndicator());
                         }
                         return (_invoice.file_reject?.isNotEmpty ?? false)
-                            ? (Provider.of<privilge_vm>(context, listen: true).checkprivlge('145') == true
+                            ? (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('145') == true
                                 ? Center(
                                     child: ElevatedButton(
                                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
@@ -985,7 +985,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                         if (_globalKey.currentState!.validate()) {
                                           _globalKey.currentState!.save();
 
-                                          await Provider.of<invoice_vm>(context, listen: false).delete_back(
+                                          await Provider.of<invoice_vm>(context, listen: false).deleteBack(
                                               _invoice.idInvoice.toString(), _invoice.file_reject.toString());
 
                                           clear_back();
@@ -1016,18 +1016,18 @@ class _RejectDialogState extends State<RejectDialog> {
                                             'type_back': 'back',
                                             'fk_regoin': _invoice.fk_regoin.toString(),
                                             'fkcountry': _invoice.fk_country.toString(),
-                                            "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                            "fkUserdo": Provider.of<UserProvider>(context, listen: false)
                                                 .currentUser
                                                 .idUser
                                                 .toString(),
                                             "name_enterprise": widget.clientModel.nameEnterprise.toString(),
-                                            "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                            "nameUserdo": Provider.of<UserProvider>(context, listen: false)
                                                 .currentUser
                                                 .nameUser
                                                 .toString(),
                                             "fk_client": _invoice.fkIdClient.toString(),
                                             "reason_back": typeclient_provider.selectedValueOut.toString(),
-                                            "fkuser_back": Provider.of<user_vm_provider>(context, listen: false)
+                                            "fkuser_back": Provider.of<UserProvider>(context, listen: false)
                                                 .currentUser
                                                 .idUser
                                                 .toString(),
@@ -1055,18 +1055,18 @@ class _RejectDialogState extends State<RejectDialog> {
                                             'type_back': 'return',
                                             'fk_regoin': _invoice.fk_regoin.toString(),
                                             'fkcountry': _invoice.fk_country.toString(),
-                                            "fkUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                            "fkUserdo": Provider.of<UserProvider>(context, listen: false)
                                                 .currentUser
                                                 .idUser
                                                 .toString(),
                                             "name_enterprise": widget.clientModel.nameEnterprise.toString(),
-                                            "nameUserdo": Provider.of<user_vm_provider>(context, listen: false)
+                                            "nameUserdo": Provider.of<UserProvider>(context, listen: false)
                                                 .currentUser
                                                 .nameUser
                                                 .toString(),
                                             "fk_client": _invoice.fkIdClient.toString(),
                                             "reason_back": typeclient_provider.selectedValueOut.toString(),
-                                            "fkuser_back": Provider.of<user_vm_provider>(context, listen: false)
+                                            "fkuser_back": Provider.of<UserProvider>(context, listen: false)
                                                 .currentUser
                                                 .idUser
                                                 .toString(),

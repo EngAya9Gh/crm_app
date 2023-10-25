@@ -60,7 +60,7 @@ class _report_rateState extends State<report_rate> {
     List<BarModel> tempdata = [];
     rowsdata.clear();
     UserModel usermodel = Provider
-        .of<user_vm_provider>(context, listen: false)
+        .of<UserProvider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String iduser = usermodel.idUser.toString();

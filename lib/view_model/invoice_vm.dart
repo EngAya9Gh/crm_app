@@ -1391,10 +1391,10 @@ class invoice_vm extends ChangeNotifier {
     }
   }
 
-  Future<void> delete_back(String id_invoice, String file_reject) async {
+  Future<void> deleteBack(String id_invoice, String file_reject) async {
     isloading = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service().delete_back(id_invoice, file_reject);
+    InvoiceModel data = await Invoice_Service().deleteBack(id_invoice, file_reject);
     int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
     if (index != -1) {
       listinvoices[index] = data;

@@ -42,15 +42,15 @@ class _View_installedClientState extends State<View_installedClient> {
 
   @override
   void initState() {
-    user = context.read<user_vm_provider>().currentUser;
+    user = context.read<UserProvider>().currentUser;
     userId = user.idUser!;
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<typeclient>(context, listen: false).changelisttype_install_iso('الكل');
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
+      Provider.of<ClientType>(context, listen: false).changelisttype_install_iso('الكل');
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
-      context.read<user_vm_provider>().changevalueuser(null, true);
+      context.read<UserProvider>().changevalueuser(null, true);
       await Provider.of<communication_vm>(context, listen: false)
           .getCommunicationInstall(1, '');
     });
@@ -91,19 +91,19 @@ class _View_installedClientState extends State<View_installedClient> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Consumer<regoin_vm>(
+                      child: Consumer<RegionProvider>(
                         builder: (context, cart, child) {
                           return DropdownButton(
                             isExpanded: true,
                             hint: Text("الفرع"),
-                            items: cart.listregoinfilter.map((level_one) {
+                            items: cart.listRegionFilter.map((level_one) {
                               return DropdownMenuItem(
-                                child: Text(level_one.name_regoin),
+                                child: Text(level_one.regionName),
                                 //label of item
-                                value: level_one.id_regoin, //value of item
+                                value: level_one.regionId, //value of item
                               );
                             }).toList(),
-                            value: cart.selectedValueLevel,
+                            value: cart.selectedRegionId,
                             onChanged: (value) {
                               //  setState(() {
                               cart.changeVal(value.toString());
@@ -120,7 +120,7 @@ class _View_installedClientState extends State<View_installedClient> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 8),
-                      child: Consumer<typeclient>(builder: (context, cart, child) {
+                      child: Consumer<ClientType>(builder: (context, cart, child) {
                         return DropdownButton(
                           isExpanded: true,
                           hint: Text('الحالة'),
@@ -149,15 +149,15 @@ class _View_installedClientState extends State<View_installedClient> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8),
-                child: Consumer<user_vm_provider>(
+                child: Consumer<UserProvider>(
                   builder: (context, user, child) {
                     return Row(
                       children: [
-                        if (user.selecteduser != null) ...{
+                        if (user.selectedUser != null) ...{
                           IconButton(
                             onPressed: () {
                               employeeId = null;
-                              context.read<user_vm_provider>().changevalueuser(null);
+                              context.read<UserProvider>().changevalueuser(null);
                               filtershow();
                             },
                             icon: Icon(Icons.highlight_off),
@@ -173,11 +173,11 @@ class _View_installedClientState extends State<View_installedClient> {
                             items: user.usersSupportManagement,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
-                              context.read<user_vm_provider>().changevalueuser(data);
+                              context.read<UserProvider>().changevalueuser(data);
                               employeeId = data?.idUser;
                               filtershow();
                             },
-                            selectedItem: user.selecteduser,
+                            selectedItem: user.selectedUser,
                             showSearchBox: true,
                             dropdownSearchDecoration: InputDecoration(
                               isCollapsed: true,

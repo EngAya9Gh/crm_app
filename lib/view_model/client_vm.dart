@@ -20,7 +20,7 @@ import 'country_vm.dart';
 const CACHE_ClientByUser_KEY = "CACHE_Client_KEY";
 const CACHE_ClientByUser_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
 
-class client_vm extends ChangeNotifier {
+class ClientProvider extends ChangeNotifier {
   List<ClientModel> listClient = [];
   List<ClientModel> listClientAccept = [];
   List<ClientModel> listClientAprroveTransfer = [];

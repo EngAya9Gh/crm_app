@@ -91,12 +91,12 @@ class add_payement extends StatelessWidget {
                         'fk_regoin': invoiceModel.fk_regoin.toString(),
                         'fkcountry': invoiceModel.fk_country.toString(),
 
-                        "lastuserupdate": Provider.of<user_vm_provider>(context,
+                        "lastuserupdate": Provider.of<UserProvider>(context,
                                 listen: false)
                             .currentUser
                             .idUser
                             .toString(),
-                        "lastnameuser": Provider.of<user_vm_provider>(context,
+                        "lastnameuser": Provider.of<UserProvider>(context,
                                 listen: false)
                             .currentUser
                             .nameUser

@@ -755,12 +755,12 @@ class _addinvoiceState extends State<addinvoice> {
                               ),
                             );
                           }),
-                      Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true &&
+                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true &&
                               _invoice!.idInvoice != null &&
                               _invoice!.userinstall != null
                           ? RowEdit(name: 'يوزر العميل', des: '')
                           : Container(),
-                      Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true &&
+                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true &&
                               _invoice!.idInvoice != null &&
                               _invoice!.userinstall != null
                           ? EditTextFormField(
@@ -961,8 +961,8 @@ class _addinvoiceState extends State<addinvoice> {
                                                         ),
                                                       ),
                                                     ),
-                                                    if (Provider.of<privilge_vm>(context, listen: true)
-                                                            .checkprivlge('146') ==
+                                                    if (Provider.of<PrivilegeProvider>(context, listen: true)
+                                                            .checkPrivilege('146') ==
                                                         true)
                                                       Positioned.fill(
                                                         child: Align(
@@ -1297,7 +1297,7 @@ class _addinvoiceState extends State<addinvoice> {
                                     deletedFiles.forEachIndexed((i, e) {
                                       deleteFilesMap["id_files[$i]"] = e;
                                     });
-                                    final user = context.read<user_vm_provider>();
+                                    final user = context.read<UserProvider>();
                                     if (_invoice?.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
                                       final body = {
@@ -1325,11 +1325,11 @@ class _addinvoiceState extends State<addinvoice> {
                                         "fk_idClient": widget.itemClient.idClients.toString(),
                                         "fk_idUser": user.currentUser.idUser,
                                         "image_record": widget.invoice!.imageRecord.toString(),
-                                        "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
+                                        "lastuserupdate": Provider.of<UserProvider>(context, listen: false)
                                             .currentUser
                                             .idUser
                                             .toString(),
-                                        "lastnameuser": Provider.of<user_vm_provider>(context, listen: false)
+                                        "lastnameuser": Provider.of<UserProvider>(context, listen: false)
                                             .currentUser
                                             .nameUser
                                             .toString(),
@@ -1470,7 +1470,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         body.addAll({
                                           'date_not_readyinstall': DateTime.now().toString(),
                                           'user_not_ready_install':
-                                              Provider.of<user_vm_provider>(context, listen: false)
+                                              Provider.of<UserProvider>(context, listen: false)
                                                   .currentUser
                                                   .idUser
                                                   .toString(),
@@ -1478,7 +1478,7 @@ class _addinvoiceState extends State<addinvoice> {
                                       else
                                         body.addAll({
                                           'date_readyinstall': DateTime.now().toString(),
-                                          'user_ready_install': Provider.of<user_vm_provider>(context, listen: false)
+                                          'user_ready_install': Provider.of<UserProvider>(context, listen: false)
                                               .currentUser
                                               .idUser
                                               .toString(),

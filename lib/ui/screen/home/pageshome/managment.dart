@@ -41,7 +41,7 @@ class _managmentpageState extends State<managmentpage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
+      await Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
     });
     super.initState();
   }
@@ -61,11 +61,11 @@ class _managmentpageState extends State<managmentpage> {
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 50),
-        child: Consumer<privilge_vm>(builder: (context, privilge, child) {
+        child: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
           return SingleChildScrollView(
             child: Column(
               children: [
-                privilge.checkprivlge('3') == true
+                privilge.checkPrivilege('3') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -75,7 +75,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'إدارة المستخدمين')
                     : Container(),
-                privilge.checkprivlge('17') == true
+                privilge.checkPrivilege('17') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -85,7 +85,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'ادارة الصلاحيات')
                     : Container(),
-                privilge.checkprivlge('142') == true
+                privilge.checkPrivilege('142') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -95,7 +95,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'إدارة الإنسحابات')
                     : SizedBox.shrink(),
-                privilge.checkprivlge('4') == true
+                privilge.checkPrivilege('4') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -111,7 +111,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'المنتجات ')
                     : Container(),
-                privilge.checkprivlge('20') == true
+                privilge.checkPrivilege('20') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -126,9 +126,9 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'ملف الإعدادات ')
                     : Container(),
-                privilge.checkprivlge('52') == true
+                privilge.checkPrivilege('52') == true
                     ? buildSelectCategory(
-                        subtitle: Provider.of<user_vm_provider>(context, listen: false).currentUser.nameCountry,
+                        subtitle: Provider.of<UserProvider>(context, listen: false).currentUser.nameCountry,
                         colorbag: Colors.white,
                         colortitle: Colors.black,
                         colorarrow: Colors.black,
@@ -142,7 +142,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'تغيير الدولة')
                     : Container(),
-                privilge.checkprivlge('63') == true
+                privilge.checkPrivilege('63') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -157,7 +157,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'إداراة الفروع')
                     : Container(),
-                privilge.checkprivlge('64') == true
+                privilge.checkPrivilege('64') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -172,7 +172,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'إضافة الإدارات')
                     : Container(),
-                privilge.checkprivlge('73') == true
+                privilge.checkPrivilege('73') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -187,7 +187,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'أسباب الانسحاب')
                     : Container(),
-                privilge.checkprivlge('77') == true
+                privilge.checkPrivilege('77') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -202,7 +202,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: ' ادارة المناطق والمدن')
                     : Container(),
-                privilge.checkprivlge('74') == true
+                privilge.checkPrivilege('74') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -243,7 +243,7 @@ class _managmentpageState extends State<managmentpage> {
                       );
                     },
                     title: 'الشركات المنافسة'),
-                privilge.checkprivlge('113') == true
+                privilge.checkPrivilege('113') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -258,7 +258,7 @@ class _managmentpageState extends State<managmentpage> {
                         },
                         title: 'المتعاونين')
                     : Container(),
-                privilge.checkprivlge('114') == true
+                privilge.checkPrivilege('114') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,
@@ -274,7 +274,7 @@ class _managmentpageState extends State<managmentpage> {
                         title: "الوكلاء والموزعين",
                       )
                     : Container(),
-                privilge.checkprivlge('117') == true
+                privilge.checkPrivilege('117') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,

@@ -12,6 +12,7 @@ import '../../../../common/models/page_state/result_builder.dart';
 import '../../../../constants.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/widgets/custom_widget/RowWidget.dart';
+import '../../../../view_model/privilge_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
@@ -31,7 +32,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
   @override
   void initState() {
     _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()..getWithdrawnDetails(widget.invoice.idInvoice!);
-    currentUser = context.read<user_vm_provider>().currentUser;
+    currentUser = context.read<UserProvider>().currentUser;
     super.initState();
   }
 
@@ -69,11 +70,33 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                       cardRow(title: 'المبلغ المسترجع', value: data.valueBack.toString()),
                       cardRow(
                           title: 'تاريخ الإنسحاب',
-                          value: "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
+                          value:
+                              "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
                       cardRow(
                           title: 'الحالة',
                           value: WithdrawalStatus.values[int.parse(data.approveBackDone!)].text,
                           withDivider: false),
+                      if (context.read<PrivilegeProvider>().checkPrivilege('145') == true) ...{
+                        Spacer(),
+                        if (state.deleteWithdrawnRequestStatus.isLoading())
+                          Center(child: CircularProgressIndicator.adaptive())
+                        else
+                        ElevatedButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                          onPressed: () async {
+                            _manageWithdrawalsCubit.deleteWithdrawalRequest(
+                              widget.invoice.idInvoice!,
+                              data.fileReject!,
+                              onSuccess: () {
+                                Navigator.of(context)
+                                  ..pop()
+                                  ..pop();
+                              },
+                            );
+                          },
+                          child: Text('حذف الطلب'),
+                        ),
+                      }
                     ],
                   ),
                 );

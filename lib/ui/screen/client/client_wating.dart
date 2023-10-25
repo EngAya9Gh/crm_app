@@ -45,15 +45,15 @@ class _ClientWaitingState extends State<ClientWaiting> {
 
   @override
   void initState() {
-    user = context.read<user_vm_provider>().currentUser;
+    user = context.read<UserProvider>().currentUser;
     context.read<maincity_vm>().filterMainCityByCurrentUserMainCityList(user);
     selecteditemmaincity = context.read<maincity_vm>().selecteditemmaincity;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<invoice_vm>(context, listen: false).listInvoicesAccept = [];
-      Provider.of<typeclient>(context, listen: false).changelisttype_install('الكل');
+      Provider.of<ClientType>(context, listen: false).changelisttype_install('الكل');
       typeclientvalue = 'الكل';
-      Provider.of<client_vm>(context, listen: false).getallclientAccept();
+      Provider.of<ClientProvider>(context, listen: false).getallclientAccept();
       Provider.of<invoice_vm>(context, listen: false).getfilter_maincity(selecteditemmaincity, typeclientvalue);
     });
 
@@ -70,7 +70,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
         ),
         centerTitle: true,
       ),
-      body: Consumer<privilge_vm>(builder: (context, privilge, child) {
+      body: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
         return SafeArea(
           child: Directionality(
             textDirection: TextDirection.rtl,
@@ -120,7 +120,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                           //state
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20.0, right: 8),
-                            child: Consumer<typeclient>(builder: (context, cart, child) {
+                            child: Consumer<ClientType>(builder: (context, cart, child) {
                               return DropdownButton(
                                 isExpanded: true,
                                 hint: Text('الحالة'),

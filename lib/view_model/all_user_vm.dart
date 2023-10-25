@@ -15,7 +15,7 @@ class AllUserVMController extends GetxController {
     super.onInit();
     getUsers();
 
-    //print(currentUser.value.nameUser);
+    
   }
   @override
   void onReady(){

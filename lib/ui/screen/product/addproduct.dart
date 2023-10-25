@@ -75,7 +75,7 @@ class _addProductState extends State<addProduct> {
       Provider.of<switch_provider>(
           context,
           listen: false).changeboolValue(false);
-      //print(Provider.of<config_vm>(context, listen: false).listofconfig[0]);
+      
     });
     super.initState();
   }
@@ -263,7 +263,7 @@ class _addProductState extends State<addProduct> {
                                           'nameProduct': nameprod,
                                           'priceProduct': price.toString(),
                                           'type': valtype_product.toString(),
-                                          'fk_country': Provider.of<user_vm_provider>(context,listen: false)
+                                          'fk_country': Provider.of<UserProvider>(context,listen: false)
                                           .currentUser.fkCountry.toString(),
                                           'fk_config': valtaxrate
                                               ? taxrate.id_config
@@ -272,7 +272,7 @@ class _addProductState extends State<addProduct> {
                                               ? taxrate.value_config
                                               : "null",
                                           "created_at":DateTime.now().toString(),
-                                          "fkusercreate":Provider.of<user_vm_provider>
+                                          "fkusercreate":Provider.of<UserProvider>
                                             (context,listen: false).currentUser.idUser.toString(),
                                           //
                                         }).then((value) => value != "false"

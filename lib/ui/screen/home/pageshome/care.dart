@@ -40,11 +40,11 @@ class _carepageState extends State<carepage> {
 
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
-      Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
+      Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
       //
       Provider.of<communication_vm>(context, listen: false)
           .setvaluepriv(
-          Provider.of<privilge_vm>(context, listen: false).privilgelist);
+          Provider.of<PrivilegeProvider>(context, listen: false).privilegeList);
      //  Provider.of<ticket_vm>(context,listen: false)
      //      .getclientticket_filter('جديدة');
      // await Provider.of<communication_vm>(context, listen: false)
@@ -91,7 +91,7 @@ class _carepageState extends State<carepage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('44') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('44') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -103,8 +103,8 @@ class _carepageState extends State<carepage> {
                       title: 'العملاء المشتركين')
                   : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-            Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('9')==true?
+            Provider.of<PrivilegeProvider>(context,listen: true)
+              .checkPrivilege('9')==true?
           buildSelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,
@@ -115,8 +115,8 @@ class _carepageState extends State<carepage> {
                         care_page_view()));
           }, title: 'التواصل الدوري'):Container(),
 
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('137')==true?
+              Provider.of<PrivilegeProvider>(context,listen: true)
+                  .checkPrivilege('137')==true?
               buildSelectCategory(
                 colorbag: Colors.white,
                 colortitle: Colors.black,
@@ -128,8 +128,8 @@ class _carepageState extends State<carepage> {
                 },
                 title: 'قائمة العملاء المميزين',
               ):Container() ,
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('29')==true?
+          Provider.of<PrivilegeProvider>(context,listen: true)
+              .checkPrivilege('29')==true?
           buildSelectCategory(
             // subtitle:   Provider.of<communication_vm>(
             //     context, listen: true).listwelcomenumber.length.toString(),
@@ -142,8 +142,8 @@ class _carepageState extends State<carepage> {
                         View_welcomeClient()));
           }, title: 'الترحيب بالعملاء'):Container(),
 
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('30')==true?
+          Provider.of<PrivilegeProvider>(context,listen: true)
+              .checkPrivilege('30')==true?
           buildSelectCategory(
             // subtitle:
             // Provider.of<communication_vm>(
@@ -162,7 +162,7 @@ class _carepageState extends State<carepage> {
                       title: ' جودة التركيب والتدريب')
                   : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('33') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('33') == true
                   ? buildSelectCategory(
                       // subtitle: Provider.of<ticket_vm>(context,listen: true)
                       //     .listticket_clientfilter.length.toString(),
@@ -174,7 +174,7 @@ class _carepageState extends State<carepage> {
                       },
                       title: 'تذاكر العملاء  ')
                   : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('102') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('102') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -184,7 +184,7 @@ class _carepageState extends State<carepage> {
                       },
                       title: 'تقرير العناية بالعملاء')
                   : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('103') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('103') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -194,7 +194,7 @@ class _carepageState extends State<carepage> {
                       },
                       title: 'تقرير مستوى التقييم')
                   : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('104') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('104') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -204,7 +204,7 @@ class _carepageState extends State<carepage> {
                       },
                       title: label_repeat_comm)
                   : Container(), //'تقرير الاتصال الدوري '
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('105') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('105') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,
@@ -214,7 +214,7 @@ class _carepageState extends State<carepage> {
                       },
                       title: label_not_use)
                   : Container(), //' عملاء لا يستخدمون النظام '
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('106') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('106') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,
                       colortitle: Colors.black,

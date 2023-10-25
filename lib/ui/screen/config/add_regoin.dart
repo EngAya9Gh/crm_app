@@ -44,8 +44,8 @@ class _addregoinState extends State<addregoin> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<regoin_vm>(context)
-              .isloading,
+          inAsyncCall: Provider.of<RegionProvider>(context)
+              .isLoading,
           child : Form(
             key: _globalKey,
             child: Padding(
@@ -83,10 +83,10 @@ class _addregoinState extends State<addregoin> {
                           _globalKey.currentState!.save();
 
                           if(widget.idregoin==null){
-                            Provider.of<regoin_vm>(context,listen: false)
-                                .addRegoin_vm({
+                            Provider.of<RegionProvider>(context,listen: false)
+                                .addRegionVm({
                               'name_regoin':namelevel.text,
-                              'fk_country':Provider.of<user_vm_provider>
+                              'fk_country':Provider.of<UserProvider>
                                 (context,listen: false).currentUser.fkCountry.toString(),
                             }).then(
                                     (value) =>  value!="error"
@@ -94,8 +94,8 @@ class _addregoinState extends State<addregoin> {
                                     : error(context)
                             );}
                           else{
-                            Provider.of<regoin_vm>(context,listen: false)
-                                .update_regoin({
+                            Provider.of<RegionProvider>(context,listen: false)
+                                .updateRegion({
                               'name_regoin':namelevel.text,
                               'id_regoin':widget.idregoin,
                               'fk_country':widget.fk_country,

@@ -33,11 +33,11 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
 
   @override
   void initState() {
-    user = context.read<user_vm_provider>().currentUser;
+    user = context.read<UserProvider>().currentUser;
     userId = user.idUser!;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<typeclient>(context, listen: false).changelisttype_welcome('الكل');
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
+      Provider.of<ClientType>(context, listen: false).changelisttype_welcome('الكل');
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       await Provider.of<communication_vm>(context, listen: false).getCommunicationWelcome("");
     });
     super.initState();
@@ -72,19 +72,19 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
-                      child: Consumer<regoin_vm>(
+                      child: Consumer<RegionProvider>(
                         builder: (context, cart, child) {
                           return DropdownButton(
                             isExpanded: true,
                             hint: Text("الفرع"),
-                            items: cart.listregoinfilter.map((level_one) {
+                            items: cart.listRegionFilter.map((level_one) {
                               return DropdownMenuItem(
-                                child: Text(level_one.name_regoin),
+                                child: Text(level_one.regionName),
                                 //label of item
-                                value: level_one.id_regoin, //value of item
+                                value: level_one.regionId, //value of item
                               );
                             }).toList(),
-                            value: cart.selectedValueLevel,
+                            value: cart.selectedRegionId,
                             onChanged: (value) {
                               //  setState(() {
                               cart.changeVal(value.toString());
@@ -125,7 +125,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 8),
-                      child: Consumer<typeclient>(builder: (context, cart, child) {
+                      child: Consumer<ClientType>(builder: (context, cart, child) {
                         return DropdownButton(
                           isExpanded: true,
                           hint: Text('الحالة'),

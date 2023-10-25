@@ -81,16 +81,16 @@ class _addClientState extends State<addClient> {
     super.dispose();
   }
 
-  late activity_vm activityViewmodel;
+  late ActivityVm activityViewmodel;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
 
       context.read<maincity_vm>().getcityAll();
-      activityViewmodel = context.read<activity_vm>()
+      activityViewmodel = context.read<ActivityVm>()
         ..initValueOut()
-        ..getactv();
+        ..getActivities();
       context.read<company_vm>()
         ..initValueOut()
         ..getcompany();
@@ -166,7 +166,7 @@ class _addClientState extends State<addClient> {
                     SizedBox(height: 15),
                     RowEdit(name: label_client_typejob, des: '*'),
                     SizedBox(height: 5),
-                    Consumer<activity_vm>(
+                    Consumer<ActivityVm>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,
@@ -174,14 +174,14 @@ class _addClientState extends State<addClient> {
                             mode: Mode.DIALOG,
                             filterFn: (user, filter) => user!.getfilter_actv(filter!),
                             compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
-                            items: cart.list_activity,
+                            items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
                               // iduser = data!.id_activity_type;
-                              cart.changevalueOut(data);
+                              cart.onChangeSelectedActivity(data);
                               // filtershow();
                             },
-                            selectedItem: cart.selectedValueOut,
+                            selectedItem: cart.selectedActivity,
                             showSearchBox: true,
                             dropdownSearchDecoration: InputDecoration(
                               isCollapsed: true,
@@ -248,7 +248,7 @@ class _addClientState extends State<addClient> {
                             items: cart.listcity,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) => cityController = data!.id_city,
-                            //print(data!.nameUser),
+                            
                             showSearchBox: true,
                             dropdownSearchDecoration: InputDecoration(
                               labelText: "حدد مدينة",
@@ -353,12 +353,12 @@ class _addClientState extends State<addClient> {
                         text: label_clientadd,
                         onpress: () async {
                           if (_globalKey.currentState!.validate() &&
-                              Provider.of<activity_vm>(context, listen: false).selectedValueOut != null &&
+                              Provider.of<ActivityVm>(context, listen: false).selectedActivity != null &&
                               sourclient != '') {
                             _globalKey.currentState!.save();
                             Provider.of<LoadProvider>(context, listen: false).changebooladdclient(true);
-                            UserModel _user = Provider.of<user_vm_provider>(context, listen: false).currentUser;
-                            Provider.of<client_vm>(context, listen: false).addclient_vm({
+                            UserModel _user = Provider.of<UserProvider>(context, listen: false).currentUser;
+                            Provider.of<ClientProvider>(context, listen: false).addclient_vm({
                               'descActivController': descActivController.text,
                               'name_client': nameclientController.text,
                               'address_client': address_client.text,
@@ -376,8 +376,8 @@ class _addClientState extends State<addClient> {
                               'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
                               'sourcclient': sourclient,
                               'activity_type_fk':
-                                  Provider.of<activity_vm>(context, listen: false)
-                                      .selectedValueOut!.id_activity_type.toString(),
+                                  Provider.of<ActivityVm>(context, listen: false)
+                                      .selectedActivity!.id_activity_type.toString(),
                               "mobile": mobileController.text,
                               "phone": phoneController.text,
                               "ismarketing": sourclient == 'ميداني' ? '0' : '1',

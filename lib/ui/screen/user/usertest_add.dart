@@ -107,7 +107,7 @@ class _addusertestState extends State<addusertest> {
                                     .addusertest_vm({
                                   'nameusertest':nameusertest.text,
                                   'des_usertest': desusertest.text,
-                                  'fk_country':Provider.of<user_vm_provider>
+                                  'fk_country':Provider.of<UserProvider>
                                     (context,listen: false).currentUser.fkCountry
                                 }).then(
                                         (value) =>  value!="error"

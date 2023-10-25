@@ -167,10 +167,10 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                 textDirection: TextDirection.rtl,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Consumer2<regoin_vm, BranchRaceViewmodel>(
+                  child: Consumer2<RegionProvider, BranchRaceViewmodel>(
                     builder: (_, regionVm, branchViewModel, __) {
                       final listRegion =
-                          regionVm.listregoinfilter.where((element) => element.id_regoin != "0").toList();
+                          regionVm.listRegionFilter.where((element) => element.regionId != "0").toList();
                       final selectedRegionId = branchViewModel.selectedRegionId;
 
                       return DropdownButtonFormField<String>(
@@ -192,10 +192,10 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                           focusedErrorBorder: InputBorder.none,
                         ),
                         hint: Text("اختر الفرع"),
-                        items: listRegion.map((RegoinModel region) {
+                        items: listRegion.map((RegionModel region) {
                           return DropdownMenuItem<String>(
-                            child: Text(region.name_regoin, textDirection: TextDirection.rtl),
-                            value: region.id_regoin,
+                            child: Text(region.regionName, textDirection: TextDirection.rtl),
+                            value: region.regionId,
                           );
                         }).toList(),
                         value: selectedRegionId,

@@ -39,8 +39,8 @@ class _managviewState extends State<managview> {
         centerTitle: true,
       ),
       floatingActionButton:
-      Provider.of<privilge_vm>(context,listen: true)
-          .checkprivlge('64')==true ?
+      Provider.of<PrivilegeProvider>(context,listen: true)
+          .checkPrivilege('64')==true ?
       FloatingActionButton(
         child:Icon(Icons.add),
         onPressed: (){

@@ -188,7 +188,7 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                 ),
               ),
             ),
-          if (Provider.of<privilge_vm>(context, listen: true).checkprivlge('146') == true)
+          if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('146') == true)
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topRight,

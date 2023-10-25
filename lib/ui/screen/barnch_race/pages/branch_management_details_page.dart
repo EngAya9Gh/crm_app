@@ -27,7 +27,7 @@ class _BranchManagementDetailsPageState extends State<BranchManagementDetailsPag
   @override
   void initState() {
     targetBranchController.text = branchRaceModel.valueTarget ?? '';
-    context.read<user_vm_provider>().currentUser.fkCountry!;
+    context.read<UserProvider>().currentUser.fkCountry!;
     super.initState();
 
     scheduleMicrotask(() => viewmodel.onEditBranchTarget(targetBranchController.text));

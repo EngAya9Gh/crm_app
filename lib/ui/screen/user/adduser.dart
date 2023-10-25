@@ -62,7 +62,7 @@ class _addUserState extends State<addUser> {
       Provider.of<manage_provider>(context, listen: false).getmanage();
 
       //Provider.of<regoin_vm>(context,listen: false).getregoin();
-      Provider.of<regoin_vm>(context, listen: false).changeValuser(null);
+      Provider.of<RegionProvider>(context, listen: false).changeValuser(null);
     });
 
     super.didChangeDependencies();
@@ -261,15 +261,15 @@ class _addUserState extends State<addUser> {
                     //
                     // },
                     //),
-                    Consumer<regoin_vm>(
+                    Consumer<RegionProvider>(
                       builder: (context, cart, child) {
                         return DropdownButtonFormField(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),
-                          items: cart.listregoin.map((level_one) {
+                          items: cart.listRegion.map((level_one) {
                             return DropdownMenuItem(
-                              child: Text(level_one.name_regoin), //label of item
-                              value: level_one.id_regoin, //value of item
+                              child: Text(level_one.regionName), //label of item
+                              value: level_one.regionId, //value of item
                             );
                           }).toList(),
                           value: cart.selectedValueuser,
@@ -353,13 +353,13 @@ class _addUserState extends State<addUser> {
                           final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
                           bool hasChanges = selectedMainCityIds.isNotEmpty;
 
-                          String? regoin = Provider.of<regoin_vm>(context, listen: false).selectedValueuser;
+                          String? regoin = Provider.of<RegionProvider>(context, listen: false).selectedValueuser;
                           String? regoinname = regoin == null
                               ? ""
-                              : Provider.of<regoin_vm>(context, listen: false)
-                                  .listregoin
-                                  .firstWhere((element) => element.id_regoin == regoin)
-                                  .name_regoin;
+                              : Provider.of<RegionProvider>(context, listen: false)
+                                  .listRegion
+                                  .firstWhere((element) => element.regionId == regoin)
+                                  .regionName;
 
                           String? level = Provider.of<level_vm>(context, listen: false).selectedValueLevel;
                           String levelname = Provider.of<level_vm>(context, listen: false)
@@ -368,7 +368,7 @@ class _addUserState extends State<addUser> {
                               .nameLevel;
 
                           String? id_country =
-                              Provider.of<user_vm_provider>(context, listen: false).currentUser.fkCountry;
+                              Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
                           if (level != null &&
                               emailController.text.toString().trim().isNotEmpty &&
                               nameController.text.toString().trim().isNotEmpty &&
@@ -387,11 +387,11 @@ class _addUserState extends State<addUser> {
                               'name_level': levelname,
                               'name_regoin': regoinname,
                               'fkuserAdd':
-                                  Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                  Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
                               'fk_regoin': regoin != null ? regoin : "null",
                             };
-                            Provider.of<user_vm_provider>(context, listen: false)
-                                .adduser_vm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "",selectedRegion.map((e) => e.asUserRegion()).toList())
+                            Provider.of<UserProvider>(context, listen: false)
+                                .addUserVm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "",selectedRegion.map((e) => e.asUserRegion()).toList())
                                 .then((value) => value != "repeat" ? clear() : error());
                           } else {
                             ScaffoldMessenger.of(context)

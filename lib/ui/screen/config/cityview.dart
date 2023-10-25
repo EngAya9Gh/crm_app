@@ -51,8 +51,8 @@ class cityview extends StatefulWidget {
         centerTitle: true,
       ),
       floatingActionButton:
-      Provider.of<privilge_vm>(context,listen: true)
-          .checkprivlge('79')==true ?
+      Provider.of<PrivilegeProvider>(context,listen: true)
+          .checkPrivilege('79')==true ?
       FloatingActionButton(
         child:Icon(Icons.add),
         onPressed: (){

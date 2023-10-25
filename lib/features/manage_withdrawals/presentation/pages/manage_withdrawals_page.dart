@@ -21,7 +21,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
 
   @override
   void initState() {
-    currentUser = context.read<user_vm_provider>().currentUser;
+    currentUser = context.read<UserProvider>().currentUser;
     _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()..getUsersSeries(currentUser.fkCountry!);
     super.initState();
   }

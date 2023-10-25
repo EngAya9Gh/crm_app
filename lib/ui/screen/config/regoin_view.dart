@@ -27,14 +27,14 @@ class regoinview extends StatefulWidget {
 class _regoinviewState extends State<regoinview> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-      Provider.of<regoin_vm>
-      (context,listen: false).getregoin();});
+      Provider.of<RegionProvider>
+      (context,listen: false).getRegions();});
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    List<RegoinModel> _listlevel= Provider.of<regoin_vm>
-      (context,listen: true).listregoin;
+    List<RegionModel> _listlevel= Provider.of<RegionProvider>
+      (context,listen: true).listRegion;
     return Scaffold(
       appBar: AppBar(
         title: Text('الفروع',style: TextStyle(color: kWhiteColor),),
@@ -85,10 +85,10 @@ class _regoinviewState extends State<regoinview> {
                                 Navigator.push(context,
                                     CupertinoPageRoute(
                                         builder: (context)=>addregoin(
-                                          fk_country: _listlevel[index].fk_country,
+                                          fk_country: _listlevel[index].countryId,
                                           nameregoin:
-                                          _listlevel[index].name_regoin,
-                                          idregoin: _listlevel[index].id_regoin,
+                                          _listlevel[index].regionName,
+                                          idregoin: _listlevel[index].regionId,
                                         )));
                               },
                               child: Container(
@@ -118,7 +118,7 @@ class _regoinviewState extends State<regoinview> {
                                       padding: EdgeInsets.all(4),
                                       child: Center(
                                         child:
-                                        Text(_listlevel[index].name_regoin,
+                                        Text(_listlevel[index].regionName,
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontFamily: kfontfamily2),),),
