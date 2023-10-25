@@ -4,6 +4,7 @@ import 'dart:ui' as myui;
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
+import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
@@ -23,6 +24,7 @@ import 'package:intl/intl.dart' as rt;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../api/api.dart';
 import '../../../constants.dart';
 import '../../../function_global.dart';
 import '../../../labeltext.dart';
@@ -32,7 +34,9 @@ import '../../widgets/pick_image_bottom_sheet.dart';
 import 'add_payement.dart';
 import 'edit_invoice.dart';
 import 'invoice_file_gallery_page.dart';
-
+import 'package:path/path.dart' as pp;
+import 'package:open_file/open_file.dart';
+import 'dart:io';
 class InvoiceView extends StatefulWidget {
   InvoiceView({
     this.type,
@@ -882,18 +886,40 @@ class _RejectDialogState extends State<RejectDialog> {
                               ],
                             )
                           : (_invoice.file_reject?.isNotEmpty ?? false)
-                              ? InkWell(
-                                  onTap: () => AppPhotoViewer(urls: [urlfile + _invoice.file_reject!]).show(context),
+                              ?
+                      InkWell(
+                                  //onTap: () => AppPhotoViewer(urls: [urlfile + _invoice.file_reject!]).show(context),
                                   child: Stack(
                                     children: [
                                       Positioned.fill(
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
+                                        child:
+
+                                        // ClipRRect(
+                                        //   borderRadius: BorderRadius.circular(15),
+                                        //   child: FancyImageShimmerViewer(
+                                        //     imageUrl: urlfile + _invoice.file_reject!,
+                                        //     fit: BoxFit.cover,
+                                        //   ),
+                                        // ),
+                                        _invoice.file_reject!.mimeType?.contains("image") == true
+                                            ? InkWell(
+                                          onTap: () => AppPhotoViewer(
+                                            imageSource: ImageSourceViewer.network,
+                                            urls: [urlfile + _invoice.file_reject!],
+                                          ).show(context),
                                           child: FancyImageShimmerViewer(
                                             imageUrl: urlfile + _invoice.file_reject!,
                                             fit: BoxFit.cover,
                                           ),
+                                        )
+                                            : InkWell(
+                                          onTap: () =>   openFile(_invoice.file_reject!),
+                                          child: Container(
+                                              width: double.infinity,
+                                              decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
+                                              child: Icon(Icons.picture_as_pdf_rounded, color: Colors.grey, size: 30)),
                                         ),
+
                                       ),
                                       Positioned.fill(
                                         child: Align(
@@ -974,6 +1000,7 @@ class _RejectDialogState extends State<RejectDialog> {
                         }
                         return (_invoice.file_reject?.isNotEmpty ?? false)
                             ? (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('145') == true
+                                && _invoice.approveBackDone=='0'
                                 ? Center(
                                     child: ElevatedButton(
                                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
@@ -1104,5 +1131,31 @@ class _RejectDialogState extends State<RejectDialog> {
     setState(() {
       _invoice = _invoice.copyWith(deleteRejectImage: true);
     });
+  }
+  openFile(String  attachFile) async {
+    try {
+      if (attachFile  != null) {
+        // final check = await Permission.manageExternalStorage.request();
+        // if (check == PermissionStatus.denied) {
+        //   return;
+        // }
+
+        final checkFile = await Api().checkExist(pp.basename(attachFile));
+        if (checkFile != null) {
+          final result = await OpenFile.open(checkFile.path);
+          return;
+        }
+
+        File file;
+        file = await Api().downloadFile(urlfile + attachFile ,  pp.basename(attachFile) );
+        if (file.existsSync()) {
+          final result = await OpenFile.open(file.path );
+
+          return;
+        }
+      }
+    }
+    catch (e) {
+    }
   }
 }

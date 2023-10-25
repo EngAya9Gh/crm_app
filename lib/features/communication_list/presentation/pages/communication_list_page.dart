@@ -57,7 +57,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          'قائمة التواصل',
+          'قائمة عملاء التميز',
           style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
         ),
       ),
@@ -80,15 +80,15 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       fillColor: Colors.grey.shade200,
                     ),
                   ),
-                  SwitchListTile(
-                    value: isMyClients,
-                    onChanged: (value) {
-                      setState(() => isMyClients = value);
-                      _communicationListBloc.add(GetCommunicationListEvent(fkCountry!,
-                          userId: isMyClients ? userId : null, query: _searchTextField.text));
-                    },
-                    title: Text("عملائي"),
-                  ),
+                  // SwitchListTile(
+                  //   value: isMyClients,
+                  //   onChanged: (value) {
+                  //     setState(() => isMyClients = value);
+                  //     _communicationListBloc.add(GetCommunicationListEvent(fkCountry!,
+                  //         userId: isMyClients ? userId : null, query: _searchTextField.text));
+                  //   },
+                  //   title: Text("عملائي"),
+                  // ),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async => _communicationListBloc.add(GetCommunicationListEvent(fkCountry!,
@@ -121,9 +121,9 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
           CupertinoPageRoute(
             builder: (context) => ProfileClient(
               idClient: communication.fkClient,
-              tabIndex: 4,
+              tabIndex: 3,
               tabCareIndex: 2,
-              idCommunication: communication.idCommunication!,
+              // idCommunication: communication.idCommunication!,
             ),
           ),
         );
@@ -134,30 +134,30 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  Text(
-                    "${communication.idCommunication}#",
-                    style: TextStyle(color: Colors.amber, fontFamily: kfontfamily2),
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.start,
-                  ),
-                  SizedBox(width: 15),
-                  Expanded(
-                    child: TextScroll(
-                      communication.nameClient ?? '',
-                      mode: TextScrollMode.endless,
-                      velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
-                      delayBefore: Duration(milliseconds: 2000),
-                      pauseBetween: Duration(milliseconds: 1000),
-                      style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.center,
-                      textDirection: TextDirection.rtl,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15),
+              // Row(
+              //   children: [
+              //     // Text(
+              //     //   "${communication.idInvoice}#",
+              //     //   style: TextStyle(color: Colors.amber, fontFamily: kfontfamily2),
+              //     //   textDirection: TextDirection.rtl,
+              //     //   textAlign: TextAlign.start,
+              //     // ),
+              //     // SizedBox(width: 15),
+              //     // Expanded(
+              //     //   child: TextScroll(
+              //     //     communication.nameClient ?? '',
+              //     //     mode: TextScrollMode.endless,
+              //     //     velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
+              //     //     delayBefore: Duration(milliseconds: 2000),
+              //     //     pauseBetween: Duration(milliseconds: 1000),
+              //     //     style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.w600),
+              //     //     textAlign: TextAlign.center,
+              //     //     textDirection: TextDirection.rtl,
+              //     //   ),
+              //     // ),
+              //   ],
+              // ),
+              // SizedBox(height: 15),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -165,8 +165,9 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                     child: Row(
                       children: [
                         Text(
-                          "اسم الشركة:",
-                          style: TextStyle(fontFamily: kfontfamily2),
+                          " اسم الشركة: ",
+                          // style: TextStyle(fontFamily: kfontfamily2),
+                          style: TextStyle(color: kMainColor, fontFamily: kfontfamily2),
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.start,
                         ),
@@ -185,20 +186,20 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       ],
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: kMainColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    margin: EdgeInsetsDirectional.only(start: 10),
-                    child: Center(
-                      child: Text(
-                        "دوري",
-                        style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     color: kMainColor,
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  //   margin: EdgeInsetsDirectional.only(start: 10),
+                  //   child: Center(
+                  //     child: Text(
+                  //       "دوري",
+                  //       style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: 15),
@@ -207,14 +208,15 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                 children: [
                   Text(
                     communication.nameRegoin ?? '',
-                    style: TextStyle(color: Colors.grey.shade800, fontFamily: kfontfamily2),
+                    style: TextStyle(color: Colors.black, fontFamily: kfontfamily2),
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(width: 15),
                   Text(
-                    DateFormat("yyyy MMM dd hh:mm a", "ar").format(communication.dateNext ?? DateTime.now()),
-                    style: TextStyle(color: Colors.grey, fontFamily: kfontfamily2),
+                      communication.dateCreate,
+                    //DateFormat("yyyy MMM dd hh:mm a", "ar").format(communication.dateApprove ?? DateTime.now()),
+                    style: TextStyle(color: kMainColor, fontFamily: kfontfamily2),
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.start,
                   ),

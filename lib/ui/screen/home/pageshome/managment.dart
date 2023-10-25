@@ -274,7 +274,7 @@ class _managmentpageState extends State<managmentpage> {
                         title: "الوكلاء والموزعين",
                       )
                     : Container(),
-                privilge.checkPrivilege('117') == true
+                privilge.checkPrivilege('149') == true
                     ? buildSelectCategory(
                         colorbag: Colors.white,
                         colortitle: Colors.black,

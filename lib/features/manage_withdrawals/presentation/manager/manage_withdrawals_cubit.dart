@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
@@ -7,15 +8,20 @@ import 'package:crm_smart/features/manage_withdrawals/data/models/withdrawn_deta
 import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart';
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../../common/models/page_state/bloc_status.dart';
 import '../../../../../../features/manage_users/domain/use_cases/get_allusers_usecase.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../model/reasonmodel.dart';
 import '../../../../services/Invoice_Service.dart';
+import '../../../../api/api.dart';
+import '../../../../constants.dart';
 import '../../../../services/configService.dart';
 import '../../data/models/invoice_withdrawal_series_model.dart';
 import '../../data/models/user_series.dart';
@@ -24,6 +30,9 @@ import '../../domain/use_cases/get_withdrawal_invoice_details_usecase.dart';
 import '../../domain/use_cases/get_withdrawn_details_usecase.dart';
 import '../../domain/use_cases/set_approve_series_usecase.dart';
 import '../../domain/use_cases/update_user_series_usecase.dart';
+
+import 'package:open_file/open_file.dart';
+
 
 part 'manage_withdrawals_state.dart';
 
@@ -46,6 +55,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   final SetApproveSeriesUsecase _setApproveSeriesUsecase;
   final GetWithdrawnDetailsUsecase _getWithdrawnDetailsUsecase;
   List<ReasonModel> reasons = [];
+
 
   getUsersSeries(final String fkCountry) async {
     emit(state.copyWith(allUsersSeries: PageState.loading()));
@@ -219,7 +229,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         List<InvoiceWithdrawalSeries> list = state.withdrawalInvoiceDetails.getDataWhenSuccess ?? [];
         list = list
             .map((e) =>
-                e.fkUser == seriesParams.clientId ? e.copyWith(withdrawalStatus: seriesParams.withdrawalStatus) : e)
+                e.fkUser == seriesParams.id_user ? e.copyWith(withdrawalStatus: seriesParams.withdrawalStatus) : e)
             .toList();
 
         List<InvoiceModel> listInvoice = state.withdrawalsInvoices.getDataWhenSuccess ?? [];
