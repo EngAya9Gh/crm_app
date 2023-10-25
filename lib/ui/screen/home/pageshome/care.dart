@@ -86,148 +86,146 @@ class _carepageState extends State<carepage> {
         backgroundColor: kMainColor,
         elevation: 0,
       ),
-      body: Padding(
-        padding: EdgeInsets.only(top: 50),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('44') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        //
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => Care_ClientAccept()));
-                      },
-                      title: 'العملاء المشتركين')
-                  : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('44') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      //
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => Care_ClientAccept()));
+                    },
+                    title: 'العملاء المشتركين')
+                : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
+
+          Provider.of<PrivilegeProvider>(context,listen: true)
+            .checkPrivilege('9')==true?
+        buildSelectCategory(
+            colorbag: Colors.white,
+            colortitle: Colors.black,
+            colorarrow: Colors.black,
+            onTap: () {
+              Navigator.push(context, CupertinoPageRoute(
+                  builder: (context)=>
+                      care_page_view()));
+        }, title: 'التواصل الدوري'):Container(),
 
             Provider.of<PrivilegeProvider>(context,listen: true)
-              .checkPrivilege('9')==true?
-          buildSelectCategory(
+                .checkPrivilege('137')==true?
+            buildSelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                Navigator.push(context, CupertinoPageRoute(
-                    builder: (context)=>
-                        care_page_view()));
-          }, title: 'التواصل الدوري'):Container(),
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) =>
+                        CommunicationListPage()));
+              },
+              title: 'قائمة العملاء المميزين',
+            ):Container() ,
+        Provider.of<PrivilegeProvider>(context,listen: true)
+            .checkPrivilege('29')==true?
+        buildSelectCategory(
+          // subtitle:   Provider.of<communication_vm>(
+          //     context, listen: true).listwelcomenumber.length.toString(),
+            colorbag: Colors.white,
+            colortitle: Colors.black,
+            colorarrow: Colors.black,
+            onTap: () {
+              Navigator.push(context, CupertinoPageRoute(
+                  builder: (context)=>
+                      View_welcomeClient()));
+        }, title: 'الترحيب بالعملاء'):Container(),
 
-              Provider.of<PrivilegeProvider>(context,listen: true)
-                  .checkPrivilege('137')==true?
-              buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(context,
-                      CupertinoPageRoute(builder: (context) =>
-                          CommunicationListPage()));
-                },
-                title: 'قائمة العملاء المميزين',
-              ):Container() ,
-          Provider.of<PrivilegeProvider>(context,listen: true)
-              .checkPrivilege('29')==true?
-          buildSelectCategory(
-            // subtitle:   Provider.of<communication_vm>(
-            //     context, listen: true).listwelcomenumber.length.toString(),
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(context, CupertinoPageRoute(
-                    builder: (context)=>
-                        View_welcomeClient()));
-          }, title: 'الترحيب بالعملاء'):Container(),
+        Provider.of<PrivilegeProvider>(context,listen: true)
+            .checkPrivilege('30')==true?
+        buildSelectCategory(
+          // subtitle:
+          // Provider.of<communication_vm>(
+          //     context, listen: true).listinstallnumber.length.toString(),
+            colorbag: Colors.white,
+            colortitle: Colors.black,
+            colorarrow: Colors.black,
+            onTap: () {
+              Navigator.push(context, CupertinoPageRoute(
+                  builder: (context)=>
+                      View_installedClient()));
 
-          Provider.of<PrivilegeProvider>(context,listen: true)
-              .checkPrivilege('30')==true?
-          buildSelectCategory(
-            // subtitle:
-            // Provider.of<communication_vm>(
-            //     context, listen: true).listinstallnumber.length.toString(),
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(context, CupertinoPageRoute(
-                    builder: (context)=>
-                        View_installedClient()));
-
-                //الاتصال الثاني للجودة جديد
+              //الاتصال الثاني للجودة جديد
 //View_installedClient
-                      },
-                      title: ' جودة التركيب والتدريب')
-                  : Container(),
+                    },
+                    title: ' جودة التركيب والتدريب')
+                : Container(),
 
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('33') == true
-                  ? buildSelectCategory(
-                      // subtitle: Provider.of<ticket_vm>(context,listen: true)
-                      //     .listticket_clientfilter.length.toString(),
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => ticketclientview()));
-                      },
-                      title: 'تذاكر العملاء  ')
-                  : Container(),
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('102') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => care_report()));
-                      },
-                      title: 'تقرير العناية بالعملاء')
-                  : Container(),
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('103') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => report_rate()));
-                      },
-                      title: 'تقرير مستوى التقييم')
-                  : Container(),
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('104') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => repeat_report()));
-                      },
-                      title: label_repeat_comm)
-                  : Container(), //'تقرير الاتصال الدوري '
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('105') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => not_using_system()));
-                      },
-                      title: label_not_use)
-                  : Container(), //' عملاء لا يستخدمون النظام '
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('106') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => wrong_number()));
-                      },
-                      title: label_wrong_number)
-                  : Container(), //' عملاء أرقامهم خاطئة '
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('33') == true
+                ? buildSelectCategory(
+                    // subtitle: Provider.of<ticket_vm>(context,listen: true)
+                    //     .listticket_clientfilter.length.toString(),
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ticketclientview()));
+                    },
+                    title: 'تذاكر العملاء  ')
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('102') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => care_report()));
+                    },
+                    title: 'تقرير العناية بالعملاء')
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('103') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => report_rate()));
+                    },
+                    title: 'تقرير مستوى التقييم')
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('104') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => repeat_report()));
+                    },
+                    title: label_repeat_comm)
+                : Container(), //'تقرير الاتصال الدوري '
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('105') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => not_using_system()));
+                    },
+                    title: label_not_use)
+                : Container(), //' عملاء لا يستخدمون النظام '
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('106') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => wrong_number()));
+                    },
+                    title: label_wrong_number)
+                : Container(), //' عملاء أرقامهم خاطئة '
 
 
-            ],
-          ),
+          ],
         ),
       ),
     );

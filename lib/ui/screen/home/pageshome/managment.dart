@@ -59,242 +59,240 @@ class _managmentpageState extends State<managmentpage> {
         backgroundColor: kMainColor,
         elevation: 0,
       ),
-      body: Padding(
-        padding: EdgeInsets.only(top: 50),
-        child: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                privilge.checkPrivilege('3') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageUserPage()));
-                        },
-                        title: 'إدارة المستخدمين')
-                    : Container(),
-                privilge.checkPrivilege('17') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(context, CupertinoPageRoute(builder: (context) => check_level()));
-                        },
-                        title: 'ادارة الصلاحيات')
-                    : Container(),
-                privilge.checkPrivilege('142') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageWithdrawalsPage()));
-                        },
-                        title: 'إدارة الإنسحابات')
-                    : SizedBox.shrink(),
-                privilge.checkPrivilege('4') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => ProductView(),
-                              fullscreenDialog: true,
-                            ),
-                          );
-                        },
-                        title: 'المنتجات ')
-                    : Container(),
-                privilge.checkPrivilege('20') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => config_view(),
-                            ),
-                          );
-                        },
-                        title: 'ملف الإعدادات ')
-                    : Container(),
-                privilge.checkPrivilege('52') == true
-                    ? buildSelectCategory(
-                        subtitle: Provider.of<UserProvider>(context, listen: false).currentUser.nameCountry,
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => change_country(),
-                            ),
-                          );
-                        },
-                        title: 'تغيير الدولة')
-                    : Container(),
-                privilge.checkPrivilege('63') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => regoinview(),
-                            ),
-                          );
-                        },
-                        title: 'إداراة الفروع')
-                    : Container(),
-                privilge.checkPrivilege('64') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => managview(),
-                            ),
-                          );
-                        },
-                        title: 'إضافة الإدارات')
-                    : Container(),
-                privilge.checkPrivilege('73') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => resoan_view(type: 'client'),
-                            ),
-                          );
-                        },
-                        title: 'أسباب الانسحاب')
-                    : Container(),
-                privilge.checkPrivilege('77') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => maincityview(),
-                            ),
-                          );
-                        },
-                        title: ' ادارة المناطق والمدن')
-                    : Container(),
-                privilge.checkPrivilege('74') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => resoan_view(type: 'ticket'),
-                            ),
-                          );
-                        },
-                        title: 'أنواع التذاكر')
-                    : Container(),
-                buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => activity_view(type: 'ticket'),
-                        ),
-                      );
-                    },
-                    title: 'أنواع النشاط'),
-                buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => company_view(type: 'ticket'),
-                        ),
-                      );
-                    },
-                    title: 'الشركات المنافسة'),
-                privilge.checkPrivilege('113') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => participate_view(),
-                            ),
-                          );
-                        },
-                        title: 'المتعاونين')
-                    : Container(),
-                privilge.checkPrivilege('114') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => AgentsAndDistributorsView(),
-                            ),
-                          );
-                        },
-                        title: "الوكلاء والموزعين",
-                      )
-                    : Container(),
-                privilge.checkPrivilege('149') == true
-                    ? buildSelectCategory(
-                        colorbag: Colors.white,
-                        colortitle: Colors.black,
-                        colorarrow: Colors.black,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            CupertinoPageRoute<void>(
-                              builder: (BuildContext context) => BranchRaceManagementView(),
-                            ),
-                          );
-                        },
-                        title: "سباق الفروع",
-                      )
-                    : Container()
-              ],
-            ),
-          );
-        }),
-      ),
+      body: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(top: 20),
+          child: Column(
+            children: [
+              privilge.checkPrivilege('3') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageUserPage()));
+                      },
+                      title: 'إدارة المستخدمين')
+                  : Container(),
+              privilge.checkPrivilege('17') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => check_level()));
+                      },
+                      title: 'ادارة الصلاحيات')
+                  : Container(),
+              privilge.checkPrivilege('142') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageWithdrawalsPage()));
+                      },
+                      title: 'إدارة الإنسحابات')
+                  : SizedBox.shrink(),
+              privilge.checkPrivilege('4') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => ProductView(),
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                      title: 'المنتجات ')
+                  : Container(),
+              privilge.checkPrivilege('20') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => config_view(),
+                          ),
+                        );
+                      },
+                      title: 'ملف الإعدادات ')
+                  : Container(),
+              privilge.checkPrivilege('52') == true
+                  ? buildSelectCategory(
+                      subtitle: Provider.of<UserProvider>(context, listen: false).currentUser.nameCountry,
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => change_country(),
+                          ),
+                        );
+                      },
+                      title: 'تغيير الدولة')
+                  : Container(),
+              privilge.checkPrivilege('63') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => regoinview(),
+                          ),
+                        );
+                      },
+                      title: 'إداراة الفروع')
+                  : Container(),
+              privilge.checkPrivilege('64') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => managview(),
+                          ),
+                        );
+                      },
+                      title: 'إضافة الإدارات')
+                  : Container(),
+              privilge.checkPrivilege('73') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => resoan_view(type: 'client'),
+                          ),
+                        );
+                      },
+                      title: 'أسباب الانسحاب')
+                  : Container(),
+              privilge.checkPrivilege('77') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => maincityview(),
+                          ),
+                        );
+                      },
+                      title: ' ادارة المناطق والمدن')
+                  : Container(),
+              privilge.checkPrivilege('74') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => resoan_view(type: 'ticket'),
+                          ),
+                        );
+                      },
+                      title: 'أنواع التذاكر')
+                  : Container(),
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<void>(
+                        builder: (BuildContext context) => activity_view(type: 'ticket'),
+                      ),
+                    );
+                  },
+                  title: 'أنواع النشاط'),
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<void>(
+                        builder: (BuildContext context) => company_view(type: 'ticket'),
+                      ),
+                    );
+                  },
+                  title: 'الشركات المنافسة'),
+              privilge.checkPrivilege('113') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => participate_view(),
+                          ),
+                        );
+                      },
+                      title: 'المتعاونين')
+                  : Container(),
+              privilge.checkPrivilege('114') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => AgentsAndDistributorsView(),
+                          ),
+                        );
+                      },
+                      title: "الوكلاء والموزعين",
+                    )
+                  : Container(),
+              privilge.checkPrivilege('149') == true
+                  ? buildSelectCategory(
+                      colorbag: Colors.white,
+                      colortitle: Colors.black,
+                      colorarrow: Colors.black,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute<void>(
+                            builder: (BuildContext context) => BranchRaceManagementView(),
+                          ),
+                        );
+                      },
+                      title: "سباق الفروع",
+                    )
+                  : Container()
+            ],
+          ),
+        );
+      }),
     );
   }
 }

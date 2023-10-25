@@ -52,7 +52,7 @@ class _supportpageState extends State<supportpage> {
         elevation: 0,
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 50),
+        padding: EdgeInsets.only(top: 20),
         child: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
           return Column(
             children: [

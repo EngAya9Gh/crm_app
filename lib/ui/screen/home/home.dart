@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
-            padding: const EdgeInsets.only(top: 25),
+            padding: const EdgeInsets.only(top: 0),
             child: BuildCard(),
           ),
         ),

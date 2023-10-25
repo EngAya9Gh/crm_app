@@ -26,7 +26,7 @@ class financepage extends StatelessWidget {
         elevation: 0,
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 50),
+        padding: EdgeInsets.only(top: 20),
         child:
         Column(children: [
           // Provider.of<privilge_vm>(context,listen: true)
