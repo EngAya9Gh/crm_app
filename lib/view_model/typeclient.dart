@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
 
-class ClientType extends ChangeNotifier{
+class ClientTypeProvider extends ChangeNotifier{
   List<String> type_of_client=[];
   List<String> type_of_welcome=['الكل','تم الترحيب','لم يتم الترحيب'];
   List<String> type_of_install_iso=['الكل','تم التأكد من الجودة',

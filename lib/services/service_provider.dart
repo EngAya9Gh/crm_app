@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../features/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/communication_list/presentation/manager/communication_list_bloc.dart';
 
 class ServiceProvider extends StatelessWidget {
@@ -16,6 +17,9 @@ class ServiceProvider extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => GetIt.I<CommunicationListBloc>(),
+        ) ,
+        BlocProvider(
+          create: (context) => GetIt.I<ClientsListBloc>(),
         )
       ],
       child: child,

@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../client/agents_distributors_invoices_view.dart';
 import '../../client/calender_client.dart';
@@ -59,13 +60,19 @@ class _salesState extends State<sales> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => tabclients()));
-                    },
-                    title: ' قائمة العملاء')
-                : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
-                ? buildSelectCategory(
-                    colorbag: Colors.white,
+                      // Navigator.push(context,
+                      //     CupertinoPageRoute(
+                      //     builder: (context)=>
+                      //         tabclients()));
+                      Navigator.push(context,
+                          CupertinoPageRoute(
+                          builder: (context)=>
+                              ClientsListPage()));
+                }, title: ' قائمة العملاء') :Container(),
+                Provider.of<PrivilegeProvider>(context,listen: true)
+                    .checkPrivilege('39')==true?
+                buildSelectCategory(
+                    colorbag:   Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {

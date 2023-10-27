@@ -54,11 +54,11 @@ class _clientmarketingState extends State<clientmarketing> {
       Provider.of<UserProvider>(context, listen: false).getUsersVm();
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
-      Provider.of<ClientType>(context, listen: false).changevaluefilter(null);
+      Provider.of<ClientTypeProvider>(context, listen: false).changevaluefilter(null);
       List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
       Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       await Provider.of<ClientProvider>(context, listen: false).getclientMarketing();
-      await Provider.of<ActivityVm>(context, listen: false).getActivities();
+      await Provider.of<ActivityProvider>(context, listen: false).getActivities();
     });
   }
 
@@ -133,7 +133,7 @@ class _clientmarketingState extends State<clientmarketing> {
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.only(left: 20.0, right: 8),
-                              child: Consumer<ClientType>(builder: (context, cart, child) {
+                              child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
                                 return DropdownButton(
                                   isExpanded: true,
                                   hint: Text('الحالة'),
@@ -218,7 +218,7 @@ class _clientmarketingState extends State<clientmarketing> {
                           left: 8.0,
                           right: 8,
                         ),
-                        child: Consumer<ActivityVm>(
+                        child: Consumer<ActivityProvider>(
                           builder: (context, cart, child) {
                             return Row(
                               children: [

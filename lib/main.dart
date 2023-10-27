@@ -159,7 +159,7 @@ void main() async {
         create: (_) => maincity_vm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-      ChangeNotifierProvider<ClientType>(create: (_) => ClientType()),
+      ChangeNotifierProvider<ClientTypeProvider>(create: (_) => ClientTypeProvider()),
       ChangeNotifierProvider<EventProvider>(
         create: (_) => EventProvider(),
       ),
@@ -174,7 +174,7 @@ void main() async {
       ),
 
       ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
-      ChangeNotifierProvider<ActivityVm>(create: (_) => ActivityVm()),
+      ChangeNotifierProvider<ActivityProvider>(create: (_) => ActivityProvider()),
       ChangeNotifierProvider<company_vm>(create: (_) => company_vm()),
       ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
       ChangeNotifierProvider<AgentDistributorViewModel>(

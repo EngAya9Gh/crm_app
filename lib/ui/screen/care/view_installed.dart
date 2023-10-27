@@ -47,7 +47,7 @@ class _View_installedClientState extends State<View_installedClient> {
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ClientType>(context, listen: false).changelisttype_install_iso('الكل');
+      Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_install_iso('الكل');
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
       context.read<UserProvider>().changevalueuser(null, true);
@@ -120,7 +120,7 @@ class _View_installedClientState extends State<View_installedClient> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 8),
-                      child: Consumer<ClientType>(builder: (context, cart, child) {
+                      child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
                         return DropdownButton(
                           isExpanded: true,
                           hint: Text('الحالة'),

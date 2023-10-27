@@ -134,7 +134,7 @@ class _ticketAddState extends State<ticketAdd> {
                         ),
                         RowEdit(name: 'نوع المشكلة', des: '*'),
 
-                        Consumer<ClientType>(
+                        Consumer<ClientTypeProvider>(
                           builder: (context, cart, child) {
                             return SizedBox(
                               //width: 240,
@@ -209,7 +209,7 @@ class _ticketAddState extends State<ticketAdd> {
                                     'name_enterprise': name_enterprise,
                                     'fk_client': widget.fk_client.toString(),
                                     'type_problem': Provider
-                                        .of<ClientType>(
+                                        .of<ClientTypeProvider>(
                                         context,
                                         listen: false)
                                         .selectedValueOut

@@ -40,7 +40,7 @@ class _addActvState extends State<addractivity> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<ActivityVm>(context)
+          inAsyncCall: Provider.of<ActivityProvider>(context)
               .isLoading,
           child : Directionality(
             textDirection: TextDirection.rtl,
@@ -83,7 +83,7 @@ class _addActvState extends State<addractivity> {
                               // Provider.of<LoadProvider>(context, listen: false)
                               //     .changebooladdclient(true);
                               if(widget.idActivity==null){
-                                Provider.of<ActivityVm>(context,listen: false)
+                                Provider.of<ActivityProvider>(context,listen: false)
                                     .addActivityVm({
                                   'name_activity_type':nameractv.text,
                                  // 'type':widget.type,
@@ -94,7 +94,7 @@ class _addActvState extends State<addractivity> {
                                 );
                               }
                               else{
-                                Provider.of<ActivityVm>(context,listen: false)
+                                Provider.of<ActivityProvider>(context,listen: false)
                                     .updateActivity({
 
                                   'name_activity_type':nameractv.text,

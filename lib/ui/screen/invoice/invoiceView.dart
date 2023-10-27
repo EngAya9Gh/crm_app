@@ -660,7 +660,7 @@ class RejectDialog extends StatefulWidget {
 class _RejectDialogState extends State<RejectDialog> {
   final TextEditingController valueBackController = TextEditingController();
   final TextEditingController descresaonController = TextEditingController();
-  late ClientType typeclient_provider;
+  late ClientTypeProvider typeclient_provider;
   late InvoiceModel _invoice;
   File? selectedFile;
 
@@ -672,7 +672,7 @@ class _RejectDialogState extends State<RejectDialog> {
     if (_invoice.value_back?.isNotEmpty ?? false) valueBackController.text = _invoice.value_back.toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      typeclient_provider = Provider.of<ClientType>(context, listen: false);
+      typeclient_provider = Provider.of<ClientTypeProvider>(context, listen: false);
       typeclient_provider.getreasons('client');
 
       typeclient_provider.selectedValueOut = _invoice.reason_back == null ? null : _invoice.reason_back.toString();
@@ -752,7 +752,7 @@ class _RejectDialogState extends State<RejectDialog> {
                 child: Column(
                   children: [
                     RowEdit(name: "اسباب الإنسحاب", des: '*'),
-                    Consumer<ClientType>(
+                    Consumer<ClientTypeProvider>(
                       builder: (context, cart, child) {
                         print("cart.type_of_out ${cart.type_of_out}");
                         print("cart.selectedValueOut ${cart.selectedValueOut}");

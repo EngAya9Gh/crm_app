@@ -81,14 +81,14 @@ class _addClientState extends State<addClient> {
     super.dispose();
   }
 
-  late ActivityVm activityViewmodel;
+  late ActivityProvider activityViewmodel;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
 
       context.read<maincity_vm>().getcityAll();
-      activityViewmodel = context.read<ActivityVm>()
+      activityViewmodel = context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
       context.read<company_vm>()
@@ -166,7 +166,7 @@ class _addClientState extends State<addClient> {
                     SizedBox(height: 15),
                     RowEdit(name: label_client_typejob, des: '*'),
                     SizedBox(height: 5),
-                    Consumer<ActivityVm>(
+                    Consumer<ActivityProvider>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,
@@ -353,7 +353,7 @@ class _addClientState extends State<addClient> {
                         text: label_clientadd,
                         onpress: () async {
                           if (_globalKey.currentState!.validate() &&
-                              Provider.of<ActivityVm>(context, listen: false).selectedActivity != null &&
+                              Provider.of<ActivityProvider>(context, listen: false).selectedActivity != null &&
                               sourclient != '') {
                             _globalKey.currentState!.save();
                             Provider.of<LoadProvider>(context, listen: false).changebooladdclient(true);
@@ -376,7 +376,7 @@ class _addClientState extends State<addClient> {
                               'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
                               'sourcclient': sourclient,
                               'activity_type_fk':
-                                  Provider.of<ActivityVm>(context, listen: false)
+                                  Provider.of<ActivityProvider>(context, listen: false)
                                       .selectedActivity!.id_activity_type.toString(),
                               "mobile": mobileController.text,
                               "phone": phoneController.text,

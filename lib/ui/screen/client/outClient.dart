@@ -47,7 +47,7 @@ class _OutClientState extends State<OutClient> {
       //if(widget.type=='only')
       //  Provider.of<invoice_vm>(context, listen: false).getinvoice_Local("مشترك",'approved only');
       //if(widget.type=='client')
-      Provider.of<ClientType>(context,listen: false).changelisttype_install(null);
+      Provider.of<ClientTypeProvider>(context,listen: false).changelisttype_install(null);
       Provider.of<RegionProvider>(context,listen: false).changeVal(null);
 
       Provider.of<invoice_vm>(context, listen: false)

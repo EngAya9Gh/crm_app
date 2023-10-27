@@ -36,7 +36,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
     user = context.read<UserProvider>().currentUser;
     userId = user.idUser!;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ClientType>(context, listen: false).changelisttype_welcome('الكل');
+      Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_welcome('الكل');
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       await Provider.of<communication_vm>(context, listen: false).getCommunicationWelcome("");
     });
@@ -125,7 +125,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 8),
-                      child: Consumer<ClientType>(builder: (context, cart, child) {
+                      child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
                         return DropdownButton(
                           isExpanded: true,
                           hint: Text('الحالة'),

@@ -39,7 +39,7 @@ class _addresaonState extends State<addresaon> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<ClientType>(context)
+          inAsyncCall: Provider.of<ClientTypeProvider>(context)
               .isloading,
           child : Form(
             key: _globalKey,
@@ -80,7 +80,7 @@ class _addresaonState extends State<addresaon> {
                             // Provider.of<LoadProvider>(context, listen: false)
                             //     .changebooladdclient(true);
                             if(widget.idReason==null){
-                            Provider.of<ClientType>(context,listen: false)
+                            Provider.of<ClientTypeProvider>(context,listen: false)
                                 .addReson_vm({
                               'name_reason':namereson.text,
                               'type':widget.type,
@@ -91,7 +91,7 @@ class _addresaonState extends State<addresaon> {
                             );
                             }
                             else{
-                              Provider.of<ClientType>(context,listen: false)
+                              Provider.of<ClientTypeProvider>(context,listen: false)
                                   .update_resoan({
 
                                 'name_reason':namereson.text,

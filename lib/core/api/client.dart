@@ -135,7 +135,7 @@ class ClientApi {
           if (exception.error is SocketException) {
             throw AppNetworkException(reason: AppNetworkExceptionReason.noInternet, exception: exception);
           }
-          throw AppException.unknown(exception: exception, message: exception.response?.data['message']);
+          throw AppException.unknown(exception: exception, message: exception.response==null?((exception.error??"").toString()):exception.response?.data['message']);
       }
     } catch (e, s) {
       log(e.toString(), stackTrace: s);

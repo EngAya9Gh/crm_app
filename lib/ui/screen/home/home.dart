@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
       Provider.of<notifyvm>(context,listen: false).getcounter();
       Provider.of<product_vm>(context, listen: false)
           .getproduct_vm();
-      Provider.of<ClientType>(context,listen: false).getreasons('ticket');
+      Provider.of<ClientTypeProvider>(context,listen: false).getreasons('ticket');
 
       Provider.of<ticket_vm>(context, listen: false)
           .getticket();

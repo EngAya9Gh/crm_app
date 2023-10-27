@@ -5,7 +5,7 @@ import '../constants.dart';
 import '../model/ActivityModel.dart';
 import '../services/configService.dart';
 
-class ActivityVm extends ChangeNotifier {
+class ActivityProvider extends ChangeNotifier {
   List<ActivityModel> activitiesList = [];
 
   Future<void> getActivities() async {

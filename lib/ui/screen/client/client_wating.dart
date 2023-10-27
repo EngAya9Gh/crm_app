@@ -51,7 +51,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<invoice_vm>(context, listen: false).listInvoicesAccept = [];
-      Provider.of<ClientType>(context, listen: false).changelisttype_install('الكل');
+      Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_install('الكل');
       typeclientvalue = 'الكل';
       Provider.of<ClientProvider>(context, listen: false).getallclientAccept();
       Provider.of<invoice_vm>(context, listen: false).getfilter_maincity(selecteditemmaincity, typeclientvalue);
@@ -120,7 +120,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                           //state
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20.0, right: 8),
-                            child: Consumer<ClientType>(builder: (context, cart, child) {
+                            child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
                               return DropdownButton(
                                 isExpanded: true,
                                 hint: Text('الحالة'),

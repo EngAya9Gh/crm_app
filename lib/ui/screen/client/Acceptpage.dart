@@ -43,7 +43,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
       Provider.of<invoice_vm>(context, listen: false).getinvoice_Debt();
           // .getinvoice_Localwithprev();
 
-      Provider.of<ClientType>(context,listen: false).changelisttype_install(null);
+      Provider.of<ClientTypeProvider>(context,listen: false).changelisttype_install(null);
       Provider.of<RegionProvider>(context,listen: false).changeVal(null);
     Provider.of<invoice_vm>(context,listen: false).listInvoicesAccept=[];
 
@@ -115,7 +115,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                             Expanded( //state
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 20.0,right: 8),
-                                child: Consumer<ClientType>(
+                                child: Consumer<ClientTypeProvider>(
                                     builder: (context, cart, child){
                                       return DropdownButton(
                                         isExpanded: true,

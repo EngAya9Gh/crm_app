@@ -40,7 +40,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
       List<PrivilgeModel> list = await Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
       Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);
 
-      Provider.of<ClientType>(context, listen: false).changelisttype_install(null);
+      Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<invoice_vm>(context, listen: false).getinvoice_marketing();
       await Provider.of<ClientProvider>(context, listen: false).getclientMarketing();
@@ -103,7 +103,7 @@ class _invoice_marketingState extends State<invoice_marketing> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20.0, right: 8),
-                            child: Consumer<ClientType>(builder: (context, cart, child) {
+                            child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
                               return DropdownButton(
                                 isExpanded: true,
                                 hint: Text('الحالة'),

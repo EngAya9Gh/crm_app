@@ -55,7 +55,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               10.verticalSpace,
               AppText(
                 "فلترة العملاء:",
-                style: context.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w500),
+                style: context.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
               ),
               20.verticalSpace,
               Row(
@@ -86,7 +86,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     ),
                     10.horizontalSpace,
                   },
-                  Consumer<ClientType>(
+                  Consumer<ClientTypeProvider>(
                     builder: (context, clientTypeVm, child) {
                       return Expanded(
                         child: AppDropdownButtonFormField<String, String>(
@@ -166,7 +166,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 ),
                 10.verticalSpace,
               },
-              Consumer<ActivityVm>(
+              Consumer<ActivityProvider>(
                 builder: (context, activityVm, child) {
                   return Row(
                     children: [

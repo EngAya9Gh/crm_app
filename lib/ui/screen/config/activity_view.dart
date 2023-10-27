@@ -28,14 +28,14 @@ class _resoan_viewState extends State<activity_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
 
-      await Provider.of<ActivityVm>(context,listen: false).getActivities( );
+      await Provider.of<ActivityProvider>(context,listen: false).getActivities( );
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ActivityModel> _listlevel= Provider.of<ActivityVm>
+    List<ActivityModel> _listlevel= Provider.of<ActivityProvider>
       (context,listen: true).activitiesList;
     return Scaffold(
       appBar: AppBar(

@@ -33,7 +33,7 @@ class _ticketclientviewState extends State<ticketclientview> {
       Provider.of<ticket_vm>(context,listen: false).changeticket(0);
       Provider.of<ticket_vm>(context,listen: false).
       gettypeticket_filter('0');
-      Provider.of<ClientType>(context, listen: false).getreasons('ticket');
+      Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket');
 
     });
     super.initState();

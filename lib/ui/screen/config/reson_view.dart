@@ -25,13 +25,13 @@ class _resoan_viewState extends State<resoan_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
 
-     await Provider.of<ClientType>
+     await Provider.of<ClientTypeProvider>
       (context,listen: false).getreasons(widget.type);});
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    List<ReasonModel> _listlevel= Provider.of<ClientType>
+    List<ReasonModel> _listlevel= Provider.of<ClientTypeProvider>
       (context,listen: true).type_of_out;
     return Scaffold(
       appBar: AppBar(

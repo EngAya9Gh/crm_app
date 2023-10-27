@@ -9,10 +9,9 @@ import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../constants.dart';
 import '../../../features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'addClient.dart';
@@ -44,12 +43,12 @@ class _tabclientsState extends State<tabclients> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
-      Provider.of<ClientType>(context, listen: false).changevaluefilter(null);
+      Provider.of<ClientTypeProvider>(context, listen: false).changevaluefilter(null);
       Provider.of<ClientProvider>(context, listen: false).clear();
       List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
       Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       Provider.of<ClientProvider>(context, listen: false).getclient_vm();
-      context.read<ActivityVm>()
+      context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
     });

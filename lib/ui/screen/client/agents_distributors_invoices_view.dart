@@ -62,7 +62,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     scheduleMicrotask(() {
       viewmodel.init();
       context.read<RegionProvider>().changeVal(null);
-      context.read<ClientType>().changelisttype_install(null);
+      context.read<ClientTypeProvider>().changelisttype_install(null);
       context.read<invoice_vm>()
         ..setvaluepriv(privilegeList)
         ..getinvoice_Localwithprev();

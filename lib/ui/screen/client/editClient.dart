@@ -68,7 +68,7 @@ class _editclientState extends State<editclient> {
 
   // final TextEditingController address_client = TextEditingController();
 
-  late ClientType typeclient_provider;
+  late ClientTypeProvider typeclient_provider;
   late final UserModel currentUser;
   late String? namemanage = '';
   String? sourclient;
@@ -149,8 +149,8 @@ class _editclientState extends State<editclient> {
 
       Provider.of<maincity_vm>(context, listen: false).changevalue(widget.itemClient.city.toString());
 
-      await Provider.of<ActivityVm>(context, listen: false).getActivities();
-      Provider.of<ActivityVm>(context, listen: false)
+      await Provider.of<ActivityProvider>(context, listen: false).getActivities();
+      Provider.of<ActivityProvider>(context, listen: false)
           .onChangeSelectedActivityTypeId(widget.itemClient.activity_type_fk);
 
       await Provider.of<company_vm>(context, listen: false).getcompany();
@@ -172,7 +172,7 @@ class _editclientState extends State<editclient> {
       // Add Your Code here.
       bool ism = widget.itemClient.ismarketing == '1' ? true : false;
       Provider.of<switch_provider>(context, listen: false).changeboolValue(ism);
-      typeclient_provider = Provider.of<ClientType>(context, listen: false);
+      typeclient_provider = Provider.of<ClientTypeProvider>(context, listen: false);
       typeclient_provider.type_of_client =
           // widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
           widget.itemClient.typeClient == "تفاوض" ||
@@ -223,7 +223,7 @@ class _editclientState extends State<editclient> {
 
   @override
   Widget build(BuildContext context) {
-    typeclient_provider = Provider.of<ClientType>(context, listen: true);
+    typeclient_provider = Provider.of<ClientTypeProvider>(context, listen: true);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -278,7 +278,7 @@ class _editclientState extends State<editclient> {
                       // typeclient_provider.selectedValuemanag == "منسحب"
                       //     ? typeclient_provider.selectedValueOut
                       //     :
-                      'activity_type_fk': Provider.of<ActivityVm>
+                      'activity_type_fk': Provider.of<ActivityProvider>
                         (context, listen: false)
                           .selectedActivity?.id_activity_type.toString(),
                       // "mobile": mobileController.text,
@@ -394,7 +394,7 @@ class _editclientState extends State<editclient> {
                       height: 15,
                     ),
                     RowEdit(name: label_client_typejob, des: '*'),
-                    Consumer<ActivityVm>(
+                    Consumer<ActivityProvider>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,
