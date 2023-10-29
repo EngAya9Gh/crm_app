@@ -47,7 +47,7 @@ class _commentViewState extends State<commentView> {
     //   Provider.of<comment_vm>(context, listen: false)
     //       .getComment(widget.fk_client);
     // });
-    print('init in comment');
+
     super.initState();
   }
 

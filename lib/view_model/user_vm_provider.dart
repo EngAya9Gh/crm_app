@@ -200,7 +200,7 @@ class UserProvider extends ChangeNotifier {
         return prefs;
       }
     } catch (e) {
-      print('exp error is ' + e.toString());
+      
     }
     notifyListeners();
     return prefs;

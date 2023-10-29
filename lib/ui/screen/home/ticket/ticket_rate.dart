@@ -98,10 +98,10 @@ class _ticket_rateState extends State<ticket_rate> {
                         color: Colors.amber,
                       ),
                       onRatingUpdate: (rating) {
-                        print(rating);
+
                         setState(() {
                           rate=rating;
-                          print(rate);
+
                         });
                       },
                     ),

@@ -92,8 +92,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print('_selectedDatefrom ' + _selectedDatefrom.toString());
-        print('_selectedDateto ' + _selectedDateto.toString());
+
+
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
             .onChange_date(_selectedDatefrom, _selectedDateto);
@@ -113,7 +113,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print('_selectedDateto ' + _selectedDateto.toString());
+
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
             .onChange_date(_selectedDatefrom, _selectedDateto);

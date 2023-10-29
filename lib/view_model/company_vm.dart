@@ -18,7 +18,7 @@ class company_vm extends ChangeNotifier {
 
     List<CompanyModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
       prodlist.add(CompanyModel.fromJson(data[i]));
     }
     list_company = prodlist.toList();

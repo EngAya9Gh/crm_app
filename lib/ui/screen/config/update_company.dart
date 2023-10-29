@@ -107,7 +107,7 @@ class _updatecompanyState extends State<updatecompany> {
                               imageQuality: 100,);
                             File?   pickedFile = File(pickedImage!.path);
                             setState(() {
-                              print(pickedFile.path);
+
                               _myfilelogo=pickedFile;
                               logoController.text=pickedFile.path;
                             });
@@ -203,7 +203,7 @@ class _updatecompanyState extends State<updatecompany> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
@@ -212,6 +212,6 @@ class _updatecompanyState extends State<updatecompany> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+    
   }
 }

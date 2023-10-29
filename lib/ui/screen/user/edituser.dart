@@ -172,8 +172,8 @@ class _EditUserState extends State<EditUser> {
                     .nameLevel;
 
                 //String id_country=Provider.of<country_vm>(context,listen: false).id_country;
-                print("level in update button" + levelname.toString());
-                print("regoin in update button" + regoinname.toString());
+
+
                 if (levelname != null && emailController.text.toString().trim().isNotEmpty) {
                   // Provider.of<LoadProvider>(context, listen: false)
                   //     .changeboolUpdateUser(true);
@@ -425,7 +425,7 @@ class _EditUserState extends State<EditUser> {
                             buttonWidth: 110, selectedColor: kMainColor, borderRadius: BorderRadius.circular(10)),
                         buttons: ['غير نشط', 'نشط'],
                         onSelected: (_, index, isselected) {
-                          print(index);
+
                           setState(() {
                             isAcive = index.toString();
                             //selectedProvider.selectValuetypeinstall(index);

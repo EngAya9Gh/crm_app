@@ -167,8 +167,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 RowEdit(name: label_level, des: '*'),
                 Consumer<level_vm>(
                   builder: (context, cart, child) {
-                    print("cart.selectedValueLevel ${cart.selectedValueLevel}");
-                    print("cart.listoflevel_periorty ${cart.listoflevel_periorty}");
+                    
+                    
                     return DropdownButtonFormField(
                       isExpanded: true,
                       items: cart.listoflevel_periorty.map((level) {
@@ -220,7 +220,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 RowEdit(name: 'المناطق', des: ''),
                 Consumer<maincity_vm>(
                   builder: (context, cart, child) {
-                    print(cart.selecteditemmaincity.length);
+                    
 
                     final items = cart.listmaincityfilter
                         .where((element) => element.id_maincity != '0')

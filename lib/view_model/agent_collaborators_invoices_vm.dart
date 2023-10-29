@@ -166,8 +166,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     from=from_param;
     to=to_param;
     notifyListeners();
-    print('from '+from.toString());
-    print('to '+to.toString());
+    
+    
     onFilter();
   }
 
@@ -226,9 +226,9 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
       }
     }).toList();
     List<InvoiceModel> invoicesFiltered_temp = [];
-    print('invoicesFiltered.length');
+    
 
-    print(invoicesFiltered.length);
+    
      if(invoicesFiltered.isEmpty)
       list.forEach((element) {
       if (  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
@@ -243,10 +243,10 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
         invoicesFiltered_temp.add(element);
       }
     });
-    print(invoicesFiltered.length);
+    
 
     invoicesFiltered=List.from(invoicesFiltered_temp);
-    print('nb '+invoicesFiltered.length.toString());
+    
     notifyListeners();
 
 

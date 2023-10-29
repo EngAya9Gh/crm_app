@@ -136,8 +136,8 @@ class _View_installedClientState extends State<View_installedClient> {
                             //namemanage=value.toString();
                             cart.changelisttype_install_iso(value.toString());
                             typeclientvalue = value.toString();
-                            print('filter state' + value.toString());
-                            print(typeclientvalue);
+
+
 
                             filtershow();
                           },
@@ -216,7 +216,7 @@ class _View_installedClientState extends State<View_installedClient> {
                     options: GroupButtonOptions(buttonWidth: 90, borderRadius: BorderRadius.circular(10)),
                     buttons: [' التواصل الأول ', 'التواصل الثاني'],
                     onSelected: (_, index, isselected) {
-                      print(index);
+
                       switch (index) {
                         case 0:
                           type = 1; //1

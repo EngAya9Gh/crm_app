@@ -21,7 +21,7 @@ class PrivilegeProvider extends ChangeNotifier {
     List<PrivilgeModel> list = [];
     for (int i = 0; i < data.length; i++) {
       list.add(PrivilgeModel.fromJson(data[i]));
-      print(data[i]);
+      
     }
     privilegeList = list;
 
@@ -35,7 +35,7 @@ class PrivilegeProvider extends ChangeNotifier {
     List<PrivilgeModel> list = [];
     for (int i = 0; i < data.length; i++) {
       list.add(PrivilgeModel.fromJson(data[i]));
-      print(data[i]);
+      
     }
     privilegeListPage = list;
 

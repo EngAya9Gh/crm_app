@@ -166,7 +166,7 @@ class UserModel {
     List<PrivilgeModel> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        print(i);
+
 
         
         prodlist.add(PrivilgeModel.fromJson(data[i]));

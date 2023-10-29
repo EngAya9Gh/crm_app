@@ -60,7 +60,7 @@ class _loginState extends State<login> {
                   ),
                   // IconButton(
                   //     onPressed: () async {
-                  //       print("fcm : ${await FirebaseMessaging.instance.getToken()}");
+                  //       user.
                   //     },
                   //     icon: Icon(Icons.add)),
                   CustomFormField(
@@ -91,7 +91,7 @@ class _loginState extends State<login> {
                     if(_globalKey.currentState!.validate()){
                       
                       _globalKey.currentState!.save();
-                      // print('after ${_textcontroller!.text}');
+                      //
                       if (val.sendcode) {
                         Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
 
@@ -111,14 +111,14 @@ class _loginState extends State<login> {
                         }
                       }
                       else {
-                        print(valEmail);
-                        print(valueField);
+
+
                         Provider.of<AuthProvider>(context,listen: false).changeboolValueisLoading(true);
                         final email = valEmail.trim();
                         final otpCode = valueField?.trim() ?? '';
 
                         String? res=await AuthServices().verfiy_otp(email,otpCode);
-                        print(res);
+
                         if (res!="false") {
                           SharedPreferences preferences  = await SharedPreferences.getInstance();
                           preferences.setBool(kKeepMeLoggedIn, true);

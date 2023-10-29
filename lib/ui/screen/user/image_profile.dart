@@ -153,7 +153,7 @@ class ImageProfile extends StatelessWidget {
                 onPressed: () {
                   //controllerUser.takedPhoto(ImageSource.camera);
                   // controllerUser.openCamera();
-                  // print('camera');
+                  //
                   takePhoto(ImageSource.camera,context);
                 },
                 icon: Icon(
@@ -171,7 +171,7 @@ class ImageProfile extends StatelessWidget {
               TextButton.icon(
                 onPressed: () {
                   //controllerUser.openGallery();
-                  // print('Gallery');
+                  //
                   takePhoto(ImageSource.gallery,context);
                 },
                 icon: Icon(
@@ -196,14 +196,13 @@ class ImageProfile extends StatelessWidget {
     await imagePicker.pickImage(
         source: source, imageQuality: 100,maxHeight:1000,maxWidth: 1000 );
     pickedFile = File(pickedImage!.path);
-    print(pickedFile!.path);
+
     Provider.of<UserProvider>(context,listen: false)
         .setImagePath(pickedFile!.path);
         //.currentUser!.path=pickedFile!.path;
     // controllerUser.setProfileImagePath(pickedFile!.path);
     // Get.back();
-    print(Provider.of<UserProvider>(context,listen: false)
-        .currentUser.path.toString());
+
      Navigator.of(context).pop();
   }
 }

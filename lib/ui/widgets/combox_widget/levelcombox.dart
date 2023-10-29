@@ -33,7 +33,7 @@ void initState()  {
       Provider.of<level_vm>(context,listen: false)
           .changeVal(widget.selected);
 
-      print("init level combox");
+      
 
 
     });
@@ -68,7 +68,7 @@ void initState()  {
 
     List<LevelModel> _list=[];
 
-    print("build combox level");
+    
     _list  =Provider.of<level_vm>(context,listen: true).listoflevel;
 
      WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -78,7 +78,7 @@ void initState()  {
     if (_list.isEmpty)
       return Text("لا يوجد بيانات");
     else {
-      print("inside else");
+      
       
 
       return Container(

@@ -111,8 +111,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                                   selectedItems: cart.selecteditemmaincity,
                                   itemAsString: (u) => u!.userAsString(),
                                   onChanged: (data) {
-                                    for (int i = 0; i < data.length; i++) print(data[i].id_maincity);
-                                    print(data);
+
                                     selecteditemmaincity = data;
                                     cart.changeitemlist(data);
                                     filtershow();
@@ -238,8 +237,8 @@ class _ClientAcceptState extends State<ClientAccept> {
   }
 
   void filtershow() {
-    print(regoin);
-    // print(typeclientvalue);
+
+    //
     //   Provider.of<invoice_vm>(context,listen: false)
     //       .getclienttype_filter(typeclientvalue!,regoin,'only');
     Provider.of<ClientProvider>(context, listen: false).getfilterviewSupport(selecteditemmaincity);

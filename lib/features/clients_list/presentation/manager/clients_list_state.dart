@@ -1,22 +1,22 @@
-
 part of 'clients_list_bloc.dart';
 
 class ClientsListState {
-   ClientsListState({
-    this.clientsListState = const PageState.init(),
-    this.currentPage = 1,
-  });
+  ClientsListState({
+    PagingController<int, ClientModel>? clientsListController,
+    this.getClientsWithFilterParams,
+  }) : clientsListController = clientsListController ?? PagingController(firstPageKey: 1,invisibleItemsThreshold: 10);
 
-  final PageState<List<ClientModel>> clientsListState;
-   int currentPage;
+  final PagingController<int, ClientModel> clientsListController;
+  final GetClientsWithFilterParams? getClientsWithFilterParams;
 
   ClientsListState copyWith({
-    PageState<List<ClientModel>>? clientsListState,
-    int? currentPage,
+    PagingController<int, ClientModel>? clientsListController,
+    GetClientsWithFilterParams? getClientsWithFilterParams,
+    bool restFilter = false,
   }) {
     return ClientsListState(
-      clientsListState: clientsListState ?? this.clientsListState,
-      currentPage: currentPage ?? this.currentPage,
+      clientsListController: clientsListController ?? this.clientsListController,
+      getClientsWithFilterParams: restFilter ? null : getClientsWithFilterParams ?? this.getClientsWithFilterParams,
     );
   }
 }

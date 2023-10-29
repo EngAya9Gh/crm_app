@@ -17,8 +17,8 @@ class widgetlogo extends StatelessWidget {
   bool? isExpanded=false;
   @override
   Widget build(BuildContext context) {
-    print('smsnsjkn');
-    print( value.toString());
+    
+    
     return Column(
       //mainAxisAlignment: MainAxisAlignment.start,
       // crossAxisAlignment: CrossAxisAlignment.start,

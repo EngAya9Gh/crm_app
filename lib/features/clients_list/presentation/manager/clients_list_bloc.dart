@@ -1,77 +1,75 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/features/clients_list/domain/use_cases/get_all_clients_list_usecase.dart';
-import 'package:crm_smart/features/clients_list/domain/use_cases/get_clients_by_region_usecase.dart';
-import 'package:crm_smart/features/clients_list/domain/use_cases/get_clients_by_user_usecase.dart';
+import 'package:crm_smart/common/helpers/helper_functions.dart';
+import 'package:crm_smart/common/models/nullable.dart';
+import 'package:crm_smart/features/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../data/models/clients_list_response.dart';
 
+part 'clients_list_event.dart';
 
 part 'clients_list_state.dart';
-part 'clients_list_event.dart';
 
 @injectable
 class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   ClientsListBloc(
-      this._getAllClientsListUseCase,
-      this._getClientsListByUserUseCase,
-      this._getClientsListByRegionUseCase,
-      ) : super(ClientsListState()) {
+    this._getClientsWithFilterUserUsecase,
+  ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
-    on<GetClientsListByRegionEvent>(_onGetClientsListByRegionEvent);
-    on<GetClientsListByUserEvent>(_onGetClientsListByUserEvent);
+    on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
+    on<SearchEvent>(_onSearchEvent);
+    on<ResetClientList>(_onResetClientList);
   }
-  final GetAllClientsListUseCase _getAllClientsListUseCase;
-  final GetClientsListByUserUseCase _getClientsListByUserUseCase;
-  final GetClientsListByRegionUseCase _getClientsListByRegionUseCase;
 
-  FutureOr<void> _onGetAllClientsListEvent(
-      GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
-    List<ClientModel> currentList = [];
-    if(event.page==1){
-      emit(state.copyWith(clientsListState: PageState.loading()));
-    }else{
-      currentList = state.clientsListState.data.toList();
-    }
-    final response = await _getAllClientsListUseCase(GetAllClientsListParams(country: event.fkCountry,page: event.page,perPage: event.perPage));
+  final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
+
+  FutureOr<void> _onGetAllClientsListEvent(GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
+    final GetClientsWithFilterParams getClientsWithFilterParams =
+        state.getClientsWithFilterParams?.copyWith(page: Nullable.value(event.page)) ??
+            GetClientsWithFilterParams(country: event.fkCountry, page: event.page);
+
+    final response = await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
 
     response.fold(
-          (exception, message) => emit(state.copyWith(clientsListState:PageState.error())),
-          (value) {
-            if(event.page>1){
-              currentList.addAll(value.data??[]);
-              emit(state.copyWith(clientsListState: PageState.loaded(data:currentList ?? [])));
-            }else
-              emit(state.copyWith(clientsListState: PageState.loaded(data: value.data ?? [])));
-          }
+      (exception, message) => state.clientsListController.error = exception,
+      (value) {
+        final hasReachedMax = HelperFunctions.instance.hasReachedMax(value.message);
+        if (hasReachedMax) {
+          state.clientsListController.appendLastPage(value.message ?? []);
+        } else {
+          final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
+          state.clientsListController.appendPage(value.message ?? [], nextPage);
+        }
+        emit(state.copyWith(getClientsWithFilterParams: getClientsWithFilterParams));
+      },
     );
   }
 
-  FutureOr<void> _onGetClientsListByUserEvent(
-      GetClientsListByUserEvent event, Emitter<ClientsListState> emit) async {
-    emit(state.copyWith(clientsListState: PageState.loading()));
+  FutureOr<void> _onUpdateGetClientsParamsEvent(UpdateGetClientsParamsEvent event, Emitter<ClientsListState> emit) {
+    emit(state.copyWith(
+      getClientsWithFilterParams: event.getClientsWithFilterParams,
+      restFilter: event.resetFilter,
+    ));
 
-    final response = await _getClientsListByUserUseCase(GetClientsListByUserParams(user: event.fkUser));
-
-    response.fold(
-          (exception, message) => emit(state.copyWith(clientsListState:PageState.error())),
-          (value) => emit(state.copyWith(clientsListState: PageState.loaded(data: value.data ?? []))),
-    );
+    state.clientsListController.refresh();
   }
 
+  FutureOr<void> _onSearchEvent(SearchEvent event, Emitter<ClientsListState> emit) {
+    emit(state.copyWith(
+      getClientsWithFilterParams: state.getClientsWithFilterParams?.copyWith(query: Nullable.value(event.query)),
+    ));
 
-  FutureOr<void> _onGetClientsListByRegionEvent(
-      GetClientsListByRegionEvent event, Emitter<ClientsListState> emit) async {
-    emit(state.copyWith(clientsListState: PageState.loading()));
+    state.clientsListController.refresh();
+  }
 
-    final response = await _getClientsListByRegionUseCase(GetClientsListByRegionParams(region: event.fkRegion));
-
-    response.fold(
-          (exception, message) => emit(state.copyWith(clientsListState:PageState.error())),
-          (value) => emit(state.copyWith(clientsListState: PageState.loaded(data: value.data ?? []))),
-    );
+  FutureOr<void> _onResetClientList(ResetClientList event, Emitter<ClientsListState> emit) {
+    emit(state.copyWith(
+      clientsListController: PagingController(firstPageKey: 1, invisibleItemsThreshold: 10),
+      restFilter: true,
+    ));
   }
 }

@@ -84,7 +84,7 @@ class _support_addState extends State<support_add> {
       //  Provider.of<typeclient>(context,listen: false).getreasons('ticket');
     });
 
-    print('init support');
+    
     super.initState();
   }
 
@@ -172,7 +172,7 @@ class _support_addState extends State<support_add> {
                               onTap: () {
                                 refresh(() {
                                   _selectDate(context, DateTime.now());
-                                  print('before on tap ' + _currentDate.toString());
+                                  
                                 });
                               },
                               validator: (value) {
@@ -823,7 +823,7 @@ class _support_addState extends State<support_add> {
                                                                  DateTime datanext = DateTime.now();
                                                                  int peroidtime = int.parse(peroid.value_config);
                                                                  datanext = Jiffy().add(days: peroidtime).dateTime;
-                                                                 print(datanext.toString());
+                                                                 
 
                                                                  peroid = _listconfg.firstWhere((element) =>
                                                                  element.name_config ==
@@ -832,7 +832,7 @@ class _support_addState extends State<support_add> {
                                                                  peroidtime = int.parse(peroid.value_config);
                                                                  datanext_install =
                                                                      Jiffy().add(days: peroidtime).dateTime;
-                                                                 print(datanext.toString());
+                                                                 
                                                                  await Provider.of<invoice_vm>(context, listen: false)
                                                                      .setdatedone_vm({
                                                                    'clientusername': _textnameuserclient.text,
@@ -1099,9 +1099,9 @@ class _support_addState extends State<support_add> {
         _time = _hour + ' : ' + _minute;
         _timeController.text = _time;
         _timeController.text = selectedTime.toString();
-        print('ssdsds');
-        print(TimeOfDay.now());
-        print(selectedTime.toString());
+        
+        
+        
         // Utils.toTime(selectedTime)
         // formatDate(
         // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
@@ -1123,15 +1123,15 @@ class _support_addState extends State<support_add> {
       setState(() {
         // _invoice.dateinstall_task=pickedDate.toString() ;
         _currentDate = pickedDate;
-        print(_currentDate.toString());
+        
 
         final time =
             Duration(hours: DateTime.now().hour, minutes: DateTime.now().minute, seconds: DateTime.now().second);
-        print('timme');
-        print(DateFormat.Hms().format(_currentDate));
+        
+        
         _currentDate.add(Duration(hours: DateTime.now().hour));
-        print(time.toString());
-        print(_currentDate.toString());
+        
+        
         // _currentDate.add(Duration(hours: selectedTime.hour));
 
         // _invoice!.dateinstall_task = _currentDate.toString();

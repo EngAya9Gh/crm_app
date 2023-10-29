@@ -33,9 +33,9 @@ mixin _$ClientModel {
   @JsonKey(name: "location")
   String? get location => throw _privateConstructorUsedError;
   @JsonKey(name: "fk_regoin")
-  String? get fkRegoin => throw _privateConstructorUsedError;
+  String? get fkRegion => throw _privateConstructorUsedError;
   @JsonKey(name: "fkcountry")
-  String? get fkcountry => throw _privateConstructorUsedError;
+  String? get fkCountry => throw _privateConstructorUsedError;
   @JsonKey(name: "date_create")
   String? get dateCreate => throw _privateConstructorUsedError;
   @JsonKey(name: "type_client")
@@ -47,7 +47,7 @@ mixin _$ClientModel {
   @JsonKey(name: "mobile")
   String? get mobile => throw _privateConstructorUsedError;
   @JsonKey(name: "date_changetype")
-  String? get dateChangetype => throw _privateConstructorUsedError;
+  String? get dateChangeType => throw _privateConstructorUsedError;
   @JsonKey(name: "reason_change")
   String? get reasonChange => throw _privateConstructorUsedError;
   @JsonKey(name: "reason_transfer")
@@ -57,71 +57,71 @@ mixin _$ClientModel {
   @JsonKey(name: "nameUser")
   String? get nameUser => throw _privateConstructorUsedError;
   @JsonKey(name: "name_regoin")
-  String? get name_regoin => throw _privateConstructorUsedError;
+  String? get nameRegion => throw _privateConstructorUsedError;
   @JsonKey(name: "total")
   String? get total => throw _privateConstructorUsedError;
   @JsonKey(name: "amount_paid")
-  String? get amount_paid => throw _privateConstructorUsedError;
+  String? get amountPaid => throw _privateConstructorUsedError;
   @JsonKey(name: "offer_price")
-  String? get offer_price => throw _privateConstructorUsedError;
+  String? get offerPrice => throw _privateConstructorUsedError;
   @JsonKey(name: "date_price")
-  String? get date_price => throw _privateConstructorUsedError;
+  String? get datePrice => throw _privateConstructorUsedError;
   @JsonKey(name: "user_do")
-  String? get user_do => throw _privateConstructorUsedError;
+  String? get userDo => throw _privateConstructorUsedError;
   @JsonKey(name: "isApprove")
   String? get isApprove => throw _privateConstructorUsedError;
   @JsonKey(name: "nameuserdoning")
-  String? get nameuserdoning => throw _privateConstructorUsedError;
+  String? get nameUserDoing => throw _privateConstructorUsedError;
   @JsonKey(name: "nameusertransfer")
-  String? get nameusertransfer => throw _privateConstructorUsedError;
+  String? get nameUserTransfer => throw _privateConstructorUsedError;
   @JsonKey(name: "fkusertrasfer")
-  String? get fkusertrasfer => throw _privateConstructorUsedError;
+  String? get fkUserTrasfer => throw _privateConstructorUsedError;
   @JsonKey(name: "mobileuser")
-  String? get mobileuser => throw _privateConstructorUsedError;
+  String? get mobileUser => throw _privateConstructorUsedError;
   @JsonKey(name: "total_paid")
-  String? get total_paid => throw _privateConstructorUsedError;
+  String? get totalPaid => throw _privateConstructorUsedError;
   @JsonKey(name: "ismarketing")
-  String? get ismarketing => throw _privateConstructorUsedError;
+  String? get isMarketing => throw _privateConstructorUsedError;
   @JsonKey(name: "address_client")
-  String? get address_client => throw _privateConstructorUsedError;
+  String? get addressClient => throw _privateConstructorUsedError;
   @JsonKey(name: "descActivController")
-  String? get descActivController => throw _privateConstructorUsedError;
+  String? get descriptionActiveController => throw _privateConstructorUsedError;
   @JsonKey(name: "presystem")
-  String? get presystem => throw _privateConstructorUsedError;
+  String? get preSystem => throw _privateConstructorUsedError;
   @JsonKey(name: "presystemtitle")
-  String? get presystemtitle => throw _privateConstructorUsedError;
+  String? get preSystemTitle => throw _privateConstructorUsedError;
   @JsonKey(name: "sourcclient")
-  String? get sourcclient => throw _privateConstructorUsedError;
+  String? get sourceClient => throw _privateConstructorUsedError;
   @JsonKey(name: "activity_type_fk")
-  String? get activity_type_fk => throw _privateConstructorUsedError;
+  String? get activityTypeFk => throw _privateConstructorUsedError;
   @JsonKey(name: "activity_type_title")
-  String? get activity_type_title => throw _privateConstructorUsedError;
+  String? get activityTypeTitle => throw _privateConstructorUsedError;
   @JsonKey(name: "phone")
   String? get phone => throw _privateConstructorUsedError;
   @JsonKey(name: "user_add")
-  String? get user_add => throw _privateConstructorUsedError;
+  String? get userAdd => throw _privateConstructorUsedError;
   @JsonKey(name: "nameAdduser")
   String? get nameAdduser => throw _privateConstructorUsedError;
   @JsonKey(name: "date_visit_Client")
-  String? get date_visit_Client => throw _privateConstructorUsedError;
-  @JsonKey(name: "tag")
-  String? get tag => throw _privateConstructorUsedError;
+  String? get dateVisitClient => throw _privateConstructorUsedError;
+  @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson)
+  bool? get tag => throw _privateConstructorUsedError;
   @JsonKey(name: "done_visit")
   String? get doneVisit => throw _privateConstructorUsedError;
   @JsonKey(name: "done_transfer")
   String? get doneTransfer => throw _privateConstructorUsedError;
   @JsonKey(name: "name_city")
-  String? get name_city => throw _privateConstructorUsedError;
+  String? get nameCity => throw _privateConstructorUsedError;
   @JsonKey(name: "namemaincity")
   String? get nameMainCity => throw _privateConstructorUsedError;
   @JsonKey(name: "id_maincity")
   String? get idMainCity => throw _privateConstructorUsedError;
   @JsonKey(name: "IDcustomer")
-  String? get IdCustomer => throw _privateConstructorUsedError;
+  String? get customerId => throw _privateConstructorUsedError;
   @JsonKey(name: "userAdd_email")
   String? get userAddEmail => throw _privateConstructorUsedError;
   @JsonKey(name: "date_recive")
-  String? get dateRecive => throw _privateConstructorUsedError;
+  String? get dateReceive => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -142,51 +142,51 @@ abstract class $ClientModelCopyWith<$Res> {
       @JsonKey(name: "type_job") String? typeJob,
       @JsonKey(name: "city") String? city,
       @JsonKey(name: "location") String? location,
-      @JsonKey(name: "fk_regoin") String? fkRegoin,
-      @JsonKey(name: "fkcountry") String? fkcountry,
+      @JsonKey(name: "fk_regoin") String? fkRegion,
+      @JsonKey(name: "fkcountry") String? fkCountry,
       @JsonKey(name: "date_create") String? dateCreate,
       @JsonKey(name: "type_client") String? typeClient,
       @JsonKey(name: "fk_user") String? fkUser,
       @JsonKey(name: "date_transfer") String? dateTransfer,
       @JsonKey(name: "mobile") String? mobile,
-      @JsonKey(name: "date_changetype") String? dateChangetype,
+      @JsonKey(name: "date_changetype") String? dateChangeType,
       @JsonKey(name: "reason_change") String? reasonChange,
       @JsonKey(name: "reason_transfer") String? reasonTransfer,
       @JsonKey(name: "nameCountry") String? nameCountry,
       @JsonKey(name: "nameUser") String? nameUser,
-      @JsonKey(name: "name_regoin") String? name_regoin,
+      @JsonKey(name: "name_regoin") String? nameRegion,
       @JsonKey(name: "total") String? total,
-      @JsonKey(name: "amount_paid") String? amount_paid,
-      @JsonKey(name: "offer_price") String? offer_price,
-      @JsonKey(name: "date_price") String? date_price,
-      @JsonKey(name: "user_do") String? user_do,
+      @JsonKey(name: "amount_paid") String? amountPaid,
+      @JsonKey(name: "offer_price") String? offerPrice,
+      @JsonKey(name: "date_price") String? datePrice,
+      @JsonKey(name: "user_do") String? userDo,
       @JsonKey(name: "isApprove") String? isApprove,
-      @JsonKey(name: "nameuserdoning") String? nameuserdoning,
-      @JsonKey(name: "nameusertransfer") String? nameusertransfer,
-      @JsonKey(name: "fkusertrasfer") String? fkusertrasfer,
-      @JsonKey(name: "mobileuser") String? mobileuser,
-      @JsonKey(name: "total_paid") String? total_paid,
-      @JsonKey(name: "ismarketing") String? ismarketing,
-      @JsonKey(name: "address_client") String? address_client,
-      @JsonKey(name: "descActivController") String? descActivController,
-      @JsonKey(name: "presystem") String? presystem,
-      @JsonKey(name: "presystemtitle") String? presystemtitle,
-      @JsonKey(name: "sourcclient") String? sourcclient,
-      @JsonKey(name: "activity_type_fk") String? activity_type_fk,
-      @JsonKey(name: "activity_type_title") String? activity_type_title,
+      @JsonKey(name: "nameuserdoning") String? nameUserDoing,
+      @JsonKey(name: "nameusertransfer") String? nameUserTransfer,
+      @JsonKey(name: "fkusertrasfer") String? fkUserTrasfer,
+      @JsonKey(name: "mobileuser") String? mobileUser,
+      @JsonKey(name: "total_paid") String? totalPaid,
+      @JsonKey(name: "ismarketing") String? isMarketing,
+      @JsonKey(name: "address_client") String? addressClient,
+      @JsonKey(name: "descActivController") String? descriptionActiveController,
+      @JsonKey(name: "presystem") String? preSystem,
+      @JsonKey(name: "presystemtitle") String? preSystemTitle,
+      @JsonKey(name: "sourcclient") String? sourceClient,
+      @JsonKey(name: "activity_type_fk") String? activityTypeFk,
+      @JsonKey(name: "activity_type_title") String? activityTypeTitle,
       @JsonKey(name: "phone") String? phone,
-      @JsonKey(name: "user_add") String? user_add,
+      @JsonKey(name: "user_add") String? userAdd,
       @JsonKey(name: "nameAdduser") String? nameAdduser,
-      @JsonKey(name: "date_visit_Client") String? date_visit_Client,
-      @JsonKey(name: "tag") String? tag,
+      @JsonKey(name: "date_visit_Client") String? dateVisitClient,
+      @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) bool? tag,
       @JsonKey(name: "done_visit") String? doneVisit,
       @JsonKey(name: "done_transfer") String? doneTransfer,
-      @JsonKey(name: "name_city") String? name_city,
+      @JsonKey(name: "name_city") String? nameCity,
       @JsonKey(name: "namemaincity") String? nameMainCity,
       @JsonKey(name: "id_maincity") String? idMainCity,
-      @JsonKey(name: "IDcustomer") String? IdCustomer,
+      @JsonKey(name: "IDcustomer") String? customerId,
       @JsonKey(name: "userAdd_email") String? userAddEmail,
-      @JsonKey(name: "date_recive") String? dateRecive});
+      @JsonKey(name: "date_recive") String? dateReceive});
 }
 
 /// @nodoc
@@ -208,51 +208,51 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
     Object? typeJob = freezed,
     Object? city = freezed,
     Object? location = freezed,
-    Object? fkRegoin = freezed,
-    Object? fkcountry = freezed,
+    Object? fkRegion = freezed,
+    Object? fkCountry = freezed,
     Object? dateCreate = freezed,
     Object? typeClient = freezed,
     Object? fkUser = freezed,
     Object? dateTransfer = freezed,
     Object? mobile = freezed,
-    Object? dateChangetype = freezed,
+    Object? dateChangeType = freezed,
     Object? reasonChange = freezed,
     Object? reasonTransfer = freezed,
     Object? nameCountry = freezed,
     Object? nameUser = freezed,
-    Object? name_regoin = freezed,
+    Object? nameRegion = freezed,
     Object? total = freezed,
-    Object? amount_paid = freezed,
-    Object? offer_price = freezed,
-    Object? date_price = freezed,
-    Object? user_do = freezed,
+    Object? amountPaid = freezed,
+    Object? offerPrice = freezed,
+    Object? datePrice = freezed,
+    Object? userDo = freezed,
     Object? isApprove = freezed,
-    Object? nameuserdoning = freezed,
-    Object? nameusertransfer = freezed,
-    Object? fkusertrasfer = freezed,
-    Object? mobileuser = freezed,
-    Object? total_paid = freezed,
-    Object? ismarketing = freezed,
-    Object? address_client = freezed,
-    Object? descActivController = freezed,
-    Object? presystem = freezed,
-    Object? presystemtitle = freezed,
-    Object? sourcclient = freezed,
-    Object? activity_type_fk = freezed,
-    Object? activity_type_title = freezed,
+    Object? nameUserDoing = freezed,
+    Object? nameUserTransfer = freezed,
+    Object? fkUserTrasfer = freezed,
+    Object? mobileUser = freezed,
+    Object? totalPaid = freezed,
+    Object? isMarketing = freezed,
+    Object? addressClient = freezed,
+    Object? descriptionActiveController = freezed,
+    Object? preSystem = freezed,
+    Object? preSystemTitle = freezed,
+    Object? sourceClient = freezed,
+    Object? activityTypeFk = freezed,
+    Object? activityTypeTitle = freezed,
     Object? phone = freezed,
-    Object? user_add = freezed,
+    Object? userAdd = freezed,
     Object? nameAdduser = freezed,
-    Object? date_visit_Client = freezed,
+    Object? dateVisitClient = freezed,
     Object? tag = freezed,
     Object? doneVisit = freezed,
     Object? doneTransfer = freezed,
-    Object? name_city = freezed,
+    Object? nameCity = freezed,
     Object? nameMainCity = freezed,
     Object? idMainCity = freezed,
-    Object? IdCustomer = freezed,
+    Object? customerId = freezed,
     Object? userAddEmail = freezed,
-    Object? dateRecive = freezed,
+    Object? dateReceive = freezed,
   }) {
     return _then(_value.copyWith(
       idClients: freezed == idClients
@@ -279,13 +279,13 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
-      fkRegoin: freezed == fkRegoin
-          ? _value.fkRegoin
-          : fkRegoin // ignore: cast_nullable_to_non_nullable
+      fkRegion: freezed == fkRegion
+          ? _value.fkRegion
+          : fkRegion // ignore: cast_nullable_to_non_nullable
               as String?,
-      fkcountry: freezed == fkcountry
-          ? _value.fkcountry
-          : fkcountry // ignore: cast_nullable_to_non_nullable
+      fkCountry: freezed == fkCountry
+          ? _value.fkCountry
+          : fkCountry // ignore: cast_nullable_to_non_nullable
               as String?,
       dateCreate: freezed == dateCreate
           ? _value.dateCreate
@@ -307,9 +307,9 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.mobile
           : mobile // ignore: cast_nullable_to_non_nullable
               as String?,
-      dateChangetype: freezed == dateChangetype
-          ? _value.dateChangetype
-          : dateChangetype // ignore: cast_nullable_to_non_nullable
+      dateChangeType: freezed == dateChangeType
+          ? _value.dateChangeType
+          : dateChangeType // ignore: cast_nullable_to_non_nullable
               as String?,
       reasonChange: freezed == reasonChange
           ? _value.reasonChange
@@ -327,106 +327,106 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.nameUser
           : nameUser // ignore: cast_nullable_to_non_nullable
               as String?,
-      name_regoin: freezed == name_regoin
-          ? _value.name_regoin
-          : name_regoin // ignore: cast_nullable_to_non_nullable
+      nameRegion: freezed == nameRegion
+          ? _value.nameRegion
+          : nameRegion // ignore: cast_nullable_to_non_nullable
               as String?,
       total: freezed == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as String?,
-      amount_paid: freezed == amount_paid
-          ? _value.amount_paid
-          : amount_paid // ignore: cast_nullable_to_non_nullable
+      amountPaid: freezed == amountPaid
+          ? _value.amountPaid
+          : amountPaid // ignore: cast_nullable_to_non_nullable
               as String?,
-      offer_price: freezed == offer_price
-          ? _value.offer_price
-          : offer_price // ignore: cast_nullable_to_non_nullable
+      offerPrice: freezed == offerPrice
+          ? _value.offerPrice
+          : offerPrice // ignore: cast_nullable_to_non_nullable
               as String?,
-      date_price: freezed == date_price
-          ? _value.date_price
-          : date_price // ignore: cast_nullable_to_non_nullable
+      datePrice: freezed == datePrice
+          ? _value.datePrice
+          : datePrice // ignore: cast_nullable_to_non_nullable
               as String?,
-      user_do: freezed == user_do
-          ? _value.user_do
-          : user_do // ignore: cast_nullable_to_non_nullable
+      userDo: freezed == userDo
+          ? _value.userDo
+          : userDo // ignore: cast_nullable_to_non_nullable
               as String?,
       isApprove: freezed == isApprove
           ? _value.isApprove
           : isApprove // ignore: cast_nullable_to_non_nullable
               as String?,
-      nameuserdoning: freezed == nameuserdoning
-          ? _value.nameuserdoning
-          : nameuserdoning // ignore: cast_nullable_to_non_nullable
+      nameUserDoing: freezed == nameUserDoing
+          ? _value.nameUserDoing
+          : nameUserDoing // ignore: cast_nullable_to_non_nullable
               as String?,
-      nameusertransfer: freezed == nameusertransfer
-          ? _value.nameusertransfer
-          : nameusertransfer // ignore: cast_nullable_to_non_nullable
+      nameUserTransfer: freezed == nameUserTransfer
+          ? _value.nameUserTransfer
+          : nameUserTransfer // ignore: cast_nullable_to_non_nullable
               as String?,
-      fkusertrasfer: freezed == fkusertrasfer
-          ? _value.fkusertrasfer
-          : fkusertrasfer // ignore: cast_nullable_to_non_nullable
+      fkUserTrasfer: freezed == fkUserTrasfer
+          ? _value.fkUserTrasfer
+          : fkUserTrasfer // ignore: cast_nullable_to_non_nullable
               as String?,
-      mobileuser: freezed == mobileuser
-          ? _value.mobileuser
-          : mobileuser // ignore: cast_nullable_to_non_nullable
+      mobileUser: freezed == mobileUser
+          ? _value.mobileUser
+          : mobileUser // ignore: cast_nullable_to_non_nullable
               as String?,
-      total_paid: freezed == total_paid
-          ? _value.total_paid
-          : total_paid // ignore: cast_nullable_to_non_nullable
+      totalPaid: freezed == totalPaid
+          ? _value.totalPaid
+          : totalPaid // ignore: cast_nullable_to_non_nullable
               as String?,
-      ismarketing: freezed == ismarketing
-          ? _value.ismarketing
-          : ismarketing // ignore: cast_nullable_to_non_nullable
+      isMarketing: freezed == isMarketing
+          ? _value.isMarketing
+          : isMarketing // ignore: cast_nullable_to_non_nullable
               as String?,
-      address_client: freezed == address_client
-          ? _value.address_client
-          : address_client // ignore: cast_nullable_to_non_nullable
+      addressClient: freezed == addressClient
+          ? _value.addressClient
+          : addressClient // ignore: cast_nullable_to_non_nullable
               as String?,
-      descActivController: freezed == descActivController
-          ? _value.descActivController
-          : descActivController // ignore: cast_nullable_to_non_nullable
+      descriptionActiveController: freezed == descriptionActiveController
+          ? _value.descriptionActiveController
+          : descriptionActiveController // ignore: cast_nullable_to_non_nullable
               as String?,
-      presystem: freezed == presystem
-          ? _value.presystem
-          : presystem // ignore: cast_nullable_to_non_nullable
+      preSystem: freezed == preSystem
+          ? _value.preSystem
+          : preSystem // ignore: cast_nullable_to_non_nullable
               as String?,
-      presystemtitle: freezed == presystemtitle
-          ? _value.presystemtitle
-          : presystemtitle // ignore: cast_nullable_to_non_nullable
+      preSystemTitle: freezed == preSystemTitle
+          ? _value.preSystemTitle
+          : preSystemTitle // ignore: cast_nullable_to_non_nullable
               as String?,
-      sourcclient: freezed == sourcclient
-          ? _value.sourcclient
-          : sourcclient // ignore: cast_nullable_to_non_nullable
+      sourceClient: freezed == sourceClient
+          ? _value.sourceClient
+          : sourceClient // ignore: cast_nullable_to_non_nullable
               as String?,
-      activity_type_fk: freezed == activity_type_fk
-          ? _value.activity_type_fk
-          : activity_type_fk // ignore: cast_nullable_to_non_nullable
+      activityTypeFk: freezed == activityTypeFk
+          ? _value.activityTypeFk
+          : activityTypeFk // ignore: cast_nullable_to_non_nullable
               as String?,
-      activity_type_title: freezed == activity_type_title
-          ? _value.activity_type_title
-          : activity_type_title // ignore: cast_nullable_to_non_nullable
+      activityTypeTitle: freezed == activityTypeTitle
+          ? _value.activityTypeTitle
+          : activityTypeTitle // ignore: cast_nullable_to_non_nullable
               as String?,
       phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
-      user_add: freezed == user_add
-          ? _value.user_add
-          : user_add // ignore: cast_nullable_to_non_nullable
+      userAdd: freezed == userAdd
+          ? _value.userAdd
+          : userAdd // ignore: cast_nullable_to_non_nullable
               as String?,
       nameAdduser: freezed == nameAdduser
           ? _value.nameAdduser
           : nameAdduser // ignore: cast_nullable_to_non_nullable
               as String?,
-      date_visit_Client: freezed == date_visit_Client
-          ? _value.date_visit_Client
-          : date_visit_Client // ignore: cast_nullable_to_non_nullable
+      dateVisitClient: freezed == dateVisitClient
+          ? _value.dateVisitClient
+          : dateVisitClient // ignore: cast_nullable_to_non_nullable
               as String?,
       tag: freezed == tag
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       doneVisit: freezed == doneVisit
           ? _value.doneVisit
           : doneVisit // ignore: cast_nullable_to_non_nullable
@@ -435,9 +435,9 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.doneTransfer
           : doneTransfer // ignore: cast_nullable_to_non_nullable
               as String?,
-      name_city: freezed == name_city
-          ? _value.name_city
-          : name_city // ignore: cast_nullable_to_non_nullable
+      nameCity: freezed == nameCity
+          ? _value.nameCity
+          : nameCity // ignore: cast_nullable_to_non_nullable
               as String?,
       nameMainCity: freezed == nameMainCity
           ? _value.nameMainCity
@@ -447,17 +447,17 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.idMainCity
           : idMainCity // ignore: cast_nullable_to_non_nullable
               as String?,
-      IdCustomer: freezed == IdCustomer
-          ? _value.IdCustomer
-          : IdCustomer // ignore: cast_nullable_to_non_nullable
+      customerId: freezed == customerId
+          ? _value.customerId
+          : customerId // ignore: cast_nullable_to_non_nullable
               as String?,
       userAddEmail: freezed == userAddEmail
           ? _value.userAddEmail
           : userAddEmail // ignore: cast_nullable_to_non_nullable
               as String?,
-      dateRecive: freezed == dateRecive
-          ? _value.dateRecive
-          : dateRecive // ignore: cast_nullable_to_non_nullable
+      dateReceive: freezed == dateReceive
+          ? _value.dateReceive
+          : dateReceive // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -478,51 +478,51 @@ abstract class _$$_ClientModelCopyWith<$Res>
       @JsonKey(name: "type_job") String? typeJob,
       @JsonKey(name: "city") String? city,
       @JsonKey(name: "location") String? location,
-      @JsonKey(name: "fk_regoin") String? fkRegoin,
-      @JsonKey(name: "fkcountry") String? fkcountry,
+      @JsonKey(name: "fk_regoin") String? fkRegion,
+      @JsonKey(name: "fkcountry") String? fkCountry,
       @JsonKey(name: "date_create") String? dateCreate,
       @JsonKey(name: "type_client") String? typeClient,
       @JsonKey(name: "fk_user") String? fkUser,
       @JsonKey(name: "date_transfer") String? dateTransfer,
       @JsonKey(name: "mobile") String? mobile,
-      @JsonKey(name: "date_changetype") String? dateChangetype,
+      @JsonKey(name: "date_changetype") String? dateChangeType,
       @JsonKey(name: "reason_change") String? reasonChange,
       @JsonKey(name: "reason_transfer") String? reasonTransfer,
       @JsonKey(name: "nameCountry") String? nameCountry,
       @JsonKey(name: "nameUser") String? nameUser,
-      @JsonKey(name: "name_regoin") String? name_regoin,
+      @JsonKey(name: "name_regoin") String? nameRegion,
       @JsonKey(name: "total") String? total,
-      @JsonKey(name: "amount_paid") String? amount_paid,
-      @JsonKey(name: "offer_price") String? offer_price,
-      @JsonKey(name: "date_price") String? date_price,
-      @JsonKey(name: "user_do") String? user_do,
+      @JsonKey(name: "amount_paid") String? amountPaid,
+      @JsonKey(name: "offer_price") String? offerPrice,
+      @JsonKey(name: "date_price") String? datePrice,
+      @JsonKey(name: "user_do") String? userDo,
       @JsonKey(name: "isApprove") String? isApprove,
-      @JsonKey(name: "nameuserdoning") String? nameuserdoning,
-      @JsonKey(name: "nameusertransfer") String? nameusertransfer,
-      @JsonKey(name: "fkusertrasfer") String? fkusertrasfer,
-      @JsonKey(name: "mobileuser") String? mobileuser,
-      @JsonKey(name: "total_paid") String? total_paid,
-      @JsonKey(name: "ismarketing") String? ismarketing,
-      @JsonKey(name: "address_client") String? address_client,
-      @JsonKey(name: "descActivController") String? descActivController,
-      @JsonKey(name: "presystem") String? presystem,
-      @JsonKey(name: "presystemtitle") String? presystemtitle,
-      @JsonKey(name: "sourcclient") String? sourcclient,
-      @JsonKey(name: "activity_type_fk") String? activity_type_fk,
-      @JsonKey(name: "activity_type_title") String? activity_type_title,
+      @JsonKey(name: "nameuserdoning") String? nameUserDoing,
+      @JsonKey(name: "nameusertransfer") String? nameUserTransfer,
+      @JsonKey(name: "fkusertrasfer") String? fkUserTrasfer,
+      @JsonKey(name: "mobileuser") String? mobileUser,
+      @JsonKey(name: "total_paid") String? totalPaid,
+      @JsonKey(name: "ismarketing") String? isMarketing,
+      @JsonKey(name: "address_client") String? addressClient,
+      @JsonKey(name: "descActivController") String? descriptionActiveController,
+      @JsonKey(name: "presystem") String? preSystem,
+      @JsonKey(name: "presystemtitle") String? preSystemTitle,
+      @JsonKey(name: "sourcclient") String? sourceClient,
+      @JsonKey(name: "activity_type_fk") String? activityTypeFk,
+      @JsonKey(name: "activity_type_title") String? activityTypeTitle,
       @JsonKey(name: "phone") String? phone,
-      @JsonKey(name: "user_add") String? user_add,
+      @JsonKey(name: "user_add") String? userAdd,
       @JsonKey(name: "nameAdduser") String? nameAdduser,
-      @JsonKey(name: "date_visit_Client") String? date_visit_Client,
-      @JsonKey(name: "tag") String? tag,
+      @JsonKey(name: "date_visit_Client") String? dateVisitClient,
+      @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) bool? tag,
       @JsonKey(name: "done_visit") String? doneVisit,
       @JsonKey(name: "done_transfer") String? doneTransfer,
-      @JsonKey(name: "name_city") String? name_city,
+      @JsonKey(name: "name_city") String? nameCity,
       @JsonKey(name: "namemaincity") String? nameMainCity,
       @JsonKey(name: "id_maincity") String? idMainCity,
-      @JsonKey(name: "IDcustomer") String? IdCustomer,
+      @JsonKey(name: "IDcustomer") String? customerId,
       @JsonKey(name: "userAdd_email") String? userAddEmail,
-      @JsonKey(name: "date_recive") String? dateRecive});
+      @JsonKey(name: "date_recive") String? dateReceive});
 }
 
 /// @nodoc
@@ -542,51 +542,51 @@ class __$$_ClientModelCopyWithImpl<$Res>
     Object? typeJob = freezed,
     Object? city = freezed,
     Object? location = freezed,
-    Object? fkRegoin = freezed,
-    Object? fkcountry = freezed,
+    Object? fkRegion = freezed,
+    Object? fkCountry = freezed,
     Object? dateCreate = freezed,
     Object? typeClient = freezed,
     Object? fkUser = freezed,
     Object? dateTransfer = freezed,
     Object? mobile = freezed,
-    Object? dateChangetype = freezed,
+    Object? dateChangeType = freezed,
     Object? reasonChange = freezed,
     Object? reasonTransfer = freezed,
     Object? nameCountry = freezed,
     Object? nameUser = freezed,
-    Object? name_regoin = freezed,
+    Object? nameRegion = freezed,
     Object? total = freezed,
-    Object? amount_paid = freezed,
-    Object? offer_price = freezed,
-    Object? date_price = freezed,
-    Object? user_do = freezed,
+    Object? amountPaid = freezed,
+    Object? offerPrice = freezed,
+    Object? datePrice = freezed,
+    Object? userDo = freezed,
     Object? isApprove = freezed,
-    Object? nameuserdoning = freezed,
-    Object? nameusertransfer = freezed,
-    Object? fkusertrasfer = freezed,
-    Object? mobileuser = freezed,
-    Object? total_paid = freezed,
-    Object? ismarketing = freezed,
-    Object? address_client = freezed,
-    Object? descActivController = freezed,
-    Object? presystem = freezed,
-    Object? presystemtitle = freezed,
-    Object? sourcclient = freezed,
-    Object? activity_type_fk = freezed,
-    Object? activity_type_title = freezed,
+    Object? nameUserDoing = freezed,
+    Object? nameUserTransfer = freezed,
+    Object? fkUserTrasfer = freezed,
+    Object? mobileUser = freezed,
+    Object? totalPaid = freezed,
+    Object? isMarketing = freezed,
+    Object? addressClient = freezed,
+    Object? descriptionActiveController = freezed,
+    Object? preSystem = freezed,
+    Object? preSystemTitle = freezed,
+    Object? sourceClient = freezed,
+    Object? activityTypeFk = freezed,
+    Object? activityTypeTitle = freezed,
     Object? phone = freezed,
-    Object? user_add = freezed,
+    Object? userAdd = freezed,
     Object? nameAdduser = freezed,
-    Object? date_visit_Client = freezed,
+    Object? dateVisitClient = freezed,
     Object? tag = freezed,
     Object? doneVisit = freezed,
     Object? doneTransfer = freezed,
-    Object? name_city = freezed,
+    Object? nameCity = freezed,
     Object? nameMainCity = freezed,
     Object? idMainCity = freezed,
-    Object? IdCustomer = freezed,
+    Object? customerId = freezed,
     Object? userAddEmail = freezed,
-    Object? dateRecive = freezed,
+    Object? dateReceive = freezed,
   }) {
     return _then(_$_ClientModel(
       idClients: freezed == idClients
@@ -613,13 +613,13 @@ class __$$_ClientModelCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
-      fkRegoin: freezed == fkRegoin
-          ? _value.fkRegoin
-          : fkRegoin // ignore: cast_nullable_to_non_nullable
+      fkRegion: freezed == fkRegion
+          ? _value.fkRegion
+          : fkRegion // ignore: cast_nullable_to_non_nullable
               as String?,
-      fkcountry: freezed == fkcountry
-          ? _value.fkcountry
-          : fkcountry // ignore: cast_nullable_to_non_nullable
+      fkCountry: freezed == fkCountry
+          ? _value.fkCountry
+          : fkCountry // ignore: cast_nullable_to_non_nullable
               as String?,
       dateCreate: freezed == dateCreate
           ? _value.dateCreate
@@ -641,9 +641,9 @@ class __$$_ClientModelCopyWithImpl<$Res>
           ? _value.mobile
           : mobile // ignore: cast_nullable_to_non_nullable
               as String?,
-      dateChangetype: freezed == dateChangetype
-          ? _value.dateChangetype
-          : dateChangetype // ignore: cast_nullable_to_non_nullable
+      dateChangeType: freezed == dateChangeType
+          ? _value.dateChangeType
+          : dateChangeType // ignore: cast_nullable_to_non_nullable
               as String?,
       reasonChange: freezed == reasonChange
           ? _value.reasonChange
@@ -661,106 +661,106 @@ class __$$_ClientModelCopyWithImpl<$Res>
           ? _value.nameUser
           : nameUser // ignore: cast_nullable_to_non_nullable
               as String?,
-      name_regoin: freezed == name_regoin
-          ? _value.name_regoin
-          : name_regoin // ignore: cast_nullable_to_non_nullable
+      nameRegion: freezed == nameRegion
+          ? _value.nameRegion
+          : nameRegion // ignore: cast_nullable_to_non_nullable
               as String?,
       total: freezed == total
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as String?,
-      amount_paid: freezed == amount_paid
-          ? _value.amount_paid
-          : amount_paid // ignore: cast_nullable_to_non_nullable
+      amountPaid: freezed == amountPaid
+          ? _value.amountPaid
+          : amountPaid // ignore: cast_nullable_to_non_nullable
               as String?,
-      offer_price: freezed == offer_price
-          ? _value.offer_price
-          : offer_price // ignore: cast_nullable_to_non_nullable
+      offerPrice: freezed == offerPrice
+          ? _value.offerPrice
+          : offerPrice // ignore: cast_nullable_to_non_nullable
               as String?,
-      date_price: freezed == date_price
-          ? _value.date_price
-          : date_price // ignore: cast_nullable_to_non_nullable
+      datePrice: freezed == datePrice
+          ? _value.datePrice
+          : datePrice // ignore: cast_nullable_to_non_nullable
               as String?,
-      user_do: freezed == user_do
-          ? _value.user_do
-          : user_do // ignore: cast_nullable_to_non_nullable
+      userDo: freezed == userDo
+          ? _value.userDo
+          : userDo // ignore: cast_nullable_to_non_nullable
               as String?,
       isApprove: freezed == isApprove
           ? _value.isApprove
           : isApprove // ignore: cast_nullable_to_non_nullable
               as String?,
-      nameuserdoning: freezed == nameuserdoning
-          ? _value.nameuserdoning
-          : nameuserdoning // ignore: cast_nullable_to_non_nullable
+      nameUserDoing: freezed == nameUserDoing
+          ? _value.nameUserDoing
+          : nameUserDoing // ignore: cast_nullable_to_non_nullable
               as String?,
-      nameusertransfer: freezed == nameusertransfer
-          ? _value.nameusertransfer
-          : nameusertransfer // ignore: cast_nullable_to_non_nullable
+      nameUserTransfer: freezed == nameUserTransfer
+          ? _value.nameUserTransfer
+          : nameUserTransfer // ignore: cast_nullable_to_non_nullable
               as String?,
-      fkusertrasfer: freezed == fkusertrasfer
-          ? _value.fkusertrasfer
-          : fkusertrasfer // ignore: cast_nullable_to_non_nullable
+      fkUserTrasfer: freezed == fkUserTrasfer
+          ? _value.fkUserTrasfer
+          : fkUserTrasfer // ignore: cast_nullable_to_non_nullable
               as String?,
-      mobileuser: freezed == mobileuser
-          ? _value.mobileuser
-          : mobileuser // ignore: cast_nullable_to_non_nullable
+      mobileUser: freezed == mobileUser
+          ? _value.mobileUser
+          : mobileUser // ignore: cast_nullable_to_non_nullable
               as String?,
-      total_paid: freezed == total_paid
-          ? _value.total_paid
-          : total_paid // ignore: cast_nullable_to_non_nullable
+      totalPaid: freezed == totalPaid
+          ? _value.totalPaid
+          : totalPaid // ignore: cast_nullable_to_non_nullable
               as String?,
-      ismarketing: freezed == ismarketing
-          ? _value.ismarketing
-          : ismarketing // ignore: cast_nullable_to_non_nullable
+      isMarketing: freezed == isMarketing
+          ? _value.isMarketing
+          : isMarketing // ignore: cast_nullable_to_non_nullable
               as String?,
-      address_client: freezed == address_client
-          ? _value.address_client
-          : address_client // ignore: cast_nullable_to_non_nullable
+      addressClient: freezed == addressClient
+          ? _value.addressClient
+          : addressClient // ignore: cast_nullable_to_non_nullable
               as String?,
-      descActivController: freezed == descActivController
-          ? _value.descActivController
-          : descActivController // ignore: cast_nullable_to_non_nullable
+      descriptionActiveController: freezed == descriptionActiveController
+          ? _value.descriptionActiveController
+          : descriptionActiveController // ignore: cast_nullable_to_non_nullable
               as String?,
-      presystem: freezed == presystem
-          ? _value.presystem
-          : presystem // ignore: cast_nullable_to_non_nullable
+      preSystem: freezed == preSystem
+          ? _value.preSystem
+          : preSystem // ignore: cast_nullable_to_non_nullable
               as String?,
-      presystemtitle: freezed == presystemtitle
-          ? _value.presystemtitle
-          : presystemtitle // ignore: cast_nullable_to_non_nullable
+      preSystemTitle: freezed == preSystemTitle
+          ? _value.preSystemTitle
+          : preSystemTitle // ignore: cast_nullable_to_non_nullable
               as String?,
-      sourcclient: freezed == sourcclient
-          ? _value.sourcclient
-          : sourcclient // ignore: cast_nullable_to_non_nullable
+      sourceClient: freezed == sourceClient
+          ? _value.sourceClient
+          : sourceClient // ignore: cast_nullable_to_non_nullable
               as String?,
-      activity_type_fk: freezed == activity_type_fk
-          ? _value.activity_type_fk
-          : activity_type_fk // ignore: cast_nullable_to_non_nullable
+      activityTypeFk: freezed == activityTypeFk
+          ? _value.activityTypeFk
+          : activityTypeFk // ignore: cast_nullable_to_non_nullable
               as String?,
-      activity_type_title: freezed == activity_type_title
-          ? _value.activity_type_title
-          : activity_type_title // ignore: cast_nullable_to_non_nullable
+      activityTypeTitle: freezed == activityTypeTitle
+          ? _value.activityTypeTitle
+          : activityTypeTitle // ignore: cast_nullable_to_non_nullable
               as String?,
       phone: freezed == phone
           ? _value.phone
           : phone // ignore: cast_nullable_to_non_nullable
               as String?,
-      user_add: freezed == user_add
-          ? _value.user_add
-          : user_add // ignore: cast_nullable_to_non_nullable
+      userAdd: freezed == userAdd
+          ? _value.userAdd
+          : userAdd // ignore: cast_nullable_to_non_nullable
               as String?,
       nameAdduser: freezed == nameAdduser
           ? _value.nameAdduser
           : nameAdduser // ignore: cast_nullable_to_non_nullable
               as String?,
-      date_visit_Client: freezed == date_visit_Client
-          ? _value.date_visit_Client
-          : date_visit_Client // ignore: cast_nullable_to_non_nullable
+      dateVisitClient: freezed == dateVisitClient
+          ? _value.dateVisitClient
+          : dateVisitClient // ignore: cast_nullable_to_non_nullable
               as String?,
       tag: freezed == tag
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as bool?,
       doneVisit: freezed == doneVisit
           ? _value.doneVisit
           : doneVisit // ignore: cast_nullable_to_non_nullable
@@ -769,9 +769,9 @@ class __$$_ClientModelCopyWithImpl<$Res>
           ? _value.doneTransfer
           : doneTransfer // ignore: cast_nullable_to_non_nullable
               as String?,
-      name_city: freezed == name_city
-          ? _value.name_city
-          : name_city // ignore: cast_nullable_to_non_nullable
+      nameCity: freezed == nameCity
+          ? _value.nameCity
+          : nameCity // ignore: cast_nullable_to_non_nullable
               as String?,
       nameMainCity: freezed == nameMainCity
           ? _value.nameMainCity
@@ -781,17 +781,17 @@ class __$$_ClientModelCopyWithImpl<$Res>
           ? _value.idMainCity
           : idMainCity // ignore: cast_nullable_to_non_nullable
               as String?,
-      IdCustomer: freezed == IdCustomer
-          ? _value.IdCustomer
-          : IdCustomer // ignore: cast_nullable_to_non_nullable
+      customerId: freezed == customerId
+          ? _value.customerId
+          : customerId // ignore: cast_nullable_to_non_nullable
               as String?,
       userAddEmail: freezed == userAddEmail
           ? _value.userAddEmail
           : userAddEmail // ignore: cast_nullable_to_non_nullable
               as String?,
-      dateRecive: freezed == dateRecive
-          ? _value.dateRecive
-          : dateRecive // ignore: cast_nullable_to_non_nullable
+      dateReceive: freezed == dateReceive
+          ? _value.dateReceive
+          : dateReceive // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -799,7 +799,7 @@ class __$$_ClientModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClientModel implements _ClientModel {
+class _$_ClientModel extends _ClientModel {
   const _$_ClientModel(
       {@JsonKey(name: "id_clients") this.idClients,
       @JsonKey(name: "name_client") this.nameClient,
@@ -807,51 +807,52 @@ class _$_ClientModel implements _ClientModel {
       @JsonKey(name: "type_job") this.typeJob,
       @JsonKey(name: "city") this.city,
       @JsonKey(name: "location") this.location,
-      @JsonKey(name: "fk_regoin") this.fkRegoin,
-      @JsonKey(name: "fkcountry") this.fkcountry,
+      @JsonKey(name: "fk_regoin") this.fkRegion,
+      @JsonKey(name: "fkcountry") this.fkCountry,
       @JsonKey(name: "date_create") this.dateCreate,
       @JsonKey(name: "type_client") this.typeClient,
       @JsonKey(name: "fk_user") this.fkUser,
       @JsonKey(name: "date_transfer") this.dateTransfer,
       @JsonKey(name: "mobile") this.mobile,
-      @JsonKey(name: "date_changetype") this.dateChangetype,
+      @JsonKey(name: "date_changetype") this.dateChangeType,
       @JsonKey(name: "reason_change") this.reasonChange,
       @JsonKey(name: "reason_transfer") this.reasonTransfer,
       @JsonKey(name: "nameCountry") this.nameCountry,
       @JsonKey(name: "nameUser") this.nameUser,
-      @JsonKey(name: "name_regoin") this.name_regoin,
+      @JsonKey(name: "name_regoin") this.nameRegion,
       @JsonKey(name: "total") this.total,
-      @JsonKey(name: "amount_paid") this.amount_paid,
-      @JsonKey(name: "offer_price") this.offer_price,
-      @JsonKey(name: "date_price") this.date_price,
-      @JsonKey(name: "user_do") this.user_do,
+      @JsonKey(name: "amount_paid") this.amountPaid,
+      @JsonKey(name: "offer_price") this.offerPrice,
+      @JsonKey(name: "date_price") this.datePrice,
+      @JsonKey(name: "user_do") this.userDo,
       @JsonKey(name: "isApprove") this.isApprove,
-      @JsonKey(name: "nameuserdoning") this.nameuserdoning,
-      @JsonKey(name: "nameusertransfer") this.nameusertransfer,
-      @JsonKey(name: "fkusertrasfer") this.fkusertrasfer,
-      @JsonKey(name: "mobileuser") this.mobileuser,
-      @JsonKey(name: "total_paid") this.total_paid,
-      @JsonKey(name: "ismarketing") this.ismarketing,
-      @JsonKey(name: "address_client") this.address_client,
-      @JsonKey(name: "descActivController") this.descActivController,
-      @JsonKey(name: "presystem") this.presystem,
-      @JsonKey(name: "presystemtitle") this.presystemtitle,
-      @JsonKey(name: "sourcclient") this.sourcclient,
-      @JsonKey(name: "activity_type_fk") this.activity_type_fk,
-      @JsonKey(name: "activity_type_title") this.activity_type_title,
+      @JsonKey(name: "nameuserdoning") this.nameUserDoing,
+      @JsonKey(name: "nameusertransfer") this.nameUserTransfer,
+      @JsonKey(name: "fkusertrasfer") this.fkUserTrasfer,
+      @JsonKey(name: "mobileuser") this.mobileUser,
+      @JsonKey(name: "total_paid") this.totalPaid,
+      @JsonKey(name: "ismarketing") this.isMarketing,
+      @JsonKey(name: "address_client") this.addressClient,
+      @JsonKey(name: "descActivController") this.descriptionActiveController,
+      @JsonKey(name: "presystem") this.preSystem,
+      @JsonKey(name: "presystemtitle") this.preSystemTitle,
+      @JsonKey(name: "sourcclient") this.sourceClient,
+      @JsonKey(name: "activity_type_fk") this.activityTypeFk,
+      @JsonKey(name: "activity_type_title") this.activityTypeTitle,
       @JsonKey(name: "phone") this.phone,
-      @JsonKey(name: "user_add") this.user_add,
+      @JsonKey(name: "user_add") this.userAdd,
       @JsonKey(name: "nameAdduser") this.nameAdduser,
-      @JsonKey(name: "date_visit_Client") this.date_visit_Client,
-      @JsonKey(name: "tag") this.tag,
+      @JsonKey(name: "date_visit_Client") this.dateVisitClient,
+      @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) this.tag,
       @JsonKey(name: "done_visit") this.doneVisit,
       @JsonKey(name: "done_transfer") this.doneTransfer,
-      @JsonKey(name: "name_city") this.name_city,
+      @JsonKey(name: "name_city") this.nameCity,
       @JsonKey(name: "namemaincity") this.nameMainCity,
       @JsonKey(name: "id_maincity") this.idMainCity,
-      @JsonKey(name: "IDcustomer") this.IdCustomer,
+      @JsonKey(name: "IDcustomer") this.customerId,
       @JsonKey(name: "userAdd_email") this.userAddEmail,
-      @JsonKey(name: "date_recive") this.dateRecive});
+      @JsonKey(name: "date_recive") this.dateReceive})
+      : super._();
 
   factory _$_ClientModel.fromJson(Map<String, dynamic> json) =>
       _$$_ClientModelFromJson(json);
@@ -876,10 +877,10 @@ class _$_ClientModel implements _ClientModel {
   final String? location;
   @override
   @JsonKey(name: "fk_regoin")
-  final String? fkRegoin;
+  final String? fkRegion;
   @override
   @JsonKey(name: "fkcountry")
-  final String? fkcountry;
+  final String? fkCountry;
   @override
   @JsonKey(name: "date_create")
   final String? dateCreate;
@@ -897,7 +898,7 @@ class _$_ClientModel implements _ClientModel {
   final String? mobile;
   @override
   @JsonKey(name: "date_changetype")
-  final String? dateChangetype;
+  final String? dateChangeType;
   @override
   @JsonKey(name: "reason_change")
   final String? reasonChange;
@@ -912,79 +913,79 @@ class _$_ClientModel implements _ClientModel {
   final String? nameUser;
   @override
   @JsonKey(name: "name_regoin")
-  final String? name_regoin;
+  final String? nameRegion;
   @override
   @JsonKey(name: "total")
   final String? total;
   @override
   @JsonKey(name: "amount_paid")
-  final String? amount_paid;
+  final String? amountPaid;
   @override
   @JsonKey(name: "offer_price")
-  final String? offer_price;
+  final String? offerPrice;
   @override
   @JsonKey(name: "date_price")
-  final String? date_price;
+  final String? datePrice;
   @override
   @JsonKey(name: "user_do")
-  final String? user_do;
+  final String? userDo;
   @override
   @JsonKey(name: "isApprove")
   final String? isApprove;
   @override
   @JsonKey(name: "nameuserdoning")
-  final String? nameuserdoning;
+  final String? nameUserDoing;
   @override
   @JsonKey(name: "nameusertransfer")
-  final String? nameusertransfer;
+  final String? nameUserTransfer;
   @override
   @JsonKey(name: "fkusertrasfer")
-  final String? fkusertrasfer;
+  final String? fkUserTrasfer;
   @override
   @JsonKey(name: "mobileuser")
-  final String? mobileuser;
+  final String? mobileUser;
   @override
   @JsonKey(name: "total_paid")
-  final String? total_paid;
+  final String? totalPaid;
   @override
   @JsonKey(name: "ismarketing")
-  final String? ismarketing;
+  final String? isMarketing;
   @override
   @JsonKey(name: "address_client")
-  final String? address_client;
+  final String? addressClient;
   @override
   @JsonKey(name: "descActivController")
-  final String? descActivController;
+  final String? descriptionActiveController;
   @override
   @JsonKey(name: "presystem")
-  final String? presystem;
+  final String? preSystem;
   @override
   @JsonKey(name: "presystemtitle")
-  final String? presystemtitle;
+  final String? preSystemTitle;
   @override
   @JsonKey(name: "sourcclient")
-  final String? sourcclient;
+  final String? sourceClient;
   @override
   @JsonKey(name: "activity_type_fk")
-  final String? activity_type_fk;
+  final String? activityTypeFk;
   @override
   @JsonKey(name: "activity_type_title")
-  final String? activity_type_title;
+  final String? activityTypeTitle;
   @override
   @JsonKey(name: "phone")
   final String? phone;
   @override
   @JsonKey(name: "user_add")
-  final String? user_add;
+  final String? userAdd;
   @override
   @JsonKey(name: "nameAdduser")
   final String? nameAdduser;
   @override
   @JsonKey(name: "date_visit_Client")
-  final String? date_visit_Client;
+  final String? dateVisitClient;
   @override
-  @JsonKey(name: "tag")
-  final String? tag;
+  @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson)
+  final bool? tag;
   @override
   @JsonKey(name: "done_visit")
   final String? doneVisit;
@@ -993,7 +994,7 @@ class _$_ClientModel implements _ClientModel {
   final String? doneTransfer;
   @override
   @JsonKey(name: "name_city")
-  final String? name_city;
+  final String? nameCity;
   @override
   @JsonKey(name: "namemaincity")
   final String? nameMainCity;
@@ -1002,17 +1003,17 @@ class _$_ClientModel implements _ClientModel {
   final String? idMainCity;
   @override
   @JsonKey(name: "IDcustomer")
-  final String? IdCustomer;
+  final String? customerId;
   @override
   @JsonKey(name: "userAdd_email")
   final String? userAddEmail;
   @override
   @JsonKey(name: "date_recive")
-  final String? dateRecive;
+  final String? dateReceive;
 
   @override
   String toString() {
-    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegoin: $fkRegoin, fkcountry: $fkcountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangetype: $dateChangetype, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, name_regoin: $name_regoin, total: $total, amount_paid: $amount_paid, offer_price: $offer_price, date_price: $date_price, user_do: $user_do, isApprove: $isApprove, nameuserdoning: $nameuserdoning, nameusertransfer: $nameusertransfer, fkusertrasfer: $fkusertrasfer, mobileuser: $mobileuser, total_paid: $total_paid, ismarketing: $ismarketing, address_client: $address_client, descActivController: $descActivController, presystem: $presystem, presystemtitle: $presystemtitle, sourcclient: $sourcclient, activity_type_fk: $activity_type_fk, activity_type_title: $activity_type_title, phone: $phone, user_add: $user_add, nameAdduser: $nameAdduser, date_visit_Client: $date_visit_Client, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, name_city: $name_city, nameMainCity: $nameMainCity, idMainCity: $idMainCity, IdCustomer: $IdCustomer, userAddEmail: $userAddEmail, dateRecive: $dateRecive)';
+    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegion: $fkRegion, fkCountry: $fkCountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangeType: $dateChangeType, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, nameRegion: $nameRegion, total: $total, amountPaid: $amountPaid, offerPrice: $offerPrice, datePrice: $datePrice, userDo: $userDo, isApprove: $isApprove, nameUserDoing: $nameUserDoing, nameUserTransfer: $nameUserTransfer, fkUserTrasfer: $fkUserTrasfer, mobileUser: $mobileUser, totalPaid: $totalPaid, isMarketing: $isMarketing, addressClient: $addressClient, descriptionActiveController: $descriptionActiveController, preSystem: $preSystem, preSystemTitle: $preSystemTitle, sourceClient: $sourceClient, activityTypeFk: $activityTypeFk, activityTypeTitle: $activityTypeTitle, phone: $phone, userAdd: $userAdd, nameAdduser: $nameAdduser, dateVisitClient: $dateVisitClient, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, nameCity: $nameCity, nameMainCity: $nameMainCity, idMainCity: $idMainCity, customerId: $customerId, userAddEmail: $userAddEmail, dateReceive: $dateReceive)';
   }
 
   @override
@@ -1030,10 +1031,10 @@ class _$_ClientModel implements _ClientModel {
             (identical(other.city, city) || other.city == city) &&
             (identical(other.location, location) ||
                 other.location == location) &&
-            (identical(other.fkRegoin, fkRegoin) ||
-                other.fkRegoin == fkRegoin) &&
-            (identical(other.fkcountry, fkcountry) ||
-                other.fkcountry == fkcountry) &&
+            (identical(other.fkRegion, fkRegion) ||
+                other.fkRegion == fkRegion) &&
+            (identical(other.fkCountry, fkCountry) ||
+                other.fkCountry == fkCountry) &&
             (identical(other.dateCreate, dateCreate) ||
                 other.dateCreate == dateCreate) &&
             (identical(other.typeClient, typeClient) ||
@@ -1042,8 +1043,8 @@ class _$_ClientModel implements _ClientModel {
             (identical(other.dateTransfer, dateTransfer) ||
                 other.dateTransfer == dateTransfer) &&
             (identical(other.mobile, mobile) || other.mobile == mobile) &&
-            (identical(other.dateChangetype, dateChangetype) ||
-                other.dateChangetype == dateChangetype) &&
+            (identical(other.dateChangeType, dateChangeType) ||
+                other.dateChangeType == dateChangeType) &&
             (identical(other.reasonChange, reasonChange) ||
                 other.reasonChange == reasonChange) &&
             (identical(other.reasonTransfer, reasonTransfer) ||
@@ -1052,68 +1053,67 @@ class _$_ClientModel implements _ClientModel {
                 other.nameCountry == nameCountry) &&
             (identical(other.nameUser, nameUser) ||
                 other.nameUser == nameUser) &&
-            (identical(other.name_regoin, name_regoin) ||
-                other.name_regoin == name_regoin) &&
+            (identical(other.nameRegion, nameRegion) ||
+                other.nameRegion == nameRegion) &&
             (identical(other.total, total) || other.total == total) &&
-            (identical(other.amount_paid, amount_paid) ||
-                other.amount_paid == amount_paid) &&
-            (identical(other.offer_price, offer_price) ||
-                other.offer_price == offer_price) &&
-            (identical(other.date_price, date_price) ||
-                other.date_price == date_price) &&
-            (identical(other.user_do, user_do) || other.user_do == user_do) &&
+            (identical(other.amountPaid, amountPaid) ||
+                other.amountPaid == amountPaid) &&
+            (identical(other.offerPrice, offerPrice) ||
+                other.offerPrice == offerPrice) &&
+            (identical(other.datePrice, datePrice) ||
+                other.datePrice == datePrice) &&
+            (identical(other.userDo, userDo) || other.userDo == userDo) &&
             (identical(other.isApprove, isApprove) ||
                 other.isApprove == isApprove) &&
-            (identical(other.nameuserdoning, nameuserdoning) ||
-                other.nameuserdoning == nameuserdoning) &&
-            (identical(other.nameusertransfer, nameusertransfer) ||
-                other.nameusertransfer == nameusertransfer) &&
-            (identical(other.fkusertrasfer, fkusertrasfer) ||
-                other.fkusertrasfer == fkusertrasfer) &&
-            (identical(other.mobileuser, mobileuser) ||
-                other.mobileuser == mobileuser) &&
-            (identical(other.total_paid, total_paid) ||
-                other.total_paid == total_paid) &&
-            (identical(other.ismarketing, ismarketing) ||
-                other.ismarketing == ismarketing) &&
-            (identical(other.address_client, address_client) ||
-                other.address_client == address_client) &&
-            (identical(other.descActivController, descActivController) ||
-                other.descActivController == descActivController) &&
-            (identical(other.presystem, presystem) ||
-                other.presystem == presystem) &&
-            (identical(other.presystemtitle, presystemtitle) ||
-                other.presystemtitle == presystemtitle) &&
-            (identical(other.sourcclient, sourcclient) ||
-                other.sourcclient == sourcclient) &&
-            (identical(other.activity_type_fk, activity_type_fk) ||
-                other.activity_type_fk == activity_type_fk) &&
-            (identical(other.activity_type_title, activity_type_title) ||
-                other.activity_type_title == activity_type_title) &&
+            (identical(other.nameUserDoing, nameUserDoing) ||
+                other.nameUserDoing == nameUserDoing) &&
+            (identical(other.nameUserTransfer, nameUserTransfer) ||
+                other.nameUserTransfer == nameUserTransfer) &&
+            (identical(other.fkUserTrasfer, fkUserTrasfer) ||
+                other.fkUserTrasfer == fkUserTrasfer) &&
+            (identical(other.mobileUser, mobileUser) ||
+                other.mobileUser == mobileUser) &&
+            (identical(other.totalPaid, totalPaid) ||
+                other.totalPaid == totalPaid) &&
+            (identical(other.isMarketing, isMarketing) ||
+                other.isMarketing == isMarketing) &&
+            (identical(other.addressClient, addressClient) ||
+                other.addressClient == addressClient) &&
+            (identical(other.descriptionActiveController, descriptionActiveController) ||
+                other.descriptionActiveController ==
+                    descriptionActiveController) &&
+            (identical(other.preSystem, preSystem) ||
+                other.preSystem == preSystem) &&
+            (identical(other.preSystemTitle, preSystemTitle) ||
+                other.preSystemTitle == preSystemTitle) &&
+            (identical(other.sourceClient, sourceClient) ||
+                other.sourceClient == sourceClient) &&
+            (identical(other.activityTypeFk, activityTypeFk) ||
+                other.activityTypeFk == activityTypeFk) &&
+            (identical(other.activityTypeTitle, activityTypeTitle) ||
+                other.activityTypeTitle == activityTypeTitle) &&
             (identical(other.phone, phone) || other.phone == phone) &&
-            (identical(other.user_add, user_add) ||
-                other.user_add == user_add) &&
+            (identical(other.userAdd, userAdd) || other.userAdd == userAdd) &&
             (identical(other.nameAdduser, nameAdduser) ||
                 other.nameAdduser == nameAdduser) &&
-            (identical(other.date_visit_Client, date_visit_Client) ||
-                other.date_visit_Client == date_visit_Client) &&
+            (identical(other.dateVisitClient, dateVisitClient) ||
+                other.dateVisitClient == dateVisitClient) &&
             (identical(other.tag, tag) || other.tag == tag) &&
             (identical(other.doneVisit, doneVisit) ||
                 other.doneVisit == doneVisit) &&
             (identical(other.doneTransfer, doneTransfer) ||
                 other.doneTransfer == doneTransfer) &&
-            (identical(other.name_city, name_city) ||
-                other.name_city == name_city) &&
+            (identical(other.nameCity, nameCity) ||
+                other.nameCity == nameCity) &&
             (identical(other.nameMainCity, nameMainCity) ||
                 other.nameMainCity == nameMainCity) &&
             (identical(other.idMainCity, idMainCity) ||
                 other.idMainCity == idMainCity) &&
-            (identical(other.IdCustomer, IdCustomer) ||
-                other.IdCustomer == IdCustomer) &&
+            (identical(other.customerId, customerId) ||
+                other.customerId == customerId) &&
             (identical(other.userAddEmail, userAddEmail) ||
                 other.userAddEmail == userAddEmail) &&
-            (identical(other.dateRecive, dateRecive) ||
-                other.dateRecive == dateRecive));
+            (identical(other.dateReceive, dateReceive) || other.dateReceive == dateReceive));
   }
 
   @JsonKey(ignore: true)
@@ -1126,51 +1126,51 @@ class _$_ClientModel implements _ClientModel {
         typeJob,
         city,
         location,
-        fkRegoin,
-        fkcountry,
+        fkRegion,
+        fkCountry,
         dateCreate,
         typeClient,
         fkUser,
         dateTransfer,
         mobile,
-        dateChangetype,
+        dateChangeType,
         reasonChange,
         reasonTransfer,
         nameCountry,
         nameUser,
-        name_regoin,
+        nameRegion,
         total,
-        amount_paid,
-        offer_price,
-        date_price,
-        user_do,
+        amountPaid,
+        offerPrice,
+        datePrice,
+        userDo,
         isApprove,
-        nameuserdoning,
-        nameusertransfer,
-        fkusertrasfer,
-        mobileuser,
-        total_paid,
-        ismarketing,
-        address_client,
-        descActivController,
-        presystem,
-        presystemtitle,
-        sourcclient,
-        activity_type_fk,
-        activity_type_title,
+        nameUserDoing,
+        nameUserTransfer,
+        fkUserTrasfer,
+        mobileUser,
+        totalPaid,
+        isMarketing,
+        addressClient,
+        descriptionActiveController,
+        preSystem,
+        preSystemTitle,
+        sourceClient,
+        activityTypeFk,
+        activityTypeTitle,
         phone,
-        user_add,
+        userAdd,
         nameAdduser,
-        date_visit_Client,
+        dateVisitClient,
         tag,
         doneVisit,
         doneTransfer,
-        name_city,
+        nameCity,
         nameMainCity,
         idMainCity,
-        IdCustomer,
+        customerId,
         userAddEmail,
-        dateRecive
+        dateReceive
       ]);
 
   @JsonKey(ignore: true)
@@ -1187,7 +1187,7 @@ class _$_ClientModel implements _ClientModel {
   }
 }
 
-abstract class _ClientModel implements ClientModel {
+abstract class _ClientModel extends ClientModel {
   const factory _ClientModel(
       {@JsonKey(name: "id_clients") final String? idClients,
       @JsonKey(name: "name_client") final String? nameClient,
@@ -1195,51 +1195,54 @@ abstract class _ClientModel implements ClientModel {
       @JsonKey(name: "type_job") final String? typeJob,
       @JsonKey(name: "city") final String? city,
       @JsonKey(name: "location") final String? location,
-      @JsonKey(name: "fk_regoin") final String? fkRegoin,
-      @JsonKey(name: "fkcountry") final String? fkcountry,
+      @JsonKey(name: "fk_regoin") final String? fkRegion,
+      @JsonKey(name: "fkcountry") final String? fkCountry,
       @JsonKey(name: "date_create") final String? dateCreate,
       @JsonKey(name: "type_client") final String? typeClient,
       @JsonKey(name: "fk_user") final String? fkUser,
       @JsonKey(name: "date_transfer") final String? dateTransfer,
       @JsonKey(name: "mobile") final String? mobile,
-      @JsonKey(name: "date_changetype") final String? dateChangetype,
+      @JsonKey(name: "date_changetype") final String? dateChangeType,
       @JsonKey(name: "reason_change") final String? reasonChange,
       @JsonKey(name: "reason_transfer") final String? reasonTransfer,
       @JsonKey(name: "nameCountry") final String? nameCountry,
       @JsonKey(name: "nameUser") final String? nameUser,
-      @JsonKey(name: "name_regoin") final String? name_regoin,
+      @JsonKey(name: "name_regoin") final String? nameRegion,
       @JsonKey(name: "total") final String? total,
-      @JsonKey(name: "amount_paid") final String? amount_paid,
-      @JsonKey(name: "offer_price") final String? offer_price,
-      @JsonKey(name: "date_price") final String? date_price,
-      @JsonKey(name: "user_do") final String? user_do,
+      @JsonKey(name: "amount_paid") final String? amountPaid,
+      @JsonKey(name: "offer_price") final String? offerPrice,
+      @JsonKey(name: "date_price") final String? datePrice,
+      @JsonKey(name: "user_do") final String? userDo,
       @JsonKey(name: "isApprove") final String? isApprove,
-      @JsonKey(name: "nameuserdoning") final String? nameuserdoning,
-      @JsonKey(name: "nameusertransfer") final String? nameusertransfer,
-      @JsonKey(name: "fkusertrasfer") final String? fkusertrasfer,
-      @JsonKey(name: "mobileuser") final String? mobileuser,
-      @JsonKey(name: "total_paid") final String? total_paid,
-      @JsonKey(name: "ismarketing") final String? ismarketing,
-      @JsonKey(name: "address_client") final String? address_client,
-      @JsonKey(name: "descActivController") final String? descActivController,
-      @JsonKey(name: "presystem") final String? presystem,
-      @JsonKey(name: "presystemtitle") final String? presystemtitle,
-      @JsonKey(name: "sourcclient") final String? sourcclient,
-      @JsonKey(name: "activity_type_fk") final String? activity_type_fk,
-      @JsonKey(name: "activity_type_title") final String? activity_type_title,
+      @JsonKey(name: "nameuserdoning") final String? nameUserDoing,
+      @JsonKey(name: "nameusertransfer") final String? nameUserTransfer,
+      @JsonKey(name: "fkusertrasfer") final String? fkUserTrasfer,
+      @JsonKey(name: "mobileuser") final String? mobileUser,
+      @JsonKey(name: "total_paid") final String? totalPaid,
+      @JsonKey(name: "ismarketing") final String? isMarketing,
+      @JsonKey(name: "address_client") final String? addressClient,
+      @JsonKey(name: "descActivController")
+      final String? descriptionActiveController,
+      @JsonKey(name: "presystem") final String? preSystem,
+      @JsonKey(name: "presystemtitle") final String? preSystemTitle,
+      @JsonKey(name: "sourcclient") final String? sourceClient,
+      @JsonKey(name: "activity_type_fk") final String? activityTypeFk,
+      @JsonKey(name: "activity_type_title") final String? activityTypeTitle,
       @JsonKey(name: "phone") final String? phone,
-      @JsonKey(name: "user_add") final String? user_add,
+      @JsonKey(name: "user_add") final String? userAdd,
       @JsonKey(name: "nameAdduser") final String? nameAdduser,
-      @JsonKey(name: "date_visit_Client") final String? date_visit_Client,
-      @JsonKey(name: "tag") final String? tag,
+      @JsonKey(name: "date_visit_Client") final String? dateVisitClient,
+      @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) final bool? tag,
       @JsonKey(name: "done_visit") final String? doneVisit,
       @JsonKey(name: "done_transfer") final String? doneTransfer,
-      @JsonKey(name: "name_city") final String? name_city,
+      @JsonKey(name: "name_city") final String? nameCity,
       @JsonKey(name: "namemaincity") final String? nameMainCity,
       @JsonKey(name: "id_maincity") final String? idMainCity,
-      @JsonKey(name: "IDcustomer") final String? IdCustomer,
+      @JsonKey(name: "IDcustomer") final String? customerId,
       @JsonKey(name: "userAdd_email") final String? userAddEmail,
-      @JsonKey(name: "date_recive") final String? dateRecive}) = _$_ClientModel;
+      @JsonKey(name: "date_recive")
+      final String? dateReceive}) = _$_ClientModel;
+  const _ClientModel._() : super._();
 
   factory _ClientModel.fromJson(Map<String, dynamic> json) =
       _$_ClientModel.fromJson;
@@ -1264,10 +1267,10 @@ abstract class _ClientModel implements ClientModel {
   String? get location;
   @override
   @JsonKey(name: "fk_regoin")
-  String? get fkRegoin;
+  String? get fkRegion;
   @override
   @JsonKey(name: "fkcountry")
-  String? get fkcountry;
+  String? get fkCountry;
   @override
   @JsonKey(name: "date_create")
   String? get dateCreate;
@@ -1285,7 +1288,7 @@ abstract class _ClientModel implements ClientModel {
   String? get mobile;
   @override
   @JsonKey(name: "date_changetype")
-  String? get dateChangetype;
+  String? get dateChangeType;
   @override
   @JsonKey(name: "reason_change")
   String? get reasonChange;
@@ -1300,79 +1303,79 @@ abstract class _ClientModel implements ClientModel {
   String? get nameUser;
   @override
   @JsonKey(name: "name_regoin")
-  String? get name_regoin;
+  String? get nameRegion;
   @override
   @JsonKey(name: "total")
   String? get total;
   @override
   @JsonKey(name: "amount_paid")
-  String? get amount_paid;
+  String? get amountPaid;
   @override
   @JsonKey(name: "offer_price")
-  String? get offer_price;
+  String? get offerPrice;
   @override
   @JsonKey(name: "date_price")
-  String? get date_price;
+  String? get datePrice;
   @override
   @JsonKey(name: "user_do")
-  String? get user_do;
+  String? get userDo;
   @override
   @JsonKey(name: "isApprove")
   String? get isApprove;
   @override
   @JsonKey(name: "nameuserdoning")
-  String? get nameuserdoning;
+  String? get nameUserDoing;
   @override
   @JsonKey(name: "nameusertransfer")
-  String? get nameusertransfer;
+  String? get nameUserTransfer;
   @override
   @JsonKey(name: "fkusertrasfer")
-  String? get fkusertrasfer;
+  String? get fkUserTrasfer;
   @override
   @JsonKey(name: "mobileuser")
-  String? get mobileuser;
+  String? get mobileUser;
   @override
   @JsonKey(name: "total_paid")
-  String? get total_paid;
+  String? get totalPaid;
   @override
   @JsonKey(name: "ismarketing")
-  String? get ismarketing;
+  String? get isMarketing;
   @override
   @JsonKey(name: "address_client")
-  String? get address_client;
+  String? get addressClient;
   @override
   @JsonKey(name: "descActivController")
-  String? get descActivController;
+  String? get descriptionActiveController;
   @override
   @JsonKey(name: "presystem")
-  String? get presystem;
+  String? get preSystem;
   @override
   @JsonKey(name: "presystemtitle")
-  String? get presystemtitle;
+  String? get preSystemTitle;
   @override
   @JsonKey(name: "sourcclient")
-  String? get sourcclient;
+  String? get sourceClient;
   @override
   @JsonKey(name: "activity_type_fk")
-  String? get activity_type_fk;
+  String? get activityTypeFk;
   @override
   @JsonKey(name: "activity_type_title")
-  String? get activity_type_title;
+  String? get activityTypeTitle;
   @override
   @JsonKey(name: "phone")
   String? get phone;
   @override
   @JsonKey(name: "user_add")
-  String? get user_add;
+  String? get userAdd;
   @override
   @JsonKey(name: "nameAdduser")
   String? get nameAdduser;
   @override
   @JsonKey(name: "date_visit_Client")
-  String? get date_visit_Client;
+  String? get dateVisitClient;
   @override
-  @JsonKey(name: "tag")
-  String? get tag;
+  @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson)
+  bool? get tag;
   @override
   @JsonKey(name: "done_visit")
   String? get doneVisit;
@@ -1381,7 +1384,7 @@ abstract class _ClientModel implements ClientModel {
   String? get doneTransfer;
   @override
   @JsonKey(name: "name_city")
-  String? get name_city;
+  String? get nameCity;
   @override
   @JsonKey(name: "namemaincity")
   String? get nameMainCity;
@@ -1390,13 +1393,13 @@ abstract class _ClientModel implements ClientModel {
   String? get idMainCity;
   @override
   @JsonKey(name: "IDcustomer")
-  String? get IdCustomer;
+  String? get customerId;
   @override
   @JsonKey(name: "userAdd_email")
   String? get userAddEmail;
   @override
   @JsonKey(name: "date_recive")
-  String? get dateRecive;
+  String? get dateReceive;
   @override
   @JsonKey(ignore: true)
   _$$_ClientModelCopyWith<_$_ClientModel> get copyWith =>

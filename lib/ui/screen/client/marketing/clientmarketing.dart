@@ -343,7 +343,7 @@ class _clientmarketingState extends State<clientmarketing> {
   }
 
   void filtershow() {
-    print("******* filter ******** ");
+
     context.read<ClientProvider>().filterClientMarketingSalesList(
           activity: activity,
           idUser: iduser,
@@ -351,7 +351,7 @@ class _clientmarketingState extends State<clientmarketing> {
           typeClient: typeclientvalue,
         );
 
-    // print(typeclientvalue);
+    //
     // if(typeclientvalue=='الكل'){
     //   Provider.of<client_vm>(context, listen: false) .resetlist();
     // }

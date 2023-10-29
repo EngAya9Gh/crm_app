@@ -112,7 +112,7 @@ class _support_viewState extends State<support_view> {
                         //               borderRadius: BorderRadius.circular(10)),
                         //           buttons: ['الكل','بالإنتظار','تم التركيب'],
                         //           onSelected: (index,isselected){
-                        //             print(index);
+                        //             
                         //             //setState(() {
                         //             typepayController=index.toString();
                         //             selectedProvider.changeinstall(index);
@@ -202,8 +202,8 @@ class _support_viewState extends State<support_view> {
   }
 
     void filtershow(){
-    print(regoin);
-    // print(typeclientvalue);
+    
+    // 
     //   Provider.of<invoice_vm>(context,listen: false)
     //       .getclienttype_filter(typeclientvalue!,regoin,'only');
     Provider.of<invoice_vm>(context,listen: false)

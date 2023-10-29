@@ -15,8 +15,8 @@ class buildCardUsers extends StatelessWidget {
   UserModel usermodell;
   @override
   Widget build(BuildContext context) {
-    print('dd');
-    print( usermodell.img_thumbnail.toString().trim().length);
+    
+    
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 10, top: 5),
       child: InkWell(

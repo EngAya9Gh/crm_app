@@ -112,7 +112,7 @@ class _addinvoiceState extends State<addinvoice> {
     numTaxController.dispose();
     userclientController.dispose();
     addressController.dispose();
-    print('in dispos add invoice *****************');
+    
     //_resetState();
     //await FilePicker.platform.clearTemporaryFiles();
     super.dispose();
@@ -131,7 +131,7 @@ class _addinvoiceState extends State<addinvoice> {
 
       invoiceViewmodel.listproductinvoic = [];
       invoiceViewmodel.set_total('0'.toString());
-      print('init in addinvoice screen main');
+      
       totalController = '0';
       _invoice = widget.invoice;
       numbranchController.addListener(() {
@@ -163,9 +163,9 @@ class _addinvoiceState extends State<addinvoice> {
 
         typepayController = _invoice!.typePay.toString();
         currencyController = _invoice!.currency_name == null ? 1 : int.parse(_invoice!.currency_name.toString());
-        print(typepayController.toString());
+        
         typeinstallController = _invoice!.typeInstallation.toString();
-        print(typeinstallController);
+        
         if (_invoice!.ready_install != null) readyinstallController = _invoice!.ready_install!;
 
         noteController.text = _invoice!.notes.toString();
@@ -182,7 +182,7 @@ class _addinvoiceState extends State<addinvoice> {
         /// add invoice
         // Provider.of<invoice_vm>(context,listen: false)
         //     .listinvoiceClient.add(
-        print('in else invoice');
+        
         invoiceViewmodel.initAttachFiles([]);
 
         _invoice = InvoiceModel(
@@ -220,14 +220,14 @@ class _addinvoiceState extends State<addinvoice> {
         }
       });
       Provider.of<selected_button_provider>(context, listen: false).selectValuetypepay(int.parse(typepayController));
-      print(typepayController);
+      
 
       context.read<selected_button_provider>()
         ..selectValuereadyinstall(int.parse(readyinstallController), isInit: true)
         ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
         ..selectValueCurrency(int.parse(currencyController.toString()));
 
-      print(typeinstallController);
+      
     });
     super.initState();
   }
@@ -492,7 +492,7 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['نقدا', 'تحويل'],
                                 onSelected: (_, index, isselected) {
-                                  print(index);
+                                  
                                   //setState(() {
                                   typepayController = index.toString();
                                   selectedProvider.selectValuetypepay(index);
@@ -532,7 +532,7 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['ميداني', 'اونلاين'],
                                 onSelected: (_, index, isselected) {
-                                  print(index);
+                                  
                                   //setState(() {
                                   typeinstallController = index.toString();
                                   selectedProvider.selectValuetypeinstall(index);
@@ -576,7 +576,7 @@ class _addinvoiceState extends State<addinvoice> {
                       //                     GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                       //                 buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
                       //                 onSelected: (_, index, isselected) {
-                      //                   print(index);
+                      //                   
                       //                   //setState(() {
                       //                   readyinstallController = index.toString();
                       //                   selectedProvider.selectValuereadyinstall(index);
@@ -616,7 +616,7 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: [' USD دولار', '  SAR ريال'],
                                 onSelected: (_, index, isselected) {
-                                  print(index);
+                                  
                                   //setState(() {
                                   currencyController = index;
                                   selectedProvider.selectValueCurrency(index);
@@ -1521,37 +1521,15 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   clear(BuildContext context, String value, List<ProductsInvoice>? _products) async {
-    // int index=  Provider.of<client_vm>(context,listen: false)
-    //     .listClient.indexWhere(
-    //           (element) => element.idClients==widget.itemClient.idClients);
-    //  //
-    //
-    // if(index!=-1) {
-    //   double total_paid=0;
-    //
-    //   total_paid=double.parse(Provider.of<client_vm>(context,listen: false)
-    //       .listClient[index].total_paid.toString());
-    //
-    //   total_paid=total_paid+(
-    //        double.parse(totalController)
-    //       -double.parse(amount_paidController.text));
-    //
-    //   Provider.of<client_vm>(context,listen: false).listClient[index]
-    //       .total_paid  =total_paid.toString();
-    // }
-    print('in clear');
-    //widget.indexinvoice = 0;
+
     _products =
-        // Provider
-        // .of<invoice_vm>(context, listen: false)
-        // .listinvoiceClient[widget.indexinvoice]
-        _invoice!.products;
-    print('length ' + _products!.length.toString());
+        _invoice!.products ?? [];
+    
     for (int i = 0; i < _products.length; i++) {
-      print('inside for');
+      
       if (_products[i].idInvoiceProduct == null || _products[i].idInvoiceProduct == "null") {
-        print('inside if');
-        Map<String, dynamic?> body = _products[i].toJson();
+        
+        Map<String, dynamic> body = _products[i].toJson();
         // if(value!="")//update
         // {}
         body.addAll({
@@ -1568,9 +1546,9 @@ class _addinvoiceState extends State<addinvoice> {
       } //if
       else {
         //update product in invoice
-        print('before else');
-        Map<String, dynamic?> body = _products[i].toJson();
-        print('after else');
+        
+        Map<String, dynamic> body = _products[i].toJson();
+        
         bool res = await invoiceViewmodel.update_invoiceProduct_vm(body, _products[i].idInvoiceProduct.toString());
       }
     }
@@ -1601,7 +1579,7 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   error(context) {
-    print("error method");
+    
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
   }
@@ -1610,7 +1588,7 @@ class _addinvoiceState extends State<addinvoice> {
 
   Future<File> createFileOfPdfUrl(String urlparam) async {
     Completer<File> completer = Completer();
-    print("Start download file from internet!");
+    
     try {
       final url = urlparam;
       final filename = url.substring(url.lastIndexOf("/") + 1);
@@ -1618,8 +1596,8 @@ class _addinvoiceState extends State<addinvoice> {
       var response = await request.close();
       var bytes = await consolidateHttpClientResponseBytes(response);
       var dir = await getApplicationDocumentsDirectory();
-      print("Download files");
-      print("${dir.path}/$filename");
+      
+      
       File file = File("${dir.path}/$filename");
 
       await file.writeAsBytes(bytes, flush: true);

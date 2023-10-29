@@ -15,7 +15,7 @@ class product_vm extends ChangeNotifier {
   UserModel? usercurrent;
 
   void setvalue(user){
-    print('in set usercurrent in product vm');
+    
     usercurrent=user;
     notifyListeners();
   }
@@ -25,7 +25,7 @@ class product_vm extends ChangeNotifier {
     List<ProductModel> templistProduct = [];
     // code to convert the first character to uppercase
     String searchKey =productName;//
-    print(productName);
+    
     if(productName.isNotEmpty) {
       if(listProduct.isNotEmpty ) {
          listProduct.forEach((element) {
@@ -45,8 +45,8 @@ class product_vm extends ChangeNotifier {
     isloading=true;
     notifyListeners();
     // listProduct.clear();
-    print('after clear');
-    print(listProduct.length);
+    
+    
     listProduct = await ProductService()
         .getAllProduct(usercurrent!.fkCountry.toString());
     isloading=false;
@@ -75,7 +75,7 @@ class product_vm extends ChangeNotifier {
   Future<String> deleteProduct(String? id_product) async {
     //listProduct=[];
     String res = await ProductService().deleteProductById(id_product!);
-    print(res);
+    
       if(res=="done"){
         final index=listProduct.indexWhere(
                 (element) =>

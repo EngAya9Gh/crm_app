@@ -112,8 +112,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
             .checkPrivilege('97')==true ||
         Provider.of<PrivilegeProvider>(context,listen: false)
             .checkPrivilege('98')==true ) {
-      print(type);
-      print(paramprivilge);
+      
+      
       if(idregoin=='0'){
         type='userSum';
       }
@@ -154,7 +154,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
       rowsdata=[];
       for (int i = 0; i < data.length; i++) {
         tempdata.add(BarModel.fromJson(data[i]));
-        print(tempdata[i].y);
+        
         totalval+=tempdata[i].y;
         rowsdata.add(
             DataRow(
@@ -252,7 +252,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                     buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['سنوي', 'شهري', 'يومي'],
                                 onSelected: (_,index, isselected) {
-                                  print(index);
+                                  
                                   switch(index){
                                     case 0:
                                       type='dateyear';
@@ -509,7 +509,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                         _selectedDatemonth = dateTime;
                                       });
 
-                                      print(_selectedDatemonth);
+                                      
                                       // close the dialog when year is selected.
                                       Navigator.pop(context);
                                       getData();
@@ -748,7 +748,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });
@@ -766,7 +766,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });

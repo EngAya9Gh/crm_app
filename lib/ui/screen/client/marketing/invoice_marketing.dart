@@ -117,8 +117,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
                                 onChanged: (value) {
                                   cart.changelisttype_install(value.toString());
                                   typeclientvalue = value.toString();
-                                  print('filter state' + value.toString());
-                                  print(typeclientvalue);
+
+
 
                                   filtershow();
                                 },
@@ -193,8 +193,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
   }
 
   void filtershow({String? query}) {
-    print(regoin);
-    print(typeclientvalue);
+
+
     Provider.of<invoice_vm>(context, listen: false)
         // .getclienttype_marketing(typeclientvalue,regoin,'only');
         .onFilterInvoice(typeclientvalue, regoin, query);

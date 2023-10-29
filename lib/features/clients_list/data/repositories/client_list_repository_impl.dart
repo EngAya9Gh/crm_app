@@ -17,12 +17,19 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   Future<Result<ResponseWrapper<List<ClientModel>>>> getAllClients(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getAllClientsList(body));
   }
+
   @override
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getClientsByRegionList(body));
   }
+
   @override
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByUser(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getClientsByUserList(body));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsWithFilter(Map<String, dynamic> body) {
+    return toApiResult(() => datasource.getAllClientsWithFilterList(body));
   }
 }

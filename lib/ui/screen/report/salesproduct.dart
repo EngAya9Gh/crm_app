@@ -140,7 +140,7 @@ class _salesproductState extends State<salesproduct> {
       rowsdata = [];
       for (int i = 0; i < data.length; i++) {
         tempData.add(BarModel.fromJson(data[i]));
-        print(tempData[i].y);
+        
         totalval += tempData[i].y;
         rowsdata.add(DataRow(
           cells: <DataCell>[
@@ -247,7 +247,7 @@ class _salesproductState extends State<salesproduct> {
                         options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                         buttons: ['سنوي', 'شهري', 'يومي'],
                         onSelected: (_, index, isselected) {
-                          print(index);
+                          
                           switch (index) {
                             case 0:
                               type = 'dateyear';
@@ -479,7 +479,7 @@ class _salesproductState extends State<salesproduct> {
                                               _selectedDatemonth = dateTime;
                                             });
 
-                                            print(_selectedDatemonth);
+                                            
                                             // close the dialog when year is selected.
                                             Navigator.pop(context);
                                             getData();
@@ -590,7 +590,7 @@ class _salesproductState extends State<salesproduct> {
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['الكل', 'أجهزة', 'برامج'],
                         onSelected: (_, index, isselected) {
-                          print(index);
+                          
                           switch (index) {
                             case 0:
                               typeproduct = 'الكل';
@@ -784,7 +784,7 @@ class _salesproductState extends State<salesproduct> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
@@ -802,7 +802,7 @@ class _salesproductState extends State<salesproduct> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }

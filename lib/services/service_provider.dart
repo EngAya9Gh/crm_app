@@ -15,12 +15,8 @@ class ServiceProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => GetIt.I<CommunicationListBloc>(),
-        ) ,
-        BlocProvider(
-          create: (context) => GetIt.I<ClientsListBloc>(),
-        )
+        BlocProvider(create: (context) => GetIt.I<CommunicationListBloc>()),
+        BlocProvider(create: (context) => GetIt.I<ClientsListBloc>())
       ],
       child: child,
     );

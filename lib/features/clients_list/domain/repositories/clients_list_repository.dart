@@ -6,4 +6,5 @@ abstract class ClientsListRepository{
   Future<Result<ResponseWrapper<List<ClientModel>>>> getAllClients(Map<String, dynamic> body);
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(Map<String, dynamic> body);
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByUser(Map<String, dynamic> body);
+  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsWithFilter(Map<String, dynamic> body);
 }

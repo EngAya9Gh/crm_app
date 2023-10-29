@@ -1,7 +1,7 @@
 abstract class EndPoints {
   EndPoints._();
 
-  static const baseUrl = "http://smartcrm.ws/crm/api/";
+  static const baseUrl = "http://smartcrm.ws/test/api/";
   static const care = _Care();
   static const client= _Client();
   static const users = _Users();
@@ -39,4 +39,5 @@ class _Client {
   final allClientsList = 'client/getClientAll.php';
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
+  final allClientsWithFilter = 'client/getclientAll_filter.php';
 }

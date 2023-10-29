@@ -127,7 +127,7 @@ class _addmanageState extends State<addmanage> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    // 
   }
 
   error(context) {
@@ -136,6 +136,6 @@ class _addmanageState extends State<addmanage> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+    
   }
 }

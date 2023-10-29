@@ -78,10 +78,6 @@ class AgentDistributorViewModel extends ChangeNotifier {
     try {
       isLoadingAction = true;
       notifyListeners();
-
-      print(
-          "agentDistributorActionParams ${agentDistributorActionParams.toMap().toString()} \n"
-          "agentId: $agentId");
       dynamic response;
       if (agentId == null) {
         response = await Api().postRequestWithFile("array",
@@ -102,7 +98,7 @@ class AgentDistributorViewModel extends ChangeNotifier {
       resetAgentDistributorActionParams();
       getAgentsAndDistributors();
     } catch (e, stackTrace) {
-      print("stackTrace $stackTrace");
+      
       isLoadingAction = false;
       notifyListeners();
     }

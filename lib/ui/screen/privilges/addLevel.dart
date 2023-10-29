@@ -96,7 +96,7 @@ class addLevel extends StatelessWidget {
          SnackBar(content: Text('تم إنشاء مستوى جديد'))
      );
      Navigator.pop(context);
-     // print("succ");
+     // 
    }
 
    error(context) {
@@ -105,6 +105,6 @@ class addLevel extends StatelessWidget {
      ScaffoldMessenger.of(context).showSnackBar(
          SnackBar(content: Text('هناك خطأ ما'))
      );
-     print("error");
+     
    }
 }

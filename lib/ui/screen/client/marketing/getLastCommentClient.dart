@@ -85,7 +85,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                       options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                       buttons: ['تفاوض', 'مشترك', 'مستبعد', 'عرض سعر'],
                       onSelected: (_, index, isselected) {
-                        print(index);
+
                         switch (index) {
                           case 0:
                             type = 'تفاوض';

@@ -132,8 +132,8 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                                           //namemanage=value.toString();
                                           cart.changelisttype_install(value.toString());
                                           typeclientvalue=value.toString();
-                                          print('filter state'+value.toString());
-                                          print(typeclientvalue);
+
+
 
                                           filtershow();
                                         },
@@ -297,8 +297,8 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   }
 
   void filtershow(){
-    print(regoin);
-    print(typeclientvalue);
+
+
     Provider.of<invoice_vm>(context,listen: false)
         .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);
 
@@ -317,7 +317,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           Provider.of<invoice_vm>(context,listen: false)
               .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);
@@ -337,7 +337,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           Provider.of<invoice_vm>(context,listen: false)
               .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);

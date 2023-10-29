@@ -46,7 +46,7 @@ class _config_viewState extends State<config_view> {
 
      });
 
-    print("build 3 add");
+
     // taxrate =
     //     _listconfg.firstWhere((element) => element.name_config == 'taxrate');
     super.initState();
@@ -153,8 +153,8 @@ class _config_viewState extends State<config_view> {
                       case 'period_commincation3':
 
                         if(value!=_controllerperiod_commincation3.text) {
-                          print('vvvvvvalue '+value);
-                          print('com   '+_controllerperiod_commincation3.text);
+
+                          
                           Provider.of<config_vm>(context,listen: false)
                           .updateConfig_vm({
                             'value_config':_controllerperiod_commincation3.text,

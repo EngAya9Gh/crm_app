@@ -39,7 +39,7 @@ void initState() {
   Widget build(BuildContext context) {
     _listProd = Provider.of<product_vm>(context, listen: true).listProduct;
     // _isLoading = _listProd.isEmpty ? true : false;
-    print(_listProd);
+    
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButton:

@@ -59,24 +59,24 @@ class _EditProductState extends State<EditProduct> {
   void initState()  {
 
 
-    print(widget.productModel.fkConfig);
+    
     valtaxrate=widget.productModel.fkConfig==null
         ||widget.productModel.fkConfig=="null"?false:true;
-    print(valtaxrate);
-    print(valtaxrate);
+    
+    
 
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
 
         Provider.of<config_vm>(context, listen: false).getAllConfig();
-        print(Provider.of<config_vm>(context, listen: false).listofconfig);
+        
         ////////////////////////////////
         Provider.of<selected_button_provider>(context,listen: false)
             .selectValue(valtype_product);
 
         Provider.of<switch_provider>(context,listen: false)
             .changeboolValue(valtaxrate);
-        print("valtaxrate");
+        
       });
     nameprod= _textName.text=widget.productModel.nameProduct;
     _textprice.text=widget.productModel.priceProduct;
@@ -94,20 +94,20 @@ class _EditProductState extends State<EditProduct> {
 
     List<ConfigModel> _listconfg =
         Provider.of<config_vm>(context, listen: false).listofconfig;
-    print("build 3");
+    
     taxrate =
         _listconfg.firstWhere((element) => element.name_config == 'taxrate');
-    print(taxrate);
+    
   }
 
   @override
   Widget build(BuildContext context) {
     //
     // idCountry= Provider.of<country_vm>(context,listen: false).id_country;
-    // print("build edit prod");
-    // print(idCountry);
+    // 
+    // 
     // Provider.of<config_vm>(context, listen: false).getAllConfig(idCountry!);
-    // print(Provider.of<config_vm>(context, listen: false).listofconfig);
+    // 
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changeLoadingupdateprod(false);
 
@@ -166,8 +166,6 @@ class _EditProductState extends State<EditProduct> {
                                   buttons: ['أجهزة', 'برامج'], //[0,1]
                                   controller: GroupButtonController(
                                     selectedIndex: selectedProvider.isSelected,
-                                    onDisablePressed: (i) =>
-                                        print('Button #$i is disabled'),
                                   ),
                                   onSelected: (_,selected, isselect) {
                                     valtype_product = selected;
@@ -280,10 +278,10 @@ class _EditProductState extends State<EditProduct> {
                                     .changeLoadingupdateprod(true);
 
                                 settaxrate(context);
-                                print("update");
-                                print(valtype_product);
-                                print(valtaxrate);
-                                print(taxrate.id_config);
+                                
+                                
+                                
+                                
                                 valtype_product=   Provider.of<selected_button_provider>(context,listen: false)
                                     .isSelected;
                                 valtaxrate=  Provider.of<switch_provider>(context,listen: false).isSwitched;
@@ -351,7 +349,7 @@ class _EditProductState extends State<EditProduct> {
                                                   .deleteProduct( widget.productModel.idProduct);
                                               Provider.of<LoadProvider>(context,listen: false)
                                                   .changebooldelete(false);
-                                              print(res);
+                                              
                                               if(res=="remove error")
                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                     SnackBar(content: Text("لا يمكن حذف هذا المنتج"))

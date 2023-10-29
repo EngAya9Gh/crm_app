@@ -162,7 +162,7 @@ class _care_page_viewState extends State<care_page_view> {
                                 options: GroupButtonOptions(buttonWidth: 135, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['بالإنتظار', 'تم التقييم'],
                                 onSelected: (_, index, isselected) {
-                                  print(index);
+
                                   switch (index) {
                                     case 0:
                                       type = 'wait';
@@ -268,7 +268,7 @@ class _care_page_viewState extends State<care_page_view> {
                                           GroupButtonOptions(buttonWidth: 40, borderRadius: BorderRadius.circular(10)),
                                       buttons: ['1', '2', '3', '4', '5', '-'],
                                       onSelected: (_, index, isselected) {
-                                        print(index);
+
                                         switch (index) {
                                           case 0:
                                             typeproduct = '1';
@@ -535,7 +535,7 @@ class _care_page_viewState extends State<care_page_view> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+
         //if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         getData();
       });
@@ -554,7 +554,7 @@ class _care_page_viewState extends State<care_page_view> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+
         //if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         getData();
       });

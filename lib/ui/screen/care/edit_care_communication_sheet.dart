@@ -142,10 +142,10 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                             color: Colors.amber,
                           ),
                           onRatingUpdate: (rating) {
-                            print(rating);
+
                             setState(() {
                               rate = rating;
-                              print(rate);
+
                             });
                           },
                         ),

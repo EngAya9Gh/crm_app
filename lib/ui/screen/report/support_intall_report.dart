@@ -124,7 +124,7 @@ class _support_install_reportState extends State<support_install_report> {
       totalval=0;
       for (int i = 0; i < data.length; i++) {
         tempdata.add(BarModel.fromJson(data[i]));
-        print(tempdata[i].y);
+        
         totalval+=tempdata[i].y;
         rowsdata.add(
             DataRow(
@@ -219,7 +219,7 @@ class _support_install_reportState extends State<support_install_report> {
                                     buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['سنوي', 'شهري', 'يومي'],
                                 onSelected: (_,index, isselected) {
-                                  print(index);
+                                  
                                   switch(index){
                                     case 0:
                                       type='dateyear';
@@ -380,7 +380,7 @@ class _support_install_reportState extends State<support_install_report> {
                                         _selectedDatemonth = dateTime;
                                       });
 
-                                      print(_selectedDatemonth);
+                                      
                                       // close the dialog when year is selected.
                                       Navigator.pop(context);
                                       getData();
@@ -641,7 +641,7 @@ class _support_install_reportState extends State<support_install_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });
@@ -659,7 +659,7 @@ class _support_install_reportState extends State<support_install_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         getData();
 
       });

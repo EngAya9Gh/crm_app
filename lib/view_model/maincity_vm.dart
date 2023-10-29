@@ -147,7 +147,7 @@ class maincity_vm extends ChangeNotifier {
     if (listcity.isEmpty) {
       List<dynamic> data = [];
       data = await Api().get(url: url + 'config/getcity.php?fk_maincity=${fkmain}');
-      print(data);
+      
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));
@@ -165,7 +165,7 @@ class maincity_vm extends ChangeNotifier {
     if (listcity.isEmpty) {
       List<dynamic> data = [];
       data = await Api().get(url: url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
-      print(data);
+      
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));

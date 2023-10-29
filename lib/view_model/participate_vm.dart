@@ -10,10 +10,10 @@ class participate_vm extends ChangeNotifier {
   Future<void> get_participate() async {
     var data = await Api().get(url: url + 'agent/get_participate.php');
 
-    print(data);
+    
     List<ParticipateModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
       prodlist.add(ParticipateModel.fromJson(data[i]));
     }
     list_paricipate = prodlist;

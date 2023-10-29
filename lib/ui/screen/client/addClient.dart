@@ -413,13 +413,13 @@ class _addClientState extends State<addClient> {
     // _scaffoldKey.currentState!.showSnackBar(
     //     SnackBar(content: Text(label_Addeduser))
     // );
-    print("succ");
+
   }
 
   error(context) {
     Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_errorAddProd)));
-    print("error");
+
   }
 
   DateTime _currentDate = DateTime.now();

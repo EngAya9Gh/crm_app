@@ -57,17 +57,17 @@
 //   void getmessge(){
 //     FirebaseMessaging.onMessage.listen(
 //             (message) {
-//              print( message.notification!.title);
-//             print( message.notification!.body);
-//             print(  message.data['iduser']);
-//             print(  message.data['nameuser']);
+//              
+//             
+//             
+//             
 //             });
 //     FirebaseMessaging.onMessageOpenedApp.listen(
 //             (message) {
-//           print( message.notification!.title);
-//           print( message.notification!.body);
-//           print(  message.data['iduser']);
-//           print(  message.data['nameuser']);
+//           
+//           
+//           
+//           
 //         });
 //   }
 //

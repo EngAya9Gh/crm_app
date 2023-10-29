@@ -28,8 +28,10 @@ import '../../features/clients_list/domain/use_cases/get_clients_by_region_useca
     as _i15;
 import '../../features/clients_list/domain/use_cases/get_clients_by_user_usecase.dart'
     as _i16;
+import '../../features/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart'
+    as _i17;
 import '../../features/clients_list/presentation/manager/clients_list_bloc.dart'
-    as _i27;
+    as _i28;
 import '../../features/communication_list/data/data_sources/communication_list_datasource.dart'
     as _i11;
 import '../../features/communication_list/data/repositories/communication_list_repository_impl.dart'
@@ -37,43 +39,43 @@ import '../../features/communication_list/data/repositories/communication_list_r
 import '../../features/communication_list/domain/repositories/communication_list_repository.dart'
     as _i12;
 import '../../features/communication_list/domain/use_cases/get_communication_list_usecase.dart'
-    as _i17;
-import '../../features/communication_list/presentation/manager/communication_list_bloc.dart'
-    as _i28;
-import '../../features/manage_users/data/data_sources/users_datasource.dart'
-    as _i23;
-import '../../features/manage_users/data/repositories/users_repository_impl.dart'
-    as _i25;
-import '../../features/manage_users/domain/repositories/users_repository.dart'
-    as _i24;
-import '../../features/manage_users/domain/use_cases/action_user_usecase.dart'
-    as _i26;
-import '../../features/manage_users/domain/use_cases/get_allusers_usecase.dart'
-    as _i29;
-import '../../features/manage_users/presentation/manager/users_cubit.dart'
-    as _i35;
-import '../../features/manage_withdrawals/data/data_sources/manage_withdrawals_datasource.dart'
     as _i18;
-import '../../features/manage_withdrawals/data/repositories/manage_withdrawals_repository_impl.dart'
-    as _i20;
-import '../../features/manage_withdrawals/domain/repositories/manage_withdrawals_repository.dart'
-    as _i19;
-import '../../features/manage_withdrawals/domain/use_cases/get_user_series_usecase.dart'
+import '../../features/communication_list/presentation/manager/communication_list_bloc.dart'
+    as _i29;
+import '../../features/manage_users/data/data_sources/users_datasource.dart'
+    as _i24;
+import '../../features/manage_users/data/repositories/users_repository_impl.dart'
+    as _i26;
+import '../../features/manage_users/domain/repositories/users_repository.dart'
+    as _i25;
+import '../../features/manage_users/domain/use_cases/action_user_usecase.dart'
+    as _i27;
+import '../../features/manage_users/domain/use_cases/get_allusers_usecase.dart'
     as _i30;
-import '../../features/manage_withdrawals/domain/use_cases/get_withdrawal_invoice_details_usecase.dart'
-    as _i31;
-import '../../features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart'
-    as _i32;
-import '../../features/manage_withdrawals/domain/use_cases/get_withdrawn_details_usecase.dart'
-    as _i33;
-import '../../features/manage_withdrawals/domain/use_cases/set_approve_series_usecase.dart'
+import '../../features/manage_users/presentation/manager/users_cubit.dart'
+    as _i36;
+import '../../features/manage_withdrawals/data/data_sources/manage_withdrawals_datasource.dart'
+    as _i19;
+import '../../features/manage_withdrawals/data/repositories/manage_withdrawals_repository_impl.dart'
     as _i21;
-import '../../features/manage_withdrawals/domain/use_cases/update_user_series_usecase.dart'
-    as _i22;
-import '../../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart'
+import '../../features/manage_withdrawals/domain/repositories/manage_withdrawals_repository.dart'
+    as _i20;
+import '../../features/manage_withdrawals/domain/use_cases/get_user_series_usecase.dart'
+    as _i31;
+import '../../features/manage_withdrawals/domain/use_cases/get_withdrawal_invoice_details_usecase.dart'
+    as _i32;
+import '../../features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart'
+    as _i33;
+import '../../features/manage_withdrawals/domain/use_cases/get_withdrawn_details_usecase.dart'
     as _i34;
+import '../../features/manage_withdrawals/domain/use_cases/set_approve_series_usecase.dart'
+    as _i22;
+import '../../features/manage_withdrawals/domain/use_cases/update_user_series_usecase.dart'
+    as _i23;
+import '../../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart'
+    as _i35;
 import '../api/client.dart' as _i7;
-import 'di_container.dart' as _i36;
+import 'di_container.dart' as _i37;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -114,57 +116,56 @@ Future<_i1.GetIt> $initGetIt(
       _i15.GetClientsListByRegionUseCase(gh<_i9.ClientsListRepository>()));
   gh.factory<_i16.GetClientsListByUserUseCase>(
       () => _i16.GetClientsListByUserUseCase(gh<_i9.ClientsListRepository>()));
-  gh.factory<_i17.GetCommunicationListUsecase>(() =>
-      _i17.GetCommunicationListUsecase(gh<_i12.CommunicationListRepository>()));
-  gh.factory<_i18.ManageWithdrawalsDatasource>(
-      () => _i18.ManageWithdrawalsDatasource(gh<_i7.ClientApi>()));
-  gh.factory<_i19.ManageWithdrawalsRepository>(() =>
-      _i20.ManageWithdrawalsRepositoryImpl(
-          gh<_i18.ManageWithdrawalsDatasource>()));
-  gh.factory<_i21.SetApproveSeriesUsecase>(() =>
-      _i21.SetApproveSeriesUsecase(gh<_i19.ManageWithdrawalsRepository>()));
-  gh.factory<_i22.UpdateSeriesUsecase>(
-      () => _i22.UpdateSeriesUsecase(gh<_i19.ManageWithdrawalsRepository>()));
-  gh.factory<_i23.UsersDatasource>(
-      () => _i23.UsersDatasource(gh<_i7.ClientApi>()));
-  gh.factory<_i24.UsersRepository>(
-      () => _i25.UsersRepositoryImpl(gh<_i23.UsersDatasource>()));
-  gh.factory<_i26.ActionUserUsecase>(
-      () => _i26.ActionUserUsecase(gh<_i24.UsersRepository>()));
-  gh.factory<_i27.ClientsListBloc>(() => _i27.ClientsListBloc(
-        gh<_i14.GetAllClientsListUseCase>(),
-        gh<_i16.GetClientsListByUserUseCase>(),
-        gh<_i15.GetClientsListByRegionUseCase>(),
-      ));
-  gh.factory<_i28.CommunicationListBloc>(
-      () => _i28.CommunicationListBloc(gh<_i17.GetCommunicationListUsecase>()));
-  gh.factory<_i29.GetAllUsersUsecase>(
-      () => _i29.GetAllUsersUsecase(gh<_i24.UsersRepository>()));
-  gh.factory<_i30.GetUserSeriesUsecase>(
-      () => _i30.GetUserSeriesUsecase(gh<_i19.ManageWithdrawalsRepository>()));
-  gh.factory<_i31.GetWithdrawalInvoiceDetailsUsecase>(() =>
-      _i31.GetWithdrawalInvoiceDetailsUsecase(
-          gh<_i19.ManageWithdrawalsRepository>()));
-  gh.factory<_i32.GetWithdrawalsInvoicesUsecase>(() =>
-      _i32.GetWithdrawalsInvoicesUsecase(
-          gh<_i19.ManageWithdrawalsRepository>()));
-  gh.factory<_i33.GetWithdrawnDetailsUsecase>(() =>
-      _i33.GetWithdrawnDetailsUsecase(gh<_i19.ManageWithdrawalsRepository>()));
-  gh.lazySingleton<_i34.ManageWithdrawalsCubit>(
-      () => _i34.ManageWithdrawalsCubit(
-            gh<_i30.GetUserSeriesUsecase>(),
-            gh<_i22.UpdateSeriesUsecase>(),
-            gh<_i29.GetAllUsersUsecase>(),
-            gh<_i32.GetWithdrawalsInvoicesUsecase>(),
-            gh<_i31.GetWithdrawalInvoiceDetailsUsecase>(),
-            gh<_i21.SetApproveSeriesUsecase>(),
-            gh<_i33.GetWithdrawnDetailsUsecase>(),
+  gh.factory<_i17.GetClientsWithFilterUserUsecase>(() =>
+      _i17.GetClientsWithFilterUserUsecase(gh<_i9.ClientsListRepository>()));
+  gh.factory<_i18.GetCommunicationListUsecase>(() =>
+      _i18.GetCommunicationListUsecase(gh<_i12.CommunicationListRepository>()));
+  gh.factory<_i19.ManageWithdrawalsDatasource>(
+      () => _i19.ManageWithdrawalsDatasource(gh<_i7.ClientApi>()));
+  gh.factory<_i20.ManageWithdrawalsRepository>(() =>
+      _i21.ManageWithdrawalsRepositoryImpl(
+          gh<_i19.ManageWithdrawalsDatasource>()));
+  gh.factory<_i22.SetApproveSeriesUsecase>(() =>
+      _i22.SetApproveSeriesUsecase(gh<_i20.ManageWithdrawalsRepository>()));
+  gh.factory<_i23.UpdateSeriesUsecase>(
+      () => _i23.UpdateSeriesUsecase(gh<_i20.ManageWithdrawalsRepository>()));
+  gh.factory<_i24.UsersDatasource>(
+      () => _i24.UsersDatasource(gh<_i7.ClientApi>()));
+  gh.factory<_i25.UsersRepository>(
+      () => _i26.UsersRepositoryImpl(gh<_i24.UsersDatasource>()));
+  gh.factory<_i27.ActionUserUsecase>(
+      () => _i27.ActionUserUsecase(gh<_i25.UsersRepository>()));
+  gh.factory<_i28.ClientsListBloc>(
+      () => _i28.ClientsListBloc(gh<_i17.GetClientsWithFilterUserUsecase>()));
+  gh.factory<_i29.CommunicationListBloc>(
+      () => _i29.CommunicationListBloc(gh<_i18.GetCommunicationListUsecase>()));
+  gh.factory<_i30.GetAllUsersUsecase>(
+      () => _i30.GetAllUsersUsecase(gh<_i25.UsersRepository>()));
+  gh.factory<_i31.GetUserSeriesUsecase>(
+      () => _i31.GetUserSeriesUsecase(gh<_i20.ManageWithdrawalsRepository>()));
+  gh.factory<_i32.GetWithdrawalInvoiceDetailsUsecase>(() =>
+      _i32.GetWithdrawalInvoiceDetailsUsecase(
+          gh<_i20.ManageWithdrawalsRepository>()));
+  gh.factory<_i33.GetWithdrawalsInvoicesUsecase>(() =>
+      _i33.GetWithdrawalsInvoicesUsecase(
+          gh<_i20.ManageWithdrawalsRepository>()));
+  gh.factory<_i34.GetWithdrawnDetailsUsecase>(() =>
+      _i34.GetWithdrawnDetailsUsecase(gh<_i20.ManageWithdrawalsRepository>()));
+  gh.lazySingleton<_i35.ManageWithdrawalsCubit>(
+      () => _i35.ManageWithdrawalsCubit(
+            gh<_i31.GetUserSeriesUsecase>(),
+            gh<_i23.UpdateSeriesUsecase>(),
+            gh<_i30.GetAllUsersUsecase>(),
+            gh<_i33.GetWithdrawalsInvoicesUsecase>(),
+            gh<_i32.GetWithdrawalInvoiceDetailsUsecase>(),
+            gh<_i22.SetApproveSeriesUsecase>(),
+            gh<_i34.GetWithdrawnDetailsUsecase>(),
           ));
-  gh.factory<_i35.UsersCubit>(() => _i35.UsersCubit(
-        gh<_i29.GetAllUsersUsecase>(),
-        gh<_i26.ActionUserUsecase>(),
+  gh.factory<_i36.UsersCubit>(() => _i36.UsersCubit(
+        gh<_i30.GetAllUsersUsecase>(),
+        gh<_i27.ActionUserUsecase>(),
       ));
   return getIt;
 }
 
-class _$AppModule extends _i36.AppModule {}
+class _$AppModule extends _i37.AppModule {}

@@ -15,7 +15,7 @@ class customAppbar extends StatelessWidget implements PreferredSizeWidget{
     var notify=Provider.of<notifyvm>(context,listen: true);
     //notify.getcounter();
 
-    print('build appbar');
+    
     return  AppBar(
       key: key,
       leading:leading,

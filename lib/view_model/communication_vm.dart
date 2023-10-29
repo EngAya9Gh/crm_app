@@ -35,7 +35,7 @@ class communication_vm extends ChangeNotifier {
   }
 
   void setvaluepriv(privilgelistparam) {
-    print('in set privilge client vm');
+    
     privilgelist = privilgelistparam;
     //todo Add parameter null to get all
     param = get_privilgelist();
@@ -77,7 +77,7 @@ class communication_vm extends ChangeNotifier {
       List<dynamic> data = [];
       data = await Api()
           .get(url: url + 'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
-      print(data);
+      
 
       if (data.length.toString().isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
@@ -159,7 +159,7 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
     List<dynamic> data = [];
     data = await Api().get(url: url + 'care/view_communcation.php?fk_client=${fk_client}');
-    print(data);
+    
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
@@ -189,24 +189,24 @@ class communication_vm extends ChangeNotifier {
 
     List<CommunicationModel> _listInvoicesAccept = [];
     if (regoin == null || regoin == '0') {
-      print(filter);
+      
       if (listCommunicationWelcome.isNotEmpty) {
         if (filter == 'الكل' || filter == null) {
           _listInvoicesAccept = List.from(listCommunicationWelcome);
-          print('serch الكل');
+          
         }
         if (filter == 'تم الترحيب')
           listCommunicationWelcome.forEach((element) {
             if (element.dateCommunication != null) {
               _listInvoicesAccept.add(element);
-              print('serch تم');
+              
             }
           });
         if (filter == 'لم يتم الترحيب')
           listCommunicationWelcome.forEach((element) {
             if (element.dateCommunication == null) {
               _listInvoicesAccept.add(element);
-              print('serch لم يتم الترحيب');
+              
             }
           });
       }
@@ -216,7 +216,7 @@ class communication_vm extends ChangeNotifier {
           listCommunicationWelcome.forEach((element) {
             if (element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              print('regoin الكل');
+              
             }
           });
 
@@ -224,14 +224,14 @@ class communication_vm extends ChangeNotifier {
           listCommunicationWelcome.forEach((element) {
             if (element.dateCommunication != null && element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              print('regoin بالإنتظار');
+              
             }
           });
         if (filter == 'لم يتم الترحيب')
           listCommunicationWelcome.forEach((element) {
             if (element.dateCommunication == null && element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              print('regoin تم التركيب');
+              
             }
           });
       }
@@ -258,26 +258,26 @@ class communication_vm extends ChangeNotifier {
     if (typefilter == 2) listCommunicationInstall = List.from(listCommunicationInstall2_temp);
 
     List<CommunicationModel> _listInvoicesAccept = [];
-    print('regoin');
-    print(regoin);
+    
+    
     if (regoin == '0' || regoin == null) {
       if (listCommunicationInstall.isNotEmpty) {
         if (filter == 'الكل') {
           _listInvoicesAccept = List.from(listCommunicationInstall);
-          print('serch الكل');
+          
         }
         if (filter == 'تم التأكد من الجودة')
           listCommunicationInstall.forEach((element) {
             if (element.dateCommunication != null) {
               _listInvoicesAccept.add(element);
-              print('serch بالانتظار');
+              
             }
           });
         if (filter == 'انتظار الجودة')
           listCommunicationInstall.forEach((element) {
             if (element.dateCommunication == null) {
               _listInvoicesAccept.add(element);
-              print('serch لم يتم التأكد ');
+              
             }
           });
       }
@@ -287,7 +287,7 @@ class communication_vm extends ChangeNotifier {
           listCommunicationInstall.forEach((element) {
             if (element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              print('regoin الكل');
+              
             }
           });
 
@@ -295,14 +295,14 @@ class communication_vm extends ChangeNotifier {
           listCommunicationInstall.forEach((element) {
             if (element.dateCommunication != null && element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              print('regoin بالإنتظار');
+              
             }
           });
         if (filter == 'انتظار الجودة')
           listCommunicationInstall.forEach((element) {
             if (element.dateCommunication == null && element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              print('regoin لم يتم التأكد ');
+              
             }
           });
       }
@@ -425,9 +425,9 @@ class communication_vm extends ChangeNotifier {
     listCommunicationInstall2_temp = [];
     isloading = true;
     notifyListeners();
-    print(type.toString());
-    print('param');
-    print(param);
+    
+    
+    
     // String param= get_privilgelist();
     if (type == 2) {
       await getInstall2(myClientsParams);
@@ -498,7 +498,7 @@ class communication_vm extends ChangeNotifier {
 
     data = await _cancelableFuture?.value;
 
-    print(data);
+    
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
@@ -523,7 +523,7 @@ class communication_vm extends ChangeNotifier {
 
     data = await _cancelableFuture?.value;
 
-    print(data);
+    
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
@@ -580,7 +580,7 @@ class communication_vm extends ChangeNotifier {
   //addcommuncation
   Future<CommunicationModel> addcommmuncation(Map<String, dynamic?> body, String id_communication, int type,
       {VoidCallback? onSuccess}) async {
-    print(id_communication);
+    
     isload = true;
     notifyListeners();
     var result =
@@ -698,7 +698,7 @@ class communication_vm extends ChangeNotifier {
         url: url + 'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&type=$type$myClientsParam'));
 
     data = await (_cancelableWelcomeFuture?.value);
-    print(data);
+    
     if (type == 'تركيب') {
       listCommunicationInstall_temp = [];
 
@@ -726,7 +726,7 @@ class communication_vm extends ChangeNotifier {
   //   List<dynamic> data=[];
   //   data= await Api()
   //       .get(url:url+ 'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&&type=$type');
-  //   print(data);
+  //   
   //   if(data.length.toString().isNotEmpty) {
   //     for (int i = 0; i < data.length; i++) {
   //       listCommunication.add(CommunicationModel.fromJson(data[i]));
@@ -747,8 +747,8 @@ class communication_vm extends ChangeNotifier {
 
     data = await _cancelableCommunicationInstall2Future?.value;
 
-    print('data.length');
-    print(data.length);
+    
+    
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationInstall2_temp.add(CommunicationModel.fromJson(data[i]));
@@ -769,8 +769,8 @@ class communication_vm extends ChangeNotifier {
         Api().get(url: url + 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}$myClientsParams'));
 
     data = await _cancelableCommunicationInstall1Future?.value;
-    print('data.length');
-    print(data.length);
+    
+    
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationInstall_temp.add(CommunicationModel.fromJson(data[i]));

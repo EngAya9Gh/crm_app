@@ -119,7 +119,7 @@ class _addcityState extends State<addcity> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
@@ -127,6 +127,6 @@ class _addcityState extends State<addcity> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+
   }
 }

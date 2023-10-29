@@ -265,7 +265,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                       );
                                       File? pickedFile = File(pickedImage!.path);
                                       setState(() {
-                                        print(pickedFile.path);
+                                        
                                         _myfilelogo = pickedFile;
                                         logoController.text = pickedFile.path;
                                         viewmodel.onSaveimagefile(_myfilelogo);

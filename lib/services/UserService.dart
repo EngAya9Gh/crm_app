@@ -56,8 +56,8 @@ Future<List<UserModel>> usersServices() async {
   for (int i = 0; i < data.length; i++) {
     usersList.add(UserModel.fromJson(data[i]));
   }
-  print('usersList');
-  print(usersList);
+  
+  
   return usersList;
 }
 

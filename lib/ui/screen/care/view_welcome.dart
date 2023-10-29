@@ -111,7 +111,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   //               borderRadius: BorderRadius.circular(10)),
                   //           buttons: ['الكل','بالإنتظار','تم التركيب'],
                   //           onSelected: (index,isselected){
-                  //             print(index);
+                  //
                   //             //setState(() {
                   //             typepayController=index.toString();
                   //             selectedProvider.changeinstall(index);
@@ -141,8 +141,8 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                             //namemanage=value.toString();
                             cart.changelisttype_welcome(value.toString());
                             typeclientvalue = value.toString();
-                            print('filter state' + value.toString());
-                            print(typeclientvalue);
+
+
 
                             filtershow();
                           },
@@ -327,8 +327,8 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
   }
 
   void filtershow([String? myClientsParam]) {
-    print(regoin);
-    print(typeclientvalue);
+
+
 
     Provider.of<communication_vm>(context, listen: false).getcommtype_filter(typeclientvalue, regoin, myClientsParam);
 

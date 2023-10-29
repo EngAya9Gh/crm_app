@@ -38,8 +38,6 @@ class _transferClientState extends State<transferClient> {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       await Provider.of<UserProvider>(context,listen: false)
           .getUsersVm();
-      print(Provider.of<UserProvider>(context,listen: false)
-          .allUsers.length);
     }
     );
     super.didChangeDependencies();

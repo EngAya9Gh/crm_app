@@ -38,8 +38,8 @@
 //
 //       Provider.of<regoin_vm>(context,listen: false)
 //           .changeVal(widget.selected);
-//       print("init regoin combox///////");
-//       print(widget.selected);
+//       
+//       
 //     });
 //     super.initState();
 //
@@ -64,12 +64,12 @@
 //  Widget  citycombo(context){
 //   List<RegoinModel> regoinllist=[];
 //   regoinllist= Provider.of<regoin_vm>(context,listen: true).listregoin;
-//   print("build regoin combox"+regoinllist.length.toString());
+//   
 //
 //    WidgetsBinding.instance.addPostFrameCallback((_) {
 //
 //  });
-//   print("build after regoin combox"+regoinllist.length.toString());
+//   
 //
 //   //  return  Consumer<regoin_vm>(
 //   //      builder: (context,regoinllist,child){

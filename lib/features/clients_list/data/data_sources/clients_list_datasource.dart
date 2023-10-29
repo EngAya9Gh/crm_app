@@ -27,7 +27,7 @@ class ClientsListDatasource {
 
       return ResponseWrapper<List<ClientModel>>.fromJson(
         response.data,
-            (json) {
+        (json) {
           return List.from((json as List<dynamic>).map((e) {
             return ClientModel.fromJson(e as Map<String, dynamic>);
           }));
@@ -37,6 +37,7 @@ class ClientsListDatasource {
 
     return throwAppException(fun);
   }
+
   Future<ResponseWrapper<List<ClientModel>>> getClientsByRegionList(Map<String, dynamic> body) async {
     fun() async {
       final response = await _clientApi.request(
@@ -50,7 +51,7 @@ class ClientsListDatasource {
 
       return ResponseWrapper<List<ClientModel>>.fromJson(
         response.data,
-            (json) {
+        (json) {
           return List.from((json as List<dynamic>).map((e) {
             return ClientModel.fromJson(e as Map<String, dynamic>);
           }));
@@ -60,6 +61,7 @@ class ClientsListDatasource {
 
     return throwAppException(fun);
   }
+
   Future<ResponseWrapper<List<ClientModel>>> getClientsByUserList(Map<String, dynamic> body) async {
     fun() async {
       final response = await _clientApi.request(
@@ -73,7 +75,31 @@ class ClientsListDatasource {
 
       return ResponseWrapper<List<ClientModel>>.fromJson(
         response.data,
-            (json) {
+        (json) {
+          return List.from((json as List<dynamic>).map((e) {
+            return ClientModel.fromJson(e as Map<String, dynamic>);
+          }));
+        },
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<List<ClientModel>>> getAllClientsWithFilterList(Map<String, dynamic> body) async {
+    fun() async {
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.client.allClientsWithFilter,
+          queryParameters: body,
+          clientMethod: ClientMethod.get,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      return ResponseWrapper<List<ClientModel>>.fromJson(
+        response.data,
+        (json) {
           return List.from((json as List<dynamic>).map((e) {
             return ClientModel.fromJson(e as Map<String, dynamic>);
           }));

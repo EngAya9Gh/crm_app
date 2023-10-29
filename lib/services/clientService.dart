@@ -9,13 +9,13 @@ import '../constants.dart';
 
 class ClientService {
   Future<ClientModel> addClient(Map<String, dynamic?> body) async {
-    print("$body");
+    
     // try{
     var result = await Api().post(url: url + "client/clientAdd.php", body: body);
-    print(result);
+    
     //   return result !="error"? result:"false";}
     // catch(e){
-    //   print(e);
+    //   
     //   return "false";
     // }
     return ClientModel.fromJson(result[0]);
@@ -92,8 +92,8 @@ class ClientService {
     if (listparam != null) {
       String params = '';
       for (int i = 0; i < listparam.length; i++) params += '&maincity[]=${listparam[i]}';
-      print('params');
-      print(params);
+      
+      
       data = await Api().get(url: url + 'client/getclientfilteraccept.php?fk_country=$fkcountry$params');
     } else
       data = await Api().get(url: url + 'client/getclientfilteraccept.php?fk_country=$fkcountry');
@@ -103,7 +103,7 @@ class ClientService {
     for (int i = 0; i < data.length; i++) {
       prodlist.add(ClientModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 
@@ -116,7 +116,7 @@ class ClientService {
     for (int i = 0; i < data.length; i++) {
       prodlist.add(ClientModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
   Future<List<ClientModel>> getClientmarket_regoin(String regoin) async {
@@ -128,7 +128,7 @@ class ClientService {
     for (int i = 0; i < data.length; i++) {
       prodlist.add(ClientModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
   Future<List<ClientModel>> getClientmarket_user(String user) async {
@@ -140,7 +140,7 @@ class ClientService {
     for (int i = 0; i < data.length; i++) {
       prodlist.add(ClientModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
   Future<ClientModel> getclientid(String? id_clients) async {
@@ -159,7 +159,7 @@ class ClientService {
     for (int i = 0; i < data.length; i++) {
       prodlist.add(ClientModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 
@@ -172,15 +172,15 @@ class ClientService {
     for (int i = 0; i < data.length; i++) {
       prodlist.add(ClientModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 
   Future<List<ClientModel>> getClientbyuser(String? fk_user) async {
     List<dynamic> data = [];
     data = await Api().get(url: url + 'client/getclientbyuser.php?fk_user=$fk_user');
-    print('before data');
-    print(data);
+    
+    
     List<ClientModel> prodlist = await compute<List<dynamic>, List<ClientModel>>(convertToClients, data);
     return prodlist;
   }

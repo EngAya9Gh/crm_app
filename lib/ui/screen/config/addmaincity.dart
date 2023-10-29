@@ -130,7 +130,7 @@ class _addmaincityState extends State<addmaincity> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
@@ -138,6 +138,6 @@ class _addmaincityState extends State<addmaincity> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+
   }
 }

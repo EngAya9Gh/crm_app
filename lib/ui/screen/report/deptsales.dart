@@ -106,12 +106,12 @@ class _deptsalesState extends State<deptsales> {
     if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('92') == true ||
         Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('93') == true ||
         Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('94') == true) {
-      print(type);
+      
       if (idregoin == '0') {
         type = 'allregoin';
         labelxx = 'الفرع';
       }
-      print(paramprivilge);
+      
 
       String isMarketingParams = '';
       if (isMarketing) {
@@ -143,7 +143,7 @@ class _deptsalesState extends State<deptsales> {
       if (type == 'allregoin') {
         for (int i = 0; i < data.length; i++) {
           tempdata.add(BarModel.fromJson(data[i]));
-          print(tempdata[i].y.toStringAsFixed(2).toString());
+          
           totalval += tempdata[i].y;
           rowsdata.add(DataRow(
             cells: <DataCell>[

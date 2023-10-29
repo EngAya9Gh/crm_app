@@ -56,9 +56,9 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   //DefaultFirebaseOptions .currentPlatform );
   await Firebase.initializeApp();
-  print("Handling a background message: ${message.messageId}");
-  print("Handling a background message: ${message.data['idclient']}");
-  print("Handling a background message: ${message.data['Typenotify']}");
+
+
+
 }
 
 void main() async {
@@ -83,8 +83,8 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  print('in main ');
-  //   print(await FirebaseMessaging.instance.getToken(
+
+  //
   //     //vapidKey: "BLHC6fhpHX_VBbufktusXDMRhLtLI764Ic_ZcCc9Lh2puYzPEvwOpvxDfBmHKtRQu38OU_hUoalT42PxzHc8JPg")
   // ));
 
@@ -221,7 +221,7 @@ class _MyAppState extends State<MyApp> {
     return FutureBuilder<SharedPreferences>(
         future: currentUser,
         builder: (context, snapshot) {
-          print('in main builder');
+
           if (!snapshot.hasData) {
             //Center(child: CircularProgressIndicator(),)
             return MaterialApp(

@@ -130,8 +130,8 @@ class _support_tableState extends State<support_table> {
                         selectedItems: cart.selecteditemmaincity,
                         itemAsString: (u) => u!.userAsString(),
                         onChanged: (data) {
-                          for (int i = 0; i < data.length; i++) print(data[i].id_maincity);
-                          print(data);
+                          for (int i = 0; i < data.length; i++) 
+                          
                           // selecteditemmaincity=data;
 
                           cart.changeitemlist(data);

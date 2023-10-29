@@ -129,7 +129,7 @@ class _addregoinState extends State<addregoin> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
@@ -137,6 +137,6 @@ class _addregoinState extends State<addregoin> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+
   }
 }

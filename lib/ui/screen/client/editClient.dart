@@ -241,7 +241,7 @@ class _editclientState extends State<editclient> {
                     String ismarket =
                         Provider.of<switch_provider>(context, listen: false).isSwitched == true ? '1' : '0';
 
-                    print(ismarket);
+
 
                     Map<String, dynamic> body = {};
                     if (typeclient_provider.selectedValuemanag == "عرض سعر")
@@ -293,7 +293,7 @@ class _editclientState extends State<editclient> {
                       // "value_back": typeclient_provider.selectedValuemanag == "منسحب"
                       //     ?valueBackController.text:"",
                     });
-                    print('$body');
+
                     Provider.of<ClientProvider>(context, listen: false)
                         .updateclient_vm(body, widget.itemClient.idClients)
                         .then((value) => value != "false" ? clear(context) : error(context));
@@ -573,7 +573,7 @@ class _editclientState extends State<editclient> {
                       onChanged: (value) {
                         setState(() {
                           sourclient = value.toString();
-                          print("source   " + sourclient.toString());
+
                         });
                         //  setState(() {
                         //cart.changevalueOut(value.toString());
@@ -632,8 +632,8 @@ class _editclientState extends State<editclient> {
                     //                     activeColor: kMainColor,
                     //                     value: isSwitched.isSwitched,
                     //                     onChanged: (value) {
-                    //                       print(value);
-                    //                       print(value.toString());
+                    //
+                    //
                     //
                     //                       //valtaxrate = value;
                     //                       isSwitched.changeboolValue(value);

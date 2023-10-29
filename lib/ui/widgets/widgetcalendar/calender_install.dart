@@ -77,9 +77,9 @@
 //           onTap: (details) {
 //
 //             final provider = Provider.of<EventProvider>(context, listen: false);
-//             print(details.date!);
+//             
 //             provider.setDate(details.date!);
-//             print(details.date!);
+//             
 //             showModalBottomSheet(
 //                 context: context, builder: (context) => TaskWidget());
 //           },

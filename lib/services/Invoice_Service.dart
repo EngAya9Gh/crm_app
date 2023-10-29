@@ -17,7 +17,7 @@ class Invoice_Service {
     List<InvoiceModel> prodlist = [];
     // final json = "[" + data[i] + "]";
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
 
       
       prodlist.add(InvoiceModel.fromJson(data[i]));
@@ -51,7 +51,7 @@ class Invoice_Service {
     List<InvoiceModel> prodlist = [];
     // final json = "[" + data[i] + "]";
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
 
       
       prodlist.add(InvoiceModel.fromJson(data[i]));
@@ -68,16 +68,16 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicemaincity(String urlstring, Map<String, dynamic> body) async {
     var data = await Api().post(url: url + urlstring, body: body);
-    print(data);
+    
     List<InvoiceModel> prodlist = [];
     // final json = "[" + data[i] + "]";
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
 
       
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 
@@ -117,15 +117,15 @@ class Invoice_Service {
     //not called because get local
     try {
       var data = await Api().get(url: url + 'client/invoice/get_invoice_ByIdClient.php?fk_idClient=$fk_idClient');
-      print(data);
+      
       List<InvoiceModel> prodlist = [];
       // final json = "[" + data[i] + "]";
       for (int i = 0; i < data.length; i++) {
-        print(i);
+        
 
         prodlist.add(InvoiceModel.fromJson(data[i]));
       }
-      print(prodlist);
+      
       return prodlist;
     } catch (e) {
       return [];
@@ -188,63 +188,63 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicebyiduser(String fk_idUser) async {
     var data = await Api().get(url: url + 'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
-    print(data);
+    
     List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
 
   Future<List<InvoiceModel>> getinvoicebyregoin(String regoin) async {
     var data = await Api().get(url: url + 'client/invoice/getinvoicebyregoin.php?fk_regoin=$regoin');
-    print(data);
+    
     List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
 
   Future<List<InvoiceModel>> getinvoiceMarketing(String fk_country) async {
     var data = await Api().get(url: url + 'client/invoice/getMarketingInvoice.php?fk_country=$fk_country');
-    print(data);
+    
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 
   Future<List<InvoiceModel>> getinvoicebyiduser_marketing(String iduser) async {
     var data = await Api().get(url: url + 'client/invoice/getinvoiceMarkting_user.php?iduser=$iduser');
-    print(data);
+    
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 
   Future<List<InvoiceModel>> getinvoicebyregoin_marketing(String regoin) async {
     var data = await Api().get(url: url + 'client/invoice/getclientMarketing_regoin.php?regoin=$regoin');
-    print(data);
+    
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 
   Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst(Map<String, dynamic> body) async {
     var data = await Api().post(url: url + 'client/accept_requsts.php', body: body);
-    print(data);
+    
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      print(i);
+      
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 
@@ -255,7 +255,7 @@ class Invoice_Service {
 
       return InvoiceModel.fromJson(data[0]);
     } catch (e) {
-      print(e.toString());
+      
       return InvoiceModel(products: []);
     }
   }
@@ -278,15 +278,15 @@ class Invoice_Service {
   }
 
   Future<String> addInvoiceProduct(Map<String, dynamic?> body) async {
-    print("$body");
+    
     try {
       String result = await Api().post(url: url + "client/invoice/addinvoice_product.php", body: body);
-      print('result idproduct invoice');
-      print(result);
+      
+      
       return result != "error" ? result : "false";
     } catch (e, st) {
-      print(e);
-      print("st $st");
+      
+      
       return "false";
     }
   }
@@ -317,7 +317,7 @@ class Invoice_Service {
     try {
       String res = await Api().post(url: url + 'client/invoice/deleteinvoice.php', body: body);
 
-      print("delete in services " + res);
+      
       return res;
     } catch (e) {
       return "res";
@@ -339,7 +339,7 @@ class Invoice_Service {
     for (int i = 0; i < data.length; i++) {
       prodlist.add(InvoiceModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
 }

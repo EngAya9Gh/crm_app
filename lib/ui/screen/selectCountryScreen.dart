@@ -96,7 +96,7 @@ class _MyDropDown extends State<select_country>{
                         _onSelectedState(value.toString());
                         Provider.of<country_vm>(context,listen: false)
                             .setIDCountry(value.toString());
-                        print("provider country selected change");
+
                         
                        // FocusScope.of(context).requestFocus(new FocusNode());
                       },
@@ -213,7 +213,7 @@ Widget buildCity(){
 
     Countrylist=(await RegoinService().getAllCountry());
     //select_dataItem=Countrylist[0];
-    print(Countrylist.length);//default country
+
     return Countrylist;
   }
 }

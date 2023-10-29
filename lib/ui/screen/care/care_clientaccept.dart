@@ -137,7 +137,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
                                           //  setState(() {
                                           cart.changeVal(value.toString());
                                           regoin = value.toString();
-                                          print('regoin'+regoin.toString());
+
                                           filtershow();
                                         },
                                       );
@@ -160,7 +160,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
                             //               borderRadius: BorderRadius.circular(10)),
                             //           buttons: ['الكل','بالإنتظار','تم التركيب'],
                             //           onSelected: (index,isselected){
-                            //             print(index);
+                            //
                             //             //setState(() {
                             //             typepayController=index.toString();
                             //             selectedProvider.changeinstall(index);
@@ -247,8 +247,8 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
   }
 
   void filtershow(){
-    print(regoin);
-    // print(typeclientvalue);
+
+    //
       Provider.of<invoice_vm>(context,listen: false)
           .getclienttype_filter(typeclientvalue!,regoin,'only');
     // Provider.of<client_vm>(context,listen: false)

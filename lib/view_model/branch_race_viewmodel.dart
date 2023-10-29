@@ -273,7 +273,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
       final params =
           "target/get_sales_target.php?fk_country=$fkCountry&from=$getFromQuarter&to=$getToQuarter&Q=$selectedQuarterFilter";
 
-      print("params $params");
+      
 
       var data = await Api().post(url: url + params, body: {'type': 'datedays'});
       List<BranchRaceModel> list = [];
@@ -407,7 +407,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
       getTargets();
       onSuccess();
     } catch (e, stackTrace) {
-      print("stackTrace $stackTrace");
+      
       isLoadingAction = false;
       notifyListeners();
     }

@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
-        print("in init getInitialMessage");
+
         //Provider.of<notifyvm>(context,listen: false).addcounter();
         String typeNotify= message.data['Typenotify'];
         String data_notify= message.data['Typenotify'];
@@ -48,11 +48,11 @@ class _HomeState extends State<Home> {
     //FirebaseMessaging.onBackgroundMessage.call(message);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
      // try{
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data['idclient']}');
+
+
 
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+
       }
       //Provider.of<notifyvm>(context,listen: false).getcounter();
       //if(message.data['data'])
@@ -61,7 +61,7 @@ class _HomeState extends State<Home> {
       //add notify to listnotify
     });
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      print('onMessageOpenedApp');
+
       Provider.of<notifyvm>(context,listen: false).addcounter();
       // Provider.of<notifyvm>(context,listen: false).getcounter();
       String typeNotify= event.data['Typenotify'];
@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
 
     // Provider.of<user_vm_provider>(context, listen: false)
     //     .getcurrentuser();
-    print('in home...init');
+
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       // Add Your Code here.
       //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();

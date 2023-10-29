@@ -210,7 +210,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
   }
 
   void filtershow() {
-    print(typeclientvalue);
+
     //    Provider.of<invoice_vm>(context,listen: false)
     //       .getfilterinvoice(regoin);
     // Provider.of<client_vm>(context,listen: false)

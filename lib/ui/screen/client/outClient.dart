@@ -174,8 +174,8 @@ class _OutClientState extends State<OutClient> {
   }
 
   void filtershow(){
-    print(regoin);
-    print(typeclientvalue);
+
+
     //    Provider.of<invoice_vm>(context,listen: false)
     //       .getfilterinvoice(regoin);
     // Provider.of<client_vm>(context,listen: false)

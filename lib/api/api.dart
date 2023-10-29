@@ -17,7 +17,7 @@ class Api {
   Future<dynamic> get({required String url}) async {
     // final client = RetryClient(http.Client());
     // try {
-    //   print(await client.get(Uri.http('example.org', '')));
+    //   
     // } finally {
     //   client.close();
     // }
@@ -30,10 +30,10 @@ class Api {
     //   http.Response response = await _client.get(
     http.Response response = await _client.get(Uri.parse(url), headers: {"Cache-Control": "no-cache"});
     if (json.decode(response.body)["code"] == "200") {
-      print(jsonDecode(response.body)["message"]);
+      
       return jsonDecode(response.body)["message"];
     } else {
-      print("ex is ${json.decode(response.body)["code"] == "200"}");
+      
       throw Exception('${json.decode(response.body)["code"] == "200"}');
     }
   }
@@ -165,25 +165,25 @@ class Api {
     });
     var myrequest = await request.send();
     var response = await http.Response.fromStream(myrequest);
-    print('body:: ${response.body}');
+    
 
     String result = '';
     if (type == 'array') {
       result = response.body;
-      print('result');
-      print(result);
+      
+      
       int idx = result.indexOf("{");
       int length = result.length;
       result = result.substring(idx, length);
     } else {
       result = response.body;
-      print(result);
+      
       int idx = result.indexOf("{");
       int idxEnd = result.indexOf("}");
       result = result.substring(idx, idxEnd + 1); //user update not run but run invoice
     } //
 
-    print(result);
+    
     if (json.decode(result)["code"] == "200") {
       return jsonDecode(result)["message"];
     } else {

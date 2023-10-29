@@ -29,7 +29,7 @@ class usertest_view extends StatefulWidget {
    Widget build(BuildContext context) {
      list_ticket=Provider.of<usertest_vm>(context,listen: true)
          .listProduct;
-    print(list_ticket.length);
+
      return Scaffold(
        floatingActionButton:
        FloatingActionButton(

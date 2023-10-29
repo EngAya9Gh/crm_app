@@ -142,54 +142,54 @@ class _tabclientsState extends State<tabclients> {
                             ),
                           ),
                         ),
-                        Tooltip(
-                          message: "فلترة",
-                          child: InkWell(
-                            onTap: () {
-                              AppBottomSheet.show(
-                                context: context,
-                                child: FilterClientsSheet(
-                                  onChangeRegion: (value) {
-                                    regoin = value.toString();
-                                    filterShow();
-                                  },
-                                  onChangeClientType: (value) {
-                                    typeclientvalue = value.toString();
-                                    filterShow();
-                                  },
-                                  onResetEmployee: (context) {
-                                    iduser = null;
-                                    filterShow();
-                                    Navigator.pop(context);
-                                  },
-                                  onChangeEmployee: (value) {
-                                    iduser = value.idUser;
-                                    filterShow();
-                                  },
-                                  onChangeActivity: (value) {
-                                    activity = value?.id_activity_type.toString();
-                                    filterShow();
-                                  },
-                                  onResetActivity: (context) {
-                                    activity = null;
-                                    filterShow();
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              );
-                            },
-                            borderRadius: BorderRadius.circular(10).r,
-                            child: Container(
-                              height: 46,
-                              width: 46,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(10).r,
-                              ),
-                              child: Icon(Icons.filter_alt_rounded, color: Colors.grey.shade600, size: 30.r),
-                            ),
-                          ),
-                        ),
+                        // Tooltip(
+                        //   message: "فلترة",
+                        //   child: InkWell(
+                        //     onTap: () {
+                        //       AppBottomSheet.show(
+                        //         context: context,
+                        //         child: FilterClientsSheet(
+                        //           onChangeRegion: (value) {
+                        //             regoin = value.toString();
+                        //             filterShow();
+                        //           },
+                        //           onChangeClientType: (value) {
+                        //             typeclientvalue = value.toString();
+                        //             filterShow();
+                        //           },
+                        //           onResetEmployee: (context) {
+                        //             iduser = null;
+                        //             filterShow();
+                        //             Navigator.pop(context);
+                        //           },
+                        //           onChangeEmployee: (value) {
+                        //             iduser = value.idUser;
+                        //             filterShow();
+                        //           },
+                        //           onChangeActivity: (value) {
+                        //             activity = value?.id_activity_type.toString();
+                        //             filterShow();
+                        //           },
+                        //           onResetActivity: (context) {
+                        //             activity = null;
+                        //             filterShow();
+                        //             Navigator.pop(context);
+                        //           },
+                        //         ),
+                        //       );
+                        //     },
+                        //     borderRadius: BorderRadius.circular(10).r,
+                        //     child: Container(
+                        //       height: 46,
+                        //       width: 46,
+                        //       decoration: BoxDecoration(
+                        //         color: Colors.grey.shade200,
+                        //         borderRadius: BorderRadius.circular(10).r,
+                        //       ),
+                        //       child: Icon(Icons.filter_alt_rounded, color: Colors.grey.shade600, size: 30.r),
+                        //     ),
+                        //   ),
+                        // ),
                         10.horizontalSpace,
                       ],
                     ),
@@ -241,7 +241,6 @@ class _tabclientsState extends State<tabclients> {
   }
 
   void filterShow() {
-    print("******* filter ******** ");
     context.read<ClientProvider>().filterClient(
           activity: activity,
           idUser: iduser,

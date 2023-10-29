@@ -104,11 +104,11 @@ class _delayinstallState extends State<delayinstall> {
     listInvoicesAccept = [];
     for (int i = 0; i < data.length; i++) {
       // tempdata.add(BarModel.fromJson(data[i]));
-      // print(tempdata[i].y);
+      // 
       listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
     }
 
-    print('length result' + listInvoicesAccept.length.toString());
+    
     // for(int i=0;i<salesresult.length;i++)
     setState(() {
       salesresult = tempdata;
@@ -368,7 +368,7 @@ class _delayinstallState extends State<delayinstall> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
       });
   }
 
@@ -385,7 +385,7 @@ class _delayinstallState extends State<delayinstall> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
       });
   }
 }

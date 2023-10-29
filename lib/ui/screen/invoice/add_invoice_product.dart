@@ -123,31 +123,31 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
       if (listProduct.isNotEmpty) {
         _textprice.text = double.parse(selectedProduct?.priceProduct ?? "0.0").toStringAsFixed(2);
         String? taxCountry = selectedProduct?.value_config;
-        print('tax');
-        print(taxCountry);
-        print('price');
-        print(_textprice.text);
+        
+        
+        
+        
         if (taxCountry != null) {
           double pricewithtax = double.parse(_textprice.text) * double.parse(taxCountry) / 100;
-          print(pricewithtax);
+          
           _textprice.text = (double.parse(_textprice.text) + pricewithtax).toString();
         }
         if (_taxadmin.text != '' && _taxuser.text != '') {
           totaltax = double.parse(_taxadmin.text) + double.parse(_taxuser.text);
           //_textprice.text=totaltax.toString();
         } else {
-          print('inside else ' + _taxadmin.text);
-          print('inside else ' + _taxuser.text);
+          
+          
           if (_taxadmin.text != '') totaltax = double.parse(_taxadmin.text);
           if (_taxuser.text != '') totaltax = double.parse(_taxuser.text);
         }
         double pricewithouttax = double.parse(_textprice.text) * totaltax / 100; //حسم
         _textprice.text = (double.parse(_textprice.text) - pricewithouttax).toString();
-        print(_textprice.text);
+        
         double totalprice = double.parse(_textprice.text) * double.parse(_amount.text.isEmpty ? '1' : _amount.text);
         // totalprice.floorToDouble();
         _textprice.text = totalprice.toStringAsFixed(2).toString();
-        print(totalprice.toStringAsFixed(2));
+        
       }
     });
   }
@@ -191,10 +191,10 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                   _total = _total + double.parse(pinv[i].price.toString());
                 }
                 widget.invoice!.total = _total.toStringAsFixed(2).toString();
-                print('_total.toString();');
-                print(_total.toString());
+                
+                
                 Provider.of<invoice_vm>(context, listen: false).set_total(_total.toString());
-                print(widget.invoice!.total);
+                
                 widget.invoice!.products = pinv;
 
                 // Provider.of<invoice_vm>(context,listen: false)
@@ -323,7 +323,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                   EditTextFormField(
                                     //read: false,
                                     onChanged: (val) {
-                                      print(val);
+                                      
                                       if (val == null) _amount_value = '';
                                       _amount_value = val;
                                       calculate();
@@ -465,7 +465,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                           typeProdRenew: pm.typeProdRenew
                                         );
                                         listAdded.add(pp);
-                                        print(pp.nameProduct);
+                                        
                                         Provider.of<invoice_vm>(context, listen: false).addlistproductinvoic(pp);
                                       } else {
                                         ScaffoldMessenger.of(context)

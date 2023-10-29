@@ -357,7 +357,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                   Navigator.of(context, rootNavigator: true).pop(true);
                                                   // dismisses only the dialog and returns true
                                                   // if(itemProd.idInvoice!=null)
-                                                  print('das');
+                                                  
                                                   DateTime _currentDate = DateTime.now();
                                                   final rt.DateFormat formatter = rt.DateFormat('yyyy-MM-dd');
                                                   // Provider.of<invoice_vm>(context, listen: false)
@@ -754,8 +754,8 @@ class _RejectDialogState extends State<RejectDialog> {
                     RowEdit(name: "اسباب الإنسحاب", des: '*'),
                     Consumer<ClientTypeProvider>(
                       builder: (context, cart, child) {
-                        print("cart.type_of_out ${cart.type_of_out}");
-                        print("cart.selectedValueOut ${cart.selectedValueOut}");
+                        
+                        
                         return DropdownButton(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),

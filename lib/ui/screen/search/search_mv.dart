@@ -25,8 +25,8 @@ class productSearchView extends StatelessWidget {
     String searchKey =productName;//
     // productName[0].toUpperCase() +
      //   productName.substring(1);
-    print('search');
-    print(searchKey);
+    
+    
     if(list is List<ClientModel> ){
       list.forEach((element) {
         if(element.nameEnterprise!.contains(searchKey,0)
@@ -49,9 +49,9 @@ class productSearchView extends StatelessWidget {
     }
     if(list is List<UserModel>)
       list.forEach((element) {
-        print(element.nameUser);
-        print(searchKey);
-        print('iside search');
+        
+        
+        
         if(element.nameUser!.contains(searchKey,0))
           clientlistsearch.add(element);
       });

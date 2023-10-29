@@ -135,10 +135,10 @@ class _installAddState extends State<installAdd> {
                         color: Colors.amber,
                       ),
                       onRatingUpdate: (rating) {
-                        print(rating);
+
                         setState(() {
                           rate=rating;
-                          print(rate);
+
                         });
                       },
                     ),
@@ -171,7 +171,7 @@ class _installAddState extends State<installAdd> {
                 //                 borderRadius: BorderRadius.circular(10)),
                 //             buttons: ['غير راضي','راضي'],
                 //             onSelected: (_,index,isselected){
-                //               print(index);
+                //
                 //               //setState(() {
                 //               typepayController=index.toString();
                 //               selectedProvider.changeinstall(index);

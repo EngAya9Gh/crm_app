@@ -57,11 +57,11 @@ class _addProductState extends State<addProduct> {
   void settaxrate(context) {
     List<ConfigModel> _listconfg =
         Provider.of<config_vm>(context, listen: false).listofconfig;
-    print("build 3 add");
+    
     taxrate =
         _listconfg.firstWhere((element) => element.name_config == 'taxrate');
 
-    print(taxrate);
+    
   }
 
   // String? idCountry;
@@ -69,9 +69,9 @@ class _addProductState extends State<addProduct> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // idCountry = Provider.of<user_vm_provider>(context, listen: false).currentUser!.fkCountry;
-      print("build add prod");
+      
       Provider.of<config_vm>(context, listen: false).getAllConfig();
-      print("build 2");
+      
       Provider.of<switch_provider>(
           context,
           listen: false).changeboolValue(false);
@@ -135,8 +135,6 @@ class _addProductState extends State<addProduct> {
                                 ),
                                 controller: GroupButtonController(
                                   selectedIndex: selectedProvider.isSelected,
-                                  onDisablePressed: (i) =>
-                                      print('Button #$i is disabled'),
                                 ),
                                 buttons: ['أجهزة', 'برامج'],
                                 onSelected: (_,int index, bool isSelected) {
@@ -144,7 +142,6 @@ class _addProductState extends State<addProduct> {
                                   // valtype_product == 0 ? 1 : 0;
                                   selectedProvider.selectValue(index);
 
-                                  debugPrint('Button #$index $isSelected');
                                 },
                               ),
                             ),
@@ -203,7 +200,7 @@ class _addProductState extends State<addProduct> {
                               label: label_name_price,
                               onChanged: (val) {
                                 price = double.parse(val.toString());
-                                print(price);
+                                
                               },
                             ),
                             SizedBox(

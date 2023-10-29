@@ -33,7 +33,7 @@ class approve_vm extends ChangeNotifier {
     }
 
     listapprove=list;
-    print(listapprove);
+    
     notifyListeners();
   }
 
@@ -48,7 +48,7 @@ class approve_vm extends ChangeNotifier {
     }
     listapprove=list;
 
-    print(listapprove);
+    
 notifyListeners();
   }
 

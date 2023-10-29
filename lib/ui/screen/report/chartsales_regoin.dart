@@ -90,7 +90,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       String params='';
     if(typeproduct=='أجهزة') params='&product=0';
     if(typeproduct=='برامج') params='&product=1';
-    print(type);
+    
       // if(idregoin=='0'){
       //   type='userSum';
       //   paramprivilge='';
@@ -126,13 +126,13 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
         setState(() {
           loading = false;
         });
-        print("e: $e , st: $st");
+        
       }
 
     totalval=0; rowsdata=[];
     for (int i = 0; i < data.length; i++) {
       tempdata.add(BarModel.fromJson(data[i]));
-      print(tempdata[i].y);
+      
       totalval+=tempdata[i].y;
       rowsdata.add(
           DataRow(
@@ -245,7 +245,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                     buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['سنوي', 'شهري', 'يومي'],
                                 onSelected: (_,index, isselected) {
-                                  print(index);
+                                  
                                   switch(index){
                                     case 0:
                                       type='dateyear';
@@ -293,7 +293,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                 buttons: ['الكل', 'أجهزة', 'برامج'],
                                 onSelected: (_,index, isselected) {
 
-                                  print(index);
+                                  
                                   switch(index){
                                     case 0:
                                       typeproduct = 'الكل';
@@ -443,7 +443,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                         _selectedDatemonth = dateTime;
                                       });
 
-                                      print(_selectedDatemonth);
+                                      
                                       // close the dialog when year is selected.
                                       Navigator.pop(context);
                                       getData();
@@ -701,7 +701,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });
@@ -719,7 +719,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });

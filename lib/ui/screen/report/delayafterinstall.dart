@@ -92,8 +92,8 @@ class _delayafterinstallState extends State<delayafterinstall> {
     //         .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
     //     .checkprivlge('81')==true){
     var data;
-print(paramprivilge);
-print(type);
+
+
     switch (type) {
       case "userSum":
         data = await Api().post(
@@ -116,7 +116,7 @@ print(type);
       listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
     }
 
-    print('length result'+listInvoicesAccept.length.toString());
+    
     // for(int i=0;i<salesresult.length;i++)
     setState (() {
 
@@ -455,7 +455,7 @@ print(type);
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });
@@ -473,7 +473,7 @@ print(type);
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });

@@ -7,32 +7,39 @@ abstract class ClientsListEvent extends Equatable {
 class GetAllClientsListEvent extends ClientsListEvent {
   final String fkCountry;
   final int page;
-  final int perPage;
 
   GetAllClientsListEvent({
     required this.fkCountry,
     required this.page,
-    required this.perPage,
   });
 
   @override
-  List<Object?> get props => [fkCountry,page,perPage];
+  List<Object?> get props => [fkCountry, page];
 }
 
-class GetClientsListByRegionEvent extends ClientsListEvent {
-  final String fkRegion;
+class UpdateGetClientsParamsEvent extends ClientsListEvent {
+  final GetClientsWithFilterParams getClientsWithFilterParams;
+  final bool resetFilter;
 
-  GetClientsListByRegionEvent(this.fkRegion,);
+  UpdateGetClientsParamsEvent({
+    required this.getClientsWithFilterParams,
+    this.resetFilter = false,
+  });
 
   @override
-  List<Object?> get props => [fkRegion];
+  List<Object?> get props => [getClientsWithFilterParams, resetFilter];
 }
 
-class GetClientsListByUserEvent extends ClientsListEvent {
-  final String fkUser;
+class SearchEvent extends ClientsListEvent {
+  final String query;
 
-  GetClientsListByUserEvent(this.fkUser);
+  const SearchEvent({required this.query});
 
   @override
-  List<Object?> get props => [fkUser];
+  List<Object?> get props => [query];
+}
+
+class ResetClientList extends ClientsListEvent {
+  @override
+  List<Object?> get props => [];
 }

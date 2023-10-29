@@ -43,7 +43,7 @@ class _main_pageState extends State<main_page> {
     //controllerUsers.getcurrentUser();
 
     //var indexProvider= Provider.of<navigatorProvider>(context);
-    print("after build");
+
     return Scaffold(
       appBar:customAppbar(),
         drawer:

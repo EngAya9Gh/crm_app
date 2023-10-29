@@ -57,12 +57,12 @@ bool isepmty=false;
       //if(listProduct.isNotEmpty){
         _textprice.text=widget.itemProd.priceProduct!;
         String? taxCountry=widget.itemProd.taxtotal;
-        print(taxCountry);
+        
 
         if(taxCountry!=null||taxCountry!='null')
         {
           double pricewithtax=double.parse(_textprice.text)* double.parse(taxCountry!)/100;
-          print(pricewithtax);
+          
           _textprice.text =(double.parse(_textprice.text) +pricewithtax).toString();
         }
         if(_taxadmin.text!=''&&_taxuser.text!='')
@@ -71,8 +71,8 @@ bool isepmty=false;
           //_textprice.text=totaltax.toString();
         }
         else {
-          print('inside else '+_taxadmin.text);
-          print('inside else '+_taxuser.text);
+          
+          
           if(_taxadmin.text!='')
             totaltax=double.parse(_taxadmin.text);
           if(_taxuser.text!='')
@@ -80,7 +80,7 @@ bool isepmty=false;
         }
         double pricewithouttax=double.parse(_textprice.text)* totaltax/100;
         _textprice.text =(double.parse(_textprice.text)-pricewithouttax).toString();
-        print( _textprice.text);
+        
         double totalprice=double.parse(_textprice.text)
             *double.parse( _amount.text.isEmpty?'1':_amount.text);
         //totalprice.floorToDouble();
@@ -140,7 +140,7 @@ bool isepmty=false;
                   },
                   //read: false,
                   onChanged: (val) {
-                    print(val);
+                    
                     if(val==null)_amount_value='1';
                     _amount_value=val;
                      setState(() { calculate();});
@@ -240,8 +240,8 @@ SizedBox(width: 15,),
                 onPressed: ()   async {
                   if(widget.itemProd.idInvoiceProduct!='null')
                   {
-                    print(widget.itemProd.idInvoiceProduct);
-                    print('widget.itemProd.idInvoiceProduct');
+                    
+                    
                     // Provider.of<invoice_vm>(context,listen: false)
                     //     .listproductinvoic[index].isdeleted=true,
                     // Provider.of<invoice_vm>(context,listen: false)
@@ -258,15 +258,11 @@ SizedBox(width: 15,),
                       _total=_total+double.parse(pinv[i].price.toString());
                     }
                     widget.invoice!.total=_total.toString();
-                    print('_total.toString();');
-                    print(_total.toString());
+                    
+                    
                     Provider.of<invoice_vm>(context,listen: false).set_total(_total.toString());
-                    print(  widget.invoice!
-                        .total);
-                    widget.invoice!.products=pinv;
-                    /////////////
 
-//////////////////////////////////////////////////////////////
+                    widget.invoice!.products=pinv;
                     String? invoiceID=widget.invoice!.idInvoice;
                     Provider.of<invoice_vm>(
                         context, listen: false)

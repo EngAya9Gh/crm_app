@@ -214,7 +214,7 @@ class InvoiceModel extends CacheRepository {
   //region Json converters
   // var products;
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
-    print(jsondata);
+    
     idInvoice = jsondata['id_invoice'];
     user_delete = jsondata['user_delete'];
     date_delete = jsondata['date_delete'];
@@ -444,7 +444,7 @@ class InvoiceModel extends CacheRepository {
     List<ProductsInvoice> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        print(i);
+        
 
         
         prodlist.add(ProductsInvoice.fromJson(data[i]));
@@ -454,12 +454,12 @@ class InvoiceModel extends CacheRepository {
   }
 
   ParticipateModel getParticipateModel(data) {
-    print('data');
-    print(data.length.toString() + 'data');
+    
+    
     List<ParticipateModel> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        print('i' + i.toString()); //+data[i]);
+        
         prodlist.add(ParticipateModel.fromJson(data[i]));
       }
     }
@@ -467,12 +467,12 @@ class InvoiceModel extends CacheRepository {
   }
 
   AgentDistributorModel getAgentDistributorModel(data) {
-    print('data');
-    print(data.length.toString() + 'data');
+    
+    
     List<AgentDistributorModel> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        print('i' + i.toString()); //+data[i]);
+        
         prodlist.add(AgentDistributorModel.fromJson(data[i]));
       }
     }
@@ -723,8 +723,8 @@ class ProductsInvoice extends CacheRepository {
 
   //region Json converters
   ProductsInvoice.fromJson(Map<String, dynamic> json) {
-    print('in product from json ');
-    print(json);
+    
+    
     idInvoiceProduct = json['id_invoice_product'];
     fkIdInvoice = json['fk_id_invoice'];
     fkProduct = json['fk_product'];
