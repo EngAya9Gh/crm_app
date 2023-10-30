@@ -1143,7 +1143,7 @@ class invoice_vm extends ChangeNotifier {
   openFile(FileAttach attachFile) async {
     try {
       if (attachFile.file != null) {
-        final check = await Permission.manageExternalStorage.request();
+        final check = await Permission.storage.request();
         if (check == PermissionStatus.denied) {
           return;
         }
@@ -1153,7 +1153,7 @@ class invoice_vm extends ChangeNotifier {
         return;
       }
       final filename = attachFile.fileAttach!.name;
-      final check = await Permission.manageExternalStorage.request();
+      final check = await Permission.storage.request();
       if (check == PermissionStatus.denied) {
         return;
       }
