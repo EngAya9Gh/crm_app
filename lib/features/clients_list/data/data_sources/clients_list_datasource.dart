@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:crm_smart/core/api/client.dart';
+import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
@@ -104,6 +107,25 @@ class ClientsListDatasource {
             return ClientModel.fromJson(e as Map<String, dynamic>);
           }));
         },
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<List<RecommendedClient>>> getRecommendedClients() async {
+    fun() async {
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.care.getRecommendedClients,
+          clientMethod: ClientMethod.get,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      return ResponseWrapper<List<RecommendedClient>>.fromJson(
+        jsonDecode(response.data),
+        (json) => List.from((json as List<dynamic>).map((e) => RecommendedClient.fromJson(e as Map<String, dynamic>))),
       );
     }
 

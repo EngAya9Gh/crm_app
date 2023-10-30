@@ -3,12 +3,16 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/common/helpers/helper_functions.dart';
 import 'package:crm_smart/common/models/nullable.dart';
+import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
 import 'package:crm_smart/features/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/models/clients_list_response.dart';
+import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 
 part 'clients_list_event.dart';
 
@@ -18,14 +22,17 @@ part 'clients_list_state.dart';
 class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   ClientsListBloc(
     this._getClientsWithFilterUserUsecase,
+    this._getRecommendedClientsUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
     on<SearchEvent>(_onSearchEvent);
     on<ResetClientList>(_onResetClientList);
+    on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
   }
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
+  final GetRecommendedClientsUsecase _getRecommendedClientsUsecase;
 
   FutureOr<void> _onGetAllClientsListEvent(GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
     final GetClientsWithFilterParams getClientsWithFilterParams =
@@ -71,5 +78,23 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       clientsListController: PagingController(firstPageKey: 1, invisibleItemsThreshold: 10),
       restFilter: true,
     ));
+  }
+
+  FutureOr<void> _onGetRecommendedClientsEvent(GetRecommendedClientsEvent event, Emitter<ClientsListState> emit) async {
+    if (state.recommendedClientsState.isLoaded) {
+      emit(state.copyWith(recommendedClientsState: state.recommendedClientsState));
+      return;
+    }
+    emit(state.copyWith(recommendedClientsState: PageState.loading()));
+
+    final response = await _getRecommendedClientsUsecase();
+
+    response.fold(
+      (exception, message) => emit(state.copyWith(recommendedClientsState: PageState.error())),
+      (value) {
+        emit(state.copyWith(recommendedClientsState: PageState.loaded(data: value.message ?? [])));
+        event.onSuccess?.call(value.message ?? []);
+      },
+    );
   }
 }

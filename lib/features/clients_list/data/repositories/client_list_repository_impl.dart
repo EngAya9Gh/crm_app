@@ -2,6 +2,7 @@ import 'package:crm_smart/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/api/api_utils.dart';
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
+import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/clients_list_repository.dart';
@@ -31,5 +32,10 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   @override
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsWithFilter(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getAllClientsWithFilterList(body));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<RecommendedClient>>>> getRecommendedClients() {
+    return toApiResult(datasource.getRecommendedClients);
   }
 }

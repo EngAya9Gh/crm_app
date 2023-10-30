@@ -241,7 +241,7 @@ class _ClientViewState extends State<ClientView> {
                                       context,
                                       CupertinoPageRoute(
                                           builder: (context) => editclient(
-                                              itemClient: clientModel,
+                                              client: clientModel,
                                               fkclient: clientModel.idClients.toString(),
                                               fkuser: clientModel.fkUser.toString())));
                                 },

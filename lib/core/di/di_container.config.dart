@@ -30,8 +30,10 @@ import '../../features/clients_list/domain/use_cases/get_clients_by_user_usecase
     as _i16;
 import '../../features/clients_list/domain/use_cases/get_clients_with_filter_usecase.dart'
     as _i17;
+import '../../features/clients_list/domain/use_cases/get_recommended_cleints_usecase.dart'
+    as _i19;
 import '../../features/clients_list/presentation/manager/clients_list_bloc.dart'
-    as _i28;
+    as _i29;
 import '../../features/communication_list/data/data_sources/communication_list_datasource.dart'
     as _i11;
 import '../../features/communication_list/data/repositories/communication_list_repository_impl.dart'
@@ -41,41 +43,41 @@ import '../../features/communication_list/domain/repositories/communication_list
 import '../../features/communication_list/domain/use_cases/get_communication_list_usecase.dart'
     as _i18;
 import '../../features/communication_list/presentation/manager/communication_list_bloc.dart'
-    as _i29;
-import '../../features/manage_users/data/data_sources/users_datasource.dart'
-    as _i24;
-import '../../features/manage_users/data/repositories/users_repository_impl.dart'
-    as _i26;
-import '../../features/manage_users/domain/repositories/users_repository.dart'
-    as _i25;
-import '../../features/manage_users/domain/use_cases/action_user_usecase.dart'
-    as _i27;
-import '../../features/manage_users/domain/use_cases/get_allusers_usecase.dart'
     as _i30;
-import '../../features/manage_users/presentation/manager/users_cubit.dart'
-    as _i36;
-import '../../features/manage_withdrawals/data/data_sources/manage_withdrawals_datasource.dart'
-    as _i19;
-import '../../features/manage_withdrawals/data/repositories/manage_withdrawals_repository_impl.dart'
-    as _i21;
-import '../../features/manage_withdrawals/domain/repositories/manage_withdrawals_repository.dart'
-    as _i20;
-import '../../features/manage_withdrawals/domain/use_cases/get_user_series_usecase.dart'
+import '../../features/manage_users/data/data_sources/users_datasource.dart'
+    as _i25;
+import '../../features/manage_users/data/repositories/users_repository_impl.dart'
+    as _i27;
+import '../../features/manage_users/domain/repositories/users_repository.dart'
+    as _i26;
+import '../../features/manage_users/domain/use_cases/action_user_usecase.dart'
+    as _i28;
+import '../../features/manage_users/domain/use_cases/get_allusers_usecase.dart'
     as _i31;
-import '../../features/manage_withdrawals/domain/use_cases/get_withdrawal_invoice_details_usecase.dart'
-    as _i32;
-import '../../features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart'
-    as _i33;
-import '../../features/manage_withdrawals/domain/use_cases/get_withdrawn_details_usecase.dart'
-    as _i34;
-import '../../features/manage_withdrawals/domain/use_cases/set_approve_series_usecase.dart'
+import '../../features/manage_users/presentation/manager/users_cubit.dart'
+    as _i37;
+import '../../features/manage_withdrawals/data/data_sources/manage_withdrawals_datasource.dart'
+    as _i20;
+import '../../features/manage_withdrawals/data/repositories/manage_withdrawals_repository_impl.dart'
     as _i22;
-import '../../features/manage_withdrawals/domain/use_cases/update_user_series_usecase.dart'
-    as _i23;
-import '../../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart'
+import '../../features/manage_withdrawals/domain/repositories/manage_withdrawals_repository.dart'
+    as _i21;
+import '../../features/manage_withdrawals/domain/use_cases/get_user_series_usecase.dart'
+    as _i32;
+import '../../features/manage_withdrawals/domain/use_cases/get_withdrawal_invoice_details_usecase.dart'
+    as _i33;
+import '../../features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart'
+    as _i34;
+import '../../features/manage_withdrawals/domain/use_cases/get_withdrawn_details_usecase.dart'
     as _i35;
+import '../../features/manage_withdrawals/domain/use_cases/set_approve_series_usecase.dart'
+    as _i23;
+import '../../features/manage_withdrawals/domain/use_cases/update_user_series_usecase.dart'
+    as _i24;
+import '../../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart'
+    as _i36;
 import '../api/client.dart' as _i7;
-import 'di_container.dart' as _i37;
+import 'di_container.dart' as _i38;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -120,52 +122,56 @@ Future<_i1.GetIt> $initGetIt(
       _i17.GetClientsWithFilterUserUsecase(gh<_i9.ClientsListRepository>()));
   gh.factory<_i18.GetCommunicationListUsecase>(() =>
       _i18.GetCommunicationListUsecase(gh<_i12.CommunicationListRepository>()));
-  gh.factory<_i19.ManageWithdrawalsDatasource>(
-      () => _i19.ManageWithdrawalsDatasource(gh<_i7.ClientApi>()));
-  gh.factory<_i20.ManageWithdrawalsRepository>(() =>
-      _i21.ManageWithdrawalsRepositoryImpl(
-          gh<_i19.ManageWithdrawalsDatasource>()));
-  gh.factory<_i22.SetApproveSeriesUsecase>(() =>
-      _i22.SetApproveSeriesUsecase(gh<_i20.ManageWithdrawalsRepository>()));
-  gh.factory<_i23.UpdateSeriesUsecase>(
-      () => _i23.UpdateSeriesUsecase(gh<_i20.ManageWithdrawalsRepository>()));
-  gh.factory<_i24.UsersDatasource>(
-      () => _i24.UsersDatasource(gh<_i7.ClientApi>()));
-  gh.factory<_i25.UsersRepository>(
-      () => _i26.UsersRepositoryImpl(gh<_i24.UsersDatasource>()));
-  gh.factory<_i27.ActionUserUsecase>(
-      () => _i27.ActionUserUsecase(gh<_i25.UsersRepository>()));
-  gh.factory<_i28.ClientsListBloc>(
-      () => _i28.ClientsListBloc(gh<_i17.GetClientsWithFilterUserUsecase>()));
-  gh.factory<_i29.CommunicationListBloc>(
-      () => _i29.CommunicationListBloc(gh<_i18.GetCommunicationListUsecase>()));
-  gh.factory<_i30.GetAllUsersUsecase>(
-      () => _i30.GetAllUsersUsecase(gh<_i25.UsersRepository>()));
-  gh.factory<_i31.GetUserSeriesUsecase>(
-      () => _i31.GetUserSeriesUsecase(gh<_i20.ManageWithdrawalsRepository>()));
-  gh.factory<_i32.GetWithdrawalInvoiceDetailsUsecase>(() =>
-      _i32.GetWithdrawalInvoiceDetailsUsecase(
-          gh<_i20.ManageWithdrawalsRepository>()));
-  gh.factory<_i33.GetWithdrawalsInvoicesUsecase>(() =>
-      _i33.GetWithdrawalsInvoicesUsecase(
-          gh<_i20.ManageWithdrawalsRepository>()));
-  gh.factory<_i34.GetWithdrawnDetailsUsecase>(() =>
-      _i34.GetWithdrawnDetailsUsecase(gh<_i20.ManageWithdrawalsRepository>()));
-  gh.lazySingleton<_i35.ManageWithdrawalsCubit>(
-      () => _i35.ManageWithdrawalsCubit(
-            gh<_i31.GetUserSeriesUsecase>(),
-            gh<_i23.UpdateSeriesUsecase>(),
-            gh<_i30.GetAllUsersUsecase>(),
-            gh<_i33.GetWithdrawalsInvoicesUsecase>(),
-            gh<_i32.GetWithdrawalInvoiceDetailsUsecase>(),
-            gh<_i22.SetApproveSeriesUsecase>(),
-            gh<_i34.GetWithdrawnDetailsUsecase>(),
+  gh.factory<_i19.GetRecommendedClientsUsecase>(
+      () => _i19.GetRecommendedClientsUsecase(gh<_i9.ClientsListRepository>()));
+  gh.factory<_i20.ManageWithdrawalsDatasource>(
+      () => _i20.ManageWithdrawalsDatasource(gh<_i7.ClientApi>()));
+  gh.factory<_i21.ManageWithdrawalsRepository>(() =>
+      _i22.ManageWithdrawalsRepositoryImpl(
+          gh<_i20.ManageWithdrawalsDatasource>()));
+  gh.factory<_i23.SetApproveSeriesUsecase>(() =>
+      _i23.SetApproveSeriesUsecase(gh<_i21.ManageWithdrawalsRepository>()));
+  gh.factory<_i24.UpdateSeriesUsecase>(
+      () => _i24.UpdateSeriesUsecase(gh<_i21.ManageWithdrawalsRepository>()));
+  gh.factory<_i25.UsersDatasource>(
+      () => _i25.UsersDatasource(gh<_i7.ClientApi>()));
+  gh.factory<_i26.UsersRepository>(
+      () => _i27.UsersRepositoryImpl(gh<_i25.UsersDatasource>()));
+  gh.factory<_i28.ActionUserUsecase>(
+      () => _i28.ActionUserUsecase(gh<_i26.UsersRepository>()));
+  gh.factory<_i29.ClientsListBloc>(() => _i29.ClientsListBloc(
+        gh<_i17.GetClientsWithFilterUserUsecase>(),
+        gh<_i19.GetRecommendedClientsUsecase>(),
+      ));
+  gh.factory<_i30.CommunicationListBloc>(
+      () => _i30.CommunicationListBloc(gh<_i18.GetCommunicationListUsecase>()));
+  gh.factory<_i31.GetAllUsersUsecase>(
+      () => _i31.GetAllUsersUsecase(gh<_i26.UsersRepository>()));
+  gh.factory<_i32.GetUserSeriesUsecase>(
+      () => _i32.GetUserSeriesUsecase(gh<_i21.ManageWithdrawalsRepository>()));
+  gh.factory<_i33.GetWithdrawalInvoiceDetailsUsecase>(() =>
+      _i33.GetWithdrawalInvoiceDetailsUsecase(
+          gh<_i21.ManageWithdrawalsRepository>()));
+  gh.factory<_i34.GetWithdrawalsInvoicesUsecase>(() =>
+      _i34.GetWithdrawalsInvoicesUsecase(
+          gh<_i21.ManageWithdrawalsRepository>()));
+  gh.factory<_i35.GetWithdrawnDetailsUsecase>(() =>
+      _i35.GetWithdrawnDetailsUsecase(gh<_i21.ManageWithdrawalsRepository>()));
+  gh.lazySingleton<_i36.ManageWithdrawalsCubit>(
+      () => _i36.ManageWithdrawalsCubit(
+            gh<_i32.GetUserSeriesUsecase>(),
+            gh<_i24.UpdateSeriesUsecase>(),
+            gh<_i31.GetAllUsersUsecase>(),
+            gh<_i34.GetWithdrawalsInvoicesUsecase>(),
+            gh<_i33.GetWithdrawalInvoiceDetailsUsecase>(),
+            gh<_i23.SetApproveSeriesUsecase>(),
+            gh<_i35.GetWithdrawnDetailsUsecase>(),
           ));
-  gh.factory<_i36.UsersCubit>(() => _i36.UsersCubit(
-        gh<_i30.GetAllUsersUsecase>(),
-        gh<_i27.ActionUserUsecase>(),
+  gh.factory<_i37.UsersCubit>(() => _i37.UsersCubit(
+        gh<_i31.GetAllUsersUsecase>(),
+        gh<_i28.ActionUserUsecase>(),
       ));
   return getIt;
 }
 
-class _$AppModule extends _i37.AppModule {}
+class _$AppModule extends _i38.AppModule {}

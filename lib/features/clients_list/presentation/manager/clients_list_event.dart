@@ -43,3 +43,11 @@ class ResetClientList extends ClientsListEvent {
   @override
   List<Object?> get props => [];
 }
+
+class GetRecommendedClientsEvent extends ClientsListEvent {
+  final ValueChanged<List<RecommendedClient>>? onSuccess;
+
+  GetRecommendedClientsEvent({this.onSuccess});
+  @override
+  List<Object?> get props => [];
+}
