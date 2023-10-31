@@ -242,7 +242,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
       scheme: uri.scheme,
       port: uri.port,
       queryParameters: queryParams,
-      path: uri.path + 'reports/reportsales.php',
+      path: uri.path + 'reports/get_race_employe.php',
     );
 
     var data = await Api().post(
