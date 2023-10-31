@@ -163,9 +163,9 @@ class ClientService {
     return prodlist;
   }
 
-  Future<List<ClientModel>> getTransfer(String? iduser) async {
+  Future<List<ClientModel>> getTransfer(String param) async {
     List<dynamic> data = [];
-    data = await Api().get(url: url + 'client/get_approveTransfer.php?iduser=$iduser');
+    data = await Api().get(url: url + 'client/get_approveTransfer.php?$param');
 
     List<ClientModel> prodlist = [];
 
