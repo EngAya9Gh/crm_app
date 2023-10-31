@@ -189,16 +189,26 @@ class _ClientViewState extends State<ClientView> {
 
                   cardRow(title: 'رقم الموظف', value: clientModel.mobileuser.toString()),
 
-                  // (clientModel.reasonTransfer == null) &&
-                      clientModel.fkusertrasfer != null?
+                 if(clientModel.reasonTransfer != null)
+                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                      clientModel.fkusertrasfer != null ?
                       cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
-                          : Container(),
+                          : Container()
 
-                  (clientModel.reasonTransfer == null) &&     clientModel.fkusertrasfer != null
+                 else
+
+              clientModel.fkusertrasfer != null ?
+          cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+              : Container(),
+
+
+                   Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                      (clientModel.reasonTransfer == null) &&     clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value:'تم قبول التحويل')
                       : Container(),
 
-                  (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
+                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                      (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value:'معلق')
 
                       : Container(),
