@@ -189,11 +189,22 @@ class _ClientViewState extends State<ClientView> {
 
                   cardRow(title: 'رقم الموظف', value: clientModel.mobileuser.toString()),
 
-                  (clientModel.reasonTransfer == null) && clientModel.fkusertrasfer != null
-                      ? cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+                  // (clientModel.reasonTransfer == null) &&
+                      clientModel.fkusertrasfer != null?
+                      cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+                          : Container(),
+
+                  (clientModel.reasonTransfer == null) &&     clientModel.fkusertrasfer != null
+                      ? cardRow(title: 'حالة التحويل', value:'تم قبول التحويل')
                       : Container(),
 
-                  (clientModel.reasonTransfer == null) && clientModel.fkusertrasfer != null
+                  (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
+                      ? cardRow(title: 'حالة التحويل', value:'معلق')
+
+                      : Container(),
+
+                  // (clientModel.reasonTransfer == null) &&
+                      clientModel.fkusertrasfer != null
                       ? cardRow(title: 'تاريخ التحويل', value: clientModel.dateTransfer.toString())
                       : Container(),
 
