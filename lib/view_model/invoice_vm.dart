@@ -884,6 +884,7 @@ class invoice_vm extends ChangeNotifier {
     InvoiceModel? data = await Invoice_Service().setApproveClient(body, idInvoice!);
     int index = listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
     int iindex = listInvoicesAccept.indexWhere((element) => element.idInvoice == idInvoice);
+    int iindexadmin = listInvoicesAccept_admin.indexWhere((element) => element.idInvoice == idInvoice);
     if (index != -1) {
       if (data != null) {
         listinvoices[index] = data;
@@ -892,6 +893,7 @@ class invoice_vm extends ChangeNotifier {
       }
     }
     if (iindex != -1) listInvoicesAccept.removeAt(iindex);
+    if (iindexadmin != -1) listInvoicesAccept_admin.removeAt(iindex);
     isapproved = false;
     notifyListeners();
 
