@@ -400,7 +400,7 @@ class client_vm extends ChangeNotifier {
     listClientAprroveTransfer = List.from(listClient);
     notifyListeners();
   }
-
+     
   Future<void> getallclientAcceptwithprev() async {
     listClient = [];
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '1').isCheck == '1' ? true : false;
