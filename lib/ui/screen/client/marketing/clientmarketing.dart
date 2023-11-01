@@ -1,32 +1,17 @@
-import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/provider/loadingprovider.dart';
-import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
 import 'package:crm_smart/ui/widgets/client_widget/cardAllclient.dart';
-import 'package:crm_smart/ui/widgets/client_widget/cardClient.dart';
-import 'package:crm_smart/ui/widgets/client_widget/cardclientAccept.dart';
-import 'package:crm_smart/ui/widgets/client_widget/clientCardNew.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:group_button/group_button.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
-// import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
+import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../model/ActivityModel.dart';
 import '../addClient.dart';
@@ -235,7 +220,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                 Expanded(
                                   child:   DropdownSearch<ActivityModel>(
                                     mode: Mode.DIALOG,
-                                    filterFn: (user, filter) => user!.getfilter_actv(filter!),
+                                    filterFn: (user, filter) => user!.getFilterActivityType(filter!),
                                     compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
                                     items: cart.activitiesList,
                                     itemAsString: (u) => u!.userAsString(),

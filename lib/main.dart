@@ -46,6 +46,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
+import 'core/config/theme/theme.dart';
 
 //import 'package:firebase_core/firebase_core.dart';
 
@@ -155,8 +156,8 @@ void main() async {
         create: (_) => invoice_vm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-      ChangeNotifierProxyProvider<UserProvider, maincity_vm>(
-        create: (_) => maincity_vm(),
+      ChangeNotifierProxyProvider<UserProvider, MainCityProvider>(
+        create: (_) => MainCityProvider(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
       ChangeNotifierProvider<ClientTypeProvider>(create: (_) => ClientTypeProvider()),
@@ -175,7 +176,7 @@ void main() async {
 
       ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
       ChangeNotifierProvider<ActivityProvider>(create: (_) => ActivityProvider()),
-      ChangeNotifierProvider<company_vm>(create: (_) => company_vm()),
+      ChangeNotifierProvider<CompanyProvider>(create: (_) => CompanyProvider()),
       ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
       ChangeNotifierProvider<AgentDistributorViewModel>(
           create: (_) => AgentDistributorViewModel()),
@@ -218,55 +219,50 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SharedPreferences>(
-        future: currentUser,
-        builder: (context, snapshot) {
-
-          if (!snapshot.hasData) {
-            //Center(child: CircularProgressIndicator(),)
-            return MaterialApp(
-              home: Scaffold(
-                body: Center(
-                  child: Text('Loading....'),
-                ),
-              ),
-            );
-          } else {
-            isUserLoggedIn = snapshot.data!.getBool(kKeepMeLoggedIn) ?? false;
-            if (snapshot.data!.getString('id_user1') == '0')
+    return ScreenUtilInit(
+      useInheritedMediaQuery: true,
+      child: FutureBuilder<SharedPreferences>(
+          future: currentUser,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              //Center(child: CircularProgressIndicator(),)
               return MaterialApp(
                 home: Scaffold(
                   body: Center(
-                    child: Text('غير مصرح لك الدخول'),
+                    child: Text('Loading....'),
                   ),
                 ),
               );
-            // String idcurrentuser= snapshot.data!.getString("id_user").toString();
-            else {
-              return MaterialApp(
-                // localizationsDelegates: [
-                //   GlobalWidgetsLocalizations.delegate,
-                //   GlobalMaterialLocalizations.delegate,
-                //   // MonthYearPickerLocalizations.delegate,
-                // ],
-                debugShowCheckedModeBanner: false,
-                title: 'Flutter Demo',
-                theme: ThemeData(
-                  primaryColor: kMainColor,
-                  backgroundColor: Colors.white,
-                  brightness: Brightness.light,
-                ),
-                home: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: ScreenUtilInit(
-                    useInheritedMediaQuery: true,
+            } else {
+              isUserLoggedIn = snapshot.data!.getBool(kKeepMeLoggedIn) ?? false;
+              if (snapshot.data!.getString('id_user1') == '0')
+                return MaterialApp(
+                  home: Scaffold(
+                    body: Center(
+                      child: Text('غير مصرح لك الدخول'),
+                    ),
+                  ),
+                );
+              // String idcurrentuser= snapshot.data!.getString("id_user").toString();
+              else {
+                return MaterialApp(
+                  // localizationsDelegates: [
+                  //   GlobalWidgetsLocalizations.delegate,
+                  //   GlobalMaterialLocalizations.delegate,
+                  //   // MonthYearPickerLocalizations.delegate,
+                  // ],
+                  debugShowCheckedModeBanner: false,
+                  title: 'Flutter Demo',
+                  theme: AppTheme.light(context),
+                  home: Directionality(
+                    textDirection: TextDirection.rtl,
                     child: isUserLoggedIn ? Home() : login(),
                   ),
-                ),
-              );
+                );
+              }
             }
-          }
-        });
+          }),
+    );
   }
 }
 // This widget is the root of your application.

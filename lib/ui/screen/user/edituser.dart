@@ -1,38 +1,23 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/model/managmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/provider/loadingprovider.dart';
-import 'package:crm_smart/provider/manage_provider.dart';
-import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:crm_smart/services/UserService.dart';
 import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/levelcombox.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/manage_widget.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/regoincombox.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
-import 'package:crm_smart/view_model/country_vm.dart';
-import 'package:crm_smart/view_model/level_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../labeltext.dart';
-import 'package:get/get.dart';
-import 'dart:io';
-
 import '../../../model/maincitymodel.dart';
+import '../../../provider/manage_provider.dart';
+import '../../../view_model/level_vm.dart';
 import '../../../view_model/maincity_vm.dart';
 
 class EditUser extends StatefulWidget {
@@ -105,7 +90,7 @@ class _EditUserState extends State<EditUser> {
           widget.userModel.typeAdministration.toString();
       Provider.of<manage_provider>(context, listen: false).changevalue(namemanage!);
 
-      context.read<maincity_vm>().getmaincity(regions: widget.userModel.maincitylist_user);
+      context.read<MainCityProvider>().getmaincity(regions: widget.userModel.maincitylist_user);
       emailController.text =
           widget.userModel.email.toString();
 
@@ -144,7 +129,7 @@ class _EditUserState extends State<EditUser> {
                   return;
                 }
 
-                final selectedRegion = context.read<maincity_vm>().selecteditemmaincity;
+                final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
                 final oldRegion = widget.userModel.maincitylist_user?.map((e) => e.asMainCity).toList();
 
                 final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
@@ -358,7 +343,7 @@ class _EditUserState extends State<EditUser> {
                       height: 20,
                     ),
                     RowEdit(name: 'المناطق', des: ''),
-                    Consumer<maincity_vm>(
+                    Consumer<MainCityProvider>(
                       builder: (context, cart, child) {
                         return DropdownSearch<MainCityModel>.multiSelection(
                           mode: Mode.DIALOG,

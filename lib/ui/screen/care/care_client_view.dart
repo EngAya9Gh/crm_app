@@ -1,13 +1,13 @@
+import 'package:collection/collection.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
 import 'communcation_view_widget.dart';
-import 'package:collection/collection.dart';
 
 class care_client_view extends StatefulWidget {
   care_client_view({
@@ -25,10 +25,6 @@ class care_client_view extends StatefulWidget {
 }
 
 class _care_client_viewState extends State<care_client_view> {
-  // List<CommunicationModel> listCommunication = [];
-  // List<TicketModel> listticket_client = [];
-  // TicketModel? ttc;
-
   Map tabsToIndex = {
     0: "ترحيب",
     1: "تركيب",
@@ -37,9 +33,6 @@ class _care_client_viewState extends State<care_client_view> {
 
   @override
   Widget build(BuildContext context) {
-    // listCommunication = Provider.of<communication_vm>(context, listen: true).listCommunicationClient;
-    // listticket_client= Provider.of<ticket_vm>(context, listen: true)
-    //     .listticket_client;
     return Scaffold(
       body: Directionality(
         textDirection: TextDirection.rtl,

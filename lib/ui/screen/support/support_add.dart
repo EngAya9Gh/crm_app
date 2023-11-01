@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:ui' as myui;
 
+import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/calendar/event.dart';
 import 'package:crm_smart/model/configmodel.dart';
@@ -18,7 +20,6 @@ import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';

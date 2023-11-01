@@ -45,7 +45,7 @@ class _updatecompanyState extends State<updatecompany> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<company_vm>(context)
+          inAsyncCall: Provider.of<CompanyProvider>(context)
               .isloading,
           child : Directionality(
             textDirection: TextDirection.rtl,
@@ -153,7 +153,7 @@ class _updatecompanyState extends State<updatecompany> {
                               // Provider.of<LoadProvider>(context, listen: false)
                               //     .changebooladdclient(true);
                               if(widget.idCompany!=null){
-                                Provider.of<company_vm>(context,listen: false)
+                                Provider.of<CompanyProvider>(context,listen: false)
                                     .update_company({
                                   'name_company':nameractv.text,
                                   // 'type':widget.type,

@@ -8,10 +8,10 @@ import '../constants.dart';
 import '../model/ActivityModel.dart';
 import '../services/configService.dart';
 
-class company_vm extends ChangeNotifier {
+class CompanyProvider extends ChangeNotifier {
   List<CompanyModel> list_company = [];
 
-  Future<void> getcompany() async {
+  Future<void> getcompany({VoidCallback? onSuccess}) async {
     // notifyListeners();
     //  if(list_activity.isEmpty)
     var data = await Api().get(url: url + 'config/get_company.php');
@@ -23,6 +23,8 @@ class company_vm extends ChangeNotifier {
     }
     list_company = prodlist.toList();
     // list_company.insert(0, null);
+
+    onSuccess?.call();
 
     notifyListeners();
   }

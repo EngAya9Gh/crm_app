@@ -46,8 +46,8 @@ class _ClientWaitingState extends State<ClientWaiting> {
   @override
   void initState() {
     user = context.read<UserProvider>().currentUser;
-    context.read<maincity_vm>().filterMainCityByCurrentUserMainCityList(user);
-    selecteditemmaincity = context.read<maincity_vm>().selecteditemmaincity;
+    context.read<MainCityProvider>().filterMainCityByCurrentUserMainCityList(user);
+    selecteditemmaincity = context.read<MainCityProvider>().selecteditemmaincity;
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<invoice_vm>(context, listen: false).listInvoicesAccept = [];
@@ -85,7 +85,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0, right: 8),
-                            child: Consumer<maincity_vm>(
+                            child: Consumer<MainCityProvider>(
                               builder: (context, cart, child) {
                                 return DropdownSearch<MainCityModel>.multiSelection(
                                   mode: Mode.DIALOG,

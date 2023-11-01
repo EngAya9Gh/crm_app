@@ -6,11 +6,15 @@ abstract class ClientsListEvent extends Equatable {
 
 class GetAllClientsListEvent extends ClientsListEvent {
   final String fkCountry;
+  final String? userPrivilegeId;
+  final String? regionPrivilegeId;
   final int page;
 
   GetAllClientsListEvent({
     required this.fkCountry,
     required this.page,
+    this.regionPrivilegeId,
+    this.userPrivilegeId,
   });
 
   @override
@@ -48,6 +52,27 @@ class GetRecommendedClientsEvent extends ClientsListEvent {
   final ValueChanged<List<RecommendedClient>>? onSuccess;
 
   GetRecommendedClientsEvent({this.onSuccess});
+
   @override
   List<Object?> get props => [];
+}
+
+class AddClientEvent extends ClientsListEvent {
+  final AddClientParams addClientParams;
+  final VoidCallback? onSuccess;
+
+  AddClientEvent(this.addClientParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class EditClientEvent extends ClientsListEvent {
+  final EditClientParams editClientParams;
+  final VoidCallback? onSuccess;
+
+  EditClientEvent(this.editClientParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }

@@ -1,23 +1,15 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/user/image_profile.dart';
 import 'package:crm_smart/ui/screen/user/row_edit2.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-
-import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
-import 'package:crm_smart/view_model/user_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import '../../../function_global.dart';

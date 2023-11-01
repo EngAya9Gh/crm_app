@@ -20,10 +20,12 @@ class ManageWithdrawalsState {
     this.allUsersSeries = const PageState.init(),
     this.withdrawalsInvoices = const PageState.init(),
     this.withdrawnDetailsState = const PageState.init(),
+    this.rejectReasonsStat = const PageState.init(),
     this.withdrawalInvoiceDetails = const PageState.init(),
     this.updateUsersSeriesState = const BlocStatus.initial(),
     this.setApproveSeriesState = const BlocStatus.initial(),
     this.deleteWithdrawnRequestStatus = const BlocStatus.initial(),
+    this.actionRejectReason = const BlocStatus.initial(),
     this.allUsers = const [],
     this.handleAllUsers = const [],
     this.handleUsersSeries = const {},
@@ -32,6 +34,7 @@ class ManageWithdrawalsState {
   final PageState<List<UserSeries>> allUsersSeries;
   final PageState<List<InvoiceModel>> withdrawalsInvoices;
   final PageState<List<InvoiceWithdrawalSeries>> withdrawalInvoiceDetails;
+  final PageState<List<RejectReason>> rejectReasonsStat;
   final PageState<WithdrawnDetailsModel> withdrawnDetailsState;
   final List<UserModel> allUsers;
   final List<UserWithdrawalsManager> handleAllUsers;
@@ -39,17 +42,20 @@ class ManageWithdrawalsState {
   final BlocStatus updateUsersSeriesState;
   final BlocStatus setApproveSeriesState;
   final BlocStatus deleteWithdrawnRequestStatus;
+  final BlocStatus actionRejectReason;
 
   ManageWithdrawalsState copyWith({
     PageState<List<UserSeries>>? allUsersSeries,
     PageState<List<InvoiceModel>>? withdrawalsInvoices,
     PageState<List<InvoiceWithdrawalSeries>>? withdrawalInvoiceDetails,
+    PageState<List<RejectReason>>? rejectReasonsStat,
     List<UserModel>? allUsers,
     List<UserWithdrawalsManager>? handleAllUsers,
     Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>>? handleUsersSeries,
     BlocStatus? updateUsersSeriesState,
     BlocStatus? setApproveSeriesState,
     BlocStatus? deleteWithdrawnRequestStatus,
+    BlocStatus? actionRejectReason,
     PageState<WithdrawnDetailsModel>? withdrawnDetailsState,
   }) {
     return ManageWithdrawalsState(
@@ -63,6 +69,8 @@ class ManageWithdrawalsState {
       setApproveSeriesState: setApproveSeriesState ?? this.setApproveSeriesState,
       withdrawnDetailsState: withdrawnDetailsState ?? this.withdrawnDetailsState,
       deleteWithdrawnRequestStatus: deleteWithdrawnRequestStatus ?? this.deleteWithdrawnRequestStatus,
+      rejectReasonsStat: rejectReasonsStat ?? this.rejectReasonsStat,
+      actionRejectReason: actionRejectReason ?? this.actionRejectReason,
     );
   }
 }

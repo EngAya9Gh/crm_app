@@ -8,8 +8,9 @@ import '../services/configService.dart';
 class ActivityProvider extends ChangeNotifier {
   List<ActivityModel> activitiesList = [];
 
-  Future<void> getActivities() async {
+  Future<void> getActivities({VoidCallback? onSuccess}) async {
     if (activitiesList.isEmpty) activitiesList = await config_service().getactv('type');
+    onSuccess?.call();
     notifyListeners();
   }
 

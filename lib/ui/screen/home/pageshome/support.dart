@@ -33,7 +33,7 @@ class _supportpageState extends State<supportpage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<maincity_vm>(context, listen: false).getmaincity();
+      await Provider.of<MainCityProvider>(context, listen: false).getmaincity();
     });
     super.initState();
   }

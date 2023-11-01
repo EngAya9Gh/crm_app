@@ -1,10 +1,9 @@
 import 'package:async/async.dart';
+import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
-
 import '../constants.dart';
 import '../model/privilgemodel.dart';
 

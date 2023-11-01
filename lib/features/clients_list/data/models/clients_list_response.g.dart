@@ -59,6 +59,9 @@ _$_ClientModel _$$_ClientModelFromJson(Map<String, dynamic> json) =>
       customerId: json['IDcustomer'] as String?,
       userAddEmail: json['userAdd_email'] as String?,
       dateReceive: json['date_recive'] as String?,
+      email: json['email'] as String?,
+      sizeActivity: json['size_activity'] as String?,
+      fkClientSource: json['fk_client_source'] as String?,
     );
 
 Map<String, dynamic> _$$_ClientModelToJson(_$_ClientModel instance) =>
@@ -114,4 +117,7 @@ Map<String, dynamic> _$$_ClientModelToJson(_$_ClientModel instance) =>
       'IDcustomer': instance.customerId,
       'userAdd_email': instance.userAddEmail,
       'date_recive': instance.dateReceive,
+      'email': instance.email,
+      'size_activity': instance.sizeActivity,
+      'fk_client_source': instance.fkClientSource,
     };

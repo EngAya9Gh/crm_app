@@ -41,4 +41,9 @@ class _Client {
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final allClientsWithFilter = 'client/getclientAll_filter.php';
+  final addClient = 'client/clientAdd.php';
+  final editClient = "client/clientUpdate.php";
+  final getRejectReasons = "client/reason_client_reject/Get_reasonRejectClient.php";
+  final addRejectReasons = "client/reason_client_reject/Add_reasonRejectClient.php";
+  final editRejectReasons = "client/reason_client_reject/Edit_reasonRejectClient.php";
 }

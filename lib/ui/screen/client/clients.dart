@@ -1,33 +1,19 @@
-import 'package:crm_smart/api/fcm.dart';
-import 'package:crm_smart/model/approvemodel.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/care/comment_view.dart';
 import 'package:crm_smart/ui/screen/client/clientView.dart';
-import 'package:crm_smart/ui/screen/client/tabclients.dart';
-import 'package:crm_smart/ui/screen/home/approvepage.dart';
-import 'package:crm_smart/ui/screen/home/home.dart';
-import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
-import 'package:crm_smart/ui/screen/invoice/add_invoice_product.dart';
 import 'package:crm_smart/ui/screen/invoice/invoiceView.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/bottomnavigatorbar.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/tabar.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/tabview.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
-import 'package:crm_smart/view_model/approve_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
-import 'addClient.dart';
-import 'package:get/get.dart';
 
 class client_dashboard extends StatefulWidget {
    client_dashboard({required this.invoiceModel,required this.typeinvoice,  Key? key}) : super(key: key);

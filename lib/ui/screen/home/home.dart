@@ -1,26 +1,21 @@
-
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
-import 'package:crm_smart/ui/screen/client/detail_client.dart';
 import 'package:crm_smart/ui/screen/home/build_card.dart';
-import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/appbar.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customDrawer.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:crm_smart/ui/screen/home/approvepage.dart';
-import 'package:crm_smart/view_model/typeclient.dart';
+
 import '../../../function_global.dart';
 
 class Home extends StatefulWidget {
@@ -123,7 +118,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.grey[200],
         appBar: customAppbar(
           leading:    IconButton(
-            icon: Icon(Icons.menu,color: kWhiteColor,),
+            icon: Icon(Icons.menu,color: context.colorScheme.primary,size: 25.r),
             tooltip: 'Menu',
             onPressed: () {
               _scaffoldKey.currentState!.openDrawer();

@@ -1,26 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/routes/routes.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/ui/screen/login.dart';
-import 'package:crm_smart/ui/screen/product/productView.dart';
-import 'package:crm_smart/ui/screen/selectCountryScreen.dart';
-import 'package:crm_smart/ui/screen/user/alluser.dart';
-import 'package:crm_smart/ui/screen/user/editprofile.dart';
 import 'package:crm_smart/ui/screen/user/usertest_view.dart';
 import 'package:crm_smart/ui/screen/user/userview.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:get/get.dart';
-import 'dart:io';
 
-import '../../screen/barnch_race/pages/branch_race_view.dart';
-import '../../screen/employee_race/pages/employee_race_page.dart';
 import '../animated_dialog.dart';
 import '../delete_acconut_dialog.dart';
 
@@ -43,12 +32,12 @@ class CustomDrawer extends StatelessWidget {
                   ),
               accountName: Text(
                 controllerUsers.currentUser.nameUser.toString(),
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(fontFamily: kfontfamily2,color: context.colorScheme.onBackground),
               ),
 
               accountEmail: Text(
                 controllerUsers.currentUser.email.toString(),
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(fontFamily: kfontfamily2,color: context.colorScheme.onBackground),
               ),
               currentAccountPicture: CircleAvatar(
                   backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Color(0xFF56ccf2) : Colors.grey,

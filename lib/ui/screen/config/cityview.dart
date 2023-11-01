@@ -32,7 +32,7 @@ class cityview extends StatefulWidget {
 
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-     await Provider.of<maincity_vm>
+     await Provider.of<MainCityProvider>
         (context,listen: false)
           .getcity(widget.fkmain);
     });
@@ -42,7 +42,7 @@ class cityview extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
 
-    _listlevel= Provider.of<maincity_vm>
+    _listlevel= Provider.of<MainCityProvider>
       (context,listen: true).listcity;
     return Scaffold(
       appBar: AppBar(

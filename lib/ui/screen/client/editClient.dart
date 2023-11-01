@@ -27,6 +27,7 @@ import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/enums/activity_type_size.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
@@ -124,7 +125,7 @@ class _editclientState extends State<editclient> {
 
   @override
   void initState() {
-    context.read<company_vm>().initValueOut();
+    context.read<CompanyProvider>().initValueOut();
     _clientsListBloc = context.read<ClientsListBloc>();
     currentUser = Provider.of<UserProvider>(context, listen: false).currentUser;
     nameclientController.text = widget.client.nameClient!.toString();
@@ -145,17 +146,17 @@ class _editclientState extends State<editclient> {
 
     presystemcomb = sourclient = widget.client.sourcclient == null ? 'ميداني' : widget.client.sourcclient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<maincity_vm>(context, listen: false).getcityAll();
+      await Provider.of<MainCityProvider>(context, listen: false).getcityAll();
 
-      Provider.of<maincity_vm>(context, listen: false).changevalue(widget.client.city.toString());
+      Provider.of<MainCityProvider>(context, listen: false).changevalue(widget.client.city.toString());
 
       await Provider.of<ActivityProvider>(context, listen: false).getActivities();
       Provider.of<ActivityProvider>(context, listen: false)
           .onChangeSelectedActivityTypeId(widget.client.activity_type_fk);
 
-      await Provider.of<company_vm>(context, listen: false).getcompany();
+      await Provider.of<CompanyProvider>(context, listen: false).getcompany();
 
-      Provider.of<company_vm>(context, listen: false).changevalueOut(widget.client.presystem);
+      Provider.of<CompanyProvider>(context, listen: false).changevalueOut(widget.client.presystem);
 
       cityController = widget.client.city!.toString();
 
@@ -209,7 +210,7 @@ class _editclientState extends State<editclient> {
               onPressed: () {
                 if (_globalKey.currentState!.validate()) {
                   _globalKey.currentState!.save();
-                  if (Provider.of<maincity_vm>(context, listen: false).selectedValuemanag != null) {
+                  if (Provider.of<MainCityProvider>(context, listen: false).selectedValuemanag != null) {
                     Provider.of<LoadProvider>(context, listen: false).changebooladdclient(true);
                     String ismarket =
                         Provider.of<switch_provider>(context, listen: false).isSwitched == true ? '1' : '0';
@@ -259,7 +260,7 @@ class _editclientState extends State<editclient> {
                       // "mobile": mobileController.text,
                       "ismarketing": sourclient == 'ميداني' ? '0' : '1',
                       "user_do": Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
-                      'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
+                      'presystem': Provider.of<CompanyProvider>(context, listen: false).selectedValueOut.toString(),
                       'sourcclient': sourclient,
                       'descActivController': desctypejobController.text,
                       // "desc_reason":  typeclient_provider.selectedValuemanag == "منسحب"
@@ -395,7 +396,7 @@ class _editclientState extends State<editclient> {
                         return SizedBox(
                           child: DropdownSearch<ActivityModel>(
                             mode: Mode.DIALOG,
-                            filterFn: (user, filter) => user!.getfilter_actv(filter!),
+                            filterFn: (user, filter) => user!.getFilterActivityType(filter!),
                             compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
                             items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
@@ -491,7 +492,7 @@ class _editclientState extends State<editclient> {
                     RowEdit(name: label_clientcity, des: '*'),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<maincity_vm>(
+                      child: Consumer<MainCityProvider>(
                         builder: (context, cart, child) {
                           return DropdownSearch<CityModel>(
                             mode: Mode.DIALOG,
@@ -581,7 +582,7 @@ class _editclientState extends State<editclient> {
 
                       isExpanded: true,
                       //hint: Text("حدد حالة العميل"),
-                      items: list_sourcclient.map((level_one) {
+                      items: sourceClientsList.map((level_one) {
                         return DropdownMenuItem(
                           child: Text(level_one), //label of item
 
@@ -642,7 +643,7 @@ class _editclientState extends State<editclient> {
                     },
                     RowEdit(name: 'نظام سابق', des: ' '),
 
-                    Consumer<company_vm>(
+                    Consumer<CompanyProvider>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,

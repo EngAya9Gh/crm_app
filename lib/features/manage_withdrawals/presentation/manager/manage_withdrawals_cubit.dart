@@ -1,38 +1,33 @@
 import 'dart:ui';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/features/manage_withdrawals/data/models/reject_reason.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/withdrawn_details_model.dart';
 import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart';
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
-
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../../../../../common/models/page_state/bloc_status.dart';
 import '../../../../../../features/manage_users/domain/use_cases/get_allusers_usecase.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../model/reasonmodel.dart';
 import '../../../../services/Invoice_Service.dart';
-import '../../../../api/api.dart';
-import '../../../../constants.dart';
 import '../../../../services/configService.dart';
 import '../../data/models/invoice_withdrawal_series_model.dart';
 import '../../data/models/user_series.dart';
+import '../../domain/use_cases/add_reject_reason_usecase.dart';
+import '../../domain/use_cases/edit_reject_reason_usecase.dart';
+import '../../domain/use_cases/get_reject_reasons_usecase.dart';
 import '../../domain/use_cases/get_user_series_usecase.dart';
 import '../../domain/use_cases/get_withdrawal_invoice_details_usecase.dart';
 import '../../domain/use_cases/get_withdrawn_details_usecase.dart';
 import '../../domain/use_cases/set_approve_series_usecase.dart';
 import '../../domain/use_cases/update_user_series_usecase.dart';
-
-import 'package:open_file/open_file.dart';
-
 
 part 'manage_withdrawals_state.dart';
 
@@ -46,6 +41,9 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     this._getWithdrawalInvoiceDetailsUsecase,
     this._setApproveSeriesUsecase,
     this._getWithdrawnDetailsUsecase,
+    this._addRejectReasonsUsecase,
+    this._getRejectReasonsUsecase,
+    this._editRejectReasonsUsecase,
   ) : super(ManageWithdrawalsState());
   final GetUserSeriesUsecase _getUserSeriesUsecase;
   final UpdateSeriesUsecase _updateSeriesUsecase;
@@ -54,8 +52,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   final GetWithdrawalInvoiceDetailsUsecase _getWithdrawalInvoiceDetailsUsecase;
   final SetApproveSeriesUsecase _setApproveSeriesUsecase;
   final GetWithdrawnDetailsUsecase _getWithdrawnDetailsUsecase;
+  final AddRejectReasonsUsecase _addRejectReasonsUsecase;
+  final GetRejectReasonsUsecase _getRejectReasonsUsecase;
+  final EditRejectReasonsUsecase _editRejectReasonsUsecase;
   List<ReasonModel> reasons = [];
-
 
   getUsersSeries(final String fkCountry) async {
     emit(state.copyWith(allUsersSeries: PageState.loading()));
@@ -298,5 +298,45 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   Future<void> close() {
     GetIt.I.resetLazySingleton<ManageWithdrawalsCubit>();
     return super.close();
+  }
+
+  getReasonReject() async {
+    emit(state.copyWith(rejectReasonsStat: PageState.loading()));
+    final response = await _getRejectReasonsUsecase();
+
+    response.fold(
+      (exception, message) => emit(state.copyWith(rejectReasonsStat: PageState.error())),
+      (value) => emit(state.copyWith(rejectReasonsStat: PageState.loaded(data: value.message ?? []))),
+    );
+  }
+
+  actionReasonReject(String reasonName, {String? rejectReasonId ,required VoidCallback onSuccess}) async {
+    emit(state.copyWith(actionRejectReason: BlocStatus.loading()));
+
+    bool isEdit() => rejectReasonId != null;
+    final params = ActionReasonParams(name: reasonName, reasonRejectId: rejectReasonId);
+
+    final response = isEdit() ? await _editRejectReasonsUsecase(params) : await _addRejectReasonsUsecase(params);
+
+    response.fold(
+      (exception, message) => emit(state.copyWith(actionRejectReason: BlocStatus.fail(error: message))),
+      (value) {
+        List<RejectReason> list = state.rejectReasonsStat.getDataWhenSuccess ?? [];
+        if (isEdit()) {
+          list = list
+              .map((e) => e.idRejectClient == rejectReasonId ? e.copyWith(nameReasonReject: reasonName) : e)
+              .toList();
+        } else {
+          list.add(RejectReason(nameReasonReject: reasonName, idRejectClient: value.message));
+        }
+
+        emit(state.copyWith(
+          rejectReasonsStat: PageState.loaded(data: list),
+          actionRejectReason: BlocStatus.success(),
+        ));
+
+        onSuccess();
+      },
+    );
   }
 }

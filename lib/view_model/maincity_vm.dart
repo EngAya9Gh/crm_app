@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
 
-class maincity_vm extends ChangeNotifier {
+class MainCityProvider extends ChangeNotifier {
   List<MainCityModel> listmaincity = [];
   List<MainCityModel> listmaincityfilter = [];
   List<MainCityModel> listCurrentUserMainCityFilter = [];
@@ -159,7 +159,7 @@ class maincity_vm extends ChangeNotifier {
     }
   }
 
-  Future<void> getcityAll() async {
+  Future<void> getcityAll({VoidCallback? onSuccess}) async {
     listcity = [];
     notifyListeners();
     if (listcity.isEmpty) {
@@ -172,6 +172,7 @@ class maincity_vm extends ChangeNotifier {
         }
       }
 
+      onSuccess?.call();
       notifyListeners();
     }
   }

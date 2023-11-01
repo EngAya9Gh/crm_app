@@ -44,7 +44,7 @@ class _addcompanyState extends State<addcompany> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<company_vm>(context)
+          inAsyncCall: Provider.of<CompanyProvider>(context)
               .isloading,
           child : Directionality(
             textDirection: TextDirection.rtl,
@@ -135,7 +135,7 @@ class _addcompanyState extends State<addcompany> {
                             if (_globalKey.currentState!.validate()) {
                               _globalKey.currentState!.save();
 
-                                Provider.of<company_vm>(context,listen: false)
+                                Provider.of<CompanyProvider>(context,listen: false)
                                     .addCompany_vm({
                                   'name_company':nameractv.text,
                                   // 'type':widget.type,

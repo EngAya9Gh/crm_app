@@ -1,7 +1,8 @@
 import 'package:crm_smart/core/utils/search_mixin.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
+import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
-import 'package:crm_smart/ui/screen/client/filter_clients_sheet.dart';
+import 'package:crm_smart/features/clients_list/presentation/pages/filter_clients_sheet.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,16 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../model/privilgemodel.dart';
-import '../../../../ui/screen/client/addClient.dart';
+import '../../../../model/usermodel.dart';
 import '../../../../view_model/activity_vm.dart';
 import '../../../../view_model/privilge_vm.dart';
+import '../../../../view_model/user_vm_provider.dart';
+import '../../../app/presentation/widgets/app_elvated_button.dart';
+import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/custom_paged_list_view.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
+import 'action_client_page.dart';
 
 class ClientsListPage extends StatefulWidget {
   const ClientsListPage({Key? key}) : super(key: key);
@@ -28,13 +33,20 @@ class ClientsListPage extends StatefulWidget {
 class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
   late ClientsListBloc _clientsListBloc;
   late final String fkCountry;
+  late final UserModel userModel;
 
   @override
   void initState() {
-    fkCountry = context.read<ClientProvider>().usercurrent!.fkCountry.toString();
+    userModel = context.read<UserProvider>().currentUser;
+    fkCountry = userModel.fkCountry.toString();
     _clientsListBloc = context.read<ClientsListBloc>();
     _clientsListBloc.state.clientsListController.addPageRequestListener((pageKey) {
-      _clientsListBloc.add(GetAllClientsListEvent(fkCountry: fkCountry, page: pageKey));
+      _clientsListBloc.add(GetAllClientsListEvent(
+        fkCountry: fkCountry,
+        page: pageKey,
+        userPrivilegeId: context.read<PrivilegeProvider>().checkPrivilege('16') ? userModel.idUser : null,
+        regionPrivilegeId: context.read<PrivilegeProvider>().checkPrivilege('15') ? userModel.fkRegoin : null,
+      ));
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -68,23 +80,25 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'قائمة العملاء',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+      appBar: SmartCrmAppBar(
+        appBarParams: AppBarParams(
+          title: 'قائمة العملاء',
+          action: [
+            if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('47'))
+              AppTextButton(
+                text: "إضافة عميل",
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => ActionClientPage(),
+                      ));
+                },
+                appButtonStyle: AppButtonStyle.secondary,
+              ),
+          ],
         ),
       ),
-      floatingActionButton: Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('47') == true
-          ? FloatingActionButton(
-              backgroundColor: kMainColor,
-              onPressed: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (context) => addClient()));
-              },
-              tooltip: 'إضافة عميل',
-              child: Icon(Icons.add),
-            )
-          : Container(),
       body: SafeArea(
         child: Directionality(
           textDirection: TextDirection.rtl,

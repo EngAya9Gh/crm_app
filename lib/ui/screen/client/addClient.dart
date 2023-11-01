@@ -23,25 +23,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/enums/activity_type_size.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../labeltext.dart';
 import '../../../model/ActivityModel.dart';
 
-enum ActivitySizeType { large, medium, small }
 
-extension ActivitySizeTypeExt on ActivitySizeType {
-  String get value {
-    switch (this) {
-      case ActivitySizeType.large:
-        return 'كبير';
-      case ActivitySizeType.medium:
-        return 'متوسط';
-      case ActivitySizeType.small:
-        return 'صغير';
-    }
-  }
-}
 
 class addClient extends StatefulWidget {
   addClient({Key? key}) : super(key: key);
@@ -104,15 +92,15 @@ class _addClientState extends State<addClient> {
   void initState() {
     _clientsListBloc = context.read<ClientsListBloc>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      context.read<maincity_vm>().getcityAll();
+      context.read<MainCityProvider>().getcityAll();
       activityViewmodel = context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
-      context.read<company_vm>()
+      context.read<CompanyProvider>()
         ..initValueOut()
         ..getcompany();
 
-      context.read<maincity_vm>().changevalue(null);
+      context.read<MainCityProvider>().changevalue(null);
       _clientsListBloc.add(GetRecommendedClientsEvent());
     });
     super.initState();
@@ -212,7 +200,7 @@ class _addClientState extends State<addClient> {
                           //width: 240,
                           child: DropdownSearch<ActivityModel>(
                             mode: Mode.DIALOG,
-                            filterFn: (user, filter) => user!.getfilter_actv(filter!),
+                            filterFn: (user, filter) => user!.getFilterActivityType(filter!),
                             compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
                             items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
@@ -280,7 +268,7 @@ class _addClientState extends State<addClient> {
                     SizedBox(height: 5),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<maincity_vm>(
+                      child: Consumer<MainCityProvider>(
                         builder: (context, cart, child) {
                           return DropdownSearch<CityModel>(
                             mode: Mode.DIALOG,
@@ -342,7 +330,7 @@ class _addClientState extends State<addClient> {
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(width: 2, color: Colors.grey))),
                       isExpanded: true,
-                      items: list_sourcclient.map((level_one) {
+                      items: sourceClientsList.map((level_one) {
                         return DropdownMenuItem(
                           child: Text(level_one), //label of item
 
@@ -412,7 +400,7 @@ class _addClientState extends State<addClient> {
                       SizedBox(height: 15),
                     },
                     RowEdit(name: 'نظام سابق', des: ' '),
-                    Consumer<company_vm>(
+                    Consumer<CompanyProvider>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           child: DropdownButtonFormField(
@@ -423,7 +411,7 @@ class _addClientState extends State<addClient> {
                             isExpanded: true,
                             items: cart.list_company.map((level_one) {
                               return DropdownMenuItem(
-                                child: Text(level_one.name_company.toString()), //label of item
+                                  child: Text(level_one.name_company.toString()), //label of item
 
                                 value: level_one.id_Company, //value of item
                               );
@@ -467,7 +455,7 @@ class _addClientState extends State<addClient> {
                               "fk_user": _user.idUser,
                               "user_add": _user.idUser,
                               // "date_transfer":,
-                              'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
+                              'presystem': Provider.of<CompanyProvider>(context, listen: false).selectedValueOut.toString(),
                               'sourcclient': sourclient,
                               'activity_type_fk': Provider.of<ActivityProvider>(context, listen: false)
                                   .selectedActivity!

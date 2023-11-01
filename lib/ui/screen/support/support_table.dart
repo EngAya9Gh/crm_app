@@ -32,7 +32,7 @@ late EventProvider _eventProvider;
 class _support_tableState extends State<support_table> {
   @override
   Future<void> didChangeDependencies() async {
-    context.read<maincity_vm>().changeitemlist([], isInit: true);
+    context.read<MainCityProvider>().changeitemlist([], isInit: true);
 
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       _eventProvider = context.read<EventProvider>();
@@ -118,7 +118,7 @@ class _support_tableState extends State<support_table> {
                       //     //);
                       //   },
                       // ),
-                      Consumer<maincity_vm>(
+                      Consumer<MainCityProvider>(
                     builder: (context, cart, child) {
                       return DropdownSearch<MainCityModel>.multiSelection(
                         mode: Mode.DIALOG,

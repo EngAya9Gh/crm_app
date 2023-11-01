@@ -1,15 +1,9 @@
 import 'dart:io';
-
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/constants.dart';
-
-import 'package:crm_smart/view_model/user_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageProfile extends StatelessWidget {

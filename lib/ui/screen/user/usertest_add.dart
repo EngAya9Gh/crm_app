@@ -50,7 +50,7 @@ class _addusertestState extends State<addusertest> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<maincity_vm>(context)
+          inAsyncCall: Provider.of<MainCityProvider>(context)
               .isloading,
           child : SingleChildScrollView(
             child: Form(

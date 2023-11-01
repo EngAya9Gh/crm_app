@@ -32,14 +32,14 @@ class _resoan_viewState extends State<company_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
 
-      await Provider.of<company_vm>(context,listen: false).getcompany( );
+      await Provider.of<CompanyProvider>(context,listen: false).getcompany( );
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<CompanyModel> _listlevel= Provider.of<company_vm>
+    List<CompanyModel> _listlevel= Provider.of<CompanyProvider>
       (context,listen: true).list_company;
     return Scaffold(
       appBar: AppBar(

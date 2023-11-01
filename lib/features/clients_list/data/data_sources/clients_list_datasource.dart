@@ -131,4 +131,42 @@ class ClientsListDatasource {
 
     return throwAppException(fun);
   }
+
+  Future<ResponseWrapper<ClientModel>> addClient(Map<String, dynamic> body) async {
+    fun() async {
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.client.addClient,
+          data: body,
+          clientMethod: ClientMethod.post,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      final client = ClientModel.fromJson(response.data['message'][0]);
+      return ResponseWrapper(message: client, data: client);
+    }
+
+    return throwAppException(fun);
+  }
+
+
+  Future<ResponseWrapper<ClientModel>> editClient(Map<String, dynamic> body,Map<String, dynamic> params) async {
+    fun() async {
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.client.editClient,
+          data: body,
+          queryParameters: params,
+          clientMethod: ClientMethod.post,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      final client = ClientModel.fromJson(response.data['message'][0]);
+      return ResponseWrapper(message: client, data: client);
+    }
+
+    return throwAppException(fun);
+  }
 }

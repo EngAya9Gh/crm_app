@@ -49,7 +49,7 @@ final List<Widget> listwidget = [
   financepage(),
   race_page(),
 ];
-List<String> list_sourcclient = [
+List<String> sourceClientsList = [
   'ميداني',
   'فيسبوك',
   'غوغل',

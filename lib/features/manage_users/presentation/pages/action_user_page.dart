@@ -55,16 +55,16 @@ class _ActionUserPageState extends State<ActionUserPage> {
       Provider.of<level_vm>(context, listen: false).getlevel();
       Provider.of<manage_provider>(context, listen: false).getmanage();
       Provider.of<RegionProvider>(context, listen: false).changeValuser(null, true);
-      context.read<maincity_vm>().changeitemlist([], isInit: true);
+      context.read<MainCityProvider>().changeitemlist([], isInit: true);
       if (user == null)
-        context.read<maincity_vm>().getmaincity();
+        context.read<MainCityProvider>().getmaincity();
     });
 
     if (user != null) {
       scheduleMicrotask(() {
         nameManage = user!.typeAdministration.toString();
         context.read<manage_provider>().changevalue(nameManage!);
-        context.read<maincity_vm>().getmaincity(regions: user!.maincitylist_user);
+        context.read<MainCityProvider>().getmaincity(regions: user!.maincitylist_user);
         emailController.text = user!.email.toString();
         mobileController.text = user!.mobile.toString();
 
@@ -218,7 +218,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 ),
                 15.verticalSpace,
                 RowEdit(name: 'المناطق', des: ''),
-                Consumer<maincity_vm>(
+                Consumer<MainCityProvider>(
                   builder: (context, cart, child) {
                     
 
@@ -324,7 +324,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
       return;
     }
     final selectedRegion = context
-        .read<maincity_vm>()
+        .read<MainCityProvider>()
         .selecteditemmaincity;
     final oldRegion = user?.maincitylist_user?.map((e) => e.asMainCity).toList();
 

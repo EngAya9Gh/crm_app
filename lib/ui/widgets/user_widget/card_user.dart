@@ -1,17 +1,7 @@
-
-
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/ui/screen/user/userview.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get.dart';
-import '../custom_widget/text_uitil.dart';
+
 import 'carduserbuild.dart';
 
 class CardUsers extends StatefulWidget {

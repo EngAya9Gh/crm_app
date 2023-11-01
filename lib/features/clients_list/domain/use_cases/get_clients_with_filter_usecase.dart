@@ -29,8 +29,8 @@ class GetClientsWithFilterParams {
   final String? typeClient;
   final int? userId;
   final int? activityTypeId;
-  final int? userPrivilegeId;
-  final int? regionPrivilegeId;
+  final String? userPrivilegeId;
+  final String? regionPrivilegeId;
   final String? query;
 
   GetClientsWithFilterParams({
@@ -72,8 +72,8 @@ class GetClientsWithFilterParams {
     Nullable<String?>? typeClient,
     Nullable<int?>? userId,
     Nullable<int?>? activityTypeId,
-    Nullable<int?>? userPrivilegeId,
-    Nullable<int?>? regionPrivilegeId,
+    Nullable<String?>? userPrivilegeId,
+    Nullable<String?>? regionPrivilegeId,
     Nullable<String?>? query,
   }) {
     return GetClientsWithFilterParams(

@@ -36,7 +36,7 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
   final DropdownSearchItemAsValue<T?, V?> itemAsValue;
   final ValueChanged<V?>? onChange;
   final FormFieldSetter? onSaved;
-  final FormFieldValidator? validator;
+  final FormFieldValidator<V?>? validator;
   final VoidCallback? onTap;
   final String? hint;
   final double? menuMaxHeight;

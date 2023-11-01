@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'addClient.dart';
-import 'filter_clients_sheet.dart';
+import '../../../features/clients_list/presentation/pages/filter_clients_sheet.dart';
 
 class tabclients extends StatefulWidget {
   tabclients({Key? key}) : super(key: key);

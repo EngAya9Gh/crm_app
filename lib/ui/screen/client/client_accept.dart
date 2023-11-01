@@ -37,7 +37,7 @@ class _ClientAcceptState extends State<ClientAccept> {
   void initState() {
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
-    context.read<maincity_vm>().changeitemlist([], isInit: true);
+    context.read<MainCityProvider>().changeitemlist([], isInit: true);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
@@ -56,7 +56,7 @@ class _ClientAcceptState extends State<ClientAccept> {
       //  Provider.of<client_vm>(context,listen: false)
       //     .getallclientAccept();
       Provider.of<ClientProvider>(context, listen: false)
-          .getfilterviewSupport(Provider.of<maincity_vm>(context, listen: false).selecteditemmaincity);
+          .getfilterviewSupport(Provider.of<MainCityProvider>(context, listen: false).selecteditemmaincity);
     });
 
     super.initState();
@@ -98,7 +98,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Consumer<maincity_vm>(
+                            child: Consumer<MainCityProvider>(
                               builder: (context, cart, child) {
                                 return DropdownSearch<MainCityModel>.multiSelection(
                                   showFavoriteItems: true,

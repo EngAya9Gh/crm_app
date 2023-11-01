@@ -2,6 +2,7 @@ import 'package:crm_smart/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/api/api_utils.dart';
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/invoice_withdrawal_series_model.dart';
+import 'package:crm_smart/features/manage_withdrawals/data/models/reject_reason.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/withdrawn_details_model.dart';
 import 'package:injectable/injectable.dart';
 
@@ -45,5 +46,20 @@ class ManageWithdrawalsRepositoryImpl extends ManageWithdrawalsRepository {
   @override
   Future<Result<ResponseWrapper<WithdrawnDetailsModel>>> getWithdrawnDetails(Map<String, dynamic> query) {
     return toApiResult(() => _datasource.getWithdrawnDetails(query));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<String>>> addRejectReasons(Map<String, dynamic> query) {
+    return toApiResult(() => _datasource.addRejectReasons(query));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<String>>> editRejectReasons(Map<String, dynamic> query, Map<String, dynamic> data) {
+    return toApiResult(() => _datasource.editRejectReasons(query,data));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<RejectReason>>>> getRejectReasons() {
+    return toApiResult(_datasource.getRejectReasons);
   }
 }

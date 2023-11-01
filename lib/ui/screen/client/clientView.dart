@@ -234,18 +234,20 @@ class _ClientViewState extends State<ClientView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ElevatedButton(
-                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                onPressed: () async {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => editclient(
-                                              client: clientModel,
-                                              fkclient: clientModel.idClients.toString(),
-                                              fkuser: clientModel.fkUser.toString())));
-                                },
-                                child: Text('تعديل بيانات العميل'),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  onPressed: () async {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => editclient(
+                                                client: clientModel,
+                                                fkclient: clientModel.idClients.toString(),
+                                                fkuser: clientModel.fkUser.toString())));
+                                  },
+                                  child: Text('تعديل بيانات العميل'),
+                                ),
                               ),
                               clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
                                   ? SizedBox(
@@ -253,21 +255,23 @@ class _ClientViewState extends State<ClientView> {
                                     )
                                   : Container(),
                               clientModel.reasonTransfer == null  ?
-                              ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                                builder: (context) => transferClient(
-                                                      name_enterprise: clientModel.nameEnterprise.toString(),
-                                                      idclient: clientModel.idClients.toString(),
-                                                      type: "client",
-                                                    ),
-                                                fullscreenDialog: true));
-                                      },
-                                      child: Text('تحويل العميل'),
-                                    )
+                              Expanded(
+                                child: ElevatedButton(
+                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) => transferClient(
+                                                        name_enterprise: clientModel.nameEnterprise.toString(),
+                                                        idclient: clientModel.idClients.toString(),
+                                                        type: "client",
+                                                      ),
+                                                  fullscreenDialog: true));
+                                        },
+                                        child: Text('تحويل العميل'),
+                                      ),
+                              )
                                   : Container(),
                                SizedBox(
                                 height: 3,

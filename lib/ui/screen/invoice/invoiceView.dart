@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:ui' as myui;
 
+import 'package:collection/collection.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
@@ -18,10 +20,11 @@ import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl.dart' as rt;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path/path.dart' as pp;
 import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
@@ -34,9 +37,6 @@ import '../../widgets/pick_image_bottom_sheet.dart';
 import 'add_payement.dart';
 import 'edit_invoice.dart';
 import 'invoice_file_gallery_page.dart';
-import 'package:path/path.dart' as pp;
-import 'package:open_file/open_file.dart';
-import 'dart:io';
 class InvoiceView extends StatefulWidget {
   InvoiceView({
     this.type,

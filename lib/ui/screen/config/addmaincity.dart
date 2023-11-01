@@ -45,7 +45,7 @@ class _addmaincityState extends State<addmaincity> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<maincity_vm>(context)
+          inAsyncCall: Provider.of<MainCityProvider>(context)
               .isloading,
           child : Form(
             key: _globalKey,
@@ -84,7 +84,7 @@ class _addmaincityState extends State<addmaincity> {
                           _globalKey.currentState!.save();
 
                           if(widget.idregoin==null){
-                            Provider.of<maincity_vm>(context,listen: false)
+                            Provider.of<MainCityProvider>(context,listen: false)
                                 .addmaincity_vm({
                               'namemaincity':namelevel.text,
                               'fk_country':Provider.of<UserProvider>
@@ -95,7 +95,7 @@ class _addmaincityState extends State<addmaincity> {
                                     : error(context)
                             );}
                           else{
-                            Provider.of<maincity_vm>(context,listen: false)
+                            Provider.of<MainCityProvider>(context,listen: false)
                                 .update_maincity({
                               'namemaincity':namelevel.text,
                               'fk_country':widget.fkcountry,

@@ -122,6 +122,12 @@ mixin _$ClientModel {
   String? get userAddEmail => throw _privateConstructorUsedError;
   @JsonKey(name: "date_recive")
   String? get dateReceive => throw _privateConstructorUsedError;
+  @JsonKey(name: "email")
+  String? get email => throw _privateConstructorUsedError;
+  @JsonKey(name: "size_activity")
+  String? get sizeActivity => throw _privateConstructorUsedError;
+  @JsonKey(name: "fk_client_source")
+  String? get fkClientSource => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -186,7 +192,10 @@ abstract class $ClientModelCopyWith<$Res> {
       @JsonKey(name: "id_maincity") String? idMainCity,
       @JsonKey(name: "IDcustomer") String? customerId,
       @JsonKey(name: "userAdd_email") String? userAddEmail,
-      @JsonKey(name: "date_recive") String? dateReceive});
+      @JsonKey(name: "date_recive") String? dateReceive,
+      @JsonKey(name: "email") String? email,
+      @JsonKey(name: "size_activity") String? sizeActivity,
+      @JsonKey(name: "fk_client_source") String? fkClientSource});
 }
 
 /// @nodoc
@@ -253,6 +262,9 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
     Object? customerId = freezed,
     Object? userAddEmail = freezed,
     Object? dateReceive = freezed,
+    Object? email = freezed,
+    Object? sizeActivity = freezed,
+    Object? fkClientSource = freezed,
   }) {
     return _then(_value.copyWith(
       idClients: freezed == idClients
@@ -459,6 +471,18 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.dateReceive
           : dateReceive // ignore: cast_nullable_to_non_nullable
               as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sizeActivity: freezed == sizeActivity
+          ? _value.sizeActivity
+          : sizeActivity // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fkClientSource: freezed == fkClientSource
+          ? _value.fkClientSource
+          : fkClientSource // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -522,7 +546,10 @@ abstract class _$$_ClientModelCopyWith<$Res>
       @JsonKey(name: "id_maincity") String? idMainCity,
       @JsonKey(name: "IDcustomer") String? customerId,
       @JsonKey(name: "userAdd_email") String? userAddEmail,
-      @JsonKey(name: "date_recive") String? dateReceive});
+      @JsonKey(name: "date_recive") String? dateReceive,
+      @JsonKey(name: "email") String? email,
+      @JsonKey(name: "size_activity") String? sizeActivity,
+      @JsonKey(name: "fk_client_source") String? fkClientSource});
 }
 
 /// @nodoc
@@ -587,6 +614,9 @@ class __$$_ClientModelCopyWithImpl<$Res>
     Object? customerId = freezed,
     Object? userAddEmail = freezed,
     Object? dateReceive = freezed,
+    Object? email = freezed,
+    Object? sizeActivity = freezed,
+    Object? fkClientSource = freezed,
   }) {
     return _then(_$_ClientModel(
       idClients: freezed == idClients
@@ -793,6 +823,18 @@ class __$$_ClientModelCopyWithImpl<$Res>
           ? _value.dateReceive
           : dateReceive // ignore: cast_nullable_to_non_nullable
               as String?,
+      email: freezed == email
+          ? _value.email
+          : email // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sizeActivity: freezed == sizeActivity
+          ? _value.sizeActivity
+          : sizeActivity // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fkClientSource: freezed == fkClientSource
+          ? _value.fkClientSource
+          : fkClientSource // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -851,7 +893,10 @@ class _$_ClientModel extends _ClientModel {
       @JsonKey(name: "id_maincity") this.idMainCity,
       @JsonKey(name: "IDcustomer") this.customerId,
       @JsonKey(name: "userAdd_email") this.userAddEmail,
-      @JsonKey(name: "date_recive") this.dateReceive})
+      @JsonKey(name: "date_recive") this.dateReceive,
+      @JsonKey(name: "email") this.email,
+      @JsonKey(name: "size_activity") this.sizeActivity,
+      @JsonKey(name: "fk_client_source") this.fkClientSource})
       : super._();
 
   factory _$_ClientModel.fromJson(Map<String, dynamic> json) =>
@@ -1010,10 +1055,19 @@ class _$_ClientModel extends _ClientModel {
   @override
   @JsonKey(name: "date_recive")
   final String? dateReceive;
+  @override
+  @JsonKey(name: "email")
+  final String? email;
+  @override
+  @JsonKey(name: "size_activity")
+  final String? sizeActivity;
+  @override
+  @JsonKey(name: "fk_client_source")
+  final String? fkClientSource;
 
   @override
   String toString() {
-    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegion: $fkRegion, fkCountry: $fkCountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangeType: $dateChangeType, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, nameRegion: $nameRegion, total: $total, amountPaid: $amountPaid, offerPrice: $offerPrice, datePrice: $datePrice, userDo: $userDo, isApprove: $isApprove, nameUserDoing: $nameUserDoing, nameUserTransfer: $nameUserTransfer, fkUserTrasfer: $fkUserTrasfer, mobileUser: $mobileUser, totalPaid: $totalPaid, isMarketing: $isMarketing, addressClient: $addressClient, descriptionActiveController: $descriptionActiveController, preSystem: $preSystem, preSystemTitle: $preSystemTitle, sourceClient: $sourceClient, activityTypeFk: $activityTypeFk, activityTypeTitle: $activityTypeTitle, phone: $phone, userAdd: $userAdd, nameAdduser: $nameAdduser, dateVisitClient: $dateVisitClient, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, nameCity: $nameCity, nameMainCity: $nameMainCity, idMainCity: $idMainCity, customerId: $customerId, userAddEmail: $userAddEmail, dateReceive: $dateReceive)';
+    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegion: $fkRegion, fkCountry: $fkCountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangeType: $dateChangeType, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, nameRegion: $nameRegion, total: $total, amountPaid: $amountPaid, offerPrice: $offerPrice, datePrice: $datePrice, userDo: $userDo, isApprove: $isApprove, nameUserDoing: $nameUserDoing, nameUserTransfer: $nameUserTransfer, fkUserTrasfer: $fkUserTrasfer, mobileUser: $mobileUser, totalPaid: $totalPaid, isMarketing: $isMarketing, addressClient: $addressClient, descriptionActiveController: $descriptionActiveController, preSystem: $preSystem, preSystemTitle: $preSystemTitle, sourceClient: $sourceClient, activityTypeFk: $activityTypeFk, activityTypeTitle: $activityTypeTitle, phone: $phone, userAdd: $userAdd, nameAdduser: $nameAdduser, dateVisitClient: $dateVisitClient, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, nameCity: $nameCity, nameMainCity: $nameMainCity, idMainCity: $idMainCity, customerId: $customerId, userAddEmail: $userAddEmail, dateReceive: $dateReceive, email: $email, sizeActivity: $sizeActivity, fkClientSource: $fkClientSource)';
   }
 
   @override
@@ -1113,7 +1167,10 @@ class _$_ClientModel extends _ClientModel {
                 other.customerId == customerId) &&
             (identical(other.userAddEmail, userAddEmail) ||
                 other.userAddEmail == userAddEmail) &&
-            (identical(other.dateReceive, dateReceive) || other.dateReceive == dateReceive));
+            (identical(other.dateReceive, dateReceive) || other.dateReceive == dateReceive) &&
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.sizeActivity, sizeActivity) || other.sizeActivity == sizeActivity) &&
+            (identical(other.fkClientSource, fkClientSource) || other.fkClientSource == fkClientSource));
   }
 
   @JsonKey(ignore: true)
@@ -1170,7 +1227,10 @@ class _$_ClientModel extends _ClientModel {
         idMainCity,
         customerId,
         userAddEmail,
-        dateReceive
+        dateReceive,
+        email,
+        sizeActivity,
+        fkClientSource
       ]);
 
   @JsonKey(ignore: true)
@@ -1240,8 +1300,11 @@ abstract class _ClientModel extends ClientModel {
       @JsonKey(name: "id_maincity") final String? idMainCity,
       @JsonKey(name: "IDcustomer") final String? customerId,
       @JsonKey(name: "userAdd_email") final String? userAddEmail,
-      @JsonKey(name: "date_recive")
-      final String? dateReceive}) = _$_ClientModel;
+      @JsonKey(name: "date_recive") final String? dateReceive,
+      @JsonKey(name: "email") final String? email,
+      @JsonKey(name: "size_activity") final String? sizeActivity,
+      @JsonKey(name: "fk_client_source")
+      final String? fkClientSource}) = _$_ClientModel;
   const _ClientModel._() : super._();
 
   factory _ClientModel.fromJson(Map<String, dynamic> json) =
@@ -1400,6 +1463,15 @@ abstract class _ClientModel extends ClientModel {
   @override
   @JsonKey(name: "date_recive")
   String? get dateReceive;
+  @override
+  @JsonKey(name: "email")
+  String? get email;
+  @override
+  @JsonKey(name: "size_activity")
+  String? get sizeActivity;
+  @override
+  @JsonKey(name: "fk_client_source")
+  String? get fkClientSource;
   @override
   @JsonKey(ignore: true)
   _$$_ClientModelCopyWith<_$_ClientModel> get copyWith =>

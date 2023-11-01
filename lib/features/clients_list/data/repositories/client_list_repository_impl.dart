@@ -38,4 +38,14 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   Future<Result<ResponseWrapper<List<RecommendedClient>>>> getRecommendedClients() {
     return toApiResult(datasource.getRecommendedClients);
   }
+
+  @override
+  Future<Result<ResponseWrapper<ClientModel>>> addClient(Map<String, dynamic> body) {
+    return toApiResult(() => datasource.addClient(body));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<ClientModel>>> editClient(Map<String, dynamic> body, Map<String, dynamic> params) {
+    return toApiResult(() => datasource.editClient(body, params));
+  }
 }

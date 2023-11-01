@@ -37,36 +37,42 @@ class AppBottomSheet<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        20.verticalSpace,
-        Padding(
-          padding: HWEdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: showCloseIcon ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
-            textDirection: TextDirection.rtl,
-            children: [
-              if (showCloseIcon) const SizedBox.shrink(),
-              Container(
-                width: 90.w,
-                height: 5.h,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(90).r,
-                ),
+    return AnimatedPadding(
+      padding: MediaQuery.of(context).viewInsets,
+      duration: const Duration(milliseconds: 300),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            20.verticalSpace,
+            Padding(
+              padding: HWEdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: showCloseIcon ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+                textDirection: TextDirection.rtl,
+                children: [
+                  if (showCloseIcon) const SizedBox.shrink(),
+                  Container(
+                    width: 90.w,
+                    height: 5.h,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade400,
+                      borderRadius: BorderRadius.circular(90).r,
+                    ),
+                  ),
+                  if (showCloseIcon)
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(Icons.close, color: Colors.grey),
+                    ),
+                ],
               ),
-              if (showCloseIcon)
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Icon(Icons.close, color: Colors.grey),
-                ),
-            ],
-          ),
+            ),
+            child,
+          ],
         ),
-        child,
-      ],
+      ),
     );
   }
 }
