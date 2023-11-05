@@ -31,6 +31,7 @@ class typeclient extends ChangeNotifier{
     selectedValufilter=s;
     notifyListeners();
   }//listtype_install
+
   late String? selectedlisttype_install=null;
 
   void changelisttype_install(String? s){

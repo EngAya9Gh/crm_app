@@ -32,6 +32,7 @@ import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:crm_smart/view_model/participate_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
+import 'package:crm_smart/view_model/reason_suspend.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
@@ -195,6 +196,8 @@ void main() async {
       ChangeNotifierProvider<activity_vm>(create: (_) => activity_vm()),
       ChangeNotifierProvider<company_vm>(create: (_) => company_vm()),
       ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
+      ChangeNotifierProvider<reason_suspend>(create: (_) => reason_suspend()),
+
       ChangeNotifierProvider<AgentDistributorViewModel>(
           create: (_) => AgentDistributorViewModel()),
       ChangeNotifierProxyProvider<invoice_vm,
