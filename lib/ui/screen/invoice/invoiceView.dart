@@ -296,7 +296,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true &&

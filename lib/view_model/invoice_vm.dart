@@ -455,6 +455,7 @@ class invoice_vm extends ChangeNotifier {
         state = null;
       else if (state == 'تم التركيب') state = '1';
       if (state == 'معلق') state = 'suspend';
+      if (state == 'غير جاهز') state = 'notReady';
       print('typpping ' + type);
 
       switch (type) {
