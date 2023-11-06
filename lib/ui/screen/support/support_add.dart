@@ -1493,6 +1493,7 @@ class _dialog_readyState extends State<dialog_ready> {
                                 value: cart.selectedValuemanag,
                                 onChanged: (value) {
                                   cart.changevalue(value.toString());
+                                  Value_sales=value.toString();
                                   //typeclientvalue = value.toString();
                                   // filtershow();
                                 },
