@@ -392,12 +392,16 @@ class client_vm extends ChangeNotifier {
   }
 
   Future<void> getallclientTransfer() async {
+    isloading = true;
+    notifyListeners();
     String param='';
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '150').isCheck == '1' ? true : false;
     if(res) param='id_regoin= '+ usercurrent!.fkRegoin.toString();
     else param='iduser='+ usercurrent!.idUser.toString();
     listClient = await ClientService().getTransfer(param); //=List.from(listClient);
     listClientAprroveTransfer = List.from(listClient);
+    isloading = false;
+
     notifyListeners();
   }
      

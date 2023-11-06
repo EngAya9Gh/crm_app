@@ -82,7 +82,7 @@ class _supportpageState extends State<supportpage> {
                    ClientAccept() // support_view(type: 'only',)
                ));
             }, title: 'العملاء المشتركين'):Container(),//تاريخ الفاتورة جنبو اسم المؤسسة
-     privilge.checkprivlge('34')==true?
+           privilge.checkprivlge('34')==true?
            buildSelectCategory(
                colorbag: Colors.white,
                colortitle: Colors.black,
