@@ -296,7 +296,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Provider.of<privilge_vm>(context, listen: true).checkprivlge('141') == true &&
@@ -1031,9 +1031,10 @@ class _RejectDialogState extends State<RejectDialog> {
                                     ElevatedButton(
                                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                       onPressed: () async {
-                                        if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
+                                        if ((selectedFile == null && (_invoice.file_reject?.isEmpty ?? true))
+                                            ||typeclient_provider.selectedValueOut==null ) {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                              .showSnackBar(SnackBar(content: Text("من فضلك قم بملىء الخيارات")));
                                           return;
                                         }
                                         if (_globalKey.currentState!.validate()) {
@@ -1070,9 +1071,10 @@ class _RejectDialogState extends State<RejectDialog> {
                                     ElevatedButton(
                                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                       onPressed: () async {
-                                        if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
+                                        if ( (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true))
+                                            ||typeclient_provider.selectedValueOut==null  ) {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                                              .showSnackBar(SnackBar(content: Text("من فضلك قم بملىء الخيارات")));
                                           return;
                                         }
                                         if (_globalKey.currentState!.validate()) {

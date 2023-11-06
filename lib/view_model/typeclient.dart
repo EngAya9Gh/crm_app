@@ -15,7 +15,7 @@ class typeclient extends ChangeNotifier{
   List<String> type_of_client_filter=['الكل','مشترك','تفاوض','عرض سعر','مستبعد','منسحب'];
  // List<String> type_of_client=['تفاوض','عرض سعر','مستبعد','منسحب'];
   List<ReasonModel> type_of_out=[]; //أسباب الانسحاب
-  List<String> listtype_install=['الكل','بالإنتظار','تم التركيب','معلق'];
+  List<String> listtype_install=['الكل','بالإنتظار','تم التركيب','معلق','غير جاهز'];
   List<String> listtype_care=['تم التواصل','بالإنتظار' ];
   late String? selectedValuemanag=null;
 
@@ -31,6 +31,7 @@ class typeclient extends ChangeNotifier{
     selectedValufilter=s;
     notifyListeners();
   }//listtype_install
+
   late String? selectedlisttype_install=null;
 
   void changelisttype_install(String? s){
