@@ -53,6 +53,7 @@ class ClientModel extends CacheRepository {
     this.nameAdduser,
     this.reason_change,
     this.tag,
+    this.nameTransferTo,
   });
 
   late final String? idClients;
@@ -110,6 +111,7 @@ class ClientModel extends CacheRepository {
   late String? nameAdduser;
   String? date_visit_Client;
   String? reason_change;
+  String? nameTransferTo;
   bool? tag;
   String? name_city, namemaincity, id_maincity;
 
@@ -170,6 +172,7 @@ class ClientModel extends CacheRepository {
     date_visit_Client = json['date_visit_Client'];
     reason_change = json['reason_change'];
     tag = json['tag'] == "true";
+    nameTransferTo = json['nameTransferTo'] ;
   }
 
   Map<String, dynamic> toJson() {

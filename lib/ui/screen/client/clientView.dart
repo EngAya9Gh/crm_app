@@ -198,11 +198,15 @@ class _ClientViewState extends State<ClientView> {
                  else
 
               clientModel.fkusertrasfer != null ?
-          cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+              cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
               : Container(),
 
+                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                      (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
+                      ? cardRow(title: 'تحويل العميل إلى', value: clientModel.nameTransferTo.toString())
+                      : Container(),
 
-                   Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
                       (clientModel.reasonTransfer == null) &&     clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value:'تم قبول التحويل')
                       : Container(),
@@ -210,7 +214,6 @@ class _ClientViewState extends State<ClientView> {
                   Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
                       (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value:'معلق')
-
                       : Container(),
 
                   // (clientModel.reasonTransfer == null) &&
@@ -304,7 +307,7 @@ class _ClientViewState extends State<ClientView> {
                   //     Provider.of<privilge_vm>(context,listen: true)
                   //         .checkprivlge('7')==true?
 
-                  widget.clienttransfer == null
+                  widget.clienttransfer == null || Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true
                       ? Container()
                       : Center(
                           child: Row(
@@ -376,6 +379,8 @@ class _ClientViewState extends State<ClientView> {
                               SizedBox(
                                 width: 4,
                               ),
+
+
                               ElevatedButton(
                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
                                   onPressed: () async {
@@ -436,7 +441,7 @@ class _ClientViewState extends State<ClientView> {
                                       },
                                     );
                                   },
-                                  child: Text('رفض تحويل العميل')),
+                                  child: Text('رفض تحويل العميل')) ,
                             ],
                           ),
                         ),
