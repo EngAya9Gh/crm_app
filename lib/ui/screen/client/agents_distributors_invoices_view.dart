@@ -63,6 +63,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       viewmodel.init();
       context.read<regoin_vm>().changeVal(null);
       context.read<typeclient>().changelisttype_install(null);
+      context.read<typeclient>().changevalueNotReady (null);
       context.read<invoice_vm>()
         ..setvaluepriv(privilegeList)
         ..getinvoice_Localwithprev();
@@ -276,29 +277,26 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                 ),
               ],
             ),
-            Expanded(
-              //state
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 8),
-                child: Consumer<typeclient>(builder: (context, cart, child) {
-                  return DropdownButton(
-                    isExpanded: true,
-                    hint: Text('الحالة'),
-                    items: cart.listtype_notReady.map((level_one) {
-                      return DropdownMenuItem(
-                        child: Text(level_one),
-                        value: level_one,
-                      );
-                    }).toList(),
-                    value: cart.selectedValufilter_NotReady,
-                    onChanged: (value) {
-                      cart.changevalueNotReady(value.toString());
-                      viewmodel.onChangeNotReady(value.toString());
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 8),
+              child: Consumer<typeclient>(builder: (context, cart, child) {
+                return DropdownButton(
+                  isExpanded: true,
+                  hint: Text('حالة الفاتورة'),
+                  items: cart.listtype_notReady.map((level_one) {
+                    return DropdownMenuItem(
+                      child: Text(level_one),
+                      value: level_one,
+                    );
+                  }).toList(),
+                  value: cart.selectedValufilter_NotReady,
+                  onChanged: (value) {
+                    cart.changevalueNotReady(value.toString());
+                    viewmodel.onChangeNotReady(value.toString());
 
-                    },
-                  );
-                }),
-              ),
+                  },
+                );
+              }),
             ),
 
             Padding(
