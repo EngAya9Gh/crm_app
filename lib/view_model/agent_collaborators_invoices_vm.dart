@@ -24,6 +24,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   UserModel? selectedEmployee;
   AgentDistributorModel? selectedAgentDistributor;
   String? selectedRegion;
+  String? selectednotReady;
 
   DateTime from=DateTime(1,1,1);
   DateTime to=DateTime(1,1,1) ;
@@ -38,6 +39,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     selectedEmployee = null;
     selectedAgentDistributor = null;
     selectedRegion = null;
+    selectednotReady = null;
      from=DateTime(1,1,1);
      to=DateTime(1,1,1) ;
     notifyListeners();
@@ -160,6 +162,10 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     selectedRegion = region;
     onFilter();
   }
+  onChangeNotReady(String notReady) {
+    selectednotReady = notReady;
+    onFilter();
+  }
 
   onChange_date(DateTime from_param, DateTime to_param) {
     // selectedRegion = region;
@@ -225,10 +231,19 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
         return isSelectedSellerTypeFilterEqualInvoice(element) || element.type_seller == null ;
       }
     }).toList();
+    // isSelectedNotReadyInvoice(el)
     List<InvoiceModel> invoicesFiltered_temp = [];
     print('invoicesFiltered.length');
 
     print(invoicesFiltered.length);
+
+    if(selectednotReady=='غير جاهز')
+      list.forEach((element) {
+        if (  element.isdoneinstall == null
+            && element.ready_install =='0'  && element.TypeReadyClient=='notReady') {
+          invoicesFiltered_temp.add(element);
+        }
+      });
      if(invoicesFiltered.isEmpty)
       list.forEach((element) {
       if (  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
@@ -259,6 +274,9 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   bool get isSelectedRegionEqualNull => selectedRegion == null;
 
   bool isSelectedRegionEqualInvoice(InvoiceModel element) => element.fk_regoin_invoice == selectedRegion;
+  bool isSelectedNotReadyInvoice(InvoiceModel element) =>
+      element.isdoneinstall == null
+      && element.ready_install =='0'  && element.TypeReadyClient=='notReady';
 
   bool isSelectedSellerTypeFilterEqualInvoice(InvoiceModel element) =>
       element.type_seller == selectedSellerTypeFilter.index.toString();
