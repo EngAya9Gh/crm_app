@@ -237,27 +237,68 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
     print(invoicesFiltered.length);
 
-    if(selectednotReady=='غير جاهز')
-      list.forEach((element) {
-        if (  element.isdoneinstall == null
-            && element.ready_install =='0'  && element.TypeReadyClient=='notReady') {
-          invoicesFiltered_temp.add(element);
-        }
-      });
+
+    // if(invoicesFiltered.isEmpty){
+    // if(selectednotReady=='غير جاهز')
+    //   list.forEach((element) {
+    //     if (  element.isdoneinstall == null
+    //         && element.ready_install =='0'  && element.TypeReadyClient=='notReady') {
+    //       invoicesFiltered.add(element);
+    //     }
+    //   });
+    // }
+    // else {
+    //   if (selectednotReady == 'غير جاهز')
+    //     invoicesFiltered.forEach((element) {
+    //       if (element.isdoneinstall == null
+    //           && element.ready_install == '0' &&
+    //           element.TypeReadyClient == 'notReady') {
+    //         invoicesFiltered_temp.add(element);
+    //       }
+    //     });
+    //   invoicesFiltered=List.from(invoicesFiltered_temp);
+    //   invoicesFiltered_temp=[];
+    // }
+     if(selectednotReady == 'غير جاهز'){
      if(invoicesFiltered.isEmpty)
       list.forEach((element) {
-      if (  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+
+      if ( element.isdoneinstall == null
+                && element.ready_install == '0' &&
+                element.TypeReadyClient == 'notReady'&&
+                DateTime.parse(element.date_approve.toString()).isAfter(from) &&
           DateTime.parse(element.date_approve.toString()).isBefore(to)) {
         invoicesFiltered_temp.add(element);
       }
     });
-    else
+     else
+       invoicesFiltered.forEach((element) {
+       if ( element.isdoneinstall == null
+           && element.ready_install == '0' &&
+           element.TypeReadyClient == 'notReady'&&
+           DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+           DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+         invoicesFiltered_temp.add(element);
+       }
+     });
+     }
+    else{
+       if(invoicesFiltered.isEmpty)
+         list.forEach((element) {
+
+           if (  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+               DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+             invoicesFiltered_temp.add(element);
+           }
+         });
+       else
     invoicesFiltered.forEach((element) {
       if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
           DateTime.parse(element.date_approve.toString()).isBefore(to)) {
         invoicesFiltered_temp.add(element);
       }
     });
+    }
     print(invoicesFiltered.length);
 
     invoicesFiltered=List.from(invoicesFiltered_temp);

@@ -733,14 +733,31 @@ class _support_addState extends State<support_add> {
                               ? 'ميداني'
                               : 'اونلاين'),
 
-                      _invoice!.ready_install == '0'
+                      _invoice!.ready_install == '0'&& _invoice!.TypeReadyClient=='suspend'
                           ? cardRow(
                               title: 'هل تم التركيب للعميل ', value: 'معلق')
+                           :
+                      _invoice!.ready_install == '0'&& _invoice!.TypeReadyClient=='notReady'
+                          ? cardRow(
+                              title: 'هل تم التركيب للعميل ', value: 'غير جاهز')
+
                           : cardRow(
                               title: 'هل تم التركيب للعميل ',
                               value: _invoice!.dateinstall_done == null
                                   ? 'بالانتظار'
                                   : 'تم التركيب'),
+
+                      _invoice!.ready_install == '0'&& _invoice!.dateinstall_done == null
+                          ? cardRow(
+                          title: 'ملاحظة التعليق', value: _invoice!.notes_ready.toString()):Container(),
+
+                      _invoice!.ready_install == '0'&& _invoice!.TypeReadyClient=='notReady'
+                          ? cardRow(
+                          title: 'سبب تعليق العميل', value: _invoice!.reason_notReady.toString()):Container(),
+                 _invoice!.ready_install == '0'&& _invoice!.TypeReadyClient=='suspend'
+                          ? cardRow(
+                          title: 'سبب تعليق العميل', value: _invoice!.reason_suspend.toString()):Container(),
+
 
                       _invoice!.date_readyinstall != null
                           ? cardRow(
