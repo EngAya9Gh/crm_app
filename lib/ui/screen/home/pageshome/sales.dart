@@ -20,6 +20,7 @@ import '../../../../constants.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../client/agents_distributors_invoices_view.dart';
 import '../../client/calender_client.dart';
+import '../../client/marketing/getLastCommentClient.dart';
 
 class sales extends StatefulWidget {
   const sales({Key? key}) : super(key: key);
@@ -90,6 +91,19 @@ class _salesState extends State<sales> {
                       title: 'فواتير العملاء')
                   : Container(),
 
+              Provider.of<privilge_vm>(context,listen: true).checkprivlge('119') == true?
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(context, CupertinoPageRoute(
+                        builder: (context)=>
+                            getLastCommentClient()
+                    ));
+                  },
+                  title: 'آخر تحديثات العملاء'):Container()
+              ,
               Provider.of<privilge_vm>(context, listen: true).checkprivlge('39') == true
                   ? buildSelectCategory(
                       colorbag: Colors.white,

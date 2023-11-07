@@ -33,7 +33,7 @@ class Api {
     // "Cache-Control": "no-cache"
     //   http.Response response = await _client.get(
     http.Response response = await _client.get(Uri.parse(url), headers: {"Cache-Control": "no-cache"});
-    log(json.decode(response.body).toString());
+    // log(json.decode(response.body).toString());
     if (json.decode(response.body)["code"] == "200") {
       print(jsonDecode(response.body)["message"]);
       return jsonDecode(response.body)["message"];

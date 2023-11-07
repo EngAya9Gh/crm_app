@@ -5,22 +5,22 @@ import 'package:provider/provider.dart';
 
 import '../../../view_model/privilge_vm.dart';
 
-class IsMarketingCheckbox extends StatefulWidget {
-  const IsMarketingCheckbox({Key? key, required this.onChange}) : super(key: key);
+class IsMarketingCheckbox_last extends StatefulWidget {
+  const IsMarketingCheckbox_last({Key? key, required this.onChange}) : super(key: key);
 
   final ValueChanged<bool> onChange;
 
   @override
-  State<IsMarketingCheckbox> createState() => _IsMarketingCheckboxState();
+  State<IsMarketingCheckbox_last> createState() => _IsMarketingCheckbox_lastState();
 }
 
-class _IsMarketingCheckboxState extends State<IsMarketingCheckbox> {
+class _IsMarketingCheckbox_lastState extends State<IsMarketingCheckbox_last> {
   late ValueNotifier<bool> _isMarketingNotifier;
   late bool haveMarketingPrivilege;
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55') ;
+    haveMarketingPrivilege =  context.read<privilge_vm>().checkprivlge('155');
     _isMarketingNotifier = ValueNotifier(haveMarketingPrivilege);
     if (haveMarketingPrivilege) {
       scheduleMicrotask(() => widget.onChange(haveMarketingPrivilege));
