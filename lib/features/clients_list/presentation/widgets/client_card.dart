@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:provider/provider.dart';
 
+import '../../../../view_model/privilge_vm.dart';
 import '../pages/action_client_page.dart';
 
 class CardClient extends StatelessWidget {
@@ -21,7 +23,7 @@ class CardClient extends StatelessWidget {
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
         extentRatio: 0.35,
-        children:  [
+        children: [
           SlidableAction(
             onPressed: (actionContext) async {
               Navigator.push(
@@ -37,7 +39,6 @@ class CardClient extends StatelessWidget {
           ),
         ],
       ),
-
       child: InkWell(
         onTap: () {
           Navigator.push(
@@ -72,7 +73,7 @@ class CardClient extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
                       ),
                     ),
-                    if (clientModel.tag ?? false)
+                    if ((clientModel.tag ?? false) && context.read<PrivilegeProvider>().checkPrivilege('133'))
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,

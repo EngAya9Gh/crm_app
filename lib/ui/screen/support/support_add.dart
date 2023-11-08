@@ -847,134 +847,140 @@ class _support_addState extends State<support_add> {
                                 //
 
                                 Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('109') == true
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(left: 3.0),
-                                        child: ElevatedButton(
-                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                            onPressed: _invoice!.ready_install == '0'
-                                                ? null
-                                                : () async {
-                                                    await showDialog(
-                                                      context: context,
-                                                      builder: (context) => dialog_ready(
-                                                        type_ready: 'suspend',
-                                                        invoice: _invoice!,
-                                                      ),
-                                                    );
-                                                  },
-                                            child: Text('تعليق التركيب')),
-                                      )
+                                    ? Expanded(
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(left: 3.0),
+                                          child: ElevatedButton(
+                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                              onPressed: _invoice!.ready_install == '0'
+                                                  ? null
+                                                  : () async {
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder: (context) => dialog_ready(
+                                                          type_ready: 'suspend',
+                                                          invoice: _invoice!,
+                                                        ),
+                                                      );
+                                                    },
+                                              child: Text('تعليق التركيب')),
+                                        ),
+                                    )
                                     : Container(),
 
                                 Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('151') == true
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(left: 3.0, right: 3),
-                                        child: ElevatedButton(
-                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                            onPressed: _invoice!.ready_install == '0'
-                                                ? null
-                                                : () async {
-                                                    await showDialog(
-                                                      context: context,
-                                                      builder: (context) => dialog_ready(
-                                                        type_ready: 'notReady',
-                                                        invoice: _invoice!,
-                                                      ),
-                                                    );
-                                                    //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
-                                                  },
-                                            child: Text('غير جاهز')),
-                                      )
+                                    ? Expanded(
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(left: 3.0, right: 3),
+                                          child: ElevatedButton(
+                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                              onPressed: _invoice!.ready_install == '0'
+                                                  ? null
+                                                  : () async {
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder: (context) => dialog_ready(
+                                                          type_ready: 'notReady',
+                                                          invoice: _invoice!,
+                                                        ),
+                                                      );
+                                                      //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
+                                                    },
+                                              child: Text('غير جاهز')),
+                                        ),
+                                    )
                                     : Container(),
 
                                 Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('110') == true ||
                                         Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('152') ==
                                             true
-                                    ? Padding(
+                                    ? Expanded(
+                                      child: Padding(
                                         padding: const EdgeInsets.only(right: 3),
                                         child: ElevatedButton(
-                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                            onPressed: _invoice!.ready_install == '1'
-                                                ? null
-                                                : () async {
-                                                    await showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        return ModalProgressHUD(
-                                                          inAsyncCall: Provider.of<invoice_vm>(context, listen: true)
-                                                              .isloadingdone,
-                                                          child: Directionality(
-                                                            textDirection: myui.TextDirection.rtl,
-                                                            child: AlertDialog(
-                                                              title: Text('التأكيد'),
-                                                              content: Text('هل تريد الغاء تعليق العميل '),
-                                                              actions: <Widget>[
-                                                                Column(
-                                                                  children: [
-                                                                    SizedBox(height: 10),
-                                                                    Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                      children: [
-                                                                        ElevatedButton(
-                                                                          style: ButtonStyle(
-                                                                              backgroundColor:
-                                                                                  MaterialStateProperty.all(
-                                                                                      kMainColor)),
-                                                                          onPressed: () {
-                                                                            Navigator.of(context, rootNavigator: true).pop(
-                                                                                false); // dismisses only the dialog and returns false
-                                                                          },
-                                                                          child: Text('لا'),
-                                                                        ),
-                                                                        ElevatedButton(
-                                                                          style: ButtonStyle(
-                                                                              backgroundColor:
-                                                                                  MaterialStateProperty.all(
-                                                                                      kMainColor)),
-                                                                          onPressed: () async {
-                                                                            Provider.of<invoice_vm>(context,
-                                                                                    listen: false)
-                                                                                .setisload();
+                                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                              onPressed: _invoice!.ready_install == '1'
+                                                  ? null
+                                                  : () async {
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+                                                          return ModalProgressHUD(
+                                                            inAsyncCall: Provider.of<invoice_vm>(context, listen: true)
+                                                                .isloadingdone,
+                                                            child: Directionality(
+                                                              textDirection: myui.TextDirection.rtl,
+                                                              child: AlertDialog(
+                                                                title: Text('التأكيد'),
+                                                                content: Text('هل تريد الغاء تعليق العميل '),
+                                                                actions: <Widget>[
+                                                                  Column(
+                                                                    children: [
+                                                                      SizedBox(height: 10),
+                                                                      Row(
+                                                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                        children: [
+                                                                          ElevatedButton(
+                                                                            style: ButtonStyle(
+                                                                                backgroundColor:
+                                                                                    MaterialStateProperty.all(
+                                                                                        kMainColor)),
+                                                                            onPressed: () {
+                                                                              Navigator.of(context, rootNavigator: true).pop(
+                                                                                  false); // dismisses only the dialog and returns false
+                                                                            },
+                                                                            child: Text('لا'),
+                                                                          ),
+                                                                          ElevatedButton(
+                                                                            style: ButtonStyle(
+                                                                                backgroundColor:
+                                                                                    MaterialStateProperty.all(
+                                                                                        kMainColor)),
+                                                                            onPressed: () async {
+                                                                              Provider.of<invoice_vm>(context,
+                                                                                      listen: false)
+                                                                                  .setisload();
 
-                                                                            await Provider.of<invoice_vm>(context,
-                                                                                    listen: false)
-                                                                                .set_ready_install({
-                                                                              'date_temp': _invoice!
-                                                                                  .date_not_readyinstall
-                                                                                  .toString(),
-                                                                              'date_ready_prev': _invoice!
-                                                                                  .date_readyinstall
-                                                                                  .toString(),
-                                                                              'date_readyinstall':
-                                                                                  DateTime.now().toString(),
-                                                                              'user_ready_install':
-                                                                                  Provider.of<UserProvider>(context,
-                                                                                          listen: false)
-                                                                                      .currentUser
-                                                                                      .idUser
-                                                                                      .toString(),
-                                                                              'ready_install': '1',
-                                                                            }, _invoice!.idInvoice).then(
-                                                                                    (value) => clear());
-                                                                            Navigator.of(context, rootNavigator: true)
-                                                                                .pop(true);
-                                                                          },
-                                                                          child: Text('نعم'),
-                                                                        ),
-                                                                      ],
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ],
+                                                                              await Provider.of<invoice_vm>(context,
+                                                                                      listen: false)
+                                                                                  .set_ready_install({
+                                                                                'date_temp': _invoice!
+                                                                                    .date_not_readyinstall
+                                                                                    .toString(),
+                                                                                'date_ready_prev': _invoice!
+                                                                                    .date_readyinstall
+                                                                                    .toString(),
+                                                                                'date_readyinstall':
+                                                                                    DateTime.now().toString(),
+                                                                                'user_ready_install':
+                                                                                    Provider.of<UserProvider>(context,
+                                                                                            listen: false)
+                                                                                        .currentUser
+                                                                                        .idUser
+                                                                                        .toString(),
+                                                                                'ready_install': '1',
+                                                                              }, _invoice!.idInvoice).then(
+                                                                                      (value) => clear());
+                                                                              Navigator.of(context, rootNavigator: true)
+                                                                                  .pop(true);
+                                                                            },
+                                                                            child: Text('نعم'),
+                                                                          ),
+                                                                        ],
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
-                                                    //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
-                                                  },
-                                            child: Text('الغاء تعليق العميل')),
-                                      )
+                                                          );
+                                                        },
+                                                      );
+                                                      //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
+                                                    },
+                                              child: Text('الغاء تعليق العميل')),
+                                      ),
+                                    )
                                     : Container(),
                               ],
                             ),

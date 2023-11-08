@@ -3,22 +3,26 @@ part of 'communication_list_bloc.dart';
 class CommunicationListState extends Equatable {
   const CommunicationListState({
     this.communicationListState = const PageState.init(),
-    this.allCommunicationsState = const <Communication>[],
+    this.allCommunicationsState = const <DistinctiveClient>[],
+    this.selectedCityId,
   });
 
-  final PageState<List<Communication>> communicationListState;
-  final List<Communication> allCommunicationsState;
+  final PageState<List<DistinctiveClient>> communicationListState;
+  final List<DistinctiveClient> allCommunicationsState;
+  final String? selectedCityId;
 
   @override
-  List<Object?> get props => [communicationListState];
+  List<Object?> get props => [communicationListState, selectedCityId];
 
   CommunicationListState copyWith({
-    PageState<List<Communication>>? communicationListState,
-    List<Communication>? allCommunicationsState,
+    PageState<List<DistinctiveClient>>? communicationListState,
+    List<DistinctiveClient>? allCommunicationsState,
+    Nullable<String?>? selectedCityId,
   }) {
     return CommunicationListState(
       communicationListState: communicationListState ?? this.communicationListState,
       allCommunicationsState: allCommunicationsState ?? this.allCommunicationsState,
+      selectedCityId: selectedCityId != null ? selectedCityId.value : this.selectedCityId,
     );
   }
 }

@@ -72,11 +72,11 @@ class _$RecommendedClientCopyWithImpl<$Res, $Val extends RecommendedClient>
 }
 
 /// @nodoc
-abstract class _$$_RecommendedClientCopyWith<$Res>
+abstract class _$$RecommendedClientImplCopyWith<$Res>
     implements $RecommendedClientCopyWith<$Res> {
-  factory _$$_RecommendedClientCopyWith(_$_RecommendedClient value,
-          $Res Function(_$_RecommendedClient) then) =
-      __$$_RecommendedClientCopyWithImpl<$Res>;
+  factory _$$RecommendedClientImplCopyWith(_$RecommendedClientImpl value,
+          $Res Function(_$RecommendedClientImpl) then) =
+      __$$RecommendedClientImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -85,11 +85,11 @@ abstract class _$$_RecommendedClientCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RecommendedClientCopyWithImpl<$Res>
-    extends _$RecommendedClientCopyWithImpl<$Res, _$_RecommendedClient>
-    implements _$$_RecommendedClientCopyWith<$Res> {
-  __$$_RecommendedClientCopyWithImpl(
-      _$_RecommendedClient _value, $Res Function(_$_RecommendedClient) _then)
+class __$$RecommendedClientImplCopyWithImpl<$Res>
+    extends _$RecommendedClientCopyWithImpl<$Res, _$RecommendedClientImpl>
+    implements _$$RecommendedClientImplCopyWith<$Res> {
+  __$$RecommendedClientImplCopyWithImpl(_$RecommendedClientImpl _value,
+      $Res Function(_$RecommendedClientImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -98,7 +98,7 @@ class __$$_RecommendedClientCopyWithImpl<$Res>
     Object? fkClient = freezed,
     Object? nameEnterprise = freezed,
   }) {
-    return _then(_$_RecommendedClient(
+    return _then(_$RecommendedClientImpl(
       fkClient: freezed == fkClient
           ? _value.fkClient
           : fkClient // ignore: cast_nullable_to_non_nullable
@@ -113,13 +113,13 @@ class __$$_RecommendedClientCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_RecommendedClient implements _RecommendedClient {
-  const _$_RecommendedClient(
+class _$RecommendedClientImpl implements _RecommendedClient {
+  const _$RecommendedClientImpl(
       {@JsonKey(name: "fk_client") this.fkClient,
       @JsonKey(name: "name_enterprise") this.nameEnterprise});
 
-  factory _$_RecommendedClient.fromJson(Map<String, dynamic> json) =>
-      _$$_RecommendedClientFromJson(json);
+  factory _$RecommendedClientImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RecommendedClientImplFromJson(json);
 
   @override
   @JsonKey(name: "fk_client")
@@ -137,7 +137,7 @@ class _$_RecommendedClient implements _RecommendedClient {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RecommendedClient &&
+            other is _$RecommendedClientImpl &&
             (identical(other.fkClient, fkClient) ||
                 other.fkClient == fkClient) &&
             (identical(other.nameEnterprise, nameEnterprise) ||
@@ -151,13 +151,13 @@ class _$_RecommendedClient implements _RecommendedClient {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RecommendedClientCopyWith<_$_RecommendedClient> get copyWith =>
-      __$$_RecommendedClientCopyWithImpl<_$_RecommendedClient>(
+  _$$RecommendedClientImplCopyWith<_$RecommendedClientImpl> get copyWith =>
+      __$$RecommendedClientImplCopyWithImpl<_$RecommendedClientImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RecommendedClientToJson(
+    return _$$RecommendedClientImplToJson(
       this,
     );
   }
@@ -167,10 +167,10 @@ abstract class _RecommendedClient implements RecommendedClient {
   const factory _RecommendedClient(
           {@JsonKey(name: "fk_client") final String? fkClient,
           @JsonKey(name: "name_enterprise") final String? nameEnterprise}) =
-      _$_RecommendedClient;
+      _$RecommendedClientImpl;
 
   factory _RecommendedClient.fromJson(Map<String, dynamic> json) =
-      _$_RecommendedClient.fromJson;
+      _$RecommendedClientImpl.fromJson;
 
   @override
   @JsonKey(name: "fk_client")
@@ -180,6 +180,6 @@ abstract class _RecommendedClient implements RecommendedClient {
   String? get nameEnterprise;
   @override
   @JsonKey(ignore: true)
-  _$$_RecommendedClientCopyWith<_$_RecommendedClient> get copyWith =>
+  _$$RecommendedClientImplCopyWith<_$RecommendedClientImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

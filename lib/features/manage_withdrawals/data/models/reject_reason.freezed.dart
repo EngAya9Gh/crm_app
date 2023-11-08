@@ -72,11 +72,11 @@ class _$RejectReasonCopyWithImpl<$Res, $Val extends RejectReason>
 }
 
 /// @nodoc
-abstract class _$$_RejectReasonCopyWith<$Res>
+abstract class _$$RejectReasonImplCopyWith<$Res>
     implements $RejectReasonCopyWith<$Res> {
-  factory _$$_RejectReasonCopyWith(
-          _$_RejectReason value, $Res Function(_$_RejectReason) then) =
-      __$$_RejectReasonCopyWithImpl<$Res>;
+  factory _$$RejectReasonImplCopyWith(
+          _$RejectReasonImpl value, $Res Function(_$RejectReasonImpl) then) =
+      __$$RejectReasonImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -85,11 +85,11 @@ abstract class _$$_RejectReasonCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RejectReasonCopyWithImpl<$Res>
-    extends _$RejectReasonCopyWithImpl<$Res, _$_RejectReason>
-    implements _$$_RejectReasonCopyWith<$Res> {
-  __$$_RejectReasonCopyWithImpl(
-      _$_RejectReason _value, $Res Function(_$_RejectReason) _then)
+class __$$RejectReasonImplCopyWithImpl<$Res>
+    extends _$RejectReasonCopyWithImpl<$Res, _$RejectReasonImpl>
+    implements _$$RejectReasonImplCopyWith<$Res> {
+  __$$RejectReasonImplCopyWithImpl(
+      _$RejectReasonImpl _value, $Res Function(_$RejectReasonImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -98,7 +98,7 @@ class __$$_RejectReasonCopyWithImpl<$Res>
     Object? idRejectClient = freezed,
     Object? nameReasonReject = freezed,
   }) {
-    return _then(_$_RejectReason(
+    return _then(_$RejectReasonImpl(
       idRejectClient: freezed == idRejectClient
           ? _value.idRejectClient
           : idRejectClient // ignore: cast_nullable_to_non_nullable
@@ -113,13 +113,13 @@ class __$$_RejectReasonCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_RejectReason implements _RejectReason {
-  const _$_RejectReason(
+class _$RejectReasonImpl implements _RejectReason {
+  const _$RejectReasonImpl(
       {@JsonKey(name: "id_rejectClient") this.idRejectClient,
       @JsonKey(name: "NameReason_reject") this.nameReasonReject});
 
-  factory _$_RejectReason.fromJson(Map<String, dynamic> json) =>
-      _$$_RejectReasonFromJson(json);
+  factory _$RejectReasonImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RejectReasonImplFromJson(json);
 
   @override
   @JsonKey(name: "id_rejectClient")
@@ -137,7 +137,7 @@ class _$_RejectReason implements _RejectReason {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RejectReason &&
+            other is _$RejectReasonImpl &&
             (identical(other.idRejectClient, idRejectClient) ||
                 other.idRejectClient == idRejectClient) &&
             (identical(other.nameReasonReject, nameReasonReject) ||
@@ -152,12 +152,12 @@ class _$_RejectReason implements _RejectReason {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RejectReasonCopyWith<_$_RejectReason> get copyWith =>
-      __$$_RejectReasonCopyWithImpl<_$_RejectReason>(this, _$identity);
+  _$$RejectReasonImplCopyWith<_$RejectReasonImpl> get copyWith =>
+      __$$RejectReasonImplCopyWithImpl<_$RejectReasonImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RejectReasonToJson(
+    return _$$RejectReasonImplToJson(
       this,
     );
   }
@@ -167,10 +167,10 @@ abstract class _RejectReason implements RejectReason {
   const factory _RejectReason(
           {@JsonKey(name: "id_rejectClient") final String? idRejectClient,
           @JsonKey(name: "NameReason_reject") final String? nameReasonReject}) =
-      _$_RejectReason;
+      _$RejectReasonImpl;
 
   factory _RejectReason.fromJson(Map<String, dynamic> json) =
-      _$_RejectReason.fromJson;
+      _$RejectReasonImpl.fromJson;
 
   @override
   @JsonKey(name: "id_rejectClient")
@@ -180,6 +180,6 @@ abstract class _RejectReason implements RejectReason {
   String? get nameReasonReject;
   @override
   @JsonKey(ignore: true)
-  _$$_RejectReasonCopyWith<_$_RejectReason> get copyWith =>
+  _$$RejectReasonImplCopyWith<_$RejectReasonImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

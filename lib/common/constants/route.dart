@@ -34,6 +34,9 @@ class _Care {
   final getRecommendedClients = 'care/get_recommand_care.php';
 }
 
+
+
+
 class _Client {
   const _Client();
 
@@ -46,4 +49,5 @@ class _Client {
   final getRejectReasons = "client/reason_client_reject/Get_reasonRejectClient.php";
   final addRejectReasons = "client/reason_client_reject/Add_reasonRejectClient.php";
   final editRejectReasons = "client/reason_client_reject/Edit_reasonRejectClient.php";
+  final distinctiveClient = "star_client/get_client_star.php";
 }

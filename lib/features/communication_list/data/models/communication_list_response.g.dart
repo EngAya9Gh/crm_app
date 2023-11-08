@@ -6,9 +6,9 @@ part of 'communication_list_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_CommunicationListResponse _$$_CommunicationListResponseFromJson(
+_$CommunicationListResponseImpl _$$CommunicationListResponseImplFromJson(
         Map<String, dynamic> json) =>
-    _$_CommunicationListResponse(
+    _$CommunicationListResponseImpl(
       result: json['result'] as String?,
       code: json['code'] as String?,
       message: (json['message'] as List<dynamic>?)
@@ -16,16 +16,16 @@ _$_CommunicationListResponse _$$_CommunicationListResponseFromJson(
           .toList(),
     );
 
-Map<String, dynamic> _$$_CommunicationListResponseToJson(
-        _$_CommunicationListResponse instance) =>
+Map<String, dynamic> _$$CommunicationListResponseImplToJson(
+        _$CommunicationListResponseImpl instance) =>
     <String, dynamic>{
       'result': instance.result,
       'code': instance.code,
       'message': instance.message,
     };
 
-_$_Communication _$$_CommunicationFromJson(Map<String, dynamic> json) =>
-    _$_Communication(
+_$CommunicationImpl _$$CommunicationImplFromJson(Map<String, dynamic> json) =>
+    _$CommunicationImpl(
       idCommunication: json['id_communication'] as String?,
       fkClient: json['fk_client'] as String?,
       fkUser: json['fk_user'] as String?,
@@ -64,7 +64,7 @@ _$_Communication _$$_CommunicationFromJson(Map<String, dynamic> json) =>
       hoursdelaylabel: json['hoursdelaylabel'] as String?,
     );
 
-Map<String, dynamic> _$$_CommunicationToJson(_$_Communication instance) =>
+Map<String, dynamic> _$$CommunicationImplToJson(_$CommunicationImpl instance) =>
     <String, dynamic>{
       'id_communication': instance.idCommunication,
       'fk_client': instance.fkClient,

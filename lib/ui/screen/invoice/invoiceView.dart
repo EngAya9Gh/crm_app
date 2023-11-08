@@ -20,6 +20,7 @@ import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl.dart' as rt;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -1028,85 +1029,90 @@ class _RejectDialogState extends State<RejectDialog> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                      onPressed: () async {
-                                        if ((selectedFile == null && (_invoice.file_reject?.isEmpty ?? true))
-                                            ||typeclient_provider.selectedValueOut==null ) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(content: Text("من فضلك قم بملىء الخيارات")));
-                                          return;
-                                        }
-                                        if (_globalKey.currentState!.validate()) {
-                                          _globalKey.currentState!.save();
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                        onPressed: () async {
+                                          if ((selectedFile == null && (_invoice.file_reject?.isEmpty ?? true))
+                                              ||typeclient_provider.selectedValueOut==null ) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(content: Text("من فضلك قم بملىء الخيارات")));
+                                            return;
+                                          }
+                                          if (_globalKey.currentState!.validate()) {
+                                            _globalKey.currentState!.save();
 
-                                          await Provider.of<invoice_vm>(context, listen: false).set_state_back({
-                                            'type_back': 'back',
-                                            'fk_regoin': _invoice.fk_regoin.toString(),
-                                            'fkcountry': _invoice.fk_country.toString(),
-                                            "fkUserdo": Provider.of<UserProvider>(context, listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                            "name_enterprise": widget.clientModel.nameEnterprise.toString(),
-                                            "nameUserdo": Provider.of<UserProvider>(context, listen: false)
-                                                .currentUser
-                                                .nameUser
-                                                .toString(),
-                                            "fk_client": _invoice.fkIdClient.toString(),
-                                            "reason_back": typeclient_provider.selectedValueOut.toString(),
-                                            "fkuser_back": Provider.of<UserProvider>(context, listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                            "desc_reason_back": descresaonController.text.toString(),
-                                            "date_change_back": _currentDate.toString(),
-                                            "value_back": valueBackController.text.toString(),
-                                          }, _invoice.idInvoice.toString(), selectedFile);
-                                          Navigator.of(context, rootNavigator: true).pop(false);
-                                        }
-                                      },
-                                      child: Text('انسحاب'),
+                                            await Provider.of<invoice_vm>(context, listen: false).set_state_back({
+                                              'type_back': 'back',
+                                              'fk_regoin': _invoice.fk_regoin.toString(),
+                                              'fkcountry': _invoice.fk_country.toString(),
+                                              "fkUserdo": Provider.of<UserProvider>(context, listen: false)
+                                                  .currentUser
+                                                  .idUser
+                                                  .toString(),
+                                              "name_enterprise": widget.clientModel.nameEnterprise.toString(),
+                                              "nameUserdo": Provider.of<UserProvider>(context, listen: false)
+                                                  .currentUser
+                                                  .nameUser
+                                                  .toString(),
+                                              "fk_client": _invoice.fkIdClient.toString(),
+                                              "reason_back": typeclient_provider.selectedValueOut.toString(),
+                                              "fkuser_back": Provider.of<UserProvider>(context, listen: false)
+                                                  .currentUser
+                                                  .idUser
+                                                  .toString(),
+                                              "desc_reason_back": descresaonController.text.toString(),
+                                              "date_change_back": _currentDate.toString(),
+                                              "value_back": valueBackController.text.toString(),
+                                            }, _invoice.idInvoice.toString(), selectedFile);
+                                            Navigator.of(context, rootNavigator: true).pop(false);
+                                          }
+                                        },
+                                        child: Text('انسحاب'),
+                                      ),
                                     ),
-                                    ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                      onPressed: () async {
-                                        if ( (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true))
-                                            ||typeclient_provider.selectedValueOut==null  ) {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(content: Text("من فضلك قم بملىء الخيارات")));
-                                          return;
-                                        }
-                                        if (_globalKey.currentState!.validate()) {
-                                          _globalKey.currentState!.save();
+                                    20.horizontalSpace,
+                                    Expanded(
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                        onPressed: () async {
+                                          if ( (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true))
+                                              ||typeclient_provider.selectedValueOut==null  ) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(content: Text("من فضلك قم بملىء الخيارات")));
+                                            return;
+                                          }
+                                          if (_globalKey.currentState!.validate()) {
+                                            _globalKey.currentState!.save();
 
-                                          await Provider.of<invoice_vm>(context, listen: false).set_state_back({
-                                            'type_back': 'return',
-                                            'fk_regoin': _invoice.fk_regoin.toString(),
-                                            'fkcountry': _invoice.fk_country.toString(),
-                                            "fkUserdo": Provider.of<UserProvider>(context, listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                            "name_enterprise": widget.clientModel.nameEnterprise.toString(),
-                                            "nameUserdo": Provider.of<UserProvider>(context, listen: false)
-                                                .currentUser
-                                                .nameUser
-                                                .toString(),
-                                            "fk_client": _invoice.fkIdClient.toString(),
-                                            "reason_back": typeclient_provider.selectedValueOut.toString(),
-                                            "fkuser_back": Provider.of<UserProvider>(context, listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                            "desc_reason_back": descresaonController.text.toString(),
-                                            "date_change_back": _currentDate.toString(),
-                                            "value_back": valueBackController.text.toString(),
-                                          }, _invoice.idInvoice.toString(), selectedFile);
-                                          Navigator.of(context, rootNavigator: true).pop(false);
-                                        }
-                                      },
-                                      child: Text('ارجاع'),
+                                            await Provider.of<invoice_vm>(context, listen: false).set_state_back({
+                                              'type_back': 'return',
+                                              'fk_regoin': _invoice.fk_regoin.toString(),
+                                              'fkcountry': _invoice.fk_country.toString(),
+                                              "fkUserdo": Provider.of<UserProvider>(context, listen: false)
+                                                  .currentUser
+                                                  .idUser
+                                                  .toString(),
+                                              "name_enterprise": widget.clientModel.nameEnterprise.toString(),
+                                              "nameUserdo": Provider.of<UserProvider>(context, listen: false)
+                                                  .currentUser
+                                                  .nameUser
+                                                  .toString(),
+                                              "fk_client": _invoice.fkIdClient.toString(),
+                                              "reason_back": typeclient_provider.selectedValueOut.toString(),
+                                              "fkuser_back": Provider.of<UserProvider>(context, listen: false)
+                                                  .currentUser
+                                                  .idUser
+                                                  .toString(),
+                                              "desc_reason_back": descresaonController.text.toString(),
+                                              "date_change_back": _currentDate.toString(),
+                                              "value_back": valueBackController.text.toString(),
+                                            }, _invoice.idInvoice.toString(), selectedFile);
+                                            Navigator.of(context, rootNavigator: true).pop(false);
+                                          }
+                                        },
+                                        child: Text('ارجاع'),
+                                      ),
                                     ),
                                   ],
                                 ),

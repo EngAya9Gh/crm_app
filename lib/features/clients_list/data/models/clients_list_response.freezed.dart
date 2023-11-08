@@ -488,11 +488,11 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
 }
 
 /// @nodoc
-abstract class _$$_ClientModelCopyWith<$Res>
+abstract class _$$ClientModelImplCopyWith<$Res>
     implements $ClientModelCopyWith<$Res> {
-  factory _$$_ClientModelCopyWith(
-          _$_ClientModel value, $Res Function(_$_ClientModel) then) =
-      __$$_ClientModelCopyWithImpl<$Res>;
+  factory _$$ClientModelImplCopyWith(
+          _$ClientModelImpl value, $Res Function(_$ClientModelImpl) then) =
+      __$$ClientModelImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -553,11 +553,11 @@ abstract class _$$_ClientModelCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_ClientModelCopyWithImpl<$Res>
-    extends _$ClientModelCopyWithImpl<$Res, _$_ClientModel>
-    implements _$$_ClientModelCopyWith<$Res> {
-  __$$_ClientModelCopyWithImpl(
-      _$_ClientModel _value, $Res Function(_$_ClientModel) _then)
+class __$$ClientModelImplCopyWithImpl<$Res>
+    extends _$ClientModelCopyWithImpl<$Res, _$ClientModelImpl>
+    implements _$$ClientModelImplCopyWith<$Res> {
+  __$$ClientModelImplCopyWithImpl(
+      _$ClientModelImpl _value, $Res Function(_$ClientModelImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -618,7 +618,7 @@ class __$$_ClientModelCopyWithImpl<$Res>
     Object? sizeActivity = freezed,
     Object? fkClientSource = freezed,
   }) {
-    return _then(_$_ClientModel(
+    return _then(_$ClientModelImpl(
       idClients: freezed == idClients
           ? _value.idClients
           : idClients // ignore: cast_nullable_to_non_nullable
@@ -841,8 +841,8 @@ class __$$_ClientModelCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ClientModel extends _ClientModel {
-  const _$_ClientModel(
+class _$ClientModelImpl extends _ClientModel {
+  const _$ClientModelImpl(
       {@JsonKey(name: "id_clients") this.idClients,
       @JsonKey(name: "name_client") this.nameClient,
       @JsonKey(name: "name_enterprise") this.nameEnterprise,
@@ -899,8 +899,8 @@ class _$_ClientModel extends _ClientModel {
       @JsonKey(name: "fk_client_source") this.fkClientSource})
       : super._();
 
-  factory _$_ClientModel.fromJson(Map<String, dynamic> json) =>
-      _$$_ClientModelFromJson(json);
+  factory _$ClientModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ClientModelImplFromJson(json);
 
   @override
   @JsonKey(name: "id_clients")
@@ -1074,7 +1074,7 @@ class _$_ClientModel extends _ClientModel {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ClientModel &&
+            other is _$ClientModelImpl &&
             (identical(other.idClients, idClients) ||
                 other.idClients == idClients) &&
             (identical(other.nameClient, nameClient) ||
@@ -1236,12 +1236,12 @@ class _$_ClientModel extends _ClientModel {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ClientModelCopyWith<_$_ClientModel> get copyWith =>
-      __$$_ClientModelCopyWithImpl<_$_ClientModel>(this, _$identity);
+  _$$ClientModelImplCopyWith<_$ClientModelImpl> get copyWith =>
+      __$$ClientModelImplCopyWithImpl<_$ClientModelImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ClientModelToJson(
+    return _$$ClientModelImplToJson(
       this,
     );
   }
@@ -1304,11 +1304,11 @@ abstract class _ClientModel extends ClientModel {
       @JsonKey(name: "email") final String? email,
       @JsonKey(name: "size_activity") final String? sizeActivity,
       @JsonKey(name: "fk_client_source")
-      final String? fkClientSource}) = _$_ClientModel;
+      final String? fkClientSource}) = _$ClientModelImpl;
   const _ClientModel._() : super._();
 
   factory _ClientModel.fromJson(Map<String, dynamic> json) =
-      _$_ClientModel.fromJson;
+      _$ClientModelImpl.fromJson;
 
   @override
   @JsonKey(name: "id_clients")
@@ -1474,6 +1474,6 @@ abstract class _ClientModel extends ClientModel {
   String? get fkClientSource;
   @override
   @JsonKey(ignore: true)
-  _$$_ClientModelCopyWith<_$_ClientModel> get copyWith =>
+  _$$ClientModelImplCopyWith<_$ClientModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

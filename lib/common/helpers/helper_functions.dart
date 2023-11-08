@@ -22,7 +22,6 @@ class HelperFunctions {
     return null;
   }
 
-
   String? emailFiledValidate(String? value) {
     final isFill = requiredFiled(value);
 
@@ -35,5 +34,9 @@ class HelperFunctions {
     }
 
     return null;
+  }
+
+  List<T> intersection<T>(Iterable<Iterable<T>> iterables) {
+    return iterables.map((e) => e.toSet()).reduce((a, b) => a.intersection(b)).toList();
   }
 }

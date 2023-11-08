@@ -88,11 +88,11 @@ class _$ResponseWrapperCopyWithImpl<T, $Res, $Val extends ResponseWrapper<T>>
 }
 
 /// @nodoc
-abstract class _$$_ResponseWrapperCopyWith<T, $Res>
+abstract class _$$ResponseWrapperImplCopyWith<T, $Res>
     implements $ResponseWrapperCopyWith<T, $Res> {
-  factory _$$_ResponseWrapperCopyWith(_$_ResponseWrapper<T> value,
-          $Res Function(_$_ResponseWrapper<T>) then) =
-      __$$_ResponseWrapperCopyWithImpl<T, $Res>;
+  factory _$$ResponseWrapperImplCopyWith(_$ResponseWrapperImpl<T> value,
+          $Res Function(_$ResponseWrapperImpl<T>) then) =
+      __$$ResponseWrapperImplCopyWithImpl<T, $Res>;
   @override
   @useResult
   $Res call(
@@ -103,11 +103,11 @@ abstract class _$$_ResponseWrapperCopyWith<T, $Res>
 }
 
 /// @nodoc
-class __$$_ResponseWrapperCopyWithImpl<T, $Res>
-    extends _$ResponseWrapperCopyWithImpl<T, $Res, _$_ResponseWrapper<T>>
-    implements _$$_ResponseWrapperCopyWith<T, $Res> {
-  __$$_ResponseWrapperCopyWithImpl(
-      _$_ResponseWrapper<T> _value, $Res Function(_$_ResponseWrapper<T>) _then)
+class __$$ResponseWrapperImplCopyWithImpl<T, $Res>
+    extends _$ResponseWrapperCopyWithImpl<T, $Res, _$ResponseWrapperImpl<T>>
+    implements _$$ResponseWrapperImplCopyWith<T, $Res> {
+  __$$ResponseWrapperImplCopyWithImpl(_$ResponseWrapperImpl<T> _value,
+      $Res Function(_$ResponseWrapperImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -118,7 +118,7 @@ class __$$_ResponseWrapperCopyWithImpl<T, $Res>
     Object? message = freezed,
     Object? data = freezed,
   }) {
-    return _then(_$_ResponseWrapper<T>(
+    return _then(_$ResponseWrapperImpl<T>(
       status: freezed == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -141,16 +141,16 @@ class __$$_ResponseWrapperCopyWithImpl<T, $Res>
 
 /// @nodoc
 @JsonSerializable(genericArgumentFactories: true)
-class _$_ResponseWrapper<T> implements _ResponseWrapper<T> {
-  const _$_ResponseWrapper(
+class _$ResponseWrapperImpl<T> implements _ResponseWrapper<T> {
+  const _$ResponseWrapperImpl(
       {this.status,
       this.success,
       @JsonKey(name: "message") required this.message,
       @JsonKey(name: "data") required this.data});
 
-  factory _$_ResponseWrapper.fromJson(
+  factory _$ResponseWrapperImpl.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
-      _$$_ResponseWrapperFromJson(json, fromJsonT);
+      _$$ResponseWrapperImplFromJson(json, fromJsonT);
 
   @override
   final String? status;
@@ -172,7 +172,7 @@ class _$_ResponseWrapper<T> implements _ResponseWrapper<T> {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ResponseWrapper<T> &&
+            other is _$ResponseWrapperImpl<T> &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.success, success) || other.success == success) &&
             const DeepCollectionEquality().equals(other.message, message) &&
@@ -191,26 +191,27 @@ class _$_ResponseWrapper<T> implements _ResponseWrapper<T> {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ResponseWrapperCopyWith<T, _$_ResponseWrapper<T>> get copyWith =>
-      __$$_ResponseWrapperCopyWithImpl<T, _$_ResponseWrapper<T>>(
+  _$$ResponseWrapperImplCopyWith<T, _$ResponseWrapperImpl<T>> get copyWith =>
+      __$$ResponseWrapperImplCopyWithImpl<T, _$ResponseWrapperImpl<T>>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
-    return _$$_ResponseWrapperToJson<T>(this, toJsonT);
+    return _$$ResponseWrapperImplToJson<T>(this, toJsonT);
   }
 }
 
 abstract class _ResponseWrapper<T> implements ResponseWrapper<T> {
   const factory _ResponseWrapper(
-      {final String? status,
-      final bool? success,
-      @JsonKey(name: "message") required final T? message,
-      @JsonKey(name: "data") required final T? data}) = _$_ResponseWrapper<T>;
+          {final String? status,
+          final bool? success,
+          @JsonKey(name: "message") required final T? message,
+          @JsonKey(name: "data") required final T? data}) =
+      _$ResponseWrapperImpl<T>;
 
   factory _ResponseWrapper.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =
-      _$_ResponseWrapper<T>.fromJson;
+      _$ResponseWrapperImpl<T>.fromJson;
 
   @override
   String? get status;
@@ -224,6 +225,6 @@ abstract class _ResponseWrapper<T> implements ResponseWrapper<T> {
   T? get data;
   @override
   @JsonKey(ignore: true)
-  _$$_ResponseWrapperCopyWith<T, _$_ResponseWrapper<T>> get copyWith =>
+  _$$ResponseWrapperImplCopyWith<T, _$ResponseWrapperImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

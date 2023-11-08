@@ -88,11 +88,11 @@ class _$PaginationModelCopyWithImpl<T, $Res, $Val extends PaginationModel<T>>
 }
 
 /// @nodoc
-abstract class _$$_PaginationModelCopyWith<T, $Res>
+abstract class _$$PaginationModelImplCopyWith<T, $Res>
     implements $PaginationModelCopyWith<T, $Res> {
-  factory _$$_PaginationModelCopyWith(_$_PaginationModel<T> value,
-          $Res Function(_$_PaginationModel<T>) then) =
-      __$$_PaginationModelCopyWithImpl<T, $Res>;
+  factory _$$PaginationModelImplCopyWith(_$PaginationModelImpl<T> value,
+          $Res Function(_$PaginationModelImpl<T>) then) =
+      __$$PaginationModelImplCopyWithImpl<T, $Res>;
   @override
   @useResult
   $Res call({T? data, Links links, Meta meta});
@@ -104,11 +104,11 @@ abstract class _$$_PaginationModelCopyWith<T, $Res>
 }
 
 /// @nodoc
-class __$$_PaginationModelCopyWithImpl<T, $Res>
-    extends _$PaginationModelCopyWithImpl<T, $Res, _$_PaginationModel<T>>
-    implements _$$_PaginationModelCopyWith<T, $Res> {
-  __$$_PaginationModelCopyWithImpl(
-      _$_PaginationModel<T> _value, $Res Function(_$_PaginationModel<T>) _then)
+class __$$PaginationModelImplCopyWithImpl<T, $Res>
+    extends _$PaginationModelCopyWithImpl<T, $Res, _$PaginationModelImpl<T>>
+    implements _$$PaginationModelImplCopyWith<T, $Res> {
+  __$$PaginationModelImplCopyWithImpl(_$PaginationModelImpl<T> _value,
+      $Res Function(_$PaginationModelImpl<T>) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -118,7 +118,7 @@ class __$$_PaginationModelCopyWithImpl<T, $Res>
     Object? links = null,
     Object? meta = null,
   }) {
-    return _then(_$_PaginationModel<T>(
+    return _then(_$PaginationModelImpl<T>(
       data: freezed == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
@@ -137,8 +137,8 @@ class __$$_PaginationModelCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$_PaginationModel<T> extends _PaginationModel<T> {
-  const _$_PaginationModel(
+class _$PaginationModelImpl<T> extends _PaginationModel<T> {
+  const _$PaginationModelImpl(
       {required this.data, required this.links, required this.meta})
       : super._();
 
@@ -158,7 +158,7 @@ class _$_PaginationModel<T> extends _PaginationModel<T> {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PaginationModel<T> &&
+            other is _$PaginationModelImpl<T> &&
             const DeepCollectionEquality().equals(other.data, data) &&
             (identical(other.links, links) || other.links == links) &&
             (identical(other.meta, meta) || other.meta == meta));
@@ -171,8 +171,8 @@ class _$_PaginationModel<T> extends _PaginationModel<T> {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PaginationModelCopyWith<T, _$_PaginationModel<T>> get copyWith =>
-      __$$_PaginationModelCopyWithImpl<T, _$_PaginationModel<T>>(
+  _$$PaginationModelImplCopyWith<T, _$PaginationModelImpl<T>> get copyWith =>
+      __$$PaginationModelImplCopyWithImpl<T, _$PaginationModelImpl<T>>(
           this, _$identity);
 }
 
@@ -180,7 +180,7 @@ abstract class _PaginationModel<T> extends PaginationModel<T> {
   const factory _PaginationModel(
       {required final T? data,
       required final Links links,
-      required final Meta meta}) = _$_PaginationModel<T>;
+      required final Meta meta}) = _$PaginationModelImpl<T>;
   const _PaginationModel._() : super._();
 
   @override
@@ -191,7 +191,7 @@ abstract class _PaginationModel<T> extends PaginationModel<T> {
   Meta get meta;
   @override
   @JsonKey(ignore: true)
-  _$$_PaginationModelCopyWith<T, _$_PaginationModel<T>> get copyWith =>
+  _$$PaginationModelImplCopyWith<T, _$PaginationModelImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -259,18 +259,21 @@ class _$LinksCopyWithImpl<$Res, $Val extends Links>
 }
 
 /// @nodoc
-abstract class _$$_LinksCopyWith<$Res> implements $LinksCopyWith<$Res> {
-  factory _$$_LinksCopyWith(_$_Links value, $Res Function(_$_Links) then) =
-      __$$_LinksCopyWithImpl<$Res>;
+abstract class _$$LinksImplCopyWith<$Res> implements $LinksCopyWith<$Res> {
+  factory _$$LinksImplCopyWith(
+          _$LinksImpl value, $Res Function(_$LinksImpl) then) =
+      __$$LinksImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? first, String? last, dynamic prev, String? next});
 }
 
 /// @nodoc
-class __$$_LinksCopyWithImpl<$Res> extends _$LinksCopyWithImpl<$Res, _$_Links>
-    implements _$$_LinksCopyWith<$Res> {
-  __$$_LinksCopyWithImpl(_$_Links _value, $Res Function(_$_Links) _then)
+class __$$LinksImplCopyWithImpl<$Res>
+    extends _$LinksCopyWithImpl<$Res, _$LinksImpl>
+    implements _$$LinksImplCopyWith<$Res> {
+  __$$LinksImplCopyWithImpl(
+      _$LinksImpl _value, $Res Function(_$LinksImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -281,7 +284,7 @@ class __$$_LinksCopyWithImpl<$Res> extends _$LinksCopyWithImpl<$Res, _$_Links>
     Object? prev = freezed,
     Object? next = freezed,
   }) {
-    return _then(_$_Links(
+    return _then(_$LinksImpl(
       first: freezed == first
           ? _value.first
           : first // ignore: cast_nullable_to_non_nullable
@@ -304,11 +307,11 @@ class __$$_LinksCopyWithImpl<$Res> extends _$LinksCopyWithImpl<$Res, _$_Links>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Links implements _Links {
-  const _$_Links({this.first, this.last, this.prev, this.next});
+class _$LinksImpl implements _Links {
+  const _$LinksImpl({this.first, this.last, this.prev, this.next});
 
-  factory _$_Links.fromJson(Map<String, dynamic> json) =>
-      _$$_LinksFromJson(json);
+  factory _$LinksImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LinksImplFromJson(json);
 
   @override
   final String? first;
@@ -328,7 +331,7 @@ class _$_Links implements _Links {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Links &&
+            other is _$LinksImpl &&
             (identical(other.first, first) || other.first == first) &&
             (identical(other.last, last) || other.last == last) &&
             const DeepCollectionEquality().equals(other.prev, prev) &&
@@ -343,12 +346,12 @@ class _$_Links implements _Links {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LinksCopyWith<_$_Links> get copyWith =>
-      __$$_LinksCopyWithImpl<_$_Links>(this, _$identity);
+  _$$LinksImplCopyWith<_$LinksImpl> get copyWith =>
+      __$$LinksImplCopyWithImpl<_$LinksImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LinksToJson(
+    return _$$LinksImplToJson(
       this,
     );
   }
@@ -359,9 +362,9 @@ abstract class _Links implements Links {
       {final String? first,
       final String? last,
       final dynamic prev,
-      final String? next}) = _$_Links;
+      final String? next}) = _$LinksImpl;
 
-  factory _Links.fromJson(Map<String, dynamic> json) = _$_Links.fromJson;
+  factory _Links.fromJson(Map<String, dynamic> json) = _$LinksImpl.fromJson;
 
   @override
   String? get first;
@@ -373,7 +376,7 @@ abstract class _Links implements Links {
   String? get next;
   @override
   @JsonKey(ignore: true)
-  _$$_LinksCopyWith<_$_Links> get copyWith =>
+  _$$LinksImplCopyWith<_$LinksImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -473,9 +476,10 @@ class _$MetaCopyWithImpl<$Res, $Val extends Meta>
 }
 
 /// @nodoc
-abstract class _$$_MetaCopyWith<$Res> implements $MetaCopyWith<$Res> {
-  factory _$$_MetaCopyWith(_$_Meta value, $Res Function(_$_Meta) then) =
-      __$$_MetaCopyWithImpl<$Res>;
+abstract class _$$MetaImplCopyWith<$Res> implements $MetaCopyWith<$Res> {
+  factory _$$MetaImplCopyWith(
+          _$MetaImpl value, $Res Function(_$MetaImpl) then) =
+      __$$MetaImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -490,9 +494,10 @@ abstract class _$$_MetaCopyWith<$Res> implements $MetaCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_MetaCopyWithImpl<$Res> extends _$MetaCopyWithImpl<$Res, _$_Meta>
-    implements _$$_MetaCopyWith<$Res> {
-  __$$_MetaCopyWithImpl(_$_Meta _value, $Res Function(_$_Meta) _then)
+class __$$MetaImplCopyWithImpl<$Res>
+    extends _$MetaCopyWithImpl<$Res, _$MetaImpl>
+    implements _$$MetaImplCopyWith<$Res> {
+  __$$MetaImplCopyWithImpl(_$MetaImpl _value, $Res Function(_$MetaImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -507,7 +512,7 @@ class __$$_MetaCopyWithImpl<$Res> extends _$MetaCopyWithImpl<$Res, _$_Meta>
     Object? to = freezed,
     Object? total = freezed,
   }) {
-    return _then(_$_Meta(
+    return _then(_$MetaImpl(
       currentPage: freezed == currentPage
           ? _value.currentPage
           : currentPage // ignore: cast_nullable_to_non_nullable
@@ -546,8 +551,8 @@ class __$$_MetaCopyWithImpl<$Res> extends _$MetaCopyWithImpl<$Res, _$_Meta>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Meta implements _Meta {
-  const _$_Meta(
+class _$MetaImpl implements _Meta {
+  const _$MetaImpl(
       {this.currentPage,
       this.from,
       this.lastPage,
@@ -558,7 +563,8 @@ class _$_Meta implements _Meta {
       this.total})
       : _links = links;
 
-  factory _$_Meta.fromJson(Map<String, dynamic> json) => _$$_MetaFromJson(json);
+  factory _$MetaImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MetaImplFromJson(json);
 
   @override
   final int? currentPage;
@@ -594,7 +600,7 @@ class _$_Meta implements _Meta {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Meta &&
+            other is _$MetaImpl &&
             (identical(other.currentPage, currentPage) ||
                 other.currentPage == currentPage) &&
             (identical(other.from, from) || other.from == from) &&
@@ -615,12 +621,12 @@ class _$_Meta implements _Meta {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MetaCopyWith<_$_Meta> get copyWith =>
-      __$$_MetaCopyWithImpl<_$_Meta>(this, _$identity);
+  _$$MetaImplCopyWith<_$MetaImpl> get copyWith =>
+      __$$MetaImplCopyWithImpl<_$MetaImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MetaToJson(
+    return _$$MetaImplToJson(
       this,
     );
   }
@@ -635,9 +641,9 @@ abstract class _Meta implements Meta {
       final String? path,
       final String? perPage,
       final int? to,
-      final int? total}) = _$_Meta;
+      final int? total}) = _$MetaImpl;
 
-  factory _Meta.fromJson(Map<String, dynamic> json) = _$_Meta.fromJson;
+  factory _Meta.fromJson(Map<String, dynamic> json) = _$MetaImpl.fromJson;
 
   @override
   int? get currentPage;
@@ -657,7 +663,8 @@ abstract class _Meta implements Meta {
   int? get total;
   @override
   @JsonKey(ignore: true)
-  _$$_MetaCopyWith<_$_Meta> get copyWith => throw _privateConstructorUsedError;
+  _$$MetaImplCopyWith<_$MetaImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 Link _$LinkFromJson(Map<String, dynamic> json) {
@@ -718,18 +725,20 @@ class _$LinkCopyWithImpl<$Res, $Val extends Link>
 }
 
 /// @nodoc
-abstract class _$$_LinkCopyWith<$Res> implements $LinkCopyWith<$Res> {
-  factory _$$_LinkCopyWith(_$_Link value, $Res Function(_$_Link) then) =
-      __$$_LinkCopyWithImpl<$Res>;
+abstract class _$$LinkImplCopyWith<$Res> implements $LinkCopyWith<$Res> {
+  factory _$$LinkImplCopyWith(
+          _$LinkImpl value, $Res Function(_$LinkImpl) then) =
+      __$$LinkImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String? url, String? label, bool? active});
 }
 
 /// @nodoc
-class __$$_LinkCopyWithImpl<$Res> extends _$LinkCopyWithImpl<$Res, _$_Link>
-    implements _$$_LinkCopyWith<$Res> {
-  __$$_LinkCopyWithImpl(_$_Link _value, $Res Function(_$_Link) _then)
+class __$$LinkImplCopyWithImpl<$Res>
+    extends _$LinkCopyWithImpl<$Res, _$LinkImpl>
+    implements _$$LinkImplCopyWith<$Res> {
+  __$$LinkImplCopyWithImpl(_$LinkImpl _value, $Res Function(_$LinkImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -739,7 +748,7 @@ class __$$_LinkCopyWithImpl<$Res> extends _$LinkCopyWithImpl<$Res, _$_Link>
     Object? label = freezed,
     Object? active = freezed,
   }) {
-    return _then(_$_Link(
+    return _then(_$LinkImpl(
       url: freezed == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -758,10 +767,11 @@ class __$$_LinkCopyWithImpl<$Res> extends _$LinkCopyWithImpl<$Res, _$_Link>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Link implements _Link {
-  const _$_Link({this.url, this.label, this.active});
+class _$LinkImpl implements _Link {
+  const _$LinkImpl({this.url, this.label, this.active});
 
-  factory _$_Link.fromJson(Map<String, dynamic> json) => _$$_LinkFromJson(json);
+  factory _$LinkImpl.fromJson(Map<String, dynamic> json) =>
+      _$$LinkImplFromJson(json);
 
   @override
   final String? url;
@@ -779,7 +789,7 @@ class _$_Link implements _Link {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Link &&
+            other is _$LinkImpl &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.label, label) || other.label == label) &&
             (identical(other.active, active) || other.active == active));
@@ -792,12 +802,12 @@ class _$_Link implements _Link {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_LinkCopyWith<_$_Link> get copyWith =>
-      __$$_LinkCopyWithImpl<_$_Link>(this, _$identity);
+  _$$LinkImplCopyWith<_$LinkImpl> get copyWith =>
+      __$$LinkImplCopyWithImpl<_$LinkImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_LinkToJson(
+    return _$$LinkImplToJson(
       this,
     );
   }
@@ -805,9 +815,11 @@ class _$_Link implements _Link {
 
 abstract class _Link implements Link {
   const factory _Link(
-      {final String? url, final String? label, final bool? active}) = _$_Link;
+      {final String? url,
+      final String? label,
+      final bool? active}) = _$LinkImpl;
 
-  factory _Link.fromJson(Map<String, dynamic> json) = _$_Link.fromJson;
+  factory _Link.fromJson(Map<String, dynamic> json) = _$LinkImpl.fromJson;
 
   @override
   String? get url;
@@ -817,5 +829,6 @@ abstract class _Link implements Link {
   bool? get active;
   @override
   @JsonKey(ignore: true)
-  _$$_LinkCopyWith<_$_Link> get copyWith => throw _privateConstructorUsedError;
+  _$$LinkImplCopyWith<_$LinkImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

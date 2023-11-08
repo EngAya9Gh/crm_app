@@ -6,8 +6,8 @@ part of 'clients_list_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ClientModel _$$_ClientModelFromJson(Map<String, dynamic> json) =>
-    _$_ClientModel(
+_$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
+    _$ClientModelImpl(
       idClients: json['id_clients'] as String?,
       nameClient: json['name_client'] as String?,
       nameEnterprise: json['name_enterprise'] as String?,
@@ -64,7 +64,7 @@ _$_ClientModel _$$_ClientModelFromJson(Map<String, dynamic> json) =>
       fkClientSource: json['fk_client_source'] as String?,
     );
 
-Map<String, dynamic> _$$_ClientModelToJson(_$_ClientModel instance) =>
+Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
     <String, dynamic>{
       'id_clients': instance.idClients,
       'name_client': instance.nameClient,

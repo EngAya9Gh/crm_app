@@ -82,12 +82,12 @@ class _$CommunicationListResponseCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_CommunicationListResponseCopyWith<$Res>
+abstract class _$$CommunicationListResponseImplCopyWith<$Res>
     implements $CommunicationListResponseCopyWith<$Res> {
-  factory _$$_CommunicationListResponseCopyWith(
-          _$_CommunicationListResponse value,
-          $Res Function(_$_CommunicationListResponse) then) =
-      __$$_CommunicationListResponseCopyWithImpl<$Res>;
+  factory _$$CommunicationListResponseImplCopyWith(
+          _$CommunicationListResponseImpl value,
+          $Res Function(_$CommunicationListResponseImpl) then) =
+      __$$CommunicationListResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -97,13 +97,13 @@ abstract class _$$_CommunicationListResponseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CommunicationListResponseCopyWithImpl<$Res>
+class __$$CommunicationListResponseImplCopyWithImpl<$Res>
     extends _$CommunicationListResponseCopyWithImpl<$Res,
-        _$_CommunicationListResponse>
-    implements _$$_CommunicationListResponseCopyWith<$Res> {
-  __$$_CommunicationListResponseCopyWithImpl(
-      _$_CommunicationListResponse _value,
-      $Res Function(_$_CommunicationListResponse) _then)
+        _$CommunicationListResponseImpl>
+    implements _$$CommunicationListResponseImplCopyWith<$Res> {
+  __$$CommunicationListResponseImplCopyWithImpl(
+      _$CommunicationListResponseImpl _value,
+      $Res Function(_$CommunicationListResponseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -113,7 +113,7 @@ class __$$_CommunicationListResponseCopyWithImpl<$Res>
     Object? code = freezed,
     Object? message = freezed,
   }) {
-    return _then(_$_CommunicationListResponse(
+    return _then(_$CommunicationListResponseImpl(
       result: freezed == result
           ? _value.result
           : result // ignore: cast_nullable_to_non_nullable
@@ -132,15 +132,15 @@ class __$$_CommunicationListResponseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_CommunicationListResponse implements _CommunicationListResponse {
-  const _$_CommunicationListResponse(
+class _$CommunicationListResponseImpl implements _CommunicationListResponse {
+  const _$CommunicationListResponseImpl(
       {@JsonKey(name: "result") this.result,
       @JsonKey(name: "code") this.code,
       @JsonKey(name: "message") final List<Communication>? message})
       : _message = message;
 
-  factory _$_CommunicationListResponse.fromJson(Map<String, dynamic> json) =>
-      _$$_CommunicationListResponseFromJson(json);
+  factory _$CommunicationListResponseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CommunicationListResponseImplFromJson(json);
 
   @override
   @JsonKey(name: "result")
@@ -168,7 +168,7 @@ class _$_CommunicationListResponse implements _CommunicationListResponse {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CommunicationListResponse &&
+            other is _$CommunicationListResponseImpl &&
             (identical(other.result, result) || other.result == result) &&
             (identical(other.code, code) || other.code == code) &&
             const DeepCollectionEquality().equals(other._message, _message));
@@ -182,13 +182,13 @@ class _$_CommunicationListResponse implements _CommunicationListResponse {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CommunicationListResponseCopyWith<_$_CommunicationListResponse>
-      get copyWith => __$$_CommunicationListResponseCopyWithImpl<
-          _$_CommunicationListResponse>(this, _$identity);
+  _$$CommunicationListResponseImplCopyWith<_$CommunicationListResponseImpl>
+      get copyWith => __$$CommunicationListResponseImplCopyWithImpl<
+          _$CommunicationListResponseImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CommunicationListResponseToJson(
+    return _$$CommunicationListResponseImplToJson(
       this,
     );
   }
@@ -199,10 +199,10 @@ abstract class _CommunicationListResponse implements CommunicationListResponse {
           {@JsonKey(name: "result") final String? result,
           @JsonKey(name: "code") final String? code,
           @JsonKey(name: "message") final List<Communication>? message}) =
-      _$_CommunicationListResponse;
+      _$CommunicationListResponseImpl;
 
   factory _CommunicationListResponse.fromJson(Map<String, dynamic> json) =
-      _$_CommunicationListResponse.fromJson;
+      _$CommunicationListResponseImpl.fromJson;
 
   @override
   @JsonKey(name: "result")
@@ -215,7 +215,7 @@ abstract class _CommunicationListResponse implements CommunicationListResponse {
   List<Communication>? get message;
   @override
   @JsonKey(ignore: true)
-  _$$_CommunicationListResponseCopyWith<_$_CommunicationListResponse>
+  _$$CommunicationListResponseImplCopyWith<_$CommunicationListResponseImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -533,11 +533,11 @@ class _$CommunicationCopyWithImpl<$Res, $Val extends Communication>
 }
 
 /// @nodoc
-abstract class _$$_CommunicationCopyWith<$Res>
+abstract class _$$CommunicationImplCopyWith<$Res>
     implements $CommunicationCopyWith<$Res> {
-  factory _$$_CommunicationCopyWith(
-          _$_Communication value, $Res Function(_$_Communication) then) =
-      __$$_CommunicationCopyWithImpl<$Res>;
+  factory _$$CommunicationImplCopyWith(
+          _$CommunicationImpl value, $Res Function(_$CommunicationImpl) then) =
+      __$$CommunicationImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -578,11 +578,11 @@ abstract class _$$_CommunicationCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_CommunicationCopyWithImpl<$Res>
-    extends _$CommunicationCopyWithImpl<$Res, _$_Communication>
-    implements _$$_CommunicationCopyWith<$Res> {
-  __$$_CommunicationCopyWithImpl(
-      _$_Communication _value, $Res Function(_$_Communication) _then)
+class __$$CommunicationImplCopyWithImpl<$Res>
+    extends _$CommunicationCopyWithImpl<$Res, _$CommunicationImpl>
+    implements _$$CommunicationImplCopyWith<$Res> {
+  __$$CommunicationImplCopyWithImpl(
+      _$CommunicationImpl _value, $Res Function(_$CommunicationImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -623,7 +623,7 @@ class __$$_CommunicationCopyWithImpl<$Res>
     Object? nameClient = freezed,
     Object? hoursdelaylabel = freezed,
   }) {
-    return _then(_$_Communication(
+    return _then(_$CommunicationImpl(
       idCommunication: freezed == idCommunication
           ? _value.idCommunication
           : idCommunication // ignore: cast_nullable_to_non_nullable
@@ -766,8 +766,8 @@ class __$$_CommunicationCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Communication implements _Communication {
-  const _$_Communication(
+class _$CommunicationImpl implements _Communication {
+  const _$CommunicationImpl(
       {@JsonKey(name: "id_communication") this.idCommunication,
       @JsonKey(name: "fk_client") this.fkClient,
       @JsonKey(name: "fk_user") this.fkUser,
@@ -803,8 +803,8 @@ class _$_Communication implements _Communication {
       @JsonKey(name: "name_client") this.nameClient,
       @JsonKey(name: "hoursdelaylabel") this.hoursdelaylabel});
 
-  factory _$_Communication.fromJson(Map<String, dynamic> json) =>
-      _$$_CommunicationFromJson(json);
+  factory _$CommunicationImpl.fromJson(Map<String, dynamic> json) =>
+      _$$CommunicationImplFromJson(json);
 
   @override
   @JsonKey(name: "id_communication")
@@ -918,7 +918,7 @@ class _$_Communication implements _Communication {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Communication &&
+            other is _$CommunicationImpl &&
             (identical(other.idCommunication, idCommunication) ||
                 other.idCommunication == idCommunication) &&
             (identical(other.fkClient, fkClient) ||
@@ -1021,12 +1021,12 @@ class _$_Communication implements _Communication {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CommunicationCopyWith<_$_Communication> get copyWith =>
-      __$$_CommunicationCopyWithImpl<_$_Communication>(this, _$identity);
+  _$$CommunicationImplCopyWith<_$CommunicationImpl> get copyWith =>
+      __$$CommunicationImplCopyWithImpl<_$CommunicationImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_CommunicationToJson(
+    return _$$CommunicationImplToJson(
       this,
     );
   }
@@ -1068,10 +1068,10 @@ abstract class _Communication implements Communication {
       @JsonKey(name: "name_regoin") final String? nameRegoin,
       @JsonKey(name: "name_client") final String? nameClient,
       @JsonKey(name: "hoursdelaylabel")
-      final String? hoursdelaylabel}) = _$_Communication;
+      final String? hoursdelaylabel}) = _$CommunicationImpl;
 
   factory _Communication.fromJson(Map<String, dynamic> json) =
-      _$_Communication.fromJson;
+      _$CommunicationImpl.fromJson;
 
   @override
   @JsonKey(name: "id_communication")
@@ -1177,6 +1177,6 @@ abstract class _Communication implements Communication {
   String? get hoursdelaylabel;
   @override
   @JsonKey(ignore: true)
-  _$$_CommunicationCopyWith<_$_Communication> get copyWith =>
+  _$$CommunicationImplCopyWith<_$CommunicationImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
