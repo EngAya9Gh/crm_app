@@ -58,7 +58,7 @@ class GetClientsWithFilterParams {
       'fk_user_prv': userPrivilegeId,
       'fk_regoin_prv': regionPrivilegeId,
       'filter': query,
-    }..removeWhere((key, value) => value == null);
+    }..removeWhere((key, value) => value == null || value == '');
 
     params = params.map((key, value) => MapEntry(key, value.toString()));
     return params;

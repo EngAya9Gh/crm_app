@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import '../../../../../../constants.dart';
+import '../../../../core/config/theme/theme.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class ManageWithdrawalsPage extends StatefulWidget {
@@ -101,7 +102,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                             );
                           },
                         ),
-                        child: Icon(Icons.add),
+                        child: Icon(Icons.add,color: AppColors.white),
                         backgroundColor: kMainColor,
                       );
                     },

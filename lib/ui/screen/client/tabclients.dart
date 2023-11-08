@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
 import '../../../features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'addClient.dart';
 import '../../../features/clients_list/presentation/pages/filter_clients_sheet.dart';
@@ -90,7 +91,7 @@ class _tabclientsState extends State<tabclients> {
                 Navigator.push(context, CupertinoPageRoute(builder: (context) => addClient()));
               },
               tooltip: 'إضافة عميل',
-              child: Icon(Icons.add),
+              child: Icon(Icons.add,color: AppColors.white),
             )
           : Container(),
       body: Consumer<ClientProvider>(

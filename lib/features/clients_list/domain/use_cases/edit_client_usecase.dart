@@ -36,7 +36,7 @@ class EditClientParams {
   final String anotherPhoneNumber;
   final String addressClient;
   final String selectedActivityIdType;
-  final bool isMarketing;
+  final String isMarketing;
   final String userActionID;
   final String sourceClient;
   final String descriptionActivity;
@@ -83,7 +83,7 @@ class EditClientParams {
       "offer_price": offerPrice,
       "reason_change": reason,
       'activity_type_fk': selectedActivityIdType,
-      "ismarketing": isMarketing ? '1' : '0',
+      "ismarketing": isMarketing,
       "user_do": userActionID,
       'presystem': statusClient,
       'sourcclient': sourceClient,

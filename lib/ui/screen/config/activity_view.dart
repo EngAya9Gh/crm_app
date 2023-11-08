@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/config/theme/theme.dart';
 import '../../../view_model/activity_vm.dart';
 import 'add_activity.dart';
 import 'addreson.dart';
@@ -47,7 +48,7 @@ class _resoan_viewState extends State<activity_view> {
       // Provider.of<privilge_vm>(context,listen: true)
       //     .checkprivlge('74')==true ?
       FloatingActionButton(
-        child:Icon(Icons.add),
+        child:Icon(Icons.add,color: AppColors.white),
         onPressed: (){
           Navigator.push(
             context,

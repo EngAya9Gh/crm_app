@@ -15,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/config/theme/theme.dart';
 import 'add_regoin.dart';
 
 class regoinview extends StatefulWidget {
@@ -45,7 +46,7 @@ class _regoinviewState extends State<regoinview> {
       // Provider.of<privilge_vm>(context,listen: true)
       //     .checkprivlge('64')==true ?
       FloatingActionButton(
-        child:Icon(Icons.add),
+        child:Icon(Icons.add,color: AppColors.white),
         onPressed: (){
           Navigator.push(
             context,

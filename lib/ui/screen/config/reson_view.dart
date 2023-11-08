@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/config/theme/theme.dart';
 import 'addreson.dart';
 class resoan_view extends StatefulWidget {
   resoan_view({required this.type, Key? key}) : super(key: key);
@@ -45,7 +46,7 @@ class _resoan_viewState extends State<resoan_view> {
       Provider.of<PrivilegeProvider>(context,listen: true)
           .checkPrivilege('73')==true ?
       FloatingActionButton(
-        child:Icon(Icons.add),
+        child:Icon(Icons.add,color: AppColors.white),
         onPressed: (){
           Navigator.push(
             context,
@@ -62,7 +63,7 @@ class _resoan_viewState extends State<resoan_view> {
         backgroundColor: kMainColor,):Container():
           Provider.of<PrivilegeProvider>(context,listen: true)
               .checkPrivilege('74')==true ? FloatingActionButton(
-            child:Icon(Icons.add),
+            child:Icon(Icons.add,color: AppColors.white),
             onPressed: (){
               Navigator.push(
                 context,

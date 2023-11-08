@@ -1,33 +1,33 @@
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/ui/screen/notification/notifypage.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/customDrawer.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/customTextStyle.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-class customAppbar extends StatelessWidget implements PreferredSizeWidget{
-   customAppbar({this.leading, Key? key}) : super(key: key);
-   Widget? leading;
+
+class customAppbar extends StatelessWidget implements PreferredSizeWidget {
+  customAppbar({this.leading, Key? key}) : super(key: key);
+  Widget? leading;
+
   @override
   Widget build(BuildContext context) {
-    var notify=Provider.of<notifyvm>(context,listen: true);
+    var notify = Provider.of<notifyvm>(context, listen: true);
     //notify.getcounter();
 
-    
-    return  AppBar(
+    return AppBar(
       key: key,
-      leading:leading,
+      leading: leading,
 
       //textTheme: TextTheme(),
       title: Padding(
         padding: EdgeInsets.all(60),
-          //height: toolbarHeight,
-          child: Image.asset(kLogo),
-    ),
+        //height: toolbarHeight,
+        child: Image.asset(kLogo),
+      ),
       //Text('Smart Life',style:
-     // TextStyle(color: Colors.white,fontSize: 16,fontFamily: kfontfamily),),
+      // TextStyle(color: Colors.white,fontSize: 16,fontFamily: kfontfamily),),
       centerTitle: true,
       elevation: 0,
       actions: [
@@ -35,47 +35,44 @@ class customAppbar extends StatelessWidget implements PreferredSizeWidget{
           padding: const EdgeInsets.all(8.0),
           child: Stack(
             children: [
-
-                 IconButton(
+              IconButton(
                 icon: Icon(
-                  Icons.notifications
-                  ,size: 20
-                  ,color: Colors.white,
-                ), onPressed: () {
-
-                   notify.setRead_notify_vm();
-                   //notify.clearcounter();
-                   Navigator.push(context,
-                    CupertinoPageRoute(
-                        builder: (context)=>
-                            notify_pageview()
-                      // ,fullscreenDialog:true
-                    ));
-                //set read to 1
-              },
-              ),
-
-              notify.countnotify!=0?
-              Positioned(
-                top: 5,
-                right:7,
-                child:
-              Container(
-                decoration: BoxDecoration(
-                  color:Colors.red,
-                  borderRadius: BorderRadius.circular(20),
+                  Icons.notifications,
+                  size: 20,
+                  color: context.colorScheme.primary,
                 ),
-                child:  Center(
-                  child: Text(notify.countnotify.toString(),
-                    style: TextStyle(color: Colors.white,
-                        fontSize:7 ),),
-                ),
-                height: 15,
-                width: 15,
+                onPressed: () {
+                  notify.setRead_notify_vm();
+                  //notify.clearcounter();
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(builder: (context) => notify_pageview()
+                          // ,fullscreenDialog:true
+                          ));
+                  //set read to 1
+                },
               ),
-              )
-                  :Text(''),
-          ],
+              notify.countnotify != 0
+                  ? Positioned(
+                      top: 5,
+                      right: 7,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Center(
+                          child: Text(
+                            notify.countnotify.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 7),
+                          ),
+                        ),
+                        height: 15,
+                        width: 15,
+                      ),
+                    )
+                  : Text(''),
+            ],
           ),
         ),
       ],
@@ -89,5 +86,5 @@ class customAppbar extends StatelessWidget implements PreferredSizeWidget{
 
   @override
   // TODO: implement preferredSize
-  Size get preferredSize =>Size.fromHeight(50);
+  Size get preferredSize => Size.fromHeight(50);
 }

@@ -4,10 +4,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart' hide TextDirection;
 import 'package:text_scroll/text_scroll.dart';
-
 import '../../../../constants.dart';
 import '../../../../ui/screen/client/profileclient.dart';
 import '../manager/communication_list_bloc.dart';

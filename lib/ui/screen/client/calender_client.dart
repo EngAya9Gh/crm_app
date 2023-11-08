@@ -9,6 +9,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/config/theme/theme.dart';
 import '../../../model/calendar/event.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../widgets/custom_widget/row_edit.dart';
@@ -237,7 +238,7 @@ class _calender_clientState extends State<calender_client> {
           return FloatingActionButton(
             onPressed: () =>
                 AnimatedDialog.show(context, child: SizedBox(height: 250, child: dialog(clientVm.selectedclient!))),
-            child: Icon(Icons.schedule_send_rounded),
+            child: Icon(Icons.schedule_send_rounded,color: AppColors.white),
           );
         },
       ),

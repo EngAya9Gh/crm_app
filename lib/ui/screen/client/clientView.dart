@@ -154,6 +154,13 @@ class _ClientViewState extends State<ClientView> {
                   cardRow(title: ' الفرع', value: clientModel.name_regoin.toString()),
 
                   cardRow(title: ' نوع النشاط', value: clientModel.activity_type_title?.toString() ?? "لا يوجد"),
+                  clientModel.size_activity != null
+                      ? cardRow(title: 'حجم النشاط', value: clientModel.size_activity.toString())
+                      : Container(),
+                  clientModel.email != null
+                      ? cardRow(title: 'البريد الالكتروني', value: clientModel.email.toString())
+                      : Container(),
+
                   cardRow(title: ' مدينة العميل', value: clientModel.name_city.toString()),
                   cardRow(title: ' المنطقة', value: clientModel.namemaincity.toString()),
 

@@ -32,7 +32,7 @@ class AddClientParams {
   final String anotherPhoneNumber;
   final String addressClient;
   final String selectedActivityIdType;
-  final bool isMarketing;
+  final String isMarketing;
   final String sourceClient;
   final String descriptionActivity;
   final UserModel user;
@@ -69,7 +69,7 @@ class AddClientParams {
       "phone": anotherPhoneNumber,
       "address_client": addressClient,
       'activity_type_fk': selectedActivityIdType,
-      "ismarketing": isMarketing ? '1' : '0',
+      "ismarketing": isMarketing,
       'presystem': statusClient,
       'sourcclient': sourceClient,
       'descActivController': descriptionActivity,

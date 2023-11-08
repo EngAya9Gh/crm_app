@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
+import '../../../../core/config/theme/theme.dart';
 import '../../../../model/ActivityModel.dart';
 import '../addClient.dart';
 
@@ -65,7 +66,7 @@ class _clientmarketingState extends State<clientmarketing> {
                   Navigator.push(context, CupertinoPageRoute(builder: (context) => addClient()));
                 },
                 tooltip: 'إضافة عميل',
-                child: Icon(Icons.add),
+                child: Icon(Icons.add,color: AppColors.white),
                 heroTag: 'add clients',
               )
             : Container(),

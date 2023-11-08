@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
 import 'adduser.dart';
 
 class AllUserScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
       },
       tooltip: 'إضافة موظف',
 
-      child: Icon(Icons.add),
+      child: Icon(Icons.add,color: AppColors.white),
     ):Container(),
       appBar: AppBar(
         title: Text('إدارة المستخدمين',style: TextStyle(color: kWhiteColor),),

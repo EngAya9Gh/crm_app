@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/manage_users/presentation/manager/users_cubit.dart';
 import 'package:crm_smart/features/manage_users/presentation/pages/user_profile.dart';
@@ -56,7 +57,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
                           child: ActionUserPage(),
                         )),
               ),
-              child: Icon(CupertinoIcons.add),
+              child: Icon(CupertinoIcons.add,color: AppColors.white),
               heroTag: "add user",
               backgroundColor: kMainColor,
             ),

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
 import 'addproduct.dart';
 
 class ProductView extends StatefulWidget {
@@ -51,7 +52,7 @@ void initState() {
               context, CupertinoPageRoute(builder: (context) => addProduct()));
         },
         tooltip: 'إضافة منتج',
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: AppColors.white),
       ):Container(),
       appBar: AppBar(
         centerTitle: true,
