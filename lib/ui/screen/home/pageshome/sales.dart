@@ -21,6 +21,7 @@ import '../../../../features/clients_list/presentation/pages/clients_list_page.d
 import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../client/agents_distributors_invoices_view.dart';
 import '../../client/calender_client.dart';
+import '../../client/marketing/getLastCommentClient.dart';
 
 class sales extends StatefulWidget {
   const sales({Key? key}) : super(key: key);
@@ -82,7 +83,20 @@ class _salesState extends State<sales> {
                     title: 'فواتير العملاء')
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
+            Provider.of<PrivilegeProvider>(context,listen: true).checkPrivilege('119') == true?
+              buildSelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () {
+                    Navigator.push(context, CupertinoPageRoute(
+                        builder: (context)=>
+                            getLastCommentClient()
+                    ));
+                  },
+                  title: 'آخر تحديثات العملاء'):Container()
+              ,
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,

@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:ui' as myui;
 
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
 import '../../../model/agent_distributor_model.dart';
 import '../../../model/participatModel.dart';
@@ -15,7 +17,6 @@ import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../../view_model/vm.dart';
 import '../../widgets/invoice_widget/Card_invoice_client.dart';
-import 'dart:ui' as myui;
 
 enum SellerTypeFilter { distributor, agent, collaborator, employee, all }
 
@@ -62,7 +63,9 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     scheduleMicrotask(() {
       viewmodel.init();
       context.read<RegionProvider>().changeVal(null);
-      context.read<ClientTypeProvider>().changelisttype_install(null);
+      context.read<ClientTypeProvider>()
+        ..changelisttype_install(null)
+        ..changevalueNotReady(null);
       context.read<invoice_vm>()
         ..setvaluepriv(privilegeList)
         ..getinvoice_Localwithprev();
@@ -92,7 +95,6 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-
 
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
@@ -275,6 +277,26 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   ),
                 ),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 8),
+              child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
+                return DropdownButton(
+                  isExpanded: true,
+                  hint: Text('حالة الفاتورة'),
+                  items: cart.listtype_notReady.map((level_one) {
+                    return DropdownMenuItem(
+                      child: Text(level_one),
+                      value: level_one,
+                    );
+                  }).toList(),
+                  value: cart.selectedValufilter_NotReady,
+                  onChanged: (value) {
+                    cart.changevalueNotReady(value.toString());
+                    viewmodel.onChangeNotReady(value.toString());
+                  },
+                );
+              }),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),

@@ -196,11 +196,35 @@ class _ClientViewState extends State<ClientView> {
 
                   cardRow(title: 'رقم الموظف', value: clientModel.mobileuser.toString()),
 
-                  (clientModel.reasonTransfer == null) && clientModel.fkusertrasfer != null
-                      ? cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+                 if(clientModel.reasonTransfer != null)
+                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                      clientModel.fkusertrasfer != null ?
+                      cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+                          : Container()
+
+                 else
+
+              clientModel.fkusertrasfer != null ?
+              cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+              : Container(),
+
+                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                      (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
+                      ? cardRow(title: 'تحويل العميل إلى', value: clientModel.nameTransferTo.toString())
                       : Container(),
 
-                  (clientModel.reasonTransfer == null) && clientModel.fkusertrasfer != null
+                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                      (clientModel.reasonTransfer == null) &&     clientModel.fkusertrasfer != null
+                      ? cardRow(title: 'حالة التحويل', value:'تم قبول التحويل')
+                      : Container(),
+
+                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                      (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
+                      ? cardRow(title: 'حالة التحويل', value:'معلق')
+                      : Container(),
+
+                  // (clientModel.reasonTransfer == null) &&
+                      clientModel.fkusertrasfer != null
                       ? cardRow(title: 'تاريخ التحويل', value: clientModel.dateTransfer.toString())
                       : Container(),
 
@@ -294,7 +318,7 @@ class _ClientViewState extends State<ClientView> {
                   //     Provider.of<privilge_vm>(context,listen: true)
                   //         .checkprivlge('7')==true?
 
-                  widget.clienttransfer == null
+                  widget.clienttransfer == null || Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true
                       ? Container()
                       : Center(
                           child: Row(
@@ -366,6 +390,8 @@ class _ClientViewState extends State<ClientView> {
                               SizedBox(
                                 width: 4,
                               ),
+
+
                               ElevatedButton(
                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
                                   onPressed: () async {
@@ -426,7 +452,7 @@ class _ClientViewState extends State<ClientView> {
                                       },
                                     );
                                   },
-                                  child: Text('رفض تحويل العميل')),
+                                  child: Text('رفض تحويل العميل')) ,
                             ],
                           ),
                         ),

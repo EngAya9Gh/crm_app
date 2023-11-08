@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../model/privilgemodel.dart';
 import 'clients.dart';
 class TransferPage extends StatefulWidget {
   TransferPage({ Key? key}) : super(key: key);
@@ -28,6 +29,8 @@ class _TransferPageState extends State<TransferPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
+      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
+      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       Provider.of<ClientProvider>(context,listen: false)
           .getallclientTransfer();
     });

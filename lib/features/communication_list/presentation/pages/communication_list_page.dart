@@ -1,4 +1,5 @@
 import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/features/communication_list/data/models/communication_list_response.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,13 +52,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'قائمة عملاء التميز',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-        ),
-      ),
+      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'قائمة عملاء التميز')),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<CommunicationListBloc, CommunicationListState>(

@@ -97,7 +97,7 @@ class _care_page_viewState extends State<care_page_view> {
       // await Provider.of<client_vm>(context, listen: false)
       //     .get_byIdClient(widget..toString());
 
-      await Provider.of<ClientProvider>(context, listen: false).getclient_Local('مشترك');
+      // await Provider.of<ClientProvider>(context, listen: false).getclient_Local('مشترك');
       getData();
       // if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 1 ) {
       //   type='done';

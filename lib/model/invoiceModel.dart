@@ -106,6 +106,10 @@ class InvoiceModel extends CacheRepository {
   String? file_reject;
   List<FileAttach>? filesAttach;
   String? approveBackDone;
+  String? TypeReadyClient;
+  String? notes_ready;
+  String? reason_suspend;
+  String? reason_notReady;
 
   //endregion
 
@@ -204,6 +208,10 @@ class InvoiceModel extends CacheRepository {
     this.file_reject,
     this.filesAttach,
     this.approveBackDone,
+    this.TypeReadyClient,
+    this.notes_ready,
+    this.reason_suspend,
+    this.reason_notReady
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -318,6 +326,12 @@ class InvoiceModel extends CacheRepository {
     fileAttach = jsondata['file_attach'];
     file_reject = jsondata['file_reject'];
     approveBackDone = jsondata['approve_back_done'];
+    TypeReadyClient = jsondata['TypeReadyClient'];
+
+    notes_ready = jsondata['notes_ready'];
+    reason_suspend = jsondata['reason_suspend'];
+    reason_notReady = jsondata['reason_notReady'];
+
     attachFileStatus = AttachFileStatus.init;
     deleteAttachFileStatus = AttachFileStatus.init;
     //  json.decode(

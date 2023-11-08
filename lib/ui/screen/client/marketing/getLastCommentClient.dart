@@ -16,6 +16,8 @@ import '../../../../provider/selected_button_provider.dart';
 import '../../../../view_model/lastcommentclient_vm.dart';
 import '../../../../view_model/privilge_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../report/is_marketing_chekbox.dart';
+import '../IsmarketCheck_last.dart';
 import '../profileclient.dart';
 import 'LastcommentPage.dart';
 
@@ -29,15 +31,21 @@ class getLastCommentClient extends StatefulWidget {
 class _getLastCommentClientState extends State<getLastCommentClient> {
   String type = 'تفاوض';
   String? idUser = '';
+  String  isMarketingParams = '';
+  bool isMarketing = false;
+  late bool haveMarketingPrivilege;
   TextEditingController searchController = TextEditingController();
-
+  List<PrivilgeModel> list =[];
   @override
   initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_)async{
+      //haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('155');
+
       context.read<UserProvider>().changevalueuser(null,true);
-      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
-      Provider.of<lastcommentclient_vm>(context, listen: false).setvaluepriv(list);
+      list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
+      Provider.of<lastcommentclient_vm>(context, listen: false).setvaluepriv(list,false);
+      // if(!haveMarketingPrivilege)
       Provider.of<lastcommentclient_vm>(context, listen: false)
         .getLastcommentClientModel();
 
@@ -158,6 +166,16 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                       );
                     },
                   ),
+                ),
+                IsMarketingCheckbox_last(
+                  onChange: (value) {
+                    isMarketing = value;
+                    Provider.of<lastcommentclient_vm>(context, listen: false).setvaluepriv(list,isMarketing);
+                    Provider.of<lastcommentclient_vm>(context, listen: false)
+                        .getLastcommentClientModel();
+                    Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser );
+
+                  },
                 ),
                 Row(
                   children: [

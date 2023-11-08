@@ -66,18 +66,7 @@ class marketingpage extends StatelessWidget {
           //       // ));
           //     },
           //     title: 'تقرير التسويق الإلكتروني'):Container(),
-          Provider.of<PrivilegeProvider>(context,listen: true).checkPrivilege('119') == true?
-          buildSelectCategory(
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(context, CupertinoPageRoute(
-                    builder: (context)=>
-                        getLastCommentClient()
-                ));
-              },
-              title: 'آخر تحديثات العملاء'):Container()
+
         ],),
 
       ),

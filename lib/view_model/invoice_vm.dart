@@ -255,16 +255,16 @@ class invoice_vm extends ChangeNotifier {
               _listInvoicesAccept.add(element);
             }
           });
-          
+
         }
         if (filter == 'بالإنتظار')
           listforme.forEach((element) {
-            
+
             if (element.isdoneinstall == null &&
                 DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                 DateTime.parse(element.date_approve.toString()).isBefore(to)) {
               _listInvoicesAccept.add(element);
-              
+
             }
           });
         if (filter == 'تم التركيب')
@@ -273,7 +273,7 @@ class invoice_vm extends ChangeNotifier {
                 DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                 DateTime.parse(element.date_approve.toString()).isBefore(to)) {
               _listInvoicesAccept.add(element);
-              
+
             }
           });
         if (filter == 'معلق')
@@ -283,7 +283,7 @@ class invoice_vm extends ChangeNotifier {
                 DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                 DateTime.parse(element.date_approve.toString()).isBefore(to)) {
               _listInvoicesAccept.add(element);
-              
+
             }
           });
       }
@@ -296,7 +296,7 @@ class invoice_vm extends ChangeNotifier {
                   DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                   DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           } else {
@@ -317,7 +317,7 @@ class invoice_vm extends ChangeNotifier {
                   DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                   DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           } else {
@@ -326,7 +326,7 @@ class invoice_vm extends ChangeNotifier {
                   DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                   DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           }
@@ -339,7 +339,7 @@ class invoice_vm extends ChangeNotifier {
                   DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                   DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           } else {
@@ -348,7 +348,7 @@ class invoice_vm extends ChangeNotifier {
                   DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                   DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           }
@@ -362,7 +362,7 @@ class invoice_vm extends ChangeNotifier {
                   DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                   DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           } else {
@@ -372,7 +372,7 @@ class invoice_vm extends ChangeNotifier {
                   DateTime.parse(element.date_approve.toString()).isAfter(from) &&
                   DateTime.parse(element.date_approve.toString()).isBefore(to)) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           }
@@ -434,12 +434,12 @@ class invoice_vm extends ChangeNotifier {
 
           for (int i = 0; i < listval.length; i++) {
             params += '&maincity_fks[]=${listval[i]}';
-            
+
           }
         }
-        
-        
-        
+
+
+
 
         if (idexist != -1 && state == 'الكل')
           type = 'all';
@@ -455,7 +455,7 @@ class invoice_vm extends ChangeNotifier {
         state = null;
       else if (state == 'تم التركيب') state = '1';
       if (state == 'معلق') state = 'suspend';
-      
+      if (state == 'غير جاهز') state = 'notReady';
 
       switch (type) {
         case 'allmaincity':
@@ -467,7 +467,7 @@ class invoice_vm extends ChangeNotifier {
           break;
 
         case 'allstate':
-          
+
           // for(int i=0;i<listparam.length;i++)
           //   listval.add(int.parse( listparam[i].id_maincity));
           _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
@@ -509,25 +509,25 @@ class invoice_vm extends ChangeNotifier {
 
     List<InvoiceModel> _listInvoicesAccept = [];
     if (regoin == null) {
-      
+
       if (listInvoicesAccept.isNotEmpty) {
         if (filter == 'الكل') {
           _listInvoicesAccept = listInvoicesAccept;
-          
+
         }
         if (filter == 'بالإنتظار')
           listInvoicesAccept.forEach((element) {
-            
+
             if (element.isdoneinstall == null) {
               _listInvoicesAccept.add(element);
-              
+
             }
           });
         if (filter == 'تم التركيب')
           listInvoicesAccept.forEach((element) {
             if (element.isdoneinstall == '1') {
               _listInvoicesAccept.add(element);
-              
+
             }
           });
       }
@@ -538,7 +538,7 @@ class invoice_vm extends ChangeNotifier {
             listInvoicesAccept.forEach((element) {
               if (element.id_maincity == regoin) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           } else {
@@ -551,14 +551,14 @@ class invoice_vm extends ChangeNotifier {
             listInvoicesAccept.forEach((element) {
               if (element.isdoneinstall.toString() == null && element.id_maincity == regoin) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           } else {
             listInvoicesAccept.forEach((element) {
               if (element.isdoneinstall.toString() == null) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           }
@@ -568,14 +568,14 @@ class invoice_vm extends ChangeNotifier {
             listInvoicesAccept.forEach((element) {
               if (element.isdoneinstall == '1' && element.id_maincity == regoin) {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           } else {
             listInvoicesAccept.forEach((element) {
               if (element.isdoneinstall == '1') {
                 _listInvoicesAccept.add(element);
-                
+
               }
             });
           }
@@ -623,32 +623,32 @@ class invoice_vm extends ChangeNotifier {
 
     // List<InvoiceModel> _listInvoicesAccept = [];
     // if (regoin == null) {
-    //   
+    //
     //   if (listinvoicesMarketing.isNotEmpty) {
     //     if (filter == 'الكل') {
     //       _listInvoicesAccept =List.from( listinvoicesMarketing);
-    //       
+    //
     //     }
     //     if (filter == 'بالإنتظار')
     //       listinvoicesMarketing.forEach((element) {
-    //         
+    //
     //         if (element.isdoneinstall == null) {
     //           _listInvoicesAccept.add(element);
-    //           
+    //
     //         }
     //       });
     //     if (filter == 'تم التركيب')
     //       listinvoicesMarketing.forEach((element) {
     //         if (element.isdoneinstall == '1') {
     //           _listInvoicesAccept.add(element);
-    //           
+    //
     //         }
     //       });
     //     if (filter == 'معلق')
     //       listinvoicesMarketing.forEach((element) {
     //         if (element.isdoneinstall != '1' && element.ready_install == '0') {
     //           _listInvoicesAccept.add(element);
-    //           
+    //
     //         }
     //       });
     //   }
@@ -658,7 +658,7 @@ class invoice_vm extends ChangeNotifier {
     //       listinvoicesMarketing.forEach((element) {
     //         if (element.fk_regoin_invoice == regoin) {
     //           _listInvoicesAccept.add(element);
-    //           
+    //
     //         }
     //       });
     //
@@ -666,14 +666,14 @@ class invoice_vm extends ChangeNotifier {
     //       listinvoicesMarketing.forEach((element) {
     //         if (element.isdoneinstall.toString() == null && element.fk_regoin_invoice == regoin) {
     //           _listInvoicesAccept.add(element);
-    //           
+    //
     //         }
     //       });
     //     if (filter == 'تم التركيب')
     //       listinvoicesMarketing.forEach((element) {
     //         if (element.isdoneinstall == '1' && element.fk_regoin_invoice == regoin) {
     //           _listInvoicesAccept.add(element);
-    //           
+    //
     //         }
     //       });
     //     if (filter == 'معلق') {
@@ -682,14 +682,14 @@ class invoice_vm extends ChangeNotifier {
     //           if (element.isdoneinstall != '1' && element.ready_install == '0'
     //               && element.fk_regoin_invoice == regoin) {
     //             _listInvoicesAccept.add(element);
-    //             
+    //
     //           }
     //         });
     //       } else {
     //         listinvoicesMarketing.forEach((element) {
     //           if (element.isdoneinstall != '1' && element.ready_install == '0') {
     //             _listInvoicesAccept.add(element);
-    //             
+    //
     //           }
     //         });
     //       }
@@ -711,7 +711,7 @@ class invoice_vm extends ChangeNotifier {
       return true;
     }
 
-    
+
     return (element.address_invoice!.toLowerCase().contains(query!.toLowerCase()))
         // ||
         // (element.mobile!.toLowerCase().contains(query.toLowerCase())) ||
@@ -730,14 +730,14 @@ class invoice_vm extends ChangeNotifier {
       listInvoicesAccept_admin.forEach((element) {
         if (element.fk_regoin_invoice == regoin) {
           _listInvoicesAccept.add(element);
-          
+
         }
       });
     else {
       listInvoicesAccept_admin.forEach((element) {
         if (element.fk_country == usercurrent!.fkCountry) {
           _listInvoicesAccept.add(element);
-          
+
         }
       });
     }
@@ -769,7 +769,7 @@ class invoice_vm extends ChangeNotifier {
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '94').isCheck == '1' ? true : false;
     if (res) {
       listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(), "all", '');
-      
+
     } else {
       res = privilgelist.firstWhere((element) => element.fkPrivileg == '93').isCheck == '1' ? true : false;
       if (res) {
@@ -815,10 +815,10 @@ class invoice_vm extends ChangeNotifier {
     isloading = true;
     listInvoicesAccept = [];
     notifyListeners();
-    
-    
+
+
     if (approvetype == null) {
-      
+
       await getinvoices();
       if (listinvoices.isNotEmpty) {
         if (type == 'approved only')
@@ -840,7 +840,7 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = list;
       }
     } else {
-      
+
       if (approvetype == 'country') await get_invoicesbyRegoin_accept_requst('c');
       if (approvetype == 'regoin') await get_invoicesbyRegoin_accept_requst('r');
       if (approvetype == 'finance') await get_invoicesbyRegoin_accept_requst('f');
@@ -883,6 +883,7 @@ class invoice_vm extends ChangeNotifier {
     InvoiceModel? data = await Invoice_Service().setApproveClient(body, idInvoice!);
     int index = listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
     int iindex = listInvoicesAccept.indexWhere((element) => element.idInvoice == idInvoice);
+    int iindexadmin = listInvoicesAccept_admin.indexWhere((element) => element.idInvoice == idInvoice);
     if (index != -1) {
       if (data != null) {
         listinvoices[index] = data;
@@ -891,6 +892,7 @@ class invoice_vm extends ChangeNotifier {
       }
     }
     if (iindex != -1) listInvoicesAccept.removeAt(iindex);
+    if (iindexadmin != -1) listInvoicesAccept_admin.removeAt(iindex);
     isapproved = false;
     notifyListeners();
 
@@ -903,6 +905,7 @@ class invoice_vm extends ChangeNotifier {
     InvoiceModel? data = await Invoice_Service().setApproveFClient(body, idInvoice!);
     int index = listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
     int iindex = listInvoicesAccept.indexWhere((element) => element.idInvoice == idInvoice);
+    int iindex_ff = listInvoicesAccept_admin.indexWhere((element) => element.idInvoice == idInvoice);
     if (index != -1) {
       if (data != null) {
         listinvoices[index] = data;
@@ -911,6 +914,7 @@ class invoice_vm extends ChangeNotifier {
       }
     }
     if (iindex != -1) listInvoicesAccept.removeAt(iindex);
+    if (iindex_ff != -1) listInvoicesAccept_admin.removeAt(iindex_ff);
     isapproved = false;
     notifyListeners();
 
@@ -980,8 +984,8 @@ class invoice_vm extends ChangeNotifier {
         }
       }
 
-      
-      
+
+
       if (isParticipate) {
         isLoadingInvoicesClientParticipateLocal = false;
       } else {
@@ -999,7 +1003,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   void setvaluepriv(privilgelistparam) {
-    
+
     privilgelist = privilgelistparam;
     notifyListeners();
   }
@@ -1017,7 +1021,7 @@ class invoice_vm extends ChangeNotifier {
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '130').isCheck == '1' ? true : false;
     if (res) {
       listinvoices = await Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
-      
+
     } else {
       res = privilgelist.firstWhere((element) => element.fkPrivileg == '131').isCheck == '1' ? true : false;
       if (res) {
@@ -1039,7 +1043,7 @@ class invoice_vm extends ChangeNotifier {
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '1').isCheck == '1' ? true : false;
     if (res) {
       listinvoices = await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
-      
+
     } else {
       res = privilgelist.firstWhere((element) => element.fkPrivileg == '38').isCheck == '1' ? true : false;
       if (res) {
@@ -1089,7 +1093,7 @@ class invoice_vm extends ChangeNotifier {
 
   //getinvoaicebyregoin_accept_requst
   Future<void> get_invoicesbyRegoin_accept_requst(String type) async {
-    
+
     switch (type) {
       case 'r':
         listinvoicebyregoin =
@@ -1129,12 +1133,12 @@ class invoice_vm extends ChangeNotifier {
     String res = 'done';
     InvoiceModel data = await Invoice_Service().addInvoice(body, file, myfilelogo, files);
     //  if(data !=null){
-    
+
     listinvoices.insert(0, data);
     listinvoiceClient.insert(0, data);
     listInvoicesAccept.insert(0, data);
     res = data.idInvoice.toString();
-    
+
     // } else res='false';
     notifyListeners();
     return res;
@@ -1192,7 +1196,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<String> add_invoiceProduct_vm(Map<String, dynamic?>? body) async {
-    
+
     String res = await Invoice_Service().addInvoiceProduct(body!);
 
     if (res != "false") {
@@ -1206,7 +1210,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<bool> update_invoiceProduct_vm(Map<String, dynamic?>? body, String idInvoiceProduct) async {
-    
+
     bool res = await Invoice_Service().updateProductInvoice(body!, idInvoiceProduct);
     //listproductinvoic.insert(0, ProductsInvoice.fromJson(body));
     notifyListeners();
@@ -1301,7 +1305,7 @@ class invoice_vm extends ChangeNotifier {
     listinvoiceClient.removeAt(index);
     notifyListeners();
     String res = await Invoice_Service().deleteInvoiceById(body);
-    
+
     //if(res=="done"){
     index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
     listinvoices.removeAt(index);
@@ -1348,7 +1352,7 @@ class invoice_vm extends ChangeNotifier {
 
     onSuccess.call(data);
     // if (index != -1) listinvoices[index] = te;
-    // // 
+    // //
     // listinvoiceClientSupport[index1] = te;
 
     // listinvoiceClientSupport
@@ -1454,7 +1458,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   void disposValue(index) {
-    
+
     if (index != -1)
       listinvoiceClient.removeAt(index);
     else {

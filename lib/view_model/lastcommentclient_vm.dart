@@ -21,20 +21,24 @@ class lastcommentclient_vm extends ChangeNotifier {
     usercurrent = user;
     notifyListeners();
   }
-  void setvaluepriv(privilgelistparam) {
-    
+  void setvaluepriv(privilgelistparam,bool ismarketing) {
+
     privilgelist = privilgelistparam;
-    param=get_privilgelist();
+    param=get_privilgelist(  ismarketing);
 
     notifyListeners();
   }
-  String get_privilgelist() {
+  String get_privilgelist(bool   ismarketing) {
     // if(listClient.isEmpty)
     //main list
     String param = '';
-    bool res = privilgelist?.firstWhere((element) => element.fkPrivileg == '138').isCheck == '1' ? true : false;
+    bool res =   privilgelist?.firstWhere((element) => element.fkPrivileg == '155').isCheck == '1'  ? true : false;
+    if(res)
+      param = 'fk_country='+usercurrent!.fkCountry.toString()+'&ismarketing=1';
+    else {
+    res = privilgelist?.firstWhere((element) => element.fkPrivileg == '138').isCheck == '1' ? true : false;
     if (res) {
-      param = 'fk_country'+usercurrent!.fkCountry.toString();
+      param = 'fk_country='+usercurrent!.fkCountry.toString();
     } else {
       res = privilgelist?.firstWhere((element) => element.fkPrivileg == '139').isCheck == '1' ? true : false;
       if (res) {
@@ -46,13 +50,16 @@ class lastcommentclient_vm extends ChangeNotifier {
         }
       }
     }
+    if( ismarketing)
+    param=param+'&ismarketing=1' ;
+    }
     return param;
   }
   Future<void> getLastcommentClientModel( ) async {
     isload = true;
     notifyListeners();
-   
-   
+
+
     final response = await Api().get(url: url + 'reports/get_lastcomment.php?${param}');
 
     var list = List<LastcommentClientModel>.from((response ?? []).map((x) => LastcommentClientModel.fromJson(x)))
@@ -85,24 +92,24 @@ class lastcommentclient_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getData(String filterType, String? idUser) async {
+  Future<void> getData(String filterType, String? idUser ) async {
     isload = true;
     notifyListeners();
     List<LastcommentClientModel> list_temp = [];
 
     list_LastcommentClientModel = List.from(list_LastcommentClientModel_temp);
 
-    
+
     if (idUser == '')
       list_LastcommentClientModel.forEach((element) {
-        
+
         if (element.client_obj.typeClient == filterType) {
           list_temp.add(element);
         }
       });
     else
       list_LastcommentClientModel.forEach((element) {
-        
+
         if (element.client_obj.typeClient == filterType && element.client_obj.fkUser == idUser) {
           list_temp.add(element);
         }
