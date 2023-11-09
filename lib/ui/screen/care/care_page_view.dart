@@ -495,6 +495,11 @@ class _care_page_viewState extends State<care_page_view> {
                                                                                 ],
                                                                               )
                                                                             : Container(),
+                                                                        if (( listCommunication[index].tag ?? false) && context.read<PrivilegeProvider>().checkPrivilege('133'))
+                                                                          Icon(
+                                                                            CupertinoIcons.checkmark_seal_fill,
+                                                                            color: Colors.amber,
+                                                                          ),
                                                                       ],
                                                                     )
                                                                   ],

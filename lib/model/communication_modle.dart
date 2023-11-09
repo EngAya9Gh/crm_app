@@ -48,6 +48,7 @@ class CommunicationModel {
   late final String? name_regoin;
   late final String? fk_regoin;
   late final String? nameClient;
+  late final bool? tag;
   late   String? type_install;
   late  String? hoursdelaylabel;
   late  String? isRecommendation;
@@ -84,6 +85,7 @@ class CommunicationModel {
     is_visit = json['is_visit'];
     is_suspend = json['is_suspend'];
     userinstall = json['userinstall'];
+    tag = json['tag']=="true"?true:false;
   }
 
   Map<String, dynamic> toJson() {

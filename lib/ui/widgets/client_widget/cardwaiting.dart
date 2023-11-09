@@ -4,6 +4,9 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../view_model/privilge_vm.dart';
 
 class cardWaiting extends StatelessWidget {
   cardWaiting(
@@ -72,6 +75,11 @@ class cardWaiting extends StatelessWidget {
                                 fontFamily: kfontfamily2),),
                         ),
                       ]),
+                  if ((iteminvoice.tag ?? false) && context.read<PrivilegeProvider>().checkPrivilege('133'))
+                    Icon(
+                      CupertinoIcons.checkmark_seal_fill,
+                      color: Colors.amber,
+                    ),
                 ],
               ),
             ),
