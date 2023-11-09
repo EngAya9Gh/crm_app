@@ -92,6 +92,7 @@ class InvoiceModel extends CacheRepository {
   String? name_regoin_invoice;
   String? date_delete;
   String? user_delete;
+  bool? tag;
   String? city, name_city, namemaincity, id_maincity;
 
   //Map<String, dynamic> products;
@@ -331,6 +332,8 @@ class InvoiceModel extends CacheRepository {
     notes_ready = jsondata['notes_ready'];
     reason_suspend = jsondata['reason_suspend'];
     reason_notReady = jsondata['reason_notReady'];
+    tag = jsondata['tag']=="true"?true:false;
+
 
     attachFileStatus = AttachFileStatus.init;
     deleteAttachFileStatus = AttachFileStatus.init;

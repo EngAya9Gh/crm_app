@@ -77,6 +77,20 @@ class ClientProvider extends ChangeNotifier {
     listClient = List.from(listClientAccept);
     notifyListeners();
   }
+  Future<void> getclient_Accept(
+      // , List<InvoiceModel> list
+      ) async {
+    isloading = true;
+    listClientAccept = [];
+
+    notifyListeners();
+    List<ClientModel> _list = await ClientService().getAcceptClient(usercurrent!.fkCountry.toString());
+
+    isloading = false;
+    listClientAccept = List.from(_list);
+    listClient = List.from(listClientAccept);
+    notifyListeners();
+  }
 
   bool getfilterclient(String filter) {
     UserModel? user;

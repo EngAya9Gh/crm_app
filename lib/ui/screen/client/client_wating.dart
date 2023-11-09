@@ -53,7 +53,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
       Provider.of<invoice_vm>(context, listen: false).listInvoicesAccept = [];
       Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_install('الكل');
       typeclientvalue = 'الكل';
-      Provider.of<ClientProvider>(context, listen: false).getallclientAccept();
+      // Provider.of<ClientProvider>(context, listen: false).getallclientAccept();
       Provider.of<invoice_vm>(context, listen: false).getfilter_maincity(selecteditemmaincity, typeclientvalue);
     });
 
