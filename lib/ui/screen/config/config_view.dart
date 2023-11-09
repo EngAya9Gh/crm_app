@@ -46,7 +46,7 @@ class _config_viewState extends State<config_view> {
 
      });
 
-    print("build 3 add");
+
     // taxrate =
     //     _listconfg.firstWhere((element) => element.name_config == 'taxrate');
     super.initState();
@@ -153,12 +153,12 @@ class _config_viewState extends State<config_view> {
                       case 'period_commincation3':
 
                         if(value!=_controllerperiod_commincation3.text) {
-                          print('vvvvvvalue '+value);
-                          print('com   '+_controllerperiod_commincation3.text);
+
+                          
                           Provider.of<config_vm>(context,listen: false)
                           .updateConfig_vm({
                             'value_config':_controllerperiod_commincation3.text,
-                            'fk_country':Provider.of<user_vm_provider>(context,listen: false)
+                            'fk_country':Provider.of<UserProvider>(context,listen: false)
                             .currentUser.fkCountry.toString(),
                              'comm3':value,//القيمة السابقة لكي اطرح من الوقت
                           },
@@ -184,7 +184,7 @@ class _config_viewState extends State<config_view> {
                       Provider.of<config_vm>(context,listen: false)
                           .updateConfig_vm({
                         'value_config':_controllerperiod_install_second.text,
-                        'fk_country':Provider.of<user_vm_provider>(context,listen: false)
+                        'fk_country':Provider.of<UserProvider>(context,listen: false)
                             .currentUser.fkCountry.toString(),
                         'comminstall_second':valueinstall_second,//القيمة السابقة لكي اطرح من الوقت
 

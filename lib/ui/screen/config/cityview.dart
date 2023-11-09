@@ -17,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/config/theme/theme.dart';
 import 'add_regoin.dart';
 import 'addcity.dart';
 import 'addmaincity.dart';
@@ -32,7 +33,7 @@ class cityview extends StatefulWidget {
 
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-     await Provider.of<maincity_vm>
+     await Provider.of<MainCityProvider>
         (context,listen: false)
           .getcity(widget.fkmain);
     });
@@ -42,7 +43,7 @@ class cityview extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
 
-    _listlevel= Provider.of<maincity_vm>
+    _listlevel= Provider.of<MainCityProvider>
       (context,listen: true).listcity;
     return Scaffold(
       appBar: AppBar(
@@ -51,10 +52,10 @@ class cityview extends StatefulWidget {
         centerTitle: true,
       ),
       floatingActionButton:
-      Provider.of<privilge_vm>(context,listen: true)
-          .checkprivlge('79')==true ?
+      Provider.of<PrivilegeProvider>(context,listen: true)
+          .checkPrivilege('79')==true ?
       FloatingActionButton(
-        child:Icon(Icons.add),
+        child:Icon(Icons.add,color: AppColors.white),
         onPressed: (){
           Navigator.push(
             context,

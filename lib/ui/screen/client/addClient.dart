@@ -1,35 +1,35 @@
+import 'dart:ui' as myui;
+
+import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';
+import 'package:crm_smart/features/clients_list/presentation/manager/clients_list_bloc.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
-import 'package:crm_smart/ui/screen/config/cityview.dart';
-import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
+import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custom_button_new.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/company_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
+import '../../../common/enums/activity_type_size.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../labeltext.dart';
-import 'dart:ui' as myui;
-import 'package:intl/intl.dart';
-
 import '../../../model/ActivityModel.dart';
+
+
 
 class addClient extends StatefulWidget {
   addClient({Key? key}) : super(key: key);
@@ -53,6 +53,7 @@ class _addClientState extends State<addClient> {
 
   // final TextEditingController typejobController = TextEditingController();
   final TextEditingController address_client = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   String? cityController;
 
@@ -65,6 +66,10 @@ class _addClientState extends State<addClient> {
   final TextEditingController locationController = TextEditingController();
 
   final TextEditingController regoinController = TextEditingController();
+
+  ActivitySizeType? _selectedActivitySizeType;
+  String? _selectedARecommendedClient;
+  late final ClientsListBloc _clientsListBloc;
 
   @override
   void dispose() {
@@ -81,21 +86,22 @@ class _addClientState extends State<addClient> {
     super.dispose();
   }
 
-  late activity_vm activityViewmodel;
+  late ActivityProvider activityViewmodel;
 
   @override
   void initState() {
+    _clientsListBloc = context.read<ClientsListBloc>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-
-      context.read<maincity_vm>().getcityAll();
-      activityViewmodel = context.read<activity_vm>()
+      context.read<MainCityProvider>().getcityAll();
+      activityViewmodel = context.read<ActivityProvider>()
         ..initValueOut()
-        ..getactv();
-      context.read<company_vm>()
+        ..getActivities();
+      context.read<CompanyProvider>()
         ..initValueOut()
         ..getcompany();
 
-      context.read<maincity_vm>().changevalue(null);
+      context.read<MainCityProvider>().changevalue(null);
+      _clientsListBloc.add(GetRecommendedClientsEvent());
     });
     super.initState();
   }
@@ -131,7 +137,6 @@ class _addClientState extends State<addClient> {
                           return label_empty;
                         }
                       },
-                      //inputformate: [FilteringTextInputFormatter.allow(RegExp(r'''/^[a-zA-Z]+$/'''))],
                       controller: nameEnterpriseController,
                     ),
                     SizedBox(height: 15),
@@ -164,24 +169,45 @@ class _addClientState extends State<addClient> {
                       inputformate: [FilteringTextInputFormatter.digitsOnly],
                     ),
                     SizedBox(height: 15),
+                    RowEdit(name: 'البريد الالكتروني', des: '*'),
+                    SizedBox(height: 5),
+                    EditTextFormField(
+                      vaild: (value) {
+                        if (value?.trim().isEmpty ?? true) {
+                          return "البريد الالكتروني مطلوب";
+                        }
+
+                        if (!value!.validateEmail) {
+                          return "من فضلك أدخل بريد الكتروني صحيح.";
+                        }
+
+                        return null;
+                      },
+                      onSaved: (email) {
+                        if (email == null) {
+                          return;
+                        }
+                      },
+                      hintText: 'example@gmail.com',
+                      controller: emailController,
+                    ),
+                    SizedBox(height: 15),
                     RowEdit(name: label_client_typejob, des: '*'),
                     SizedBox(height: 5),
-                    Consumer<activity_vm>(
+                    Consumer<ActivityProvider>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,
-                          child:   DropdownSearch<ActivityModel>(
+                          child: DropdownSearch<ActivityModel>(
                             mode: Mode.DIALOG,
-                            filterFn: (user, filter) => user!.getfilter_actv(filter!),
+                            filterFn: (user, filter) => user!.getFilterActivityType(filter!),
                             compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
-                            items: cart.list_activity,
+                            items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
-                              // iduser = data!.id_activity_type;
-                              cart.changevalueOut(data);
-                              // filtershow();
+                              cart.onChangeSelectedActivity(data);
                             },
-                            selectedItem: cart.selectedValueOut,
+                            selectedItem: cart.selectedActivity,
                             showSearchBox: true,
                             dropdownSearchDecoration: InputDecoration(
                               isCollapsed: true,
@@ -189,34 +215,40 @@ class _addClientState extends State<addClient> {
                               alignLabelWithHint: true,
                               fillColor: Colors.grey.withOpacity(0.2),
                               contentPadding: EdgeInsets.all(0),
-                              border:
-                              UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                              border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
                             ),
                             // InputDecoration(border: InputBorder.none),
                           ),
-                          // DropdownButtonFormField(
-                          //   decoration: InputDecoration(
-                          //       enabledBorder: OutlineInputBorder(
-                          //           borderRadius: BorderRadius.circular(12),
-                          //           borderSide: BorderSide(width: 2, color: Colors.grey))),
-                          //
-                          //   isExpanded: true,
-                          //   //hint: Text("حدد حالة العميل"),
-                          //   items: cart.list_activity.map((level_one) {
-                          //     return DropdownMenuItem(
-                          //       child: Text(level_one.name_activity_type), //label of item
-                          //
-                          //       value: level_one.id_activity_type, //value of item
-                          //     );
-                          //   }).toList(),
-                          //   value: cart.selectedValueOut,
-                          //   onChanged: (value) {
-                          //     //  setState(() {
-                          //     cart.changevalueOut(value.toString());
-                          //     // });
-                          //   },
-                          // ),
                         );
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    RowEdit(name: 'حجم النشاط', des: '*'),
+                    DropdownButtonFormField<ActivitySizeType>(
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(width: 2, color: Colors.grey))),
+                      isExpanded: true,
+                      items: ActivitySizeType.values.map((activitySize) {
+                        return DropdownMenuItem(
+                          child: Text(activitySize.value),
+                          value: activitySize,
+                        );
+                      }).toList(),
+                      value: _selectedActivitySizeType,
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+                        _selectedActivitySizeType = value;
+                        setState(() {});
+                      },
+                      validator: (selectedActivitySizeType) {
+                        if (selectedActivitySizeType?.value.trim().isEmpty ?? true) {
+                          return "هذا الحقل مطلوب";
+                        }
+                        return null;
                       },
                     ),
                     SizedBox(height: 15),
@@ -236,7 +268,7 @@ class _addClientState extends State<addClient> {
                     SizedBox(height: 5),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<maincity_vm>(
+                      child: Consumer<MainCityProvider>(
                         builder: (context, cart, child) {
                           return DropdownSearch<CityModel>(
                             mode: Mode.DIALOG,
@@ -248,7 +280,6 @@ class _addClientState extends State<addClient> {
                             items: cart.listcity,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) => cityController = data!.id_city,
-                            //print(data!.nameUser),
                             showSearchBox: true,
                             dropdownSearchDecoration: InputDecoration(
                               labelText: "حدد مدينة",
@@ -299,7 +330,7 @@ class _addClientState extends State<addClient> {
                               borderRadius: BorderRadius.circular(12),
                               borderSide: BorderSide(width: 2, color: Colors.grey))),
                       isExpanded: true,
-                      items: list_sourcclient.map((level_one) {
+                      items: sourceClientsList.map((level_one) {
                         return DropdownMenuItem(
                           child: Text(level_one), //label of item
 
@@ -308,8 +339,15 @@ class _addClientState extends State<addClient> {
                       }).toList(),
                       value: presystemcomb,
                       onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+
                         setState(() {
                           sourclient = value.toString();
+                          if (sourclient != 'عميل موصى به' && _selectedARecommendedClient != null) {
+                            _selectedARecommendedClient = null;
+                          }
                         });
                       },
                       validator: (value) {
@@ -320,8 +358,49 @@ class _addClientState extends State<addClient> {
                       },
                     ),
                     SizedBox(height: 15),
+                    if (sourclient == 'عميل موصى به') ...{
+                      RowEdit(name: 'العملاء', des: '*'),
+                      BlocBuilder<ClientsListBloc, ClientsListState>(
+                        builder: (context, state) {
+                          final recommendedList = state.recommendedClientsState.getDataWhenSuccess ?? [];
+
+                          return DropdownButtonFormField<String?>(
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
+                            isExpanded: true,
+                            icon: state.recommendedClientsState.isLoading
+                                ? AppLoader(size: 20.r)
+                                : Icon(Icons.arrow_drop_down_rounded),
+                            items: recommendedList.map((client) {
+                              return DropdownMenuItem(
+                                child: Text(client.nameEnterprise!),
+                                value: client.fkClient,
+                              );
+                            }).toList(),
+                            value: _selectedARecommendedClient,
+                            onChanged: (value) {
+                              if (value == null) {
+                                return;
+                              }
+                              setState(() {
+                                _selectedARecommendedClient = value.toString();
+                              });
+                            },
+                            validator: (value) {
+                              if (value?.trim().isEmpty ?? true) {
+                                return "هذا الحقل مطلوب";
+                              }
+                              return null;
+                            },
+                          );
+                        },
+                      ),
+                      SizedBox(height: 15),
+                    },
                     RowEdit(name: 'نظام سابق', des: ' '),
-                    Consumer<company_vm>(
+                    Consumer<CompanyProvider>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           child: DropdownButtonFormField(
@@ -332,7 +411,7 @@ class _addClientState extends State<addClient> {
                             isExpanded: true,
                             items: cart.list_company.map((level_one) {
                               return DropdownMenuItem(
-                                child: Text(level_one.name_company.toString()), //label of item
+                                  child: Text(level_one.name_company.toString()), //label of item
 
                                 value: level_one.id_Company, //value of item
                               );
@@ -353,12 +432,15 @@ class _addClientState extends State<addClient> {
                         text: label_clientadd,
                         onpress: () async {
                           if (_globalKey.currentState!.validate() &&
-                              Provider.of<activity_vm>(context, listen: false).selectedValueOut != null &&
+                              Provider.of<ActivityProvider>(context, listen: false).selectedActivity != null &&
                               sourclient != '') {
                             _globalKey.currentState!.save();
                             Provider.of<LoadProvider>(context, listen: false).changebooladdclient(true);
-                            UserModel _user = Provider.of<user_vm_provider>(context, listen: false).currentUser;
-                            Provider.of<client_vm>(context, listen: false).addclient_vm({
+                            UserModel _user = Provider.of<UserProvider>(context, listen: false).currentUser;
+                            Provider.of<ClientProvider>(context, listen: false).addclient_vm({
+                              'email': emailController.text,
+                              if (_selectedActivitySizeType != null) 'size_activity': _selectedActivitySizeType?.value,
+                              if (_selectedARecommendedClient != null) 'fk_client_source': _selectedARecommendedClient,
                               'descActivController': descActivController.text,
                               'name_client': nameclientController.text,
                               'address_client': address_client.text,
@@ -373,11 +455,12 @@ class _addClientState extends State<addClient> {
                               "fk_user": _user.idUser,
                               "user_add": _user.idUser,
                               // "date_transfer":,
-                              'presystem': Provider.of<company_vm>(context, listen: false).selectedValueOut.toString(),
+                              'presystem': Provider.of<CompanyProvider>(context, listen: false).selectedValueOut.toString(),
                               'sourcclient': sourclient,
-                              'activity_type_fk':
-                                  Provider.of<activity_vm>(context, listen: false)
-                                      .selectedValueOut!.id_activity_type.toString(),
+                              'activity_type_fk': Provider.of<ActivityProvider>(context, listen: false)
+                                  .selectedActivity!
+                                  .id_activity_type
+                                  .toString(),
                               "mobile": mobileController.text,
                               "phone": phoneController.text,
                               "ismarketing": sourclient == 'ميداني' ? '0' : '1',
@@ -403,26 +486,10 @@ class _addClientState extends State<addClient> {
   clear(BuildContext context) {
     Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
     Navigator.pop(context);
-
-    // nameEnterpriseController.text="";
-    // nameclientController.text="";
-    // locationController.text="";
-    // mobileController.text="";
-    // cityController.text="";
-    // typejobController.text="";
-    // _scaffoldKey.currentState!.showSnackBar(
-    //     SnackBar(content: Text(label_Addeduser))
-    // );
-    print("succ");
   }
 
   error(context) {
     Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_errorAddProd)));
-    print("error");
   }
-
-  DateTime _currentDate = DateTime.now();
-
-  final DateFormat formatter = DateFormat('yyyy-MM-dd');
 }

@@ -1,19 +1,20 @@
+import 'dart:ui' as myui;
+
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/rowtitle.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as myui;
+
 import '../../../constants.dart';
 import 'is_marketing_chekbox.dart';
 
@@ -44,7 +45,7 @@ class _care_reportState extends State<care_report> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
@@ -64,7 +65,7 @@ class _care_reportState extends State<care_report> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String paramprivilge='';
     // if(Provider.of<privilge_vm>(context,listen: false)
@@ -123,7 +124,7 @@ class _care_reportState extends State<care_report> {
     totalval = 0;
     for (int i = 0; i < data.length; i++) {
       tempdata.add(BarModel.fromJson(data[i]));
-      print(tempdata[i].y);
+      
       totalval += tempdata[i].y;
       rowsdata.add(DataRow(
         cells: <DataCell>[
@@ -227,7 +228,7 @@ class _care_reportState extends State<care_report> {
                         options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                         buttons: ['سنوي', 'شهري', 'يومي'],
                         onSelected: (_, index, isselected) {
-                          print(index);
+                          
                           switch (index) {
                             case 0:
                               type = 'dateyear';
@@ -269,7 +270,7 @@ class _care_reportState extends State<care_report> {
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['ترحيب', 'جودة', 'العناية'],
                         onSelected: (_, index, isselected) {
-                          print(index);
+                          
                           switch (index) {
                             case 0:
                               typeproduct = 'ترحيب';
@@ -409,7 +410,7 @@ class _care_reportState extends State<care_report> {
                                               _selectedDatemonth = dateTime;
                                             });
 
-                                            print(_selectedDatemonth);
+                                            
                                             // close the dialog when year is selected.
                                             Navigator.pop(context);
                                             getData();
@@ -663,7 +664,7 @@ class _care_reportState extends State<care_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
@@ -681,7 +682,7 @@ class _care_reportState extends State<care_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }

@@ -33,7 +33,7 @@ void initState()  {
       Provider.of<level_vm>(context,listen: false)
           .changeVal(widget.selected);
 
-      print("init level combox");
+      
 
 
     });
@@ -48,7 +48,7 @@ void initState()  {
   @override
   Widget build(BuildContext context) {
 
-      //print( Provider.of<level_vm>(context,listen: false).selectedValueLevel);
+      
 
   return
       Padding(
@@ -68,7 +68,7 @@ void initState()  {
 
     List<LevelModel> _list=[];
 
-    print("build combox level");
+    
     _list  =Provider.of<level_vm>(context,listen: true).listoflevel;
 
      WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -78,8 +78,8 @@ void initState()  {
     if (_list.isEmpty)
       return Text("لا يوجد بيانات");
     else {
-      print("inside else");
-      //print(Provider.of<level_vm>(context, listen: false).selectedValueLevel);
+      
+      
 
       return Container(
         child: DropdownButton(
@@ -100,7 +100,7 @@ void initState()  {
             Provider.of<level_vm>(context, listen: false)
                 .changeVal(value.toString());
             //_list!.changeVal(value.toString());
-            //print(Provider.of<level_vm>(context, listen: false).selectedValueLevel);
+            
           },
         ),
 

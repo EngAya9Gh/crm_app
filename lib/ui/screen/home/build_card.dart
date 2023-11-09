@@ -2,96 +2,75 @@ import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/constantsList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BuildCard extends StatelessWidget {
   BuildCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30.0),
-      child: Center(
-        child: GridView.builder(
-            itemCount: itemCategory.length,
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              childAspectRatio: 0.9,
-              mainAxisExtent: 170,
-              crossAxisSpacing: 10.0,
-              mainAxisSpacing: 10.0,
-              maxCrossAxisExtent: 250,
-            ),
-            itemBuilder: (context, index) {
-              return buildCardCategory(
-                  image: imageList[index],
-                  item: itemCategory[index],
-                  ontap: () =>
-                     Navigator.push(context,
-                         CupertinoPageRoute(
-                             builder: (context)=>
-                             listwidget[index]
-                     ))
-              );},
-            ),
-    ));
+    return Center(
+      child: GridView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+        itemCount: itemCategory.length,
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          childAspectRatio: 0.9,
+          mainAxisExtent: 170,
+          crossAxisSpacing: 0.0,
+          mainAxisSpacing: 0.0,
+          maxCrossAxisExtent: 250,
+        ),
+        itemBuilder: (context, index) {
+          return buildCardCategory(
+              image: imageList[index],
+              item: itemCategory[index],
+              onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => listwidget[index])));
+        },
+      ),
+    );
   }
 
   Widget buildCardCategory({
     required String image,
     required String item,
-    required Function() ontap,
+    required Function() onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: InkWell(
-        onTap: ontap,
+        onTap: onTap,
         child: Container(
-          //width: 150,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(12).r,
             color: Colors.white,
-            // boxShadow: [
-            //   BoxShadow(
-            //     color: Colors.grey.withOpacity(0.2),
-            //     spreadRadius: 3,
-            //     blurRadius: 5,
-            //   ),
-            // ],
           ),
           child: Padding(
             padding: EdgeInsets.all(10),
             child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Image(image: AssetImage('assest/images/bill.png')),
-
-                image=='assest/images/race.png'? SizedBox(
-                  height: 50,
-                  child: Image.asset(
-                    image,
-                   color: Colors.blue,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  image == 'assest/images/race.png'
+                      ? SizedBox(
+                          height: 50,
+                          child: Image.asset(
+                            image,
+                            color: Colors.blue,
+                          ),
+                        )
+                      : SizedBox(
+                          height: 50,
+                          child: Image.asset(image),
+                        ),
+                  SizedBox(height: 5),
+                  Text(
+                    item,
+                    style: TextStyle(fontSize: 15, fontFamily: kfontfamily3, color: Colors.black),
                   ),
-                ):
-                SizedBox(
-                  height: 50,
-                  child: Image.asset(
-                    image,
-                    //color: Colors.lightBlueAccent,
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  item,
-                  style: TextStyle(fontSize: 15,
-                      fontFamily: kfontfamily3,
-                      color: Colors.black),
-                ),
-              ],
-            )),
+                ],
+              ),
+            ),
           ),
         ),
       ),

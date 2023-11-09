@@ -41,20 +41,20 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
   DateTime _selectedDatemonth = DateTime.now();
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
-  late privilge_vm privilegeVm;
+  late PrivilegeProvider privilegeVm;
   bool isMarketing = false;
   late bool haveMarketingPrivilege;
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false)
           .selectValuebarsales(1);
     });
-    privilegeVm = Provider.of<privilge_vm>(context, listen: false);
+    privilegeVm = Provider.of<PrivilegeProvider>(context, listen: false);
     super.initState();
     if(!haveMarketingPrivilege)
     getData();
@@ -69,7 +69,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     setState(() {
       loading=true;
     });
-    UserModel usermodel=Provider.of<user_vm_provider>(context, listen: false)
+    UserModel usermodel=Provider.of<UserProvider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     String iduser = usermodel.idUser.toString();
@@ -77,20 +77,20 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     List<BarModel> tempdata = [];
     String paramprivilge='';
       if(privilegeVm
-          .checkprivlge('83')==true )
+          .checkPrivilege('83')==true )
         paramprivilge='&id_regoin=${idregoin}';
 
 
-    if(privilegeVm.checkprivlge('83')==true ||
+    if(privilegeVm.checkPrivilege('83')==true ||
         privilegeVm
-            .checkprivlge('84')==true){
+            .checkPrivilege('84')==true){
 
       var data;
       var endPoint;
       String params='';
     if(typeproduct=='أجهزة') params='&product=0';
     if(typeproduct=='برامج') params='&product=1';
-    print(type);
+    
       // if(idregoin=='0'){
       //   type='userSum';
       //   paramprivilge='';
@@ -126,13 +126,13 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
         setState(() {
           loading = false;
         });
-        print("e: $e , st: $st");
+        
       }
 
     totalval=0; rowsdata=[];
     for (int i = 0; i < data.length; i++) {
       tempdata.add(BarModel.fromJson(data[i]));
-      print(tempdata[i].y);
+      
       totalval+=tempdata[i].y;
       rowsdata.add(
           DataRow(
@@ -245,7 +245,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                     buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['سنوي', 'شهري', 'يومي'],
                                 onSelected: (_,index, isselected) {
-                                  print(index);
+                                  
                                   switch(index){
                                     case 0:
                                       type='dateyear';
@@ -293,7 +293,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                 buttons: ['الكل', 'أجهزة', 'برامج'],
                                 onSelected: (_,index, isselected) {
 
-                                  print(index);
+                                  
                                   switch(index){
                                     case 0:
                                       typeproduct = 'الكل';
@@ -443,7 +443,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                         _selectedDatemonth = dateTime;
                                       });
 
-                                      print(_selectedDatemonth);
+                                      
                                       // close the dialog when year is selected.
                                       Navigator.pop(context);
                                       getData();
@@ -701,7 +701,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });
@@ -719,7 +719,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });

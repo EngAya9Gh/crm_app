@@ -75,8 +75,8 @@ class _TicketViewState extends State<TicketView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                   widget.ticketModel.dateRecive==null?
-                  Provider.of<privilge_vm>(context,listen: false)
-                      .checkprivlge('71') == true ?
+                  Provider.of<PrivilegeProvider>(context,listen: false)
+                      .checkPrivilege('71') == true ?
                   Padding(
                     padding: const EdgeInsets.only(right: 5.0),
                     child: ElevatedButton(
@@ -86,7 +86,7 @@ class _TicketViewState extends State<TicketView> {
                         onPressed: () async{
                           Provider.of<ticket_vm>(context,listen: false)
                               .updateTicketvm({
-                            'fk_user_recive':Provider.of<user_vm_provider>
+                            'fk_user_recive':Provider.of<UserProvider>
                               (context,listen: false).currentUser.idUser.toString(),
                             'date_recive':DateTime.now().toString(),
                             'type_ticket':'قيد التنفيذ'
@@ -96,8 +96,8 @@ class _TicketViewState extends State<TicketView> {
                         child: Text('استلام التذكرة')),
                   )
                       :  widget.ticketModel.dateClose==null?
-              Provider.of<privilge_vm>(context,listen: false)
-                  .checkprivlge('72') == true ? //regoin
+              Provider.of<PrivilegeProvider>(context,listen: false)
+                  .checkPrivilege('72') == true ? //regoin
                   Padding(
                     padding: const EdgeInsets.only(right: 5),
                     child: ElevatedButton(
@@ -107,7 +107,7 @@ class _TicketViewState extends State<TicketView> {
                         onPressed: () async{
                           Provider.of<ticket_vm>(context,listen: false)
                               .updateTicketvm({
-                            'fk_user_close':Provider.of<user_vm_provider>
+                            'fk_user_close':Provider.of<UserProvider>
                               (context,listen: false).currentUser.idUser.toString(),
                             'date_close':DateTime.now().toString(),
                             'type_ticket':'مغلقة',
@@ -116,7 +116,7 @@ class _TicketViewState extends State<TicketView> {
 
                             'fkcountry': widget.ticketModel.fk_country.toString(),
                             'name_enterprise': widget.ticketModel.nameEnterprise.toString(),
-                            'nameUser':Provider.of<user_vm_provider>
+                            'nameUser':Provider.of<UserProvider>
                               (context,listen: false).currentUser.nameUser.toString(),
                           },  widget.ticketModel.idTicket);
                         },
@@ -124,8 +124,8 @@ class _TicketViewState extends State<TicketView> {
                   ):Container():Container():Container(),
                   widget.ticketModel.dateRecive!=null &&
                       widget.ticketModel.dateClose==null?
-                  Provider.of<privilge_vm>(context,listen: true)
-                      .checkprivlge('75')==true?
+                  Provider.of<PrivilegeProvider>(context,listen: true)
+                      .checkPrivilege('75')==true?
                   Padding(
                     padding: const EdgeInsets.only(right: 5.0),
                     child: ElevatedButton(

@@ -39,8 +39,8 @@ class _ticketAddState extends State<ticketAdd> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<client_vm>(context,listen: false).getclient_Local('مشترك');
-      Provider.of<client_vm>(context,listen: false).changevalueclient(null);
+      await Provider.of<ClientProvider>(context,listen: false).getclient_Local('مشترك');
+      Provider.of<ClientProvider>(context,listen: false).changevalueclient(null);
     });
     super.initState();
   }
@@ -85,7 +85,7 @@ class _ticketAddState extends State<ticketAdd> {
                             left: 8.0,
                             right: 8,
                           ),
-                          child: Consumer<client_vm>(
+                          child: Consumer<ClientProvider>(
                             builder: (context, cart, child) {
                               return DropdownSearch<ClientModel>(
                                 mode: Mode.DIALOG,
@@ -134,7 +134,7 @@ class _ticketAddState extends State<ticketAdd> {
                         ),
                         RowEdit(name: 'نوع المشكلة', des: '*'),
 
-                        Consumer<typeclient>(
+                        Consumer<ClientTypeProvider>(
                           builder: (context, cart, child) {
                             return SizedBox(
                               //width: 240,
@@ -202,14 +202,14 @@ class _ticketAddState extends State<ticketAdd> {
                               if (_globalKey.currentState!.validate()) {
                                 _globalKey.currentState!.save();
                                 if (widget.fk_client != null) {
-                                  print('widget.fk_client.toString()' );
-                                  print(widget.fk_client.toString() );
+
+
                                   bool isav= await Provider.of<ticket_vm>(context, listen: false)
                                       .addticket({
                                     'name_enterprise': name_enterprise,
                                     'fk_client': widget.fk_client.toString(),
                                     'type_problem': Provider
-                                        .of<typeclient>(
+                                        .of<ClientTypeProvider>(
                                         context,
                                         listen: false)
                                         .selectedValueOut
@@ -219,7 +219,7 @@ class _ticketAddState extends State<ticketAdd> {
                                     'type_ticket': 'جديدة',
                                     'fk_user_open':
                                     Provider
-                                        .of<user_vm_provider>(context,
+                                        .of<UserProvider>(context,
                                         listen: false)
                                         .currentUser
                                         .idUser
@@ -229,7 +229,7 @@ class _ticketAddState extends State<ticketAdd> {
                                     'fk_regoin': '',
                                     'fkcountry': '',
                                     'nameUser': Provider
-                                        .of<user_vm_provider>
+                                        .of<UserProvider>
                                       (context, listen: false)
                                         .currentUser
                                         .nameUser
@@ -267,12 +267,12 @@ class _ticketAddState extends State<ticketAdd> {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('تم إنشاء تذكرة جديد')));
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
-    print("error");
+
   }
 }

@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
 import 'adduser.dart';
 
 class AllUserScreen extends StatefulWidget {
@@ -26,20 +27,20 @@ class _AllUserScreenState extends State<AllUserScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_)async {
       // Add Your Code here.
       // only
-      await Provider.of<privilge_vm>(context, listen: false)
-          .getprivlg_usercurrent();
-      Provider.of<user_vm_provider>(context, listen: false).getuser_vm();
+      await Provider.of<PrivilegeProvider>(context, listen: false)
+          .getPrivilegeUserCurrent();
+      Provider.of<UserProvider>(context, listen: false).getUsersVm();
     });
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     final controllerUsers =
-    Provider.of<user_vm_provider>(context, listen: true);
+    Provider.of<UserProvider>(context, listen: true);
     return Scaffold(
       floatingActionButton:
-      Provider.of<privilge_vm>(context,listen: true)
-          .checkprivlge('49')==true ?
+      Provider.of<PrivilegeProvider>(context,listen: true)
+          .checkPrivilege('49')==true ?
       FloatingActionButton(
       backgroundColor: kMainColor,
       onPressed: (){
@@ -48,7 +49,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
       },
       tooltip: 'إضافة موظف',
 
-      child: Icon(Icons.add),
+      child: Icon(Icons.add,color: AppColors.white),
     ):Container(),
       appBar: AppBar(
         title: Text('إدارة المستخدمين',style: TextStyle(color: kWhiteColor),),
@@ -70,7 +71,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
               height: 5,
             ),
 
-            controllerUsers.listuserfilter.length == 0?
+            controllerUsers.listFilteredUser.length == 0?
     Center(
     child: CircularProgressIndicator()):
             Directionality(
@@ -78,9 +79,9 @@ class _AllUserScreenState extends State<AllUserScreen> {
               child: Expanded(
                 child:
                 ListView.separated(
-                  itemCount: controllerUsers.listuserfilter.length,
+                  itemCount: controllerUsers.listFilteredUser.length,
                   itemBuilder: (context, index) {
-                    return Consumer<user_vm_provider>(
+                    return Consumer<UserProvider>(
                         builder: (context, cart, child) {
                           return
                           //   value.listClientfilter.length==0?
@@ -90,7 +91,7 @@ class _AllUserScreenState extends State<AllUserScreen> {
                           Padding(
                             padding: const EdgeInsets.all(2),
                             child: buildCardUsers(
-                              usermodell: controllerUsers.listuserfilter[index],
+                              usermodell: controllerUsers.listFilteredUser[index],
                             ),
                           );
                         });

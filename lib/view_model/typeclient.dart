@@ -7,12 +7,12 @@ import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
 
-class typeclient extends ChangeNotifier{
+class ClientTypeProvider extends ChangeNotifier{
   List<String> type_of_client=[];
   List<String> type_of_welcome=['الكل','تم الترحيب','لم يتم الترحيب'];
   List<String> type_of_install_iso=['الكل','تم التأكد من الجودة',
     'انتظار الجودة'];
-  List<String> type_of_client_filter=['الكل','مشترك','تفاوض','عرض سعر','مستبعد','منسحب'];
+  List<String> typeOfClientFilter=['الكل','مشترك','تفاوض','عرض سعر','مستبعد','منسحب'];
  // List<String> type_of_client=['تفاوض','عرض سعر','مستبعد','منسحب'];
   List<ReasonModel> type_of_out=[]; //أسباب الانسحاب
   List<String> listtype_install=['الكل','بالإنتظار','تم التركيب','معلق'];
@@ -21,8 +21,6 @@ class typeclient extends ChangeNotifier{
   late String? selectedValuemanag=null;
 
   void changevalue(String? s){
-    print('s.toString()');
-    print(s.toString());
     selectedValuemanag=s;
     notifyListeners();
   }

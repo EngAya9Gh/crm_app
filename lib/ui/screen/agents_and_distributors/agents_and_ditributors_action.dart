@@ -52,7 +52,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
       descriptionController.text = agentDistributorModel!.description;
     }
 
-    fkCountry = context.read<user_vm_provider>().currentUser.fkCountry!;
+    fkCountry = context.read<UserProvider>().currentUser.fkCountry!;
 
     scheduleMicrotask(() {
       viewmodel.resetAgentDistributorActionParams();
@@ -265,7 +265,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                       );
                                       File? pickedFile = File(pickedImage!.path);
                                       setState(() {
-                                        print(pickedFile.path);
+                                        
                                         _myfilelogo = pickedFile;
                                         logoController.text = pickedFile.path;
                                         viewmodel.onSaveimagefile(_myfilelogo);

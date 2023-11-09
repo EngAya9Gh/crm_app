@@ -38,19 +38,19 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      List<PrivilgeModel> list = await Provider.of<privilge_vm>(context, listen: false).privilgelist;
+      List<PrivilgeModel> list = await Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
       Provider.of<invoice_vm>(context, listen: false).setvaluepriv(list);
       Provider.of<invoice_vm>(context, listen: false).getinvoice_Debt();
           // .getinvoice_Localwithprev();
 
-      Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
-      Provider.of<regoin_vm>(context,listen: false).changeVal(null);
+      Provider.of<ClientTypeProvider>(context,listen: false).changelisttype_install(null);
+      Provider.of<RegionProvider>(context,listen: false).changeVal(null);
     Provider.of<invoice_vm>(context,listen: false).listInvoicesAccept=[];
 
-     await Provider.of<client_vm>(context,listen: false)
+     await Provider.of<ClientProvider>(context,listen: false)
            .getallclientAccept();
 
-       Provider.of<client_vm>(context,listen: false)
+       Provider.of<ClientProvider>(context,listen: false)
           .getallclientAcceptwithprev();
 
     });
@@ -68,7 +68,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
         ),
         centerTitle: true,
       ),
-      body: Consumer<privilge_vm>(
+      body: Consumer<PrivilegeProvider>(
           builder: (context, privilge, child) {
             return SafeArea(
               child: Directionality(
@@ -80,26 +80,26 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            privilge.checkprivlge('94') == true ? //regoin
+                            privilge.checkPrivilege('94') == true ? //regoin
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                child: Consumer<regoin_vm>(
+                                child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
                                     return
                                       DropdownButton(
                                         isExpanded: true,
                                         hint: Text("الفرع"),
-                                        items: cart.listregoinfilter.map((level_one) {
+                                        items: cart.listRegionFilter.map((level_one) {
                                           return DropdownMenuItem(
 
-                                            child: Text(level_one.name_regoin),
+                                            child: Text(level_one.regionName),
                                             //label of item
                                             value: level_one
-                                                .id_regoin, //value of item
+                                                .regionId, //value of item
                                           );
                                         }).toList(),
-                                        value: cart.selectedValueLevel,
+                                        value: cart.selectedRegionId,
                                         onChanged: (value) {
                                           //  setState(() {
                                           cart.changeVal(value.toString());
@@ -115,7 +115,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                             Expanded( //state
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 20.0,right: 8),
-                                child: Consumer<typeclient>(
+                                child: Consumer<ClientTypeProvider>(
                                     builder: (context, cart, child){
                                       return DropdownButton(
                                         isExpanded: true,
@@ -132,8 +132,8 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
                                           //namemanage=value.toString();
                                           cart.changelisttype_install(value.toString());
                                           typeclientvalue=value.toString();
-                                          print('filter state'+value.toString());
-                                          print(typeclientvalue);
+
+
 
                                           filtershow();
                                         },
@@ -297,8 +297,8 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   }
 
   void filtershow(){
-    print(regoin);
-    print(typeclientvalue);
+
+
     Provider.of<invoice_vm>(context,listen: false)
         .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);
 
@@ -317,7 +317,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           Provider.of<invoice_vm>(context,listen: false)
               .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);
@@ -337,7 +337,7 @@ class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           Provider.of<invoice_vm>(context,listen: false)
               .getfilterinvoicesclient(typeclientvalue,regoin,_selectedDatefrom,_selectedDateto);

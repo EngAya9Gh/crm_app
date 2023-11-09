@@ -1,32 +1,20 @@
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/manage_provider.dart';
-import 'package:crm_smart/provider/switch_provider.dart';
-import 'package:crm_smart/services/UserService.dart';
 import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/levelcombox.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/regoincombox.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custom_button_new.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
-import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get.dart';
 
-import '../../../function_global.dart';
 import '../../../labeltext.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -62,7 +50,7 @@ class _addUserState extends State<addUser> {
       Provider.of<manage_provider>(context, listen: false).getmanage();
 
       //Provider.of<regoin_vm>(context,listen: false).getregoin();
-      Provider.of<regoin_vm>(context, listen: false).changeValuser(null);
+      Provider.of<RegionProvider>(context, listen: false).changeValuser(null);
     });
 
     super.didChangeDependencies();
@@ -83,7 +71,7 @@ class _addUserState extends State<addUser> {
     // Provider.of<level_vm>(context,listen: false).getlevel();
     //
     // context.read<user_vm_provider>() .
-    context.read<maincity_vm>()
+    context.read<MainCityProvider>()
       ..changeitemlist([], isInit: true)
       ..getmaincity();
 
@@ -261,15 +249,15 @@ class _addUserState extends State<addUser> {
                     //
                     // },
                     //),
-                    Consumer<regoin_vm>(
+                    Consumer<RegionProvider>(
                       builder: (context, cart, child) {
                         return DropdownButtonFormField(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),
-                          items: cart.listregoin.map((level_one) {
+                          items: cart.listRegion.map((level_one) {
                             return DropdownMenuItem(
-                              child: Text(level_one.name_regoin), //label of item
-                              value: level_one.id_regoin, //value of item
+                              child: Text(level_one.regionName), //label of item
+                              value: level_one.regionId, //value of item
                             );
                           }).toList(),
                           value: cart.selectedValueuser,
@@ -293,7 +281,7 @@ class _addUserState extends State<addUser> {
                       height: 15,
                     ),
                     RowEdit(name: 'المناطق', des: ''),
-                    Consumer<maincity_vm>(
+                    Consumer<MainCityProvider>(
                       builder: (context, cart, child) {
                         return DropdownSearch<MainCityModel>.multiSelection(
                           mode: Mode.DIALOG,
@@ -349,17 +337,17 @@ class _addUserState extends State<addUser> {
                             return;
                           }
 
-                          final selectedRegion = context.read<maincity_vm>().selecteditemmaincity;
+                          final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
                           final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
                           bool hasChanges = selectedMainCityIds.isNotEmpty;
 
-                          String? regoin = Provider.of<regoin_vm>(context, listen: false).selectedValueuser;
+                          String? regoin = Provider.of<RegionProvider>(context, listen: false).selectedValueuser;
                           String? regoinname = regoin == null
                               ? ""
-                              : Provider.of<regoin_vm>(context, listen: false)
-                                  .listregoin
-                                  .firstWhere((element) => element.id_regoin == regoin)
-                                  .name_regoin;
+                              : Provider.of<RegionProvider>(context, listen: false)
+                                  .listRegion
+                                  .firstWhere((element) => element.regionId == regoin)
+                                  .regionName;
 
                           String? level = Provider.of<level_vm>(context, listen: false).selectedValueLevel;
                           String levelname = Provider.of<level_vm>(context, listen: false)
@@ -368,7 +356,7 @@ class _addUserState extends State<addUser> {
                               .nameLevel;
 
                           String? id_country =
-                              Provider.of<user_vm_provider>(context, listen: false).currentUser.fkCountry;
+                              Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
                           if (level != null &&
                               emailController.text.toString().trim().isNotEmpty &&
                               nameController.text.toString().trim().isNotEmpty &&
@@ -387,11 +375,11 @@ class _addUserState extends State<addUser> {
                               'name_level': levelname,
                               'name_regoin': regoinname,
                               'fkuserAdd':
-                                  Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                                  Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
                               'fk_regoin': regoin != null ? regoin : "null",
                             };
-                            Provider.of<user_vm_provider>(context, listen: false)
-                                .adduser_vm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "",selectedRegion.map((e) => e.asUserRegion()).toList())
+                            Provider.of<UserProvider>(context, listen: false)
+                                .addUserVm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "",selectedRegion.map((e) => e.asUserRegion()).toList())
                                 .then((value) => value != "repeat" ? clear() : error());
                           } else {
                             ScaffoldMessenger.of(context)

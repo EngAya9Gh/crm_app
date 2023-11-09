@@ -48,12 +48,12 @@ extension UserTypeExt on UserType {
   }
 }
 
-class user_vm_provider extends ChangeNotifier {
-  List<UserModel> userall = [];
-  List<UserModel> listuserfilter = [];
+class UserProvider extends ChangeNotifier {
+  List<UserModel> allUsers = [];
+  List<UserModel> listFilteredUser = [];
   var isLoading = true;
-  bool isupdate = false;
-  late UserModel? selecteduser = null;
+  bool isUpdate = false;
+  UserModel? selectedUser;
 
   List<UserModel> usersHigherManagement = [];
   List<UserModel> usersSalesManagement = [];
@@ -66,7 +66,7 @@ class user_vm_provider extends ChangeNotifier {
   List<UserModel> usersMarketingManagement = [];
 
   void changevalueuser(UserModel? s, [bool isInit = false]) {
-    selecteduser = s;
+    selectedUser = s;
     if (isInit) {
       return;
     }
@@ -76,16 +76,12 @@ class user_vm_provider extends ChangeNotifier {
   late String? selectedValueUser = null;
 
   void changeValUserID(String? val) {
-    print('inside regoin vm');
-    print(val);
     if (val == null || val == "null") {
       selectedValueUser = null;
-      print('regoin vm');
     } else {
       selectedValueUser = val;
-      print('regoin in vm');
     }
-    changevalueuser(userall.firstWhere((element) => element.idUser == val));
+    changevalueuser(allUsers.firstWhere((element) => element.idUser == val));
     notifyListeners();
   }
 
@@ -105,42 +101,37 @@ class user_vm_provider extends ChangeNotifier {
       isActive: '1',
       fkuserAdd: '');
 
-  Future<void> getuser_vm() async {
+  Future<void> getUsersVm() async {
     isLoading = true;
     notifyListeners();
-    await getUsersVm();
+    await _getUsersVm();
     isLoading = false;
-    listuserfilter = List.from(userall);
+    listFilteredUser = List.from(allUsers);
     notifyListeners();
   }
 
-  void setpath(String path) {
+  void setImagePath(String path) {
     currentUser.path = path;
     notifyListeners();
   }
 
-  Future<void> updateuser_vm(Map<String, dynamic> body, String? iduser, File? file,
+  Future<void> updateUserVm(Map<String, dynamic> body, String? iduser, File? file,
       [List<UserRegion> mainCityList = const [], String params = '']) async {
-    isupdate = true;
+    isUpdate = true;
     notifyListeners();
-    int index = userall.indexWhere((element) => element.idUser == iduser);
+    int index = allUsers.indexWhere((element) => element.idUser == iduser);
     UserModel ustemp = await UserService().UpdateUser(body: body, idUser: iduser, file: file, params: params);
-    //if(ustemp.idUser!='0'){
-
     ustemp.maincitylist_user = mainCityList;
-    userall[index] = ustemp;
+    allUsers[index] = ustemp;
     updateUserList(ustemp);
     getcurrentuser();
-    userall[index].path = "";
-    //}
-    listuserfilter = List.from(userall);
-    isupdate = false;
+    allUsers[index].path = "";
+    listFilteredUser = List.from(allUsers);
+    isUpdate = false;
     notifyListeners();
-
-    // return result;
   }
 
-  Future<String> adduser_vm(Map<String, String?> body, String params, List<UserRegion> mainCityList) async {
+  Future<String> addUserVm(Map<String, String?> body, String params, List<UserRegion> mainCityList) async {
     try {
       UserModel us = await UserService().addUser(body, params);
       String result = '';
@@ -148,9 +139,9 @@ class user_vm_provider extends ChangeNotifier {
         result = 'repeat';
       } else {
         us.maincitylist_user = mainCityList;
-        userall.insert(0, us);
+        allUsers.insert(0, us);
         addUserList(us);
-        listuserfilter.insert(0, us);
+        listFilteredUser.insert(0, us);
         notifyListeners();
         result = 'done';
       }
@@ -161,71 +152,47 @@ class user_vm_provider extends ChangeNotifier {
   }
 
   Future<void> searchProducts(String productName) async {
-    listuserfilter = [];
-    // code to convert the first character to uppercase
-    String searchKey = productName; //
-    print(productName);
+    listFilteredUser = [];
+    String searchKey = productName;
     if (productName.isNotEmpty) {
-      if (userall.isNotEmpty) {
-        userall.forEach((element) {
+      if (allUsers.isNotEmpty) {
+        allUsers.forEach((element) {
           if (element.nameUser!.toLowerCase().contains(searchKey.toLowerCase(), 0)
               // || element.mobile!.contains(searchKey,0)
-              ) listuserfilter.add(element);
+              ) listFilteredUser.add(element);
         });
       }
     } else {
-      print('useeeeeeeeeeeeeeer');
-      listuserfilter = List.from(userall);
+      listFilteredUser = List.from(allUsers);
     }
     notifyListeners();
   }
 
-  bool getfilteruser(String filter) {
+  bool getFilterUser(String filter) {
     UserModel? user;
-    userall.map((e) {
+    allUsers.map((e) {
       e.nameUser!.contains(filter);
       return true;
     });
     return false;
   }
 
-  Future<bool> tryAutoLogin() async {
-    // prefs=await SharedPreferences.getInstance();
-    if (!prefs.containsKey('id_user')) {
-      return false;
-    }
-    final extractedUserData = prefs.getString('id_user');
-    notifyListeners();
-    return true;
-  }
-
   Future<SharedPreferences> getcurrentuser() async {
     prefs = await SharedPreferences.getInstance();
     try {
-      print('user id neeeeeeeewwww  ');
-
-      await getUsersVm();
-
+      await _getUsersVm();
       String? id = prefs.getString('id_user');
-      print('user id sss  ');
-      print(id);
-      //print("in get user" + userall[0].nameUser.toString());
       if (id != null) {
-        // currentUser=await UserService().userByIdServices(idUser: id.toString());
 
-        final index = userall.indexWhere((element) => element.idUser == id && element.isActive == '1');
+        final index = allUsers.indexWhere((element) => element.idUser == id && element.isActive == '1');
         if (index >= 0) {
-          // if (currentUser.isActive=='1') {
-          currentUser = userall[index];
+          currentUser = allUsers[index];
           currentUser.path = "";
           notifyListeners();
-          print("preferences");
-          print(prefs.containsKey('id_user'));
           prefs.setString("id_user1", '-1');
           return prefs;
         } else {
           SharedPreferences preferences = await SharedPreferences.getInstance();
-          //preferences.setBool(kKeepMeLoggedIn, true);
           preferences.setString("id_user1", '0');
           return preferences;
         }
@@ -233,7 +200,7 @@ class user_vm_provider extends ChangeNotifier {
         return prefs;
       }
     } catch (e) {
-      print('exp error is ' + e.toString());
+      
     }
     notifyListeners();
     return prefs;
@@ -262,22 +229,21 @@ class user_vm_provider extends ChangeNotifier {
       notifyListeners();
       onDeleteSucceed.call();
     } catch (e) {
-      print("eeeeeeeeeeee $e");
       isDeletingAccount = false;
       notifyListeners();
       onDeleteFailed?.call();
     }
   }
 
-  Future<void> getUsersVm() async {
-    if (userall.isNotEmpty) {
+  Future<void> _getUsersVm() async {
+    if (allUsers.isNotEmpty) {
       return;
     }
 
-    userall = await UserService().usersServices();
+    allUsers = await UserService().usersServices();
 
     final List<UserModel> activeUsers =
-        List<UserModel>.of(userall).where((element) => element.isActive == '1').toList();
+        List<UserModel>.of(allUsers).where((element) => element.isActive == '1').toList();
 
     usersHigherManagement = List.of(activeUsers)
         .where((element) => element.typeAdministration == UserType.HigherManagement.type.toString())

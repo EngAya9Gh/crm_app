@@ -16,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/config/theme/theme.dart';
 import '../../../model/companyModel.dart';
 import '../../../view_model/activity_vm.dart';
 import 'add_activity.dart';
@@ -32,14 +33,14 @@ class _resoan_viewState extends State<company_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
 
-      await Provider.of<company_vm>(context,listen: false).getcompany( );
+      await Provider.of<CompanyProvider>(context,listen: false).getcompany( );
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<CompanyModel> _listlevel= Provider.of<company_vm>
+    List<CompanyModel> _listlevel= Provider.of<CompanyProvider>
       (context,listen: true).list_company;
     return Scaffold(
       appBar: AppBar(
@@ -51,7 +52,7 @@ class _resoan_viewState extends State<company_view> {
       // Provider.of<privilge_vm>(context,listen: true)
       //     .checkprivlge('74')==true ?
       FloatingActionButton(
-        child:Icon(Icons.add),
+        child:Icon(Icons.add,color: AppColors.white),
         onPressed: (){
           Navigator.push(
             context,

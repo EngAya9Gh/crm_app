@@ -58,7 +58,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
 
   @override
   Widget build(BuildContext context) {
-    _currentUser = Provider.of<user_vm_provider>(context, listen: true).currentUser;
+    _currentUser = Provider.of<UserProvider>(context, listen: true).currentUser;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(

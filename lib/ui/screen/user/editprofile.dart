@@ -27,11 +27,11 @@ class _edit_profileState extends State<edit_profile> {
    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
    @override void initState() {
-     nameuserController.text= Provider.of<user_vm_provider>(context,listen: false)
+     nameuserController.text= Provider.of<UserProvider>(context,listen: false)
          .currentUser.nameUser.toString();
-     mobileController.text= Provider.of<user_vm_provider>(context,listen: false)
+     mobileController.text= Provider.of<UserProvider>(context,listen: false)
          .currentUser.mobile.toString();
-     emailController.text= Provider.of<user_vm_provider>(context,listen: false)
+     emailController.text= Provider.of<UserProvider>(context,listen: false)
          .currentUser.email.toString();
     super.initState();
   }
@@ -51,7 +51,7 @@ appBar: AppBar(
     IconButton(
       onPressed: () {
       if(_globalKey.currentState!.validate()){
-        //print('before ${_textcontroller!.text}');
+        
         _globalKey.currentState!.save();
           // Provider.of<LoadProvider>(context, listen: false)
           //     .changeboolUpdateUser(true);
@@ -71,14 +71,14 @@ appBar: AppBar(
             // 'name_regoin':regoinname,
             // 'name_level' :levelname,
           };
-          Provider.of<user_vm_provider>(context,listen: false)
-              .updateuser_vm(
+          Provider.of<UserProvider>(context,listen: false)
+              .updateUserVm(
               body,
-              Provider.of<user_vm_provider>(context,listen: false)
+              Provider.of<UserProvider>(context,listen: false)
                   .currentUser.idUser,
-              Provider.of<user_vm_provider>(context,listen: false)
+              Provider.of<UserProvider>(context,listen: false)
                   .currentUser.path!.isNotEmpty?
-              File(Provider.of<user_vm_provider>(context,listen: false)
+              File(Provider.of<UserProvider>(context,listen: false)
                       .currentUser.path!):null
 
           );
@@ -99,7 +99,7 @@ appBar: AppBar(
   ],
 ),
       body:  ModalProgressHUD(
-        inAsyncCall: Provider.of<user_vm_provider>(context,listen: true).isupdate,
+        inAsyncCall: Provider.of<UserProvider>(context,listen: true).isUpdate,
         child: SingleChildScrollView(
           child: ContainerShadows(
             width: double.infinity,

@@ -1,15 +1,20 @@
 import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/features/communication_list/data/models/communication_list_response.dart';
+import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:intl/intl.dart' hide TextDirection;
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart' as intl;
+import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../constants.dart';
+import '../../../../model/regoin_model.dart';
 import '../../../../ui/screen/client/profileclient.dart';
+import '../../../../view_model/regoin_vm.dart';
+import '../../../app/presentation/widgets/app_drop_down.dart';
+import '../../data/models/distinctive_client.dart';
 import '../manager/communication_list_bloc.dart';
 
 class CommunicationListPage extends StatefulWidget {
@@ -29,13 +34,11 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
   @override
   void initState() {
     _searchTextField = TextEditingController()..addListener(onSearch);
-    final currentUser = context.read<user_vm_provider>().currentUser;
+    final currentUser = context.read<UserProvider>().currentUser;
     fkCountry = currentUser.fkCountry;
     userId = currentUser.idUser;
     _communicationListBloc = context.read<CommunicationListBloc>()
-      ..add(
-        GetCommunicationListEvent(fkCountry!, query: _searchTextField.text),
-      );
+      ..add(GetCommunicationListEvent(fkCountry!, query: _searchTextField.text));
     super.initState();
   }
 
@@ -54,13 +57,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'قائمة عملاء التميز',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-        ),
-      ),
+      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'قائمة عملاء التميز')),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<CommunicationListBloc, CommunicationListState>(
@@ -70,15 +67,60 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
               loading: () => Center(child: CircularProgressIndicator()),
               loaded: (data) => Column(
                 children: [
-                  TextField(
-                    textInputAction: TextInputAction.search,
-                    controller: _searchTextField,
-                    decoration: InputDecoration(
-                      hintText: "المؤسسة, العميل, الفرع.....",
-                      border: InputBorder.none,
-                      filled: true,
-                      fillColor: Colors.grey.shade200,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: TextField(
+                          textInputAction: TextInputAction.search,
+                          controller: _searchTextField,
+                          decoration: InputDecoration(
+                            hintText: "المؤسسة, العميل, الفرع.....",
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                          ),
+                        ),
+                      ),
+                      5.horizontalSpace,
+                      Expanded(
+                        flex: 3,
+                        child: BlocBuilder<CommunicationListBloc, CommunicationListState>(
+                          builder: (context, state) {
+                            return Consumer<RegionProvider>(
+                              builder: (context, regionVm, child) {
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      child: AppDropdownButtonFormField<RegionModel, String?>(
+                                        items: regionVm.listRegionFilter,
+                                        value: state.selectedCityId,
+                                        itemAsString: (item) => item!.regionName,
+                                        itemAsValue: (item) => item!.regionId,
+                                        onChange: (value) {
+                                          if (value == null) {
+                                            return;
+                                          }
+                                          _communicationListBloc
+                                              .add(OnChangeRegionEvent(value, fkCountry!, _searchTextField.text));
+                                        },
+                                        hint: "الفرع",
+                                      ),
+                                    ),
+                                    if(state.selectedCityId != null)
+                                    IconButton(
+                                        onPressed: () => _communicationListBloc
+                                            .add(OnChangeRegionEvent(null, fkCountry!, _searchTextField.text)),
+                                        icon: Icon(Icons.close))
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                      10.horizontalSpace,
+                    ],
                   ),
                   // SwitchListTile(
                   //   value: isMyClients,
@@ -91,8 +133,8 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                   // ),
                   Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () async => _communicationListBloc.add(GetCommunicationListEvent(fkCountry!,
-                          query: _searchTextField.text, userId: isMyClients ? userId : null)),
+                      onRefresh: () async => _communicationListBloc
+                          .add(GetCommunicationListEvent(fkCountry!, query: _searchTextField.text)),
                       child: ListView.separated(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                         itemBuilder: (BuildContext context, int index) => communicationWidget(
@@ -114,7 +156,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
     );
   }
 
-  Widget communicationWidget(Communication communication) {
+  Widget communicationWidget(DistinctiveClient communication) {
     return InkWell(
       onTap: () {
         Navigator.of(context).push(
@@ -214,8 +256,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                   ),
                   SizedBox(width: 15),
                   Text(
-                      communication.dateCreate,
-                    //DateFormat("yyyy MMM dd hh:mm a", "ar").format(communication.dateApprove ?? DateTime.now()),
+                    intl.DateFormat("yyyy MMM dd hh:mm a", "ar").format(communication.dateCreate ?? DateTime.now()),
                     style: TextStyle(color: kMainColor, fontFamily: kfontfamily2),
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.start,

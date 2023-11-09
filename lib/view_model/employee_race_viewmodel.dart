@@ -225,7 +225,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("e $e");
+      
       employeeDailyReportState = employeeDailyReportState.changeToFailed;
       notifyListeners();
     }

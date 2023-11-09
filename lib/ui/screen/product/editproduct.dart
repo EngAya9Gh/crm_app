@@ -59,30 +59,30 @@ class _EditProductState extends State<EditProduct> {
   void initState()  {
 
 
-    print(widget.productModel.fkConfig);
+    
     valtaxrate=widget.productModel.fkConfig==null
         ||widget.productModel.fkConfig=="null"?false:true;
-    print(valtaxrate);
-    print(valtaxrate);
+    
+    
 
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
 
         Provider.of<config_vm>(context, listen: false).getAllConfig();
-        print(Provider.of<config_vm>(context, listen: false).listofconfig);
+        
         ////////////////////////////////
         Provider.of<selected_button_provider>(context,listen: false)
             .selectValue(valtype_product);
 
         Provider.of<switch_provider>(context,listen: false)
             .changeboolValue(valtaxrate);
-        print("valtaxrate");
+        
       });
     nameprod= _textName.text=widget.productModel.nameProduct;
     _textprice.text=widget.productModel.priceProduct;
     price=double.parse(_textprice.text.toString());
     valtype_product=int.parse( widget.productModel.type);
-    idCountry=Provider.of<user_vm_provider>(context,listen: false)
+    idCountry=Provider.of<UserProvider>(context,listen: false)
     .currentUser.fkCountry.toString();
 
     //valtype_product == 0 ? 1 : 0;
@@ -94,20 +94,20 @@ class _EditProductState extends State<EditProduct> {
 
     List<ConfigModel> _listconfg =
         Provider.of<config_vm>(context, listen: false).listofconfig;
-    print("build 3");
+    
     taxrate =
         _listconfg.firstWhere((element) => element.name_config == 'taxrate');
-    print(taxrate);
+    
   }
 
   @override
   Widget build(BuildContext context) {
     //
     // idCountry= Provider.of<country_vm>(context,listen: false).id_country;
-    // print("build edit prod");
-    // print(idCountry);
+    // 
+    // 
     // Provider.of<config_vm>(context, listen: false).getAllConfig(idCountry!);
-    // print(Provider.of<config_vm>(context, listen: false).listofconfig);
+    // 
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changeLoadingupdateprod(false);
 
@@ -166,8 +166,6 @@ class _EditProductState extends State<EditProduct> {
                                   buttons: ['أجهزة', 'برامج'], //[0,1]
                                   controller: GroupButtonController(
                                     selectedIndex: selectedProvider.isSelected,
-                                    onDisablePressed: (i) =>
-                                        print('Button #$i is disabled'),
                                   ),
                                   onSelected: (_,selected, isselect) {
                                     valtype_product = selected;
@@ -268,8 +266,8 @@ class _EditProductState extends State<EditProduct> {
                           _isLoading
                               ? CircularProgressIndicator()
                               :
-                          Provider.of<privilge_vm>(context,listen: true)
-                              .checkprivlge('46')==true ?
+                          Provider.of<PrivilegeProvider>(context,listen: true)
+                              .checkPrivilege('46')==true ?
                           CustomButton(
                             width: MediaQuery.of(context).size.width * 0.2,
                             text: "تعديل",
@@ -280,10 +278,10 @@ class _EditProductState extends State<EditProduct> {
                                     .changeLoadingupdateprod(true);
 
                                 settaxrate(context);
-                                print("update");
-                                print(valtype_product);
-                                print(valtaxrate);
-                                print(taxrate.id_config);
+                                
+                                
+                                
+                                
                                 valtype_product=   Provider.of<selected_button_provider>(context,listen: false)
                                     .isSelected;
                                 valtaxrate=  Provider.of<switch_provider>(context,listen: false).isSwitched;
@@ -298,7 +296,7 @@ class _EditProductState extends State<EditProduct> {
                                       "value_config":valtaxrate ?taxrate.value_config:"null",
                                       "id_product": widget.productModel.idProduct.toString(),
                                        "updated_at":DateTime.now().toString(),
-                                      "fkuserupdate":Provider.of<user_vm_provider>
+                                      "fkuserupdate":Provider.of<UserProvider>
                                     (context,listen: false).currentUser.idUser.toString(),
                                     },
                                     widget.productModel.idProduct.toString())
@@ -317,8 +315,8 @@ class _EditProductState extends State<EditProduct> {
                             },
                           ):Container(),
 
-                          Provider.of<privilge_vm>(context,listen: true)
-                              .checkprivlge('48')==true ?   CustomButton(
+                          Provider.of<PrivilegeProvider>(context,listen: true)
+                              .checkPrivilege('48')==true ?   CustomButton(
                               width: MediaQuery.of(context).size.width * 0.2,
 
                               onTap: ()async{
@@ -351,7 +349,7 @@ class _EditProductState extends State<EditProduct> {
                                                   .deleteProduct( widget.productModel.idProduct);
                                               Provider.of<LoadProvider>(context,listen: false)
                                                   .changebooldelete(false);
-                                              print(res);
+                                              
                                               if(res=="remove error")
                                                 ScaffoldMessenger.of(context).showSnackBar(
                                                     SnackBar(content: Text("لا يمكن حذف هذا المنتج"))

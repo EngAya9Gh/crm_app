@@ -175,7 +175,7 @@ class view_deleted extends StatelessWidget {
                         ? cardRow(title: 'عنوان الفاتورة', value: invoice.address_invoice.toString())
                         : Container(),
 
-                    Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true
+                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true
                         ? invoice.clientusername != null && invoice.clientusername.toString().isNotEmpty
                         ? cardRow(
                         title: 'يوزر العميل',

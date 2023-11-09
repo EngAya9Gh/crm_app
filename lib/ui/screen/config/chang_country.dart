@@ -21,7 +21,7 @@ class _change_countryState extends State<change_country> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_)async {
-      String fkcoun=Provider.of<user_vm_provider>(context,listen: false).currentUser.fkCountry.toString();
+      String fkcoun=Provider.of<UserProvider>(context,listen: false).currentUser.fkCountry.toString();
       await Provider.of<country_vm>(context,listen: false).getcountry();
       Provider.of<country_vm>(context,listen: false).changeValuser(fkcoun);
     });
@@ -31,8 +31,8 @@ class _change_countryState extends State<change_country> {
     return Scaffold(
 
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<user_vm_provider>(context)
-              .isupdate,
+          inAsyncCall: Provider.of<UserProvider>(context)
+              .isUpdate,
           child : Padding(
             padding: EdgeInsets.only(
                 top: 150,
@@ -72,13 +72,13 @@ class _change_countryState extends State<change_country> {
                     //MediaQuery.of(context).size.width * 0.2,
                     text: 'حفظ',
                     onTap: () async {
-                        String iduser=Provider.of<user_vm_provider>(context,listen: false)
+                        String iduser=Provider.of<UserProvider>(context,listen: false)
                         .currentUser.idUser.toString();
                         String fkcountry=Provider.of<country_vm>(context,listen: false)
                         .selectedValueuser.toString();
 
-                          Provider.of<user_vm_provider>(context,listen: false)
-                              .updateuser_vm({
+                          Provider.of<UserProvider>(context,listen: false)
+                              .updateUserVm({
                            'fk_country':fkcountry
                           },iduser,null);}
                     ),

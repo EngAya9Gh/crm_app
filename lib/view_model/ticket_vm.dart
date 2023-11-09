@@ -35,7 +35,7 @@ class ticket_vm extends ChangeNotifier{
     addvalue=true;
     notifyListeners();
   bool isav=  await getclient_ticket_close(client);
-  print(isav);
+  
   if(isav){
     var data= await Api()
         .post( url:url+"ticket/add_ticket.php",body:
@@ -59,8 +59,8 @@ class ticket_vm extends ChangeNotifier{
     // code to convert the first character to uppercase
     String searchKey =productName;//
 
-    print('search');
-    print(searchKey);
+    
+    
     if(productName.isNotEmpty){
     if(listticket.isNotEmpty ){
       listticket.forEach((element) {
@@ -124,9 +124,9 @@ class ticket_vm extends ChangeNotifier{
     if( element.fkClient==fkIdClient)
     {
       listticket_client.add(element);
-      print('vghfggcgbbbbbbbbbbbbbbbbbbbb');
-      print(listticket_client[index].nameEnterprise);
-      print(fkIdClient);
+      
+      
+      
       index++;
     }
   });
@@ -210,8 +210,8 @@ Future<void> getticket() async {
   var
   data=await Api()
       .get(url:url+ 'ticket/view_ticket.php?fk_country=${usercurrent!.fkCountry}');
-   print('tickets print');
-   print(data);
+   
+   
   List<TicketModel> prodlist = [];
   for (int i = 0; i < data.length; i++) {
     prodlist.add(TicketModel.fromJson(data[i]));

@@ -49,7 +49,7 @@ class _ClientViewState extends State<ClientView> {
     //         .listClient
     //         .firstWhere((element) => element.idClients == widget.idclient);
 
-    return Consumer<client_vm>(
+    return Consumer<ClientProvider>(
         builder: (context, state, _) {
           if (state.currentClientModel.isLoading || state.currentClientModel.isInit) {
             return Scaffold(
@@ -59,7 +59,7 @@ class _ClientViewState extends State<ClientView> {
             return Scaffold(
               body: Center(
                 child: IconButton(
-                  onPressed: () => context.read<client_vm>().get_byIdClient(widget.idclient.toString()),
+                  onPressed: () => context.read<ClientProvider>().get_byIdClient(widget.idclient.toString()),
                   icon: Icon(Icons.refresh),
                 ),
               ),
@@ -100,13 +100,13 @@ class _ClientViewState extends State<ClientView> {
                               color: kWhiteColor,
                             ),
                           ),
-                          (Provider.of<privilge_vm>(context, listen: false)
-                              .checkprivlge('133') == true)?
+                          (Provider.of<PrivilegeProvider>(context, listen: false)
+                              .checkPrivilege('133') == true)?
                             IconButton(
                               onPressed: () {
-                             if( (Provider.of<privilge_vm>(context, listen: false)
-                                 .checkprivlge('147') == true))
-                               context.read<client_vm>().setTagClient();
+                             if( (Provider.of<PrivilegeProvider>(context, listen: false)
+                                 .checkPrivilege('147') == true))
+                               context.read<ClientProvider>().setTagClient();
                               },
                               icon: Icon(
                                 (clientModel!.tag ?? false)
@@ -154,6 +154,13 @@ class _ClientViewState extends State<ClientView> {
                   cardRow(title: ' الفرع', value: clientModel.name_regoin.toString()),
 
                   cardRow(title: ' نوع النشاط', value: clientModel.activity_type_title?.toString() ?? "لا يوجد"),
+                  clientModel.size_activity != null
+                      ? cardRow(title: 'حجم النشاط', value: clientModel.size_activity.toString())
+                      : Container(),
+                  clientModel.email != null
+                      ? cardRow(title: 'البريد الالكتروني', value: clientModel.email.toString())
+                      : Container(),
+
                   cardRow(title: ' مدينة العميل', value: clientModel.name_city.toString()),
                   cardRow(title: ' المنطقة', value: clientModel.namemaincity.toString()),
 
@@ -190,7 +197,7 @@ class _ClientViewState extends State<ClientView> {
                   cardRow(title: 'رقم الموظف', value: clientModel.mobileuser.toString()),
 
                  if(clientModel.reasonTransfer != null)
-                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
                       clientModel.fkusertrasfer != null ?
                       cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
                           : Container()
@@ -201,17 +208,17 @@ class _ClientViewState extends State<ClientView> {
               cardRow(title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
               : Container(),
 
-                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
                       (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
                       ? cardRow(title: 'تحويل العميل إلى', value: clientModel.nameTransferTo.toString())
                       : Container(),
 
-                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
                       (clientModel.reasonTransfer == null) &&     clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value:'تم قبول التحويل')
                       : Container(),
 
-                  Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true &&
+                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
                       (clientModel.reasonTransfer != null) &&     clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value:'معلق')
                       : Container(),
@@ -258,18 +265,20 @@ class _ClientViewState extends State<ClientView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              ElevatedButton(
-                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                onPressed: () async {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => editclient(
-                                              itemClient: clientModel,
-                                              fkclient: clientModel.idClients.toString(),
-                                              fkuser: clientModel.fkUser.toString())));
-                                },
-                                child: Text('تعديل بيانات العميل'),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  onPressed: () async {
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                            builder: (context) => editclient(
+                                                client: clientModel,
+                                                fkclient: clientModel.idClients.toString(),
+                                                fkuser: clientModel.fkUser.toString())));
+                                  },
+                                  child: Text('تعديل بيانات العميل'),
+                                ),
                               ),
                               clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
                                   ? SizedBox(
@@ -277,21 +286,23 @@ class _ClientViewState extends State<ClientView> {
                                     )
                                   : Container(),
                               clientModel.reasonTransfer == null  ?
-                              ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            CupertinoPageRoute(
-                                                builder: (context) => transferClient(
-                                                      name_enterprise: clientModel.nameEnterprise.toString(),
-                                                      idclient: clientModel.idClients.toString(),
-                                                      type: "client",
-                                                    ),
-                                                fullscreenDialog: true));
-                                      },
-                                      child: Text('تحويل العميل'),
-                                    )
+                              Expanded(
+                                child: ElevatedButton(
+                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              CupertinoPageRoute(
+                                                  builder: (context) => transferClient(
+                                                        name_enterprise: clientModel.nameEnterprise.toString(),
+                                                        idclient: clientModel.idClients.toString(),
+                                                        type: "client",
+                                                      ),
+                                                  fullscreenDialog: true));
+                                        },
+                                        child: Text('تحويل العميل'),
+                                      ),
+                              )
                                   : Container(),
                                SizedBox(
                                 height: 3,
@@ -307,7 +318,7 @@ class _ClientViewState extends State<ClientView> {
                   //     Provider.of<privilge_vm>(context,listen: true)
                   //         .checkprivlge('7')==true?
 
-                  widget.clienttransfer == null || Provider.of<privilge_vm>(context, listen: true).checkprivlge('150') == true
+                  widget.clienttransfer == null || Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true
                       ? Container()
                       : Center(
                           child: Row(
@@ -320,7 +331,7 @@ class _ClientViewState extends State<ClientView> {
                                       context: context,
                                       builder: (context) {
                                         return ModalProgressHUD(
-                                          inAsyncCall: Provider.of<client_vm>(context).isapproved,
+                                          inAsyncCall: Provider.of<ClientProvider>(context).isapproved,
                                           child: Directionality(
                                             textDirection: TextDirection.rtl,
                                             child: AlertDialog(
@@ -336,10 +347,10 @@ class _ClientViewState extends State<ClientView> {
                                                   onPressed: () async {
                                                     String? reason_transfer = null;
                                                     //update fkuser to new user
-                                                    Provider.of<client_vm>(context, listen: false).setfkUserApprove({
+                                                    Provider.of<ClientProvider>(context, listen: false).setfkUserApprove({
                                                       'approve': '1',
                                                       'reason_transfer': reason_transfer.toString(),
-                                                      'fkuser': Provider.of<user_vm_provider>(context, listen: false)
+                                                      'fkuser': Provider.of<UserProvider>(context, listen: false)
                                                           .currentUser
                                                           .idUser
                                                           .toString(), //user reciept
@@ -347,7 +358,7 @@ class _ClientViewState extends State<ClientView> {
                                                       // Provider.of<user_vm_provider>(context,listen: false)
                                                       //     .currentUser.nameUser.toString(),//الموظف الذي حول العميل
                                                       'name_enterprise': clientModel.nameEnterprise,
-                                                      'fk_regoin': Provider.of<user_vm_provider>(context, listen: false)
+                                                      'fk_regoin': Provider.of<UserProvider>(context, listen: false)
                                                           .currentUser
                                                           .fkRegoin
                                                           .toString(),
@@ -393,7 +404,7 @@ class _ClientViewState extends State<ClientView> {
                                       context: context,
                                       builder: (context) {
                                         return ModalProgressHUD(
-                                          inAsyncCall: Provider.of<client_vm>(context).isapproved,
+                                          inAsyncCall: Provider.of<ClientProvider>(context).isapproved,
                                           child: Directionality(
                                             textDirection: TextDirection.rtl,
                                             child: AlertDialog(
@@ -407,8 +418,8 @@ class _ClientViewState extends State<ClientView> {
                                                   style:
                                                       ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                                   onPressed: () async {
-                                                    Provider.of<client_vm>(context, listen: false).setfkUserApprove({
-                                                      'userrefuse': Provider.of<user_vm_provider>(context, listen: false)
+                                                    Provider.of<ClientProvider>(context, listen: false).setfkUserApprove({
+                                                      'userrefuse': Provider.of<UserProvider>(context, listen: false)
                                                           .currentUser
                                                           .nameUser,
                                                       'fkuserclient': clientModel.fkUser.toString(), //صاحب العميل
@@ -490,11 +501,11 @@ class _ClientViewState extends State<ClientView> {
                                                           "fkusername": widget.invoice!.nameUser, //موظف المبيعات
                                                           //"message":"",//
                                                           "nameuserApproved":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .nameUser,
                                                           "iduser_approve":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .idUser //معتمد الاشتراك
                                                         }, widget.invoice!.idInvoice).then(
@@ -565,11 +576,11 @@ class _ClientViewState extends State<ClientView> {
                                                           "fkusername": widget.invoice!.nameUser, //موظف المبيعات
                                                           //"message":"",//
                                                           "nameuserApproved":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .nameUser,
                                                           "iduser_approve":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .idUser //معتمد الاشتراك
                                                         }, widget.invoice!.idInvoice).then(
@@ -610,7 +621,7 @@ class _ClientViewState extends State<ClientView> {
                   widget.invoice != null
                       ? widget.invoice!.isApprove != 1 &&
                               widget.invoice!.isApproveFinance == null &&
-                              Provider.of<privilge_vm>(context, listen: true).checkprivlge('111') == true &&
+                              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('111') == true &&
                               widget.typeinvoice == 'f'
                           ? Center(
                               child: Row(
@@ -655,11 +666,11 @@ class _ClientViewState extends State<ClientView> {
                                                           "fkusername": widget.invoice!.nameUser, //موظف المبيعات
                                                           //"message":"",//
                                                           "nameuserApproved":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .nameUser,
                                                           "iduser_FApprove":
-                                                              Provider.of<user_vm_provider>(context, listen: false)
+                                                              Provider.of<UserProvider>(context, listen: false)
                                                                   .currentUser
                                                                   .idUser //معتمد الاشتراك
                                                         }, widget.invoice!.idInvoice).then(

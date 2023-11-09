@@ -6,7 +6,7 @@ import '../constants.dart';
 class ProductService{
 
   Future<ProductModel> addProduct( Map<String,dynamic?> body) async {
-    print("$body");
+    
 
     var result = await Api()
         .post( url:url+"products/addProduct.php",
@@ -32,7 +32,7 @@ class ProductService{
     for (int i = 0; i < data.length; i++) {
       prodlist.add(ProductModel.fromJson(data[i]));
     }
-    print(prodlist);
+    
     return prodlist;
   }
   Future<List<ProductModel>> getAllProductById(String idproduct) async {

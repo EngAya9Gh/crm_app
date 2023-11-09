@@ -52,7 +52,7 @@ class _delayinstallState extends State<delayinstall> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
-      Provider.of<user_vm_provider>(context, listen: false).changevalueuser(null);
+      Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
     super.initState();
     getData();
@@ -69,7 +69,7 @@ class _delayinstallState extends State<delayinstall> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String iduser = usermodel.idUser.toString();
     // String idregoin = usermodel.fkRegoin.toString();
@@ -104,11 +104,11 @@ class _delayinstallState extends State<delayinstall> {
     listInvoicesAccept = [];
     for (int i = 0; i < data.length; i++) {
       // tempdata.add(BarModel.fromJson(data[i]));
-      // print(tempdata[i].y);
+      // 
       listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
     }
 
-    print('length result' + listInvoicesAccept.length.toString());
+    
     // for(int i=0;i<salesresult.length;i++)
     setState(() {
       salesresult = tempdata;
@@ -134,11 +134,11 @@ class _delayinstallState extends State<delayinstall> {
                   left: 8.0,
                   right: 8,
                 ),
-                child: Consumer<user_vm_provider>(
+                child: Consumer<UserProvider>(
                   builder: (context, cart, child) {
                     return Row(
                       children: [
-                        if(cart.selecteduser != null)
+                        if(cart.selectedUser != null)
                           ...{
                             IconButton(
                                 onPressed: () {
@@ -161,7 +161,7 @@ class _delayinstallState extends State<delayinstall> {
                               cart.changevalueuser(data);
                               getData();
                             },
-                            selectedItem: cart.selecteduser,
+                            selectedItem: cart.selectedUser,
                             showSearchBox: true,
                             dropdownSearchDecoration: InputDecoration(
                               isCollapsed: true,
@@ -368,7 +368,7 @@ class _delayinstallState extends State<delayinstall> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
       });
   }
 
@@ -385,7 +385,7 @@ class _delayinstallState extends State<delayinstall> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
       });
   }
 }

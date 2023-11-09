@@ -33,7 +33,7 @@ class _ticketclientviewState extends State<ticketclientview> {
       Provider.of<ticket_vm>(context,listen: false).changeticket(0);
       Provider.of<ticket_vm>(context,listen: false).
       gettypeticket_filter('0');
-      Provider.of<typeclient>(context, listen: false).getreasons('ticket');
+      Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket');
 
     });
     super.initState();
@@ -53,8 +53,8 @@ class _ticketclientviewState extends State<ticketclientview> {
           padding: EdgeInsets.all(2),
           child: ListView(
             children: [
-              Provider.of<privilge_vm>(context,listen: true)
-                  .checkprivlge('26')==true?   Padding(
+              Provider.of<PrivilegeProvider>(context,listen: true)
+                  .checkPrivilege('26')==true?   Padding(
               padding: const EdgeInsets.only(left: 8.0,right: 8),
               child: ElevatedButton(
                   style: ButtonStyle(
@@ -88,7 +88,7 @@ class _ticketclientviewState extends State<ticketclientview> {
                               borderRadius: BorderRadius.circular(10)),
                           buttons: ['جديدة','مستلمة','مغلقة','تم التقييم'],
                           onSelected: (_,index,isselected){
-                            print(index);
+
                             //setState(() {
                             typepayController=index.toString();
                             selectedProvider.changeticket(index);

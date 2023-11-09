@@ -20,7 +20,7 @@ class _IsMarketingCheckbox_lastState extends State<IsMarketingCheckbox_last> {
 
   @override
   void initState() {
-    haveMarketingPrivilege =  context.read<privilge_vm>().checkprivlge('155');
+    haveMarketingPrivilege =  context.read<PrivilegeProvider>().checkPrivilege('155');
     _isMarketingNotifier = ValueNotifier(haveMarketingPrivilege);
     if (haveMarketingPrivilege) {
       scheduleMicrotask(() => widget.onChange(haveMarketingPrivilege));

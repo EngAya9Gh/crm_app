@@ -45,7 +45,7 @@ class _updatecompanyState extends State<updatecompany> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<company_vm>(context)
+          inAsyncCall: Provider.of<CompanyProvider>(context)
               .isloading,
           child : Directionality(
             textDirection: TextDirection.rtl,
@@ -107,7 +107,7 @@ class _updatecompanyState extends State<updatecompany> {
                               imageQuality: 100,);
                             File?   pickedFile = File(pickedImage!.path);
                             setState(() {
-                              print(pickedFile.path);
+
                               _myfilelogo=pickedFile;
                               logoController.text=pickedFile.path;
                             });
@@ -153,7 +153,7 @@ class _updatecompanyState extends State<updatecompany> {
                               // Provider.of<LoadProvider>(context, listen: false)
                               //     .changebooladdclient(true);
                               if(widget.idCompany!=null){
-                                Provider.of<company_vm>(context,listen: false)
+                                Provider.of<CompanyProvider>(context,listen: false)
                                     .update_company({
                                   'name_company':nameractv.text,
                                   // 'type':widget.type,
@@ -203,7 +203,7 @@ class _updatecompanyState extends State<updatecompany> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
@@ -212,6 +212,6 @@ class _updatecompanyState extends State<updatecompany> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+    
   }
 }

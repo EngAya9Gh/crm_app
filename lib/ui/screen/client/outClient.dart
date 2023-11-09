@@ -47,8 +47,8 @@ class _OutClientState extends State<OutClient> {
       //if(widget.type=='only')
       //  Provider.of<invoice_vm>(context, listen: false).getinvoice_Local("مشترك",'approved only');
       //if(widget.type=='client')
-      Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
-      Provider.of<regoin_vm>(context,listen: false).changeVal(null);
+      Provider.of<ClientTypeProvider>(context,listen: false).changelisttype_install(null);
+      Provider.of<RegionProvider>(context,listen: false).changeVal(null);
 
       Provider.of<invoice_vm>(context, listen: false)
           .getinvoice_Local("منسحب",'out',null);
@@ -65,7 +65,7 @@ class _OutClientState extends State<OutClient> {
         title: Text('الفواتير المنسحبة ',style: TextStyle(color: kWhiteColor),),
         centerTitle: true,
       ),
-      body: Consumer<privilge_vm>(
+      body: Consumer<PrivilegeProvider>(
           builder: (context, privilge, child) {
             return SafeArea(
               child: Directionality(
@@ -81,22 +81,22 @@ class _OutClientState extends State<OutClient> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 8.0, right: 8),
-                                child: Consumer<regoin_vm>(
+                                child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
                                     return
                                       DropdownButton(
                                         isExpanded: true,
                                         hint: Text("الفرع"),
-                                        items: cart.listregoinfilter.map((level_one) {
+                                        items: cart.listRegionFilter.map((level_one) {
                                           return DropdownMenuItem(
 
-                                            child: Text(level_one.name_regoin),
+                                            child: Text(level_one.regionName),
                                             //label of item
                                             value: level_one
-                                                .id_regoin, //value of item
+                                                .regionId, //value of item
                                           );
                                         }).toList(),
-                                        value: cart.selectedValueLevel,
+                                        value: cart.selectedRegionId,
                                         onChanged: (value) {
                                           //  setState(() {
                                           cart.changeVal(value.toString());
@@ -174,8 +174,8 @@ class _OutClientState extends State<OutClient> {
   }
 
   void filtershow(){
-    print(regoin);
-    print(typeclientvalue);
+
+
     //    Provider.of<invoice_vm>(context,listen: false)
     //       .getfilterinvoice(regoin);
     // Provider.of<client_vm>(context,listen: false)

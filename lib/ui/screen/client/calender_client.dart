@@ -9,6 +9,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/config/theme/theme.dart';
 import '../../../model/calendar/event.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../widgets/custom_widget/row_edit.dart';
@@ -34,14 +35,14 @@ class _calender_clientState extends State<calender_client> {
   @override
   Future<void> didChangeDependencies() async {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
-      context.read<client_vm>().changevalueclient(null);
+      context.read<ClientProvider>().changevalueclient(null);
       Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(DateTime(1,1,1));
-      await Provider.of<user_vm_provider>(context, listen: false).getuser_vm();
-      print(Provider.of<user_vm_provider>(context, listen: false).userall.length);
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
-      await Provider.of<client_vm>(context, listen: false).getClientDateTable_vm();
+      await Provider.of<UserProvider>(context, listen: false).getUsersVm();
+
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
+      await Provider.of<ClientProvider>(context, listen: false).getClientDateTable_vm();
       Provider.of<EventProvider>(context, listen: false)
-          .setvalueClient(Provider.of<client_vm>(context, listen: false).listClientAccept);
+          .setvalueClient(Provider.of<ClientProvider>(context, listen: false).listClientAccept);
       Provider.of<EventProvider>(context, listen: false).getevent_AllClient();
     });
 
@@ -80,7 +81,7 @@ class _calender_clientState extends State<calender_client> {
           textDirection: TextDirection.rtl,
           child: Padding(
             padding: EdgeInsets.only(left: 5, right: 5, top: 2, bottom: 2),
-            child: Selector2<user_vm_provider, client_vm, bool>(
+            child: Selector2<UserProvider, ClientProvider, bool>(
               selector: (_, p1, p2) => p1.isLoading || p2.isloading,
               builder: (context, value, child) {
                 if (value) {
@@ -90,14 +91,14 @@ class _calender_clientState extends State<calender_client> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 8),
-                      child: Consumer<client_vm>(
+                      child: Consumer<ClientProvider>(
                         builder: (context, cart, child) {
                           return Row(
                             children: [
                               if (cart.selectedclient != null) ...{
                                 IconButton(
                                   onPressed: () {
-                                    context.read<client_vm>().changevalueclient(null);
+                                    context.read<ClientProvider>().changevalueclient(null);
                                     Provider.of<EventProvider>(context, listen: false).getevent_AllClient();
                                   },
                                   icon: Icon(Icons.highlight_off, color: Colors.grey.shade600),
@@ -122,10 +123,10 @@ class _calender_clientState extends State<calender_client> {
                                     setState(() {
                                       clientModel = data!;
                                       idclient = data!.idClients!;
-                                      print('idclient');
-                                      print(idclient.toString());
+
+
                                     });
-                                    context.read<client_vm>().changevalueclient(data);
+                                    context.read<ClientProvider>().changevalueclient(data);
                                     Provider.of<EventProvider>(context, listen: false).getevent_Client(idclient);
                                     // Provider.of<client_vm>(context, listen: false)
                                     //     .getclientfilter_Local(iduser!,"user");
@@ -229,7 +230,7 @@ class _calender_clientState extends State<calender_client> {
           ),
         ),
       ),
-      floatingActionButton: Consumer<client_vm>(
+      floatingActionButton: Consumer<ClientProvider>(
         builder: (context, clientVm, _) {
           if (clientVm.selectedclient == null) {
             return const SizedBox.shrink();
@@ -237,7 +238,7 @@ class _calender_clientState extends State<calender_client> {
           return FloatingActionButton(
             onPressed: () =>
                 AnimatedDialog.show(context, child: SizedBox(height: 250, child: dialog(clientVm.selectedclient!))),
-            child: Icon(Icons.schedule_send_rounded),
+            child: Icon(Icons.schedule_send_rounded,color: AppColors.white),
           );
         },
       ),
@@ -285,7 +286,7 @@ class _calender_clientState extends State<calender_client> {
                     SizedBox(height: 30),
                     SizedBox(
                       child: Center(
-                        child: Consumer<client_vm>(builder: (context, clientVm, _) {
+                        child: Consumer<ClientProvider>(builder: (context, clientVm, _) {
                           if (clientVm.isloading) {
                             return CircularProgressIndicator();
                           }
@@ -293,7 +294,7 @@ class _calender_clientState extends State<calender_client> {
                           return ElevatedButton(
                             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                             onPressed: () async {
-                              Provider.of<client_vm>(context, listen: false).updateclient_vm(
+                              Provider.of<ClientProvider>(context, listen: false).updateclient_vm(
                                 {
                                   "date_visit_Client": _currentDate.toString(), //DateTime.now().toString(),
                                 },

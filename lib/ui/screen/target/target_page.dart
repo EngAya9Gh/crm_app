@@ -1,11 +1,5 @@
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/target/target_employee.dart';
-import 'package:crm_smart/ui/screen/target/target_user.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:group_button/group_button.dart';
-
 import 'card_target.dart';
 
 class TargetPage extends StatelessWidget {

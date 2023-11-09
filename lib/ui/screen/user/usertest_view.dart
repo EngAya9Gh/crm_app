@@ -9,6 +9,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
 
 class usertest_view extends StatefulWidget {
    const usertest_view({Key? key}) : super(key: key);
@@ -29,7 +30,7 @@ class usertest_view extends StatefulWidget {
    Widget build(BuildContext context) {
      list_ticket=Provider.of<usertest_vm>(context,listen: true)
          .listProduct;
-    print(list_ticket.length);
+
      return Scaffold(
        floatingActionButton:
        FloatingActionButton(
@@ -40,7 +41,7 @@ class usertest_view extends StatefulWidget {
                builder: (context)=> addusertest(idregoin: null, nameusertest: '',)));
          },
          tooltip: 'إضافة ',
-         child: Icon(Icons.add),
+         child: Icon(Icons.add,color: AppColors.white),
        ),
        appBar: AppBar(title: Text('يوزرات تجريبية',style: TextStyle(color: kWhiteColor),),centerTitle: true,),
        body: SafeArea(

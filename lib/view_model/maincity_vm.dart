@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
 
-class maincity_vm extends ChangeNotifier {
+class MainCityProvider extends ChangeNotifier {
   List<MainCityModel> listmaincity = [];
   List<MainCityModel> listmaincityfilter = [];
   List<MainCityModel> listCurrentUserMainCityFilter = [];
@@ -147,7 +147,7 @@ class maincity_vm extends ChangeNotifier {
     if (listcity.isEmpty) {
       List<dynamic> data = [];
       data = await Api().get(url: url + 'config/getcity.php?fk_maincity=${fkmain}');
-      print(data);
+      
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));
@@ -159,19 +159,20 @@ class maincity_vm extends ChangeNotifier {
     }
   }
 
-  Future<void> getcityAll() async {
+  Future<void> getcityAll({VoidCallback? onSuccess}) async {
     listcity = [];
     notifyListeners();
     if (listcity.isEmpty) {
       List<dynamic> data = [];
       data = await Api().get(url: url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
-      print(data);
+      
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));
         }
       }
 
+      onSuccess?.call();
       notifyListeners();
     }
   }

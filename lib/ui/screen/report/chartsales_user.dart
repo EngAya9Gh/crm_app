@@ -44,11 +44,11 @@ class _BarChartAPIState extends State<BarChartAPI> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('55');
+    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(1);
-      Provider.of<user_vm_provider>(context, listen: false).changevalueuser(null);
+      Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
     super.initState();
     if (!haveMarketingPrivilege) getData();
@@ -60,21 +60,21 @@ class _BarChartAPIState extends State<BarChartAPI> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     String iduser = usermodel.idUser.toString();
     String idregoin = usermodel.fkRegoin.toString();
 
     String paramprivilge = '';
-    if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('80') == true)
+    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('80') == true)
       paramprivilge = '&id_user=${iduser}';
     else {
-      if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('81') == true)
+      if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('81') == true)
         paramprivilge = '&id_regoin=${idregoin}';
     }
-    if (Provider.of<privilge_vm>(context, listen: false).checkprivlge('82') == true ||
-        Provider.of<privilge_vm>(context, listen: false).checkprivlge('80') == true ||
-        Provider.of<privilge_vm>(context, listen: false).checkprivlge('81') == true) {
+    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('82') == true ||
+        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('80') == true ||
+        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('81') == true) {
       var data;
       String params = '';
       if (typeproduct == 'أجهزة') params = '&product=0';
@@ -119,7 +119,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
       rowsdata = [];
       for (int i = 0; i < data.length; i++) {
         tempdata.add(BarModel.fromJson(data[i]));
-        print(tempdata[i].y);
+        
         totalval += tempdata[i].y;
         rowsdata.add(DataRow(
           cells: <DataCell>[
@@ -227,7 +227,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                         options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                         buttons: ['سنوي', 'شهري', 'يومي'],
                         onSelected: (_, index, isselected) {
-                          print(index);
+                          
                           switch (index) {
                             case 0:
                               type = 'dateyear';
@@ -269,7 +269,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['الكل', 'أجهزة', 'برامج'],
                         onSelected: (_, index, isselected) {
-                          print(index);
+                          
                           switch (index) {
                             case 0:
                               typeproduct = 'الكل';
@@ -409,7 +409,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
                                               _selectedDatemonth = dateTime;
                                             });
 
-                                            print(_selectedDatemonth);
+                                            
                                             // close the dialog when year is selected.
                                             Navigator.pop(context);
                                             getData();
@@ -663,7 +663,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
@@ -681,7 +681,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }

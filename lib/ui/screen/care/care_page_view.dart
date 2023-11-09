@@ -52,7 +52,7 @@ class _care_page_viewState extends State<care_page_view> {
     if (typeproduct == '4') params = '&product=4';
     if (typeproduct == '5') params = '&product=5';
 
-    final user = context.read<user_vm_provider>().currentUser;
+    final user = context.read<UserProvider>().currentUser;
     final userId = user.idUser;
     final fkCountry = user.fkCountry.toString();
 
@@ -81,14 +81,14 @@ class _care_page_viewState extends State<care_page_view> {
       // Add Your Code here.
       // only
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0,isInit: true);
-      fkcountry = Provider.of<user_vm_provider>(context, listen: false).currentUser.fkCountry.toString();
+      fkcountry = Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry.toString();
       //   Provider.of<communication_vm>(context, listen: false)
       //  .getCommunicationall('');
-      await Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
-      List<PrivilgeModel> list = await Provider.of<privilge_vm>(context, listen: false).privilgelist;
-      Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
+      await Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
+      List<PrivilgeModel> list = await Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
+      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       // selectValuebarsalestype(index)
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(5);
       // Provider.of<client_vm>(context, listen: false)
@@ -97,7 +97,7 @@ class _care_page_viewState extends State<care_page_view> {
       // await Provider.of<client_vm>(context, listen: false)
       //     .get_byIdClient(widget..toString());
 
-      // await Provider.of<client_vm>(context, listen: false).getclient_Local('مشترك');
+      // await Provider.of<ClientProvider>(context, listen: false).getclient_Local('مشترك');
       getData();
       // if(Provider.of<selected_button_provider>(context, listen: false).isbarsales == 1 ) {
       //   type='done';
@@ -128,7 +128,7 @@ class _care_page_viewState extends State<care_page_view> {
         ),
         centerTitle: true,
       ),
-      body: Consumer<privilge_vm>(builder: (context, privilge, child) {
+      body: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
         return SafeArea(
           child: Directionality(
             textDirection: myui.TextDirection.rtl,
@@ -162,7 +162,7 @@ class _care_page_viewState extends State<care_page_view> {
                                 options: GroupButtonOptions(buttonWidth: 135, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['بالإنتظار', 'تم التقييم'],
                                 onSelected: (_, index, isselected) {
-                                  print(index);
+
                                   switch (index) {
                                     case 0:
                                       type = 'wait';
@@ -268,7 +268,7 @@ class _care_page_viewState extends State<care_page_view> {
                                           GroupButtonOptions(buttonWidth: 40, borderRadius: BorderRadius.circular(10)),
                                       buttons: ['1', '2', '3', '4', '5', '-'],
                                       onSelected: (_, index, isselected) {
-                                        print(index);
+
                                         switch (index) {
                                           case 0:
                                             typeproduct = '1';
@@ -323,7 +323,7 @@ class _care_page_viewState extends State<care_page_view> {
                       height: MediaQuery.of(context).size.height * 0.73,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Consumer2<communication_vm, client_vm>(
+                        child: Consumer2<communication_vm, ClientProvider>(
                           builder: (context, value, value2, child) {
                             final isLoadingClient = value2.isloading;
                             final isLoadingCommunication = value.isload;
@@ -535,7 +535,7 @@ class _care_page_viewState extends State<care_page_view> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+
         //if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         getData();
       });
@@ -554,7 +554,7 @@ class _care_page_viewState extends State<care_page_view> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+
         //if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         getData();
       });

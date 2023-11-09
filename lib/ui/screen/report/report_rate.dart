@@ -60,7 +60,7 @@ class _report_rateState extends State<report_rate> {
     List<BarModel> tempdata = [];
     rowsdata.clear();
     UserModel usermodel = Provider
-        .of<user_vm_provider>(context, listen: false)
+        .of<UserProvider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String iduser = usermodel.idUser.toString();
@@ -110,7 +110,7 @@ class _report_rateState extends State<report_rate> {
 
     }
 
-    print('length result'+listInvoicesAccept.length.toString());
+    
     // for(int i=0;i<salesresult.length;i++)
     setState (() {
 
@@ -235,7 +235,7 @@ class _report_rateState extends State<report_rate> {
                                       borderRadius: BorderRadius.circular(10)),
                                   buttons: ['1', '2', '3','4','5','-'],
                                   onSelected: (_,index, isselected) {
-                                    print(index);
+                                    
                                     switch(index){
                                        case 0:
                                         typeproduct = '1';
@@ -415,7 +415,7 @@ class _report_rateState extends State<report_rate> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         type='datedays';
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
@@ -434,7 +434,7 @@ class _report_rateState extends State<report_rate> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         type='datedays';
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();

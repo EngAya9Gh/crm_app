@@ -40,7 +40,7 @@ final List<String> listSelectCategory = [
   'تقرير مبيعات جميع الموظفين',
   'تقرير تارجت جميع الموظفين',
 ];
-final List<Widget> listwidget=[
+final List<Widget> listwidget = [
   sales(),
   supportpage(),
   carepage(),
@@ -49,7 +49,20 @@ final List<Widget> listwidget=[
   financepage(),
   race_page(),
 ];
-List<String> list_sourcclient=['ميداني','فيسبوك','غوغل','تويتر','الموقع','الرقم الموحد','واتس كنترول','انستغرام','سناب','غوغل ماب','تيك توك'];
+List<String> sourceClientsList = [
+  'ميداني',
+  'فيسبوك',
+  'غوغل',
+  'تويتر',
+  'الموقع',
+  'الرقم الموحد',
+  'واتس كنترول',
+  'انستغرام',
+  'سناب',
+  'غوغل ماب',
+  'تيك توك',
+  'عميل موصى به'
+];
 final List<dynamic> listHome = [
   [
     'كل العملاء',
@@ -103,5 +116,4 @@ List<String> imageList = [
   'assest/images/administrator.png',
   'assest/images/money.png',
   'assest/images/race.png',
-
 ];

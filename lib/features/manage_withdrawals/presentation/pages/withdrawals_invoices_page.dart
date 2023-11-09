@@ -56,7 +56,7 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                   icon: Icon(Icons.refresh_rounded),
                 ),
               ),
-              result: state.withdrawalsInvoice,
+              result: state.withdrawalsInvoices,
               empty: Center(child: Text("No Withdrawals Invoices")),
             );
           },

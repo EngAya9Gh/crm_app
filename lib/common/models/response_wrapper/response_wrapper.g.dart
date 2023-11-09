@@ -6,19 +6,19 @@ part of 'response_wrapper.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ResponseWrapper<T> _$$_ResponseWrapperFromJson<T>(
+_$ResponseWrapperImpl<T> _$$ResponseWrapperImplFromJson<T>(
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
 ) =>
-    _$_ResponseWrapper<T>(
+    _$ResponseWrapperImpl<T>(
       status: json['status'] as String?,
       success: json['success'] as bool?,
       message: _$nullableGenericFromJson(json['message'], fromJsonT),
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
     );
 
-Map<String, dynamic> _$$_ResponseWrapperToJson<T>(
-  _$_ResponseWrapper<T> instance,
+Map<String, dynamic> _$$ResponseWrapperImplToJson<T>(
+  _$ResponseWrapperImpl<T> instance,
   Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{

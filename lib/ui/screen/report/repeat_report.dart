@@ -51,7 +51,7 @@ class _repeat_reportState extends State<repeat_report> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<user_vm_provider>(context, listen: false).currentUser;
+    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     var data;
     String isMarketingParams = '';
@@ -75,7 +75,7 @@ class _repeat_reportState extends State<repeat_report> {
     totalval = 0;
     for (int i = 0; i < data.length; i++) {
       tempdata.add(BarModel.fromJson(data[i]));
-      print(tempdata[i].y);
+      
       totalval += tempdata[i].y;
       rowsdata.add(DataRow(
         cells: <DataCell>[
@@ -316,7 +316,7 @@ class _repeat_reportState extends State<repeat_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         getData();
       });
@@ -335,7 +335,7 @@ class _repeat_reportState extends State<repeat_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         getData();
       });
   }

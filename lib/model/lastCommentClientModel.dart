@@ -28,12 +28,12 @@ class LastcommentClientModel {
   }
  ClientModel  getproud(data){
 
-    print('data');
-     print( data.length.toString()+'data');
+    
+     
     List<ClientModel> prodlist = [];
     if(data!=null) {
       for (int i = 0; i < data.length; i++) {
-          print('i'+i.toString());//+data[i]);
+          
         prodlist.add(ClientModel.fromJson(data[i]));
       }
     }
@@ -44,7 +44,7 @@ class LastcommentClientModel {
     List<CommentModel> prodlist = [];
     if(data!=null){
       for (int i = 0; i < data.length; i++) {
-        // print(i+data[i]);
+        // 
         prodlist.add(CommentModel.fromJson(data[i]));
       }
     }

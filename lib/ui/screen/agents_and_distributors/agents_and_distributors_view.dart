@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
 import '../../../view_model/agent_dsitributor_vm.dart';
 import '../../../view_model/page_state.dart';
 import '../../../view_model/vm.dart';
@@ -44,7 +45,7 @@ class _AgentsAndDistributorsViewState extends State<AgentsAndDistributorsView>
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: AppColors.white),
         onPressed: goToAgentsActionPage,
         backgroundColor: kMainColor,
       ),

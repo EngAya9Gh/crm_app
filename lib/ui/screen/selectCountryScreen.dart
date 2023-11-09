@@ -96,8 +96,8 @@ class _MyDropDown extends State<select_country>{
                         _onSelectedState(value.toString());
                         Provider.of<country_vm>(context,listen: false)
                             .setIDCountry(value.toString());
-                        print("provider country selected change");
-                        //print(Provider.of<user_vm_provider>(context,listen: false).currentUser!.fkCountry);
+
+                        
                        // FocusScope.of(context).requestFocus(new FocusNode());
                       },
                     ),
@@ -168,7 +168,7 @@ Widget buildCity(){
     // return (data is ErrorModel ) != null?
     // Text((data as ErrorModel).message.toString())
     //     :
-    return     (data as  List<RegoinModel>).isEmpty ?
+    return     (data as  List<RegionModel>).isEmpty ?
     Text("لا يوجد مناطق"):
     cityList();
   }else {
@@ -176,17 +176,17 @@ Widget buildCity(){
   }
 }
   Widget cityList() { //widget function for city list
-    List<RegoinModel> citylist =[];
+    List<RegionModel> citylist =[];
     if(data != null)
    {
-     citylist=data as List<RegoinModel>;
+     citylist=data as List<RegionModel>;
       return DropdownButton(
           hint: Text("حددالمنطقة"),
           isExpanded: true,
           items: citylist.map((cityOne){
             return DropdownMenuItem(
-              child: Text(""+cityOne.name_regoin),
-              value: cityOne.id_regoin.toString(),
+              child: Text(""+cityOne.regionName),
+              value: cityOne.regionId.toString(),
             );
           }).toList(),
           value: _selectedLGA,
@@ -213,7 +213,7 @@ Widget buildCity(){
 
     Countrylist=(await RegoinService().getAllCountry());
     //select_dataItem=Countrylist[0];
-    print(Countrylist.length);//default country
+
     return Countrylist;
   }
 }

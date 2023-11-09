@@ -52,7 +52,7 @@ class _delayafterinstallState extends State<delayafterinstall> {
           .selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsales(0);
-      Provider.of<user_vm_provider>(context,listen: false).changevalueuser(null);
+      Provider.of<UserProvider>(context,listen: false).changevalueuser(null);
 
     });
     super.initState();
@@ -71,7 +71,7 @@ class _delayafterinstallState extends State<delayafterinstall> {
     List<BarModel> tempdata = [];
     rowsdata.clear();
     UserModel usermodel = Provider
-        .of<user_vm_provider>(context, listen: false)
+        .of<UserProvider>(context, listen: false)
         .currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String iduser = usermodel.idUser.toString();
@@ -92,8 +92,8 @@ class _delayafterinstallState extends State<delayafterinstall> {
     //         .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
     //     .checkprivlge('81')==true){
     var data;
-print(paramprivilge);
-print(type);
+
+
     switch (type) {
       case "userSum":
         data = await Api().post(
@@ -116,7 +116,7 @@ print(type);
       listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
     }
 
-    print('length result'+listInvoicesAccept.length.toString());
+    
     // for(int i=0;i<salesresult.length;i++)
     setState (() {
 
@@ -145,11 +145,11 @@ print(type);
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0,right: 8,),
                     child:
-                    Consumer<user_vm_provider>(
+                    Consumer<UserProvider>(
                       builder: (context, cart, child){
                         return  Row(
                           children: [
-                            if(cart.selecteduser != null)
+                            if(cart.selectedUser != null)
                               ...{
                                 IconButton(
                                     onPressed: () {
@@ -172,7 +172,7 @@ print(type);
                                   cart.changevalueuser(data);
                                   getData();
                                 } ,
-                                selectedItem: cart.selecteduser,
+                                selectedItem: cart.selectedUser,
                                 showSearchBox: true,
                                 dropdownSearchDecoration:
                                 InputDecoration(
@@ -455,7 +455,7 @@ print(type);
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print(_selectedDatefrom.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });
@@ -473,7 +473,7 @@ print(type);
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print(_selectedDateto.toString());
+        
         if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
           getData();
       });

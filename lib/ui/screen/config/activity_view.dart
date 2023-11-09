@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/config/theme/theme.dart';
 import '../../../view_model/activity_vm.dart';
 import 'add_activity.dart';
 import 'addreson.dart';
@@ -28,15 +29,15 @@ class _resoan_viewState extends State<activity_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async{
 
-      await Provider.of<activity_vm>(context,listen: false).getactv( );
+      await Provider.of<ActivityProvider>(context,listen: false).getActivities( );
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ActivityModel> _listlevel= Provider.of<activity_vm>
-      (context,listen: true).list_activity;
+    List<ActivityModel> _listlevel= Provider.of<ActivityProvider>
+      (context,listen: true).activitiesList;
     return Scaffold(
       appBar: AppBar(
         title: Text('النشاط',style: TextStyle(color: kWhiteColor),),
@@ -47,7 +48,7 @@ class _resoan_viewState extends State<activity_view> {
       // Provider.of<privilge_vm>(context,listen: true)
       //     .checkprivlge('74')==true ?
       FloatingActionButton(
-        child:Icon(Icons.add),
+        child:Icon(Icons.add,color: AppColors.white),
         onPressed: (){
           Navigator.push(
             context,

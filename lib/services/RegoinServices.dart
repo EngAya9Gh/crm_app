@@ -15,15 +15,15 @@ class RegoinService{
 
   Future<Object> getRegoinByCountry(String fk_country) async {
 
-    print("before regoin");
-    List<RegoinModel> _Regoinlist=[];
+    
+    List<RegionModel> _Regoinlist=[];
 
     try{
       List<dynamic> data= await Api()
         .get(url:url+ 'country/get_regoinByIdCountry.php?fk_country=$fk_country');
 
     for (int i = 0; i < data.length; i++) {
-      _Regoinlist.add(RegoinModel.fromJson(data[i]));
+      _Regoinlist.add(RegionModel.fromJson(data[i]));
     }}
     catch(e){
       return ErrorModel(message: e);
@@ -38,7 +38,7 @@ class RegoinService{
      );
 
     List<CountryModel> list = [];
-    print(data.length);
+    
     for (int i = 0; i < data.length; i++) {
       list.add(CountryModel.fromJson(data[i]));
     }
@@ -46,7 +46,7 @@ class RegoinService{
     return list;
     }
         catch(e){
-      print("print message error"+e.toString());
+      
       return data as List<CountryModel>;
         }
   }

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/config/theme/theme.dart';
 import 'addproduct.dart';
 
 class ProductView extends StatefulWidget {
@@ -39,19 +40,19 @@ void initState() {
   Widget build(BuildContext context) {
     _listProd = Provider.of<product_vm>(context, listen: true).listProduct;
     // _isLoading = _listProd.isEmpty ? true : false;
-    print(_listProd);
+    
     return Scaffold(
       key: _scaffoldKey,
       floatingActionButton:
-      Provider.of<privilge_vm>(context,listen: true)
-          .checkprivlge('45')==true ? FloatingActionButton(
+      Provider.of<PrivilegeProvider>(context,listen: true)
+          .checkPrivilege('45')==true ? FloatingActionButton(
         backgroundColor: kMainColor,
         onPressed: () {
           Navigator.push(
               context, CupertinoPageRoute(builder: (context) => addProduct()));
         },
         tooltip: 'إضافة منتج',
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,color: AppColors.white),
       ):Container(),
       appBar: AppBar(
         centerTitle: true,

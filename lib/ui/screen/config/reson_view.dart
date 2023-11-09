@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/config/theme/theme.dart';
 import 'addreson.dart';
 class resoan_view extends StatefulWidget {
   resoan_view({required this.type, Key? key}) : super(key: key);
@@ -25,13 +26,13 @@ class _resoan_viewState extends State<resoan_view> {
   @override void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
 
-     await Provider.of<typeclient>
+     await Provider.of<ClientTypeProvider>
       (context,listen: false).getreasons(widget.type);});
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
-    List<ReasonModel> _listlevel= Provider.of<typeclient>
+    List<ReasonModel> _listlevel= Provider.of<ClientTypeProvider>
       (context,listen: true).type_of_out;
     return Scaffold(
       appBar: AppBar(
@@ -42,10 +43,10 @@ class _resoan_viewState extends State<resoan_view> {
       ),
       floatingActionButton:
           widget.type=='client'?
-      Provider.of<privilge_vm>(context,listen: true)
-          .checkprivlge('73')==true ?
+      Provider.of<PrivilegeProvider>(context,listen: true)
+          .checkPrivilege('73')==true ?
       FloatingActionButton(
-        child:Icon(Icons.add),
+        child:Icon(Icons.add,color: AppColors.white),
         onPressed: (){
           Navigator.push(
             context,
@@ -60,9 +61,9 @@ class _resoan_viewState extends State<resoan_view> {
           );
         },
         backgroundColor: kMainColor,):Container():
-          Provider.of<privilge_vm>(context,listen: true)
-              .checkprivlge('74')==true ? FloatingActionButton(
-            child:Icon(Icons.add),
+          Provider.of<PrivilegeProvider>(context,listen: true)
+              .checkPrivilege('74')==true ? FloatingActionButton(
+            child:Icon(Icons.add,color: AppColors.white),
             onPressed: (){
               Navigator.push(
                 context,

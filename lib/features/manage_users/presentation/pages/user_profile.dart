@@ -35,7 +35,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final isMyProfile = context.read<user_vm_provider>().currentUser.idUser == widget.userModel.idUser;
+    final isMyProfile = context.read<UserProvider>().currentUser.idUser == widget.userModel.idUser;
     return BlocBuilder<UsersCubit, UsersState>(
       builder: (context, state) {
         final user = state.currentUser!;
@@ -55,7 +55,7 @@ class _UserProfileState extends State<UserProfile> {
               //           color: kWhiteColor,
               //         ))
               //     :
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('50') == true
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('50') == true
                       ? IconButton(
                           onPressed: () {
                             Navigator.push(

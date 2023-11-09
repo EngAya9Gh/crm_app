@@ -1,20 +1,11 @@
+import 'dart:ui' as myui;
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/targetmodel.dart';
 import 'package:crm_smart/ui/screen/target/target_data.dart';
-import 'package:crm_smart/ui/screen/user/userview.dart';
-import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' as rt;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:get/get.dart';
-// import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'dart:ui' as myui;
 import 'buildCardTarget.dart';
 
 
@@ -186,7 +177,7 @@ class _CardTagetState extends State<CardTaget> {
                         maxCrossAxisExtent: 250,
                       ),
                       itemBuilder: (context, index) {
-                        return Consumer<user_vm_provider>(
+                        return Consumer<UserProvider>(
                             builder: (context, cart, child) {
                           return buildCardTarget(
                           target: list_target[index],

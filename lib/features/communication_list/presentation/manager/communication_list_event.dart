@@ -7,11 +7,9 @@ abstract class CommunicationListEvent extends Equatable {
 class GetCommunicationListEvent extends CommunicationListEvent {
   final String fkCountry;
   final String query;
-  final String? userId;
 
   GetCommunicationListEvent(
     this.fkCountry, {
-    this.userId,
     required this.query,
   });
 
@@ -26,4 +24,15 @@ class SearchEvent extends CommunicationListEvent {
 
   @override
   List<Object?> get props => [query];
+}
+
+class OnChangeRegionEvent extends CommunicationListEvent {
+  final String? selectedRegionId;
+  final String fkCountry;
+  final String query;
+
+  OnChangeRegionEvent(this.selectedRegionId, this.fkCountry, this.query);
+
+  @override
+  List<Object?> get props => [selectedRegionId, fkCountry, query];
 }

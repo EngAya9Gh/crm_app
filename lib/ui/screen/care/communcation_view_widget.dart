@@ -200,7 +200,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 value: typepayController, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    print(value);
+
                                     typepayController = value!;
                                     //values[key] = value;
                                   });
@@ -218,7 +218,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 value: numberwrong, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    print(value);
+
                                     numberwrong = value!;
                                     //values[key] = value;
                                   });
@@ -231,7 +231,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 value: repeat, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    print(value);
+
                                     repeat = value!;
                                     //values[key] = value;
                                   });
@@ -244,7 +244,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 value: isRecommendation, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    print(value);
+
                                     isRecommendation = value!;
                                     //values[key] = value;
                                   });
@@ -257,7 +257,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 value: isVisit, // as bool,
                                 onChanged: (bool? value) {
                                   setState(() {
-                                    print(value);
+
                                     isVisit = value!;
                                     //values[key] = value;
                                   });
@@ -270,7 +270,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                           value: isSuspend, // as bool,
                           onChanged: (bool? value) {
                             setState(() {
-                              print(value);
+
                               isSuspend = value!;
                               //values[key] = value;
                             });
@@ -293,10 +293,10 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                       color: Colors.amber,
                                     ),
                                     onRatingUpdate: (rating) {
-                                      print(rating);
+
                                       setState(() {
                                         rate = rating;
-                                        print(rate);
+
                                       });
                                     },
                                   ),
@@ -316,14 +316,14 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                 Provider.of<communication_vm>(context, listen: false).addcommmuncation(
                                     {
                                       //'fk_client':widget.com.fkClient.toString(),
-                                      'fk_user': Provider.of<user_vm_provider>(context, listen: false)
+                                      'fk_user': Provider.of<UserProvider>(context, listen: false)
                                           .currentUser
                                           .idUser
                                           .toString(),
                                       'date_communication': DateTime.now().toString(),
                                       'result': '0',
                                       //
-                                      'nameUser': Provider.of<user_vm_provider>(context, listen: false)
+                                      'nameUser': Provider.of<UserProvider>(context, listen: false)
                                           .currentUser
                                           .nameUser
                                           .toString(),
@@ -350,24 +350,24 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
 
                                 int peroidtime = int.parse(peroid.value_config);
                                 datanext = Jiffy().add(days: peroidtime).dateTime;
-                                print(datanext.toString());
+
                                 // datanext.add(Duration(days: peroidtime));
-                                print(datanext);
-                                print(widget.element.dateCommunication.toString());
-                                print(widget.element.idCommunication);
+
+
+
                                 if (widget.element.dateCommunication == null) {
                                   //datanext.add( Duration(days: day+ pp));
                                   // int peroidtime= int.parse(peroid.value_config);
                                   // datanext=Jiffy().add(days: peroidtime).dateTime;
-                                  // print(datanext.toString());
+                                  //
                                   // datanext.add(Duration(days: peroidtime));
-                                  // print(datanext);
+                                  //
                                   if(isSuspend.toString()=='true')
                                     rate=0.0;
 
                                   await Provider.of<communication_vm>(context, listen: false).updatecarecommuncation({
                                     'type': 'دوري',
-                                    'fk_user': Provider.of<user_vm_provider>(context, listen: false)
+                                    'fk_user': Provider.of<UserProvider>(context, listen: false)
                                         .currentUser
                                         .idUser
                                         .toString(),

@@ -32,17 +32,17 @@ late EventProvider _eventProvider;
 class _support_tableState extends State<support_table> {
   @override
   Future<void> didChangeDependencies() async {
-    context.read<maincity_vm>().changeitemlist([], isInit: true);
+    context.read<MainCityProvider>().changeitemlist([], isInit: true);
 
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       _eventProvider = context.read<EventProvider>();
-      Provider.of<user_vm_provider>(context, listen: false)
+      Provider.of<UserProvider>(context, listen: false)
         ..changevalueuser(null, true)
-        ..getuser_vm();
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
+        ..getUsersVm();
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       _eventProvider
         ..resetFilter()
-        ..setFkCountry(context.read<user_vm_provider>().currentUser.fkCountry!)
+        ..setFkCountry(context.read<UserProvider>().currentUser.fkCountry!)
         ..getAppointments();
 
       // await Provider.of<invoice_vm>(context, listen: false).getfilter_maincity([], 'الكل');
@@ -118,7 +118,7 @@ class _support_tableState extends State<support_table> {
                       //     //);
                       //   },
                       // ),
-                      Consumer<maincity_vm>(
+                      Consumer<MainCityProvider>(
                     builder: (context, cart, child) {
                       return DropdownSearch<MainCityModel>.multiSelection(
                         mode: Mode.DIALOG,
@@ -130,8 +130,8 @@ class _support_tableState extends State<support_table> {
                         selectedItems: cart.selecteditemmaincity,
                         itemAsString: (u) => u!.userAsString(),
                         onChanged: (data) {
-                          for (int i = 0; i < data.length; i++) print(data[i].id_maincity);
-                          print(data);
+                          for (int i = 0; i < data.length; i++) 
+                          
                           // selecteditemmaincity=data;
 
                           cart.changeitemlist(data);
@@ -172,14 +172,14 @@ class _support_tableState extends State<support_table> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8),
-                  child: Consumer2<user_vm_provider, EventProvider>(
+                  child: Consumer2<UserProvider, EventProvider>(
                     builder: (context, user, event, child) {
                       return Row(
                         children: [
                           if (event.selectedFkUser != null && event.appointmentsState.isSuccess) ...{
                             IconButton(
                               onPressed: () {
-                                context.read<user_vm_provider>().changevalueuser(null);
+                                context.read<UserProvider>().changevalueuser(null);
                                 _eventProvider.onChangeFkUser('');
                               },
                               icon: Icon(Icons.highlight_off),
@@ -200,14 +200,14 @@ class _support_tableState extends State<support_table> {
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 iduser = data!.idUser!;
-                                context.read<user_vm_provider>().changevalueuser(data);
+                                context.read<UserProvider>().changevalueuser(data);
                                 _eventProvider.onChangeFkUser(iduser);
                                 // Provider.of<EventProvider>(context, listen: false).getevents(iduser, [], "user");
 
                                 // Provider.of<client_vm>(context, listen: false)
                                 //     .getclientfilter_Local(iduser!,"user");
                               },
-                              selectedItem: user.selecteduser,
+                              selectedItem: user.selectedUser,
                               showSearchBox: true,
                               dropdownSearchDecoration: InputDecoration(
                                 //filled: true,
@@ -299,7 +299,7 @@ class _support_tableState extends State<support_table> {
                 //     //                   .getevents(iduser,"user");
                 //     //               // Provider.of<client_vm>(context, listen: false)
                 //     //               //     .getclientfilter_Local(iduser!,"user");
-                //     //             } ,//print(data!.nameUser),
+                //     //             } ,
                 //     //             showSearchBox: true,
                 //     //             dropdownSearchDecoration:
                 //     //             InputDecoration(

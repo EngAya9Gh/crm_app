@@ -159,9 +159,9 @@
 //           initialSelectedDate: DateTime.now(),
 //           cellBorderColor: Colors.transparent,
 //           onLongPress: (longDetail) async{
-//             //print('sdsada'+widget.clientModel!.idClients.toString());
+//             
 //             if(widget.clientModel !=null) {
-//               print('iside if');
+//               
 //               await showDialog<void>(
 //                   context: context,
 //                   builder: (context) => dialog);
@@ -186,9 +186,9 @@
 //           onTap: (details) {
 //
 //             final provider = Provider.of<EventProvider>(context, listen: false);
-//             print(details.date!);
+//             
 //             provider.setDate(details.date!);
-//             print(details.date!);
+//             
 //             showModalBottomSheet(
 //                 context: context, builder: (context) => TaskWidget());
 //           },

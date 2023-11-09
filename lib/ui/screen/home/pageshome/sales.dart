@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/clients_list/presentation/pages/clients_list_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../client/agents_distributors_invoices_view.dart';
 import '../../client/calender_client.dart';
@@ -30,20 +31,9 @@ class sales extends StatefulWidget {
 }
 
 class _salesState extends State<sales> {
-  bool checkvalue = false;
-
-  @override
-  void didChangeDependencies() async {
-    // Future.delayed(Duration(milliseconds: 3)).then((_) async {
-    //   //checkvalue = await privilge.checkprivlge('8');
-    //  // print(checkvalue);
-    // });
-    super.didChangeDependencies();
-  }
-
   @override
   void initState() {
-    Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
+    Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
 
     super.initState();
   }
@@ -61,37 +51,39 @@ class _salesState extends State<sales> {
         backgroundColor: kMainColor,
         elevation: 0,
       ),
-      body:
-          // Consumer<privilge_vm>(
-          // builder: (context, privilge, child){
-          Padding(
-        padding: EdgeInsets.only(top: 50),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('36') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => tabclients()));
-                      },
-                      title: ' قائمة العملاء')
-                  : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('39') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                            context, CupertinoPageRoute(builder: (context) => AgentsDistributorsInvoicesView()));
-                      },
-                      title: 'فواتير العملاء')
-                  : Container(),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('36') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      // Navigator.push(context,
+                      //     CupertinoPageRoute(
+                      //     builder: (context)=>
+                      //         tabclients()));
+                      Navigator.push(context,
+                          CupertinoPageRoute(
+                          builder: (context)=>
+                              ClientsListPage()));
+                }, title: ' قائمة العملاء') :Container(),
+                Provider.of<PrivilegeProvider>(context,listen: true)
+                    .checkPrivilege('39')==true?
+                buildSelectCategory(
+                    colorbag:   Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                          context, CupertinoPageRoute(builder: (context) => AgentsDistributorsInvoicesView()));
+                    },
+                    title: 'فواتير العملاء')
+                : Container(),
 
-              Provider.of<privilge_vm>(context,listen: true).checkprivlge('119') == true?
+            Provider.of<PrivilegeProvider>(context,listen: true).checkPrivilege('119') == true?
               buildSelectCategory(
                   colorbag: Colors.white,
                   colortitle: Colors.black,
@@ -104,166 +96,164 @@ class _salesState extends State<sales> {
                   },
                   title: 'آخر تحديثات العملاء'):Container()
               ,
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('39') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
-                                ));
-                      },
-                      title: 'ديون العملاء')
-                  : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('120') == true
-                  ? buildSelectCategory(
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => calender_client()));
-                      },
-                      title: 'جدول زيارات العميل ',
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                    )
-                  : Container(),
+              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  invoicesAcceptclient() //AcceptPage()   // support_view(type: 'client',)
+                              ));
+                    },
+                    title: 'ديون العملاء')
+                : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('120') == true
+                ? buildSelectCategory(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => calender_client()));
+                    },
+                    title: 'جدول زيارات العميل ',
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                  )
+                : Container(),
 
-              buildSelectCategory(
-                  colorbag: Colors.white,
-                  colortitle: Colors.black,
-                  colorarrow: Colors.black,
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => TransferPage() //AcceptPage()   // support_view(type: 'client',)
-                            ));
-                  },
-                  title: 'موافقات تحويل العملاء'), //تاريخ الفاتورة جنبو اسم المؤسسة
+            buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => TransferPage() //AcceptPage()   // support_view(type: 'client',)
+                          ));
+                },
+                title: 'موافقات تحويل العملاء'), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('40') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => ApprovePage()));
-                      },
-                      title: ' طلبات موافقة المشرفين ')
-                  : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('40') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ApprovePage()));
+                    },
+                    title: ' طلبات موافقة المشرفين ')
+                : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('111') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => ApproveFinancePage()));
-                      },
-                      title: ' طلبات اعتماد المالية ')
-                  : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('111') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ApproveFinancePage()));
+                    },
+                    title: ' طلبات اعتماد المالية ')
+                : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('85') == true
-                  ? buildSelectCategory(
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartAPI()));
-                      },
-                      title: 'تقارير مبيعات الموظفين ',
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                    )
-                  : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('85') == true
+                ? buildSelectCategory(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartAPI()));
+                    },
+                    title: 'تقارير مبيعات الموظفين ',
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                  )
+                : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('86') == true
-                  ? buildSelectCategory(
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartregoinsales()));
-                      },
-                      title: ' تقارير مبيعات الفروع ',
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                    )
-                  : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('88') == true
-                  ? buildSelectCategory(
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => salesproduct()));
-                      },
-                      title: ' تقارير مبيعات المنتجات ',
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                    )
-                  : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('91') == true
-                  ? buildSelectCategory(
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => deptsales()));
-                      },
-                      title: ' تقارير ديون العملاء ',
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                    )
-                  : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('95') == true
-                  ? buildSelectCategory(
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => sales_reportstate()));
-                      },
-                      title: ' تقارير حالات العملاء ',
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                    )
-                  : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('86') == true
+                ? buildSelectCategory(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartregoinsales()));
+                    },
+                    title: ' تقارير مبيعات الفروع ',
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                  )
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('88') == true
+                ? buildSelectCategory(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => salesproduct()));
+                    },
+                    title: ' تقارير مبيعات المنتجات ',
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                  )
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('91') == true
+                ? buildSelectCategory(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => deptsales()));
+                    },
+                    title: ' تقارير ديون العملاء ',
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                  )
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('95') == true
+                ? buildSelectCategory(
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => sales_reportstate()));
+                    },
+                    title: ' تقارير حالات العملاء ',
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                  )
+                : Container(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('14') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => deletedinvoice()));
-                      },
-                      title: 'الفواتير المحذوفة')
-                  : Container(),
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('143') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => WithdrawalsInvoicesPage()));
-                      },
-                      title: 'إدارة الفواتير المنسحبة',
-                    )
-                  : SizedBox.shrink(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('14') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => deletedinvoice()));
+                    },
+                    title: 'الفواتير المحذوفة')
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('143') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => WithdrawalsInvoicesPage()));
+                    },
+                    title: 'إدارة الفواتير المنسحبة',
+                  )
+                : SizedBox.shrink(),
 
-              Provider.of<privilge_vm>(context, listen: true).checkprivlge('35') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => OutClient() //AcceptPage()   // support_view(type: 'client',)
-                                ));
-                      },
-                      title: 'الفواتير المنسحبة')
-                  : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
-            ],
-          ),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('35') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => OutClient() //AcceptPage()   // support_view(type: 'client',)
+                              ));
+                    },
+                    title: 'الفواتير المنسحبة')
+                : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
+          ],
         ),
       ),
-      // },),
     );
   }
 }

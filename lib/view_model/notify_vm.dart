@@ -21,7 +21,7 @@ class notifyvm extends ChangeNotifier {
     //
    await getNotification();
     countnotify=0;
-    print('get counter');
+    
     listnotify.forEach((element) {
      if(element.isread=="0")
       countnotify++;
@@ -45,26 +45,26 @@ class notifyvm extends ChangeNotifier {
     List<NotificationModel> list=[];
     for (int i = 0; i < data.length; i++) {
       list.add(NotificationModel.fromJson(data[i]));
-      print(data[i]);
+      
     }
     listnotify=list;
-    print(listnotify.length);
+    
     notifyListeners();
   }
   Future<String> setRead_notify_vm() async {
-    print('in setRead_notify_vm ');
+    
     String res="";
     bool b=false;
     listnotify.forEach((element) {
       if(element.isread=="0"){
-        print("element foreach");
-        print(element.isread);
+        
+        
         //element.isread = "1";
         b=true;//set read
          }
     });
     if(b){
-      print('inside if setRead_notify_vm ');
+      
       res = await Api().post(
         body: {
     },url: url+'notification/set_read_notify.php?to_user=${usercurrent!.idUser}');
@@ -109,7 +109,7 @@ class notifyvm extends ChangeNotifier {
       String result = await Api()
           .post( url:url+"notification/insertNotification.php",
           body: body);
-      print(result);
+      
       if (result!="error") {
         body.addAll({
           'id_notify': result,

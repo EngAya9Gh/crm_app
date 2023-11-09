@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:ui' as myui;
 
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
 import '../../../model/agent_distributor_model.dart';
 import '../../../model/participatModel.dart';
@@ -15,7 +17,6 @@ import '../../../view_model/typeclient.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../../view_model/vm.dart';
 import '../../widgets/invoice_widget/Card_invoice_client.dart';
-import 'dart:ui' as myui;
 
 enum SellerTypeFilter { distributor, agent, collaborator, employee, all }
 
@@ -47,7 +48,7 @@ class AgentsDistributorsInvoicesView extends StatefulWidget {
 
 class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoicesView>
     with StateViewModelMixin<AgentsDistributorsInvoicesView, AgentsCollaboratorsInvoicesViewmodel> {
-  late privilge_vm privilegeVm;
+  late PrivilegeProvider privilegeVm;
   late TextEditingController _searchTextField;
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
@@ -55,15 +56,16 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
   @override
   void initState() {
     super.initState();
-    privilegeVm = context.read<privilge_vm>();
+    privilegeVm = context.read<PrivilegeProvider>();
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
-    final privilegeList = privilegeVm.privilgelist;
+    final privilegeList = privilegeVm.privilegeList;
     scheduleMicrotask(() {
       viewmodel.init();
-      context.read<regoin_vm>().changeVal(null);
-      context.read<typeclient>().changelisttype_install(null);
-      context.read<typeclient>().changevalueNotReady (null);
+      context.read<RegionProvider>().changeVal(null);
+      context.read<ClientTypeProvider>()
+        ..changelisttype_install(null)
+        ..changevalueNotReady(null);
       context.read<invoice_vm>()
         ..setvaluepriv(privilegeList)
         ..getinvoice_Localwithprev();
@@ -93,8 +95,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        print('_selectedDatefrom ' + _selectedDatefrom.toString());
-        print('_selectedDateto ' + _selectedDateto.toString());
+
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
             .onChange_date(_selectedDatefrom, _selectedDateto);
@@ -114,7 +115,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        print('_selectedDateto ' + _selectedDateto.toString());
+
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
             .onChange_date(_selectedDatefrom, _selectedDateto);
@@ -172,21 +173,21 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
               ],
             ),
             SizedBox(height: 10),
-            if (privilegeVm.checkprivlge('1'))
+            if (privilegeVm.checkPrivilege('1'))
               Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 15),
-                child: Consumer<regoin_vm>(
+                child: Consumer<RegionProvider>(
                   builder: (context, cart, child) {
                     return DropdownButton<String?>(
                       isExpanded: true,
                       hint: Text("الفرع"),
-                      items: cart.listregoinfilter.map((level_one) {
+                      items: cart.listRegionFilter.map((level_one) {
                         return DropdownMenuItem(
-                          child: Text(level_one.name_regoin),
-                          value: level_one.id_regoin,
+                          child: Text(level_one.regionName),
+                          value: level_one.regionId,
                         );
                       }).toList(),
-                      value: cart.selectedValueLevel,
+                      value: cart.selectedRegionId,
                       onChanged: (value) {
                         if (value == null) {
                           return;
@@ -279,7 +280,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 8),
-              child: Consumer<typeclient>(builder: (context, cart, child) {
+              child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
                 return DropdownButton(
                   isExpanded: true,
                   hint: Text('حالة الفاتورة'),
@@ -293,12 +294,10 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   onChanged: (value) {
                     cart.changevalueNotReady(value.toString());
                     viewmodel.onChangeNotReady(value.toString());
-
                   },
                 );
               }),
             ),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(
@@ -468,7 +467,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
         ),
       );
     else if (isEmp)
-      return Consumer<user_vm_provider>(
+      return Consumer<UserProvider>(
         builder: (context, value, child) => Expanded(
           flex: 5,
           child: sellerDropdown<UserModel>(

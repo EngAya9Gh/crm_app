@@ -38,21 +38,22 @@ Object? _$nullableGenericToJson<T>(
 ) =>
     input == null ? null : toJson(input);
 
-_$_Links _$$_LinksFromJson(Map<String, dynamic> json) => _$_Links(
+_$LinksImpl _$$LinksImplFromJson(Map<String, dynamic> json) => _$LinksImpl(
       first: json['first'] as String?,
       last: json['last'] as String?,
       prev: json['prev'],
       next: json['next'] as String?,
     );
 
-Map<String, dynamic> _$$_LinksToJson(_$_Links instance) => <String, dynamic>{
+Map<String, dynamic> _$$LinksImplToJson(_$LinksImpl instance) =>
+    <String, dynamic>{
       'first': instance.first,
       'last': instance.last,
       'prev': instance.prev,
       'next': instance.next,
     };
 
-_$_Meta _$$_MetaFromJson(Map<String, dynamic> json) => _$_Meta(
+_$MetaImpl _$$MetaImplFromJson(Map<String, dynamic> json) => _$MetaImpl(
       currentPage: json['currentPage'] as int?,
       from: json['from'] as int?,
       lastPage: json['lastPage'] as int?,
@@ -65,7 +66,8 @@ _$_Meta _$$_MetaFromJson(Map<String, dynamic> json) => _$_Meta(
       total: json['total'] as int?,
     );
 
-Map<String, dynamic> _$$_MetaToJson(_$_Meta instance) => <String, dynamic>{
+Map<String, dynamic> _$$MetaImplToJson(_$MetaImpl instance) =>
+    <String, dynamic>{
       'currentPage': instance.currentPage,
       'from': instance.from,
       'lastPage': instance.lastPage,
@@ -76,13 +78,14 @@ Map<String, dynamic> _$$_MetaToJson(_$_Meta instance) => <String, dynamic>{
       'total': instance.total,
     };
 
-_$_Link _$$_LinkFromJson(Map<String, dynamic> json) => _$_Link(
+_$LinkImpl _$$LinkImplFromJson(Map<String, dynamic> json) => _$LinkImpl(
       url: json['url'] as String?,
       label: json['label'] as String?,
       active: json['active'] as bool?,
     );
 
-Map<String, dynamic> _$$_LinkToJson(_$_Link instance) => <String, dynamic>{
+Map<String, dynamic> _$$LinkImplToJson(_$LinkImpl instance) =>
+    <String, dynamic>{
       'url': instance.url,
       'label': instance.label,
       'active': instance.active,

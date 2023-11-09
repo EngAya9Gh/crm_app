@@ -12,7 +12,7 @@ class sherdpref extends ChangeNotifier{
   UserModel? usercurrent;
 
   void setvalue(user){
-    print('in set usercurrent in product vm');
+    
     usercurrent=user;
     notifyListeners();
   }

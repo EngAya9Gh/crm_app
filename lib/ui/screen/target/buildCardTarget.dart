@@ -1,16 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/model/targetmodel.dart';
-import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/target/target_user.dart';
-import 'package:crm_smart/ui/screen/user/userview.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/ui/screen/target/target_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../../constants.dart';
 
 class buildCardTarget extends StatelessWidget {
   buildCardTarget({required this.target, Key? key}) : super(key: key);

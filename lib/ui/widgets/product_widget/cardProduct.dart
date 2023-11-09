@@ -145,7 +145,7 @@ class CardProduct extends StatelessWidget {
                             //                         .deleteProduct(itemProd.idProduct);
                             //                     Provider.of<LoadProvider>(context,listen: false)
                             //                         .changebooldelete(false);
-                            //                     print(res);
+                            //                     
                             //                     if(res=="remove error")
                             //                       scaffoldKey!.currentState!.showSnackBar(
                             //                           SnackBar(content: Text("لا يمكن حذف هذا المنتج"))

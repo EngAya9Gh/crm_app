@@ -1,23 +1,15 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/user/image_profile.dart';
 import 'package:crm_smart/ui/screen/user/row_edit2.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-
-import 'package:crm_smart/view_model/all_user_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
-import 'package:crm_smart/view_model/user_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:get/get.dart';
 
 import '../../../constants.dart';
 import '../../../function_global.dart';
@@ -42,8 +34,8 @@ class _UserScreenState extends State<UserScreen> {
   late int index;
   late var controllerUser;
   @override void initState() {
-     index = Provider.of<user_vm_provider>(context,listen: false)
-         .userall.indexWhere(
+     index = Provider.of<UserProvider>(context,listen: false)
+         .allUsers.indexWhere(
             (element) =>
         element.idUser ==widget.userModel.idUser );
      //controllerUser =Provider.of<user_vm_provider>(context,listen: false);
@@ -55,8 +47,8 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     // bool isupdate=
-    UserModel useredit=  Provider.of<user_vm_provider>
-      (context,listen: true).userall[index];
+    UserModel useredit=  Provider.of<UserProvider>
+      (context,listen: true).allUsers[index];
     //return Obx(() {
       return Scaffold(
         backgroundColor: Colors.white,
@@ -75,8 +67,8 @@ class _UserScreenState extends State<UserScreen> {
                 icon:
                 const Icon(Icons.edit,
                   color: kWhiteColor,)):
-            Provider.of<privilge_vm>(context,listen: true)
-                .checkprivlge('50')==true ?
+            Provider.of<PrivilegeProvider>(context,listen: true)
+                .checkPrivilege('50')==true ?
             IconButton(
                 onPressed: () {
                   Navigator.push(context, CupertinoPageRoute(

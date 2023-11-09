@@ -1,26 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/routes/routes.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/ui/screen/login.dart';
-import 'package:crm_smart/ui/screen/product/productView.dart';
-import 'package:crm_smart/ui/screen/selectCountryScreen.dart';
-import 'package:crm_smart/ui/screen/user/alluser.dart';
-import 'package:crm_smart/ui/screen/user/editprofile.dart';
 import 'package:crm_smart/ui/screen/user/usertest_view.dart';
 import 'package:crm_smart/ui/screen/user/userview.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:get/get.dart';
-import 'dart:io';
 
-import '../../screen/barnch_race/pages/branch_race_view.dart';
-import '../../screen/employee_race/pages/employee_race_page.dart';
 import '../animated_dialog.dart';
 import '../delete_acconut_dialog.dart';
 
@@ -30,7 +19,7 @@ class CustomDrawer extends StatelessWidget {
   //final controllerUsers = Get.find<AllUserVMController>();
   @override
   Widget build(BuildContext context) {
-    var controllerUsers = Provider.of<user_vm_provider>(context, listen: true);
+    var controllerUsers = Provider.of<UserProvider>(context, listen: true);
 
     return Drawer(
       child: Container(
@@ -43,16 +32,16 @@ class CustomDrawer extends StatelessWidget {
                   ),
               accountName: Text(
                 controllerUsers.currentUser.nameUser.toString(),
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(fontFamily: kfontfamily2,color: context.colorScheme.onBackground),
               ),
 
               accountEmail: Text(
                 controllerUsers.currentUser.email.toString(),
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(fontFamily: kfontfamily2,color: context.colorScheme.onBackground),
               ),
               currentAccountPicture: CircleAvatar(
                   backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Color(0xFF56ccf2) : Colors.grey,
-                  child: (Provider.of<user_vm_provider>(context, listen: true).currentUser.img_image?.isNotEmpty ??
+                  child: (Provider.of<UserProvider>(context, listen: true).currentUser.img_image?.isNotEmpty ??
                           false)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(45),
@@ -65,7 +54,7 @@ class CustomDrawer extends StatelessWidget {
                                       value: progress.progress,
                                     ),
                                   ),
-                              imageUrl: Provider.of<user_vm_provider>(context, listen: true).currentUser.img_image!),
+                              imageUrl: Provider.of<UserProvider>(context, listen: true).currentUser.img_image!),
                         )
                       // Image.network(Provider.of<user_vm_provider>(context,listen: true)
                       //     .currentUser!.img_image! ,
@@ -74,7 +63,7 @@ class CustomDrawer extends StatelessWidget {
                       // FileImage(
                       //     File(Provider.of<user_vm_provider>(context,listen: true).currentUser!.img_image!))
                       //     as ImageProvider
-                      : Text(Provider.of<user_vm_provider>(context, listen: true)
+                      : Text(Provider.of<UserProvider>(context, listen: true)
                           .currentUser
                           .nameUser
                           .toString()
@@ -124,7 +113,7 @@ class CustomDrawer extends StatelessWidget {
                   CupertinoPageRoute<void>(
                       builder: (BuildContext context) => UserScreen(
                           ismyprofile: 'yes',
-                          userModel: Provider.of<user_vm_provider>(context, listen: false).currentUser
+                          userModel: Provider.of<UserProvider>(context, listen: false).currentUser
                           //index: index,
                           )),
                 );

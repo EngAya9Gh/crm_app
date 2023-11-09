@@ -31,8 +31,8 @@ class _privilge_pageState extends State<privilge_page> {
   //   {'name': 'Danny', 'group': 'Team C'},
   // ];
   @override void initState() {
-    Provider.of<privilge_vm>(context,listen: false)
-        .getPrivilgepage(widget.fk_level);
+    Provider.of<PrivilegeProvider>(context,listen: false)
+        .getPrivilegePage(widget.fk_level);
     super.initState();
   }
   @override void didChangeDependencies() {
@@ -42,9 +42,9 @@ class _privilge_pageState extends State<privilge_page> {
   }
   @override
   Widget build(BuildContext context) {
-    List<PrivilgeModel> _privilgelist =Provider.of<privilge_vm>
+    List<PrivilgeModel> _privilgelist =Provider.of<PrivilegeProvider>
       (context,listen: true)
-        .privilgelistpage;
+        .privilegeListPage;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.namelevel.toString()),
@@ -53,14 +53,14 @@ class _privilge_pageState extends State<privilge_page> {
 
           IconButton(
               onPressed: (){
-                for(int i=0;i< Provider.of<privilge_vm>(context,listen: false)
-                .privilgelistpage.length;i++){
-                  Provider.of<privilge_vm>(context,listen: false)
-                      .updatepriv_vm(
-                      Provider.of<privilge_vm>(context,listen: false)
-                      .privilgelistpage[i].idPrivgUser,
-                      Provider.of<privilge_vm>(context,listen: false)
-                          .privilgelistpage[i].isCheck);
+                for(int i=0;i< Provider.of<PrivilegeProvider>(context,listen: false)
+                .privilegeListPage.length;i++){
+                  Provider.of<PrivilegeProvider>(context,listen: false)
+                      .updatePrivilegeVm(
+                      Provider.of<PrivilegeProvider>(context,listen: false)
+                      .privilegeListPage[i].idPrivgUser,
+                      Provider.of<PrivilegeProvider>(context,listen: false)
+                          .privilegeListPage[i].isCheck);
                 }
 
                 Navigator.pop(context);
@@ -140,7 +140,7 @@ class _privilge_pageState extends State<privilge_page> {
                      value:   element.isCheck=='1'?true:false,// as bool,
                      onChanged: (bool? value) {
                        setState(() {
-                         print(value);
+                         
                          value ==true?
                          element.isCheck="1": element.isCheck="0";
                          //values[key] = value;

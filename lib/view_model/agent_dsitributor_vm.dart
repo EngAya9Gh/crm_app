@@ -1,12 +1,11 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
-import 'package:crm_smart/model/countrymodel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/services/Invoice_Service.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../api/api.dart';
 import '../constants.dart';
@@ -78,10 +77,6 @@ class AgentDistributorViewModel extends ChangeNotifier {
     try {
       isLoadingAction = true;
       notifyListeners();
-
-      print(
-          "agentDistributorActionParams ${agentDistributorActionParams.toMap().toString()} \n"
-          "agentId: $agentId");
       dynamic response;
       if (agentId == null) {
         response = await Api().postRequestWithFile("array",
@@ -102,7 +97,7 @@ class AgentDistributorViewModel extends ChangeNotifier {
       resetAgentDistributorActionParams();
       getAgentsAndDistributors();
     } catch (e, stackTrace) {
-      print("stackTrace $stackTrace");
+      
       isLoadingAction = false;
       notifyListeners();
     }

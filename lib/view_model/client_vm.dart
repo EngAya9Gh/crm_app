@@ -1,26 +1,19 @@
-import 'package:crm_smart/Repository/invoice_repo/cach_data_source.dart';
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/services/ProductService.dart';
 import 'package:crm_smart/services/clientService.dart';
-import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import '../api/api.dart';
 import '../constants.dart';
-import 'country_vm.dart';
 
 const CACHE_ClientByUser_KEY = "CACHE_Client_KEY";
 const CACHE_ClientByUser_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
 
-class client_vm extends ChangeNotifier {
+class ClientProvider extends ChangeNotifier {
   List<ClientModel> listClient = [];
   List<ClientModel> listClientAccept = [];
   List<ClientModel> listClientAprroveTransfer = [];
@@ -52,14 +45,14 @@ class client_vm extends ChangeNotifier {
   bool isloading_marketing = false;
 
   void setvalue(user) {
-    print('in set usercurrent client vm');
+    
 
     usercurrent = user;
     notifyListeners();
   }
 
   void setvaluepriv(privilgelistparam) {
-    print('in set privilge client vm');
+    
     privilgelist = privilgelistparam;
     notifyListeners();
   }
@@ -130,10 +123,10 @@ class client_vm extends ChangeNotifier {
       _list = await ClientService().getAllClientsupport(usercurrent!.fkCountry.toString(), null);
     else {
       int idexist = -1;
-      print('length' + listparam.toString().length.toString());
+      
       // if(listparam!.isNotEmpty)
       idexist = listparam.indexWhere((element) => element.id_maincity == '0');
-      print(idexist);
+      
       if (idexist != -1)
         _list = await ClientService().getAllClientsupport(usercurrent!.fkCountry.toString(), null);
       else {
@@ -150,8 +143,8 @@ class client_vm extends ChangeNotifier {
     //  if(regoin!=null){
     //    if(regoin!='0'){
     //      listClientAccept.forEach((element) {
-    //        print(element.id_maincity);
-    //        print(regoin);
+    //        
+    //        
     //        if(element.id_maincity==regoin)
     //          list.add(element);
     //      });
@@ -209,7 +202,7 @@ class client_vm extends ChangeNotifier {
       listClientMarketing = List.from(listClientfilter);
     }
     if (type == "user") {
-      print('in user search');
+      
       if (filter2 == null) {
         listClient.forEach((element) {
           if (element.fkUser == searchfilter) listClientfilter.add(element);
@@ -560,21 +553,21 @@ class client_vm extends ChangeNotifier {
     //     .getCache(CACHE_ClientByUser_KEY, CACHE_ClientByUser_INTERVAL);
     //
     // if(listClientbyCurrentUser.isEmpty){
-    //   print("inside get from api client");
+    //   
     //   listClientbyCurrentUser =
     //   await ClientService().getClientbyuser(usercurrent!.idUser.toString());
     //
     //   if(listClientbyCurrentUser!=null) {
-    //     print("nukkkkklllll");
+    //     
     //   await cahe_data_source_client().saveToCache(listClientbyCurrentUser,
     //       CACHE_ClientByUser_KEY);
     //   }
     //   else {
-    //     print("elsssssss");
+    //     
     //   }
     // }else{
     //   if(list!=null){
-    //   print('inside get from cache client');
+    //   
     //   listClientbyCurrentUser.addAll(list);
     //   }
     // }

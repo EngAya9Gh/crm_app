@@ -142,10 +142,10 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                             color: Colors.amber,
                           ),
                           onRatingUpdate: (rating) {
-                            print(rating);
+
                             setState(() {
                               rate = rating;
-                              print(rate);
+
                             });
                           },
                         ),
@@ -164,7 +164,7 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                   child: ElevatedButton(
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                       onPressed: () async {
-                        final user = context.read<user_vm_provider>().currentUser;
+                        final user = context.read<UserProvider>().currentUser;
                         final fkUser = user.idUser.toString();
                         final nameUser = user.nameUser.toString();
                         final communicationVm = context.read<communication_vm>();

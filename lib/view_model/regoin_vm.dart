@@ -8,20 +8,16 @@ import 'package:flutter/cupertino.dart';
 
 import '../constants.dart';
 
-class regoin_vm extends ChangeNotifier {
-  late List<RegoinModel> listregoin = [];
-  late List<RegoinModel> listregoinfilter = [];
-  late String? selectedValueLevel = null;
+class RegionProvider extends ChangeNotifier {
+  List<RegionModel> listRegion = [];
+  List<RegionModel> listRegionFilter = [];
+  String? selectedRegionId;
 
   void changeVal(String? val) {
-    print('inside regoin vm');
-    print(val);
     if (val == null || val == "null") {
-      selectedValueLevel = null;
-      print('regoin vm');
+      selectedRegionId = null;
     } else {
-      selectedValueLevel = val;
-      print('regoin in vm');
+      selectedRegionId = val;
     }
     notifyListeners();
   }
@@ -29,55 +25,50 @@ class regoin_vm extends ChangeNotifier {
   late String? selectedValueuser = null;
 
   void changeValuser(String? val, [bool isInit = false]) {
-    print('inside regoin vm');
-    print(val);
     if (val == null || val == "null") {
       selectedValueuser = null;
-      print('regoin vm');
     } else {
       selectedValueuser = val;
-      print('regoin in vm');
     }
 
     if (!isInit) notifyListeners();
   }
 
   void clearvalues() {
-    listregoin = [];
-    selectedValueLevel = null;
+    listRegion = [];
+    selectedRegionId = null;
     notifyListeners();
   }
 
-  UserModel? usercurrent;
+  UserModel? userCurrent;
 
-  void setvalue(user) {
-    usercurrent = user;
+  void setCurrentUser(UserModel user) {
+    userCurrent = user;
     notifyListeners();
   }
 
-  Future<void> getregoin() async {
-    listregoinfilter = [];
-    if (listregoin.isEmpty) {
+  Future<void> getRegions() async {
+    listRegionFilter = [];
+    if (listRegion.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'country/get_regoinByIdCountry.php?fk_country=${usercurrent!.fkCountry}');
-      print(data);
+      data = await Api().get(url: url + 'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
-          listregoin.add(RegoinModel.fromJson(data[i]));
+          listRegion.add(RegionModel.fromJson(data[i]));
         }
       }
     }
-    listregoinfilter = List.from(listregoin); // [...listregoin];listregoin.tolist();
-    listregoinfilter.insert(0, RegoinModel(id_regoin: '0', name_regoin: 'الكل', fk_country: ''));
+    listRegionFilter = List.from(listRegion); // [...listregoin];listregoin.tolist();
+    listRegionFilter.insert(0, RegionModel(regionId: '0', regionName: 'الكل', countryId: ''));
     notifyListeners();
     //var  data=await RegoinService().getRegoinByCountry("1");
     //listregoin= data as  List<RegoinModel>;
   }
 
-  bool isloading = false;
+  bool isLoading = false;
 
-  Future<String> addRegoin_vm(Map<String, dynamic?> body) async {
-    isloading = true;
+  Future<String> addRegionVm(Map<String, dynamic> body) async {
+    isLoading = true;
     notifyListeners();
     String res = await Api().post(
         url: url + 'users/add_regoin.php', //users/addmangemt.php
@@ -86,24 +77,24 @@ class regoin_vm extends ChangeNotifier {
       body.addAll({
         'id_regoin': res,
       });
-      listregoin.insert(0, RegoinModel.fromJson(body));
-      isloading = false;
+      listRegion.insert(0, RegionModel.fromJson(body));
+      isLoading = false;
       notifyListeners();
     }
     return res;
   }
 
-  Future<String> update_regoin(Map<String, dynamic?> body, String idmanag) async {
-    isloading = true;
+  Future<String> updateRegion(Map<String, dynamic> body, String idmanag) async {
+    isLoading = true;
     notifyListeners();
     String res = await Api().post(
         url: url + 'users/update_regoin.php?id_regoin=${idmanag}', //users/addmangemt.php
         body: body);
 
-    final index = listregoin.indexWhere((element) => element.id_regoin == idmanag);
-    listregoin[index] = RegoinModel.fromJson(body);
+    final index = listRegion.indexWhere((element) => element.regionId == idmanag);
+    listRegion[index] = RegionModel.fromJson(body);
     // listregoin.add(RegoinModel.fromJson(body));
-    isloading = false;
+    isLoading = false;
     notifyListeners();
 
     return res;

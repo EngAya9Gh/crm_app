@@ -42,11 +42,10 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       //haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('155');
 
-      context.read<user_vm_provider>().changevalueuser(null,true);
-      list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
+      context.read<UserProvider>().changevalueuser(null,true);
+      list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
       Provider.of<lastcommentclient_vm>(context, listen: false).setvaluepriv(list,false);
       // if(!haveMarketingPrivilege)
-
       Provider.of<lastcommentclient_vm>(context, listen: false)
         .getLastcommentClientModel();
 
@@ -94,7 +93,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                       options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                       buttons: ['تفاوض', 'مشترك', 'مستبعد', 'عرض سعر'],
                       onSelected: (_, index, isselected) {
-                        print(index);
+
                         switch (index) {
                           case 0:
                             type = 'تفاوض';
@@ -123,11 +122,11 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                     left: 8.0,
                     right: 8,
                   ),
-                  child: Consumer<user_vm_provider>(
+                  child: Consumer<UserProvider>(
                     builder: (context, cart, child) {
                       return Row(
                         children: [
-                          if(cart.selecteduser != null)
+                          if(cart.selectedUser != null)
                             ...{
                               IconButton(
                                   onPressed: () {
@@ -150,7 +149,7 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                 cart.changevalueuser(data);
                                 Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
                               },
-                              selectedItem: cart.selecteduser,
+                              selectedItem: cart.selectedUser,
                               showSearchBox: true,
                               dropdownSearchDecoration: InputDecoration(
                                 isCollapsed: true,

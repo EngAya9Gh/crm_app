@@ -172,8 +172,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     from=from_param;
     to=to_param;
     notifyListeners();
-    print('from '+from.toString());
-    print('to '+to.toString());
+
+
     onFilter();
   }
 
@@ -233,33 +233,9 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     }).toList();
     // isSelectedNotReadyInvoice(el)
     List<InvoiceModel> invoicesFiltered_temp = [];
-    print('invoicesFiltered.length');
-
-    print(invoicesFiltered.length);
 
 
-    // if(invoicesFiltered.isEmpty){
-    // if(selectednotReady=='غير جاهز')
-    //   list.forEach((element) {
-    //     if (  element.isdoneinstall == null
-    //         && element.ready_install =='0'  && element.TypeReadyClient=='notReady') {
-    //       invoicesFiltered.add(element);
-    //     }
-    //   });
-    // }
-    // else {
-    //   if (selectednotReady == 'غير جاهز')
-    //     invoicesFiltered.forEach((element) {
-    //       if (element.isdoneinstall == null
-    //           && element.ready_install == '0' &&
-    //           element.TypeReadyClient == 'notReady') {
-    //         invoicesFiltered_temp.add(element);
-    //       }
-    //     });
-    //   invoicesFiltered=List.from(invoicesFiltered_temp);
-    //   invoicesFiltered_temp=[];
-    // }
-     if(selectednotReady == 'غير جاهز'){
+    if(selectednotReady == 'غير جاهز'){
      if(invoicesFiltered.isEmpty)
       list.forEach((element) {
 
@@ -299,10 +275,9 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
       }
     });
     }
-    print(invoicesFiltered.length);
 
     invoicesFiltered=List.from(invoicesFiltered_temp);
-    print('nb '+invoicesFiltered.length.toString());
+
     notifyListeners();
 
 

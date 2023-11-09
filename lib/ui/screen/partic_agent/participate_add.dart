@@ -195,7 +195,7 @@ class _addParticipateState extends State<addParticipate> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    // 
   }
 
   error(context) {
@@ -204,6 +204,6 @@ class _addParticipateState extends State<addParticipate> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+    
   }
 }

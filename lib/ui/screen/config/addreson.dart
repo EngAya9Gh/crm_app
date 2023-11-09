@@ -39,7 +39,7 @@ class _addresaonState extends State<addresaon> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<typeclient>(context)
+          inAsyncCall: Provider.of<ClientTypeProvider>(context)
               .isloading,
           child : Form(
             key: _globalKey,
@@ -80,7 +80,7 @@ class _addresaonState extends State<addresaon> {
                             // Provider.of<LoadProvider>(context, listen: false)
                             //     .changebooladdclient(true);
                             if(widget.idReason==null){
-                            Provider.of<typeclient>(context,listen: false)
+                            Provider.of<ClientTypeProvider>(context,listen: false)
                                 .addReson_vm({
                               'name_reason':namereson.text,
                               'type':widget.type,
@@ -91,7 +91,7 @@ class _addresaonState extends State<addresaon> {
                             );
                             }
                             else{
-                              Provider.of<typeclient>(context,listen: false)
+                              Provider.of<ClientTypeProvider>(context,listen: false)
                                   .update_resoan({
 
                                 'name_reason':namereson.text,
@@ -129,7 +129,7 @@ class _addresaonState extends State<addresaon> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
@@ -138,6 +138,6 @@ class _addresaonState extends State<addresaon> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+
   }
 }

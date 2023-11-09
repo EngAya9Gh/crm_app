@@ -53,7 +53,7 @@ class _support_viewState extends State<support_view> {
         title: Text('العملاء المشتركين',style: TextStyle(color: kWhiteColor),),
         centerTitle: true,
       ),
-      body: Consumer<privilge_vm>(
+      body: Consumer<PrivilegeProvider>(
         builder: (context, privilge, child) {
           return SafeArea(
             child: Directionality(
@@ -66,26 +66,26 @@ class _support_viewState extends State<support_view> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
                       children: [
-                        privilge.checkprivlge('1') == true ? //regoin
+                        privilge.checkPrivilege('1') == true ? //regoin
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0, right: 8),
-                            child: Consumer<regoin_vm>(
+                            child: Consumer<RegionProvider>(
                               builder: (context, cart, child) {
                                 return
                                   DropdownButton(
                                     isExpanded: true,
                                     hint: Text("الفرع"),
-                                    items: cart.listregoinfilter.map((level_one) {
+                                    items: cart.listRegionFilter.map((level_one) {
                                       return DropdownMenuItem(
 
-                                        child: Text(level_one.name_regoin),
+                                        child: Text(level_one.regionName),
                                         //label of item
                                         value: level_one
-                                            .id_regoin, //value of item
+                                            .regionId, //value of item
                                       );
                                     }).toList(),
-                                    value: cart.selectedValueLevel,
+                                    value: cart.selectedRegionId,
                                     onChanged: (value) {
                                       //  setState(() {
                                       cart.changeVal(value.toString());
@@ -112,7 +112,7 @@ class _support_viewState extends State<support_view> {
                         //               borderRadius: BorderRadius.circular(10)),
                         //           buttons: ['الكل','بالإنتظار','تم التركيب'],
                         //           onSelected: (index,isselected){
-                        //             print(index);
+                        //             
                         //             //setState(() {
                         //             typepayController=index.toString();
                         //             selectedProvider.changeinstall(index);
@@ -202,8 +202,8 @@ class _support_viewState extends State<support_view> {
   }
 
     void filtershow(){
-    print(regoin);
-    // print(typeclientvalue);
+    
+    // 
     //   Provider.of<invoice_vm>(context,listen: false)
     //       .getclienttype_filter(typeclientvalue!,regoin,'only');
     Provider.of<invoice_vm>(context,listen: false)

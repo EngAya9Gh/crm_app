@@ -57,7 +57,7 @@
 //         onTap: (details) {
 //           if (details.appointments == null) return;
 //           final event = details.appointments!.first;
-//           print(event.idinvoice);
+//           
 //           Navigator.push(
 //               context,
 //               CupertinoPageRoute(
@@ -73,8 +73,8 @@
 //   }
 //
 //   Widget appointmentBuilder(BuildContext context, CalendarAppointmentDetails details) {
-//     print('fdfdsf');
-//     print(details.bounds.width);
+//     
+//     
 //     final event = details.appointments.first;
 //     return Container(
 //         width: details.bounds.width,

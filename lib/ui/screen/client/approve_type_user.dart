@@ -29,9 +29,9 @@ class _TransferPageState extends State<TransferPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_)async{
-      List<PrivilgeModel> list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
-      Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
-      Provider.of<client_vm>(context,listen: false)
+      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
+      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
+      Provider.of<ClientProvider>(context,listen: false)
           .getallclientTransfer();
     });
     //Provider.of<notifyvm>(context,listen: false).getNotification();
@@ -67,7 +67,7 @@ class _TransferPageState extends State<TransferPage> {
                       .size
                       .height * 0.73,
                   child:
-                  Consumer<client_vm> (
+                  Consumer<ClientProvider> (
                       builder: (context,value,child) {
                         return
                           value.isloading==true?

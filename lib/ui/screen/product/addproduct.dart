@@ -57,11 +57,11 @@ class _addProductState extends State<addProduct> {
   void settaxrate(context) {
     List<ConfigModel> _listconfg =
         Provider.of<config_vm>(context, listen: false).listofconfig;
-    print("build 3 add");
+    
     taxrate =
         _listconfg.firstWhere((element) => element.name_config == 'taxrate');
 
-    print(taxrate);
+    
   }
 
   // String? idCountry;
@@ -69,13 +69,13 @@ class _addProductState extends State<addProduct> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // idCountry = Provider.of<user_vm_provider>(context, listen: false).currentUser!.fkCountry;
-      print("build add prod");
+      
       Provider.of<config_vm>(context, listen: false).getAllConfig();
-      print("build 2");
+      
       Provider.of<switch_provider>(
           context,
           listen: false).changeboolValue(false);
-      //print(Provider.of<config_vm>(context, listen: false).listofconfig[0]);
+      
     });
     super.initState();
   }
@@ -135,8 +135,6 @@ class _addProductState extends State<addProduct> {
                                 ),
                                 controller: GroupButtonController(
                                   selectedIndex: selectedProvider.isSelected,
-                                  onDisablePressed: (i) =>
-                                      print('Button #$i is disabled'),
                                 ),
                                 buttons: ['أجهزة', 'برامج'],
                                 onSelected: (_,int index, bool isSelected) {
@@ -144,7 +142,6 @@ class _addProductState extends State<addProduct> {
                                   // valtype_product == 0 ? 1 : 0;
                                   selectedProvider.selectValue(index);
 
-                                  debugPrint('Button #$index $isSelected');
                                 },
                               ),
                             ),
@@ -203,7 +200,7 @@ class _addProductState extends State<addProduct> {
                               label: label_name_price,
                               onChanged: (val) {
                                 price = double.parse(val.toString());
-                                print(price);
+                                
                               },
                             ),
                             SizedBox(
@@ -263,7 +260,7 @@ class _addProductState extends State<addProduct> {
                                           'nameProduct': nameprod,
                                           'priceProduct': price.toString(),
                                           'type': valtype_product.toString(),
-                                          'fk_country': Provider.of<user_vm_provider>(context,listen: false)
+                                          'fk_country': Provider.of<UserProvider>(context,listen: false)
                                           .currentUser.fkCountry.toString(),
                                           'fk_config': valtaxrate
                                               ? taxrate.id_config
@@ -272,7 +269,7 @@ class _addProductState extends State<addProduct> {
                                               ? taxrate.value_config
                                               : "null",
                                           "created_at":DateTime.now().toString(),
-                                          "fkusercreate":Provider.of<user_vm_provider>
+                                          "fkusercreate":Provider.of<UserProvider>
                                             (context,listen: false).currentUser.idUser.toString(),
                                           //
                                         }).then((value) => value != "false"

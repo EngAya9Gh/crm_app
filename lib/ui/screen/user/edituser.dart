@@ -1,38 +1,23 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/model/managmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/provider/loadingprovider.dart';
-import 'package:crm_smart/provider/manage_provider.dart';
-import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:crm_smart/services/UserService.dart';
 import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/levelcombox.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/manage_widget.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/regoincombox.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/view_model/all_user_vm.dart';
-import 'package:crm_smart/view_model/country_vm.dart';
-import 'package:crm_smart/view_model/level_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../labeltext.dart';
-import 'package:get/get.dart';
-import 'dart:io';
-
 import '../../../model/maincitymodel.dart';
+import '../../../provider/manage_provider.dart';
+import '../../../view_model/level_vm.dart';
 import '../../../view_model/maincity_vm.dart';
 
 class EditUser extends StatefulWidget {
@@ -105,7 +90,7 @@ class _EditUserState extends State<EditUser> {
           widget.userModel.typeAdministration.toString();
       Provider.of<manage_provider>(context, listen: false).changevalue(namemanage!);
 
-      context.read<maincity_vm>().getmaincity(regions: widget.userModel.maincitylist_user);
+      context.read<MainCityProvider>().getmaincity(regions: widget.userModel.maincitylist_user);
       emailController.text =
           widget.userModel.email.toString();
 
@@ -114,7 +99,7 @@ class _EditUserState extends State<EditUser> {
       regoinname = widget.userModel.nameRegoin;
       levelname = widget.userModel.name_level;
       Provider.of<level_vm>(context, listen: false).changeVal(widget.userModel.typeLevel.toString());
-      Provider.of<regoin_vm>(context, listen: false).changeValuser(widget.userModel.fkRegoin);
+      Provider.of<RegionProvider>(context, listen: false).changeValuser(widget.userModel.fkRegoin);
 
       setState(() {
         isAcive = widget.userModel.isActive!;
@@ -144,7 +129,7 @@ class _EditUserState extends State<EditUser> {
                   return;
                 }
 
-                final selectedRegion = context.read<maincity_vm>().selecteditemmaincity;
+                final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
                 final oldRegion = widget.userModel.maincitylist_user?.map((e) => e.asMainCity).toList();
 
                 final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
@@ -157,14 +142,14 @@ class _EditUserState extends State<EditUser> {
                   hasChanges = !const DeepCollectionEquality.unordered().equals(selectedMainCityIds, userMainCityIds);
                 }
 
-                fkregoin = Provider.of<regoin_vm>(context, listen: false).selectedValueuser;
+                fkregoin = Provider.of<RegionProvider>(context, listen: false).selectedValueuser;
                 fklevel = Provider.of<level_vm>(context, listen: false).selectedValueLevel;
                 regoinname = fkregoin == null
                     ? ""
-                    : Provider.of<regoin_vm>(context, listen: false)
-                        .listregoin
-                        .firstWhere((element) => element.id_regoin == fkregoin)
-                        .name_regoin;
+                    : Provider.of<RegionProvider>(context, listen: false)
+                        .listRegion
+                        .firstWhere((element) => element.regionId == fkregoin)
+                        .regionName;
 
                 levelname = Provider.of<level_vm>(context, listen: false)
                     .listoflevel
@@ -172,8 +157,8 @@ class _EditUserState extends State<EditUser> {
                     .nameLevel;
 
                 //String id_country=Provider.of<country_vm>(context,listen: false).id_country;
-                print("level in update button" + levelname.toString());
-                print("regoin in update button" + regoinname.toString());
+
+
                 if (levelname != null && emailController.text.toString().trim().isNotEmpty) {
                   // Provider.of<LoadProvider>(context, listen: false)
                   //     .changeboolUpdateUser(true);
@@ -190,10 +175,10 @@ class _EditUserState extends State<EditUser> {
 
                     'isActive': isAcive,
                     "updated_at": DateTime.now().toString(),
-                    "fkuserupdate": Provider.of<user_vm_provider>(context, listen: false).currentUser.idUser.toString(),
+                    "fkuserupdate": Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
                   };
 
-                  Provider.of<user_vm_provider>(context, listen: false).updateuser_vm(
+                  Provider.of<UserProvider>(context, listen: false).updateUserVm(
                       body,
                       // controllerUsers[widget.index]
                       widget.userModel.idUser,
@@ -226,8 +211,8 @@ class _EditUserState extends State<EditUser> {
           centerTitle: true,
         ),
         body: ModalProgressHUD(
-          inAsyncCall: Provider.of<user_vm_provider>(context, listen: true)
-              .isupdate, //Provider.of<LoadProvider>(context).isLoadingUpdateUser,
+          inAsyncCall: Provider.of<UserProvider>(context, listen: true)
+              .isUpdate, //Provider.of<LoadProvider>(context).isLoadingUpdateUser,
           child: SingleChildScrollView(
             child: ContainerShadows(
               width: double.infinity,
@@ -327,15 +312,15 @@ class _EditUserState extends State<EditUser> {
 
                     //admin
                     RowEdit(name: 'الفرع', des: '*'),
-                    Consumer<regoin_vm>(
+                    Consumer<RegionProvider>(
                       builder: (context, cart, child) {
                         return DropdownButtonFormField(
                           isExpanded: true,
                           //hint: Text("حدد حالة العميل"),
-                          items: cart.listregoin.map((level_one) {
+                          items: cart.listRegion.map((level_one) {
                             return DropdownMenuItem(
-                              child: Text(level_one.name_regoin), //label of item
-                              value: level_one.id_regoin, //value of item
+                              child: Text(level_one.regionName), //label of item
+                              value: level_one.regionId, //value of item
                             );
                           }).toList(),
                           value: cart.selectedValueuser,
@@ -358,7 +343,7 @@ class _EditUserState extends State<EditUser> {
                       height: 20,
                     ),
                     RowEdit(name: 'المناطق', des: ''),
-                    Consumer<maincity_vm>(
+                    Consumer<MainCityProvider>(
                       builder: (context, cart, child) {
                         return DropdownSearch<MainCityModel>.multiSelection(
                           mode: Mode.DIALOG,
@@ -425,7 +410,7 @@ class _EditUserState extends State<EditUser> {
                             buttonWidth: 110, selectedColor: kMainColor, borderRadius: BorderRadius.circular(10)),
                         buttons: ['غير نشط', 'نشط'],
                         onSelected: (_, index, isselected) {
-                          print(index);
+
                           setState(() {
                             isAcive = index.toString();
                             //selectedProvider.selectValuetypeinstall(index);

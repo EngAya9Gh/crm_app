@@ -50,7 +50,7 @@ class _addusertestState extends State<addusertest> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<maincity_vm>(context)
+          inAsyncCall: Provider.of<MainCityProvider>(context)
               .isloading,
           child : SingleChildScrollView(
             child: Form(
@@ -107,7 +107,7 @@ class _addusertestState extends State<addusertest> {
                                     .addusertest_vm({
                                   'nameusertest':nameusertest.text,
                                   'des_usertest': desusertest.text,
-                                  'fk_country':Provider.of<user_vm_provider>
+                                  'fk_country':Provider.of<UserProvider>
                                     (context,listen: false).currentUser.fkCountry
                                 }).then(
                                         (value) =>  value!="error"
@@ -148,7 +148,7 @@ class _addusertestState extends State<addusertest> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
@@ -156,6 +156,6 @@ class _addusertestState extends State<addusertest> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+
   }
 }

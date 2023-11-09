@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -16,14 +17,12 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dartz/dartz_unsafe.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -112,7 +111,7 @@ class _addinvoiceState extends State<addinvoice> {
     numTaxController.dispose();
     userclientController.dispose();
     addressController.dispose();
-    print('in dispos add invoice *****************');
+    
     //_resetState();
     //await FilePicker.platform.clearTemporaryFiles();
     super.dispose();
@@ -131,7 +130,7 @@ class _addinvoiceState extends State<addinvoice> {
 
       invoiceViewmodel.listproductinvoic = [];
       invoiceViewmodel.set_total('0'.toString());
-      print('init in addinvoice screen main');
+      
       totalController = '0';
       _invoice = widget.invoice;
       numbranchController.addListener(() {
@@ -163,9 +162,9 @@ class _addinvoiceState extends State<addinvoice> {
 
         typepayController = _invoice!.typePay.toString();
         currencyController = _invoice!.currency_name == null ? 1 : int.parse(_invoice!.currency_name.toString());
-        print(typepayController.toString());
+        
         typeinstallController = _invoice!.typeInstallation.toString();
-        print(typeinstallController);
+        
         if (_invoice!.ready_install != null) readyinstallController = _invoice!.ready_install!;
 
         noteController.text = _invoice!.notes.toString();
@@ -182,7 +181,7 @@ class _addinvoiceState extends State<addinvoice> {
         /// add invoice
         // Provider.of<invoice_vm>(context,listen: false)
         //     .listinvoiceClient.add(
-        print('in else invoice');
+        
         invoiceViewmodel.initAttachFiles([]);
 
         _invoice = InvoiceModel(
@@ -220,14 +219,14 @@ class _addinvoiceState extends State<addinvoice> {
         }
       });
       Provider.of<selected_button_provider>(context, listen: false).selectValuetypepay(int.parse(typepayController));
-      print(typepayController);
+      
 
       context.read<selected_button_provider>()
         ..selectValuereadyinstall(int.parse(readyinstallController), isInit: true)
         ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
         ..selectValueCurrency(int.parse(currencyController.toString()));
 
-      print(typeinstallController);
+      
     });
     super.initState();
   }
@@ -492,7 +491,7 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['نقدا', 'تحويل'],
                                 onSelected: (_, index, isselected) {
-                                  print(index);
+                                  
                                   //setState(() {
                                   typepayController = index.toString();
                                   selectedProvider.selectValuetypepay(index);
@@ -532,7 +531,7 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['ميداني', 'اونلاين'],
                                 onSelected: (_, index, isselected) {
-                                  print(index);
+                                  
                                   //setState(() {
                                   typeinstallController = index.toString();
                                   selectedProvider.selectValuetypeinstall(index);
@@ -576,7 +575,7 @@ class _addinvoiceState extends State<addinvoice> {
                       //                     GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                       //                 buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
                       //                 onSelected: (_, index, isselected) {
-                      //                   print(index);
+                      //                   
                       //                   //setState(() {
                       //                   readyinstallController = index.toString();
                       //                   selectedProvider.selectValuereadyinstall(index);
@@ -616,7 +615,7 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: [' USD دولار', '  SAR ريال'],
                                 onSelected: (_, index, isselected) {
-                                  print(index);
+                                  
                                   //setState(() {
                                   currencyController = index;
                                   selectedProvider.selectValueCurrency(index);
@@ -756,12 +755,12 @@ class _addinvoiceState extends State<addinvoice> {
                               ),
                             );
                           }),
-                      Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true &&
+                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true &&
                               _invoice!.idInvoice != null &&
                               _invoice!.userinstall != null
                           ? RowEdit(name: 'يوزر العميل', des: '')
                           : Container(),
-                      Provider.of<privilge_vm>(context, listen: true).checkprivlge('76') == true &&
+                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true &&
                               _invoice!.idInvoice != null &&
                               _invoice!.userinstall != null
                           ? EditTextFormField(
@@ -962,8 +961,8 @@ class _addinvoiceState extends State<addinvoice> {
                                                         ),
                                                       ),
                                                     ),
-                                                    if (Provider.of<privilge_vm>(context, listen: true)
-                                                            .checkprivlge('146') ==
+                                                    if (Provider.of<PrivilegeProvider>(context, listen: true)
+                                                            .checkPrivilege('146') ==
                                                         true)
                                                       Positioned.fill(
                                                         child: Align(
@@ -1298,7 +1297,7 @@ class _addinvoiceState extends State<addinvoice> {
                                     deletedFiles.forEachIndexed((i, e) {
                                       deleteFilesMap["id_files[$i]"] = e;
                                     });
-                                    final user = context.read<user_vm_provider>();
+                                    final user = context.read<UserProvider>();
                                     if (_invoice?.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
                                       final body = {
@@ -1326,11 +1325,11 @@ class _addinvoiceState extends State<addinvoice> {
                                         "fk_idClient": widget.itemClient.idClients.toString(),
                                         "fk_idUser": user.currentUser.idUser,
                                         "image_record": widget.invoice!.imageRecord.toString(),
-                                        "lastuserupdate": Provider.of<user_vm_provider>(context, listen: false)
+                                        "lastuserupdate": Provider.of<UserProvider>(context, listen: false)
                                             .currentUser
                                             .idUser
                                             .toString(),
-                                        "lastnameuser": Provider.of<user_vm_provider>(context, listen: false)
+                                        "lastnameuser": Provider.of<UserProvider>(context, listen: false)
                                             .currentUser
                                             .nameUser
                                             .toString(),
@@ -1471,7 +1470,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         body.addAll({
                                           'date_not_readyinstall': DateTime.now().toString(),
                                           'user_not_ready_install':
-                                              Provider.of<user_vm_provider>(context, listen: false)
+                                              Provider.of<UserProvider>(context, listen: false)
                                                   .currentUser
                                                   .idUser
                                                   .toString(),
@@ -1479,7 +1478,7 @@ class _addinvoiceState extends State<addinvoice> {
                                       else
                                         body.addAll({
                                           'date_readyinstall': DateTime.now().toString(),
-                                          'user_ready_install': Provider.of<user_vm_provider>(context, listen: false)
+                                          'user_ready_install': Provider.of<UserProvider>(context, listen: false)
                                               .currentUser
                                               .idUser
                                               .toString(),
@@ -1521,37 +1520,15 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   clear(BuildContext context, String value, List<ProductsInvoice>? _products) async {
-    // int index=  Provider.of<client_vm>(context,listen: false)
-    //     .listClient.indexWhere(
-    //           (element) => element.idClients==widget.itemClient.idClients);
-    //  //
-    //
-    // if(index!=-1) {
-    //   double total_paid=0;
-    //
-    //   total_paid=double.parse(Provider.of<client_vm>(context,listen: false)
-    //       .listClient[index].total_paid.toString());
-    //
-    //   total_paid=total_paid+(
-    //        double.parse(totalController)
-    //       -double.parse(amount_paidController.text));
-    //
-    //   Provider.of<client_vm>(context,listen: false).listClient[index]
-    //       .total_paid  =total_paid.toString();
-    // }
-    print('in clear');
-    //widget.indexinvoice = 0;
+
     _products =
-        // Provider
-        // .of<invoice_vm>(context, listen: false)
-        // .listinvoiceClient[widget.indexinvoice]
-        _invoice!.products;
-    print('length ' + _products!.length.toString());
+        _invoice!.products ?? [];
+    
     for (int i = 0; i < _products.length; i++) {
-      print('inside for');
+      
       if (_products[i].idInvoiceProduct == null || _products[i].idInvoiceProduct == "null") {
-        print('inside if');
-        Map<String, dynamic?> body = _products[i].toJson();
+        
+        Map<String, dynamic> body = _products[i].toJson();
         // if(value!="")//update
         // {}
         body.addAll({
@@ -1568,9 +1545,9 @@ class _addinvoiceState extends State<addinvoice> {
       } //if
       else {
         //update product in invoice
-        print('before else');
-        Map<String, dynamic?> body = _products[i].toJson();
-        print('after else');
+        
+        Map<String, dynamic> body = _products[i].toJson();
+        
         bool res = await invoiceViewmodel.update_invoiceProduct_vm(body, _products[i].idInvoiceProduct.toString());
       }
     }
@@ -1601,7 +1578,7 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   error(context) {
-    print("error method");
+    
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
   }
@@ -1610,7 +1587,7 @@ class _addinvoiceState extends State<addinvoice> {
 
   Future<File> createFileOfPdfUrl(String urlparam) async {
     Completer<File> completer = Completer();
-    print("Start download file from internet!");
+    
     try {
       final url = urlparam;
       final filename = url.substring(url.lastIndexOf("/") + 1);
@@ -1618,8 +1595,8 @@ class _addinvoiceState extends State<addinvoice> {
       var response = await request.close();
       var bytes = await consolidateHttpClientResponseBytes(response);
       var dir = await getApplicationDocumentsDirectory();
-      print("Download files");
-      print("${dir.path}/$filename");
+      
+      
       File file = File("${dir.path}/$filename");
 
       await file.writeAsBytes(bytes, flush: true);

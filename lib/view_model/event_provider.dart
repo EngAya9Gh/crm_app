@@ -160,7 +160,7 @@ class EventProvider extends ChangeNotifier {
   //       DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
   //           ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
   //           : DateTime.parse(element.dateinstall_task.toString());
-  //       print(element.dateinstall_task);
+  //       
   //       event = Event(
   //           fkIdClient: element.fkIdClient,
   //           title: element.name_enterprise.toString(),
@@ -174,7 +174,7 @@ class EventProvider extends ChangeNotifier {
   //         DateTime temp = DateTime.parse(element.daterepaly.toString()).hour >= 21
   //             ? DateTime.parse(element.daterepaly.toString()).subtract(Duration(hours: 3))
   //             : DateTime.parse(element.daterepaly.toString());
-  //         print(element.daterepaly);
+  //         
   //         event = Event(
   //             fkIdClient: element.fkIdClient,
   //             title: element.name_enterprise.toString(),
@@ -244,7 +244,7 @@ class EventProvider extends ChangeNotifier {
   //             DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
   //                 ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
   //                 : DateTime.parse(element.dateinstall_task.toString());
-  //             print(element.dateinstall_task);
+  //             
   //             event = Event(
   //                 fkIdClient: element.fkIdClient,
   //                 title: element.name_enterprise.toString(),
@@ -265,7 +265,7 @@ class EventProvider extends ChangeNotifier {
   //           DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
   //               ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
   //               : DateTime.parse(element.dateinstall_task.toString());
-  //           print(element.dateinstall_task);
+  //           
   //           event = Event(
   //               fkIdClient: element.fkIdClient,
   //               title: element.name_enterprise.toString(),
@@ -296,7 +296,7 @@ class EventProvider extends ChangeNotifier {
           DateTime temp = DateTime.parse(element.date_visit_Client.toString()).hour >= 21
               ? DateTime.parse(element.date_visit_Client.toString()).subtract(Duration(hours: 3))
               : DateTime.parse(element.date_visit_Client.toString());
-          print(element.date_visit_Client);
+          
           event = Event(
               fkIdClient: element.idClients,
               title: element.nameEnterprise.toString(),
@@ -332,7 +332,7 @@ class EventProvider extends ChangeNotifier {
         DateTime temp = DateTime.parse(element.date_visit_Client.toString()).hour >= 21
             ? DateTime.parse(element.date_visit_Client.toString()).subtract(Duration(hours: 3))
             : DateTime.parse(element.date_visit_Client.toString());
-        print(element.date_visit_Client);
+        
         event = Event(
             fkIdClient: element.idClients,
             title: element.nameEnterprise.toString(),

@@ -1,14 +1,8 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/retry.dart';
-import 'package:path/path.dart';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class Api {
@@ -21,7 +15,7 @@ class Api {
   Future<dynamic> get({required String url}) async {
     // final client = RetryClient(http.Client());
     // try {
-    //   print(await client.get(Uri.http('example.org', '')));
+    //   
     // } finally {
     //   client.close();
     // }
@@ -33,12 +27,11 @@ class Api {
     // "Cache-Control": "no-cache"
     //   http.Response response = await _client.get(
     http.Response response = await _client.get(Uri.parse(url), headers: {"Cache-Control": "no-cache"});
-    // log(json.decode(response.body).toString());
     if (json.decode(response.body)["code"] == "200") {
-      print(jsonDecode(response.body)["message"]);
+      
       return jsonDecode(response.body)["message"];
     } else {
-      print("ex is ${json.decode(response.body)["code"] == "200"}");
+      
       throw Exception('${json.decode(response.body)["code"] == "200"}');
     }
   }
@@ -46,11 +39,10 @@ class Api {
   Future<dynamic> post({
     required String url,
     @required dynamic body,
-    @required String? token,
+    String? token,
   }) async {
     Map<String, String> headers = {};
 
-    print("url $url");
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
@@ -60,8 +52,6 @@ class Api {
       headers: headers,
     );
     String result = response.body;
-    print('before');
-    log(result.toString());
     int idx = result.indexOf("{");
     int length = result.length;
     result = result.substring(idx, length); //run for login and update client and set date task
@@ -70,9 +60,6 @@ class Api {
     // int idxEnd = result.indexOf("}");
     // int length=result.length;
     // result=result.substring(idx,idxEnd+1);//set approve is run but set don date not run
-
-    print("resultttt");
-    print(json.decode(result)["code"]);
 
     if (json.decode(result)["code"] == "200") {
       return jsonDecode(result)["message"];
@@ -176,25 +163,25 @@ class Api {
     });
     var myrequest = await request.send();
     var response = await http.Response.fromStream(myrequest);
-    print('body:: ${response.body}');
+    
 
     String result = '';
     if (type == 'array') {
       result = response.body;
-      print('result');
-      print(result);
+      
+      
       int idx = result.indexOf("{");
       int length = result.length;
       result = result.substring(idx, length);
     } else {
       result = response.body;
-      print(result);
+      
       int idx = result.indexOf("{");
       int idxEnd = result.indexOf("}");
       result = result.substring(idx, idxEnd + 1); //user update not run but run invoice
     } //
 
-    print(result);
+    
     if (json.decode(result)["code"] == "200") {
       return jsonDecode(result)["message"];
     } else {
@@ -204,7 +191,7 @@ class Api {
 
   Future<dynamic> delete({
     required String url,
-    @required dynamic? body,
+    @required dynamic body,
     @required String? token,
   }) async {
     Map<String, String> headers = {};
@@ -232,15 +219,13 @@ class Api {
     int idx = result.indexOf("{");
     int length = result.length;
     result = result.substring(idx, length);
-    print(result);
-    print(json.decode(result)["code"]);
     //if (json.decode(result)["code"] == "200") {
     /*String data="";
       if(jsonDecode(result)["message"]=="done")
         data =jsonDecode(result)["message"] ;
       else
         Map<String, dynamic>  jsonDecode(result)["message"];*/
-    //print("in json data is $data");
+    
     //   return jsonDecode(result)["message"];
     // } else {
     //

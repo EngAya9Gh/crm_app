@@ -54,17 +54,17 @@ class _ActionUserPageState extends State<ActionUserPage> {
     scheduleMicrotask(() {
       Provider.of<level_vm>(context, listen: false).getlevel();
       Provider.of<manage_provider>(context, listen: false).getmanage();
-      Provider.of<regoin_vm>(context, listen: false).changeValuser(null, true);
-      context.read<maincity_vm>().changeitemlist([], isInit: true);
+      Provider.of<RegionProvider>(context, listen: false).changeValuser(null, true);
+      context.read<MainCityProvider>().changeitemlist([], isInit: true);
       if (user == null)
-        context.read<maincity_vm>().getmaincity();
+        context.read<MainCityProvider>().getmaincity();
     });
 
     if (user != null) {
       scheduleMicrotask(() {
         nameManage = user!.typeAdministration.toString();
         context.read<manage_provider>().changevalue(nameManage!);
-        context.read<maincity_vm>().getmaincity(regions: user!.maincitylist_user);
+        context.read<MainCityProvider>().getmaincity(regions: user!.maincitylist_user);
         emailController.text = user!.email.toString();
         mobileController.text = user!.mobile.toString();
 
@@ -72,7 +72,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
         levelName = user!.name_level;
 
         context.read<level_vm>().changeVal(user!.typeLevel.toString());
-        context.read<regoin_vm>().changeValuser(user!.fkRegoin);
+        context.read<RegionProvider>().changeValuser(user!.fkRegoin);
 
         setState(() {
           isActive = user!.isActive!;
@@ -167,8 +167,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 RowEdit(name: label_level, des: '*'),
                 Consumer<level_vm>(
                   builder: (context, cart, child) {
-                    print("cart.selectedValueLevel ${cart.selectedValueLevel}");
-                    print("cart.listoflevel_periorty ${cart.listoflevel_periorty}");
+                    
+                    
                     return DropdownButtonFormField(
                       isExpanded: true,
                       items: cart.listoflevel_periorty.map((level) {
@@ -193,14 +193,14 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 ),
                 15.verticalSpace,
                 RowEdit(name: 'الفرع', des: '*'),
-                Consumer<regoin_vm>(
+                Consumer<RegionProvider>(
                   builder: (context, cart, child) {
                     return DropdownButtonFormField(
                       isExpanded: true,
-                      items: cart.listregoin.map((branch) {
+                      items: cart.listRegion.map((branch) {
                         return DropdownMenuItem(
-                          child: Text(branch.name_regoin), //label of item
-                          value: branch.id_regoin, //value of item
+                          child: Text(branch.regionName), //label of item
+                          value: branch.regionId, //value of item
                         );
                       }).toList(),
                       value: cart.selectedValueuser,
@@ -218,9 +218,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 ),
                 15.verticalSpace,
                 RowEdit(name: 'المناطق', des: ''),
-                Consumer<maincity_vm>(
+                Consumer<MainCityProvider>(
                   builder: (context, cart, child) {
-                    print(cart.selecteditemmaincity.length);
+                    
 
                     final items = cart.listmaincityfilter
                         .where((element) => element.id_maincity != '0')
@@ -324,7 +324,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
       return;
     }
     final selectedRegion = context
-        .read<maincity_vm>()
+        .read<MainCityProvider>()
         .selecteditemmaincity;
     final oldRegion = user?.maincitylist_user?.map((e) => e.asMainCity).toList();
 
@@ -338,12 +338,12 @@ class _ActionUserPageState extends State<ActionUserPage> {
       hasChanges = !const DeepCollectionEquality.unordered().equals(selectedMainCityIds, userMainCityIds);
     }
 
-    final regionVm = context.read<regoin_vm>();
+    final regionVm = context.read<RegionProvider>();
     String? region = regionVm.selectedValueuser;
     String? regionName =
-    region == null ? "" : regionVm.listregoin
-        .firstWhere((element) => element.id_regoin == region)
-        .name_regoin;
+    region == null ? "" : regionVm.listRegion
+        .firstWhere((element) => element.regionId == region)
+        .regionName;
 
     final levelVm = context.read<level_vm>();
     String? level = levelVm.selectedValueLevel;
@@ -352,7 +352,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
         .nameLevel;
 
     final currentUser = context
-        .read<user_vm_provider>()
+        .read<UserProvider>()
         .currentUser;
     final fkCountry = currentUser.fkCountry;
     final userID = currentUser.idUser;

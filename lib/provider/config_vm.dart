@@ -12,7 +12,7 @@ class config_vm extends ChangeNotifier{
   UserModel? usercurrent;
 
   void setvalue(user){
-    print('in set usercurrent in config vm');
+    
     usercurrent=user;
     notifyListeners();
   }

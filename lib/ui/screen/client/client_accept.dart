@@ -37,26 +37,26 @@ class _ClientAcceptState extends State<ClientAccept> {
   void initState() {
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
-    context.read<maincity_vm>().changeitemlist([], isInit: true);
+    context.read<MainCityProvider>().changeitemlist([], isInit: true);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
-      Provider.of<client_vm>(context, listen: false).clear();
-      await Provider.of<privilge_vm>(context, listen: false).getprivlg_usercurrent();
-      List<PrivilgeModel> list = Provider.of<privilge_vm>(context, listen: false).privilgelist;
-      Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
+      Provider.of<ClientProvider>(context, listen: false).clear();
+      await Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
+      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
+      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
-      Provider.of<regoin_vm>(context, listen: false).changeVal(null);
-      Provider.of<client_vm>(context, listen: false).listClientAccept = [];
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
+      Provider.of<ClientProvider>(context, listen: false).listClientAccept = [];
       // Provider.of<client_vm>(context, listen: false)
       //   .getallclient();
       // Provider.of<client_vm>(context, listen: false). getclient_Local('مشترك');
 
       //  Provider.of<client_vm>(context,listen: false)
       //     .getallclientAccept();
-      Provider.of<client_vm>(context, listen: false)
-          .getfilterviewSupport(Provider.of<maincity_vm>(context, listen: false).selecteditemmaincity);
+      Provider.of<ClientProvider>(context, listen: false)
+          .getfilterviewSupport(Provider.of<MainCityProvider>(context, listen: false).selecteditemmaincity);
     });
 
     super.initState();
@@ -71,7 +71,7 @@ class _ClientAcceptState extends State<ClientAccept> {
   }
 
   void onSearch() {
-    context.read<client_vm>().onSearch(_searchTextField.text);
+    context.read<ClientProvider>().onSearch(_searchTextField.text);
   }
 
   @override
@@ -84,7 +84,7 @@ class _ClientAcceptState extends State<ClientAccept> {
         ),
         centerTitle: true,
       ),
-      body: Consumer<privilge_vm>(builder: (context, privilge, child) {
+      body: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
         return SafeArea(
           child: Directionality(
             textDirection: TextDirection.rtl,
@@ -98,7 +98,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Consumer<maincity_vm>(
+                            child: Consumer<MainCityProvider>(
                               builder: (context, cart, child) {
                                 return DropdownSearch<MainCityModel>.multiSelection(
                                   showFavoriteItems: true,
@@ -111,8 +111,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                                   selectedItems: cart.selecteditemmaincity,
                                   itemAsString: (u) => u!.userAsString(),
                                   onChanged: (data) {
-                                    for (int i = 0; i < data.length; i++) print(data[i].id_maincity);
-                                    print(data);
+
                                     selecteditemmaincity = data;
                                     cart.changeitemlist(data);
                                     filtershow();
@@ -183,7 +182,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                             'عدد العملاء',
                             style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                           ),
-                          Consumer<client_vm>(builder: (context, value, child) {
+                          Consumer<ClientProvider>(builder: (context, value, child) {
                             final list =
                                 _searchTextField.text.isEmpty ? value.listClientAccept : value.listClientAcceptFilter;
                             return Text(
@@ -201,7 +200,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                       height: MediaQuery.of(context).size.height * 0.73,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Consumer<client_vm>(builder: (context, value, child) {
+                        child: Consumer<ClientProvider>(builder: (context, value, child) {
                           final list =
                               _searchTextField.text.isEmpty ? value.listClientAccept : value.listClientAcceptFilter;
 
@@ -238,11 +237,11 @@ class _ClientAcceptState extends State<ClientAccept> {
   }
 
   void filtershow() {
-    print(regoin);
-    // print(typeclientvalue);
+
+    //
     //   Provider.of<invoice_vm>(context,listen: false)
     //       .getclienttype_filter(typeclientvalue!,regoin,'only');
-    Provider.of<client_vm>(context, listen: false).getfilterviewSupport(selecteditemmaincity);
+    Provider.of<ClientProvider>(context, listen: false).getfilterviewSupport(selecteditemmaincity);
     //   if(regoin==null)
     //  Provider.of<invoice_vm>(context,listen: false).getclienttype_filter(typepayController,regoin);
     // else {

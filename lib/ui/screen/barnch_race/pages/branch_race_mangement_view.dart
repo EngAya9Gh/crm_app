@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants.dart';
+import '../../../../core/config/theme/theme.dart';
 import '../../../../model/branch_race_model.dart';
 import '../../../../model/targetmodel.dart';
 import '../../../../view_model/page_state.dart';
@@ -56,7 +57,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 20.0),
         child: FloatingActionButton(
-          child: Icon(Icons.add_outlined, size: 35),
+          child: Icon(Icons.add_outlined, size: 35,color: AppColors.white),
           backgroundColor: kMainColor,
           onPressed: () {
             Navigator.of(context).push(
@@ -125,7 +126,7 @@ class _BranchRaceManagementViewState extends State<BranchRaceManagementView>
     super.initState();
 
     scheduleMicrotask(() => viewmodel
-      ..init(context.read<user_vm_provider>().currentUser.fkCountry.toString())
+      ..init(context.read<UserProvider>().currentUser.fkCountry.toString())
       ..getTargets());
   }
 }

@@ -35,7 +35,7 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
             textDirection: TextDirection.rtl,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey, fontFamily: kfontfamily2),
           ),
-          Consumer<user_vm_provider>(builder: (context, userProvider, _) {
+          Consumer<UserProvider>(builder: (context, userProvider, _) {
             if (userProvider.isDeletingAccount) {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),

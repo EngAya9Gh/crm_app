@@ -118,10 +118,10 @@ class _careAddState extends State<careAdd> {
                 color: Colors.amber,
               ),
               onRatingUpdate: (rating) {
-                print(rating);
+
                 setState(() {
                   rate=rating;
-                  print(rate);
+
                 });
               },
             ),
@@ -140,7 +140,7 @@ class _careAddState extends State<careAdd> {
                 //               borderRadius: BorderRadius.circular(10)),
                 //           buttons: ['لا يستخدم النظام','يستخدم النظام'],
                 //           onSelected: (_,index,isselected){
-                //             print(index);
+                //
                 //             //setState(() {
                 //             typepayController=index.toString();
                 //             selectedProvider.changeinstall(index);
@@ -156,7 +156,7 @@ class _careAddState extends State<careAdd> {
                   value:   typepayController,// as bool,
                   onChanged: (bool? value) {
                     setState(() {
-                      print(value);
+
                       typepayController=value!;
                       //values[key] = value;
                     });
@@ -168,7 +168,7 @@ class _careAddState extends State<careAdd> {
                   value: numberwrong,// as bool,
                   onChanged: (bool? value) {
                     setState(() {
-                      print(value);
+
                       numberwrong=value!;
                       //values[key] = value;
                     });
@@ -180,7 +180,7 @@ class _careAddState extends State<careAdd> {
                   value:   repeat,// as bool,
                   onChanged: (bool? value) {
                     setState(() {
-                      print(value);
+
                       repeat=value!;
                       //values[key] = value;
                     });
@@ -212,23 +212,23 @@ class _careAddState extends State<careAdd> {
 
                           int peroidtime= int.parse(peroid.value_config);
                           datanext=Jiffy().add(days: peroidtime).dateTime;
-                          print(datanext.toString());
+
                           // datanext.add(Duration(days: peroidtime));
-                          print(datanext);
-                          print( widget.com.dateCommunication.toString());
-                          print( widget.com.idCommunication);
+
+
+
                           if(widget.com.dateCommunication==null) {
                             //datanext.add( Duration(days: day+ pp));
                             // int peroidtime= int.parse(peroid.value_config);
                             // datanext=Jiffy().add(days: peroidtime).dateTime;
-                            // print(datanext.toString());
+                            //
                             // datanext.add(Duration(days: peroidtime));
-                            // print(datanext);
+                            //
 
                           await  Provider.of<communication_vm>
                               (context,listen: false).updatecarecommuncation({
                                'type':'دوري',
-                               'fk_user':Provider.of<user_vm_provider>
+                               'fk_user':Provider.of<UserProvider>
                                 (context,listen: false).
                                  currentUser.idUser.toString(),
                                'date_communication':DateTime.now().toString(),

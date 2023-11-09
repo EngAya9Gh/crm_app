@@ -1,26 +1,21 @@
-
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/privilgemodel.dart';
-import 'package:crm_smart/ui/screen/client/detail_client.dart';
 import 'package:crm_smart/ui/screen/home/build_card.dart';
-import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/appbar.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customDrawer.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:crm_smart/ui/screen/home/approvepage.dart';
-import 'package:crm_smart/view_model/typeclient.dart';
+
 import '../../../function_global.dart';
 
 class Home extends StatefulWidget {
@@ -38,7 +33,7 @@ class _HomeState extends State<Home> {
         .getInitialMessage()
         .then((RemoteMessage? message) {
       if (message != null) {
-        print("in init getInitialMessage");
+
         //Provider.of<notifyvm>(context,listen: false).addcounter();
         String typeNotify= message.data['Typenotify'];
         String data_notify= message.data['Typenotify'];
@@ -48,11 +43,11 @@ class _HomeState extends State<Home> {
     //FirebaseMessaging.onBackgroundMessage.call(message);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
      // try{
-      print('Got a message whilst in the foreground!');
-      print('Message data: ${message.data['idclient']}');
+
+
 
       if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
+
       }
       //Provider.of<notifyvm>(context,listen: false).getcounter();
       //if(message.data['data'])
@@ -61,7 +56,7 @@ class _HomeState extends State<Home> {
       //add notify to listnotify
     });
     FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      print('onMessageOpenedApp');
+
       Provider.of<notifyvm>(context,listen: false).addcounter();
       // Provider.of<notifyvm>(context,listen: false).getcounter();
       String typeNotify= event.data['Typenotify'];
@@ -70,15 +65,15 @@ class _HomeState extends State<Home> {
 
     // Provider.of<user_vm_provider>(context, listen: false)
     //     .getcurrentuser();
-    print('in home...init');
+
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       // Add Your Code here.
       //Provider.of<privilge_vm>(context,listen: false).getprivlg_usercurrent();
-      Provider.of<regoin_vm>(context,listen: false).getregoin();
+      Provider.of<RegionProvider>(context,listen: false).getRegions();
       Provider.of<notifyvm>(context,listen: false).getcounter();
       Provider.of<product_vm>(context, listen: false)
           .getproduct_vm();
-      Provider.of<typeclient>(context,listen: false).getreasons('ticket');
+      Provider.of<ClientTypeProvider>(context,listen: false).getreasons('ticket');
 
       Provider.of<ticket_vm>(context, listen: false)
           .getticket();
@@ -86,15 +81,15 @@ class _HomeState extends State<Home> {
     // Provider.of<invoice_vm>(context, listen: false)
     //     .getfilter_maincity([],'الكل');
         // .getinvoices();
-    await Provider.of<privilge_vm>
-      (context,listen: false).getprivlg_usercurrent();
+    await Provider.of<PrivilegeProvider>
+      (context,listen: false).getPrivilegeUserCurrent();
 
      // Provider.of<notifyvm>(context, listen: false)
      //    .getNotification();
 
      List<PrivilgeModel> list=
-           Provider.of<privilge_vm>(context,listen: false).privilgelist;
-     Provider.of<client_vm>(context, listen: false).setvaluepriv(list);
+           Provider.of<PrivilegeProvider>(context,listen: false).privilegeList;
+     Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       // await Provider.of<invoice_vm>(context, listen: false)
       //     .getfilter_maincity([],'الكل');
      // Provider.of<client_vm>(context, listen: false)
@@ -123,7 +118,7 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.grey[200],
         appBar: customAppbar(
           leading:    IconButton(
-            icon: Icon(Icons.menu,color: kWhiteColor,),
+            icon: Icon(Icons.menu,color: context.colorScheme.primary,size: 25.r),
             tooltip: 'Menu',
             onPressed: () {
               _scaffoldKey.currentState!.openDrawer();
@@ -148,7 +143,7 @@ class _HomeState extends State<Home> {
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
-            padding: const EdgeInsets.only(top: 25),
+            padding: const EdgeInsets.only(top: 0),
             child: BuildCard(),
           ),
         ),

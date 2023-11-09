@@ -20,7 +20,7 @@ class comment_vm extends ChangeNotifier {
       // if(listComments.isEmpty){
       List<dynamic> data = [];
       data = await Api().get(url: url + 'care/viewcomment.php?fk_client=$fk_client');
-      print(data);
+      
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listComments.add(CommentModel.fromJson(data[i]));

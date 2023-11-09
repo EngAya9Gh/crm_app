@@ -36,10 +36,8 @@ class _transferClientState extends State<transferClient> {
   @override
   Future<void> didChangeDependencies() async {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
-      await Provider.of<user_vm_provider>(context,listen: false)
-          .getuser_vm();
-      print(Provider.of<user_vm_provider>(context,listen: false)
-          .userall.length);
+      await Provider.of<UserProvider>(context,listen: false)
+          .getUsersVm();
     }
     );
     super.didChangeDependencies();
@@ -54,7 +52,7 @@ class _transferClientState extends State<transferClient> {
     onPressed: () => Navigator.of(context).pop(),
     )),
       body: ModalProgressHUD(
-        inAsyncCall: Provider.of<client_vm>(context, listen: true)
+        inAsyncCall: Provider.of<ClientProvider>(context, listen: true)
             .isloading,
         child: ModalProgressHUD(
           inAsyncCall: Provider.of<ticket_vm>(context,listen: true)
@@ -69,7 +67,7 @@ class _transferClientState extends State<transferClient> {
                   children: [
                     Text("من فضلك اختر اسم الموظف الذي ترغب بتحويل العميل إليه"),
                     SizedBox(height: 10,),
-                    Consumer<user_vm_provider>(
+                    Consumer<UserProvider>(
                       builder: (context, cart, child){
                       return  DropdownSearch<UserModel>(
                         mode: Mode.DIALOG,
@@ -82,11 +80,11 @@ class _transferClientState extends State<transferClient> {
                        filterFn: (user, filter) => user!.getfilteruser(filter!),
                         //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                          // itemAsString: (UserModel u) => u.userAsStringByName(),
-                        items: cart.userall,
+                        items: cart.allUsers,
                         itemAsString:
                             ( u) => u!.userAsString(),
                        // selectedItem: cart.currentUser,
-                          onChanged: (data) => iduser=data!.idUser!,//print(data!.nameUser),
+                          onChanged: (data) => iduser=data!.idUser!,
                         showSearchBox: true,
                         dropdownSearchDecoration: InputDecoration(
                           labelText: "choose a user",
@@ -132,13 +130,13 @@ class _transferClientState extends State<transferClient> {
                                   'fk_client': widget.idclient,
                                   'nameusertransfer':
                                   Provider
-                                      .of<user_vm_provider>(context, listen: false)
+                                      .of<UserProvider>(context, listen: false)
                                       .currentUser
                                       .nameUser
                                       .toString(), //الموظف الذي حول العميل
                                   'name_enterprise': widget.name_enterprise,
                                   'fkusertrasfer': Provider
-                                      .of<user_vm_provider>(context, listen: false)
+                                      .of<UserProvider>(context, listen: false)
                                       .currentUser
                                       .idUser
                                       .toString(),
@@ -155,7 +153,7 @@ class _transferClientState extends State<transferClient> {
                           else {
                             String? reason_transfer = 'transfer';
                             //update fkuser to new user
-                          await  Provider.of<client_vm>(context, listen: false)
+                          await  Provider.of<ClientProvider>(context, listen: false)
                                 .setfkUserclient_vm(
                                 {
                                   'date_transfer': DateTime.now().toString(),
@@ -163,13 +161,13 @@ class _transferClientState extends State<transferClient> {
                                   'fkuser': iduser, //user reciept
                                   'nameusertransfer':
                                   Provider
-                                      .of<user_vm_provider>(context, listen: false)
+                                      .of<UserProvider>(context, listen: false)
                                       .currentUser
                                       .nameUser
                                       .toString(), //الموظف الذي حول العميل
                                   'name_enterprise': widget.name_enterprise,
                                   'fkusertrasfer': Provider
-                                      .of<user_vm_provider>(context, listen: false)
+                                      .of<UserProvider>(context, listen: false)
                                       .currentUser
                                       .idUser
                                       .toString(),

@@ -160,8 +160,8 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
     }
     setState(() {
       fromDate = date;
-      print('nnnnn');
-      print(fromDate);
+      
+      
     });
   }
 

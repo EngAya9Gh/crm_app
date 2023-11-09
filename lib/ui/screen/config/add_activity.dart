@@ -40,8 +40,8 @@ class _addActvState extends State<addractivity> {
     return Scaffold(
         key:_scaffoldKey,
         body:ModalProgressHUD(
-          inAsyncCall: Provider.of<activity_vm>(context)
-              .isloading,
+          inAsyncCall: Provider.of<ActivityProvider>(context)
+              .isLoading,
           child : Directionality(
             textDirection: TextDirection.rtl,
             child: Form(
@@ -83,8 +83,8 @@ class _addActvState extends State<addractivity> {
                               // Provider.of<LoadProvider>(context, listen: false)
                               //     .changebooladdclient(true);
                               if(widget.idActivity==null){
-                                Provider.of<activity_vm>(context,listen: false)
-                                    .addActv_vm({
+                                Provider.of<ActivityProvider>(context,listen: false)
+                                    .addActivityVm({
                                   'name_activity_type':nameractv.text,
                                  // 'type':widget.type,
                                 }).then(
@@ -94,8 +94,8 @@ class _addActvState extends State<addractivity> {
                                 );
                               }
                               else{
-                                Provider.of<activity_vm>(context,listen: false)
-                                    .update_actv({
+                                Provider.of<ActivityProvider>(context,listen: false)
+                                    .updateActivity({
 
                                   'name_activity_type':nameractv.text,
                                   // 'type':widget.type,
@@ -133,7 +133,7 @@ class _addActvState extends State<addractivity> {
         SnackBar(content: Text('تمت الإضافة بنجاح'))
     );
     Navigator.pop(context);
-    // print("succ");
+    //
   }
 
   error(context) {
@@ -142,6 +142,6 @@ class _addActvState extends State<addractivity> {
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('هناك خطأ ما'))
     );
-    print("error");
+
   }
 }

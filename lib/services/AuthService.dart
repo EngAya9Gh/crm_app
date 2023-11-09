@@ -15,7 +15,7 @@ class  AuthServices{
         .post( url:url+"Auth/send_otp.php",body: {
           'email':email
     } );
-   // print(result);
+   // 
     return result=="done"? true:false;}
         catch(e){
 
@@ -28,8 +28,8 @@ class  AuthServices{
     try {
       final fcm = await FirebaseMessaging.instance.getToken();
 
-      print("fcmmmmmmm: $fcm");
-      // print(await FirebaseMessaging.instance.getToken());
+      
+      // 
       result = await Api().post(url: url + "Auth/check_otp.php", body: {
         'email': email,
         'otp': otp,

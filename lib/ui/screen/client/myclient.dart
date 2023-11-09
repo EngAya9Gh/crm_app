@@ -26,8 +26,8 @@ class _MyClientPageState extends State<MyClientPage> {
   }
   @override
   void didChangeDependencies() async{
-    List<ClientModel> list= Provider.of<client_vm>(context,listen: false).listClient;
-    await    Provider.of<client_vm>(context, listen: false)
+    List<ClientModel> list= Provider.of<ClientProvider>(context,listen: false).listClient;
+    await    Provider.of<ClientProvider>(context, listen: false)
         .getclientByIdUser_vm(list);
     // Future.delayed(Duration(milliseconds: 10)).then((_) async {
     //   await    Provider.of<invoice_vm>(context, listen: false)
@@ -51,7 +51,7 @@ class _MyClientPageState extends State<MyClientPage> {
             padding: const EdgeInsets.only(top: 10,bottom: 10),
             child: Center(
               child:
-              Consumer<client_vm> (
+              Consumer<ClientProvider> (
                   builder: (context,value,child) {
                     return value.listClientbyCurrentUser.length==0?
                     CircularProgressIndicator()

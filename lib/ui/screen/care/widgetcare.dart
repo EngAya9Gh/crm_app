@@ -14,8 +14,8 @@ import '../../../view_model/communication_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 
 Widget commview(CommunicationModel element,BuildContext context) {
-  print('element.rate');
-  print(element.idCommunication);
+
+
   if (element.idCommunication != '') {
     String? dateinvoice = element.date_create;
     String val = dateinvoice != null ? '(فاتورة ${dateinvoice})' : '';

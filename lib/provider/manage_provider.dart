@@ -31,7 +31,7 @@ class manage_provider extends ChangeNotifier{
        List<dynamic> data=[];
        data= await Api()
            .get(url:url+ 'users/getmanagment.php');
-       print(data);
+       
        if(data !=null) {
          for (int i = 0; i < data.length; i++) {
            listtext.add(ManageModel.fromJson(data[i]));

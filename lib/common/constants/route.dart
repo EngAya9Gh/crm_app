@@ -1,8 +1,9 @@
 abstract class EndPoints {
   EndPoints._();
 
-  static const baseUrl = "http://smartcrm.ws/aya/api/";
+  static const baseUrl = "http://smartcrm.ws/test/api/";
   static const care = _Care();
+  static const client= _Client();
   static const users = _Users();
   static const series = _Series();
 }
@@ -30,4 +31,23 @@ class _Care {
   const _Care();
 
   final communicationRepeat = 'care/getcommuncation_repeat_star.php';
+  final getRecommendedClients = 'care/get_recommand_care.php';
+}
+
+
+
+
+class _Client {
+  const _Client();
+
+  final allClientsList = 'client/getClientAll.php';
+  final clientsByRegionList = 'client/getclientByRegoin.php';
+  final clientsByUserList = 'client/getclientbyuser.php';
+  final allClientsWithFilter = 'client/getclientAll_filter.php';
+  final addClient = 'client/clientAdd.php';
+  final editClient = "client/clientUpdate.php";
+  final getRejectReasons = "client/reason_client_reject/Get_reasonRejectClient.php";
+  final addRejectReasons = "client/reason_client_reject/Add_reasonRejectClient.php";
+  final editRejectReasons = "client/reason_client_reject/Edit_reasonRejectClient.php";
+  final distinctiveClient = "star_client/get_client_star.php";
 }

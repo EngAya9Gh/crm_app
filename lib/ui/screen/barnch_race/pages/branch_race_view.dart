@@ -84,7 +84,7 @@ class _BranchRaceViewState extends State<BranchRaceView> with StateViewModelMixi
 
     scheduleMicrotask(() {
       viewmodel
-        ..init(context.read<user_vm_provider>().currentUser.fkCountry.toString())
+        ..init(context.read<UserProvider>().currentUser.fkCountry.toString())
         // ..
         // ..getTargets()
         ..onChangeYear(DateTime.now().year.toString());
