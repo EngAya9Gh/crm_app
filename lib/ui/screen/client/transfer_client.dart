@@ -179,6 +179,7 @@ class _transferClientState extends State<transferClient> {
                                     Text('تم تحويل العميل')));
 
                              Navigator.pop(context);
+                             Navigator.pop(context);
                             // Navigator.pushAndRemoveUntil(context,
                             //     CupertinoPageRoute(builder: (context)=>ticketclientview()),
                             //         (route) => false

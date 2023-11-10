@@ -234,7 +234,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               labelText: "البريد الالكتروني*",
                               maxLines: 1,
                               hintText: 'example@gmail.com',
-                              validator: HelperFunctions.instance.emailFiledValidate,
                               controller: emailController,
                             ),
                             15.verticalSpace,
@@ -478,7 +477,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                     company.changevalueOut(value.toString());
                                   },
                                   hint: "نظام سابق",
-                                  validator: HelperFunctions.instance.requiredFiled,
                                   itemAsValue: (CompanyModel? item) => item?.id_Company,
                                   itemAsString: (item) => item!.name_company!,
                                   value: company.selectedValueOut,

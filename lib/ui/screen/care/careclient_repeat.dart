@@ -1,22 +1,14 @@
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/ui/screen/care/widgetcare.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:group_button/group_button.dart';
-
-import '../../../constants.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import 'card_comment.dart';
+import '../../../constants.dart';
 import 'careAdd.dart';
 
 class careRepeat extends StatefulWidget {
@@ -30,28 +22,27 @@ class careRepeat extends StatefulWidget {
 }
 
 class _careRepeatState extends State<careRepeat> {
-  String? typepayController='0';
-  bool numberwrong=false;
-  bool repeat=false;
-  double rate=0;
-  List<CommunicationModel> listCommunication=[];
-  @override void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_)async {
+  String? typepayController = '0';
+  bool numberwrong = false;
+  bool repeat = false;
+  double rate = 0;
+  List<CommunicationModel> listCommunication = [];
 
-      Provider.of<comment_vm>(context, listen: false)
-          .getComment(widget.idclient.idClients.toString());
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<comment_vm>(context, listen: false).getComment(widget.idclient.idClients.toString());
 
       Provider.of<communication_vm>(context, listen: false)
           .getCommunicationclientrepeat(widget.idclient.idClients.toString());
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    listCommunication=Provider.of<communication_vm>(context, listen: true)
-        .listCommunicationClient;
+    listCommunication = Provider.of<communication_vm>(context, listen: true).listCommunicationClient;
     return Scaffold(
-
       appBar: AppBar(
         centerTitle: true,
         title: Text(widget.comobj.nameEnterprise.toString()),
@@ -63,54 +54,58 @@ class _careRepeatState extends State<careRepeat> {
           padding: const EdgeInsets.all(8.0),
           child: ListView(
             children: [
-
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              kMainColor)),
-                      onPressed: () async{
-                        Navigator.push(context,
-                            CupertinoPageRoute(builder: (context)=>
-                                ProfileClient(
-                                  idClient: widget.idclient.idClients ,
-                                )));
-                      },
-                      child: Text(' ملف العميل')) ,
+                  Expanded(
+                    child: ElevatedButton(
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => ProfileClient(
+                                        idClient: widget.idclient.idClients,
+                                      )));
+                        },
+                        child: Text(' ملف العميل')),
+                  ),
 
                   // Provider.of<communication_vm>(context, listen: true)
                   //     .valuebutton==false
-                  widget.type=='wait'    ?
-                  ElevatedButton(
-                      style: ButtonStyle(
-
-                          backgroundColor: MaterialStateProperty.all(
-                              kMainColor)),
-                      onPressed: () async{
-                        Navigator.push(context,
-                            CupertinoPageRoute(builder: (context)=>
-                                careAdd(
-                                  com:widget.comobj
-                                  // listCommunication.firstWhere  (
-                                  //         (element) => element.fkUser==null
-                                  //        ,orElse: ()=>listCommunication[0]
-                                  ),
-                            )
-                        );
-                        },
-                      child: Text(' خدمة العميل ',)):Container(),
+                  if (widget.type == 'wait') ...{
+                    20.horizontalSpace,
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                          onPressed: () async {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                  builder: (context) => careAdd(com: widget.comobj
+                                      // listCommunication.firstWhere  (
+                                      //         (element) => element.fkUser==null
+                                      //        ,orElse: ()=>listCommunication[0]
+                                      ),
+                                ));
+                          },
+                          child: Text(
+                            ' خدمة العميل ',
+                          )),
+                    ),
+                  },
                 ],
               ),
-              SizedBox(height: 10,),
-              Provider.of<communication_vm>(context, listen: true)
-                  .isloading==true?
-              Center(
-                  child: CircularProgressIndicator()
-              ) :Container(),
+              SizedBox(
+                height: 10,
+              ),
+              Provider.of<communication_vm>(context, listen: true).isloading == true
+                  ? Center(child: CircularProgressIndicator())
+                  : Container(),
               // for(int i=0;i<listCommunication.length;i++)
               //   if(listCommunication[i].typeCommuncation=='دوري'&&listCommunication[i].fkUser!=null)
               //     commview(listCommunication[i]) ,
@@ -155,11 +150,9 @@ class _careRepeatState extends State<careRepeat> {
   }
 
   clear(value) {
-
     Navigator.pop(context);
     // setState(() {
     //   widget.com=value;
     // });
   }
-
 }

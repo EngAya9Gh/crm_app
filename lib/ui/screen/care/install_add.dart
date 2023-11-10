@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -188,52 +189,56 @@ class _installAddState extends State<installAdd> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                kMainColor)),
-                        onPressed: () async{
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context)=>
-                                  ProfileClient(
-                                    idClient: widget.com.fkClient ,
-                                  )));
-                        },
-                        child: Text(' ملف العميل')) ,
-
-                        ElevatedButton(
+                    Expanded(
+                      child: ElevatedButton(
                           style: ButtonStyle(
-
                               backgroundColor: MaterialStateProperty.all(
-                               widget.com.dateCommunication==null?
-                               kMainColor:kWhiteColor
-                              )),
-                          onPressed: () async {
-                            if(widget.com.dateCommunication==null) {
-                              Provider.of<communication_vm>
-                            (context,listen: false).addcommmuncation({
-                             //'fk_client':widget.com.fkClient.toString(),
-                            'fk_user':Provider.of<UserProvider>
-                               (context,listen: false).currentUser.idUser.toString(),
-                            'date_communication':DateTime.now().toString(),
-                            'result':typepayController,//
-                            'nameUser':Provider.of<UserProvider>
-                                  (context,listen: false).currentUser.nameUser.toString(),
-                             'type_install':widget.com.type_install.toString(),
-                             'id_invoice':widget.com.id_invoice.toString(),
-                                'rate':rate.toString(),
+                                  kMainColor)),
+                          onPressed: () async{
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context)=>
+                                    ProfileClient(
+                                      idClient: widget.com.fkClient ,
+                                    )));
+                          },
+                          child: Text(' ملف العميل')),
+                    ) ,
+                        20.horizontalSpace,
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
 
-                          },widget.com.idCommunication,
-                         widget.com.type_install==null?
-                         1:
-                         int.parse(widget.com.type_install.toString())).then((value) =>
+                                backgroundColor: MaterialStateProperty.all(
+                                 widget.com.dateCommunication==null?
+                                 kMainColor:kWhiteColor
+                                )),
+                            onPressed: () async {
+                              if(widget.com.dateCommunication==null) {
+                                Provider.of<communication_vm>
+                              (context,listen: false).addcommmuncation({
+                               //'fk_client':widget.com.fkClient.toString(),
+                              'fk_user':Provider.of<UserProvider>
+                                 (context,listen: false).currentUser.idUser.toString(),
+                              'date_communication':DateTime.now().toString(),
+                              'result':typepayController,//
+                              'nameUser':Provider.of<UserProvider>
+                                    (context,listen: false).currentUser.nameUser.toString(),
+                               'type_install':widget.com.type_install.toString(),
+                               'id_invoice':widget.com.id_invoice.toString(),
+                                  'rate':rate.toString(),
 
-                           clear(value)
-                          );
-                          }},
-                          child: Text(' تم التواصل ',
+                            },widget.com.idCommunication,
+                           widget.com.type_install==null?
+                           1:
+                           int.parse(widget.com.type_install.toString())).then((value) =>
 
-                            style: TextStyle(color:widget.com.dateCommunication==null?kWhiteColor: kMainColor),)) ,
+                             clear(value)
+                            );
+                            }},
+                            child: Text(' تم التواصل ',
+
+                              style: TextStyle(color:widget.com.dateCommunication==null?kWhiteColor: kMainColor),)),
+                        ) ,
                   ],
                 ),
                 SizedBox(height: 10,),

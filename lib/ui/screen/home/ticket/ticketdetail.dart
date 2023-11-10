@@ -145,49 +145,82 @@ class ticketdetail extends StatelessWidget {
                     children: [
                       ticketModel.dateRecive==null?
                       Provider.of<PrivilegeProvider>(context,listen: false)
-                          .checkPrivilege('71') == true ?
-                      Padding(
+                          .checkPrivilege('71') == true
+                          ? Expanded(
+                            child: Padding(
                         padding: const EdgeInsets.only(right: 5.0),
                         child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    kMainColor)),
-                            onPressed: () async{
-                              Provider.of<ticket_vm>(context,listen: false)
-                                  .updateTicketvm({
-                                'fk_user_recive':Provider.of<UserProvider>
-                                  (context,listen: false).currentUser.idUser.toString(),
-                                'date_recive':DateTime.now().toString(),
-                                'type_ticket':'قيد التنفيذ'
-                              },ticketModel.idTicket);
-                              Navigator.pop(context);
-                            },
-                            child: Text('استلام التذكرة')),
-                      ):Container():Container(),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      kMainColor)),
+                              onPressed: () async{
+                                Provider.of<ticket_vm>(context,listen: false)
+                                    .updateTicketvm({
+                                  'fk_user_recive':Provider.of<UserProvider>
+                                    (context,listen: false).currentUser.idUser.toString(),
+                                  'date_recive':DateTime.now().toString(),
+                                  'type_ticket':'قيد التنفيذ'
+                                },ticketModel.idTicket);
+                                Navigator.pop(context);
+                              },
+                              child: Text('استلام التذكرة')),
+                      ),
+                          )
+                          :Container()
+                          :Container(),
                       ticketModel.dateClose==null?
                       Provider.of<PrivilegeProvider>(context,listen: false)
-                          .checkPrivilege('72') == true ? //regoin
-                      Padding(
+                          .checkPrivilege('72') == true
+                          ? Expanded(
+                            child: Padding(
                         padding: const EdgeInsets.only(right: 5),
                         child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    kMainColor)),
-                            onPressed: () async{
-                              await showDialog<void>(
-                                  context: context,
-                                  builder: (context) => dialog
-                              );
-                            },
-                            child: Text('اغلاق التذكرة')),
-                      ):Container():Container(),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      kMainColor)),
+                              onPressed: () async{
+                                await showDialog<void>(
+                                    context: context,
+                                    builder: (context) => dialog
+                                );
+                              },
+                              child: Text('اغلاق التذكرة')),
+                      ),
+                          )
+                          :Container()
+                          :Container(),
                          // SizedBox(width: 2,),
                           ticketModel.dateRecive!=null &&
                           ticketModel.dateClose==null?
                       Provider.of<PrivilegeProvider>(context,listen: true)
-                          .checkPrivilege('75')==true?
-                      Padding(
+                          .checkPrivilege('75')==true
+                          ? Expanded(
+                            child: Padding(
                         padding: const EdgeInsets.only(right: 5.0),
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    kMainColor)),
+                            onPressed: () {
+
+                              Navigator.push(context,CupertinoPageRoute(
+                                  builder: (context)=>transferClient(
+                                    name_enterprise:  ticketModel.nameEnterprise.toString(),
+                                    idclient:  ticketModel.fkClient.toString(),
+                                    idticket: ticketModel.idTicket,
+                                    type: "ticket",),fullscreenDialog: true
+
+                              ));
+                            },
+                            child: Text('تحويل التذكرة'),
+                        ),
+                      ),
+                          )
+                          :Container()
+                              :Container(),
+                      SizedBox(width: 10,),
+
+                      Expanded(
                         child: ElevatedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
@@ -195,51 +228,35 @@ class ticketdetail extends StatelessWidget {
                           onPressed: () {
 
                             Navigator.push(context,CupertinoPageRoute(
-                                builder: (context)=>transferClient(
-                                  name_enterprise:  ticketModel.nameEnterprise.toString(),
-                                  idclient:  ticketModel.fkClient.toString(),
-                                  idticket: ticketModel.idTicket,
-                                  type: "ticket",),fullscreenDialog: true
+                                builder: (context)=>ProfileClient(
+                                  idClient: ticketModel.fkClient.toString(),
+                                )
 
                             ));
                           },
-                          child: Text('تحويل التذكرة'),
+                          child: Text('ملف العميل'),
                         ),
-                      ):Container():Container(),
-                      SizedBox(width: 10,),
-
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                kMainColor)),
-                        onPressed: () {
-
-                          Navigator.push(context,CupertinoPageRoute(
-                              builder: (context)=>ProfileClient(
-                                idClient: ticketModel.fkClient.toString(),
-                              )
-
-                          ));
-                        },
-                        child: Text('ملف العميل'),
                       ),
                       SizedBox(width: 5,),
-                      ticketModel.dateClose!=null&&ticketModel.date_rate==null?
-                      ElevatedButton(
+                      ticketModel.dateClose!=null&&ticketModel.date_rate==null
+                          ? Expanded(
+                            child: ElevatedButton(
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                kMainColor)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  kMainColor)),
                         onPressed: () {
 
-                          Navigator.push(context,CupertinoPageRoute(
-                              builder: (context)=>ticket_rate(
-                                ticket_model: ticketModel,
-                              )
+                            Navigator.push(context,CupertinoPageRoute(
+                                builder: (context)=>ticket_rate(
+                                  ticket_model: ticketModel,
+                                )
 
-                          ));
+                            ));
                         },
                         child: Text('تقييم بعد الإغلاق'),
-                      ):Container(),
+                      ),
+                          )
+                          :Container(),
 
                     ],
                   ),

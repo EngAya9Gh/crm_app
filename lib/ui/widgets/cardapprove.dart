@@ -63,18 +63,22 @@ class cardapprove extends StatelessWidget {
                        Row(
                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                          children: [
-                           ElevatedButton(style: ButtonStyle(
-                               backgroundColor: MaterialStateProperty
-                                   .all(kMainColor)),
-                               onPressed: () {},
-                               child: Text('Approve')),
+                           Expanded(
+                             child: ElevatedButton(style: ButtonStyle(
+                                 backgroundColor: MaterialStateProperty
+                                     .all(kMainColor)),
+                                 onPressed: () {},
+                                 child: Text('Approve')),
+                           ),
                            SizedBox(width: 4,),
-                           ElevatedButton(style: ButtonStyle(
-                               backgroundColor: MaterialStateProperty
-                                   .all(Colors.redAccent)),
-                               onPressed: () {},
-                               child: Text('Refuse',style:
-                               TextStyle(color: kWhiteColor),)),
+                           Expanded(
+                             child: ElevatedButton(style: ButtonStyle(
+                                 backgroundColor: MaterialStateProperty
+                                     .all(Colors.redAccent)),
+                                 onPressed: () {},
+                                 child: Text('Refuse',style:
+                                 TextStyle(color: kWhiteColor),)),
+                           ),
                          ],
                        )
                         // Text(itemapprove,style: TextStyle(fontFamily: kfontfamily2),),

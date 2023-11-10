@@ -190,78 +190,82 @@ class _careAddState extends State<careAdd> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ElevatedButton(
-                        style: ButtonStyle(
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ButtonStyle(
 
-                            backgroundColor: MaterialStateProperty.all(
-                                kMainColor
-                            )),
-                        onPressed: () async{
-                          Provider.of<communication_vm>(context,
-                              listen: false).isloadval(true);
-                         await Provider.of<config_vm>(context, listen: false).getAllConfig();
-                          List<ConfigModel> _listconfg =
-                           Provider.of<config_vm>(context, listen: false)
-                              .listofconfig;
+                              backgroundColor: MaterialStateProperty.all(
+                                  kMainColor
+                              )),
+                          onPressed: () async{
+                            Provider.of<communication_vm>(context,
+                                listen: false).isloadval(true);
+                           await Provider.of<config_vm>(context, listen: false).getAllConfig();
+                            List<ConfigModel> _listconfg =
+                             Provider.of<config_vm>(context, listen: false)
+                                .listofconfig;
 
-                          peroid =
-                              _listconfg.firstWhere((element) =>
-                              element.name_config == 'period_commincation3');
+                            peroid =
+                                _listconfg.firstWhere((element) =>
+                                element.name_config == 'period_commincation3');
 
-                          DateTime datanext=DateTime.now();
+                            DateTime datanext=DateTime.now();
 
-                          int peroidtime= int.parse(peroid.value_config);
-                          datanext=Jiffy().add(days: peroidtime).dateTime;
+                            int peroidtime= int.parse(peroid.value_config);
+                            datanext=Jiffy().add(days: peroidtime).dateTime;
 
-                          // datanext.add(Duration(days: peroidtime));
-
-
-
-                          if(widget.com.dateCommunication==null) {
-                            //datanext.add( Duration(days: day+ pp));
-                            // int peroidtime= int.parse(peroid.value_config);
-                            // datanext=Jiffy().add(days: peroidtime).dateTime;
-                            //
                             // datanext.add(Duration(days: peroidtime));
-                            //
 
-                          await  Provider.of<communication_vm>
-                              (context,listen: false).updatecarecommuncation({
-                               'type':'دوري',
-                               'fk_user':Provider.of<UserProvider>
-                                (context,listen: false).
-                                 currentUser.idUser.toString(),
-                               'date_communication':DateTime.now().toString(),
-                               'result':typepayController.toString(),//
-                               'rate':rate.toString(),
-                               'number_wrong':numberwrong.toString(),
-                               'client_repeat':repeat.toString(),
-                               'date_next':datanext.toString(),
-                            },widget.com.idCommunication);
-                             clear();
-                          }},
-                        child: Text(' تم التواصل ',
 
-                          style: TextStyle(
-                              // color:widget.com.dateCommunication==null?
-                       color:   kWhiteColor),)),
+
+                            if(widget.com.dateCommunication==null) {
+                              //datanext.add( Duration(days: day+ pp));
+                              // int peroidtime= int.parse(peroid.value_config);
+                              // datanext=Jiffy().add(days: peroidtime).dateTime;
+                              //
+                              // datanext.add(Duration(days: peroidtime));
+                              //
+
+                            await  Provider.of<communication_vm>
+                                (context,listen: false).updatecarecommuncation({
+                                 'type':'دوري',
+                                 'fk_user':Provider.of<UserProvider>
+                                  (context,listen: false).
+                                   currentUser.idUser.toString(),
+                                 'date_communication':DateTime.now().toString(),
+                                 'result':typepayController.toString(),//
+                                 'rate':rate.toString(),
+                                 'number_wrong':numberwrong.toString(),
+                                 'client_repeat':repeat.toString(),
+                                 'date_next':datanext.toString(),
+                              },widget.com.idCommunication);
+                               clear();
+                            }},
+                          child: Text(' تم التواصل ',
+
+                            style: TextStyle(
+                                // color:widget.com.dateCommunication==null?
+                         color:   kWhiteColor),)),
+                    ),
                   ],
                 ):Container() ,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                kMainColor)),
-                        onPressed: () async{
-                          Navigator.push(context,
-                              CupertinoPageRoute(builder: (context)=>
-                                  ProfileClient(
-                                    idClient: widget.com.fkClient ,
-                                  )));
-                        },
-                        child: Text(' ملف العميل')) ,
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  kMainColor)),
+                          onPressed: () async{
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context)=>
+                                    ProfileClient(
+                                      idClient: widget.com.fkClient ,
+                                    )));
+                          },
+                          child: Text(' ملف العميل')),
+                    ) ,
                 ],
                 ),
                 SizedBox(height: 10,),
