@@ -1,4 +1,5 @@
 import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,9 +11,10 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../constants.dart';
-import '../../../../model/regoin_model.dart';
+import '../../../../core/utils/responsive_padding.dart';
+import '../../../../model/maincitymodel.dart';
 import '../../../../ui/screen/client/profileclient.dart';
-import '../../../../view_model/regoin_vm.dart';
+import '../../../../view_model/maincity_vm.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../data/models/distinctive_client.dart';
 import '../manager/communication_list_bloc.dart';
@@ -26,6 +28,7 @@ class CommunicationListPage extends StatefulWidget {
 
 class _CommunicationListPageState extends State<CommunicationListPage> {
   late CommunicationListBloc _communicationListBloc;
+  late final MainCityProvider _mainCityProvider;
   late final fkCountry;
   late final userId;
   late TextEditingController _searchTextField;
@@ -37,8 +40,13 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
     final currentUser = context.read<UserProvider>().currentUser;
     fkCountry = currentUser.fkCountry;
     userId = currentUser.idUser;
-    _communicationListBloc = context.read<CommunicationListBloc>()
-      ..add(GetCommunicationListEvent(fkCountry!, query: _searchTextField.text));
+    _mainCityProvider = context.read<MainCityProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _mainCityProvider.getcityAll();
+      _communicationListBloc = context.read<CommunicationListBloc>()
+        ..add(GetCommunicationListEvent(fkCountry!, query: _searchTextField.text));
+    });
+
     super.initState();
   }
 
@@ -87,16 +95,16 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                         flex: 3,
                         child: BlocBuilder<CommunicationListBloc, CommunicationListState>(
                           builder: (context, state) {
-                            return Consumer<RegionProvider>(
-                              builder: (context, regionVm, child) {
+                            return Consumer<MainCityProvider>(
+                              builder: (context, cities, child) {
                                 return Row(
                                   children: [
                                     Expanded(
-                                      child: AppDropdownButtonFormField<RegionModel, String?>(
-                                        items: regionVm.listRegionFilter,
+                                      child: AppDropdownButtonFormField<CityModel, String?>(
+                                        items: cities.listcity,
                                         value: state.selectedCityId,
-                                        itemAsString: (item) => item!.regionName,
-                                        itemAsValue: (item) => item!.regionId,
+                                        itemAsString: (item) => item!.name_city,
+                                        itemAsValue: (item) => item!.id_city,
                                         onChange: (value) {
                                           if (value == null) {
                                             return;
@@ -104,14 +112,14 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                                           _communicationListBloc
                                               .add(OnChangeRegionEvent(value, fkCountry!, _searchTextField.text));
                                         },
-                                        hint: "الفرع",
+                                        hint: "المدينة",
                                       ),
                                     ),
-                                    if(state.selectedCityId != null)
-                                    IconButton(
-                                        onPressed: () => _communicationListBloc
-                                            .add(OnChangeRegionEvent(null, fkCountry!, _searchTextField.text)),
-                                        icon: Icon(Icons.close))
+                                    if (state.selectedCityId != null)
+                                      IconButton(
+                                          onPressed: () => _communicationListBloc
+                                              .add(OnChangeRegionEvent(null, fkCountry!, _searchTextField.text)),
+                                          icon: Icon(Icons.close))
                                   ],
                                 );
                               },
@@ -121,6 +129,17 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       ),
                       10.horizontalSpace,
                     ],
+                  ),
+                  10.verticalSpace,
+                  Padding(
+                    padding: HWEdgeInsets.symmetric(horizontal: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText("عدد العملاء"),
+                        AppText(data.length.toString()),
+                      ],
+                    ),
                   ),
                   // SwitchListTile(
                   //   value: isMyClients,
@@ -136,7 +155,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       onRefresh: () async => _communicationListBloc
                           .add(GetCommunicationListEvent(fkCountry!, query: _searchTextField.text)),
                       child: ListView.separated(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         itemBuilder: (BuildContext context, int index) => communicationWidget(
                           state.communicationListState.data[index],
                         ),

@@ -431,59 +431,61 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // Text(' إضافة منتج للفاتورة ' ,style: TextStyle(fontFamily: kfontfamily2),),
-                                ElevatedButton(
-                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                    onPressed: () {
-                                      //iduser
-                                      if (_textprice.text.isNotEmpty && selectedvalue != null) {
-                                        // final index =
-                                        //     listProduct.indexWhere((element) => element.idProduct == selectedvalue);
-                                        ProductModel pm = selectedProduct!;
-                                        ProductsInvoice pp = ProductsInvoice(
-                                            idInvoiceProduct: "null",
-                                            fkIdInvoice: widget.invoice!.idInvoice == null
-                                                ? '0'
-                                                : widget.invoice!.idInvoice.toString(),
-                                            fkclient: widget.invoice!.fkIdClient,
-                                            fkuser: widget.invoice!.fkIdUser,
-                                            fkProduct: pm.idProduct,
-                                            fkConfig: pm.fkConfig == null ? "null" : pm.fkConfig,
-                                            fkCountry: pm.fkCountry,
-                                            price: _textprice.text,
-                                            amount: _amount.text.isEmpty ? '1' : _amount.text,
-                                            rateAdmin: _taxadmin.text,
-                                            rateUser: _taxuser.text,
-                                            nameProduct: pm.nameProduct,
-                                            type: pm.type,
-                                            idProduct: pm.idProduct,
-                                            //value: listProduct[index].idProduct,
-                                            //idInvoiceProduct: "null",
-                                            priceProduct: pm.priceProduct,
-                                            taxtotal: pm.value_config == null
-                                                ? "null"
-                                                : pm.value_config,
-                                          typeProdRenew: pm.typeProdRenew
-                                        );
-                                        listAdded.add(pp);
-                                        
-                                        Provider.of<invoice_vm>(context, listen: false).addlistproductinvoic(pp);
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(content: Text('من فضلك تأكد من عملية الإدخال')));
-                                      }
-                                      setState(() {
-                                        _taxuser.text = '';
-                                        _taxuser_value = '';
-                                        _taxadmin.text = '';
-                                        _taxadmin_value = '';
-                                        _textprice.text = '';
-                                        _amount.text = '';
-                                        _amount_value = '1';
-                                        selectedvalue = null;
-                                        selectedProduct = null;
-                                      });
-                                    },
-                                    child: Text('إضافة المنتج للفاتورة')),
+                                Expanded(
+                                  child: ElevatedButton(
+                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                      onPressed: () {
+                                        //iduser
+                                        if (_textprice.text.isNotEmpty && selectedvalue != null) {
+                                          // final index =
+                                          //     listProduct.indexWhere((element) => element.idProduct == selectedvalue);
+                                          ProductModel pm = selectedProduct!;
+                                          ProductsInvoice pp = ProductsInvoice(
+                                              idInvoiceProduct: "null",
+                                              fkIdInvoice: widget.invoice!.idInvoice == null
+                                                  ? '0'
+                                                  : widget.invoice!.idInvoice.toString(),
+                                              fkclient: widget.invoice!.fkIdClient,
+                                              fkuser: widget.invoice!.fkIdUser,
+                                              fkProduct: pm.idProduct,
+                                              fkConfig: pm.fkConfig == null ? "null" : pm.fkConfig,
+                                              fkCountry: pm.fkCountry,
+                                              price: _textprice.text,
+                                              amount: _amount.text.isEmpty ? '1' : _amount.text,
+                                              rateAdmin: _taxadmin.text,
+                                              rateUser: _taxuser.text,
+                                              nameProduct: pm.nameProduct,
+                                              type: pm.type,
+                                              idProduct: pm.idProduct,
+                                              //value: listProduct[index].idProduct,
+                                              //idInvoiceProduct: "null",
+                                              priceProduct: pm.priceProduct,
+                                              taxtotal: pm.value_config == null
+                                                  ? "null"
+                                                  : pm.value_config,
+                                            typeProdRenew: pm.typeProdRenew
+                                          );
+                                          listAdded.add(pp);
+
+                                          Provider.of<invoice_vm>(context, listen: false).addlistproductinvoic(pp);
+                                        } else {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(content: Text('من فضلك تأكد من عملية الإدخال')));
+                                        }
+                                        setState(() {
+                                          _taxuser.text = '';
+                                          _taxuser_value = '';
+                                          _taxadmin.text = '';
+                                          _taxadmin_value = '';
+                                          _textprice.text = '';
+                                          _amount.text = '';
+                                          _amount_value = '1';
+                                          selectedvalue = null;
+                                          selectedProduct = null;
+                                        });
+                                      },
+                                      child: Text('إضافة المنتج للفاتورة')),
+                                ),
                                 Text(''),
                               ],
                             ),

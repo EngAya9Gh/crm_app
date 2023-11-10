@@ -150,7 +150,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       _clientTypeProvider.changevalue(_clientTypeProvider.selectedValuemanag);
     });
 
-    reasonReject = ValueNotifier(null);
+    reasonReject = ValueNotifier(widget.client?.rejectId);
     super.initState();
   }
 
@@ -677,6 +677,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       reason: reasonController.text,
       dateChangeType: _clientTypeProvider.selectedValuemanag != null ? formatter.format(DateTime.now()) : null,
       datePrice: _clientTypeProvider.selectedValuemanag == "عرض سعر" ? dateOfferPrice.toIso8601String() : null,
+      rejectId: reasonReject.value,
     );
 
     _clientsListBloc.add(EditClientEvent(

@@ -74,7 +74,8 @@ class _ClientViewState extends State<ClientView> {
             child: Padding(
               padding: const EdgeInsets.only(left: 8, right: 8, top: 2, bottom: 10),
               child: SingleChildScrollView(
-                child: Column(children: [
+                child: Column(
+                    children: [
                   // InkWell(
                   //     onTap: ()async{
                   //       await FlutterPhoneDirectCaller.callNumber(clientModel.mobile.toString());
@@ -170,15 +171,17 @@ class _ClientViewState extends State<ClientView> {
 
                   cardRow(title: 'حالة العميل', value: clientModel.typeClient.toString()),
                   clientModel.typeClient == 'مستبعد'
-                      ? cardRow(value: 'قام بتحويل حالة العميل', title: clientModel.nameuserdoning.toString())
+                      ? cardRow(value: clientModel.nameuserdoning.toString(), title: 'قام بتحويل حالة العميل')
                       : Container(),
                   clientModel.typeClient == 'مستبعد'
-                      ? cardRow(value: 'تاريخ تحويل حالة العميل', title: clientModel.dateChangetype.toString())
+                      ? cardRow(value: clientModel.dateChangetype.toString(), title:'تاريخ تحويل حالة العميل' )
                       : Container(),
                   clientModel.typeClient == 'مستبعد'
-                      ? cardRow(value: 'سبب الاستبعاد', title: clientModel.reasonChange.toString())
+                      ? cardRow(value: clientModel.reasonChange.toString(), title: 'تفاصيل الاستبعاد')
                       : Container(),
-
+                  clientModel.typeClient == 'مستبعد'
+                      ? cardRow(value: clientModel.NameReason_reject.toString(), title:'سبب الاستبعاد' )
+                      : Container(),
                   clientModel.offer_price != null && clientModel.offer_price.toString().trim().isNotEmpty
                       ? cardRow(title: 'مبلغ عرض السعر', value: clientModel.offer_price.toString())
                       : Container(),
@@ -249,6 +252,10 @@ class _ClientViewState extends State<ClientView> {
                   cardRow(
                       title: 'مصدر العميل',
                       value: clientModel.sourcclient == null ? '' : clientModel.sourcclient.toString()),
+                      if(clientModel.sourcclient == 'عميل موصى به')
+                      cardRow(
+                          title: 'تمت التوصية من:',
+                          value: clientModel.NameClient_recomand == null ? '' : clientModel.NameClient_recomand.toString()),
 
                   clientModel.activity_type_fk == null
                       ? cardRow(title: 'نوع النشاط', value: clientModel.activity_type_title.toString())
@@ -265,21 +272,21 @@ class _ClientViewState extends State<ClientView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                  onPressed: () async {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) => editclient(
-                                                client: clientModel,
-                                                fkclient: clientModel.idClients.toString(),
-                                                fkuser: clientModel.fkUser.toString())));
-                                  },
-                                  child: Text('تعديل بيانات العميل'),
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: ElevatedButton(
+                              //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                              //     onPressed: () async {
+                              //       Navigator.push(
+                              //           context,
+                              //           CupertinoPageRoute(
+                              //               builder: (context) => editclient(
+                              //                   client: clientModel,
+                              //                   fkclient: clientModel.idClients.toString(),
+                              //                   fkuser: clientModel.fkUser.toString())));
+                              //     },
+                              //     child: Text('تعديل بيانات العميل'),
+                              //   ),
+                              // ),
                               clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
                                   ? SizedBox(
                                       width: 5,

@@ -26,12 +26,13 @@ class Api {
 //private, max-age=3600
     // "Cache-Control": "no-cache"
     //   http.Response response = await _client.get(
-    http.Response response = await _client.get(Uri.parse(url), headers: {"Cache-Control": "no-cache"});
+    http.Response response = await _client.get(Uri.parse(url));
     if (json.decode(response.body)["code"] == "200") {
       
       return jsonDecode(response.body)["message"];
     } else {
-      
+
+
       throw Exception('${json.decode(response.body)["code"] == "200"}');
     }
   }

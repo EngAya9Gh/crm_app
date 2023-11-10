@@ -28,6 +28,7 @@ class EditClientParams {
   final String? statusClient;
   final String? datePrice;
   final String? dateChangeType;
+  final String? rejectId;
   final String nameClient;
   final String nameEnterprise;
   final String city;
@@ -52,6 +53,7 @@ class EditClientParams {
     this.statusClient,
     this.datePrice,
     this.dateChangeType,
+    this.rejectId,
     required this.nameClient,
     required this.nameEnterprise,
     required this.city,
@@ -90,6 +92,7 @@ class EditClientParams {
       'descActivController': descriptionActivity,
       "date_changetype": dateChangeType,
       "date_price": datePrice,
+      "fk_rejectClient": rejectId,
     }..removeWhere((key, value) => value == null || value == "");
 
     params = params.map((key, value) => MapEntry(key, value.toString()));

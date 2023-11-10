@@ -6,7 +6,7 @@ ElevatedButtonThemeData _elevatedButtonTheme(ColorScheme scheme, TextTheme textT
         backgroundColor: scheme.primary,
         foregroundColor: scheme.onPrimary,
         disabledBackgroundColor: scheme.grey50,
-        minimumSize: Size(double.infinity, 45.h),
+        minimumSize: Size(double.infinity, 35.h),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kbrBorderTextField)),
       ),
     );
@@ -23,7 +23,7 @@ TextButtonThemeData _textButtonTheme(ColorScheme scheme, TextTheme textTheme) =>
 
 AppBarTheme _appBarTheme(ThemeData theme, ColorScheme scheme, TextTheme textTheme, ThemeMode themeMode) =>
     theme.appBarTheme.copyWith(
-        backgroundColor: scheme.background,
+        backgroundColor: scheme.primary,
         titleTextStyle: textTheme.headlineSmall,
         systemOverlayStyle: themeMode == ThemeMode.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
         elevation: 0.0,

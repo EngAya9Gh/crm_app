@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/ui/screen/notification/notifypage.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
@@ -39,7 +40,7 @@ class customAppbar extends StatelessWidget implements PreferredSizeWidget {
                 icon: Icon(
                   Icons.notifications,
                   size: 20,
-                  color: context.colorScheme.primary,
+                  color: context.colorScheme.white,
                 ),
                 onPressed: () {
                   notify.setRead_notify_vm();

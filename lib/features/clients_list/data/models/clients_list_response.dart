@@ -61,6 +61,9 @@ class ClientModel with _$ClientModel {
     @JsonKey(name: "email") String? email,
     @JsonKey(name: "size_activity") String? sizeActivity,
     @JsonKey(name: "fk_client_source") String? fkClientSource,
+    @JsonKey(name: "NameReason_reject") String? nameReasonReject,
+    @JsonKey(name: "NameClient_recomand") String? nameClientRecommend,
+    @JsonKey(name: "fk_rejectClient") String? rejectId,
   }) = _ClientModel;
 
   const ClientModel._();

@@ -316,94 +316,97 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     },
                                   )
                                 : Container(), // widget.type == 'approved'
-                            //     ? invoice.isApprove == null
-                            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('41') == true
-                                ? invoice.isApprove != null
-                                    ? CustomButton(
-                                        text: 'الاجراءات',
-                                        onTap: () async {
-                                          if (clientmodel != null)
-                                            showDialog<void>(
-                                              context: context,
-                                              builder: (context) => RejectDialog(
-                                                invoice: invoice,
-                                                clientModel: clientmodel!,
-                                              ),
-                                            );
-                                        },
-                                      )
-                                    : Container()
-                                : Container(),
-                            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('32') == true
-                                ? CustomButton(
-                                    //width: MediaQuery.of(context).size.width * 0.2,
-                                    text: 'حذف الفاتورة',
-                                    onTap: () async {
-                                      bool result = await showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text('التأكيد'),
-                                            content: Text('هل تريد حذف الفاتورة'),
-                                            actions: <Widget>[
-                                              new TextButton(
-                                                onPressed: () {
-                                                  Navigator.of(context, rootNavigator: true)
-                                                      .pop(false); // dismisses only the dialog and returns false
-                                                },
-                                                child: Text('لا'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () async {
-                                                  Navigator.of(context, rootNavigator: true).pop(true);
-                                                  // dismisses only the dialog and returns true
-                                                  // if(itemProd.idInvoice!=null)
-                                                  
-                                                  DateTime _currentDate = DateTime.now();
-                                                  final rt.DateFormat formatter = rt.DateFormat('yyyy-MM-dd');
-                                                  // Provider.of<invoice_vm>(context, listen: false)
-                                                  //     .addlistinvoicedeleted(DeletedinvoiceModel(
-                                                  //   fkClient: invoice.fkIdClient.toString(),
-                                                  //   fkUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                  //       .currentUser
-                                                  //       .idUser,
-                                                  //   //cuerrent user
-                                                  //   dateDelete: formatter.format(_currentDate),
-                                                  //   //city:itemProd.
-                                                  //   nameClient: invoice.nameClient.toString(),
-                                                  //   nameEnterprise: clientmodel.nameEnterprise,
-                                                  //   mobileclient: clientmodel.mobile,
-                                                  //   //mobileuser:widget.itemClient. ,
-                                                  //   // nameUser: widget.itemProd
-                                                  //   //     .nameUser, //موظف المبيعات
-                                                  //   nameUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                  //       .currentUser
-                                                  //       .nameUser, //name user that doing delete
-                                                  // ));
-                                                  Provider.of<invoice_vm>(context, listen: false).delete_invoice({
-                                                    "id_invoice": invoice.idInvoice.toString(),
-                                                    'fk_regoin': invoice.fk_regoin.toString(),
-                                                    'fkcountry': invoice.fk_country.toString(),
-                                                    "fkUserdo": Provider.of<UserProvider>(context, listen: false)
-                                                        .currentUser
-                                                        .idUser
-                                                        .toString(),
-                                                    "name_enterprise": clientmodel?.nameEnterprise.toString(),
-                                                    "nameUserdo": Provider.of<UserProvider>(context, listen: false)
-                                                        .currentUser
-                                                        .nameUser
-                                                        .toString(),
-                                                  }, invoice.idInvoice);
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text('نعم'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    })
-                                : Container(),
+
+                            if(Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('41') == true && invoice.isApprove != null)
+
+                             ...{
+                               10.horizontalSpace,
+                               CustomButton(
+                                 text: 'الاجراءات',
+                                 onTap: () async {
+                                   if (clientmodel != null)
+                                     showDialog<void>(
+                                       context: context,
+                                       builder: (context) => RejectDialog(
+                                         invoice: invoice,
+                                         clientModel: clientmodel!,
+                                       ),
+                                     );
+                                 },
+                               )
+                             },
+                            if(Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('32') == true)
+                            ...{
+                              10.horizontalSpace,
+                              CustomButton(
+                                //width: MediaQuery.of(context).size.width * 0.2,
+                                  text: 'حذف الفاتورة',
+                                  onTap: () async {
+                                    bool result = await showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('التأكيد'),
+                                          content: Text('هل تريد حذف الفاتورة'),
+                                          actions: <Widget>[
+                                            new TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context, rootNavigator: true)
+                                                    .pop(false); // dismisses only the dialog and returns false
+                                              },
+                                              child: Text('لا'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () async {
+                                                Navigator.of(context, rootNavigator: true).pop(true);
+                                                // dismisses only the dialog and returns true
+                                                // if(itemProd.idInvoice!=null)
+
+                                                DateTime _currentDate = DateTime.now();
+                                                final rt.DateFormat formatter = rt.DateFormat('yyyy-MM-dd');
+                                                // Provider.of<invoice_vm>(context, listen: false)
+                                                //     .addlistinvoicedeleted(DeletedinvoiceModel(
+                                                //   fkClient: invoice.fkIdClient.toString(),
+                                                //   fkUser: Provider.of<user_vm_provider>(context, listen: false)
+                                                //       .currentUser
+                                                //       .idUser,
+                                                //   //cuerrent user
+                                                //   dateDelete: formatter.format(_currentDate),
+                                                //   //city:itemProd.
+                                                //   nameClient: invoice.nameClient.toString(),
+                                                //   nameEnterprise: clientmodel.nameEnterprise,
+                                                //   mobileclient: clientmodel.mobile,
+                                                //   //mobileuser:widget.itemClient. ,
+                                                //   // nameUser: widget.itemProd
+                                                //   //     .nameUser, //موظف المبيعات
+                                                //   nameUser: Provider.of<user_vm_provider>(context, listen: false)
+                                                //       .currentUser
+                                                //       .nameUser, //name user that doing delete
+                                                // ));
+                                                Provider.of<invoice_vm>(context, listen: false).delete_invoice({
+                                                  "id_invoice": invoice.idInvoice.toString(),
+                                                  'fk_regoin': invoice.fk_regoin.toString(),
+                                                  'fkcountry': invoice.fk_country.toString(),
+                                                  "fkUserdo": Provider.of<UserProvider>(context, listen: false)
+                                                      .currentUser
+                                                      .idUser
+                                                      .toString(),
+                                                  "name_enterprise": clientmodel?.nameEnterprise.toString(),
+                                                  "nameUserdo": Provider.of<UserProvider>(context, listen: false)
+                                                      .currentUser
+                                                      .nameUser
+                                                      .toString(),
+                                                }, invoice.idInvoice);
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('نعم'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  })
+                            },
                           ],
                         ),
                       ),
@@ -425,22 +428,23 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   },
                                 )
                               : Container(),
-                          SizedBox(width: 5),
-                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('115') == true
-                              ? CustomButton(
-                                  //width: MediaQuery.of(context).size.width * 0.2,
-                                  text: 'تغيير بيانات الفاتورة',
-                                  onTap: () async {
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) => edit_invoice(
-                                                  invoiceModel: invoice,
-                                                ) // support_view(type: 'only',)
-                                            ));
-                                  },
-                                )
-                              : Container(),
+                          if(Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('115') == true)
+                            ...{
+                              10.horizontalSpace,
+                              CustomButton(
+                                //width: MediaQuery.of(context).size.width * 0.2,
+                                text: 'تغيير بيانات الفاتورة',
+                                onTap: () async {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) => edit_invoice(
+                                            invoiceModel: invoice,
+                                          ) // support_view(type: 'only',)
+                                      ));
+                                },
+                              )
+                            },
                         ],
                       ),
                       widget.type == 'approved'
@@ -739,9 +743,9 @@ class _RejectDialogState extends State<RejectDialog> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       elevation: 0,
-      titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
-      insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      titlePadding: const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 10.0),
+      insetPadding: EdgeInsets.only(left: 0, right: 0, bottom: 10),
+      contentPadding: EdgeInsets.only(left: 25, right: 25, bottom: 20,top: 10),
       title: Center(child: Text('تحويل العميل إلى منسحب', style: TextStyle(fontFamily: kfontfamily2))),
       children: [
         Directionality(
@@ -993,39 +997,41 @@ class _RejectDialogState extends State<RejectDialog> {
                                   ),
                                 ),
                     ),
-                    SizedBox(height: 6),
+                    SizedBox(height: 20),
                     Consumer<invoice_vm>(
                       builder: (context, value, child) {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        return (_invoice.file_reject?.isNotEmpty ?? false)
-                            ? (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('145') == true
-                                && _invoice.approveBackDone=='0'
-                                ? Center(
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
-                                      onPressed: () async {
-                                        // if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
-                                        //   ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
-                                        //   return;
-                                        // }
-                                        if (_globalKey.currentState!.validate()) {
-                                          _globalKey.currentState!.save();
-
-                                          await Provider.of<invoice_vm>(context, listen: false).deleteBack(
-                                              _invoice.idInvoice.toString(), _invoice.file_reject.toString());
-
-                                          clear_back();
-
-                                          Navigator.of(context, rootNavigator: true).pop(false);
-                                        }
-                                      },
-                                      child: Text('حذف الطلب'),
-                                    ),
-                                  )
-                                : SizedBox.shrink())
-                            : Center(
+                        return
+                          // (_invoice.file_reject?.isNotEmpty ?? false)
+                          //   ? (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('145') == true
+                          //       && _invoice.approveBackDone=='0'
+                          //       ? Center(
+                          //           child: ElevatedButton(
+                          //             style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                          //             onPressed: () async {
+                          //               // if (selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) {
+                          //               //   ScaffoldMessenger.of(context).showSnackBar (SnackBar(content: Text("من فضلك قم ياختيار ملف")));
+                          //               //   return;
+                          //               // }
+                          //               if (_globalKey.currentState!.validate()) {
+                          //                 _globalKey.currentState!.save();
+                          //
+                          //                 await Provider.of<invoice_vm>(context, listen: false).deleteBack(
+                          //                     _invoice.idInvoice.toString(), _invoice.file_reject.toString());
+                          //
+                          //                 clear_back();
+                          //
+                          //                 Navigator.of(context, rootNavigator: true).pop(false);
+                          //               }
+                          //             },
+                          //             child: Text('حذف الطلب'),
+                          //           ),
+                          //         )
+                          //       : SizedBox.shrink())
+                          //   :
+                          Center(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [

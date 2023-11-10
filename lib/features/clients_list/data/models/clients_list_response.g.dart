@@ -62,6 +62,9 @@ _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
       email: json['email'] as String?,
       sizeActivity: json['size_activity'] as String?,
       fkClientSource: json['fk_client_source'] as String?,
+      nameReasonReject: json['NameReason_reject'] as String?,
+      nameClientRecommend: json['NameClient_recomand'] as String?,
+      rejectId: json['fk_rejectClient'] as String?,
     );
 
 Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
@@ -120,4 +123,7 @@ Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
       'email': instance.email,
       'size_activity': instance.sizeActivity,
       'fk_client_source': instance.fkClientSource,
+      'NameReason_reject': instance.nameReasonReject,
+      'NameClient_recomand': instance.nameClientRecommend,
+      'fk_rejectClient': instance.rejectId,
     };

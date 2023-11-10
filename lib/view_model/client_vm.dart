@@ -511,7 +511,8 @@ class ClientProvider extends ChangeNotifier {
       // }
       notifyListeners();
       // return inv;
-    } catch (e) {
+    } catch (e,st) {
+      print('st $st');
       currentClientModel = currentClientModel.changeToFailed;
       // return ClientModel();
     }
