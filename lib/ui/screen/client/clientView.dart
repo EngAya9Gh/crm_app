@@ -516,8 +516,8 @@ class _ClientViewState extends State<ClientView> {
                                                                 Provider.of<UserProvider>(context, listen: false)
                                                                     .currentUser
                                                                     .idUser //معتمد الاشتراك
-                                                          }, widget.invoice!.idInvoice).then(
-                                                                  (value) => value != false ? clear() : error() // clear()
+                                                          }, widget.invoice!.idInvoice).then((value) =>
+                                                                      value != false ? clear() : error() // clear()
                                                                   // _scaffoldKey.currentState!.showSnackBar(
                                                                   //     SnackBar(content: Text('هناك مشكلة ما')))
                                                                   );
@@ -528,8 +528,8 @@ class _ClientViewState extends State<ClientView> {
                                                         style: ButtonStyle(
                                                             backgroundColor: MaterialStateProperty.all(kMainColor)),
                                                         onPressed: () {
-                                                          Navigator.of(context, rootNavigator: true)
-                                                              .pop(false); // dismisses only the dialog and returns false
+                                                          Navigator.of(context, rootNavigator: true).pop(
+                                                              false); // dismisses only the dialog and returns false
                                                         },
                                                         child: Text('لا'),
                                                       ),
@@ -544,12 +544,11 @@ class _ClientViewState extends State<ClientView> {
                                         },
                                         child: Text('Approve')),
                                   ),
-                                  SizedBox(
-                                    width: 15
-                                  ),
+                                  SizedBox(width: 15),
                                   Expanded(
                                     child: ElevatedButton(
-                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
+                                        style:
+                                            ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
                                         onPressed: () async {
                                           // Navigator.pushAndRemoveUntil(context,
                                           //     CupertinoPageRoute(builder: (context)=>Home()),
@@ -593,8 +592,8 @@ class _ClientViewState extends State<ClientView> {
                                                                 Provider.of<UserProvider>(context, listen: false)
                                                                     .currentUser
                                                                     .idUser //معتمد الاشتراك
-                                                          }, widget.invoice!.idInvoice).then(
-                                                                  (value) => value != false ? clear() : error() // clear()
+                                                          }, widget.invoice!.idInvoice).then((value) =>
+                                                                      value != false ? clear() : error() // clear()
                                                                   // _scaffoldKey.currentState!.showSnackBar(
                                                                   //     SnackBar(content: Text('هناك مشكلة ما'))
                                                                   // )
@@ -606,8 +605,8 @@ class _ClientViewState extends State<ClientView> {
                                                         style: ButtonStyle(
                                                             backgroundColor: MaterialStateProperty.all(kMainColor)),
                                                         onPressed: () {
-                                                          Navigator.of(context, rootNavigator: true)
-                                                              .pop(false); // dismisses only the dialog and returns false
+                                                          Navigator.of(context, rootNavigator: true).pop(
+                                                              false); // dismisses only the dialog and returns false
                                                         },
                                                         child: Text('لا'),
                                                       ),
@@ -707,8 +706,7 @@ class _ClientViewState extends State<ClientView> {
 
                                     //Navigator.pop(context);
                                   },
-                                  child: Text('Approve'))
-                            )
+                                  child: Text('Approve')))
                           : Container()
                       : Container(),
                 ]),

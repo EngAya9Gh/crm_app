@@ -892,7 +892,7 @@ class invoice_vm extends ChangeNotifier {
       }
     }
     if (iindex != -1) listInvoicesAccept.removeAt(iindex);
-    if (iindexadmin != -1) listInvoicesAccept_admin.removeAt(iindex);
+    if (iindexadmin != -1) listInvoicesAccept_admin.removeAt(iindexadmin);
     isapproved = false;
     notifyListeners();
 

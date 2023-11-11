@@ -45,14 +45,11 @@ class ClientProvider extends ChangeNotifier {
   bool isloading_marketing = false;
 
   void setvalue(user) {
-    
-
     usercurrent = user;
     notifyListeners();
   }
 
   void setvaluepriv(privilgelistparam) {
-    
     privilgelist = privilgelistparam;
     notifyListeners();
   }
@@ -77,8 +74,8 @@ class ClientProvider extends ChangeNotifier {
     listClient = List.from(listClientAccept);
     notifyListeners();
   }
-  Future<void> getclient_Accept(
-      // , List<InvoiceModel> list
+
+  Future<void> getclient_Accept(// , List<InvoiceModel> list
       ) async {
     isloading = true;
     listClientAccept = [];
@@ -137,10 +134,10 @@ class ClientProvider extends ChangeNotifier {
       _list = await ClientService().getAllClientsupport(usercurrent!.fkCountry.toString(), null);
     else {
       int idexist = -1;
-      
+
       // if(listparam!.isNotEmpty)
       idexist = listparam.indexWhere((element) => element.id_maincity == '0');
-      
+
       if (idexist != -1)
         _list = await ClientService().getAllClientsupport(usercurrent!.fkCountry.toString(), null);
       else {
@@ -157,8 +154,8 @@ class ClientProvider extends ChangeNotifier {
     //  if(regoin!=null){
     //    if(regoin!='0'){
     //      listClientAccept.forEach((element) {
-    //        
-    //        
+    //
+    //
     //        if(element.id_maincity==regoin)
     //          list.add(element);
     //      });
@@ -216,7 +213,6 @@ class ClientProvider extends ChangeNotifier {
       listClientMarketing = List.from(listClientfilter);
     }
     if (type == "user") {
-      
       if (filter2 == null) {
         listClient.forEach((element) {
           if (element.fkUser == searchfilter) listClientfilter.add(element);
@@ -401,17 +397,19 @@ class ClientProvider extends ChangeNotifier {
   Future<void> getallclientTransfer() async {
     isloading = true;
     notifyListeners();
-    String param='';
+    String param = '';
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '150').isCheck == '1' ? true : false;
-    if(res) param='id_regoin= '+ usercurrent!.fkRegoin.toString();
-    else param='iduser='+ usercurrent!.idUser.toString();
+    if (res)
+      param = 'id_regoin= ' + usercurrent!.fkRegoin.toString();
+    else
+      param = 'iduser=' + usercurrent!.idUser.toString();
     listClient = await ClientService().getTransfer(param); //=List.from(listClient);
     listClientAprroveTransfer = List.from(listClient);
     isloading = false;
 
     notifyListeners();
   }
-     
+
   Future<void> getallclientAcceptwithprev() async {
     listClient = [];
     bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '1').isCheck == '1' ? true : false;
@@ -439,27 +437,32 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclient_vm( ) async {
+  Future<void> getclient_vm() async {
     clear();
     listClientfilter = [];
     isloading = true;
     notifyListeners();
 
-    final String allClientPrivilege =   '8';
-    final String allClientByRegionPrivilege =  '15';
-    final String allClientByUserPrivilege =   '16';
+    final String allClientPrivilege = '8';
+    final String allClientByRegionPrivilege = '15';
+    final String allClientByUserPrivilege = '16';
 
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientPrivilege).isCheck == '1' ? true : false;
+    bool res =
+        privilgelist.firstWhere((element) => element.fkPrivileg == allClientPrivilege).isCheck == '1' ? true : false;
     if (res) {
       listClient = await ClientService().getAllClient(usercurrent!.fkCountry.toString());
       listClientfilter = List.from(listClient);
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByRegionPrivilege).isCheck == '1' ? true : false;
+      res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByRegionPrivilege).isCheck == '1'
+          ? true
+          : false;
       if (res) {
         listClient = await ClientService().getAllClientByRegoin(usercurrent!.fkRegoin.toString());
         listClientfilter = List.from(listClient);
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByUserPrivilege).isCheck == '1' ? true : false;
+        res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByUserPrivilege).isCheck == '1'
+            ? true
+            : false;
         if (res) {
           listClient = await ClientService().getClientbyuser(usercurrent!.idUser.toString());
           listClientfilter = List.from(listClient);
@@ -471,27 +474,32 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclientMarketing_vm( ) async {
+  Future<void> getclientMarketing_vm() async {
     clear();
     listClientfilter = [];
     isloading = true;
     notifyListeners();
 
-    final String allClientPrivilege = '127' ;
-    final String allClientByRegionPrivilege = '128' ;
-    final String allClientByUserPrivilege =  '129' ;
+    final String allClientPrivilege = '127';
+    final String allClientByRegionPrivilege = '128';
+    final String allClientByUserPrivilege = '129';
 
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientPrivilege).isCheck == '1' ? true : false;
+    bool res =
+        privilgelist.firstWhere((element) => element.fkPrivileg == allClientPrivilege).isCheck == '1' ? true : false;
     if (res) {
       listClient = await ClientService().getAllClientmarket(usercurrent!.fkCountry.toString());
       listClientfilter = List.from(listClient);
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByRegionPrivilege).isCheck == '1' ? true : false;
+      res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByRegionPrivilege).isCheck == '1'
+          ? true
+          : false;
       if (res) {
         listClient = await ClientService().getClientmarket_regoin(usercurrent!.fkRegoin.toString());
         listClientfilter = List.from(listClient);
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByUserPrivilege).isCheck == '1' ? true : false;
+        res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByUserPrivilege).isCheck == '1'
+            ? true
+            : false;
         if (res) {
           listClient = await ClientService().getClientmarket_user(usercurrent!.idUser.toString());
           listClientfilter = List.from(listClient);
@@ -513,19 +521,19 @@ class ClientProvider extends ChangeNotifier {
 
       // inv = listClient.firstWhereOrNull((element) => element.idClients == idClient);
 
-        // if (inv == null) {
-      inv  = await ClientService().getclientid(idClient);
+      // if (inv == null) {
+      inv = await ClientService().getclientid(idClient);
       // currentClientModel = currentClientModel.changeToLoading;
 
       // listClient.add(inv);
-        currentClientModel = currentClientModel.changeToLoaded(inv);
+      currentClientModel = currentClientModel.changeToLoaded(inv);
       onData?.call(inv);
       // } else {
       //   currentClientModel = currentClientModel.changeToLoaded(inv);
       // }
       notifyListeners();
       // return inv;
-    } catch (e,st) {
+    } catch (e, st) {
       print('st $st');
       currentClientModel = currentClientModel.changeToFailed;
       // return ClientModel();
@@ -568,21 +576,21 @@ class ClientProvider extends ChangeNotifier {
     //     .getCache(CACHE_ClientByUser_KEY, CACHE_ClientByUser_INTERVAL);
     //
     // if(listClientbyCurrentUser.isEmpty){
-    //   
+    //
     //   listClientbyCurrentUser =
     //   await ClientService().getClientbyuser(usercurrent!.idUser.toString());
     //
     //   if(listClientbyCurrentUser!=null) {
-    //     
+    //
     //   await cahe_data_source_client().saveToCache(listClientbyCurrentUser,
     //       CACHE_ClientByUser_KEY);
     //   }
     //   else {
-    //     
+    //
     //   }
     // }else{
     //   if(list!=null){
-    //   
+    //
     //   listClientbyCurrentUser.addAll(list);
     //   }
     // }
@@ -643,13 +651,13 @@ class ClientProvider extends ChangeNotifier {
       index = listClientAccept.indexWhere((element) => element.idClients == idClient);
       if (index != -1) listClientAccept[index] = data;
 
-       // get_byIdClient(idClient.toString());
-      data  = await ClientService().getclientid(idClient);
+      // get_byIdClient(idClient.toString());
+      data = await ClientService().getclientid(idClient);
       // currentClientModel = currentClientModel.changeToLoading;
 
       // listClient.add(inv);
       // currentClientModel = currentClientModel.changeToLoaded(inv);
-      if(currentClientModel.isSuccess){
+      if (currentClientModel.isSuccess) {
         currentClientModel = currentClientModel.changeToLoaded(data);
       }
       isloading = false;
@@ -843,5 +851,58 @@ class ClientProvider extends ChangeNotifier {
       tagStatus = Status.failed;
       notifyListeners();
     }
+  }
+
+  onUpdateListsMarketing(ClientModel clientModel) {
+    bool isExist = listClient.any((element) => element.idClients == clientModel.idClients);
+    if (!isExist) {
+      listClient.insert(0, clientModel);
+    } else {
+      listClient = listClient.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
+    }
+
+    isExist = listClientfilter.any((element) => element.idClients == clientModel.idClients);
+    if (!isExist) {
+      listClientfilter.insert(0, clientModel);
+    } else {
+      listClientfilter = listClientfilter.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
+    }
+
+    isExist = listClientAccept.any((element) => element.idClients == clientModel.idClients);
+    if (!isExist) {
+      listClientAccept.insert(0, clientModel);
+    } else {
+      listClientAccept = listClientAccept.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
+    }
+
+    isExist = listClientMarketing.any((element) => element.idClients == clientModel.idClients);
+    if (!isExist) {
+      if (clientModel.ismarketing == '1') {
+        listClientMarketing.insert(0, clientModel);
+      }
+    } else {
+      if (clientModel.ismarketing == '1') {
+        listClientMarketing =
+            listClientMarketing.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
+      } else {
+        listClientMarketing.removeWhere((e) => e.idClients == clientModel.idClients);
+      }
+    }
+
+    isExist = listClientMarketingFilter.any((element) => element.idClients == clientModel.idClients);
+    if (!isExist) {
+      if (clientModel.ismarketing == '1') {
+        listClientMarketingFilter.insert(0, clientModel);
+      }
+    } else {
+      if (clientModel.ismarketing == '1') {
+        listClientMarketingFilter =
+            listClientMarketingFilter.map((e) => e.idClients == clientModel.idClients ? clientModel : e).toList();
+      } else {
+        listClientMarketingFilter.removeWhere((e) => e.idClients == clientModel.idClients);
+      }
+    }
+
+    notifyListeners();
   }
 }

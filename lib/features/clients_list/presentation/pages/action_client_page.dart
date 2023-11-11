@@ -231,7 +231,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             ),
                             15.verticalSpace,
                             AppTextField(
-                              labelText: "البريد الالكتروني*",
+                              labelText: "البريد الالكتروني",
                               maxLines: 1,
                               hintText: 'example@gmail.com',
                               controller: emailController,
@@ -658,7 +658,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       anotherPhoneNumber: anotherNumberController.text,
       addressClient: addressClientController.text,
       selectedActivityIdType: activityViewmodel.selectedActivity!.id_activity_type,
-      isMarketing: selectedSourceClient != 'ميداني' ? (selectedSourceClient == "عميل موصى به" ? '2': '1') : '0',
+      isMarketing: selectedSourceClient != 'ميداني' ? (selectedSourceClient == "عميل موصى به" ? '2' : '1') : '0',
       sourceClient: selectedSourceClient!,
       descriptionActivity: descriptionActivityController.text,
       email: emailController.text,
@@ -680,7 +680,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
 
     _clientsListBloc.add(EditClientEvent(
       editClientParams,
-      onSuccess: () => Navigator.pop(context),
+      onSuccess: (client) => Navigator.pop(context, client),
     ));
   }
 
@@ -693,7 +693,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       anotherPhoneNumber: anotherNumberController.text,
       addressClient: addressClientController.text,
       selectedActivityIdType: activityViewmodel.selectedActivity!.id_activity_type,
-      isMarketing: selectedSourceClient != 'ميداني' ? (selectedSourceClient == "عميل موصى به" ? '2': '1') : '0',
+      isMarketing: selectedSourceClient != 'ميداني' ? (selectedSourceClient == "عميل موصى به" ? '2' : '1') : '0',
       sourceClient: selectedSourceClient!,
       descriptionActivity: descriptionActivityController.text,
       user: _userProvider.currentUser,
@@ -706,7 +706,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
 
     _clientsListBloc.add(AddClientEvent(
       addClientParams,
-      onSuccess: () => Navigator.pop(context),
+      onSuccess: (client) => Navigator.pop(context, client),
     ));
   }
 }

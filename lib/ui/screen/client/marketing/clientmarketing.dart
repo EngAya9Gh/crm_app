@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart' as cl;
 import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
@@ -12,10 +13,12 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
+import '../../../../features/clients_list/presentation/pages/action_client_page.dart';
 import '../../../../model/ActivityModel.dart';
-import '../addClient.dart';
+import '../../../../model/clientmodel.dart';
 
 class clientmarketing extends StatefulWidget {
   clientmarketing({Key? key}) : super(key: key);
@@ -62,11 +65,74 @@ class _clientmarketingState extends State<clientmarketing> {
         floatingActionButton: Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('47') == true
             ? FloatingActionButton(
                 backgroundColor: kMainColor,
-                onPressed: () {
-                  Navigator.push(context, CupertinoPageRoute(builder: (context) => addClient()));
+                onPressed: () async {
+                  final cl.ClientModel? clientModel = await Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) => ActionClientPage(),
+                      ));
+
+                  if (clientModel != null) {
+                    final client = ClientModel(
+                      NameReason_reject: clientModel.nameReasonReject,
+                      date_price: clientModel.datePrice,
+                      dateChangetype: clientModel.dateChangeType,
+                      offer_price: clientModel.offerPrice,
+                      location: clientModel.location,
+                      email: clientModel.email,
+                      typeClient: clientModel.typeClient,
+                      isApprove: clientModel.isApprove,
+                      fkUser: clientModel.fkUser,
+                      fkcountry: clientModel.fkCountry,
+                      activity_type_fk: clientModel.activityTypeFk,
+                      activity_type_title: clientModel.activityTypeTitle,
+                      address_client: clientModel.addressClient,
+                      amount_paid: clientModel.amountPaid,
+                      city: clientModel.city,
+                      dateCreate: clientModel.dateCreate,
+                      dateTransfer: clientModel.dateTransfer,
+                      date_visit_Client: clientModel.dateVisitClient,
+                      fk_rejectClient: clientModel.rejectId,
+                      descActivController: clientModel.descriptionActiveController,
+                      fkRegoin: clientModel.fkRegion,
+                      fk_client_source: clientModel.fkClientSource,
+                      idClients: clientModel.idClients,
+                      fkusertrasfer: clientModel.fkUserTrasfer,
+                      ismarketing: clientModel.isMarketing,
+                      id_maincity: clientModel.idMainCity,
+                      mobile: clientModel.mobile,
+                      mobileuser: clientModel.mobileUser,
+                      nameAdduser: clientModel.nameAdduser,
+                      name_city: clientModel.nameCity,
+                      nameClient: clientModel.nameClient,
+                      NameClient_recomand: clientModel.nameClientRecommend,
+                      nameCountry: clientModel.nameCountry,
+                      nameEnterprise: clientModel.nameEnterprise,
+                      namemaincity: clientModel.nameMainCity,
+                      name_regoin: clientModel.nameRegion,
+                      nameUser: clientModel.nameUser,
+                      nameuserdoning: clientModel.nameUserDoing,
+                      nameusertransfer: clientModel.nameUserTransfer,
+                      phone: clientModel.phone,
+                      presystem: clientModel.preSystem,
+                      presystemtitle: clientModel.preSystemTitle,
+                      reasonChange: clientModel.reasonChange,
+                      reasonTransfer: clientModel.reasonTransfer,
+                      size_activity: clientModel.sizeActivity,
+                      sourcclient: clientModel.sourceClient,
+                      tag: clientModel.tag,
+                      total: clientModel.total,
+                      total_paid: clientModel.totalPaid,
+                      typeJob: clientModel.typeJob,
+                      user_add: clientModel.userAdd,
+                      user_do: clientModel.userDo,
+                    );
+
+                    context.read<ClientProvider>().onUpdateListsMarketing(client);
+                  }
                 },
                 tooltip: 'إضافة عميل',
-                child: Icon(Icons.add,color: AppColors.white),
+                child: Icon(Icons.add, color: AppColors.white),
                 heroTag: 'add clients',
               )
             : Container(),
@@ -219,10 +285,11 @@ class _clientmarketingState extends State<clientmarketing> {
                                   SizedBox(width: 10),
                                 },
                                 Expanded(
-                                  child:   DropdownSearch<ActivityModel>(
+                                  child: DropdownSearch<ActivityModel>(
                                     mode: Mode.DIALOG,
                                     filterFn: (user, filter) => user!.getFilterActivityType(filter!),
-                                    compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
+                                    compareFn: (item, selectedItem) =>
+                                        item?.id_activity_type == selectedItem?.id_activity_type,
                                     items: cart.activitiesList,
                                     itemAsString: (u) => u!.userAsString(),
                                     onChanged: (data) {
@@ -239,8 +306,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                       alignLabelWithHint: true,
                                       fillColor: Colors.grey.withOpacity(0.2),
                                       contentPadding: EdgeInsets.all(0),
-                                      border:
-                                      UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                      border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
                                     ),
                                     // InputDecoration(border: InputBorder.none),
                                   ),
@@ -329,7 +395,6 @@ class _clientmarketingState extends State<clientmarketing> {
   }
 
   void filtershow() {
-
     context.read<ClientProvider>().filterClientMarketingSalesList(
           activity: activity,
           idUser: iduser,

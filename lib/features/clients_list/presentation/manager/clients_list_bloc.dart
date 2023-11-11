@@ -122,7 +122,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (value) {
         emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
         state.clientsListController.itemList = [value.data!, ...state.clientsListController.itemList ?? []];
-        event.onSuccess?.call();
+        event.onSuccess?.call(value.data!);
       },
     );
   }
@@ -139,7 +139,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         state.clientsListController.itemList = (state.clientsListController.itemList ?? [])
             .map((e) => e.idClients == event.editClientParams.clientId ? value.data! : e)
             .toList();
-        event.onSuccess?.call();
+        event.onSuccess?.call(value.data!);
       },
     );
   }
