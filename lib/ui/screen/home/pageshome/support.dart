@@ -94,17 +94,17 @@ class _supportpageState extends State<supportpage> {
                       title: 'فواتير العملاء')
                   : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('137') == true
-                  ? buildSelectCategory(
-                      colorbag: Colors.white,
-                      colortitle: Colors.black,
-                      colorarrow: Colors.black,
-                      onTap: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => CommunicationListPage()));
-                      },
-                      title: 'قائمة العملاء المميزين',
-                    )
-                  : Container(),
+              // Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('137') == true
+              //     ? buildSelectCategory(
+              //         colorbag: Colors.white,
+              //         colortitle: Colors.black,
+              //         colorarrow: Colors.black,
+              //         onTap: () {
+              //           Navigator.push(context, CupertinoPageRoute(builder: (context) => CommunicationListPage()));
+              //         },
+              //         title: 'قائمة العملاء المميزين',
+              //       )
+              //     : Container(),
 
               privilge.checkPrivilege('18') == true
                   ? buildSelectCategory(

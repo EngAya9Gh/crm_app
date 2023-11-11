@@ -278,6 +278,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                 ),
               ],
             ),
+            Provider.of<PrivilegeProvider>(context,listen: true)
+                .checkPrivilege('156')==true?
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 8),
               child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
@@ -297,7 +299,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                   },
                 );
               }),
-            ),
+            ):Container(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(

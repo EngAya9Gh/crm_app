@@ -13,6 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../constants.dart';
+import '../../client/profileclient.dart';
+
 class ticketAdd extends StatefulWidget {
   ticketAdd({this.fk_client, Key? key}) : super(key: key);
   String? fk_client;
@@ -39,7 +42,7 @@ class _ticketAddState extends State<ticketAdd> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientProvider>(context,listen: false).getclient_Local('مشترك');
+      await Provider.of<ClientProvider>(context,listen: false).getclient_Accept( );
       Provider.of<ClientProvider>(context,listen: false).changevalueclient(null);
     });
     super.initState();
@@ -132,6 +135,25 @@ class _ticketAddState extends State<ticketAdd> {
                             },
                           ),
                         ),
+                        // RowEdit(name: 'بروفايل العميل', des: ''),
+                        SizedBox(height: 10,),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  kMainColor)),
+                          onPressed: () {
+                            if (widget.fk_client != null)
+                              Navigator.push(context,CupertinoPageRoute(
+                                builder: (context)=>ProfileClient(
+                                  idClient:widget.fk_client.toString(),
+                                )
+
+                            ));
+                          },
+                          child: Text('ملف العميل'),
+                        ),
+                        SizedBox(height: 10,),
+
                         RowEdit(name: 'نوع المشكلة', des: '*'),
 
                         Consumer<ClientTypeProvider>(

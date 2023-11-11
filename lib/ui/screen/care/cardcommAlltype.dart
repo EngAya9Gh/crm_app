@@ -3,8 +3,11 @@ import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+
+import '../../../view_model/privilge_vm.dart';
 
 class cardcommalltype extends StatelessWidget {
   cardcommalltype(
@@ -64,7 +67,7 @@ class cardcommalltype extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -170,7 +173,12 @@ class cardcommalltype extends StatelessWidget {
                             ),
                           ],
                         )
-                      : Container()
+                      : Container(),
+                  if ((itemcom.tag ?? false) && context.read<PrivilegeProvider>().checkPrivilege('133'))
+                    Icon(
+                      CupertinoIcons.checkmark_seal_fill,
+                      color: Colors.amber,
+                    )
                   //Row(),
                 ],
               ),
