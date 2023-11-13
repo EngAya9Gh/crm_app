@@ -58,9 +58,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   //DefaultFirebaseOptions .currentPlatform );
   await Firebase.initializeApp();
-
-
-
 }
 
 void main() async {
@@ -85,7 +82,6 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-
   //
   //     //vapidKey: "BLHC6fhpHX_VBbufktusXDMRhLtLI764Ic_ZcCc9Lh2puYzPEvwOpvxDfBmHKtRQu38OU_hUoalT42PxzHc8JPg")
   // ));
@@ -103,14 +99,11 @@ void main() async {
 
   runApp(ServiceProvider(
     child: MultiProvider(providers: [
-      ChangeNotifierProvider<UserProvider>(
-          create: (_) => UserProvider()),
-      ChangeNotifierProvider<navigatorProvider>(
-          create: (_) => navigatorProvider()),
+      ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+      ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
       ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
       ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
-      ChangeNotifierProvider<selected_button_provider>(
-          create: (_) => selected_button_provider()),
+      ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
       ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
       ChangeNotifierProxyProvider<UserProvider, config_vm>(
         create: (_) => config_vm(),
@@ -135,7 +128,6 @@ void main() async {
         create: (_) => RegionProvider(),
         update: (ctx, value, prev) => prev!..setCurrentUser(value.currentUser),
       ),
-
       ChangeNotifierProxyProvider<UserProvider, ClientProvider>(
         create: (_) => ClientProvider(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
@@ -148,7 +140,6 @@ void main() async {
         create: (_) => notifyvm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-
       ChangeNotifierProxyProvider<UserProvider, approve_vm>(
         create: (_) => approve_vm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
@@ -174,17 +165,13 @@ void main() async {
         create: (_) => communication_vm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-
       ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
       ChangeNotifierProvider<ActivityProvider>(create: (_) => ActivityProvider()),
       ChangeNotifierProvider<CompanyProvider>(create: (_) => CompanyProvider()),
       ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
       ChangeNotifierProvider<reason_suspend>(create: (_) => reason_suspend()),
-
-      ChangeNotifierProvider<AgentDistributorViewModel>(
-          create: (_) => AgentDistributorViewModel()),
-      ChangeNotifierProxyProvider<invoice_vm,
-          AgentsCollaboratorsInvoicesViewmodel>(
+      ChangeNotifierProvider<AgentDistributorViewModel>(create: (_) => AgentDistributorViewModel()),
+      ChangeNotifierProxyProvider<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
         update: (context, invoiceVm, agentCollaborateVm) {
           if (agentCollaborateVm?.invoicesList.isEmpty ?? true)
             agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
@@ -196,10 +183,8 @@ void main() async {
         create: (_) => lastcommentclient_vm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-      ChangeNotifierProvider<BranchRaceViewmodel>(
-          create: (_) => BranchRaceViewmodel()),
-      ChangeNotifierProvider<EmployeeRaceViewmodel>(
-          create: (_) => EmployeeRaceViewmodel()),
+      ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
+      ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
     ], child: MyApp()),
   ));
 }
@@ -215,8 +200,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    currentUser =
-        Provider.of<UserProvider>(context, listen: false).getcurrentuser();
+    currentUser = Provider.of<UserProvider>(context, listen: false).getcurrentuser();
     super.initState();
   }
 

@@ -36,7 +36,8 @@ Widget buildSelectCategory({
                   child: Text(title,
                     style: TextStyle(
                         color: colortitle,
-                        fontFamily: kfontfamily2),),
+                        fontFamily: kfontfamily2,
+                    fontSize: 15,),),
                 ),
                 Row(
                   children: [

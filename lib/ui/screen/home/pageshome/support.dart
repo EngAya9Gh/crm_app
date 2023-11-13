@@ -45,7 +45,9 @@ class _supportpageState extends State<supportpage> {
       appBar: AppBar(
         title: Text(
           'الدعم الفني',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
         backgroundColor: kMainColor,

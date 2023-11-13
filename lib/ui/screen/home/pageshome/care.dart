@@ -31,26 +31,24 @@ class carepage extends StatefulWidget {
 }
 
 class _carepageState extends State<carepage> {
-  int lengthInstall=0;
-  int lengthWelcome=0;
+  int lengthInstall = 0;
+  int lengthWelcome = 0;
 
-
-  @override void initState() {
+  @override
+  void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
       Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
       //
       Provider.of<communication_vm>(context, listen: false)
-          .setvaluepriv(
-          Provider.of<PrivilegeProvider>(context, listen: false).privilegeList);
-     //  Provider.of<ticket_vm>(context,listen: false)
-     //      .getclientticket_filter('جديدة');
-     // await Provider.of<communication_vm>(context, listen: false)
-     //      .getCommunicationInstall(1);
-     // await Provider.of<communication_vm>(context, listen: false)
-     //      .getCommunicationWelcome();
+          .setvaluepriv(Provider.of<PrivilegeProvider>(context, listen: false).privilegeList);
+      //  Provider.of<ticket_vm>(context,listen: false)
+      //      .getclientticket_filter('جديدة');
+      // await Provider.of<communication_vm>(context, listen: false)
+      //      .getCommunicationInstall(1);
+      // await Provider.of<communication_vm>(context, listen: false)
+      //      .getCommunicationWelcome();
 
 //////////////////////////////////////////////
 //       Provider.of<communication_vm>(
@@ -60,8 +58,6 @@ class _carepageState extends State<carepage> {
 //       Provider.of<communication_vm>(
 //           context, listen: false)
 //           .getCommunicationwelcomenumber();
-
-
     });
     super.initState();
   }
@@ -74,13 +70,16 @@ class _carepageState extends State<carepage> {
 
   @override
   Widget build(BuildContext context) {
-
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(
           'العناية بالعملاء',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+            color: kWhiteColor,
+            fontFamily: kfontfamily2,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
         backgroundColor: kMainColor,
@@ -102,60 +101,53 @@ class _carepageState extends State<carepage> {
                     title: 'العملاء المشتركين')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-          Provider.of<PrivilegeProvider>(context,listen: true)
-            .checkPrivilege('9')==true?
-        buildSelectCategory(
-            colorbag: Colors.white,
-            colortitle: Colors.black,
-            colorarrow: Colors.black,
-            onTap: () {
-              Navigator.push(context, CupertinoPageRoute(
-                  builder: (context)=>
-                      care_page_view()));
-        }, title: 'التواصل الدوري'):Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('9') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => care_page_view()));
+                    },
+                    title: 'التواصل الدوري')
+                : Container(),
 
-            Provider.of<PrivilegeProvider>(context,listen: true)
-                .checkPrivilege('137')==true?
-            buildSelectCategory(
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) =>
-                        CommunicationListPage()));
-              },
-              title: 'قائمة العملاء المميزين',
-            ):Container() ,
-        Provider.of<PrivilegeProvider>(context,listen: true)
-            .checkPrivilege('29')==true?
-        buildSelectCategory(
-          // subtitle:   Provider.of<communication_vm>(
-          //     context, listen: true).listwelcomenumber.length.toString(),
-            colorbag: Colors.white,
-            colortitle: Colors.black,
-            colorarrow: Colors.black,
-            onTap: () {
-              Navigator.push(context, CupertinoPageRoute(
-                  builder: (context)=>
-                      View_welcomeClient()));
-        }, title: 'الترحيب بالعملاء'):Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('137') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => CommunicationListPage()));
+                    },
+                    title: 'قائمة العملاء المميزين',
+                  )
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('29') == true
+                ? buildSelectCategory(
+                    // subtitle:   Provider.of<communication_vm>(
+                    //     context, listen: true).listwelcomenumber.length.toString(),
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => View_welcomeClient()));
+                    },
+                    title: 'الترحيب بالعملاء')
+                : Container(),
 
-        Provider.of<PrivilegeProvider>(context,listen: true)
-            .checkPrivilege('30')==true?
-        buildSelectCategory(
-          // subtitle:
-          // Provider.of<communication_vm>(
-          //     context, listen: true).listinstallnumber.length.toString(),
-            colorbag: Colors.white,
-            colortitle: Colors.black,
-            colorarrow: Colors.black,
-            onTap: () {
-              Navigator.push(context, CupertinoPageRoute(
-                  builder: (context)=>
-                      View_installedClient()));
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('30') == true
+                ? buildSelectCategory(
+                    // subtitle:
+                    // Provider.of<communication_vm>(
+                    //     context, listen: true).listinstallnumber.length.toString(),
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => View_installedClient()));
 
-              //الاتصال الثاني للجودة جديد
+                      //الاتصال الثاني للجودة جديد
 //View_installedClient
                     },
                     title: ' جودة التركيب والتدريب')
@@ -223,8 +215,6 @@ class _carepageState extends State<carepage> {
                     },
                     title: label_wrong_number)
                 : Container(), //' عملاء أرقامهم خاطئة '
-
-
           ],
         ),
       ),

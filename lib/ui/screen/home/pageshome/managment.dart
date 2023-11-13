@@ -54,7 +54,11 @@ class _managmentpageState extends State<managmentpage> {
       appBar: AppBar(
         title: Text(
           'الإدارة',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+            color: kWhiteColor,
+            fontFamily: kfontfamily2,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
         backgroundColor: kMainColor,
