@@ -29,6 +29,7 @@ class ManageWithdrawalsState {
     this.allUsers = const [],
     this.handleAllUsers = const [],
     this.handleUsersSeries = const {},
+    this.currentInvoice,
   });
 
   final PageState<List<UserSeries>> allUsersSeries;
@@ -43,6 +44,7 @@ class ManageWithdrawalsState {
   final BlocStatus setApproveSeriesState;
   final BlocStatus deleteWithdrawnRequestStatus;
   final BlocStatus actionRejectReason;
+  final InvoiceModel? currentInvoice;
 
   ManageWithdrawalsState copyWith({
     PageState<List<UserSeries>>? allUsersSeries,
@@ -57,6 +59,7 @@ class ManageWithdrawalsState {
     BlocStatus? deleteWithdrawnRequestStatus,
     BlocStatus? actionRejectReason,
     PageState<WithdrawnDetailsModel>? withdrawnDetailsState,
+    InvoiceModel? currentInvoice,
   }) {
     return ManageWithdrawalsState(
       withdrawalInvoiceDetails: withdrawalInvoiceDetails ?? this.withdrawalInvoiceDetails,
@@ -71,6 +74,7 @@ class ManageWithdrawalsState {
       deleteWithdrawnRequestStatus: deleteWithdrawnRequestStatus ?? this.deleteWithdrawnRequestStatus,
       rejectReasonsStat: rejectReasonsStat ?? this.rejectReasonsStat,
       actionRejectReason: actionRejectReason ?? this.actionRejectReason,
+      currentInvoice: currentInvoice ?? this.currentInvoice,
     );
   }
 }
