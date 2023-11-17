@@ -45,7 +45,11 @@ class _salesState extends State<sales> {
       appBar: AppBar(
         title: Text(
           'المبيعات',
-          style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+          style: TextStyle(
+            color: kWhiteColor,
+            fontFamily: kfontfamily2,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
         backgroundColor: kMainColor,
@@ -65,15 +69,14 @@ class _salesState extends State<sales> {
                       //     CupertinoPageRoute(
                       //     builder: (context)=>
                       //         tabclients()));
-                      Navigator.push(context,
-                          CupertinoPageRoute(
-                          builder: (context)=>
-                              ClientsListPage()));
-                }, title: ' قائمة العملاء') :Container(),
-                Provider.of<PrivilegeProvider>(context,listen: true)
-                    .checkPrivilege('39')==true?
-                buildSelectCategory(
-                    colorbag:   Colors.white,
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ClientsListPage()));
+                    },
+                    title: ' قائمة العملاء',
+                  )
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
@@ -83,20 +86,17 @@ class _salesState extends State<sales> {
                     title: 'فواتير العملاء')
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context,listen: true).checkPrivilege('119') == true?
-              buildSelectCategory(
-                  colorbag: Colors.white,
-                  colortitle: Colors.black,
-                  colorarrow: Colors.black,
-                  onTap: () {
-                    Navigator.push(context, CupertinoPageRoute(
-                        builder: (context)=>
-                            getLastCommentClient()
-                    ));
-                  },
-                  title: 'آخر تحديثات العملاء'):Container()
-              ,
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('119') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => getLastCommentClient()));
+                    },
+                    title: 'آخر تحديثات العملاء')
+                : Container(),
+            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,

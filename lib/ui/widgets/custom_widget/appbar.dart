@@ -22,10 +22,10 @@ class customAppbar extends StatelessWidget implements PreferredSizeWidget {
       leading: leading,
 
       //textTheme: TextTheme(),
-      title: Padding(
-        padding: EdgeInsets.all(60),
-        //height: toolbarHeight,
-        child: Image.asset(kLogo),
+      title: Image.asset(
+        kLogo,
+        height: 100,
+        width: 100,
       ),
       //Text('Smart Life',style:
       // TextStyle(color: Colors.white,fontSize: 16,fontFamily: kfontfamily),),

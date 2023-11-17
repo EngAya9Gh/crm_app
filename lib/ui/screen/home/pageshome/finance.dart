@@ -13,13 +13,16 @@ class financepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         title: Text(
           'التحصيل',
-          style: TextStyle(color: kWhiteColor,
-              fontFamily: kfontfamily2),
+          style: TextStyle(
+            color: kWhiteColor,
+            fontFamily: kfontfamily2,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
         backgroundColor: kMainColor,
@@ -27,36 +30,35 @@ class financepage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.only(top: 20),
-        child:
-        Column(children: [
-          // Provider.of<privilge_vm>(context,listen: true)
-          //     .checkprivlge('118')==true?
-          // buildSelectCategory(
-          //     colorbag:   Colors.white,
-          //     colortitle: Colors.black,
-          //     colorarrow: Colors.black,
-          //     onTap: () {
-          //       Navigator.push(
-          //         context,
-          //         CupertinoPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
-          //       );
-          //     }, title:  'سباق الموظفين' ):Container(),
-          //
-          // Provider.of<privilge_vm>(context,listen: true)
-          //     .checkprivlge('117')==true?
-          // buildSelectCategory(
-          //     colorbag:   Colors.white,
-          //     colortitle: Colors.black,
-          //     colorarrow: Colors.black,
-          //     onTap: () {
-          //       Navigator.push(
-          //         context,
-          //         CupertinoPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
-          //       );
-          //     }, title:'سباق الفروع'  ):Container(),
-
-        ],),
-
+        child: Column(
+          children: [
+            // Provider.of<privilge_vm>(context,listen: true)
+            //     .checkprivlge('118')==true?
+            // buildSelectCategory(
+            //     colorbag:   Colors.white,
+            //     colortitle: Colors.black,
+            //     colorarrow: Colors.black,
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         CupertinoPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
+            //       );
+            //     }, title:  'سباق الموظفين' ):Container(),
+            //
+            // Provider.of<privilge_vm>(context,listen: true)
+            //     .checkprivlge('117')==true?
+            // buildSelectCategory(
+            //     colorbag:   Colors.white,
+            //     colortitle: Colors.black,
+            //     colorarrow: Colors.black,
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         CupertinoPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
+            //       );
+            //     }, title:'سباق الفروع'  ):Container(),
+          ],
+        ),
       ),
     );
   }
