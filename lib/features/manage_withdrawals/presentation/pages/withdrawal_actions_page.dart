@@ -1,6 +1,8 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/set_approve_series_usecase.dart';
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
@@ -134,30 +136,53 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
   }
 
   Widget cardWithdrawalManagerStatus(InvoiceWithdrawalSeries data) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CircleAvatar(
-              radius: 17.r,
-              backgroundColor: Colors.blueGrey,
-              child: Text(data.priorityApprove!,
-                  style: context.textTheme.bodyMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.w500)),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 17.r,
+                  backgroundColor: Colors.blueGrey,
+                  child: Text(data.priorityApprove!,
+                      style: context.textTheme.bodyMedium!.copyWith(color: Colors.white, fontWeight: FontWeight.w500)),
+                ),
+                20.horizontalSpace,
+                Container(
+                  child: Text(
+                    data.nameUser!,
+                    style: context.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ],
             ),
-            20.horizontalSpace,
-            Container(
-              child: Text(
-                data.nameUser!,
-                style: context.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w400),
-              ),
+            CircleAvatar(
+              radius: 7,
+              backgroundColor: data.withdrawalStatus.color,
             ),
           ],
         ),
-        CircleAvatar(
-          radius: 7,
-          backgroundColor: data.withdrawalStatus.color,
-        ),
+        if (data.notesApprove?.isNotEmpty ?? false) ...{
+          10.verticalSpace,
+          Padding(
+            padding: const EdgeInsets.only(right: 50.0),
+            child: Row(
+              children: [
+                AppText(
+                  "الملاحظة: ",
+                  style: context.textTheme.bodyMedium!.withColor(AppColors.grey),
+                ),
+                AppText(
+                  "${data.notesApprove}",
+                  style: context.textTheme.bodyMedium!.withColor(data.withdrawalStatus.color),
+                ),
+              ],
+            ),
+          ),
+        },
       ],
     );
   }

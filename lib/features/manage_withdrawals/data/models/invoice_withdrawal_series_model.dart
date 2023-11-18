@@ -16,6 +16,7 @@ class InvoiceWithdrawalSeries {
   DateTime? dateApprove;
   String? priorityApprove;
   String? nameUser;
+  String? notesApprove;
 
   InvoiceWithdrawalSeries({
     this.idApproveSeries,
@@ -25,6 +26,7 @@ class InvoiceWithdrawalSeries {
     this.dateApprove,
     this.priorityApprove,
     this.nameUser,
+    this.notesApprove,
   });
 
   factory InvoiceWithdrawalSeries.fromJson(Map<String, dynamic> json) => InvoiceWithdrawalSeries(
@@ -34,9 +36,10 @@ class InvoiceWithdrawalSeries {
         withdrawalStatus: WithdrawalStatus.values.firstWhere((element) =>
             element.status ==
             (json["is_approve"].runtimeType == String ? int.tryParse(json["is_approve"]) : json["is_approve"])),
-        dateApprove:json["date_approve"] != null ? DateTime.tryParse(json["date_approve"]) : null,
+        dateApprove: json["date_approve"] != null ? DateTime.tryParse(json["date_approve"]) : null,
         priorityApprove: json["priority_approve"],
-    nameUser: json["nameUser"],
+        nameUser: json["nameUser"],
+        notesApprove: json["notes_approve"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +49,7 @@ class InvoiceWithdrawalSeries {
         "is_approve": withdrawalStatus.status,
         "date_approve": dateApprove?.toIso8601String(),
         "priority_approve": priorityApprove,
+        "notes_approve": notesApprove,
       };
 
   InvoiceWithdrawalSeries copyWith({

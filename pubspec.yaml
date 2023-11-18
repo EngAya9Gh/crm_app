@@ -95,9 +95,8 @@ flutter:
   uses-material-design: true
 
   assets:
-    - build/app/outputs/apk/
-    - build/app/outputs/apk/debug/
-    - build/app/outputs/apk/release/
+    - assest/
+    - assest/images/
 
 
   fonts:

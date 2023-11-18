@@ -239,7 +239,7 @@ class _MyAppState extends State<MyApp> {
                   //   // MonthYearPickerLocalizations.delegate,
                   // ],
                   debugShowCheckedModeBanner: false,
-                  title: 'Flutter Demo',
+                  title: 'Smart CRM',
                   theme: AppTheme.light(context),
                   home: Directionality(
                     textDirection: TextDirection.rtl,
