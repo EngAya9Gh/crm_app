@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/app/presentation/bloc/app_manager_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -16,7 +17,8 @@ class ServiceProvider extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => GetIt.I<CommunicationListBloc>()),
-        BlocProvider(create: (context) => GetIt.I<ClientsListBloc>())
+        BlocProvider(create: (context) => GetIt.I<ClientsListBloc>()),
+        BlocProvider(create: (context) => GetIt.I<AppManagerCubit>())
       ],
       child: child,
     );

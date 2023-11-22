@@ -9,7 +9,6 @@ import 'package:crm_smart/provider/manage_provider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/provider/switch_provider.dart';
 import 'package:crm_smart/services/service_provider.dart';
-import 'package:crm_smart/ui/screen/home/home.dart';
 import 'package:crm_smart/ui/screen/login.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/agent_collaborators_invoices_vm.dart';
@@ -48,6 +47,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
 import 'core/config/theme/theme.dart';
+import 'features/app/presentation/pages/splash_screen.dart';
+import 'features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 
 //import 'package:firebase_core/firebase_core.dart';
 
@@ -216,7 +217,15 @@ class _MyAppState extends State<MyApp> {
               return MaterialApp(
                 home: Scaffold(
                   body: Center(
-                    child: Text('Loading....'),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset('assest/images/image3.png'),
+                        20.verticalSpace,
+                        AppLoader(),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -233,17 +242,12 @@ class _MyAppState extends State<MyApp> {
               // String idcurrentuser= snapshot.data!.getString("id_user").toString();
               else {
                 return MaterialApp(
-                  // localizationsDelegates: [
-                  //   GlobalWidgetsLocalizations.delegate,
-                  //   GlobalMaterialLocalizations.delegate,
-                  //   // MonthYearPickerLocalizations.delegate,
-                  // ],
                   debugShowCheckedModeBanner: false,
                   title: 'Smart CRM',
                   theme: AppTheme.light(context),
                   home: Directionality(
                     textDirection: TextDirection.rtl,
-                    child: isUserLoggedIn ? Home() : login(),
+                    child: SplashScreen(),
                   ),
                 );
               }
