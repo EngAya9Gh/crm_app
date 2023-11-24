@@ -320,7 +320,7 @@ class _care_page_viewState extends State<care_page_view> {
                       height: 5,
                     ),
                     Container(
-                      height: MediaQuery.of(context).size.height * 0.73,
+                      height: MediaQuery.of(context).size.height * 0.45,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Consumer2<communication_vm, ClientProvider>(

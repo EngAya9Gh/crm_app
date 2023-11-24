@@ -189,7 +189,7 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                 height: 5,
               ),
               Container(
-                height: MediaQuery.of(context).size.height * 0.73,
+                height: MediaQuery.of(context).size.height * 0.6,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Consumer<communication_vm>(builder: (context, value, child) {
