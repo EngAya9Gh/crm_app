@@ -580,6 +580,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                           itemAsValue: (RejectReason? item) => item!.idRejectClient!,
                                           itemAsString: (item) => item!.nameReasonReject!,
                                           value: value,
+                                          validator: HelperFunctions.instance.requiredFiled,
                                         );
                                       });
                                 },
@@ -589,6 +590,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 labelText: "سبب الاستبعاد",
                                 maxLines: 1,
                                 controller: reasonController,
+                                validator: HelperFunctions.instance.requiredFiled,
                               ),
                               10.verticalSpace,
                             },

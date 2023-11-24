@@ -110,36 +110,31 @@ class _ticket_rateState extends State<ticket_rate> {
                 SizedBox(height: 20,),
 
                 widget.ticket_model.date_rate==null?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                        style: ButtonStyle(
+                ElevatedButton(
+                    style: ButtonStyle(
 
-                            backgroundColor: MaterialStateProperty.all(
-                                kMainColor
-                            )),
-                        onPressed: () async{
-                          Provider.of<ticket_vm>(context,listen: false)
-                              .updateTicketvm({
-                            'notes_rate':_textnotes.text,
-                            'fkuser_rate':Provider.of<UserProvider>
-                              (context,listen: false).currentUser.idUser.toString(),
-                            'date_rate':DateTime.now().toString(),
-                            'rate':rate.toString(),
-                            'type_ticket':'تم التقييم'
-                          },    widget.ticket_model.idTicket);
-                          Navigator.of(context, rootNavigator: true)
-                              .pop(false);
-                          // Navigator.pop(context);
-                          },
-                        child: Text(' تم التقييم ',
+                        backgroundColor: MaterialStateProperty.all(
+                            kMainColor
+                        )),
+                    onPressed: () async{
+                      Provider.of<ticket_vm>(context,listen: false)
+                          .updateTicketvm({
+                        'notes_rate':_textnotes.text,
+                        'fkuser_rate':Provider.of<UserProvider>
+                          (context,listen: false).currentUser.idUser.toString(),
+                        'date_rate':DateTime.now().toString(),
+                        'rate':rate.toString(),
+                        'type_ticket':'تم التقييم'
+                      },    widget.ticket_model.idTicket);
+                      Navigator.of(context, rootNavigator: true)
+                          .pop(false);
+                      // Navigator.pop(context);
+                      },
+                    child: Text(' تم التقييم ',
 
-                          style: TextStyle(
-                            // color:widget.com.dateCommunication==null?
-                              color:   kWhiteColor),)),
-                  ],
-                ):Container() ,
+                      style: TextStyle(
+                        // color:widget.com.dateCommunication==null?
+                          color:   kWhiteColor),)):Container() ,
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 //   children: [
