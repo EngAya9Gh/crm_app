@@ -62,9 +62,11 @@ class ClientModel extends CacheRepository {
     this.date_visit_Client,
     this.fk_rejectClient,
     this.phone,
+    this.serialNumber,
   });
 
   late final String? idClients;
+  late final String? serialNumber;
   late final String? nameClient;
   late final String? nameEnterprise;
   late final String? typeJob;
@@ -127,6 +129,7 @@ class ClientModel extends CacheRepository {
   String? fk_rejectClient;
 
   ClientModel.fromJson(Map<String, dynamic> json) {
+    serialNumber = json['SerialNumber'];
     idClients = json['id_clients'];
     NameReason_reject = json['NameReason_reject'];
     NameClient_recomand = json['NameClient_recomand'];
@@ -194,6 +197,7 @@ class ClientModel extends CacheRepository {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
+    _data['SerialNumber'] = serialNumber;
     _data['id_clients'] = idClients;
     _data['name_client'] = nameClient;
     _data['name_enterprise'] = nameEnterprise;

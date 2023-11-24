@@ -132,6 +132,7 @@ class _ClientViewState extends State<ClientView> {
                   SizedBox(
                     height: 20,
                   ),
+                  cardRow(title: 'الرقم التسلسلي', value: clientModel.serialNumber.toString()),
                   cardRow(title: 'تاريخ الاضافة', value: clientModel.dateCreate.toString()),
                   cardRow(
                     title: 'المؤسسة',
