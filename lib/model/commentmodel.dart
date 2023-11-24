@@ -9,6 +9,7 @@ class CommentModel {
     required this.nameUser,
     required this.imgImage,
     required this.nameEnterprise,
+    required this.date_comment,
   });
   late final String idComment;
   late final String fkUser;
