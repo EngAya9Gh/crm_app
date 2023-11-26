@@ -185,6 +185,17 @@ class _InvoiceViewState extends State<InvoiceView> {
                         ? Container()
                         : cardRow(title: 'تجديد الفرع الإضافي', value: invoice.renewPlus.toString()),
 
+                    invoice.typeInstallation.toString() == '' ||
+                            invoice.typeInstallation == null ||
+                            invoice.typeInstallation.toString() == 'null'
+                        ? Container()
+                        : cardRow(
+                            title: 'نوع التركيب',
+                            value: invoice.typeInstallation.toString() == '0'
+                                ? 'ميداني'
+                                : (invoice.typeInstallation.toString() == '2' ? 'عميل موصى به' : 'اونلاين'),
+                          ),
+
                     cardRow(title: ' طريقة الدفع', value: invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
                     //nameuserApprove
 
@@ -1001,8 +1012,7 @@ class _RejectDialogState extends State<RejectDialog> {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        if(_invoice.file_reject?.isNotEmpty ?? false)
-                          return SizedBox.shrink();
+                        if (_invoice.file_reject?.isNotEmpty ?? false) return SizedBox.shrink();
                         return
                             // (_invoice.file_reject?.isNotEmpty ?? false)
                             //   ? (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('145') == true

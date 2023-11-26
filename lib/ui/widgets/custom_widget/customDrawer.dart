@@ -32,17 +32,16 @@ class CustomDrawer extends StatelessWidget {
                   ),
               accountName: Text(
                 controllerUsers.currentUser.nameUser.toString(),
-                style: TextStyle(fontFamily: kfontfamily2,color: context.colorScheme.onBackground),
+                style: TextStyle(fontFamily: kfontfamily2, color: context.colorScheme.onBackground),
               ),
 
               accountEmail: Text(
                 controllerUsers.currentUser.email.toString(),
-                style: TextStyle(fontFamily: kfontfamily2,color: context.colorScheme.onBackground),
+                style: TextStyle(fontFamily: kfontfamily2, color: context.colorScheme.onBackground),
               ),
               currentAccountPicture: CircleAvatar(
                   backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Color(0xFF56ccf2) : Colors.grey,
-                  child: (Provider.of<UserProvider>(context, listen: true).currentUser.img_image?.isNotEmpty ??
-                          false)
+                  child: (Provider.of<UserProvider>(context, listen: true).currentUser.img_image?.isNotEmpty ?? false)
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(45),
                           child: CachedNetworkImage(
@@ -101,7 +100,10 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text(
                 'الملف الشخصي',
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(
+                  fontFamily: kfontfamily2,
+                  fontSize: 20,
+                ),
               ),
               leading: Icon(
                 Icons.shop,
@@ -112,8 +114,7 @@ class CustomDrawer extends StatelessWidget {
                   context,
                   CupertinoPageRoute<void>(
                       builder: (BuildContext context) => UserScreen(
-                          ismyprofile: 'yes',
-                          userModel: Provider.of<UserProvider>(context, listen: false).currentUser
+                          ismyprofile: 'yes', userModel: Provider.of<UserProvider>(context, listen: false).currentUser
                           //index: index,
                           )),
                 );
@@ -123,7 +124,10 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text(
                 'يوزرات تجريبية',
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(
+                  fontFamily: kfontfamily2,
+                  fontSize: 20,
+                ),
               ),
               leading: Icon(
                 Icons.supervised_user_circle,
@@ -177,7 +181,10 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text(
                 'تسجيل الخروج',
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(
+                  fontFamily: kfontfamily2,
+                  fontSize: 20,
+                ),
               ),
               leading: Icon(
                 Icons.exit_to_app,
@@ -197,7 +204,10 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text(
                 'حذف حسابي',
-                style: TextStyle(fontFamily: kfontfamily2),
+                style: TextStyle(
+                  fontFamily: kfontfamily2,
+                  fontSize: 20,
+                ),
               ),
               leading: Icon(
                 Icons.delete_rounded,

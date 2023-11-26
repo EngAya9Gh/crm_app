@@ -1,6 +1,5 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/commentmodel.dart';
-import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
@@ -20,7 +19,7 @@ class comment_vm extends ChangeNotifier {
       // if(listComments.isEmpty){
       List<dynamic> data = [];
       data = await Api().get(url: url + 'care/viewcomment.php?fk_client=$fk_client');
-      
+
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listComments.add(CommentModel.fromJson(data[i]));
@@ -61,5 +60,10 @@ class comment_vm extends ChangeNotifier {
       notifyListeners();
       return "error";
     }
+  }
+
+  addCommentFromAddInvoice(CommentModel comment) {
+    listComments.insert(0, comment);
+    notifyListeners();
   }
 }

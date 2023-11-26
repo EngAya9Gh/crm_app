@@ -1,7 +1,7 @@
 name: crm_smart
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.0.9+15
+version: 1.0.10+16
 
 environment:
   sdk: ">=2.15.0 <3.0.0"
@@ -76,6 +76,8 @@ dependencies:
   open_file: ^3.3.2
   path_provider: ^2.1.1
   permission_handler: ^11.0.1
+  package_info_plus: ^4.2.0
+  store_redirect: ^2.0.1
 
 
 dependency_overrides:
@@ -95,15 +97,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assest/
     - assest/images/
-    - assest/images/logo.png
-    - assest/images/administrator.png
-    - assest/images/bill.png
-    - assest/images/digitalmarketing.png
-    - assest/images/image3.png
-    - assest/images/money.png
-    - assest/images/social-care.png
-    - assest/images/technical-support.png
 
 
   fonts:

@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:crm_smart/features/manage_withdrawals/data/models/withdrawn_details_model.dart';
+import 'package:crm_smart/features/manage_withdrawals/presentation/pages/withdrawal_actions_page.dart';
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +18,8 @@ import '../../../../api/api.dart';
 import '../../../../common/models/page_state/result_builder.dart';
 import '../../../../constants.dart';
 import '../../../../model/usermodel.dart';
+import '../../../../ui/screen/client/profileclient.dart';
+import '../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../ui/widgets/app_photo_viewer.dart';
 import '../../../../ui/widgets/custom_widget/RowWidget.dart';
 import '../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
@@ -38,7 +42,9 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()..getWithdrawnDetails(widget.invoice.idInvoice!);
+    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+      ..setCurrentInvoice(widget.invoice)
+      ..getWithdrawnDetails(widget.invoice.idInvoice!);
     currentUser = context.read<UserProvider>().currentUser;
     super.initState();
   }
@@ -52,6 +58,66 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
           title: Text("تفاصيل الانسحاب"),
           centerTitle: true,
           backgroundColor: kMainColor,
+          actions: [
+            PopupMenuButton(
+              onSelected: (value) {
+                switch (value) {
+                  case 0:
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                          builder: (context) => InvoiceView(invoice: widget.invoice, showActions: false)),
+                    );
+                    break;
+                  case 1:
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) => ProfileClient(idClient: widget.invoice.fkIdClient)));
+                    break;
+                  case 2:
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) => WithdrawalActionsPage(invoice: widget.invoice)));
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 0,
+                  padding: EdgeInsets.zero,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      Icon(Icons.receipt_rounded, color: kMainColor),
+                      Text("تفاصيل الفاتورة"),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 1,
+                  padding: EdgeInsets.zero,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      Icon(Icons.person_2_rounded, color: kMainColor),
+                      Text("بروفايل العميل"),
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 2,
+                  padding: EdgeInsets.zero,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    textDirection: TextDirection.rtl,
+                    children: [
+                      Icon(Icons.settings_rounded, color: kMainColor),
+                      Text("معالجة الطلب"),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
         body: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
           builder: (context, state) {
@@ -108,7 +174,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                           value: WithdrawalStatus.values[int.parse(data.approveBackDone!)].text,
                           withDivider: false),
                       if (context.read<PrivilegeProvider>().checkPrivilege('145') &&
-                          widget.invoice.approveBackDone == '0') ...{
+                          state.currentInvoice?.approveBackDone == '0') ...{
                         Spacer(),
                         if (state.deleteWithdrawnRequestStatus.isLoading())
                           Center(child: CircularProgressIndicator.adaptive())

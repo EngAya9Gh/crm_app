@@ -573,7 +573,7 @@ class _support_addState extends State<support_add> {
 
                       cardRow(
                           title: 'طريقة التركيب ',
-                          value: _invoice!.typeInstallation.toString() == '0' ? 'ميداني' : 'اونلاين'),
+                          value: _invoice!.typeInstallation.toString() == '0' ? 'ميداني' : ( _invoice!.typeInstallation.toString() == '2' ? 'عميل موصى به': 'اونلاين')),
 
                       _invoice!.ready_install == '0' && _invoice!.TypeReadyClient == 'suspend'
                           ? cardRow(title: 'هل تم التركيب للعميل ', value: 'معلق')

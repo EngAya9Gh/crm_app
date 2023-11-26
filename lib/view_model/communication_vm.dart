@@ -10,7 +10,7 @@ import '../model/privilgemodel.dart';
 class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunication = [];
   List<CommunicationModel> list_wrong_number = [];
-  List<CommunicationModel> list_not_use = [];
+  List<CommunicationModel>  list_not_use = [];
   List<CommunicationModel> listCommunicationrepeat = [];
   List<CommunicationModel> listCommunicationInstall = [];
   List<CommunicationModel> listCommunicationWelcome = [];
@@ -23,6 +23,18 @@ class communication_vm extends ChangeNotifier {
 
   void onSearch(String query) {
     final list = List.of(listCommunicationInstall);
+
+    listCommunicationFilterSearch = list.where((element) {
+      return element.nameEnterprise.toLowerCase().contains(query.toLowerCase()) ||
+          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
+          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ?? false);
+    }).toList();
+
+    notifyListeners();
+  }
+
+  void onSearchClientsNotUsingSys(String query) {
+    final list = List.of(list_not_use);
 
     listCommunicationFilterSearch = list.where((element) {
       return element.nameEnterprise.toLowerCase().contains(query.toLowerCase()) ||

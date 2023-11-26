@@ -1,5 +1,5 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/manage_withdrawals/presentation/pages/withdrawal_invoice_details_page.dart';
+import 'package:crm_smart/features/manage_withdrawals/presentation/pages/withdrawal_actions_page.dart';
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../constants.dart';
+import '../../../features/manage_withdrawals/presentation/pages/withdrawn_details_page.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported }
 
@@ -70,7 +71,7 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                 builder: (context) => widget.type == 'profile'
                     ? ProfileClient(tabIndex: 1, idClient: widget.invoice.fkIdClient.toString())
                     : widget.type == 'withdrawn'
-                        ? WithdrawalInvoiceDetailsPage(invoice: widget.invoice)
+                        ? WithdrawnDetailsPage(invoice: widget.invoice)
                         : InvoiceView(invoice: widget.invoice),
               ),
             );

@@ -6,6 +6,13 @@ abstract class EndPoints {
   static const client= _Client();
   static const users = _Users();
   static const series = _Series();
+  static const app = _App();
+}
+
+class _App {
+  const _App();
+
+  final getVersion = 'VersionUpdated/get_version.php';
 }
 
 class _Users {

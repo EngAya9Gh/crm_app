@@ -19,6 +19,7 @@ class EditTextFormField extends StatelessWidget {
   List<TextInputFormatter>? inputformate;
   FormFieldSetter<String>? onSaved;
   int? maxLength;
+  int? minLines;
 
   EditTextFormField(
       {this.ontap,
@@ -36,6 +37,7 @@ class EditTextFormField extends StatelessWidget {
       this.onSaved,
       this.inputformate,
       this.maxLength,
+      this.minLines,
       Key? key})
       : super(key: key);
 
@@ -54,6 +56,7 @@ class EditTextFormField extends StatelessWidget {
       inputFormatters: inputformate,
       onSaved: onSaved,
       maxLength:maxLength ,
+      minLines: minLines,
       decoration: InputDecoration(
         //icon: ,
         contentPadding: paddcustom == null ? EdgeInsets.all(2) : paddcustom,

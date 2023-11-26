@@ -243,14 +243,20 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
                 )
               : e;
         }).toList();
+        final currentInvoice = listInvoice.firstWhereOrNull((element) => element.idInvoice == seriesParams.invoiceId);
         emit(state.copyWith(
           setApproveSeriesState: BlocStatus.success(),
           withdrawalInvoiceDetails: PageState.loaded(data: list),
           withdrawalsInvoices: PageState.loaded(data: listInvoice),
+          currentInvoice: currentInvoice,
         ));
         onSuccess.call();
       },
     );
+  }
+
+  setCurrentInvoice(InvoiceModel invoice) {
+    emit(state.copyWith(currentInvoice: invoice));
   }
 
   getWithdrawnDetails(final String fkInvoice) async {
@@ -310,7 +316,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     );
   }
 
-  actionReasonReject(String reasonName, {String? rejectReasonId ,required VoidCallback onSuccess}) async {
+  actionReasonReject(String reasonName, {String? rejectReasonId, required VoidCallback onSuccess}) async {
     emit(state.copyWith(actionRejectReason: BlocStatus.loading()));
 
     bool isEdit() => rejectReasonId != null;

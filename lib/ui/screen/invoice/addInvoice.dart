@@ -7,6 +7,7 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/clientmodel.dart';
+import 'package:crm_smart/model/commentmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/participatModel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
@@ -23,6 +24,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -31,6 +33,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../labeltext.dart';
+import '../../../view_model/comment.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
@@ -86,6 +89,7 @@ class _addinvoiceState extends State<addinvoice> {
   final TextEditingController addressController = TextEditingController();
   final TextEditingController renew2Controller = TextEditingController();
   final TextEditingController sellerCommissionRate = TextEditingController();
+  final TextEditingController comment = TextEditingController();
   List<PlatformFile>? _paths;
   String? _extension;
   bool _multiPick = false;
@@ -111,7 +115,8 @@ class _addinvoiceState extends State<addinvoice> {
     numTaxController.dispose();
     userclientController.dispose();
     addressController.dispose();
-    
+    comment.dispose();
+
     //_resetState();
     //await FilePicker.platform.clearTemporaryFiles();
     super.dispose();
@@ -130,7 +135,7 @@ class _addinvoiceState extends State<addinvoice> {
 
       invoiceViewmodel.listproductinvoic = [];
       invoiceViewmodel.set_total('0'.toString());
-      
+
       totalController = '0';
       _invoice = widget.invoice;
       numbranchController.addListener(() {
@@ -162,9 +167,9 @@ class _addinvoiceState extends State<addinvoice> {
 
         typepayController = _invoice!.typePay.toString();
         currencyController = _invoice!.currency_name == null ? 1 : int.parse(_invoice!.currency_name.toString());
-        
+
         typeinstallController = _invoice!.typeInstallation.toString();
-        
+
         if (_invoice!.ready_install != null) readyinstallController = _invoice!.ready_install!;
 
         noteController.text = _invoice!.notes.toString();
@@ -181,7 +186,7 @@ class _addinvoiceState extends State<addinvoice> {
         /// add invoice
         // Provider.of<invoice_vm>(context,listen: false)
         //     .listinvoiceClient.add(
-        
+
         invoiceViewmodel.initAttachFiles([]);
 
         _invoice = InvoiceModel(
@@ -219,14 +224,11 @@ class _addinvoiceState extends State<addinvoice> {
         }
       });
       Provider.of<selected_button_provider>(context, listen: false).selectValuetypepay(int.parse(typepayController));
-      
 
       context.read<selected_button_provider>()
         ..selectValuereadyinstall(int.parse(readyinstallController), isInit: true)
         ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
         ..selectValueCurrency(int.parse(currencyController.toString()));
-
-      
     });
     super.initState();
   }
@@ -457,10 +459,27 @@ class _addinvoiceState extends State<addinvoice> {
                           },
                         );
                       }),
-                      SizedBox(
-                        height: 5,
-                      ),
-
+                      SizedBox(height: 5),
+                      if (widget.invoice == null) ...{
+                        RowEdit(name: 'التعليق', des: '*'),
+                        EditTextFormField(
+                          hintText: "اكتب تعليقاً...",
+                          obscureText: false,
+                          vaild: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return "الحقل مطلوب.";
+                            }
+                            return null;
+                          },
+                          inputType: TextInputType.multiline,
+                          controller: comment,
+                          label: "التعليق",
+                          minLines: 4,
+                          maxline: 8,
+                          paddcustom: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                        ),
+                        10.verticalSpace,
+                      },
                       //admin
                       RowEdit(name: label_typepay, des: '*'),
                       Container(
@@ -491,7 +510,6 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['نقدا', 'تحويل'],
                                 onSelected: (_, index, isselected) {
-                                  
                                   //setState(() {
                                   typepayController = index.toString();
                                   selectedProvider.selectValuetypepay(index);
@@ -531,7 +549,6 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: ['ميداني', 'اونلاين'],
                                 onSelected: (_, index, isselected) {
-                                  
                                   //setState(() {
                                   typeinstallController = index.toString();
                                   selectedProvider.selectValuetypeinstall(index);
@@ -575,7 +592,7 @@ class _addinvoiceState extends State<addinvoice> {
                       //                     GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                       //                 buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
                       //                 onSelected: (_, index, isselected) {
-                      //                   
+                      //
                       //                   //setState(() {
                       //                   readyinstallController = index.toString();
                       //                   selectedProvider.selectValuereadyinstall(index);
@@ -615,7 +632,6 @@ class _addinvoiceState extends State<addinvoice> {
                                 options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
                                 buttons: [' USD دولار', '  SAR ريال'],
                                 onSelected: (_, index, isselected) {
-                                  
                                   //setState(() {
                                   currencyController = index;
                                   selectedProvider.selectValueCurrency(index);
@@ -1409,6 +1425,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         "name_enterprise": widget.itemClient.nameEnterprise,
                                         "name_client": widget.itemClient.nameClient.toString(),
                                         "nameUser": user.currentUser.nameUser,
+                                        "comment": comment.text,
                                         //widget.itemClient.nameUser,
                                         "renew_year": renewController.text.toString(),
                                         "renew2year": renew2Controller.text.toString(),
@@ -1469,11 +1486,10 @@ class _addinvoiceState extends State<addinvoice> {
                                       if (readyinstallController == '0')
                                         body.addAll({
                                           'date_not_readyinstall': DateTime.now().toString(),
-                                          'user_not_ready_install':
-                                              Provider.of<UserProvider>(context, listen: false)
-                                                  .currentUser
-                                                  .idUser
-                                                  .toString(),
+                                          'user_not_ready_install': Provider.of<UserProvider>(context, listen: false)
+                                              .currentUser
+                                              .idUser
+                                              .toString(),
                                         });
                                       else
                                         body.addAll({
@@ -1484,18 +1500,29 @@ class _addinvoiceState extends State<addinvoice> {
                                               .toString(),
                                         });
                                       log(body.toString());
-                                      invoiceViewmodel
-                                          .add_invoiceclient_vm(
-                                            body,
-                                            recordCommercialImageNotifier.value,
-                                            companyLogoNotifier.value,
-                                            invoiceViewmodel.filesAttach
-                                                .where((element) => element.file != null)
-                                                .map((e) => File(e.file!.path))
-                                                .toList(),
-                                          )
-                                          .then((value) =>
-                                              value != "false" ? clear(context, value, _products) : error(context));
+                                      invoiceViewmodel.add_invoiceclient_vm(
+                                        body,
+                                        recordCommercialImageNotifier.value,
+                                        companyLogoNotifier.value,
+                                        invoiceViewmodel.filesAttach
+                                            .where((element) => element.file != null)
+                                            .map((e) => File(e.file!.path))
+                                            .toList(),
+                                        onAddInvoiceSuccess: (InvoiceModel invoice) {
+                                          final commentModel = CommentModel(
+                                            idComment: "idComment",
+                                            fkUser: user.currentUser.idUser!,
+                                            fkClient: widget.itemClient.idClients!,
+                                            content: comment.text,
+                                            nameUser: user.currentUser.nameUser!,
+                                            imgImage: user.currentUser.img_image,
+                                            nameEnterprise: invoice.name_enterprise!,
+                                            date_comment: DateTime.now().toIso8601String(),
+                                          );
+                                          context.read<comment_vm>().addCommentFromAddInvoice(commentModel);
+                                        },
+                                      ).then((value) =>
+                                          value != "false" ? clear(context, value, _products) : error(context));
                                     }
                                   } else {
                                     ScaffoldMessenger.of(context)
@@ -1520,14 +1547,10 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   clear(BuildContext context, String value, List<ProductsInvoice>? _products) async {
+    _products = _invoice!.products ?? [];
 
-    _products =
-        _invoice!.products ?? [];
-    
     for (int i = 0; i < _products.length; i++) {
-      
       if (_products[i].idInvoiceProduct == null || _products[i].idInvoiceProduct == "null") {
-        
         Map<String, dynamic> body = _products[i].toJson();
         // if(value!="")//update
         // {}
@@ -1545,9 +1568,9 @@ class _addinvoiceState extends State<addinvoice> {
       } //if
       else {
         //update product in invoice
-        
+
         Map<String, dynamic> body = _products[i].toJson();
-        
+
         bool res = await invoiceViewmodel.update_invoiceProduct_vm(body, _products[i].idInvoiceProduct.toString());
       }
     }
@@ -1578,7 +1601,6 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   error(context) {
-    
     Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
   }
@@ -1587,7 +1609,7 @@ class _addinvoiceState extends State<addinvoice> {
 
   Future<File> createFileOfPdfUrl(String urlparam) async {
     Completer<File> completer = Completer();
-    
+
     try {
       final url = urlparam;
       final filename = url.substring(url.lastIndexOf("/") + 1);
@@ -1595,8 +1617,7 @@ class _addinvoiceState extends State<addinvoice> {
       var response = await request.close();
       var bytes = await consolidateHttpClientResponseBytes(response);
       var dir = await getApplicationDocumentsDirectory();
-      
-      
+
       File file = File("${dir.path}/$filename");
 
       await file.writeAsBytes(bytes, flush: true);

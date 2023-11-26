@@ -28,6 +28,7 @@ class SetApproveSeriesParams {
     required this.fkcountry,
     required this.fk_regoin,
     required this.id_user,
+    required this.notesApprove,
   });
 
   final String idApproveSeries;
@@ -40,6 +41,7 @@ class SetApproveSeriesParams {
   final String nameUserdo;
   final String fk_regoin;
   final String fkcountry;
+  final String notesApprove;
 
   Map<String, dynamic> get param => {"idApprove_series": idApproveSeries, "fk_invoice": invoiceId};
 
@@ -50,6 +52,7 @@ class SetApproveSeriesParams {
         "nameUserdo": nameUserdo,
         "fkcountry": fkcountry,
         "fk_regoin": fk_regoin,
+        "notes_approve": notesApprove,
 
 
       };

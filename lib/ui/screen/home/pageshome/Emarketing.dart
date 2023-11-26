@@ -20,7 +20,9 @@ class marketingpage extends StatelessWidget {
         title: Text(
           'التسويق',
           style: TextStyle(color: kWhiteColor,
-              fontFamily: kfontfamily2),
+              fontFamily: kfontfamily2,
+            fontSize: 20,
+          ),
         ),
         centerTitle: true,
         backgroundColor: kMainColor,
