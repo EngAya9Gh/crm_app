@@ -321,10 +321,16 @@ class _ClientViewState extends State<ClientView> {
                   //     Provider.of<privilge_vm>(context,listen: true)
                   //         .checkprivlge('7')==true?
 
-                  widget.clienttransfer == null ||
-                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true
+                  widget.clienttransfer == null
                       ? Container()
-                      : Center(
+                      :
+                  // Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+
+            clientModel.reasonTransfer==Provider.of<UserProvider>(context, listen: false)
+          .currentUser
+          .idUser
+          .toString()?
+                  Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -462,7 +468,7 @@ class _ClientViewState extends State<ClientView> {
                               ),
                             ],
                           ),
-                        ),
+                        ):Container(),
                   widget.invoice != null
                       ? widget.invoice!.isApprove == null
                           ? Center(
