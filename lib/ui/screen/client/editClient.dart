@@ -23,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,7 @@ import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../labeltext.dart';
 import '../../../view_model/datetime_vm.dart';
 import 'addClient.dart';
@@ -83,6 +85,7 @@ class _editclientState extends State<editclient> {
   String? _selectedARecommendedClient;
   late final ClientsListBloc _clientsListBloc;
   final TextEditingController emailController = TextEditingController();
+  late PrivilegeCubit _privilegeCubit;
 
   @override
   void dispose() {
@@ -126,6 +129,7 @@ class _editclientState extends State<editclient> {
   @override
   void initState() {
     context.read<CompanyProvider>().initValueOut();
+    _privilegeCubit = GetIt.I<PrivilegeCubit>();
     _clientsListBloc = context.read<ClientsListBloc>();
     currentUser = Provider.of<UserProvider>(context, listen: false).currentUser;
     nameclientController.text = widget.client.nameClient!.toString();
@@ -369,10 +373,10 @@ class _editclientState extends State<editclient> {
                       controller: emailController,
                     ),
                     SizedBox(height: 15),
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
+                    _privilegeCubit.checkPrivilege('27')
                         ? Container()
                         : RowEdit(name: label_client_typejob, des: '*'),
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
+                    _privilegeCubit.checkPrivilege('27')
                         ? Container()
                         : EditTextFormField(
                             hintText: label_client_typejob,
@@ -557,10 +561,10 @@ class _editclientState extends State<editclient> {
                       height: 15,
                     ),
 
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
+                    _privilegeCubit.checkPrivilege('27')
                         ? Container()
                         : RowEdit(name: label_clientlocation, des: ''),
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
+                    _privilegeCubit.checkPrivilege('27')
                         ? Container()
                         : EditTextFormField(
                             hintText: 'location',
@@ -706,12 +710,12 @@ class _editclientState extends State<editclient> {
                     // SizedBox(
                     //   height: 15,
                     // ),
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
+                    _privilegeCubit.checkPrivilege('27')
                         ? widget.client.typeClient != "مشترك" && widget.client.typeClient != "منسحب"
                             ? RowEdit(name: label_clienttype, des: "")
                             : Container()
                         : Container(),
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == true
+                    _privilegeCubit.checkPrivilege('27')
                         ? widget.client.typeClient != "مشترك" && widget.client.typeClient != "منسحب"
                             ? DropdownButton(
                                 isExpanded: true,
@@ -754,7 +758,7 @@ class _editclientState extends State<editclient> {
                     //   },
                     //   child: Text('خيارات الإنسحاب'),
                     // ):
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == false
+                    _privilegeCubit.checkPrivilege('27')
                         ? Container()
                         : typeclient_provider.selectedValuemanag == "عرض سعر"
                             ? Row(
@@ -799,7 +803,7 @@ class _editclientState extends State<editclient> {
                                   ),
                                 ],
                               )
-                            : Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('27') == false
+                            : _privilegeCubit.checkPrivilege('27')
                                 ? Container()
                                 : typeclient_provider.selectedValuemanag == "مستبعد"
                                     ? EditTextFormField(

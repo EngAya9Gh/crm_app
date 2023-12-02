@@ -1,6 +1,6 @@
 import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
 import '../constants.dart';
+import '../features/manage_privilege/data/models/privilege_model.dart';
 import '../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 
 class UserModel {
@@ -33,7 +33,7 @@ class UserModel {
 
   // List<> maincitylist_user;
 
-  // List<PrivilgeModel>? privilgelist = [];
+  // List<PrivilegeModel>? privilgelist = [];
 
   UserModel({
     this.idUser,
@@ -162,14 +162,14 @@ class UserModel {
 
   UserWithdrawalsManager get asUserWithdrawalsManager => UserWithdrawalsManager(idUser, nameUser);
 
-  List<PrivilgeModel> getproud(data) {
-    List<PrivilgeModel> prodlist = [];
+  List<PrivilegeModel> getproud(data) {
+    List<PrivilegeModel> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
 
 
         
-        prodlist.add(PrivilgeModel.fromJson(data[i]));
+        prodlist.add(PrivilegeModel.fromJson(data[i]));
       }
     }
     return prodlist;

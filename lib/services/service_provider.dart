@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 
 import '../features/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/communication_list/presentation/manager/communication_list_bloc.dart';
+import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class ServiceProvider extends StatelessWidget {
   const ServiceProvider({
@@ -18,7 +19,8 @@ class ServiceProvider extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => GetIt.I<CommunicationListBloc>()),
         BlocProvider(create: (context) => GetIt.I<ClientsListBloc>()),
-        BlocProvider(create: (context) => GetIt.I<AppManagerCubit>())
+        BlocProvider(create: (context) => GetIt.I<AppManagerCubit>()),
+        BlocProvider(create: (context) => GetIt.I<PrivilegeCubit>())
       ],
       child: child,
     );

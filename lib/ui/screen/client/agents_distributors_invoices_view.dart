@@ -4,10 +4,12 @@ import 'dart:ui' as myui;
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/agent_distributor_model.dart';
 import '../../../model/participatModel.dart';
 import '../../../view_model/agent_collaborators_invoices_vm.dart';
@@ -48,7 +50,8 @@ class AgentsDistributorsInvoicesView extends StatefulWidget {
 
 class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoicesView>
     with StateViewModelMixin<AgentsDistributorsInvoicesView, AgentsCollaboratorsInvoicesViewmodel> {
-  late PrivilegeProvider privilegeVm;
+  late PrivilegeCubit _privilegeCubit;
+
   late TextEditingController _searchTextField;
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
@@ -56,19 +59,17 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
   @override
   void initState() {
     super.initState();
-    privilegeVm = context.read<PrivilegeProvider>();
+    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
-    final privilegeList = privilegeVm.privilegeList;
     scheduleMicrotask(() {
       viewmodel.init();
       context.read<RegionProvider>().changeVal(null);
       context.read<ClientTypeProvider>()
         ..changelisttype_install(null)
         ..changevalueNotReady(null);
-      context.read<invoice_vm>()
-        ..setvaluepriv(privilegeList)
-        ..getinvoice_Localwithprev();
+      context.read<invoice_vm>().getinvoice_Localwithprev(GetIt.I<PrivilegeCubit>());
     });
   }
 
@@ -173,7 +174,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
               ],
             ),
             SizedBox(height: 10),
-            if (privilegeVm.checkPrivilege('1'))
+            if (_privilegeCubit.checkPrivilege('1'))
               Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 15),
                 child: Consumer<RegionProvider>(
@@ -278,28 +279,28 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                 ),
               ],
             ),
-            Provider.of<PrivilegeProvider>(context,listen: true)
-                .checkPrivilege('156')==true?
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 8),
-              child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
-                return DropdownButton(
-                  isExpanded: true,
-                  hint: Text('حالة الفاتورة'),
-                  items: cart.listtype_notReady.map((level_one) {
-                    return DropdownMenuItem(
-                      child: Text(level_one),
-                      value: level_one,
-                    );
-                  }).toList(),
-                  value: cart.selectedValufilter_NotReady,
-                  onChanged: (value) {
-                    cart.changevalueNotReady(value.toString());
-                    viewmodel.onChangeNotReady(value.toString());
-                  },
-                );
-              }),
-            ):Container(),
+            _privilegeCubit.checkPrivilege('156') == true
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 8),
+                    child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
+                      return DropdownButton(
+                        isExpanded: true,
+                        hint: Text('حالة الفاتورة'),
+                        items: cart.listtype_notReady.map((level_one) {
+                          return DropdownMenuItem(
+                            child: Text(level_one),
+                            value: level_one,
+                          );
+                        }).toList(),
+                        value: cart.selectedValufilter_NotReady,
+                        onChanged: (value) {
+                          cart.changevalueNotReady(value.toString());
+                          viewmodel.onChangeNotReady(value.toString());
+                        },
+                      );
+                    }),
+                  )
+                : Container(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(

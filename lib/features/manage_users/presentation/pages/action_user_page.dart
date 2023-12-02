@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:collection/collection.dart';
+import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/features/manage_users/domain/use_cases/action_user_usecase.dart';
 import 'package:crm_smart/features/manage_users/presentation/manager/users_cubit.dart';
@@ -10,20 +12,20 @@ import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributo
 import 'package:crm_smart/ui/widgets/custom_widget/custom_button_new.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../labeltext.dart';
 import '../../../../model/maincitymodel.dart';
 import '../../../../view_model/maincity_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class ActionUserPage extends StatefulWidget {
   const ActionUserPage({Key? key, this.userModel});
@@ -52,12 +54,11 @@ class _ActionUserPageState extends State<ActionUserPage> {
   void initState() {
     _usersCubit = context.read<UsersCubit>();
     scheduleMicrotask(() {
-      Provider.of<level_vm>(context, listen: false).getlevel();
+      context.read<PrivilegeCubit>().getLevels(context.read<UserProvider>().currentUser);
       Provider.of<manage_provider>(context, listen: false).getmanage();
       Provider.of<RegionProvider>(context, listen: false).changeValuser(null, true);
       context.read<MainCityProvider>().changeitemlist([], isInit: true);
-      if (user == null)
-        context.read<MainCityProvider>().getmaincity();
+      if (user == null) context.read<MainCityProvider>().getmaincity();
     });
 
     if (user != null) {
@@ -71,7 +72,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
         regionName = user!.nameRegoin;
         levelName = user!.name_level;
 
-        context.read<level_vm>().changeVal(user!.typeLevel.toString());
+        context.read<PrivilegeCubit>().onChangeLevelId(user!.typeLevel.toString());
         context.read<RegionProvider>().changeValuser(user!.fkRegoin);
 
         setState(() {
@@ -165,21 +166,19 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 }),
                 15.verticalSpace,
                 RowEdit(name: label_level, des: '*'),
-                Consumer<level_vm>(
-                  builder: (context, cart, child) {
-                    
-                    
+                BlocBuilder<PrivilegeCubit, PrivilegeState>(
+                  builder: (context, state) {
                     return DropdownButtonFormField(
                       isExpanded: true,
-                      items: cart.listoflevel_periorty.map((level) {
+                      items: state.priorityState.map((level) {
                         return DropdownMenuItem(
-                          child: Text(level.nameLevel), //label of item
-                          value: level.idLevel, //value of item
+                          child: Text(level.nameLevel ?? ''),
+                          value: level.idLevel,
                         );
                       }).toList(),
-                      value: cart.selectedValueLevel,
+                      value: state.selectedLevelId,
                       onChanged: (value) {
-                        cart.changeVal(value.toString());
+                        context.read<PrivilegeCubit>().onChangeLevelId(value.toString());
                       },
                       validator: (value) {
                         if (value == null) {
@@ -220,8 +219,6 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 RowEdit(name: 'المناطق', des: ''),
                 Consumer<MainCityProvider>(
                   builder: (context, cart, child) {
-                    
-
                     final items = cart.listmaincityfilter
                         .where((element) => element.id_maincity != '0')
                         .map((e) => e.toMap())
@@ -232,7 +229,6 @@ class _ActionUserPageState extends State<ActionUserPage> {
                       selectedItems[index]['value'] = element['id_maincity'];
                       selectedItems[index]['parameter'] = 'id_maincity';
                     });
-
 
                     return CustomSearchableDropDown(
                       dropdownHintText: 'ابحث هنا... ',
@@ -282,16 +278,16 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 if (isEdit) ...{
                   Center(
                       child: GroupButton(
-                        controller: GroupButtonController(selectedIndex: int.parse(isActive)),
-                        options: GroupButtonOptions(
-                            buttonWidth: 110, selectedColor: kMainColor, borderRadius: BorderRadius.circular(10)),
-                        buttons: ['غير نشط', 'نشط'],
-                        onSelected: (_, index, isselected) {
-                          setState(() {
-                            isActive = index.toString();
-                          });
-                        },
-                      )),
+                    controller: GroupButtonController(selectedIndex: int.parse(isActive)),
+                    options: GroupButtonOptions(
+                        buttonWidth: 110, selectedColor: kMainColor, borderRadius: BorderRadius.circular(10)),
+                    buttons: ['غير نشط', 'نشط'],
+                    onSelected: (_, index, isselected) {
+                      setState(() {
+                        isActive = index.toString();
+                      });
+                    },
+                  )),
                   20.verticalSpace,
                 },
                 Center(
@@ -323,9 +319,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
     if (!validate) {
       return;
     }
-    final selectedRegion = context
-        .read<MainCityProvider>()
-        .selecteditemmaincity;
+    final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
     final oldRegion = user?.maincitylist_user?.map((e) => e.asMainCity).toList();
 
     final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
@@ -341,19 +335,13 @@ class _ActionUserPageState extends State<ActionUserPage> {
     final regionVm = context.read<RegionProvider>();
     String? region = regionVm.selectedValueuser;
     String? regionName =
-    region == null ? "" : regionVm.listRegion
-        .firstWhere((element) => element.regionId == region)
-        .regionName;
+        region == null ? "" : regionVm.listRegion.firstWhere((element) => element.regionId == region).regionName;
 
-    final levelVm = context.read<level_vm>();
-    String? level = levelVm.selectedValueLevel;
-    String levelName = levelVm.listoflevel
-        .firstWhere((element) => element.idLevel == level)
-        .nameLevel;
+    final levelVm = context.read<PrivilegeCubit>();
+    String? level = levelVm.state.selectedLevelId;
+    String levelName = levelVm.state.levelsState.data.firstWhere((element) => element.idLevel == level).nameLevel!;
 
-    final currentUser = context
-        .read<UserProvider>()
-        .currentUser;
+    final currentUser = context.read<UserProvider>().currentUser;
     final fkCountry = currentUser.fkCountry;
     final userID = currentUser.idUser;
 

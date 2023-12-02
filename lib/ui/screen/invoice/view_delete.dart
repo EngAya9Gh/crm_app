@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -175,7 +176,7 @@ class view_deleted extends StatelessWidget {
                         ? cardRow(title: 'عنوان الفاتورة', value: invoice.address_invoice.toString())
                         : Container(),
 
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true
+                    context.read<PrivilegeCubit>().checkPrivilege('76') == true
                         ? invoice.clientusername != null && invoice.clientusername.toString().isNotEmpty
                         ? cardRow(
                         title: 'يوزر العميل',

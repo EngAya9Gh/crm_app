@@ -9,11 +9,13 @@ import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
 
 class ClientView extends StatefulWidget {
@@ -93,10 +95,10 @@ class _ClientViewState extends State<ClientView> {
                               color: kWhiteColor,
                             ),
                           ),
-                          (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('133') == true)
+                          (context.read<PrivilegeCubit>().checkPrivilege('133') == true)
                               ? IconButton(
                                   onPressed: () {
-                                    if ((Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('147') ==
+                                    if ((context.read<PrivilegeCubit>().checkPrivilege('147') ==
                                         true)) context.read<ClientProvider>().setTagClient();
                                   },
                                   icon: Icon(
@@ -132,7 +134,16 @@ class _ClientViewState extends State<ClientView> {
                   SizedBox(
                     height: 20,
                   ),
-                  cardRow(title: 'الرقم التسلسلي', value: clientModel.serialNumber.toString()),
+                  GestureDetector(
+                      onLongPress: () async {
+                        await Clipboard.setData(ClipboardData(text: clientModel.serialNumber.toString()))
+                            .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                  "تم النسخ إلى الحافظة",
+                                  textDirection: TextDirection.rtl,
+                                ))));
+                      },
+                      child: cardRow(title: 'الرقم التسلسلي', value: clientModel.serialNumber.toString())),
                   cardRow(title: 'تاريخ الاضافة', value: clientModel.dateCreate.toString()),
                   cardRow(
                     title: 'المؤسسة',
@@ -193,7 +204,7 @@ class _ClientViewState extends State<ClientView> {
                   cardRow(title: 'رقم الموظف', value: clientModel.mobileuser.toString()),
 
                   if (clientModel.reasonTransfer != null)
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                    context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                             clientModel.fkusertrasfer != null
                         ? cardRow(
                             title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
@@ -204,19 +215,19 @@ class _ClientViewState extends State<ClientView> {
                             title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
                         : Container(),
 
-                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                  context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                           (clientModel.reasonTransfer != null) &&
                           clientModel.fkusertrasfer != null
                       ? cardRow(title: 'تحويل العميل إلى', value: clientModel.nameTransferTo.toString())
                       : Container(),
 
-                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                  context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                           (clientModel.reasonTransfer == null) &&
                           clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
                       : Container(),
 
-                  Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                  context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                           (clientModel.reasonTransfer != null) &&
                           clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value: 'معلق')
@@ -323,7 +334,7 @@ class _ClientViewState extends State<ClientView> {
                   //         .checkprivlge('7')==true?
 
                   widget.clienttransfer == null ||
-                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true
+                          context.read<PrivilegeCubit>().checkPrivilege('150') == true
                       ? Container()
                       : Center(
                           child: Row(
@@ -632,7 +643,7 @@ class _ClientViewState extends State<ClientView> {
                   widget.invoice != null
                       ? widget.invoice!.isApprove != 1 &&
                               widget.invoice!.isApproveFinance == null &&
-                              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('111') == true &&
+                              context.read<PrivilegeCubit>().checkPrivilege('111') == true &&
                               widget.typeinvoice == 'f'
                           ? Center(
                               child: ElevatedButton(

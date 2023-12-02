@@ -18,15 +18,16 @@ import 'package:crm_smart/ui/widgets/fancy_image_shimmer_viewer.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../labeltext.dart';
 import '../../../view_model/reason_suspend.dart';
 import '../../widgets/app_photo_viewer.dart';
@@ -46,6 +47,7 @@ class _support_addState extends State<support_add> {
   TextEditingController _textsupport = TextEditingController();
   TextEditingController _textnameuserclient = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+  late PrivilegeCubit _privilegeCubit;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   late InvoiceModel? _invoice = null;
@@ -68,6 +70,8 @@ class _support_addState extends State<support_add> {
   void initState() {
     timinit = TimeOfDay.now();
     _eventProvider = context.read<EventProvider>();
+    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+
     // if (widget.idinvoice != '') {
     //   // _invoice = Provider
     //   //     .of<invoice_vm>(context, listen: false)
@@ -499,7 +503,7 @@ class _support_addState extends State<support_add> {
                         },
                       ),
                       SizedBox(height: 20),
-                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('42') == true
+                      _privilegeCubit.checkPrivilege('42')
                           // ? _invoice!.dateinstall_task != null && _invoice!.dateinstall_done == null
                           ? ElevatedButton(
                               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
@@ -573,7 +577,9 @@ class _support_addState extends State<support_add> {
 
                       cardRow(
                           title: 'طريقة التركيب ',
-                          value: _invoice!.typeInstallation.toString() == '0' ? 'ميداني' : ( _invoice!.typeInstallation.toString() == '2' ? 'عميل موصى به': 'اونلاين')),
+                          value: _invoice!.typeInstallation.toString() == '0'
+                              ? 'ميداني'
+                              : (_invoice!.typeInstallation.toString() == '2' ? 'عميل موصى به' : 'اونلاين')),
 
                       _invoice!.ready_install == '0' && _invoice!.TypeReadyClient == 'suspend'
                           ? cardRow(title: 'هل تم التركيب للعميل ', value: 'معلق')
@@ -614,7 +620,7 @@ class _support_addState extends State<support_add> {
                           ? cardRow(title: ' قام بتعليق العميل ', value: _invoice!.nameuser_notready_install.toString())
                           : Container(),
 
-                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('43') == true
+                      _privilegeCubit.checkPrivilege('43')
                           ? _invoice!.dateinstall_done == null
                               ? ElevatedButton(
                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
@@ -854,7 +860,7 @@ class _support_addState extends State<support_add> {
                                 //     : Container(),
                                 //
 
-                                Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('109') == true
+                                _privilegeCubit.checkPrivilege('109')
                                     ? Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.only(left: 3.0),
@@ -879,7 +885,7 @@ class _support_addState extends State<support_add> {
                                       )
                                     : Container(),
 
-                                Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('151') == true
+                                _privilegeCubit.checkPrivilege('151')
                                     ? Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.only(left: 3.0, right: 3),
@@ -907,8 +913,7 @@ class _support_addState extends State<support_add> {
                               ],
                             ),
                       if (_invoice!.dateinstall_done == null &&
-                          (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('110') == true ||
-                              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('152') == true))
+                          (_privilegeCubit.checkPrivilege('110') || _privilegeCubit.checkPrivilege('152')))
                         Padding(
                           padding: const EdgeInsets.only(right: 3),
                           child: ElevatedButton(

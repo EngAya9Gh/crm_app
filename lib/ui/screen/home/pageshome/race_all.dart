@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../view_model/privilge_vm.dart';
+import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../barnch_race/pages/branch_race_view.dart';
 import '../../employee_race/pages/employee_race_page.dart';
 import '../widgethomeitem.dart';
@@ -32,7 +32,7 @@ class race_page extends StatelessWidget {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('118') == true
+            context.read<PrivilegeCubit>().checkPrivilege('118')
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -45,7 +45,7 @@ class race_page extends StatelessWidget {
                     },
                     title: 'سباق الموظفين')
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('117') == true
+            context.read<PrivilegeCubit>().checkPrivilege('117')
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,

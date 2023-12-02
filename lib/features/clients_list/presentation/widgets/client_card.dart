@@ -10,6 +10,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../../../view_model/privilge_vm.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/action_client_page.dart';
 
 class CardClient extends StatelessWidget {
@@ -73,7 +74,7 @@ class CardClient extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
                       ),
                     ),
-                    if ((clientModel.tag ?? false) && context.read<PrivilegeProvider>().checkPrivilege('133'))
+                    if ((clientModel.tag ?? false) && context.read<PrivilegeCubit>().checkPrivilege('133'))
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,

@@ -5,7 +5,8 @@ import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 import '../constants.dart';
-import '../model/privilgemodel.dart';
+import '../features/manage_privilege/data/models/privilege_model.dart';
+import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunication = [];
@@ -45,15 +46,11 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setvaluepriv(privilgelistparam) {
-    
-    privilgelist = privilgelistparam;
-    //todo Add parameter null to get all
-    param = get_privilgelist();
+  void setvaluepriv(PrivilegeCubit privilegeCubit) {
+    param = get_privilgelist(privilegeCubit);
     notifyListeners();
   }
 
-  List<PrivilgeModel> privilgelist = [];
   UserModel? usercurrent;
   String param = '';
 
@@ -410,19 +407,19 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get_privilgelist() {
+  String get_privilgelist(PrivilegeCubit privilegeCubit) {
     // if(listClient.isEmpty)
     //main list
     String param = '';
-    bool res = privilgelist?.firstWhere((element) => element.fkPrivileg == '123').isCheck == '1' ? true : false;
+    bool res = privilegeCubit.checkPrivilege('123');
     if (res) {
       param = ''; //'''&fk_country'+usercurrent!.fkCountry.toString();
     } else {
-      res = privilgelist?.firstWhere((element) => element.fkPrivileg == '122').isCheck == '1' ? true : false;
+      res = privilegeCubit.checkPrivilege('122');
       if (res) {
         param = '&fk_regoin=' + usercurrent!.fkRegoin.toString();
       } else {
-        res = privilgelist?.firstWhere((element) => element.fkPrivileg == '121').isCheck == '1' ? true : false;
+        res =  privilegeCubit.checkPrivilege('121');
         if (res) {
           param = '&fk_user=' + usercurrent!.idUser.toString();
         }

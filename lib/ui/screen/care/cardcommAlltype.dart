@@ -1,4 +1,5 @@
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
@@ -174,7 +175,7 @@ class cardcommalltype extends StatelessWidget {
                           ],
                         )
                       : Container(),
-                  if ((itemcom.tag ?? false) && context.read<PrivilegeProvider>().checkPrivilege('133'))
+                  if ((itemcom.tag ?? false) && context.read<PrivilegeCubit>().checkPrivilege('133'))
                     Icon(
                       CupertinoIcons.checkmark_seal_fill,
                       color: Colors.amber,

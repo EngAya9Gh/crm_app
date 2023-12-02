@@ -1,13 +1,10 @@
-import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/ui/screen/home/build_card.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/appbar.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customDrawer.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
@@ -17,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
 
 class Home extends StatefulWidget {
@@ -74,13 +72,10 @@ class _HomeState extends State<Home> {
       // Provider.of<invoice_vm>(context, listen: false)
       //     .getfilter_maincity([],'الكل');
       // .getinvoices();
-      await Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
 
       // Provider.of<notifyvm>(context, listen: false)
       //    .getNotification();
 
-      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
-      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       // await Provider.of<invoice_vm>(context, listen: false)
       //     .getfilter_maincity([],'الكل');
       // Provider.of<client_vm>(context, listen: false)

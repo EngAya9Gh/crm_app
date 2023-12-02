@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../labeltext.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/privilge_vm.dart';
@@ -189,7 +190,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                       ),
                                     ),
                                   ),
-                                  if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('146') == true)
+                                  if (context.read<PrivilegeCubit>().checkPrivilege('146'))
                                   Positioned.fill(
                                     child: Align(
                                       alignment: Alignment.topRight,
@@ -481,7 +482,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               //     ),
               //   ),
 
-              if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('146') == true)
+              if (context.read<PrivilegeCubit>().checkPrivilege('146'))
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.topRight,

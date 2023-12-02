@@ -16,7 +16,6 @@ import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
@@ -32,6 +31,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../labeltext.dart';
 import '../../../view_model/comment.dart';
 import '../../widgets/app_photo_viewer.dart';
@@ -771,12 +771,12 @@ class _addinvoiceState extends State<addinvoice> {
                               ),
                             );
                           }),
-                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true &&
+                      context.read<PrivilegeCubit>().checkPrivilege('76') == true &&
                               _invoice!.idInvoice != null &&
                               _invoice!.userinstall != null
                           ? RowEdit(name: 'يوزر العميل', des: '')
                           : Container(),
-                      Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true &&
+                      context.read<PrivilegeCubit>().checkPrivilege('76') == true &&
                               _invoice!.idInvoice != null &&
                               _invoice!.userinstall != null
                           ? EditTextFormField(
@@ -977,9 +977,7 @@ class _addinvoiceState extends State<addinvoice> {
                                                         ),
                                                       ),
                                                     ),
-                                                    if (Provider.of<PrivilegeProvider>(context, listen: true)
-                                                            .checkPrivilege('146') ==
-                                                        true)
+                                                    if (context.read<PrivilegeCubit>().checkPrivilege('146'))
                                                       Positioned.fill(
                                                         child: Align(
                                                           alignment: Alignment.topRight,

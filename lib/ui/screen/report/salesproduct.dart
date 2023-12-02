@@ -1,3 +1,6 @@
+import 'dart:ui' as myui;
+
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
@@ -12,12 +15,13 @@ import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:get_it/get_it.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as myui;
+
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class salesproduct extends StatefulWidget {
   const salesproduct({Key? key}) : super(key: key);
@@ -43,19 +47,19 @@ class _salesproductState extends State<salesproduct> {
   DateTime _selectedDatemonth = DateTime.now();
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
-  late PrivilegeProvider privilegeVm;
+  late PrivilegeCubit _privilegeCubit;
   bool isMarketing = false;
   late bool haveMarketingPrivilege;
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
+    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    haveMarketingPrivilege = _privilegeCubit.checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
-    privilegeVm = Provider.of<PrivilegeProvider>(context, listen: false);
     super.initState();
     // WidgetsBinding.instance.addPostFrameCallback((_)async {
     // if(  Provider.of<privilge_vm>(context,listen: false)
@@ -68,8 +72,7 @@ class _salesproductState extends State<salesproduct> {
     //       .checkprivlge('89')==true)
     //    type='userSum';
     // });
-    if(!haveMarketingPrivilege)
-    getData();
+    if (!haveMarketingPrivilege) getData();
   }
 
   Future<void> getData() async {
@@ -84,23 +87,23 @@ class _salesproductState extends State<salesproduct> {
     if (idregoin == '0') idregoin = userModel.fkRegoin.toString();
 
     String paramPrivilege = '';
-    if (privilegeVm.checkPrivilege('87') == true) paramPrivilege = '&id_user=$iduser';
-    if (privilegeVm.checkPrivilege('90') == true) paramPrivilege = '&id_regoin=$idregoin';
+    if (_privilegeCubit.checkPrivilege('87') == true) paramPrivilege = '&id_user=$iduser';
+    if (_privilegeCubit.checkPrivilege('90') == true) paramPrivilege = '&id_regoin=$idregoin';
 
-    if (privilegeVm.checkPrivilege('89') == true) {
+    if (_privilegeCubit.checkPrivilege('89') == true) {
       if (iduser == '' && idregoin != '') paramPrivilege = '&id_regoin=$idregoin';
       if (iduser != '' && idregoin == '') paramPrivilege = '&id_user=$iduser';
     }
-    if (privilegeVm.checkPrivilege('87') == true ||
-        privilegeVm.checkPrivilege('89') == true ||
-        privilegeVm.checkPrivilege('90') == true) {
+    if (_privilegeCubit.checkPrivilege('87') == true ||
+        _privilegeCubit.checkPrivilege('89') == true ||
+        _privilegeCubit.checkPrivilege('90') == true) {
       String params = '';
       if (typeproduct == 'أجهزة') params = '&product=0';
       if (typeproduct == 'برامج') params = '&product=1';
       String isMarketingParams = '';
-      if(isMarketing){
+      if (isMarketing) {
         isMarketingParams = '&ismarketing=1';
-      }else{
+      } else {
         isMarketingParams = '';
       }
       var data;
@@ -140,7 +143,7 @@ class _salesproductState extends State<salesproduct> {
       rowsdata = [];
       for (int i = 0; i < data.length; i++) {
         tempData.add(BarModel.fromJson(data[i]));
-        
+
         totalval += tempData[i].y;
         rowsdata.add(DataRow(
           cells: <DataCell>[
@@ -247,7 +250,6 @@ class _salesproductState extends State<salesproduct> {
                         options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
                         buttons: ['سنوي', 'شهري', 'يومي'],
                         onSelected: (_, index, isselected) {
-                          
                           switch (index) {
                             case 0:
                               type = 'dateyear';
@@ -277,7 +279,7 @@ class _salesproductState extends State<salesproduct> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('89') == true
+                _privilegeCubit.checkPrivilege('89') == true
                     ? Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -307,8 +309,7 @@ class _salesproductState extends State<salesproduct> {
                       )
                     : Container(),
                 Expanded(
-                  child: Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('89') == true ||
-                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('90') == true
+                  child: _privilegeCubit.checkPrivilege('89') == true || _privilegeCubit.checkPrivilege('90') == true
                       ? //user
                       Padding(
                           padding: const EdgeInsets.only(
@@ -319,17 +320,16 @@ class _salesproductState extends State<salesproduct> {
                             builder: (context, cart, child) {
                               return Row(
                                 children: [
-                                  if(cart.selectedUser != null)
-                                    ...{
-                                      IconButton(
-                                          onPressed: () {
-                                            iduser = '0';
-                                            cart.changevalueuser(null);
-                                            getData();
-                                          },
-                                          icon: Icon(Icons.highlight_off)),
-                                      SizedBox(width: 10),
-                                    },
+                                  if (cart.selectedUser != null) ...{
+                                    IconButton(
+                                        onPressed: () {
+                                          iduser = '0';
+                                          cart.changevalueuser(null);
+                                          getData();
+                                        },
+                                        icon: Icon(Icons.highlight_off)),
+                                    SizedBox(width: 10),
+                                  },
                                   Expanded(
                                     child: DropdownSearch<UserModel>(
                                       mode: Mode.DIALOG,
@@ -479,7 +479,6 @@ class _salesproductState extends State<salesproduct> {
                                               _selectedDatemonth = dateTime;
                                             });
 
-                                            
                                             // close the dialog when year is selected.
                                             Navigator.pop(context);
                                             getData();
@@ -590,7 +589,6 @@ class _salesproductState extends State<salesproduct> {
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['الكل', 'أجهزة', 'برامج'],
                         onSelected: (_, index, isselected) {
-                          
                           switch (index) {
                             case 0:
                               typeproduct = 'الكل';
@@ -784,7 +782,7 @@ class _salesproductState extends State<salesproduct> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        
+
         if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
@@ -802,7 +800,7 @@ class _salesproductState extends State<salesproduct> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        
+
         if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }

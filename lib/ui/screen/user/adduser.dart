@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/manage_provider.dart';
@@ -6,15 +8,16 @@ import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custom_button_new.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../labeltext.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -45,7 +48,7 @@ class _addUserState extends State<addUser> {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       // controllerUsers= Provider.of<user_vm_provider>
       //   (context,listen: false).userall!;
-      Provider.of<level_vm>(context, listen: false).getlevel();
+      context.read<PrivilegeCubit>().getLevels(context.read<UserProvider>().currentUser);
       // Provider.of<level_vm>(context, listen: false).get_periorty();
       Provider.of<manage_provider>(context, listen: false).getmanage();
 
@@ -208,22 +211,19 @@ class _addUserState extends State<addUser> {
                     ),
                     RowEdit(name: label_level, des: '*'),
 
-                    Consumer<level_vm>(
-                      builder: (context, cart, child) {
+                    BlocBuilder<PrivilegeCubit, PrivilegeState>(
+                      builder: (context, state) {
                         return DropdownButtonFormField(
                           isExpanded: true,
-                          //hint: Text("حدد حالة العميل"),
-                          items: cart.listoflevel_periorty.map((level_one) {
+                          items: state.priorityState.map((level_one) {
                             return DropdownMenuItem(
-                              child: Text(level_one.nameLevel), //label of item
+                              child: Text(level_one.nameLevel ?? ''), //label of item
                               value: level_one.idLevel, //value of item
                             );
                           }).toList(),
-                          value: cart.selectedValueLevel,
+                          value: state.selectedLevelId,
                           onChanged: (value) {
-                            //  setState(() {
-                            cart.changeVal(value.toString());
-                            // });
+                            context.read<PrivilegeCubit>().onChangeLevelId(value.toString());
                           },
                           validator: (value) {
                             if (value == null) {
@@ -328,69 +328,82 @@ class _addUserState extends State<addUser> {
                     ),
                     //show chose image
                     Center(
-                      child: custom_button_new(
-                        // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),
-                        onpress: () {
-                          _formKey.currentState!.save();
-                          final validate = _formKey.currentState!.validate();
-                          if (!validate) {
-                            return;
+                      child: BlocBuilder<PrivilegeCubit, PrivilegeState>(
+                        builder: (context, state) {
+                          if (state.levelsState.isLoading) {
+                            return SizedBox.shrink();
                           }
-
-                          final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
-                          final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
-                          bool hasChanges = selectedMainCityIds.isNotEmpty;
-
-                          String? regoin = Provider.of<RegionProvider>(context, listen: false).selectedValueuser;
-                          String? regoinname = regoin == null
-                              ? ""
-                              : Provider.of<RegionProvider>(context, listen: false)
-                                  .listRegion
-                                  .firstWhere((element) => element.regionId == regoin)
-                                  .regionName;
-
-                          String? level = Provider.of<level_vm>(context, listen: false).selectedValueLevel;
-                          String levelname = Provider.of<level_vm>(context, listen: false)
-                              .listoflevel
-                              .firstWhere((element) => element.idLevel == level)
-                              .nameLevel;
-
-                          String? id_country =
-                              Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
-                          if (level != null &&
-                              emailController.text.toString().trim().isNotEmpty &&
-                              nameController.text.toString().trim().isNotEmpty &&
-                              mobileController.text.toString().trim().isNotEmpty) {
-                            Provider.of<LoadProvider>(context, listen: false).changeboolValueUser(true);
-                            Map<String, String?> body = {
-                              "nameUser": nameController.text,
-                              'email': emailController.text != null ? emailController.text : "",
-                              'mobile': mobileController.text != null ? mobileController.text : "",
-                              'fk_country': id_country,
-                              'type_administration': namemanage,
-                              // != null
-                              // ? namemanage
-                              // : "",
-                              'type_level': level,
-                              'name_level': levelname,
-                              'name_regoin': regoinname,
-                              'fkuserAdd':
-                                  Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
-                              'fk_regoin': regoin != null ? regoin : "null",
-                            };
-                            Provider.of<UserProvider>(context, listen: false)
-                                .addUserVm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "",selectedRegion.map((e) => e.asUserRegion()).toList())
-                                .then((value) => value != "repeat" ? clear() : error());
-                          } else {
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(SnackBar(content: Text('تأكد من الخيارات من فضلك')));
+                          if (state.levelsState.isLoading) {
+                            return IconButton(
+                                onPressed: () =>
+                                    context.read<PrivilegeCubit>().getLevels(context.read<UserProvider>().currentUser),
+                                icon: Icon(Icons.refresh));
                           }
+                          return custom_button_new(
+                            // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),
+                            onpress: () {
+                              _formKey.currentState!.save();
+                              final validate = _formKey.currentState!.validate();
+                              if (!validate) {
+                                return;
+                              }
+
+                              final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
+                              final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
+                              bool hasChanges = selectedMainCityIds.isNotEmpty;
+
+                              String? regoin = Provider.of<RegionProvider>(context, listen: false).selectedValueuser;
+                              String? regoinname = regoin == null
+                                  ? ""
+                                  : Provider.of<RegionProvider>(context, listen: false)
+                                      .listRegion
+                                      .firstWhere((element) => element.regionId == regoin)
+                                      .regionName;
+
+                              String? level = state.selectedLevelId;
+                              String? levelname = state.levelsState.data
+                                  .firstWhereOrNull((element) => element.idLevel == level)
+                                  ?.nameLevel;
+
+                              String? id_country =
+                                  Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
+                              if (level != null &&
+                                  emailController.text.toString().trim().isNotEmpty &&
+                                  nameController.text.toString().trim().isNotEmpty &&
+                                  mobileController.text.toString().trim().isNotEmpty) {
+                                Provider.of<LoadProvider>(context, listen: false).changeboolValueUser(true);
+                                Map<String, String?> body = {
+                                  "nameUser": nameController.text,
+                                  'email': emailController.text != null ? emailController.text : "",
+                                  'mobile': mobileController.text != null ? mobileController.text : "",
+                                  'fk_country': id_country,
+                                  'type_administration': namemanage,
+                                  // != null
+                                  // ? namemanage
+                                  // : "",
+                                  'type_level': level,
+                                  'name_level': levelname,
+                                  'name_regoin': regoinname,
+                                  'fkuserAdd':
+                                      Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
+                                  'fk_regoin': regoin != null ? regoin : "null",
+                                };
+                                Provider.of<UserProvider>(context, listen: false)
+                                    .addUserVm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "",
+                                        selectedRegion.map((e) => e.asUserRegion()).toList())
+                                    .then((value) => value != "repeat" ? clear() : error());
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(content: Text('تأكد من الخيارات من فضلك')));
+                              }
+                            },
+                            text:
+                                //Text(
+                                'إضافة الموظف ',
+                            // style: TextStyle(color: kMainColor),
+                            //)
+                          );
                         },
-                        text:
-                            //Text(
-                            'إضافة الموظف ',
-                        // style: TextStyle(color: kMainColor),
-                        //)
                       ),
                     )
                   ],

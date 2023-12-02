@@ -1,20 +1,9 @@
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/ActivityModel.dart';
-import 'package:crm_smart/model/levelmodel.dart';
-import 'package:crm_smart/model/participatModel.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
-import 'package:crm_smart/model/reasonmodel.dart';
 import 'package:crm_smart/ui/screen/partic_agent/participate_add.dart';
-import 'package:crm_smart/ui/screen/privilges/privilge.dart';
-import 'package:crm_smart/view_model/level_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
-import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../core/config/theme/theme.dart';
-import '../../../view_model/activity_vm.dart';
 import '../../../view_model/participate_vm.dart';
 
 class participate_view extends StatefulWidget {

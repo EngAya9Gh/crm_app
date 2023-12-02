@@ -1,3 +1,4 @@
+import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/search_mixin.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
@@ -8,17 +9,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../model/privilgemodel.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/activity_vm.dart';
-import '../../../../view_model/privilge_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/custom_paged_list_view.dart';
+import '../../../manage_privilege/data/models/privilege_model.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
 import 'action_client_page.dart';
@@ -34,24 +36,25 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
   late ClientsListBloc _clientsListBloc;
   late final String fkCountry;
   late final UserModel userModel;
+  late PrivilegeCubit _privilegeCubit;
 
   @override
   void initState() {
     userModel = context.read<UserProvider>().currentUser;
+    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+
     fkCountry = userModel.fkCountry.toString();
     _clientsListBloc = context.read<ClientsListBloc>();
     _clientsListBloc.state.clientsListController.addPageRequestListener((pageKey) {
       _clientsListBloc.add(GetAllClientsListEvent(
         fkCountry: fkCountry,
         page: pageKey,
-        userPrivilegeId: context.read<PrivilegeProvider>().checkPrivilege('16') ? userModel.idUser : null,
-        regionPrivilegeId: context.read<PrivilegeProvider>().checkPrivilege('15') ? userModel.fkRegoin : null,
+        userPrivilegeId: _privilegeCubit.checkPrivilege('16') ? userModel.idUser : null,
+        regionPrivilegeId: _privilegeCubit.checkPrivilege('15') ? userModel.fkRegoin : null,
       ));
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
-      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
@@ -84,7 +87,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
         appBarParams: AppBarParams(
           title: 'قائمة العملاء',
           action: [
-            if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('47'))
+            if (_privilegeCubit.checkPrivilege('47'))
               AppTextButton(
                 text: "إضافة عميل",
                 onPressed: () {

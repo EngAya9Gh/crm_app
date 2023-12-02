@@ -1,12 +1,14 @@
-import 'package:crm_smart/model/privilgemodel.dart';
+import 'dart:io';
+
+import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/UserService.dart';
 
 // import 'package:dartz/dartz.dart';
 // import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
 
 import '../api/api.dart';
 import '../constants.dart';
@@ -183,10 +185,14 @@ class UserProvider extends ChangeNotifier {
       await _getUsersVm();
       String? id = prefs.getString('id_user');
       if (id != null) {
-
         final index = allUsers.indexWhere((element) => element.idUser == id && element.isActive == '1');
         if (index >= 0) {
           currentUser = allUsers[index];
+          final response = await GetIt.I<PrivilegeCubit>().getUserPrivileges(currentUser.typeLevel.toString());
+          if(!response){
+            prefs.setString("id_user1", '0');
+            return prefs;
+          }
           currentUser.path = "";
           notifyListeners();
           prefs.setString("id_user1", '-1');
@@ -199,9 +205,7 @@ class UserProvider extends ChangeNotifier {
       } else {
         return prefs;
       }
-    } catch (e) {
-      
-    }
+    } catch (e) {}
     notifyListeners();
     return prefs;
   }

@@ -1,20 +1,9 @@
-
-
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/levelmodel.dart';
-import 'package:crm_smart/model/managmodel.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/regoin_model.dart';
-import 'package:crm_smart/provider/manage_provider.dart';
-import 'package:crm_smart/ui/screen/privilges/addmanage.dart';
-import 'package:crm_smart/ui/screen/privilges/privilge.dart';
-import 'package:crm_smart/view_model/level_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../core/config/theme/theme.dart';
 import 'add_regoin.dart';
 

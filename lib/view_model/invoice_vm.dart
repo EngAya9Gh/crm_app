@@ -3,11 +3,11 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/common/models/page_state/page_state.dart' as pageState;
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/Invoice_Service.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/agent_distributor_model.dart';
 import '../model/calendar/event.dart';
 import '../model/participatModel.dart';
@@ -94,7 +95,7 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchwait(String productName) async {
+  Future<void> searchwait(String productName, PrivilegeCubit privilegeCubit) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
@@ -108,10 +109,10 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else {
-      if (privilgelist.firstWhere((element) => element.fkPrivileg == 2) == true)
+      if (privilegeCubit.state.userPrivilegesState.data.firstWhereOrNull((element) => element.fkPrivilege == '2')?.isCheck! ?? false)
         getinvoice_Local('مشترك', 'not approved', 'country');
       else {
-        if (privilgelist.firstWhere((element) => element.fkPrivileg == 7) == true)
+        if (privilegeCubit.state.userPrivilegesState.data.firstWhereOrNull((element) => element.fkPrivilege == '7')?.isCheck! ?? false)
           getinvoice_Local('مشترك', 'not approved', 'regoin');
       }
     }
@@ -179,7 +180,7 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchwaitwithprev(String productName) async {
+  Future<void> searchwaitwithprev(String productName,PrivilegeCubit privilegeCubit) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
@@ -193,11 +194,11 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else
-      getinvoice_Localwithprev();
+      getinvoice_Localwithprev(privilegeCubit);
     notifyListeners();
   }
 
-  Future<void> searchmarketing(String productName) async {
+  Future<void> searchmarketing(String productName,PrivilegeCubit privilegeCubit) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
@@ -211,15 +212,15 @@ class invoice_vm extends ChangeNotifier {
         listinvoicesMarketing = _listInvoicesAccept;
       }
     } else
-      getinvoice_marketing(); //getinvoice_Local("مشترك",'approved client',null);
+      getinvoice_marketing(privilegeCubit); //getinvoice_Local("مشترك",'approved client',null);
     notifyListeners();
   }
 
-  void getinvoice_marketing() async {
+  void getinvoice_marketing(PrivilegeCubit privilegeCubit) async {
     listinvoicesMarketing = [];
     isloading_marketing = true;
     notifyListeners();
-    await getinvoiceswithprev_marketing();
+    await getinvoiceswithprev_marketing(privilegeCubit);
     list_temp = List.from(listInvoicesAccept);
     listinvoicesMarketing = List.from(list_temp);
     isloading_marketing = false;
@@ -716,13 +717,13 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getinvoice_Localwithprev() async {
+  Future<void> getinvoice_Localwithprev(PrivilegeCubit privilegeCubit) async {
     // Stopwatch stopwatch = Stopwatch();
     // stopwatch.start();
     listInvoicesAccept = [];
     isloading = true;
     notifyListeners();
-    await getinvoiceswithprev();
+    await getinvoiceswithprev(privilegeCubit);
     listInvoicesAccept =
         listInvoicesAccept.where((element) => element.stateclient == 'مشترك' && element.isApprove == "1").toList();
     listforme = List.from(listInvoicesAccept);
@@ -732,21 +733,21 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getinvoice_Debt() async {
+  Future<void> getinvoice_Debt(PrivilegeCubit privilegeCubit) async {
     List<InvoiceModel> list = [];
     listInvoicesAccept = [];
     isloading = true;
     notifyListeners();
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '94').isCheck == '1' ? true : false;
+    bool res = privilegeCubit.checkPrivilege('94');
     if (res) {
       listinvoices = await Invoice_Service().getinvoice_debt(usercurrent!.fkCountry.toString(), "all", '');
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == '93').isCheck == '1' ? true : false;
+      res = privilegeCubit.checkPrivilege('93');
       if (res) {
         listinvoices = await Invoice_Service()
             .getinvoice_debt(usercurrent!.fkCountry.toString(), "regoin", usercurrent!.fkRegoin!.toString());
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == '92').isCheck == '1' ? true : false;
+        res = privilegeCubit.checkPrivilege('92');
         if (res) {
           listinvoices = await Invoice_Service()
               .getinvoice_debt(usercurrent!.fkCountry.toString(), 'users', usercurrent!.idUser.toString());
@@ -967,30 +968,23 @@ class invoice_vm extends ChangeNotifier {
     }
   }
 
-  void setvaluepriv(privilgelistparam) {
-    privilgelist = privilgelistparam;
-    notifyListeners();
-  }
-
-  List<PrivilgeModel> privilgelist = [];
-
   Future<void> getinvoices() async {
     listinvoices = await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
     listInvoicesAccept = List.from(listinvoices);
     notifyListeners();
   }
 
-  Future<void> getinvoiceswithprev_marketing() async {
+  Future<void> getinvoiceswithprev_marketing(PrivilegeCubit privilegeCubit) async {
     //main list
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '130').isCheck == '1' ? true : false;
+    bool res = privilegeCubit.checkPrivilege('130');
     if (res) {
       listinvoices = await Invoice_Service().getinvoiceMarketing(usercurrent!.fkCountry.toString());
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == '131').isCheck == '1' ? true : false;
+      res = privilegeCubit.checkPrivilege('131');
       if (res) {
         listinvoices = await Invoice_Service().getinvoicebyregoin_marketing(usercurrent!.fkRegoin!);
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == '132').isCheck == '1' ? true : false;
+        res = privilegeCubit.checkPrivilege('132');
         if (res) {
           listinvoices = await Invoice_Service().getinvoicebyiduser_marketing(usercurrent!.idUser.toString());
         }
@@ -1000,18 +994,18 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getinvoiceswithprev() async {
+  Future<void> getinvoiceswithprev(PrivilegeCubit privilegeCubit) async {
     // if(listClient.isEmpty)
     //main list
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '1').isCheck == '1' ? true : false;
+    bool res = privilegeCubit.checkPrivilege('1');
     if (res) {
       listinvoices = await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == '38').isCheck == '1' ? true : false;
+      res = privilegeCubit.checkPrivilege('38');
       if (res) {
         listinvoices = await Invoice_Service().getinvoicebyregoin(usercurrent!.fkRegoin!);
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == '6').isCheck == '1' ? true : false;
+        res = privilegeCubit.checkPrivilege('6');
         if (res) {
           listinvoices = await Invoice_Service().getinvoicebyiduser(usercurrent!.idUser.toString());
         }

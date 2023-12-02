@@ -1,22 +1,21 @@
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/widgets/client_widget/cardAllclient.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
-import '../../../features/app/presentation/widgets/app_bottom_sheet.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'addClient.dart';
-import '../../../features/clients_list/presentation/pages/filter_clients_sheet.dart';
 
 class tabclients extends StatefulWidget {
   tabclients({Key? key}) : super(key: key);
@@ -46,9 +45,7 @@ class _tabclientsState extends State<tabclients> {
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
       Provider.of<ClientTypeProvider>(context, listen: false).changevaluefilter(null);
       Provider.of<ClientProvider>(context, listen: false).clear();
-      List<PrivilgeModel> list = Provider.of<PrivilegeProvider>(context, listen: false).privilegeList;
-      Provider.of<ClientProvider>(context, listen: false).setvaluepriv(list);
-      Provider.of<ClientProvider>(context, listen: false).getclient_vm();
+      Provider.of<ClientProvider>(context, listen: false).getclient_vm(GetIt.I<PrivilegeCubit>());
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
@@ -84,14 +81,14 @@ class _tabclientsState extends State<tabclients> {
           style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
         ),
       ),
-      floatingActionButton: Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('47') == true
+      floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('47') == true
           ? FloatingActionButton(
               backgroundColor: kMainColor,
               onPressed: () {
                 Navigator.push(context, CupertinoPageRoute(builder: (context) => addClient()));
               },
               tooltip: 'إضافة عميل',
-              child: Icon(Icons.add,color: AppColors.white),
+              child: Icon(Icons.add, color: AppColors.white),
             )
           : Container(),
       body: Consumer<ClientProvider>(

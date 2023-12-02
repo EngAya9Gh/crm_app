@@ -25,6 +25,7 @@ import '../../../../ui/widgets/custom_widget/RowWidget.dart';
 import '../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../view_model/privilge_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class WithdrawnDetailsPage extends StatefulWidget {
@@ -173,7 +174,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                           title: 'الحالة',
                           value: WithdrawalStatus.values[int.parse(data.approveBackDone!)].text,
                           withDivider: false),
-                      if (context.read<PrivilegeProvider>().checkPrivilege('145') &&
+                      if (context.read<PrivilegeCubit>().checkPrivilege('145') &&
                           state.currentInvoice?.approveBackDone == '0') ...{
                         Spacer(),
                         if (state.deleteWithdrawnRequestStatus.isLoading())

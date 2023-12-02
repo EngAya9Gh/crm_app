@@ -16,9 +16,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
+
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event.dart';
-import '../../../view_model/privilge_vm.dart';
 import 'clientView.dart';
 
 class ProfileClient extends StatefulWidget {
@@ -191,23 +192,20 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             ),
             // toolbarHeight: 75,
           ),
-          body:
-          ValueListenableBuilder<int>(
+          body: ValueListenableBuilder<int>(
               valueListenable: _currentTabIndex,
               builder: (context, currentIndex, _) {
                 return Column(
                   children: [
-
                     if ((client!.tag ?? false) && currentIndex != 0) ...{
                       SizedBox(height: 20),
-
-                      (Provider.of<PrivilegeProvider>(context, listen: false)
-                          .checkPrivilege('133') == true)?
-                      Icon(
-                        CupertinoIcons.checkmark_seal_fill,
-                        color: Colors.amber,
-                      ):Container(),
-                    } ,
+                      (context.read<PrivilegeCubit>().checkPrivilege('133'))
+                          ? Icon(
+                              CupertinoIcons.checkmark_seal_fill,
+                              color: Colors.amber,
+                            )
+                          : Container(),
+                    },
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.only(bottom: 1),

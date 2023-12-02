@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../function_global.dart';
 
 class TicketView extends StatefulWidget {
@@ -86,7 +87,7 @@ class _TicketViewState extends State<TicketView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         widget.ticketModel.dateRecive == null
-                            ? Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('71') == true
+                            ? context.read<PrivilegeCubit>().checkPrivilege('71') == true
                                 ? Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 5.0),
@@ -106,8 +107,7 @@ class _TicketViewState extends State<TicketView> {
                                     ),
                                   )
                                 : widget.ticketModel.dateClose == null
-                                    ? Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('72') ==
-                                            true
+                                    ? context.read<PrivilegeCubit>().checkPrivilege('72')
                                         ? //regoin
                                         Expanded(
                                             child: Padding(
@@ -141,7 +141,7 @@ class _TicketViewState extends State<TicketView> {
                                     : Container()
                             : Container(),
                         widget.ticketModel.dateRecive != null && widget.ticketModel.dateClose == null
-                            ? Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('75') == true
+                            ? context.read<PrivilegeCubit>().checkPrivilege('75') == true
                                 ? Expanded(
                                     child: Padding(
                                       padding: const EdgeInsets.only(right: 5.0),

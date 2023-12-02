@@ -43,7 +43,6 @@ class _SplashScreenState extends State<SplashScreen> {
           SplashScreen.checkLogin(context);
         }
       });
-      // check();
     });
     super.initState();
   }

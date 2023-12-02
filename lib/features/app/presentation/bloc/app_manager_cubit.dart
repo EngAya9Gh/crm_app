@@ -83,7 +83,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         hasUpdate = true;
       }
 
-      return Tuple2(hasUpdate, updateMandatory);
+      return Tuple2(hasUpdate, false);
     } catch (e) {
       return null;
     }

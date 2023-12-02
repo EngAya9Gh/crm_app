@@ -1,19 +1,17 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
-
 import '../api/api.dart';
 import '../constants.dart';
-import '../model/ActivityModel.dart';
+import '../features/manage_privilege/data/models/privilege_model.dart';
+import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/lastCommentClientModel.dart';
-import '../model/privilgemodel.dart';
 import '../model/usermodel.dart';
-import '../services/configService.dart';
 
 class lastcommentclient_vm extends ChangeNotifier {
   List<LastcommentClientModel> list_LastcommentClientModel = [];
   List<LastcommentClientModel> list_LastcommentClientModel_temp = [];
   bool isload = false;
   String order='ASC';
-  List<PrivilgeModel> privilgelist = [];
   UserModel? usercurrent;
   String param = '';
 
@@ -21,30 +19,29 @@ class lastcommentclient_vm extends ChangeNotifier {
     usercurrent = user;
     notifyListeners();
   }
-  void setvaluepriv(privilgelistparam,bool ismarketing) {
+  void setvaluepriv(PrivilegeCubit privilegeCubit,bool ismarketing) {
 
-    privilgelist = privilgelistparam;
-    param=get_privilgelist(  ismarketing);
+    param=get_privilgelist(  ismarketing,privilegeCubit);
 
     notifyListeners();
   }
-  String get_privilgelist(bool   ismarketing) {
+  String get_privilgelist(bool   ismarketing,PrivilegeCubit privilegeCubit) {
     // if(listClient.isEmpty)
     //main list
     String param = '';
-    bool res =   privilgelist?.firstWhere((element) => element.fkPrivileg == '155').isCheck == '1'  ? true : false;
+    bool res =   privilegeCubit.checkPrivilege('155');
     if(res)
       param = 'fk_country='+usercurrent!.fkCountry.toString()+'&ismarketing=1';
     else {
-    res = privilgelist?.firstWhere((element) => element.fkPrivileg == '138').isCheck == '1' ? true : false;
+    res = privilegeCubit.checkPrivilege('138');
     if (res) {
       param = 'fk_country='+usercurrent!.fkCountry.toString();
     } else {
-      res = privilgelist?.firstWhere((element) => element.fkPrivileg == '139').isCheck == '1' ? true : false;
+      res = privilegeCubit.checkPrivilege('139');
       if (res) {
         param = 'fk_regoin=' + usercurrent!.fkRegoin.toString();
       } else {
-        res = privilgelist?.firstWhere((element) => element.fkPrivileg == '140').isCheck == '1' ? true : false;
+        res = privilegeCubit.checkPrivilege('140');
         if (res) {
           param = 'fk_user=' + usercurrent!.idUser.toString();
         }

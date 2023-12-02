@@ -146,7 +146,7 @@ class EventProvider extends ChangeNotifier {
     this.fkCountry = fkCountry;
   }
 
-  // Future<void> getevent_vm(// List<PrivilgeModel> privilgelist
+  // Future<void> getevent_vm(// List<PrivilegeModel> privilgelist
   //     ) async {
   //   loadEvents = false;
   //   notifyListeners();
