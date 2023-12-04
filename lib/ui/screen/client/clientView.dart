@@ -14,6 +14,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/clients_list/presentation/pages/action_client_page.dart';
 import '../../../function_global.dart';
 
 class ClientView extends StatefulWidget {
@@ -268,21 +269,20 @@ class _ClientViewState extends State<ClientView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Expanded(
-                              //   child: ElevatedButton(
-                              //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                              //     onPressed: () async {
-                              //       Navigator.push(
-                              //           context,
-                              //           CupertinoPageRoute(
-                              //               builder: (context) => editclient(
-                              //                   client: clientModel,
-                              //                   fkclient: clientModel.idClients.toString(),
-                              //                   fkuser: clientModel.fkUser.toString())));
-                              //     },
-                              //     child: Text('تعديل بيانات العميل'),
-                              //   ),
-                              // ),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  onPressed: () async {
+                                    // final ClientModel? obj =state.currentClientModel.data;
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => ActionClientPage(client:    ),
+                                        ));
+                                  },
+                                  child: Text('تعديل بيانات العميل'),
+                                ),
+                              ),
                               clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
                                   ? SizedBox(
                                       width: 5,
