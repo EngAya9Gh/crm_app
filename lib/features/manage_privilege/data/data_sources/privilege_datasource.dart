@@ -86,7 +86,7 @@ class PrivilegeDatasource {
         ),
       );
 
-      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
       return ResponseWrapper(message: null, data: null);
     }
 

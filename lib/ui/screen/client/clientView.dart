@@ -281,20 +281,20 @@ class _ClientViewState extends State<ClientView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                                  onPressed: () async {
-                                    // final ClientModel? obj =state.currentClientModel.data;
-                                    Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) => ActionClientPage(client:    ),
-                                        ));
-                                  },
-                                  child: Text('تعديل بيانات العميل'),
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: ElevatedButton(
+                              //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                              //     onPressed: () async {
+                              //       // final ClientModel? obj =state.currentClientModel.data;
+                              //       Navigator.push(
+                              //           context,
+                              //           CupertinoPageRoute(
+                              //             builder: (context) => ActionClientPage(client: widget.client,),
+                              //           ));
+                              //     },
+                              //     child: Text('تعديل بيانات العميل'),
+                              //   ),
+                              // ),
                               clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
                                   ? SizedBox(
                                       width: 5,
@@ -650,7 +650,7 @@ class _ClientViewState extends State<ClientView> {
                   widget.invoice != null
                       ? widget.invoice!.isApprove != 1 &&
                               widget.invoice!.isApproveFinance == null &&
-                              context.read<PrivilegeCubit>().checkPrivilege('111') == true &&
+                              Provider.of<PrivilegeCubit>(context, listen: true).checkPrivilege('111') == true &&
                               widget.typeinvoice == 'f'
                           ? Center(
                               child: ElevatedButton(

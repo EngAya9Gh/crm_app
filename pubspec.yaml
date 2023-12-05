@@ -1,7 +1,7 @@
 name: crm_smart
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.0.10+16
+version: 1.1.0+17
 
 environment:
   sdk: ">=2.15.0 <3.0.0"
