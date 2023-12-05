@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/clients_list/presentation/pages/action_client_page.dart';
 import '../../../function_global.dart';
 
 class ClientView extends StatefulWidget {
@@ -280,21 +281,20 @@ class _ClientViewState extends State<ClientView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Expanded(
-                              //   child: ElevatedButton(
-                              //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                              //     onPressed: () async {
-                              //       Navigator.push(
-                              //           context,
-                              //           CupertinoPageRoute(
-                              //               builder: (context) => editclient(
-                              //                   client: clientModel,
-                              //                   fkclient: clientModel.idClients.toString(),
-                              //                   fkuser: clientModel.fkUser.toString())));
-                              //     },
-                              //     child: Text('تعديل بيانات العميل'),
-                              //   ),
-                              // ),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  onPressed: () async {
+                                    // final ClientModel? obj =state.currentClientModel.data;
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => ActionClientPage(client:    ),
+                                        ));
+                                  },
+                                  child: Text('تعديل بيانات العميل'),
+                                ),
+                              ),
                               clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
                                   ? SizedBox(
                                       width: 5,
@@ -336,7 +336,14 @@ class _ClientViewState extends State<ClientView> {
                   widget.clienttransfer == null ||
                           context.read<PrivilegeCubit>().checkPrivilege('150') == true
                       ? Container()
-                      : Center(
+                      :
+                  // Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+
+            clientModel.reasonTransfer==Provider.of<UserProvider>(context, listen: false)
+          .currentUser
+          .idUser
+          .toString()?
+                  Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -474,7 +481,7 @@ class _ClientViewState extends State<ClientView> {
                               ),
                             ],
                           ),
-                        ),
+                        ):Container(),
                   widget.invoice != null
                       ? widget.invoice!.isApprove == null
                           ? Center(

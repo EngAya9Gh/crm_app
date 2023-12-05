@@ -98,15 +98,16 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
                         ),
                         20.verticalSpacingRadius,
                         if (isShowingActionButtons) ...{
-                          Padding(
-                            padding: HWEdgeInsets.symmetric(horizontal: 20),
-                            child: AppTextField(
-                              labelText: "ملاحظة*",
-                              maxLines: 1,
-                              validator: HelperFunctions.instance.requiredFiled,
-                              controller: _noteController,
-                            ),
-                          ),
+                        Padding(
+                        padding: HWEdgeInsets.symmetric(horizontal: 20),
+                        child: AppTextField(
+                          labelText: "ملاحظة*",
+                          maxLines: 2,
+
+                          validator: HelperFunctions.instance.requiredFiled,
+                          controller: _noteController,
+                        ),
+                        ),
                           20.verticalSpace,
                           if (state.setApproveSeriesState.isLoading())
                             Center(child: CircularProgressIndicator())
@@ -175,9 +176,11 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
                   "الملاحظة: ",
                   style: context.textTheme.bodyMedium!.withColor(AppColors.grey),
                 ),
-                AppText(
-                  "${data.notesApprove}",
-                  style: context.textTheme.bodyMedium!.withColor(data.withdrawalStatus.color),
+                Flexible(
+                  child: AppText(
+                    "${data.notesApprove}",
+                    style: context.textTheme.bodyMedium!.withColor(data.withdrawalStatus.color),
+                  ),
                 ),
               ],
             ),
