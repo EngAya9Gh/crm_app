@@ -46,7 +46,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     result.fold(
       (exception, message) => emit(state.copyWith(levelsState: const PageState.error())),
       (value) {
-        final list = _filterPriorityLevels(value.data ?? [], user.periorty!);
+        final list = _filterPriorityLevels(value.message ?? [], user.periorty!);
 
         emit(state.copyWith(
           levelsState: PageState.loaded(data: value.message ?? value.data ?? []),
