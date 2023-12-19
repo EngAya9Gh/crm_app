@@ -1,13 +1,14 @@
 abstract class EndPoints {
   EndPoints._();
 
-  static const baseUrl = "http://smartcrm.ws/aya/api/";
+  static const baseUrl = "http://smartcrm.ws/test/api/";
   static const care = _Care();
   static const client = _Client();
   static const users = _Users();
   static const series = _Series();
   static const app = _App();
   static const privilege = _Privilege();
+  static const task = _Task();
 }
 
 class _App {
@@ -63,4 +64,11 @@ class _Client {
   final addRejectReasons = "client/reason_client_reject/Add_reasonRejectClient.php";
   final editRejectReasons = "client/reason_client_reject/Edit_reasonRejectClient.php";
   final distinctiveClient = "star_client/get_client_star.php";
+}
+
+class _Task {
+  const _Task();
+
+  final addTask = 'addTask';
+  final filterTasksByAll = 'filterTaskesByAll';
 }
