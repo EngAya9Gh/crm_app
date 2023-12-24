@@ -8,6 +8,7 @@ import 'package:crm_smart/features/task_management/domain/repositories/task_repo
 import 'package:injectable/injectable.dart';
 
 import '../../../../model/usermodel.dart';
+import '../../data/models/user_region_department.dart';
 
 @injectable
 class AddTaskUsecase extends UseCase<Result<ResponseWrapper<bool>>, AddTaskParams> {
@@ -24,12 +25,12 @@ class AddTaskUsecase extends UseCase<Result<ResponseWrapper<bool>>, AddTaskParam
 class AddTaskParams {
   final String title;
   final List<UserModel> participants;
-  final UserModel assignTo;
+  final UserRegionDepartment? assignTo;
   final DateTime startDate;
   final DateTime deadLineDate;
   final File file;
-  final String regionId;
-  final String departmentId;
+  final String? regionId;
+  final String? departmentId;
   final bool? isRecurring;
   final String? recurringType;
   final String? numberOfRecurring;
@@ -39,12 +40,12 @@ class AddTaskParams {
   AddTaskParams({
     required this.title,
     required this.participants,
-    required this.assignTo,
+    this.assignTo,
     required this.startDate,
     required this.deadLineDate,
     required this.file,
-    required this.regionId,
-    required this.departmentId,
+    this.regionId,
+    this.departmentId,
     this.isRecurring,
     this.recurringType,
     this.numberOfRecurring,
@@ -60,7 +61,7 @@ class AddTaskParams {
     return {
       'title': title,
       'file_path': file,
-      "assigned_to": assignTo.idUser,
+      "assigned_to": assignTo?.idUser.toString(),
       'start_date': startDate.toIso8601String(),
       'deadline': deadLineDate.toIso8601String(),
       ...map,

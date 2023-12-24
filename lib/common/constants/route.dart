@@ -71,4 +71,6 @@ class _Task {
 
   final addTask = 'addTask';
   final filterTasksByAll = 'filterTaskesByAll';
+  final changeStatusTask = 'changeStatuseTask/';
+  final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
 }

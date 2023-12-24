@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
@@ -17,6 +18,7 @@ import 'package:intl/intl.dart' as Intl;
 
 import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import 'add_task_page.dart';
+import 'change_status_dialog.dart';
 import 'filter_task_sheet.dart';
 
 class TaskManagementListPage extends StatefulWidget {
@@ -58,12 +60,15 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                 builder: (context, state) {
                   if (GetIt.I<PrivilegeCubit>().checkPrivilege('158'))
                     return AppTextButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
+                      onPressed: () async {
+                        final result = await Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => AddTaskPage(),
                           ),
                         );
+                        if(result == true){
+                          _taskCubit.getTasks();
+                        }
                       },
                       text: "إضافة مهمة",
                       appButtonStyle: AppButtonStyle.secondary,
@@ -158,16 +163,32 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                           child: ListView.separated(
                             padding: HWEdgeInsets.symmetric(horizontal: 20),
                             separatorBuilder: (context, index) => 10.horizontalSpace,
-                            itemCount: TaskStatus.values.length,
+                            itemCount: TaskStatusType.values.length,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) => stageChip(
-                              TaskStatus.values[index],
-                              state.selectedStatus == TaskStatus.values[index],
+                              TaskStatusType.values[index],
+                              state.selectedStatus == TaskStatusType.values[index],
                             ),
                           ),
                         ),
                       ),
                       10.verticalSpace,
+                      Padding(
+                        padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            AppText(
+                              'عدد المهام: ',
+                              style: context.textTheme.bodySmall!.copyWith(color: context.colorScheme.grey500),
+                            ),
+                            AppText(
+                              '${tasksList.length}',
+                              style: context.textTheme.bodySmall!.copyWith(color: context.colorScheme.grey800),
+                            ),
+                          ],
+                        ),
+                      ),
                       Expanded(
                         child: ListView.separated(
                           itemCount: state.tasksList.length,
@@ -181,113 +202,213 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                             final secondList = assignToUserName?.split(' ').lastOrNull;
                             String? firstChar = (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
                             String? secondChar = (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
-                            if(firstChar == null){
-                              firstChar = assignToUserName?.substring(0,1);
+                            StringBuffer buffer = StringBuffer();
+
+                            if (firstChar == null) {
+                              firstChar = assignToUserName?.substring(0, 1);
                             }
-                            if(secondChar == null){
-                              secondChar = assignToUserName?.substring(1,2);
+                            if (secondChar == null) {
+                              secondChar = assignToUserName?.substring(1, 2);
                             }
 
-                            return IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  5.horizontalSpace,
-                                  Container(
-                                    width: 4,
-                                    decoration: BoxDecoration(
-                                      color: context.colorScheme.grey200,
-                                      borderRadius: BorderRadius.circular(5).r,
+                            buffer.writeAll([firstChar, secondChar], '.');
+
+                            final status =
+                                TaskStatusType.values.firstWhereOrNull((element) => element.name == task.name);
+                            return InkWell(
+                              onTap: status != null && status != TaskStatusType.Evaluated
+                                  ? () {
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        barrierLabel: task.id.toString(),
+                                        builder: (context) => BlocProvider.value(
+                                          value: _taskCubit,
+                                          child: ChangeStatusTaskDialog(
+                                            status: status,
+                                            taskModel: task,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  : null,
+                              child: IntrinsicHeight(
+                                child: Row(
+                                  children: [
+                                    5.horizontalSpace,
+                                    Container(
+                                      width: 4,
+                                      decoration: BoxDecoration(
+                                        color: status?.color,
+                                        borderRadius: BorderRadius.circular(5).r,
+                                      ),
                                     ),
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        10.verticalSpace,
-                                        Row(
-                                          children: [
-                                            20.horizontalSpace,
-                                            CircleAvatar(
-                                              backgroundColor: context.colorScheme.primary,
-                                              child: Center(
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          10.verticalSpace,
+                                          Row(
+                                            children: [
+                                              20.horizontalSpace,
+                                              CircleAvatar(
+                                                backgroundColor: context.colorScheme.primary,
+                                                child: Center(
+                                                  child: AppText(
+                                                    buffer.toString(),
+                                                    style: context.textTheme.titleMedium!
+                                                        .copyWith(color: context.colorScheme.white),
+                                                  ),
+                                                ),
+                                                radius: 22,
+                                              ),
+                                              10.horizontalSpace,
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    task.title ?? '',
+                                                    style: context.textTheme.titleMedium,
+                                                    overflow: TextOverflow.ellipsis,
+                                                    maxLines: 1,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        task.assignedByUser!.nameUser.toString(),
+                                                        style: context.textTheme.bodySmall!
+                                                            .copyWith(color: context.colorScheme.grey500),
+                                                      ),
+                                                      if ((task.assignedByUser?.nameUser?.isNotEmpty ?? false) &&
+                                                          (task.assignedToUser?.nameUser?.isNotEmpty ?? false))
+                                                        Text(' --> '),
+                                                      Text(
+                                                        task.assignedToUser!.nameUser.toString(),
+                                                        style: context.textTheme.bodySmall!
+                                                            .copyWith(color: context.colorScheme.primary),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          if (task.description?.isNotEmpty ?? false) ...{
+                                            10.verticalSpace,
+                                            Expanded(
+                                              child: Padding(
+                                                padding: EdgeInsetsDirectional.only(end: 50, start: 20),
                                                 child: AppText(
-                                                  "$firstChar.$secondChar",
-                                                  style: context.textTheme.titleMedium!
-                                                      .copyWith(color: context.colorScheme.white),
+                                                  task.description ?? '',
+                                                  style: context.textTheme.labelSmall!
+                                                      .copyWith(color: context.colorScheme.grey600),
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
                                                 ),
                                               ),
-                                              radius: 22,
                                             ),
-                                            10.horizontalSpace,
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                          },
+                                          10.verticalSpace,
+                                          Padding(
+                                            padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Text(
-                                                  task.title ?? '',
-                                                  style: context.textTheme.titleMedium,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                ),
                                                 Row(
                                                   children: [
-                                                    Text(
-                                                      task.assignedByUser!.nameUser.toString(),
+                                                    AppText(
+                                                      'من فرع: ',
                                                       style: context.textTheme.bodySmall!
                                                           .copyWith(color: context.colorScheme.grey500),
                                                     ),
-                                                    if ((task.assignedByUser?.nameUser?.isNotEmpty ?? false) &&
-                                                        (task.assignedToUser?.nameUser?.isNotEmpty ?? false))
-                                                      Text(' --> '),
-                                                    Text(
-                                                      task.assignedToUser!.nameUser.toString(),
+                                                    AppText(
+                                                      '${task.assignedByUser?.nameRegoin}',
                                                       style: context.textTheme.bodySmall!
-                                                          .copyWith(color: context.colorScheme.primary),
+                                                          .copyWith(color: context.colorScheme.grey800),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    AppText(
+                                                      'إلى فرع: ',
+                                                      style: context.textTheme.bodySmall!
+                                                          .copyWith(color: context.colorScheme.grey500),
+                                                    ),
+                                                    AppText(
+                                                      '${task.assignedToUser?.nameRegoin}',
+                                                      style: context.textTheme.bodySmall!
+                                                          .copyWith(color: context.colorScheme.grey800),
                                                     ),
                                                   ],
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                        10.verticalSpace,
-                                        Expanded(
-                                          child: Padding(
-                                            padding: EdgeInsetsDirectional.only(end: 50, start: 20),
-                                            child: AppText(
-                                              task.description ?? '',
-                                              style: context.textTheme.labelSmall!
-                                                  .copyWith(color: context.colorScheme.grey600),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
+                                          ),
+                                          5.verticalSpace,
+                                          Padding(
+                                            padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    AppText(
+                                                      'من قسم: ',
+                                                      style: context.textTheme.bodySmall!
+                                                          .copyWith(color: context.colorScheme.grey500),
+                                                    ),
+                                                    AppText(
+                                                      '${task.assignedByUser?.nameMange}',
+                                                      style: context.textTheme.bodySmall!
+                                                          .copyWith(color: context.colorScheme.grey800),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    AppText(
+                                                      'إلى قسم: ',
+                                                      style: context.textTheme.bodySmall!
+                                                          .copyWith(color: context.colorScheme.grey500),
+                                                    ),
+                                                    AppText(
+                                                      '${task.assignedToUser?.nameMange}',
+                                                      style: context.textTheme.bodySmall!
+                                                          .copyWith(color: context.colorScheme.grey800),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                        ),
-                                        10.verticalSpace,
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            20.horizontalSpace,
-                                            Icon(Icons.date_range_rounded,
-                                                size: 15, color: context.colorScheme.grey600),
-                                            5.horizontalSpace,
-                                            Directionality(
-                                              textDirection: TextDirection.ltr,
-                                              child: AppText(
-                                                Intl.DateFormat('dd MMM hh:mm a')
-                                                    .format(task.dateTimeCreated ?? DateTime.now()),
-                                                style: context.textTheme.labelSmall!
-                                                    .copyWith(color: context.colorScheme.grey600),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
+                                          10.verticalSpace,
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              20.horizontalSpace,
+                                              Icon(Icons.date_range_rounded,
+                                                  size: 15, color: context.colorScheme.grey600),
+                                              5.horizontalSpace,
+                                              Directionality(
+                                                textDirection: TextDirection.ltr,
+                                                child: AppText(
+                                                  Intl.DateFormat('dd MMM hh:mm a')
+                                                      .format(task.dateTimeCreated ?? DateTime.now()),
+                                                  style: context.textTheme.labelSmall!
+                                                      .copyWith(color: context.colorScheme.grey600),
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        10.verticalSpace
-                                      ],
+                                            ],
+                                          ),
+                                          10.verticalSpace
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             );
                           },
@@ -311,7 +432,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
     );
   }
 
-  stageChip(TaskStatus status, bool isActive) {
+  stageChip(TaskStatusType status, bool isActive) {
     return InkWell(
       onTap: () => _taskCubit.onChangeTaskStatus(status),
       child: AnimatedContainer(
@@ -323,7 +444,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
         alignment: Alignment.center,
         padding: HWEdgeInsets.symmetric(vertical: 5, horizontal: 10),
         duration: const Duration(milliseconds: 300),
-        child: AppText(status.name,
+        child: AppText(status.text,
             style: context.textTheme.bodyMedium!.m!.copyWith(
               color: isActive ? context.colorScheme.white : context.colorScheme.black,
             )),

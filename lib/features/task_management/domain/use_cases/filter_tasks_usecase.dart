@@ -25,11 +25,19 @@ class FilterTaskParams {
     this.startDateTo,
     this.startDateFrom,
     this.createdBy,
+    this.regionFrom,
+    this.regionTo,
+    this.departmentFrom,
+    this.departmentTo,
   });
 
   final String? statusName;
   final String? assignedBy;
   final String? assignedTo;
+  final String? departmentFrom;
+  final String? departmentTo;
+  final String? regionFrom;
+  final String? regionTo;
   final DateTime? dateTimeCreated;
   final DateTime? startDateTo;
   final DateTime? startDateFrom;
@@ -43,14 +51,18 @@ class FilterTaskParams {
         'start_date_to': startDateTo != null ? dateToString(startDateTo!) : null,
         'start_date_from': startDateFrom != null ? dateToString(startDateFrom!) : null,
         'created_by': createdBy?.toIso8601String(),
+        'assigend_department_from': departmentFrom,
+        'assigend_department_to': departmentTo,
+        'assigend_region_from': regionFrom,
+        'assigend_region_to': regionTo,
       }..removeWhere((key, value) => value == '' || value == null);
 
   String dateToString(DateTime dateTime) =>
       dateTime.year.toString() +
       '-' +
-      dateTime.month.toString() +
+      dateTime.month.toString().padLeft(2,'0') +
       '-' +
-      dateTime.day.toString() +
+      dateTime.day.toString().padLeft(2,'0') +
       ' ' +
       dateTime.hour.toString().padLeft(2, '0') +
       ':' +

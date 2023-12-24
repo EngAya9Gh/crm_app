@@ -92,6 +92,8 @@ mixin _$TaskModel {
   Clients? get clients => throw _privateConstructorUsedError;
   @JsonKey(name: "invoices")
   Invoices? get invoices => throw _privateConstructorUsedError;
+  @JsonKey(includeToJson: false, includeFromJson: false, required: true)
+  BlocStatus get taskBlocStatus => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -142,7 +144,9 @@ abstract class $TaskModelCopyWith<$Res> {
       @JsonKey(name: "assignedToUser") AssignedUser? assignedToUser,
       @JsonKey(name: "taskGroup") TaskGroup? taskGroup,
       @JsonKey(name: "Clients") Clients? clients,
-      @JsonKey(name: "invoices") Invoices? invoices});
+      @JsonKey(name: "invoices") Invoices? invoices,
+      @JsonKey(includeToJson: false, includeFromJson: false, required: true)
+      BlocStatus taskBlocStatus});
 
   $AssignedUserCopyWith<$Res>? get assignedByUser;
   $AssignedUserCopyWith<$Res>? get assignedToUser;
@@ -200,6 +204,7 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
     Object? taskGroup = freezed,
     Object? clients = freezed,
     Object? invoices = freezed,
+    Object? taskBlocStatus = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -346,6 +351,10 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
           ? _value.invoices
           : invoices // ignore: cast_nullable_to_non_nullable
               as Invoices?,
+      taskBlocStatus: null == taskBlocStatus
+          ? _value.taskBlocStatus
+          : taskBlocStatus // ignore: cast_nullable_to_non_nullable
+              as BlocStatus,
     ) as $Val);
   }
 
@@ -456,7 +465,9 @@ abstract class _$$TaskModelImplCopyWith<$Res>
       @JsonKey(name: "assignedToUser") AssignedUser? assignedToUser,
       @JsonKey(name: "taskGroup") TaskGroup? taskGroup,
       @JsonKey(name: "Clients") Clients? clients,
-      @JsonKey(name: "invoices") Invoices? invoices});
+      @JsonKey(name: "invoices") Invoices? invoices,
+      @JsonKey(includeToJson: false, includeFromJson: false, required: true)
+      BlocStatus taskBlocStatus});
 
   @override
   $AssignedUserCopyWith<$Res>? get assignedByUser;
@@ -517,6 +528,7 @@ class __$$TaskModelImplCopyWithImpl<$Res>
     Object? taskGroup = freezed,
     Object? clients = freezed,
     Object? invoices = freezed,
+    Object? taskBlocStatus = null,
   }) {
     return _then(_$TaskModelImpl(
       id: freezed == id
@@ -663,6 +675,10 @@ class __$$TaskModelImplCopyWithImpl<$Res>
           ? _value.invoices
           : invoices // ignore: cast_nullable_to_non_nullable
               as Invoices?,
+      taskBlocStatus: null == taskBlocStatus
+          ? _value.taskBlocStatus
+          : taskBlocStatus // ignore: cast_nullable_to_non_nullable
+              as BlocStatus,
     ));
   }
 }
@@ -708,7 +724,9 @@ class _$TaskModelImpl implements _TaskModel {
       @JsonKey(name: "assignedToUser") this.assignedToUser,
       @JsonKey(name: "taskGroup") this.taskGroup,
       @JsonKey(name: "Clients") this.clients,
-      @JsonKey(name: "invoices") this.invoices})
+      @JsonKey(name: "invoices") this.invoices,
+      @JsonKey(includeToJson: false, includeFromJson: false, required: true)
+      this.taskBlocStatus = const BlocStatus.initial()})
       : _taskStatuses = taskStatuses;
 
   factory _$TaskModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -830,10 +848,13 @@ class _$TaskModelImpl implements _TaskModel {
   @override
   @JsonKey(name: "invoices")
   final Invoices? invoices;
+  @override
+  @JsonKey(includeToJson: false, includeFromJson: false, required: true)
+  final BlocStatus taskBlocStatus;
 
   @override
   String toString() {
-    return 'TaskModel(id: $id, title: $title, description: $description, publicType: $publicType, mainTypeTask: $mainTypeTask, reciveDate: $reciveDate, startDate: $startDate, deadline: $deadline, actualDeliveryDate: $actualDeliveryDate, hours: $hours, completionPercentage: $completionPercentage, recurring: $recurring, recurringType: $recurringType, numberOfRecurring: $numberOfRecurring, createdAt: $createdAt, updatedAt: $updatedAt, dateTimeCreated: $dateTimeCreated, changedDate: $changedDate, taskStatuseId: $taskStatuseId, changedBy: $changedBy, type: $type, priority: $priority, name: $name, assignedByName: $assignedByName, assigendDepartmentFromName: $assigendDepartmentFromName, assigendDepartmentToName: $assigendDepartmentToName, assigendRegionFrom: $assigendRegionFrom, assigendRegionTo: $assigendRegionTo, createdBy: $createdBy, nameRegoin: $nameRegoin, taskStatuses: $taskStatuses, assignedByUser: $assignedByUser, assignedToUser: $assignedToUser, taskGroup: $taskGroup, clients: $clients, invoices: $invoices)';
+    return 'TaskModel(id: $id, title: $title, description: $description, publicType: $publicType, mainTypeTask: $mainTypeTask, reciveDate: $reciveDate, startDate: $startDate, deadline: $deadline, actualDeliveryDate: $actualDeliveryDate, hours: $hours, completionPercentage: $completionPercentage, recurring: $recurring, recurringType: $recurringType, numberOfRecurring: $numberOfRecurring, createdAt: $createdAt, updatedAt: $updatedAt, dateTimeCreated: $dateTimeCreated, changedDate: $changedDate, taskStatuseId: $taskStatuseId, changedBy: $changedBy, type: $type, priority: $priority, name: $name, assignedByName: $assignedByName, assigendDepartmentFromName: $assigendDepartmentFromName, assigendDepartmentToName: $assigendDepartmentToName, assigendRegionFrom: $assigendRegionFrom, assigendRegionTo: $assigendRegionTo, createdBy: $createdBy, nameRegoin: $nameRegoin, taskStatuses: $taskStatuses, assignedByUser: $assignedByUser, assignedToUser: $assignedToUser, taskGroup: $taskGroup, clients: $clients, invoices: $invoices, taskBlocStatus: $taskBlocStatus)';
   }
 
   @override
@@ -902,7 +923,9 @@ class _$TaskModelImpl implements _TaskModel {
                 other.taskGroup == taskGroup) &&
             (identical(other.clients, clients) || other.clients == clients) &&
             (identical(other.invoices, invoices) ||
-                other.invoices == invoices));
+                other.invoices == invoices) &&
+            (identical(other.taskBlocStatus, taskBlocStatus) ||
+                other.taskBlocStatus == taskBlocStatus));
   }
 
   @JsonKey(ignore: true)
@@ -944,7 +967,8 @@ class _$TaskModelImpl implements _TaskModel {
         assignedToUser,
         taskGroup,
         clients,
-        invoices
+        invoices,
+        taskBlocStatus
       ]);
 
   @JsonKey(ignore: true)
@@ -1001,7 +1025,9 @@ abstract class _TaskModel implements TaskModel {
       @JsonKey(name: "assignedToUser") final AssignedUser? assignedToUser,
       @JsonKey(name: "taskGroup") final TaskGroup? taskGroup,
       @JsonKey(name: "Clients") final Clients? clients,
-      @JsonKey(name: "invoices") final Invoices? invoices}) = _$TaskModelImpl;
+      @JsonKey(name: "invoices") final Invoices? invoices,
+      @JsonKey(includeToJson: false, includeFromJson: false, required: true)
+      final BlocStatus taskBlocStatus}) = _$TaskModelImpl;
 
   factory _TaskModel.fromJson(Map<String, dynamic> json) =
       _$TaskModelImpl.fromJson;
@@ -1114,6 +1140,9 @@ abstract class _TaskModel implements TaskModel {
   @override
   @JsonKey(name: "invoices")
   Invoices? get invoices;
+  @override
+  @JsonKey(includeToJson: false, includeFromJson: false, required: true)
+  BlocStatus get taskBlocStatus;
   @override
   @JsonKey(ignore: true)
   _$$TaskModelImplCopyWith<_$TaskModelImpl> get copyWith =>

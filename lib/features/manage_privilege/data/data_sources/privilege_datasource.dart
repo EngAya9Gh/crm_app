@@ -75,7 +75,7 @@ class PrivilegeDatasource {
   Future<ResponseWrapper<void>> updatePrivileges(Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'https://new.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(

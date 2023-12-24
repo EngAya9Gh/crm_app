@@ -1,6 +1,7 @@
 import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -45,6 +46,12 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
     _fromDateController = TextEditingController();
     _toDateController = TextEditingController();
     _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    if(_taskCubit.state.filterFromDate != null){
+      _fromDateController.text = Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterFromDate!);
+    }
+    if(_taskCubit.state.filterToDate != null){
+      _toDateController.text = Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterToDate!);
+    }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
         ..changeValuser(null, true)
@@ -74,7 +81,18 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        40.verticalSpace,
+                        Row(
+                          children: [
+                            Spacer(),
+                            AppTextButton(
+                              text: 'إعادة الافتراضي',
+                              onPressed: state.tasksState.isLoading
+                                  ? null
+                                  : () => _taskCubit.resetFilter(() => Navigator.pop(context)),
+                            ),
+                          ],
+                        ),
+                        10.verticalSpace,
                         if (!_privilegeCubit.checkPrivilege('159')) ...{
                           Row(
                             children: [
@@ -82,14 +100,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 child: Consumer<manage_provider>(
                                   builder: (context, manageList, child) {
                                     final list = manageList.listtext;
-                                    return AppDropdownButtonFormField<ManageModel, String>(
+                                    return AppDropdownButtonFormField<ManageModel, ManageModel>(
                                       items: list,
-                                      onChange: (value) => manageList.changevalue(value ?? ''),
+                                      onChange: (value) => _taskCubit.onChangeDepartmentFrom(value),
                                       hint: "من القسم",
-                                      itemAsValue: (ManageModel? item) => item!.idmange,
+                                      itemAsValue: (ManageModel? item) => item,
                                       itemAsString: (item) => item!.name_mange,
-                                      value: manageList.selectedValuemanag,
-                                      validator: HelperFunctions.instance.requiredFiled,
+                                      value: state.departmentFrom,
                                     );
                                   },
                                 ),
@@ -99,14 +116,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 child: Consumer<manage_provider>(
                                   builder: (context, manageList, child) {
                                     final list = manageList.listtext;
-                                    return AppDropdownButtonFormField<ManageModel, String>(
+                                    return AppDropdownButtonFormField<ManageModel, ManageModel>(
                                       items: list,
-                                      onChange: (value) => manageList.changevalue(value ?? ''),
+                                      onChange: (value) => _taskCubit.onChangeDepartmentTo(value),
                                       hint: "إلى القسم",
-                                      itemAsValue: (ManageModel? item) => item!.idmange,
+                                      itemAsValue: (ManageModel? item) => item,
                                       itemAsString: (item) => item!.name_mange,
-                                      value: manageList.selectedValuemanag,
-                                      validator: HelperFunctions.instance.requiredFiled,
+                                      value: state.departmentTo,
                                     );
                                   },
                                 ),
@@ -115,22 +131,22 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                           ),
                           20.verticalSpace,
                         },
-                        if (_privilegeCubit.checkPrivilege('160'))
-                          Consumer<manage_provider>(
-                            builder: (context, manageList, child) {
-                              final list = manageList.listtext;
-                              return AppDropdownButtonFormField<ManageModel, String>(
-                                items: list,
-                                onChange: (value) => manageList.changevalue(value ?? ''),
-                                hint: "من القسم",
-                                itemAsValue: (ManageModel? item) => item!.idmange,
-                                itemAsString: (item) => item!.name_mange,
-                                value: manageList.selectedValuemanag,
-                                validator: HelperFunctions.instance.requiredFiled,
-                              );
-                            },
-                          ),
-                        20.verticalSpace,
+                        // if (_privilegeCubit.checkPrivilege('160'))
+                        //   Consumer<manage_provider>(
+                        //     builder: (context, manageList, child) {
+                        //       final list = manageList.listtext;
+                        //       return AppDropdownButtonFormField<ManageModel, String>(
+                        //         items: list,
+                        //         onChange: (value) => manageList.changevalue(value ?? ''),
+                        //         hint: "القسم",
+                        //         itemAsValue: (ManageModel? item) => item!.idmange,
+                        //         itemAsString: (item) => item!.name_mange,
+                        //         value: manageList.selectedValuemanag,
+                        //         validator: HelperFunctions.instance.requiredFiled,
+                        //       );
+                        //     },
+                        //   ),
+                        // 20.verticalSpace,
                         if (!_privilegeCubit.checkPrivilege('162')) ...{
                           Row(
                             children: [
@@ -138,14 +154,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
                                     final list = cart.listRegion;
-                                    return AppDropdownButtonFormField<RegionModel, String>(
+                                    return AppDropdownButtonFormField<RegionModel, RegionModel>(
                                       items: list,
-                                      onChange: cart.changeVal,
+                                      onChange: (value) => _taskCubit.onChangeRegionFrom(value),
                                       hint: "من الفرع",
-                                      itemAsValue: (RegionModel? item) => item!.regionId,
+                                      itemAsValue: (RegionModel? item) => item,
                                       itemAsString: (item) => item!.regionName,
-                                      value: cart.selectedRegionId,
-                                      validator: HelperFunctions.instance.requiredFiled,
+                                      value: state.regionFrom,
                                     );
                                   },
                                 ),
@@ -155,14 +170,14 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
                                     final list = cart.listRegion;
-                                    return AppDropdownButtonFormField<RegionModel, String>(
+
+                                    return AppDropdownButtonFormField<RegionModel, RegionModel>(
                                       items: list,
-                                      onChange: cart.changeVal,
+                                      onChange: (value) => _taskCubit.onChangeRegionTo(value),
                                       hint: "إلى الفرع",
-                                      itemAsValue: (RegionModel? item) => item!.regionId,
+                                      itemAsValue: (RegionModel? item) => item,
                                       itemAsString: (item) => item!.regionName,
-                                      value: cart.selectedRegionId,
-                                      validator: HelperFunctions.instance.requiredFiled,
+                                      value: state.regionTo,
                                     );
                                   },
                                 ),
@@ -171,22 +186,22 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                           ),
                           20.verticalSpace,
                         },
-                        if (_privilegeCubit.checkPrivilege('161'))
-                          Consumer<RegionProvider>(
-                            builder: (context, cart, child) {
-                              final list = cart.listRegion;
-                              return AppDropdownButtonFormField<RegionModel, String>(
-                                items: list,
-                                onChange: cart.changeVal,
-                                hint: "من الفرع",
-                                itemAsValue: (RegionModel? item) => item!.regionId,
-                                itemAsString: (item) => item!.regionName,
-                                value: cart.selectedRegionId,
-                                validator: HelperFunctions.instance.requiredFiled,
-                              );
-                            },
-                          ),
-                        20.verticalSpace,
+                        // if (_privilegeCubit.checkPrivilege('161'))
+                        //   Consumer<RegionProvider>(
+                        //     builder: (context, cart, child) {
+                        //       final list = cart.listRegion;
+                        //       return AppDropdownButtonFormField<RegionModel, String>(
+                        //         items: list,
+                        //         onChange: cart.changeVal,
+                        //         hint: "من الفرع",
+                        //         itemAsValue: (RegionModel? item) => item!.regionId,
+                        //         itemAsString: (item) => item!.regionName,
+                        //         value: cart.selectedRegionId,
+                        //         validator: HelperFunctions.instance.requiredFiled,
+                        //       );
+                        //     },
+                        //   ),
+                        // 20.verticalSpace,
                         Row(
                           children: [
                             Expanded(
@@ -194,8 +209,8 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 onTap: () async {
                                   DateTime? date = await showDatePicker(
                                     context: context,
-                                    initialDate: state.filterFromDate ??DateTime.now(),
-                                    firstDate: DateTime.now(),
+                                    initialDate: state.filterFromDate ?? DateTime.now(),
+                                    firstDate: DateTime.now().subtract(Duration(days: 365 * 2)),
                                     lastDate: DateTime.now().add(Duration(days: 365)),
                                   );
                                   if (date == null) return;
@@ -224,7 +239,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                   DateTime? date = await showDatePicker(
                                     context: context,
                                     initialDate: state.filterToDate ?? DateTime.now(),
-                                    firstDate: DateTime.now(),
+                                    firstDate: DateTime.now().subtract(Duration(days: 365 * 2)),
                                     lastDate: DateTime.now().add(Duration(days: 365)),
                                   );
 
