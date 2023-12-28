@@ -37,8 +37,8 @@ class TaskState {
   final PageState<List<TaskModel>> tasksState;
   final List<TaskModel> tasksList;
   final TaskStatusType? selectedStatus;
-  final UserModel? filterAssignFrom;
-  final UserModel? filterAssignTo;
+  final UserRegionDepartment? filterAssignFrom;
+  final UserRegionDepartment? filterAssignTo;
   final DateTime? filterFromDate;
   final DateTime? filterToDate;
   final ManageModel? departmentFrom;
@@ -62,8 +62,8 @@ class TaskState {
     PageState<List<TaskModel>>? tasksState,
     List<TaskModel>? tasksList,
     Nullable<TaskStatusType?>? selectedStatus,
-    Nullable<UserModel?>? filterAssignFrom,
-    Nullable<UserModel?>? filterAssignTo,
+    Nullable<UserRegionDepartment?>? filterAssignFrom,
+    Nullable<UserRegionDepartment?>? filterAssignTo,
     Nullable<DateTime?>? filterFromDate,
     Nullable<DateTime?>? filterToDate,
     final Nullable<ManageModel?>? departmentFrom,

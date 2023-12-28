@@ -100,12 +100,8 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
-  getUsersByDepartmentAndRegion() async {
+  getUsersByDepartmentAndRegion({required String? regionId, required String? departmentId}) async {
     emit(state.copyWith(usersByDepartmentAndRegion: const PageState.loading()));
-
-    final privilegeBloc = GetIt.I<PrivilegeCubit>();
-    final regionId = privilegeBloc.checkPrivilege('167') ? state.currentUser?.fkRegoin : null;
-    final departmentId = privilegeBloc.checkPrivilege('168') ? state.currentUser?.typeAdministration : null;
 
     final result = await _getUsersByDepartmentAndRegionUsecase(GetUsersByDepartmentAndRegionParams(
       departmentId: departmentId,

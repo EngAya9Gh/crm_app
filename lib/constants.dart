@@ -5,7 +5,7 @@ enum TypeNotify { ApproveRequest, Transfer, Late, ApproveDone, ApproveRefuse, In
 
 const kMainColor = Colors.lightBlue; //Color(0xfff2c131);
 const kWhiteColor = Colors.white;
-const kLogo = 'assest/images/logo.png';
+const kLogo = 'assest/images/logo_crm_long.png';
 const kUnActiveColor = Colors.lightBlueAccent; //Color(0xdff4dc8c);
 const kfontfamily = 'Pacifico';
 const kfontfamily2 = 'Cairo-Regular';

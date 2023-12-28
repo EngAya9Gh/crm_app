@@ -41,7 +41,7 @@ class FilterTaskParams {
   final DateTime? dateTimeCreated;
   final DateTime? startDateTo;
   final DateTime? startDateFrom;
-  final DateTime? createdBy;
+  final String? createdBy;
 
   Map<String, dynamic> get toMap => {
         'status_name': statusName,
@@ -50,7 +50,7 @@ class FilterTaskParams {
         'date_time_created': dateTimeCreated?.toIso8601String(),
         'start_date_to': startDateTo != null ? dateToString(startDateTo!) : null,
         'start_date_from': startDateFrom != null ? dateToString(startDateFrom!) : null,
-        'created_by': createdBy?.toIso8601String(),
+        'created_by': createdBy,
         'assigend_department_from': departmentFrom,
         'assigend_department_to': departmentTo,
         'assigend_region_from': regionFrom,

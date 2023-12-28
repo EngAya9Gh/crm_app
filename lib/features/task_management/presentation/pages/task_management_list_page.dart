@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
@@ -9,13 +11,17 @@ import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/task_management/data/models/user_region_department.dart';
 import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
+import 'package:crm_smart/model/managmodel.dart';
+import 'package:crm_smart/model/regoin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as Intl;
 
+import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import 'add_task_page.dart';
 import 'change_status_dialog.dart';
@@ -30,11 +36,60 @@ class TaskManagementListPage extends StatefulWidget {
 
 class _TaskManagementListPageState extends State<TaskManagementListPage> with SearchMixin {
   late TaskCubit _taskCubit;
+  late PrivilegeCubit privilegeBloc;
+  String? regionId;
+  String? departmentId;
+  String? userId;
 
   @override
   void initState() {
     super.initState();
-    _taskCubit = GetIt.I<TaskCubit>()..getTasks();
+    privilegeBloc = GetIt.I<PrivilegeCubit>();
+    final currentUser = context.read<UserProvider>().currentUser;
+    departmentId = privilegeBloc.checkPrivilege('160')
+        ? null
+        : privilegeBloc.checkPrivilege('159')
+            ? currentUser.typeAdministration
+            : null;
+    regionId = privilegeBloc.checkPrivilege('161')
+        ? null
+        : privilegeBloc.checkPrivilege('162')
+            ? currentUser.fkRegoin
+            : null;
+
+    userId = privilegeBloc.checkPrivilege('163') ? currentUser.idUser : null;
+
+    _taskCubit = GetIt.I<TaskCubit>();
+    scheduleMicrotask(() {
+      if (departmentId != null) {
+        final manageModel = ManageModel(
+          idmange: departmentId!,
+          name_mange: currentUser.name_mange!,
+          fk_country: currentUser.fkCountry!,
+        );
+        _taskCubit
+          // ..onChangeDepartmentFrom(manageModel);
+          ..onChangeDepartmentTo(manageModel);
+      }
+      if (regionId != null) {
+        final region = RegionModel(
+          regionId: regionId!,
+          regionName: currentUser.nameRegoin!,
+          countryId: currentUser.fkCountry!,
+        );
+
+        _taskCubit
+          // ..onChangeRegionFrom(region);
+          ..onChangeRegionTo(region);
+      }
+      if (userId != null) {
+        final user = UserRegionDepartment(idUser: int.parse(currentUser.idUser!));
+        _taskCubit
+          ..onChangeFilterAssignFrom(user)
+          ..onChangeFilterAssignTo(user);
+      }
+      _taskCubit.getTasks();
+    });
     initSearch();
   }
 
@@ -66,7 +121,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                             builder: (context) => AddTaskPage(),
                           ),
                         );
-                        if(result == true){
+                        if (result == true) {
                           _taskCubit.getTasks();
                         }
                       },
@@ -216,7 +271,9 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                             final status =
                                 TaskStatusType.values.firstWhereOrNull((element) => element.name == task.name);
                             return InkWell(
-                              onTap: status != null && status != TaskStatusType.Evaluated
+                              onTap: status != null &&
+                                      status != TaskStatusType.Evaluated &&
+                                      privilegeBloc.checkPrivilege('165')
                                   ? () {
                                       showDialog(
                                         context: context,
@@ -252,7 +309,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                             children: [
                                               20.horizontalSpace,
                                               CircleAvatar(
-                                                backgroundColor: context.colorScheme.primary,
+                                                backgroundColor: status?.color,
                                                 child: Center(
                                                   child: AppText(
                                                     buffer.toString(),
@@ -439,7 +496,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
         width: 100.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10).r,
-          color: isActive ? context.colorScheme.primary : context.colorScheme.white,
+          color: isActive ? status.color : context.colorScheme.white,
         ),
         alignment: Alignment.center,
         padding: HWEdgeInsets.symmetric(vertical: 5, horizontal: 10),

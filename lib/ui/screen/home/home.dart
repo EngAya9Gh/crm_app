@@ -101,8 +101,9 @@ class _HomeState extends State<Home> {
         //drawerScrimColor: Colors.white,
         backgroundColor: Colors.grey[200],
         appBar: customAppbar(
+          backgroundColor: Colors.grey.shade200,
           leading: IconButton(
-            icon: Icon(Icons.menu, color: context.colorScheme.white, size: 25.r,),
+            icon: Icon(Icons.menu, color: context.colorScheme.black, size: 25.r,),
             tooltip: 'Menu',
             onPressed: () {
               _scaffoldKey.currentState!.openDrawer();

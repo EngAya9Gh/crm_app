@@ -27,7 +27,7 @@ class AddTaskParams {
   final List<UserModel> participants;
   final UserRegionDepartment? assignTo;
   final DateTime startDate;
-  final DateTime deadLineDate;
+  final DateTime? deadLineDate;
   final File file;
   final String? regionId;
   final String? departmentId;
@@ -42,7 +42,7 @@ class AddTaskParams {
     required this.participants,
     this.assignTo,
     required this.startDate,
-    required this.deadLineDate,
+    this.deadLineDate,
     required this.file,
     this.regionId,
     this.departmentId,
@@ -63,7 +63,7 @@ class AddTaskParams {
       'file_path': file,
       "assigned_to": assignTo?.idUser.toString(),
       'start_date': startDate.toIso8601String(),
-      'deadline': deadLineDate.toIso8601String(),
+      'deadline': deadLineDate?.toIso8601String(),
       ...map,
       "invoice_id": invoiceId,
       "group_id": groupId,

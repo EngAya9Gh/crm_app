@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assest/images/image3.png'),
+            Image.asset('assest/images/logo_crm_long.png'),
             20.verticalSpace,
             AppLoader(),
           ],

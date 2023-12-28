@@ -9,8 +9,9 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 
 class customAppbar extends StatelessWidget implements PreferredSizeWidget {
-  customAppbar({this.leading, Key? key}) : super(key: key);
+  customAppbar({this.leading, Key? key,this.backgroundColor}) : super(key: key);
   Widget? leading;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +21,11 @@ class customAppbar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       key: key,
       leading: leading,
-
+      backgroundColor: backgroundColor,
       //textTheme: TextTheme(),
       title: Image.asset(
         kLogo,
-        height: 100,
-        width: 100,
+        height: 50,width: 150,
       ),
       //Text('Smart Life',style:
       // TextStyle(color: Colors.white,fontSize: 16,fontFamily: kfontfamily),),
@@ -40,7 +40,7 @@ class customAppbar extends StatelessWidget implements PreferredSizeWidget {
                 icon: Icon(
                   Icons.notifications,
                   size: 20,
-                  color: context.colorScheme.white,
+                  color: context.colorScheme.black,
                 ),
                 onPressed: () {
                   notify.setRead_notify_vm();

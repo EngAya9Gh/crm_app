@@ -12,17 +12,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
-
 import '../../../../common/helpers/helper_functions.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
-import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../manage_users/presentation/manager/users_cubit.dart';
+import '../../data/models/user_region_department.dart';
 
 class FilterTaskSheet extends StatefulWidget {
   const FilterTaskSheet({Key? key}) : super(key: key);
@@ -34,22 +34,28 @@ class FilterTaskSheet extends StatefulWidget {
 class _FilterTaskSheetState extends State<FilterTaskSheet> {
   late TextEditingController _fromDateController;
   late TextEditingController _toDateController;
-  late PrivilegeCubit _privilegeCubit;
   late TaskCubit _taskCubit;
   late UsersCubit _usersCubit;
+  late PrivilegeCubit privilegeBloc;
+  String? regionId;
+  String? departmentId;
 
   @override
   void initState() {
+    privilegeBloc = GetIt.I<PrivilegeCubit>();
+    final currentUser = context.read<UserProvider>().currentUser;
+    departmentId = privilegeBloc.checkPrivilege('159') ? currentUser.typeAdministration : null;
+    regionId = privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
+
     _taskCubit = GetIt.I<TaskCubit>();
-    _usersCubit = GetIt.I<UsersCubit>()..getAllUsers();
+    _usersCubit = GetIt.I<UsersCubit>()..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
 
     _fromDateController = TextEditingController();
     _toDateController = TextEditingController();
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
-    if(_taskCubit.state.filterFromDate != null){
+    if (_taskCubit.state.filterFromDate != null) {
       _fromDateController.text = Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterFromDate!);
     }
-    if(_taskCubit.state.filterToDate != null){
+    if (_taskCubit.state.filterToDate != null) {
       _toDateController.text = Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterToDate!);
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -93,7 +99,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                           ],
                         ),
                         10.verticalSpace,
-                        if (!_privilegeCubit.checkPrivilege('159')) ...{
+                        if (privilegeBloc.checkPrivilege('160')) ...{
                           Row(
                             children: [
                               Expanded(
@@ -147,7 +153,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                         //     },
                         //   ),
                         // 20.verticalSpace,
-                        if (!_privilegeCubit.checkPrivilege('162')) ...{
+                        if (privilegeBloc.checkPrivilege('161')) ...{
                           Row(
                             children: [
                               Expanded(
@@ -270,12 +276,12 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                             Expanded(
                               child: BlocBuilder<UsersCubit, UsersState>(
                                 builder: (context, userState) {
-                                  return DropdownSearch<UserModel>(
+                                  return DropdownSearch<UserRegionDepartment>(
                                     mode: Mode.DIALOG,
                                     filterFn: (user, filter) => user!.nameUser!.contains(filter!),
                                     compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
-                                    items: userState.allUsersList.getDataWhenSuccess ?? [],
-                                    itemAsString: (u) => u!.userAsString(),
+                                    items: userState.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
+                                    itemAsString: (u) => u!.nameUser!,
                                     onChanged: (data) {
                                       _taskCubit.onChangeFilterAssignFrom(data);
                                     },
@@ -314,7 +320,9 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                           ? CupertinoActivityIndicator()
                                           : userState.allUsersList.isError
                                               ? IconButton(
-                                                  onPressed: () => _usersCubit.getAllUsers(), icon: Icon(Icons.refresh))
+                                                  onPressed: () => _usersCubit.getUsersByDepartmentAndRegion(
+                                                      regionId: regionId, departmentId: departmentId),
+                                                  icon: Icon(Icons.refresh))
                                               : null,
                                     ),
                                     // InputDecoration(border: InputBorder.none),
@@ -326,12 +334,12 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                             Expanded(
                               child: BlocBuilder<UsersCubit, UsersState>(
                                 builder: (context, userState) {
-                                  return DropdownSearch<UserModel>(
+                                  return DropdownSearch<UserRegionDepartment>(
                                     mode: Mode.DIALOG,
                                     filterFn: (user, filter) => user!.nameUser!.contains(filter!),
                                     compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
-                                    items: userState.allUsersList.getDataWhenSuccess ?? [],
-                                    itemAsString: (u) => u!.userAsString(),
+                                    items: userState.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
+                                    itemAsString: (u) => u!.nameUser!,
                                     onChanged: (data) {
                                       _taskCubit.onChangeFilterAssignTo(data);
                                     },
@@ -370,7 +378,9 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                           ? CupertinoActivityIndicator()
                                           : userState.allUsersList.isError
                                               ? IconButton(
-                                                  onPressed: () => _usersCubit.getAllUsers(), icon: Icon(Icons.refresh))
+                                                  onPressed: () => _usersCubit.getUsersByDepartmentAndRegion(
+                                                      regionId: regionId, departmentId: departmentId),
+                                                  icon: Icon(Icons.refresh))
                                               : null,
                                     ),
                                     // InputDecoration(border: InputBorder.none),

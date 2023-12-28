@@ -72,6 +72,19 @@ extension TaskStatusExt on TaskStatusType {
         return TaskStatusType.Evaluated;
     }
   }
+
+  int get id {
+    switch (this) {
+      case TaskStatusType.Open:
+        return 1;
+      case TaskStatusType.receive:
+        return 8;
+      case TaskStatusType.Completed:
+        return 4;
+      case TaskStatusType.Evaluated:
+        return 11;
+    }
+  }
 }
 
 @lazySingleton
@@ -128,9 +141,9 @@ class TaskCubit extends Cubit<TaskState> {
     final result = await _addTaskUsecase(AddTaskParams(
       title: taskName,
       file: state.attachmentFile!,
-      assignTo: state.selectedAssignedToType == AssignedToType.employee ? state.selectedAssignTo! : null,
-      deadLineDate: state.deadLineDate!,
-      participants: state.selectedParticipant!,
+      assignTo: state.selectedAssignedToType == AssignedToType.employee ? state.selectedAssignTo : null,
+      deadLineDate: state.deadLineDate,
+      participants: state.selectedParticipant ?? [],
       startDate: state.startDate!,
       numberOfRecurring: numberOfRecurring,
       isRecurring: state.isRecurring,
@@ -152,8 +165,8 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(tasksState: const PageState.loading()));
 
     final result = await _filterTaskUsecase(FilterTaskParams(
-      assignedTo: state.filterAssignTo?.idUser,
-      assignedBy: state.filterAssignFrom?.idUser,
+      assignedTo: state.filterAssignTo?.idUser?.toString(),
+      assignedBy: state.filterAssignFrom?.idUser?.toString(),
       startDateFrom: state.filterFromDate,
       startDateTo: state.filterToDate,
       departmentFrom: state.departmentFrom?.idmange,
@@ -201,11 +214,11 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(filterToDate: Nullable.value(date)));
   }
 
-  onChangeFilterAssignFrom(UserModel? user) {
+  onChangeFilterAssignFrom(UserRegionDepartment? user) {
     emit(state.copyWith(filterAssignFrom: Nullable.value(user)));
   }
 
-  onChangeFilterAssignTo(UserModel? user) {
+  onChangeFilterAssignTo(UserRegionDepartment? user) {
     emit(state.copyWith(filterAssignTo: Nullable.value(user)));
   }
 
@@ -244,11 +257,7 @@ class TaskCubit extends Cubit<TaskState> {
         } else {
           taskList = taskList
               .map((e) => e.id == taskModel.id
-                  ? e.copyWith(
-                      name: taskStatusType.next.name,
-                      taskStatuseId:
-                          e.taskStatuseId is int ? e.taskStatuseId + 1 : ((int.tryParse(e.taskStatuseId) ?? 0) + 1),
-                    )
+                  ? e.copyWith(name: taskStatusType.next.name, taskStatuseId: taskStatusType.next.id)
                   : e)
               .toList();
         }
@@ -256,15 +265,12 @@ class TaskCubit extends Cubit<TaskState> {
 
         allTasks = allTasks
             .map((e) => e.id == taskModel.id
-                ? e.copyWith(
-                    name: taskStatusType.next.name,
-                    taskStatuseId:
-                        e.taskStatuseId is int ? e.taskStatuseId + 1 : ((int.tryParse(e.taskStatuseId) ?? 0) + 1),
-                  )
+                ? e.copyWith(name: taskStatusType.next.name, taskStatuseId: taskStatusType.next.id)
                 : e)
             .toList();
 
         onSuccess();
+
         emit(state.copyWith(
           changeTaskStatus: const BlocStatus.success(),
           tasksState: PageState.loaded(data: allTasks),

@@ -23,7 +23,6 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../common/helpers/helper_functions.dart';
-import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
@@ -96,13 +95,24 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late GlobalKey<FormState> _formKey;
   late TaskCubit _taskCubit;
   late GroupButtonController _groupButtonController;
+  late PrivilegeCubit privilegeBloc;
+  String? regionId;
+  String? departmentId;
 
   @override
   void initState() {
+    privilegeBloc = GetIt.I<PrivilegeCubit>();
+    final currentUser = context
+        .read<UserProvider>()
+        .currentUser;
+    departmentId = privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166') ? currentUser.typeAdministration : null;
+    regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
+
     _usersCubit = GetIt.I<UsersCubit>()
-      ..storeCurrentUser(context.read<UserProvider>().currentUser)
+      ..storeCurrentUser(currentUser)
       ..getAllUsers()
-      ..getUsersByDepartmentAndRegion();
+      ..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
+
     _taskNameController = TextEditingController();
     _startDateController = TextEditingController();
     _deadLineDateController = TextEditingController();
@@ -119,6 +129,21 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ..getmanage();
     });
     super.initState();
+  }
+
+  List<AssignedToType> get assignedToList {
+    final list = List.of(AssignedToType.values);
+    if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
+      list.remove(AssignedToType.region);
+    }
+    if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
+      list.remove(AssignedToType.department);
+    }
+    if (!privilegeBloc.checkPrivilege('166')) {
+      list.remove(AssignedToType.employee);
+    }
+
+    return list;
   }
 
   @override
@@ -151,19 +176,23 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           return;
                         }
 
-                        if (state.selectedAssignedToType == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: AppText(
-                              "من فضلك قم باختيار اسناد إلى",
-                              style: context.textTheme.bodyMedium!.sb!.copyWith(color: context.colorScheme.white),
-                            ),
-                            backgroundColor: context.colorScheme.error,
-                          ));
-                          return;
-                        }
+                        // if (state.selectedAssignedToType == null) {
+                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        //     content: AppText(
+                        //       "من فضلك قم باختيار اسناد إلى",
+                        //       style: context.textTheme.bodyMedium!.sb!.copyWith(color: context.colorScheme.white),
+                        //     ),
+                        //     backgroundColor: context.colorScheme.error,
+                        //   ));
+                        //   return;
+                        // }
 
-                        final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
-                        final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
+                        final selectedRegionId = context
+                            .read<RegionProvider>()
+                            .selectedRegionId;
+                        final selectedValueManage = context
+                            .read<manage_provider>()
+                            .selectedValuemanag;
                         _taskCubit.addTaskAction(
                           taskName: _taskNameController.text,
                           numberOfRecurring: _numberOfRecurringController.text,
@@ -199,64 +228,64 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       controller: _taskNameController,
                     ),
                     20.verticalSpace,
-                    BlocBuilder<UsersCubit, UsersState>(
-                      builder: (context, state) {
-                        return DropdownSearch<UserModel>.multiSelection(
-                          mode: Mode.DIALOG,
-                          filterFn: (user, filter) => user!.nameUser!.contains(filter!),
-                          compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
-                          items: state.allUsersList.getDataWhenSuccess ?? [],
-                          itemAsString: (u) => u!.userAsString(),
-                          onChanged: _taskCubit.onChangeParticipants,
-                          selectedItems: taskState.selectedParticipant ?? [],
-                          showSearchBox: true,
-                          validator: (value) {
-                            if (value?.isEmpty ?? true) {
-                              return 'هذا الحقل مطلوب.';
-                            }
-                            return null;
-                          },
-
-                          dropdownSearchDecoration: InputDecoration(
-                            isCollapsed: true,
-                            hintText: 'المشاركين*',
-                            hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-                            contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12, top: 10, bottom: 15),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.primary),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.primary),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.primary),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.primary),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.error),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.error),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            suffixIcon: state.allUsersList.isLoading
-                                ? CupertinoActivityIndicator()
-                                : state.allUsersList.isError
-                                    ? IconButton(onPressed: () => _usersCubit.getAllUsers(), icon: Icon(Icons.refresh))
-                                    : null,
-                          ),
-                          // InputDecoration(border: InputBorder.none),
-                        );
-                      },
-                    ),
-                    20.verticalSpace,
+                    // BlocBuilder<UsersCubit, UsersState>(
+                    //   builder: (context, state) {
+                    //     return DropdownSearch<UserModel>.multiSelection(
+                    //       mode: Mode.DIALOG,
+                    //       filterFn: (user, filter) => user!.nameUser!.contains(filter!),
+                    //       compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                    //       items: state.allUsersList.getDataWhenSuccess ?? [],
+                    //       itemAsString: (u) => u!.userAsString(),
+                    //       onChanged: _taskCubit.onChangeParticipants,
+                    //       selectedItems: taskState.selectedParticipant ?? [],
+                    //       showSearchBox: true,
+                    //       validator: (value) {
+                    //         if (value?.isEmpty ?? true) {
+                    //           return 'هذا الحقل مطلوب.';
+                    //         }
+                    //         return null;
+                    //       },
+                    //
+                    //       dropdownSearchDecoration: InputDecoration(
+                    //         isCollapsed: true,
+                    //         hintText: 'المشاركين*',
+                    //         hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
+                    //         contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12, top: 10, bottom: 15),
+                    //         border: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: context.colorScheme.primary),
+                    //           borderRadius: BorderRadius.circular(10).r,
+                    //         ),
+                    //         focusedBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: context.colorScheme.primary),
+                    //           borderRadius: BorderRadius.circular(10).r,
+                    //         ),
+                    //         enabledBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: context.colorScheme.primary),
+                    //           borderRadius: BorderRadius.circular(10).r,
+                    //         ),
+                    //         disabledBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: context.colorScheme.primary),
+                    //           borderRadius: BorderRadius.circular(10).r,
+                    //         ),
+                    //         errorBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: context.colorScheme.error),
+                    //           borderRadius: BorderRadius.circular(10).r,
+                    //         ),
+                    //         focusedErrorBorder: OutlineInputBorder(
+                    //           borderSide: BorderSide(color: context.colorScheme.error),
+                    //           borderRadius: BorderRadius.circular(10).r,
+                    //         ),
+                    //         suffixIcon: state.allUsersList.isLoading
+                    //             ? CupertinoActivityIndicator()
+                    //             : state.allUsersList.isError
+                    //                 ? IconButton(onPressed: () => _usersCubit.getAllUsers(), icon: Icon(Icons.refresh))
+                    //                 : null,
+                    //       ),
+                    //       // InputDecoration(border: InputBorder.none),
+                    //     );
+                    //   },
+                    // ),
+                    // 20.verticalSpace,
                     Row(
                       children: [
                         Expanded(
@@ -300,49 +329,51 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             ),
                           ),
                         ),
-                        15.horizontalSpace,
-                        Expanded(
-                          child: InkWell(
-                            onTap: () async {
-                              final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
+                        if(privilegeBloc.checkPrivilege('171')) ...{
+                          15.horizontalSpace,
+                          Expanded(
+                            child: InkWell(
+                              onTap: () async {
+                                final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
 
-                              DateTime? date = await showDatePicker(
-                                context: context,
-                                initialDate: taskState.deadLineDate ?? DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime.now().add(Duration(days: 365)),
-                              );
-
-                              if (date == null) return;
-
-                              final time = await showTimePicker(
-                                context: context,
-                                initialTime: selectedTime,
-                              );
-                              if (time != null) {
-                                date = date.copyWith(
-                                  hour: time.hour,
-                                  minute: time.minute,
+                                DateTime? date = await showDatePicker(
+                                  context: context,
+                                  initialDate: taskState.deadLineDate ?? DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime.now().add(Duration(days: 365)),
                                 );
-                              }
 
-                              _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy, HH:mm').format(date);
-                              _taskCubit.onChangeDeadLineDate(date);
-                            },
-                            child: IgnorePointer(
-                              ignoring: true,
-                              child: AppTextField(
-                                labelText: "تاريخ التسليم*",
-                                maxLines: 1,
-                                validator: HelperFunctions.instance.requiredFiled,
-                                readOnly: true,
-                                controller: _deadLineDateController,
-                                textDirection: TextDirection.ltr,
-                                textAlign: TextAlign.center,
+                                if (date == null) return;
+
+                                final time = await showTimePicker(
+                                  context: context,
+                                  initialTime: selectedTime,
+                                );
+                                if (time != null) {
+                                  date = date.copyWith(
+                                    hour: time.hour,
+                                    minute: time.minute,
+                                  );
+                                }
+
+                                _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy, HH:mm').format(date);
+                                _taskCubit.onChangeDeadLineDate(date);
+                              },
+                              child: IgnorePointer(
+                                ignoring: true,
+                                child: AppTextField(
+                                  labelText: "تاريخ التسليم*",
+                                  maxLines: 1,
+                                  validator: HelperFunctions.instance.requiredFiled,
+                                  readOnly: true,
+                                  controller: _deadLineDateController,
+                                  textDirection: TextDirection.ltr,
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        },
                       ],
                     ),
                     Visibility(
@@ -400,27 +431,39 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     disabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.error),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.error),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                   ),
                                 ),
@@ -443,27 +486,39 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                     contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     disabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.error),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: context.colorScheme.error),
-                                      borderRadius: BorderRadius.circular(10).r,
+                                      borderRadius: BorderRadius
+                                          .circular(10)
+                                          .r,
                                     ),
                                   ),
                                 ),
@@ -478,7 +533,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       height: 60.h,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15).r,
+                        borderRadius: BorderRadius
+                            .circular(15)
+                            .r,
                         border: Border.all(color: context.colorScheme.primary),
                       ),
                       child: InkWell(
@@ -495,7 +552,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     20.verticalSpace,
                     GroupedButtons<AssignedToType>(
                       title: 'اسناد إلى',
-                      buttons: AssignedToType.values,
+                      buttons:assignedToList,
                       buttonTextBuilder: (selected, value, context) => value.text,
                       onSelected: (value, index, isSelected) {
                         _taskCubit.onChangeSelectedAssignedToType(value);
@@ -531,50 +588,64 @@ class _AddTaskPageState extends State<AddTaskPage> {
             },
             selectedItem: taskState.selectedAssignTo,
             showSearchBox: true,
-            validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.employee) {
-                return null;
-              }
-              if (value == null) {
-                return 'هذا الحقل مطلوب.';
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (taskState.selectedAssignedToType != AssignedToType.employee) {
+            //     return null;
+            //   }
+            //   if (value == null) {
+            //     return 'هذا الحقل مطلوب.';
+            //   }
+            //   return null;
+            // },
             dropdownSearchDecoration: InputDecoration(
               isCollapsed: true,
-              hintText: 'الموظف*',
+              hintText: 'الموظف',
               hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
               contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(10).r,
+                borderRadius: BorderRadius
+                    .circular(10)
+                    .r,
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(10).r,
+                borderRadius: BorderRadius
+                    .circular(10)
+                    .r,
               ),
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(10).r,
+                borderRadius: BorderRadius
+                    .circular(10)
+                    .r,
               ),
               disabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(10).r,
+                borderRadius: BorderRadius
+                    .circular(10)
+                    .r,
               ),
               errorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.error),
-                borderRadius: BorderRadius.circular(10).r,
+                borderRadius: BorderRadius
+                    .circular(10)
+                    .r,
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.error),
-                borderRadius: BorderRadius.circular(10).r,
+                borderRadius: BorderRadius
+                    .circular(10)
+                    .r,
               ),
               suffixIcon: state.usersByDepartmentAndRegion.isLoading
                   ? CupertinoActivityIndicator()
                   : state.usersByDepartmentAndRegion.isError
-                      ? IconButton(
-                          onPressed: () => _usersCubit.getUsersByDepartmentAndRegion(), icon: Icon(Icons.refresh))
-                      : null,
+                  ? IconButton(
+                  onPressed: () =>
+                      _usersCubit.getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId),
+                  icon: Icon(Icons.refresh))
+                  : null,
             ),
             // InputDecoration(border: InputBorder.none),
           );
@@ -587,28 +658,31 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (taskState.selectedAssignedToType == AssignedToType.department)
       return Consumer<manage_provider>(
         builder: (context, manageList, child) {
-          final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
+          final userDepartment = context
+              .read<UserProvider>()
+              .currentUser
+              .typeAdministration;
           final list = GetIt.I<PrivilegeCubit>().checkPrivilege('169')
               ? manageList.listtext
               : GetIt.I<PrivilegeCubit>().checkPrivilege('168') || GetIt.I<PrivilegeCubit>().checkPrivilege('174')
-                  ? manageList.listtext.where((element) => element.idmange == userDepartment).toList()
-                  : manageList.listtext;
+              ? manageList.listtext.where((element) => element.idmange == userDepartment).toList()
+              : manageList.listtext;
           return AppDropdownButtonFormField<ManageModel, String>(
             items: list,
             onChange: (value) => manageList.changevalue(value ?? ''),
-            hint: "القسم *",
+            hint: "القسم",
             itemAsValue: (ManageModel? item) => item!.idmange,
             itemAsString: (item) => item!.name_mange,
             value: manageList.selectedValuemanag,
-            validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.department) {
-                return null;
-              }
-              if (value == null) {
-                return 'هذا الحقل مطلوب.';
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (taskState.selectedAssignedToType != AssignedToType.department) {
+            //     return null;
+            //   }
+            //   if (value == null) {
+            //     return 'هذا الحقل مطلوب.';
+            //   }
+            //   return null;
+            // },
           );
         },
       );
@@ -619,28 +693,30 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (taskState.selectedAssignedToType == AssignedToType.region)
       return Consumer<RegionProvider>(
         builder: (context, cart, child) {
-          final user = context.read<UserProvider>().currentUser;
-          final list = GetIt.I<PrivilegeCubit>().checkPrivilege('169')
+          final user = context
+              .read<UserProvider>()
+              .currentUser;
+          final list = privilegeBloc.checkPrivilege('169')
               ? cart.listRegion
-              : GetIt.I<PrivilegeCubit>().checkPrivilege('167')
-                  ? cart.listRegion.where((element) => element.regionId == user.fkRegoin).toList()
-                  : cart.listRegion;
+              : privilegeBloc.checkPrivilege('167')
+              ? cart.listRegion.where((element) => element.regionId == user.fkRegoin).toList()
+              : cart.listRegion;
           return AppDropdownButtonFormField<RegionModel, String>(
             items: list,
             onChange: cart.changeVal,
-            hint: "الفرع *",
+            hint: "الفرع",
             itemAsValue: (RegionModel? item) => item!.regionId,
             itemAsString: (item) => item!.regionName,
             value: cart.selectedRegionId,
-            validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.region) {
-                return null;
-              }
-              if (value == null) {
-                return 'هذا الحقل مطلوب.';
-              }
-              return null;
-            },
+            // validator: (value) {
+            //   if (taskState.selectedAssignedToType != AssignedToType.region) {
+            //     return null;
+            //   }
+            //   if (value == null) {
+            //     return 'هذا الحقل مطلوب.';
+            //   }
+            //   return null;
+            // },
           );
         },
       );
@@ -665,7 +741,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
         padding: HWEdgeInsets.all(10),
         decoration: BoxDecoration(
           color: context.colorScheme.grey50,
-          borderRadius: BorderRadius.circular(10).r,
+          borderRadius: BorderRadius
+              .circular(10)
+              .r,
         ),
         child: Row(
           children: [
