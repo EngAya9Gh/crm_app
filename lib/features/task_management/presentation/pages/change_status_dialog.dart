@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/task_cubit.dart';
 
@@ -24,7 +25,6 @@ class _ChangeStatusTaskDialogState extends State<ChangeStatusTaskDialog> {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
         return AlertDialog(
-
           title: RichText(
               textDirection: TextDirection.rtl,
               textAlign: TextAlign.center,
@@ -54,6 +54,7 @@ class _ChangeStatusTaskDialogState extends State<ChangeStatusTaskDialog> {
                   widget.taskModel,
                   widget.status,
                   Navigator.of(context).pop,
+                  context.read<UserProvider>().currentUser.idUser!,
                 );
               },
               isLoading: state.changeTaskStatus.isLoading(),

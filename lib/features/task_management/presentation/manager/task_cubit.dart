@@ -20,73 +20,6 @@ import '../../domain/use_cases/filter_tasks_usecase.dart';
 
 part 'task_state.dart';
 
-enum TaskStatusType {
-  Open,
-  receive,
-  Completed,
-  Evaluated,
-  // Testing,
-  // InProgress,
-  // InReview,
-  // Rejected,
-  // Blocked,
-  // Closed,
-}
-
-extension TaskStatusExt on TaskStatusType {
-  String get text {
-    switch (this) {
-      case TaskStatusType.Open:
-        return "مفتوحة";
-      case TaskStatusType.Evaluated:
-        return "تم التقييم";
-      case TaskStatusType.Completed:
-        return "مكتملة";
-      case TaskStatusType.receive:
-        return "مستلمة";
-    }
-  }
-
-  Color get color {
-    switch (this) {
-      case TaskStatusType.Open:
-        return Colors.grey;
-      case TaskStatusType.receive:
-        return Colors.orange;
-      case TaskStatusType.Evaluated:
-        return Colors.green;
-      case TaskStatusType.Completed:
-        return Colors.indigoAccent;
-    }
-  }
-
-  TaskStatusType get next {
-    switch (this) {
-      case TaskStatusType.Open:
-        return TaskStatusType.receive;
-      case TaskStatusType.receive:
-        return TaskStatusType.Completed;
-      case TaskStatusType.Completed:
-        return TaskStatusType.Evaluated;
-      case TaskStatusType.Evaluated:
-        return TaskStatusType.Evaluated;
-    }
-  }
-
-  int get id {
-    switch (this) {
-      case TaskStatusType.Open:
-        return 1;
-      case TaskStatusType.receive:
-        return 8;
-      case TaskStatusType.Completed:
-        return 4;
-      case TaskStatusType.Evaluated:
-        return 11;
-    }
-  }
-}
-
 @lazySingleton
 class TaskCubit extends Cubit<TaskState> {
   final AddTaskUsecase _addTaskUsecase;
@@ -131,7 +64,13 @@ class TaskCubit extends Cubit<TaskState> {
 
   addTaskAction({
     required VoidCallback onSuccess,
-    required String taskName,
+    required String? taskName,
+    required String description,
+    required String userId,
+    PublicType? publicType,
+    String? mainTypeTask,
+    String? clientId,
+    String? invoiceId,
     String? regionId,
     String? departmentId,
     String? numberOfRecurring,
@@ -140,16 +79,22 @@ class TaskCubit extends Cubit<TaskState> {
 
     final result = await _addTaskUsecase(AddTaskParams(
       title: taskName,
-      file: state.attachmentFile!,
+      clientId: clientId,
+      invoiceId: invoiceId,
+      mainTypeTask: mainTypeTask,
+      publicType: publicType?.value,
+      file: state.attachmentFile,
       assignTo: state.selectedAssignedToType == AssignedToType.employee ? state.selectedAssignTo : null,
       deadLineDate: state.deadLineDate,
       participants: state.selectedParticipant ?? [],
-      startDate: state.startDate!,
+      startDate: state.startDate,
       numberOfRecurring: numberOfRecurring,
       isRecurring: state.isRecurring,
       recurringType: state.selectedRecurringType?.name,
       regionId: state.selectedAssignedToType == AssignedToType.region ? regionId : null,
       departmentId: state.selectedAssignedToType == AssignedToType.department ? departmentId : null,
+      description: description,
+      userId: userId,
     ));
 
     result.fold(
@@ -173,6 +118,9 @@ class TaskCubit extends Cubit<TaskState> {
       departmentTo: state.departmentTo?.idmange,
       regionFrom: state.regionFrom?.regionId,
       regionTo: state.regionTo?.regionId,
+      myTasks: state.myTasks,
+      myDepartment: state.myDepartment,
+      myBranch: state.myBranch,
     ));
 
     result.fold(
@@ -238,22 +186,38 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(regionTo: Nullable.value(region)));
   }
 
+  onChangeMyTasks(String? myTasks) {
+    emit(state.copyWith(myTasks: Nullable.value(myTasks)));
+  }
+
+  onChangeMyDepartment(String? myDepartment) {
+    emit(state.copyWith(myDepartment: Nullable.value(myDepartment)));
+  }
+
+  onChangeMyBranch(String? myBranch) {
+    emit(state.copyWith(myBranch: Nullable.value(myBranch)));
+  }
+
   resetFilter(VoidCallback onSuccess) {
     emit(state.copyWith(isResetTasksState: true));
     getTasks(onSuccess: onSuccess);
   }
 
-  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess) async {
+  onChangeTaskStatusStage(
+      TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId) async {
     emit(state.copyWith(changeTaskStatus: const BlocStatus.loading()));
-    final response = await _changeStatusTaskUsecase(
-        ChangeStatusTaskParams(taskModel.id.toString(), taskModel.taskStatuseId.toString()));
+    final response = await _changeStatusTaskUsecase(ChangeStatusTaskParams(
+      taskStatusType.next.id.toString(),
+      taskModel.id.toString(),
+      userId,
+    ));
 
     response.fold(
       (exception, message) => emit(state.copyWith(changeTaskStatus: BlocStatus.fail(error: message))),
       (value) {
         List<TaskModel> taskList = state.tasksList;
         if (state.selectedStatus != null) {
-          taskList.removeWhere((element) => element.id == element.id);
+          taskList.removeWhere((element) => element.id == taskModel.id);
         } else {
           taskList = taskList
               .map((e) => e.id == taskModel.id

@@ -24,10 +24,11 @@ class TaskDatasource {
       final dio = GetIt.I<Dio>();
       dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
-      final file = body['file_path'];
       FormData formData = FormData();
-      formData.files.add(MapEntry('file_path', await MultipartFile.fromFile(file.path)));
-
+      if (body['file_path'] != null) {
+        final file = body['file_path'];
+        formData.files.add(MapEntry('file_path', await MultipartFile.fromFile(file.path)));
+      }
       body.forEach((key, value) {
         if (key != 'file_path') formData.fields.add(MapEntry(key, value));
       });
@@ -96,7 +97,8 @@ class TaskDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<UserRegionDepartment>>> getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<UserRegionDepartment>>> getUsersByTypeAdministrationAndRegion(
+      Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
       dio.options.baseUrl = 'http://test.smartcrm.ws/api/';

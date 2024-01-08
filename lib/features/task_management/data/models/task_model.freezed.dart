@@ -33,7 +33,7 @@ mixin _$TaskModel {
   @JsonKey(name: "recive_date")
   dynamic get reciveDate => throw _privateConstructorUsedError;
   @JsonKey(name: "start_date")
-  dynamic get startDate => throw _privateConstructorUsedError;
+  DateTime? get startDate => throw _privateConstructorUsedError;
   @JsonKey(name: "deadline")
   dynamic get deadline => throw _privateConstructorUsedError;
   @JsonKey(name: "actual_delivery_date")
@@ -113,7 +113,7 @@ abstract class $TaskModelCopyWith<$Res> {
       @JsonKey(name: "public_Type") String? publicType,
       @JsonKey(name: "main_type_task") dynamic mainTypeTask,
       @JsonKey(name: "recive_date") dynamic reciveDate,
-      @JsonKey(name: "start_date") dynamic startDate,
+      @JsonKey(name: "start_date") DateTime? startDate,
       @JsonKey(name: "deadline") dynamic deadline,
       @JsonKey(name: "actual_delivery_date") dynamic actualDeliveryDate,
       @JsonKey(name: "hours") dynamic hours,
@@ -234,7 +234,7 @@ class _$TaskModelCopyWithImpl<$Res, $Val extends TaskModel>
       startDate: freezed == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as DateTime?,
       deadline: freezed == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
@@ -434,7 +434,7 @@ abstract class _$$TaskModelImplCopyWith<$Res>
       @JsonKey(name: "public_Type") String? publicType,
       @JsonKey(name: "main_type_task") dynamic mainTypeTask,
       @JsonKey(name: "recive_date") dynamic reciveDate,
-      @JsonKey(name: "start_date") dynamic startDate,
+      @JsonKey(name: "start_date") DateTime? startDate,
       @JsonKey(name: "deadline") dynamic deadline,
       @JsonKey(name: "actual_delivery_date") dynamic actualDeliveryDate,
       @JsonKey(name: "hours") dynamic hours,
@@ -558,7 +558,7 @@ class __$$TaskModelImplCopyWithImpl<$Res>
       startDate: freezed == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
-              as dynamic,
+              as DateTime?,
       deadline: freezed == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
@@ -752,7 +752,7 @@ class _$TaskModelImpl implements _TaskModel {
   final dynamic reciveDate;
   @override
   @JsonKey(name: "start_date")
-  final dynamic startDate;
+  final DateTime? startDate;
   @override
   @JsonKey(name: "deadline")
   final dynamic deadline;
@@ -872,7 +872,8 @@ class _$TaskModelImpl implements _TaskModel {
                 .equals(other.mainTypeTask, mainTypeTask) &&
             const DeepCollectionEquality()
                 .equals(other.reciveDate, reciveDate) &&
-            const DeepCollectionEquality().equals(other.startDate, startDate) &&
+            (identical(other.startDate, startDate) ||
+                other.startDate == startDate) &&
             const DeepCollectionEquality().equals(other.deadline, deadline) &&
             const DeepCollectionEquality()
                 .equals(other.actualDeliveryDate, actualDeliveryDate) &&
@@ -938,7 +939,7 @@ class _$TaskModelImpl implements _TaskModel {
         publicType,
         const DeepCollectionEquality().hash(mainTypeTask),
         const DeepCollectionEquality().hash(reciveDate),
-        const DeepCollectionEquality().hash(startDate),
+        startDate,
         const DeepCollectionEquality().hash(deadline),
         const DeepCollectionEquality().hash(actualDeliveryDate),
         const DeepCollectionEquality().hash(hours),
@@ -993,7 +994,7 @@ abstract class _TaskModel implements TaskModel {
       @JsonKey(name: "public_Type") final String? publicType,
       @JsonKey(name: "main_type_task") final dynamic mainTypeTask,
       @JsonKey(name: "recive_date") final dynamic reciveDate,
-      @JsonKey(name: "start_date") final dynamic startDate,
+      @JsonKey(name: "start_date") final DateTime? startDate,
       @JsonKey(name: "deadline") final dynamic deadline,
       @JsonKey(name: "actual_delivery_date") final dynamic actualDeliveryDate,
       @JsonKey(name: "hours") final dynamic hours,
@@ -1052,7 +1053,7 @@ abstract class _TaskModel implements TaskModel {
   dynamic get reciveDate;
   @override
   @JsonKey(name: "start_date")
-  dynamic get startDate;
+  DateTime? get startDate;
   @override
   @JsonKey(name: "deadline")
   dynamic get deadline;

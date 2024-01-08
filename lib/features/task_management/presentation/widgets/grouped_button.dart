@@ -70,7 +70,7 @@ class _GroupedButtonsState<T> extends State<GroupedButtons<T>> {
               enableDeselect: widget.enableDeselect,
               maxSelected: widget.maxSelected,
               options: GroupButtonOptions(
-                buttonWidth: (MediaQuery.sizeOf(context).width / widget.buttons.length) - 30.w,
+                buttonWidth: (MediaQuery.sizeOf(context).width / widget.buttons.length) - 40.w,
                 borderRadius: BorderRadius.circular(10).r,
                 spacing: widget.spacing ?? 10.w,
                 selectedShadow: [

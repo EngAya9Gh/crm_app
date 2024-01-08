@@ -29,6 +29,9 @@ class FilterTaskParams {
     this.regionTo,
     this.departmentFrom,
     this.departmentTo,
+    this.myDepartment,
+    this.myBranch,
+    this.myTasks,
   });
 
   final String? statusName;
@@ -42,19 +45,25 @@ class FilterTaskParams {
   final DateTime? startDateTo;
   final DateTime? startDateFrom;
   final String? createdBy;
+  final String? myTasks;
+  final String? myBranch;
+  final String? myDepartment;
 
   Map<String, dynamic> get toMap => {
         'status_name': statusName,
         'assigned_by': assignedBy,
         'assigned_to': assignedTo,
         'date_time_created': dateTimeCreated?.toIso8601String(),
-        'start_date_to': startDateTo != null ? dateToString(startDateTo!) : null,
-        'start_date_from': startDateFrom != null ? dateToString(startDateFrom!) : null,
+        'start_date_to': startDateTo != null ? startDateTo?.toIso8601String() : null,
+        'start_date_from': startDateFrom != null ? startDateFrom?.toIso8601String() : null,
         'created_by': createdBy,
         'assigend_department_from': departmentFrom,
         'assigend_department_to': departmentTo,
         'assigend_region_from': regionFrom,
         'assigend_region_to': regionTo,
+        'mytasks': myTasks,
+        'mydepartment': myDepartment,
+        'mybranch': myBranch,
       }..removeWhere((key, value) => value == '' || value == null);
 
   String dateToString(DateTime dateTime) =>

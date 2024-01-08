@@ -24,6 +24,9 @@ class TaskState {
     this.addTaskStatus = const BlocStatus.initial(),
     this.changeTaskStatus = const BlocStatus.initial(),
     this.selectedAssignedToType,
+    this.myBranch,
+    this.myDepartment,
+    this.myTasks,
   });
 
   final UserRegionDepartment? selectedAssignTo;
@@ -47,6 +50,9 @@ class TaskState {
   final RegionModel? regionTo;
   final BlocStatus changeTaskStatus;
   final AssignedToType? selectedAssignedToType;
+  final String? myTasks;
+  final String? myDepartment;
+  final String? myBranch;
 
   TaskState copyWith({
     UserRegionDepartment? selectedAssignTo,
@@ -71,6 +77,9 @@ class TaskState {
     final Nullable<RegionModel?>? regionFrom,
     final Nullable<RegionModel?>? regionTo,
     final Nullable<AssignedToType?>? selectedAssignedToType,
+    final Nullable<String?>? myTasks,
+    final Nullable<String?>? myDepartment,
+    final Nullable<String?>? myBranch,
     bool isResetTasksState = false,
   }) {
     return TaskState(
@@ -131,6 +140,258 @@ class TaskState {
           : departmentTo != null
               ? departmentTo.value
               : this.departmentTo,
+      myDepartment: myDepartment != null
+          ? myDepartment.value
+          : this.myDepartment,
+      myBranch: myBranch != null
+          ? myBranch.value
+          : this.myBranch,
+      myTasks: myTasks != null
+          ? myTasks.value
+          : this.myTasks,
+
     );
+  }
+}
+
+enum TaskStatusType {
+  Open,
+  receive,
+  Completed,
+  Evaluated,
+  // Testing,
+  // InProgress,
+  // InReview,
+  // Rejected,
+  // Blocked,
+  // Closed,
+}
+
+extension TaskStatusExt on TaskStatusType {
+  String get text {
+    switch (this) {
+      case TaskStatusType.Open:
+        return "مفتوحة";
+      case TaskStatusType.Evaluated:
+        return "تم التقييم";
+      case TaskStatusType.Completed:
+        return "مكتملة";
+      case TaskStatusType.receive:
+        return "مستلمة";
+    }
+  }
+
+  Color get color {
+    switch (this) {
+      case TaskStatusType.Open:
+        return Colors.grey;
+      case TaskStatusType.receive:
+        return Colors.orange;
+      case TaskStatusType.Evaluated:
+        return Colors.green;
+      case TaskStatusType.Completed:
+        return Colors.indigoAccent;
+    }
+  }
+
+  TaskStatusType get next {
+    switch (this) {
+      case TaskStatusType.Open:
+        return TaskStatusType.receive;
+      case TaskStatusType.receive:
+        return TaskStatusType.Completed;
+      case TaskStatusType.Completed:
+        return TaskStatusType.Evaluated;
+      case TaskStatusType.Evaluated:
+        return TaskStatusType.Evaluated;
+    }
+  }
+
+  int get id {
+    switch (this) {
+      case TaskStatusType.Open:
+        return 1;
+      case TaskStatusType.receive:
+        return 8;
+      case TaskStatusType.Completed:
+        return 4;
+      case TaskStatusType.Evaluated:
+        return 11;
+    }
+  }
+}
+
+const clientPublicTypeList = [
+  PublicType.updateClient,
+  PublicType.transferClient,
+  PublicType.other,
+];
+
+const invoicePublicTypeList = [
+  PublicType.updateInvoice,
+  PublicType.changeDataInvoice,
+  PublicType.transferToWithdrawal,
+  PublicType.deleteInvoice,
+  PublicType.attachment,
+  PublicType.addPayment,
+  PublicType.other
+];
+
+const commentPublicTypeList = [
+  PublicType.addComment,
+  PublicType.linkComment,
+  PublicType.other,
+];
+
+const supportPublicTypeList = [
+  PublicType.cancelSuspendClient,
+  PublicType.suspendClient,
+  PublicType.doneInstall,
+  PublicType.reScheduleClient,
+  PublicType.other,
+];
+
+const carePublicTypeList = [
+  PublicType.contactClient,
+  PublicType.updateCommunicationCard,
+  PublicType.other,
+];
+
+const ticketPublicTypeList = [
+  PublicType.addTicket,
+  PublicType.closeTicket,
+  PublicType.receiveTicket,
+  PublicType.rateTicket,
+  PublicType.other
+];
+
+enum PublicType {
+  ///client
+  updateClient,
+  transferClient,
+
+  ///invoice
+  updateInvoice,
+  changeDataInvoice,
+  transferToWithdrawal,
+  deleteInvoice,
+  attachment,
+  addPayment,
+
+  ///Comment
+  addComment,
+  linkComment,
+
+  ///Support
+  reScheduleClient,
+  cancelSuspendClient,
+  suspendClient,
+  doneInstall,
+
+  ///Care
+  contactClient,
+  updateCommunicationCard,
+
+  ///Ticket
+  addTicket,
+  receiveTicket,
+  closeTicket,
+  rateTicket,
+  other,
+}
+
+extension PublicTypeExt on PublicType {
+  String get text {
+    switch (this) {
+      case PublicType.updateClient:
+        return 'تعديل العميل';
+      case PublicType.transferClient:
+        return 'تحويل العميل';
+      case PublicType.updateInvoice:
+        return 'تعديل الفاتورة';
+      case PublicType.changeDataInvoice:
+        return 'تغيير بيانات الفاتورة';
+      case PublicType.transferToWithdrawal:
+        return 'تحويل إلى منسحبة';
+      case PublicType.deleteInvoice:
+        return 'حذف الفاتورة';
+      case PublicType.attachment:
+        return 'مرفقات الفاتورة';
+      case PublicType.addPayment:
+        return 'اضافة دفعة';
+      case PublicType.addComment:
+        return 'اضافة تعليق';
+      case PublicType.linkComment:
+        return 'ربط التعليق بمهمة';
+      case PublicType.reScheduleClient:
+        return 'جدولة الزيارة';
+      case PublicType.cancelSuspendClient:
+        return 'إلغاء تعليق العميل';
+      case PublicType.suspendClient:
+        return 'تعليق العميل';
+      case PublicType.doneInstall:
+        return 'تم التركيب';
+      case PublicType.contactClient:
+        return 'التواصل مع العميل';
+      case PublicType.updateCommunicationCard:
+        return 'تعديل التواصل';
+      case PublicType.addTicket:
+        return 'اضافة تذكرة';
+      case PublicType.receiveTicket:
+        return 'استلام تذكرة';
+      case PublicType.closeTicket:
+        return 'اغلاق تذكرة';
+      case PublicType.rateTicket:
+        return 'تقييم تذكرة';
+      case PublicType.other:
+        return 'آخرى';
+    }
+  }
+
+  String get value {
+    switch (this) {
+      case PublicType.updateClient:
+        return 'update client';
+      case PublicType.transferClient:
+        return 'transfer client';
+      case PublicType.updateInvoice:
+        return 'update invoice';
+      case PublicType.changeDataInvoice:
+        return 'change data invoice';
+      case PublicType.transferToWithdrawal:
+        return 'transfer_to_withdraw';
+      case PublicType.deleteInvoice:
+       return 'delete invoice';
+      case PublicType.attachment:
+       return 'attachment';
+      case PublicType.addPayment:
+       return 'add payment';
+      case PublicType.addComment:
+        return 'add comment';
+      case PublicType.linkComment:
+        return 'linkComment';
+      case PublicType.reScheduleClient:
+        return 'reschdule client';
+      case PublicType.cancelSuspendClient:
+        return 'cancel suspend client';
+      case PublicType.suspendClient:
+        return 'suspend client';
+      case PublicType.doneInstall:
+        return 'doneInstall';
+      case PublicType.contactClient:
+        return 'contact client';
+      case PublicType.updateCommunicationCard:
+        return 'update communication card';
+      case PublicType.addTicket:
+        return 'add ticket';
+      case PublicType.receiveTicket:
+        return 'recive ticket';
+      case PublicType.closeTicket:
+        return 'close ticket';
+      case PublicType.rateTicket:
+        return 'rateTicket';
+      case PublicType.other:
+       return 'other';
+    }
   }
 }

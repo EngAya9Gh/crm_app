@@ -7,7 +7,8 @@ import 'package:injectable/injectable.dart';
 import '../../../../common/models/response_wrapper/response_wrapper.dart';
 
 @injectable
-class UpdatePrivilegeUsecase extends UseCase<Result<ResponseWrapper<void>>, UpdatePrivilegeParams> {
+class UpdatePrivilegeUsecase
+    extends UseCase<Result<ResponseWrapper<void>>, UpdatePrivilegeParams> {
   UpdatePrivilegeUsecase(this._repository);
 
   final PrivilegeRepository _repository;
@@ -21,15 +22,26 @@ class UpdatePrivilegeUsecase extends UseCase<Result<ResponseWrapper<void>>, Upda
 class UpdatePrivilegeParams {
   final List<int> privilegeUserIdList;
   final List<int> isCheckList;
+  final String userId;
 
-  UpdatePrivilegeParams({required this.isCheckList, required this.privilegeUserIdList});
+  UpdatePrivilegeParams(
+    this.userId, {
+    required this.isCheckList,
+    required this.privilegeUserIdList,
+  });
 
   Map<String, dynamic> toMap() {
     Map privilegeUserIdMap = {};
-    privilegeUserIdList.forEachIndexed((i, e) => privilegeUserIdMap.addAll({'id_privg_user[$i]': e}));
+    privilegeUserIdList.forEachIndexed(
+        (i, e) => privilegeUserIdMap.addAll({'id_privg_user[$i]': e}));
     Map isCheckMap = {};
-    isCheckList.forEachIndexed((i, e) => privilegeUserIdMap.addAll({'is_check[$i]': e}));
+    isCheckList.forEachIndexed(
+        (i, e) => privilegeUserIdMap.addAll({'is_check[$i]': e}));
 
-    return {...privilegeUserIdMap, ...isCheckMap};
+    return {
+      ...privilegeUserIdMap,
+      ...isCheckMap,
+      'fk_user': userId,
+    };
   }
 }

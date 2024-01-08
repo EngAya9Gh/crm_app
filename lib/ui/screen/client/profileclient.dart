@@ -209,7 +209,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.only(bottom: 1),
-                        padding: const EdgeInsets.only(top: 25, left: 5, right: 5),
+                        padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
                         height: MediaQuery.of(context).size.height * 0.85,
                         child: TabBarView(
                           controller: _tabController,

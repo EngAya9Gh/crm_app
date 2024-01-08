@@ -14,7 +14,9 @@ _$TaskModelImpl _$$TaskModelImplFromJson(Map<String, dynamic> json) =>
       publicType: json['public_Type'] as String?,
       mainTypeTask: json['main_type_task'],
       reciveDate: json['recive_date'],
-      startDate: json['start_date'],
+      startDate: json['start_date'] == null
+          ? null
+          : DateTime.parse(json['start_date'] as String),
       deadline: json['deadline'],
       actualDeliveryDate: json['actual_delivery_date'],
       hours: json['hours'],
@@ -71,7 +73,7 @@ Map<String, dynamic> _$$TaskModelImplToJson(_$TaskModelImpl instance) =>
       'public_Type': instance.publicType,
       'main_type_task': instance.mainTypeTask,
       'recive_date': instance.reciveDate,
-      'start_date': instance.startDate,
+      'start_date': instance.startDate?.toIso8601String(),
       'deadline': instance.deadline,
       'actual_delivery_date': instance.actualDeliveryDate,
       'hours': instance.hours,

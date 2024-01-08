@@ -17,10 +17,14 @@ class ChangeStatusTaskUsecase extends UseCase<Result<ResponseWrapper<void>>, Cha
 }
 
 class ChangeStatusTaskParams {
-  ChangeStatusTaskParams(this.taskStatusId, this.taskId);
+  ChangeStatusTaskParams(this.taskStatusId, this.taskId, this.userId);
 
   final String taskStatusId;
   final String taskId;
+  final String userId;
 
-  Map<String, dynamic> get toMap => {'task_statuse_id': this.taskStatusId};
+  Map<String, dynamic> get toMap => {
+        'task_statuse_id': this.taskStatusId,
+        'id_user': userId,
+      };
 }

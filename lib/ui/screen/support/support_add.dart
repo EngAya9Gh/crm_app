@@ -28,6 +28,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/task_management/presentation/manager/task_cubit.dart';
+import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../labeltext.dart';
 import '../../../view_model/reason_suspend.dart';
 import '../../widgets/app_photo_viewer.dart';
@@ -298,6 +300,10 @@ class _support_addState extends State<support_add> {
                   padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 5),
                   child: Column(
                     children: [
+                      AddManualTaskButton(
+                        list: supportPublicTypeList,
+                        invoiceId: widget.idinvoice,
+                      ),
                       Consumer<invoice_vm>(
                         builder: (context, invoiceViewmodel, _) {
                           return Container(

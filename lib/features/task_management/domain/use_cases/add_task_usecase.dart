@@ -1,12 +1,10 @@
 import 'dart:io';
-
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/task_management/domain/repositories/task_repository.dart';
 import 'package:injectable/injectable.dart';
-
 import '../../../../model/usermodel.dart';
 import '../../data/models/user_region_department.dart';
 
@@ -23,12 +21,12 @@ class AddTaskUsecase extends UseCase<Result<ResponseWrapper<bool>>, AddTaskParam
 }
 
 class AddTaskParams {
-  final String title;
+  final String? title;
   final List<UserModel> participants;
   final UserRegionDepartment? assignTo;
-  final DateTime startDate;
+  final DateTime? startDate;
   final DateTime? deadLineDate;
-  final File file;
+  final File? file;
   final String? regionId;
   final String? departmentId;
   final bool? isRecurring;
@@ -36,14 +34,21 @@ class AddTaskParams {
   final String? numberOfRecurring;
   final String? groupId;
   final String? invoiceId;
+  final String userId;
+  final String description;
+  final String? clientId;
+  final String? mainTypeTask;
+  final String? publicType;
 
   AddTaskParams({
     required this.title,
+    required this.description,
+    required this.userId,
     required this.participants,
     this.assignTo,
-    required this.startDate,
+    this.startDate,
     this.deadLineDate,
-    required this.file,
+    this.file,
     this.regionId,
     this.departmentId,
     this.isRecurring,
@@ -51,6 +56,9 @@ class AddTaskParams {
     this.numberOfRecurring,
     this.groupId,
     this.invoiceId,
+    this.clientId,
+    this.mainTypeTask,
+    this.publicType,
   });
 
   Map<String, dynamic> get toMap {
@@ -62,7 +70,7 @@ class AddTaskParams {
       'title': title,
       'file_path': file,
       "assigned_to": assignTo?.idUser.toString(),
-      'start_date': startDate.toIso8601String(),
+      'start_date': startDate?.toIso8601String(),
       'deadline': deadLineDate?.toIso8601String(),
       ...map,
       "invoice_id": invoiceId,
@@ -77,6 +85,11 @@ class AddTaskParams {
       'assignment_type_from': 'user',
       'assigend_department_to': departmentId,
       'assigend_region_to': regionId,
+      'id_user': userId,
+      'description': description,
+      'client_id': clientId,
+      'main_type_task': mainTypeTask,
+      'public_Type': publicType,
     }..removeWhere((key, value) => value == null || value == '');
   }
 

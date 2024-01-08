@@ -1,5 +1,6 @@
 
 
+import 'package:crm_smart/features/task_management/presentation/pages/task_management_list_page.dart';
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
 import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
 import 'package:crm_smart/ui/screen/client/clientView.dart';
@@ -120,8 +121,7 @@ void route_notifyto(typeNotify,context,
       case "task":
       Navigator.push(context,
           CupertinoPageRoute(
-              builder: (context) =>//page tasks
-                ()));
+              builder: (context) => TaskManagementListPage()));
       break;
     case "Transfer" :
       Navigator.push(context,

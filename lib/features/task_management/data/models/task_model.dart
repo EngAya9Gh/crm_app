@@ -20,7 +20,7 @@ class TaskModel with _$TaskModel {
     @JsonKey(name: "public_Type") String? publicType,
     @JsonKey(name: "main_type_task") dynamic mainTypeTask,
     @JsonKey(name: "recive_date") dynamic reciveDate,
-    @JsonKey(name: "start_date") dynamic startDate,
+    @JsonKey(name: "start_date") DateTime? startDate,
     @JsonKey(name: "deadline") dynamic deadline,
     @JsonKey(name: "actual_delivery_date") dynamic actualDeliveryDate,
     @JsonKey(name: "hours") dynamic hours,

@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:grouped_list/grouped_list.dart';
 
+import '../../../../view_model/user_vm_provider.dart';
 import '../../data/models/privilege_model.dart';
 
 class PrivilegePage extends StatefulWidget {
@@ -29,7 +30,8 @@ class _PrivilegePageState extends State<PrivilegePage> {
 
   @override
   void initState() {
-    _privilegeCubit = GetIt.I<PrivilegeCubit>()..getPrivilegesLevel(widget.levelModel.idLevel!);
+    _privilegeCubit = GetIt.I<PrivilegeCubit>()
+      ..getPrivilegesLevel(widget.levelModel.idLevel!);
     super.initState();
   }
 
@@ -50,7 +52,10 @@ class _PrivilegePageState extends State<PrivilegePage> {
                 return AppTextButton(
                   text: 'حفظ',
                   isLoading: state.updatePrivilegeStatus.isLoading(),
-                  onPressed: isEqual ? null : _privilegeCubit.updatePrivilege,
+                  onPressed: isEqual
+                      ? null
+                      : () => _privilegeCubit.updatePrivilege(
+                          context.read<UserProvider>().currentUser.idUser!),
                   appButtonStyle: AppButtonStyle.secondary,
                 );
               },
@@ -91,13 +96,14 @@ class _PrivilegePageState extends State<PrivilegePage> {
                       return 'الإشعارات';
                     case 'report':
                       return 'التقارير';
-                      case 'tasks':
+                    case 'tasks':
                       return 'إدارة المهام';
                   }
                   return '';
                 },
                 groupComparator: (value1, value2) => value2.compareTo(value1),
-                itemComparator: (item1, item2) => item1.priority?.compareTo(item2.priority ?? '0') ?? 0,
+                itemComparator: (item1, item2) =>
+                    item1.priority?.compareTo(item2.priority ?? '0') ?? 0,
                 order: GroupedListOrder.ASC,
                 useStickyGroupSeparators: true,
                 groupSeparatorBuilder: (String value) => Padding(
@@ -130,7 +136,8 @@ class _PrivilegePageState extends State<PrivilegePage> {
           empty: () => Center(child: AppLoader()),
           error: (e) => Center(
             child: IconButton(
-              onPressed: () => _privilegeCubit.getPrivilegesLevel(widget.levelModel.idLevel!),
+              onPressed: () => _privilegeCubit
+                  .getPrivilegesLevel(widget.levelModel.idLevel!),
               icon: Icon(Icons.refresh),
             ),
           ),

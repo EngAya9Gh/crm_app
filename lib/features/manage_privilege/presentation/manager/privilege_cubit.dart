@@ -34,22 +34,28 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
 
   getLevels(UserModel user, {bool isRefresh = false}) async {
     if (state.levelsState.getDataWhenSuccess != null && !isRefresh) {
-      final list = _filterPriorityLevels(state.levelsState.data, user.periorty!);
-      emit(state.copyWith(levelsState: PageState.loaded(data: state.levelsState.data), priorityState: list));
+      final list =
+          _filterPriorityLevels(state.levelsState.data, user.periorty!);
+      emit(state.copyWith(
+          levelsState: PageState.loaded(data: state.levelsState.data),
+          priorityState: list));
       return;
     }
 
-    if (!isRefresh) emit(state.copyWith(levelsState: const PageState.loading()));
+    if (!isRefresh)
+      emit(state.copyWith(levelsState: const PageState.loading()));
 
     final result = await _getLevelsUsecase();
 
     result.fold(
-      (exception, message) => emit(state.copyWith(levelsState: const PageState.error())),
+      (exception, message) =>
+          emit(state.copyWith(levelsState: const PageState.error())),
       (value) {
         final list = _filterPriorityLevels(value.message ?? [], user.periorty!);
 
         emit(state.copyWith(
-          levelsState: PageState.loaded(data: value.message ?? value.data ?? []),
+          levelsState:
+              PageState.loaded(data: value.message ?? value.data ?? []),
           priorityState: list,
         ));
       },
@@ -62,14 +68,16 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     final result = await _addLevelUsecase(AddLevelParams(level));
 
     result.fold(
-      (exception, message) => emit(state.copyWith(addLevelStatus: BlocStatus.fail(error: message))),
+      (exception, message) =>
+          emit(state.copyWith(addLevelStatus: BlocStatus.fail(error: message))),
       (value) {
         onSuccess();
         emit(state.copyWith(
           addLevelStatus: BlocStatus.success(),
           levelsState: PageState.loaded(
               data: (state.levelsState.getDataWhenSuccess ?? [])
-                ..insert(0, LevelModel(nameLevel: level, idLevel: value.message))),
+                ..insert(
+                    0, LevelModel(nameLevel: level, idLevel: value.message))),
         ));
       },
     );
@@ -89,8 +97,10 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
         privilegesOfLevelTemp: const PageState.error(),
       )),
       (value) => emit(state.copyWith(
-        privilegesOfLevel: PageState.loaded(data: value.message ?? value.data ?? []),
-        privilegesOfLevelTemp: PageState.loaded(data: value.message ?? value.data ?? []),
+        privilegesOfLevel:
+            PageState.loaded(data: value.message ?? value.data ?? []),
+        privilegesOfLevelTemp:
+            PageState.loaded(data: value.message ?? value.data ?? []),
       )),
     );
   }
@@ -106,7 +116,9 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
         return false;
       },
       (value) {
-        emit(state.copyWith(userPrivilegesState: PageState.loaded(data: value.message ?? value.data ?? [])));
+        emit(state.copyWith(
+            userPrivilegesState:
+                PageState.loaded(data: value.message ?? value.data ?? [])));
         return true;
       },
     );
@@ -120,30 +132,38 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     emit(state.copyWith(
         privilegesOfLevelTemp: PageState.loaded(
       data: state.privilegesOfLevelTemp.data
-          .map((e) => e.idPrivilegeUser == privilegeModel.idPrivilegeUser ? e.copyWith(isCheck: !e.isCheck!) : e)
+          .map((e) => e.idPrivilegeUser == privilegeModel.idPrivilegeUser
+              ? e.copyWith(isCheck: !e.isCheck!)
+              : e)
           .toList(),
     )));
   }
 
-  updatePrivilege() async {
-    final difference =
-        state.privilegesOfLevelTemp.data.toSet().difference(state.privilegesOfLevel.data.toSet()).toList();
+  updatePrivilege(String userId) async {
+    final difference = state.privilegesOfLevelTemp.data
+        .toSet()
+        .difference(state.privilegesOfLevel.data.toSet())
+        .toList();
 
     emit(state.copyWith(updatePrivilegeStatus: const BlocStatus.loading()));
 
     final result = await _updatePrivilegeUsecase(UpdatePrivilegeParams(
+      userId,
       isCheckList: difference.map((e) => e.isCheck! ? 1 : 0).toList(),
-      privilegeUserIdList: difference.map((e) => int.parse(e.idPrivilegeUser!)).toList(),
+      privilegeUserIdList:
+          difference.map((e) => int.parse(e.idPrivilegeUser!)).toList(),
     ));
 
     result.fold(
-      (exception, message) => emit(state.copyWith(updatePrivilegeStatus: BlocStatus.fail(error: message))),
+      (exception, message) => emit(state.copyWith(
+          updatePrivilegeStatus: BlocStatus.fail(error: message))),
       (value) {
         emit(state.copyWith(
           updatePrivilegeStatus: const BlocStatus.success(),
           userPrivilegesState: PageState.loaded(
               data: state.userPrivilegesState.data.map((e) {
-            final privilege = difference.firstWhereOrNull((element) => element.idPrivilegeUser == e.idPrivilegeUser);
+            final privilege = difference.firstWhereOrNull(
+                (element) => element.idPrivilegeUser == e.idPrivilegeUser);
             if (privilege != null) {
               return e.copyWith(isCheck: privilege.isCheck);
             } else {
@@ -156,15 +176,20 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   }
 
   bool checkPrivilege(String privilegeId) {
-    final privilege = state.userPrivilegesState.data.firstWhereOrNull((element) => element.fkPrivilege == privilegeId);
+    final privilege = state.userPrivilegesState.data
+        .firstWhereOrNull((element) => element.fkPrivilege == privilegeId);
     return privilege?.isCheck! ?? false;
   }
 
-  List<LevelModel> _filterPriorityLevels(List<LevelModel> levels, final String priority) {
+  List<LevelModel> _filterPriorityLevels(
+      List<LevelModel> levels, final String priority) {
     if (priority == '0') {
       return levels;
     }
-    return levels.where((element) => int.parse(element.periorty ?? '1') > int.parse(priority)).toList();
+    return levels
+        .where((element) =>
+            int.parse(element.periorty ?? '1') > int.parse(priority))
+        .toList();
   }
 
   onChangeLevelId(String? levelModel) {
