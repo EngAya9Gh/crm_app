@@ -27,7 +27,7 @@ class ClientWaiting extends StatefulWidget {
 class _ClientWaitingState extends State<ClientWaiting> {
   String? regoin;
   String? typeclientvalue;
-  late ClientModel itemClient;
+  late ClientModel1 itemClient;
   late List<MainCityModel> selecteditemmaincity = [];
   late UserModel user;
 

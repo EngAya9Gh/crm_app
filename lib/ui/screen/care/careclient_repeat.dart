@@ -13,7 +13,7 @@ import 'careAdd.dart';
 
 class careRepeat extends StatefulWidget {
   careRepeat({required this.type, required this.comobj, required this.idclient, Key? key}) : super(key: key);
-  ClientModel idclient;
+  ClientModel1 idclient;
   CommunicationModel comobj;
   String type;
 

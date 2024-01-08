@@ -49,7 +49,7 @@ class addinvoice extends StatefulWidget {
       // required this.indexinvoice,
       Key? key})
       : super(key: key);
-  ClientModel itemClient;
+  ClientModel1 itemClient;
 
   // String? idClient,iduser;
   InvoiceModel? invoice = null;

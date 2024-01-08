@@ -24,7 +24,7 @@ class invoice_marketing extends StatefulWidget {
 class _invoice_marketingState extends State<invoice_marketing> {
   String? regoin;
   String? typeclientvalue;
-  late ClientModel itemClient;
+  late ClientModel1 itemClient;
 
   @override
   void initState() {

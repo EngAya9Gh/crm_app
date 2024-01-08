@@ -18,7 +18,7 @@ class OutClient extends StatefulWidget {
 class _OutClientState extends State<OutClient> {
   String? regoin;
   String? typeclientvalue;
-  late ClientModel itemClient;
+  late ClientModel1 itemClient;
   // late String typepayController;
   @override void didChangeDependencies() async {
 

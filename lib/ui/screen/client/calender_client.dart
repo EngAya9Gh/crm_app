@@ -24,7 +24,7 @@ class calender_client extends StatefulWidget {
   _calender_clientState createState() => _calender_clientState();
 }
 
-late ClientModel? clientModel = null;
+late ClientModel1? clientModel = null;
 int isSelectedtypeinstall = 0;
 late String idclient;
 List<InvoiceModel> listfilter = [];
@@ -108,7 +108,7 @@ class _calender_clientState extends State<calender_client> {
                                 SizedBox(width: 10),
                               },
                               Expanded(
-                                child: DropdownSearch<ClientModel>(
+                                child: DropdownSearch<ClientModel1>(
                                   mode: Mode.DIALOG,
                                   // label: " الموظف ",
                                   //hint: 'الموظف',
@@ -248,7 +248,7 @@ class _calender_clientState extends State<calender_client> {
   }
 
   Widget dialog(
-    ClientModel client,
+    ClientModel1 client,
   ) {
     return SimpleDialog(
       elevation: 0,

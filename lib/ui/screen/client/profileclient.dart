@@ -20,7 +20,7 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../../constants.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event.dart';
-import 'clientView.dart';
+import '../../../features/clients_list/presentation/widgets/client_section.dart';
 
 class ProfileClient extends StatefulWidget {
   ProfileClient({
@@ -40,7 +40,7 @@ class ProfileClient extends StatefulWidget {
   int tabCareIndex;
   InvoiceModel? invoiceModel;
   String? clientTransfer;
-  ClientModel? client;
+  ClientModel1? client;
   String idCommunication;
   final Event? event;
 
@@ -214,7 +214,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
                         child: TabBarView(
                           controller: _tabController,
                           children: <Widget>[
-                            ClientView(
+                            ClientSection(
                               client: client,
                               clienttransfer: widget.clientTransfer,
                               idclient: client.idClients.toString(),

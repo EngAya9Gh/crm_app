@@ -27,7 +27,7 @@ class productSearchView extends StatelessWidget {
      //   productName.substring(1);
     
     
-    if(list is List<ClientModel> ){
+    if(list is List<ClientModel1> ){
       list.forEach((element) {
         if(element.nameEnterprise!.contains(searchKey,0)
             || element.nameClient!.contains(searchKey,0)
@@ -69,7 +69,7 @@ class productSearchView extends StatelessWidget {
    //UserModel
    //InvoiceModel
    //ProductsInvoice
-   if(val is ClientModel )
+   if(val is ClientModel1 )
   return cardClientnew(
      itemClient:
      val,//_listProductFilter.data![index],

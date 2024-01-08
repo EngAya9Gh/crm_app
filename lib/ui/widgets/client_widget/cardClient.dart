@@ -12,7 +12,7 @@ class cardClient extends StatelessWidget {
       { Key? key,
         required this.iduser,
         required this.itemClient}) : super(key: key);
-  ClientModel itemClient;
+  ClientModel1 itemClient;
   String iduser;
   //final controllerUsers = Get.find<AllUserVMController>();
 

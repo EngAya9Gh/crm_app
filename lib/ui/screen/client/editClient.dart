@@ -41,7 +41,7 @@ import 'addClient.dart';
 class editclient extends StatefulWidget {
   editclient({required this.client, required this.fkclient, required this.fkuser, Key? key}) : super(key: key);
   String fkclient, fkuser;
-  ClientModel client;
+  ClientModel1 client;
 
   @override
   _editclientState createState() => _editclientState();

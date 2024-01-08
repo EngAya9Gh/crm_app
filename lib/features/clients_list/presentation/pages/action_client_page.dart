@@ -680,7 +680,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
 
     _clientsListBloc.add(EditClientEvent(
       editClientParams,
-      onSuccess: (client) => Navigator.pop(context, client),
+      onSuccess: (client) {
+        Navigator.pop(context, client);
+      },
     ));
   }
 
