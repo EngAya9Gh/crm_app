@@ -43,17 +43,17 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
 
     final result = await _getLevelsUsecase();
 
-    // result.fold(
-    //   (exception, message) => emit(state.copyWith(levelsState: const PageState.error())),
-    //   (value) {
-    //     final list = _filterPriorityLevels(value.message ?? [], user.periorty!);
-    //
-    //     emit(state.copyWith(
-    //       levelsState: PageState.loaded(data: value.message ?? value.data ?? []),
-    //       priorityState: list,
-    //     ));
-    //   },
-    // );
+    result.fold(
+      (exception, message) => emit(state.copyWith(levelsState: const PageState.error())),
+      (value) {
+        final list = _filterPriorityLevels(value.message ?? [], user.periorty!);
+
+        emit(state.copyWith(
+          levelsState: PageState.loaded(data: value.message ?? value.data ?? []),
+          priorityState: list,
+        ));
+      },
+    );
   }
 
   addLevel(String level, VoidCallback onSuccess) async {
@@ -83,33 +83,33 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
 
     final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
 
-    // result.fold(
-    //   (exception, message) => emit(state.copyWith(
-    //     privilegesOfLevel: const PageState.error(),
-    //     privilegesOfLevelTemp: const PageState.error(),
-    //   )),
-    //   (value) => emit(state.copyWith(
-    //     privilegesOfLevel: PageState.loaded(data: value.message ?? value.data ?? []),
-    //     privilegesOfLevelTemp: PageState.loaded(data: value.message ?? value.data ?? []),
-    //   )),
-    // );
+    result.fold(
+      (exception, message) => emit(state.copyWith(
+        privilegesOfLevel: const PageState.error(),
+        privilegesOfLevelTemp: const PageState.error(),
+      )),
+      (value) => emit(state.copyWith(
+        privilegesOfLevel: PageState.loaded(data: value.message ?? value.data ?? []),
+        privilegesOfLevelTemp: PageState.loaded(data: value.message ?? value.data ?? []),
+      )),
+    );
   }
 
   Future<bool> getUserPrivileges(final String levelId) async {
     emit(state.copyWith(userPrivilegesState: const PageState.loading()));
 
     final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
-    return Future.value(true);
-    // return result.fold(
-    //   (exception, message) {
-    //     emit(state.copyWith(userPrivilegesState: const PageState.error()));
-    //     return false;
-    //   },
-    //   (value) {
-    //     emit(state.copyWith(userPrivilegesState: PageState.loaded(data: value.message ?? value.data ?? [])));
-    //     return true;
-    //   },
-    // );
+    // return Future.value(true);
+    return result.fold(
+      (exception, message) {
+        emit(state.copyWith(userPrivilegesState: const PageState.error()));
+        return false;
+      },
+      (value) {
+        emit(state.copyWith(userPrivilegesState: PageState.loaded(data: value.message ?? value.data ?? [])));
+        return true;
+      },
+    );
   }
 
   onChangePrivilege(PrivilegeModel privilegeModel) {
@@ -156,9 +156,9 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   }
 
   bool checkPrivilege(String privilegeId) {
-    // final privilege = state.userPrivilegesState.data.firstWhereOrNull((element) => element.fkPrivilege == privilegeId);
-    // return privilege?.isCheck! ?? false;
-    return true;
+    final privilege = state.userPrivilegesState.data.firstWhereOrNull((element) => element.fkPrivilege == privilegeId);
+    return privilege?.isCheck! ?? false;
+    // return true;
   }
 
   List<LevelModel> _filterPriorityLevels(List<LevelModel> levels, final String priority) {
