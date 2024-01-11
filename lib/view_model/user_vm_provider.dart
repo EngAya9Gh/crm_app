@@ -67,6 +67,19 @@ class UserProvider extends ChangeNotifier {
   List<UserModel> usersProgrammingManagement = [];
   List<UserModel> usersMarketingManagement = [];
 
+  String? _selectedClientRegistrationType='';
+  String? _selectedClientClassificationType='';
+  String get selectedClientRegistrationType=>_selectedClientRegistrationType!;
+  String get selectedClientClassificationType=>_selectedClientClassificationType!;
+
+  void changeClientRegistrationTypeStatus( String selectedClientRegistrationType){
+    _selectedClientRegistrationType=selectedClientRegistrationType;
+    notifyListeners();
+  }
+  void changeClientClassificationTypeStatus( String selectedClientClassificationType){
+    _selectedClientClassificationType=selectedClientClassificationType;
+    notifyListeners();
+  }
   void changevalueuser(UserModel? s, [bool isInit = false]) {
     selectedUser = s;
     if (isInit) {

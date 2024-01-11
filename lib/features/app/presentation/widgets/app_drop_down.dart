@@ -27,6 +27,12 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
     this.value,
     this.title,
     this.textStyle,
+    this.fillColor,
+    this.borderColor,
+    this.iconColor,
+    this.styleForHintText,
+    this.isFilledColor,
+    this.isWithImage=false
   }) : super(key: key);
 
   final List<T> items;
@@ -44,7 +50,12 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
   final FocusNode? focusNode;
   final String? title;
   final TextStyle? textStyle;
-
+  final Color? fillColor;
+  final Color? borderColor;
+  final Color? iconColor;
+  final TextStyle? styleForHintText;
+  final bool? isFilledColor;
+  final bool? isWithImage;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,14 +73,26 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
           items: items
               .map(
                 (item) => DropdownMenuItem<V>(
-                  value: itemAsValue.call(item),
-                  child: itemAsString != null
-                      ? AppText(
-                          itemAsString?.call(item) ?? item.toString(),
-                          style: textStyle ?? context.textTheme.titleSmall,
-                        )
-                      : itemBuilder!(item),
+
+              value: itemAsValue.call(item),
+              alignment: Alignment.centerRight,
+
+
+              child: itemAsString != null
+                  ? isWithImage!?ListTile(
+                contentPadding: EdgeInsets.zero,
+
+                title: Text(itemAsString?.call(item) ?? item.toString(),  style: textStyle ?? context.textTheme.titleSmall,textDirection: TextDirection.rtl,),
+                trailing: CircleAvatar(
+                  radius: 18,
+                  backgroundImage: NetworkImage("https://smartcrm.ws/test/api/imagesApp/profile/48464df755303690b6627314ec202d64.png"),
                 ),
+              ):AppText(
+                itemAsString?.call(item) ?? item.toString(),
+                style: textStyle ?? context.textTheme.titleSmall,
+              )
+                  : itemBuilder!(item),
+            ),
               )
               .toList(),
           onChanged: onChange,
@@ -78,30 +101,51 @@ class AppDropdownButtonFormField<T, V> extends StatelessWidget {
           validator: validator,
           menuMaxHeight: menuMaxHeight,
           icon: const SizedBox.shrink(),
+          selectedItemBuilder: (context){
+            return  items.map(
+                  (item) => DropdownMenuItem<V>(
+
+                value: itemAsValue.call(item),
+                alignment: Alignment.centerRight,
+
+
+                child: itemAsString != null
+                    ? AppText(
+                  itemAsString?.call(item) ?? item.toString(),
+                  style: textStyle ?? context.textTheme.titleSmall,
+                )
+                    : itemBuilder!(item),
+              ),
+            )
+                .toList();
+          },
           focusNode: focusNode,
           value: value,
           dropdownColor: context.colorScheme.surface,
           isDense: false,
           hint: hint != null
               ? AppText(
-                  hint!,
-                  style: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-                )
+            hint!,
+            style: styleForHintText??context.textTheme.titleSmall?.copyWith(color: Colors.grey),
+          )
               : null,
           borderRadius: BorderRadius.circular(8).r,
           style: context.textTheme.bodyMedium,
           decoration: InputDecoration(
-            filled: false,
+
+            filled: isFilledColor??false,
+            fillColor:isFilledColor??false?fillColor:null,
+
             border: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
+              borderSide: BorderSide(color: borderColor??context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
+              borderSide: BorderSide(color: borderColor??context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colorScheme.primary),
+              borderSide: BorderSide(color: borderColor??context.colorScheme.primary),
               borderRadius: BorderRadius.circular(10).r,
             ),
             disabledBorder: OutlineInputBorder(

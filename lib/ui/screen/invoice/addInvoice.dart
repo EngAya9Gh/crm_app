@@ -30,7 +30,10 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../common/helpers/helper_functions.dart';
 import '../../../constants.dart';
+import '../../../constantsList.dart';
+import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../labeltext.dart';
 import '../../../view_model/comment.dart';
@@ -102,7 +105,7 @@ class _addinvoiceState extends State<addinvoice> {
 
   ValueNotifier<bool> isNumberOfBranchesBiggerThanOne = ValueNotifier(false);
   List<String> deletedFiles = [];
-
+  String? selectedInvoiceSource;
   @override
   void dispose() async {
     renewController.dispose();
@@ -147,6 +150,7 @@ class _addinvoiceState extends State<addinvoice> {
       });
 
       if (_invoice != null) {
+        selectedInvoiceSource = _invoice!.invoice_source==null?'':_invoice!.invoice_source;
         invoiceViewmodel.initAttachFiles(_invoice!.filesAttach ?? []);
         //in mode edit
         totalController = _invoice!.total.toString();
@@ -188,7 +192,7 @@ class _addinvoiceState extends State<addinvoice> {
         //     .listinvoiceClient.add(
 
         invoiceViewmodel.initAttachFiles([]);
-
+        selectedInvoiceSource="";
         _invoice = InvoiceModel(
           products: [],
           renewYear: renewController.text,
@@ -459,6 +463,33 @@ class _addinvoiceState extends State<addinvoice> {
                           },
                         );
                       }),
+                      SizedBox(height: 5),
+                      RowEdit(name: label_invoice_source, des: '*'),
+
+
+                      AppDropdownButtonFormField<String, String>(
+                        items: sourceClientsList,
+                        onChange: (value) {
+                          if (value == null) {
+                            return;
+                          }
+
+                          setState(() {
+                            selectedInvoiceSource = value.toString();
+                          });
+                        },
+                        hint: "مصدر الفاتورة*",
+                        fillColor: Colors.grey.shade200,
+                        borderColor: Colors.grey.shade200,
+                        iconColor: Colors.grey,
+                        isFilledColor: true,
+                        styleForHintText: TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+
+                        validator: HelperFunctions.instance.requiredFiled,
+                        itemAsValue: (String? item) => item,
+                        itemAsString: (item) => item!,
+                        value: selectedInvoiceSource!=null&& selectedInvoiceSource!.isNotEmpty?selectedInvoiceSource:null,
+                      ),
                       SizedBox(height: 5),
                       if (widget.invoice == null) ...{
                         RowEdit(name: 'التعليق', des: '*'),
@@ -1359,7 +1390,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         'address_invoice': addressController.text.toString(),
                                         'clientusername': userclientController.text.toString(),
                                         'date_lastuserupdate': DateTime.now().toString(),
-
+                                        'invoice_source': selectedInvoiceSource,
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
                                             invoiceViewmodel.selectedCollaborator?.id_participate != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
@@ -1450,7 +1481,7 @@ class _addinvoiceState extends State<addinvoice> {
                                         'nummostda': nummostawdaController.text.toString(),
                                         'numusers': numuserController.text.toString(),
                                         'address_invoice': addressController.text.toString(),
-
+                                        'invoice_source': selectedInvoiceSource,
                                         if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
                                             invoiceViewmodel.selectedCollaborator?.id_participate != null)
                                           'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()

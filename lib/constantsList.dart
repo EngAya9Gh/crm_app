@@ -123,3 +123,14 @@ List<String> imageList = [
   'assest/images/race.png',
   'assest/images/managetask1.png',
 ];
+
+List<String> clientsClassificationList = [
+  'لايخدمه النظام',
+  'اهتمام مختلف',
+  'أخرى',
+
+];
+List<String> clientsRegistrationTyeList = [
+  'صحيح',
+  'خاطئ',
+];

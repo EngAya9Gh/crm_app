@@ -13,6 +13,7 @@ import 'package:tuple/tuple.dart';
 import '../../../constants.dart';
 import '../../../model/countrymodel.dart';
 import '../../../model/maincitymodel.dart';
+import '../../../view_model/maincity_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../../view_model/vm.dart';
 import '../../widgets/container_boxShadows.dart';
@@ -41,7 +42,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
 
   AgentDistributorModel? get agentDistributorModel => widget.agentDistributorModel;
   late final String fkCountry;
-
+  late final MainCityProvider _mainCityProvider;
   @override
   void initState() {
     super.initState();
@@ -51,7 +52,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
       phoneNumberController.text = agentDistributorModel!.mobileAgent;
       descriptionController.text = agentDistributorModel!.description;
     }
-
+    _mainCityProvider = context.read<MainCityProvider>();
     fkCountry = context.read<UserProvider>().currentUser.fkCountry!;
 
     scheduleMicrotask(() {
@@ -67,8 +68,9 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
             ADType.values.firstWhere((element) => element.index == int.parse(agentDistributorModel!.typeAgent)));
       }
     });
-  }
 
+  }
+  bool get isEdit => widget.agentDistributorModel != null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

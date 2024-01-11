@@ -111,7 +111,7 @@ class InvoiceModel extends CacheRepository {
   String? notes_ready;
   String? reason_suspend;
   String? reason_notReady;
-
+  String? invoice_source;
   //endregion
 
   //region Constructor
@@ -212,7 +212,8 @@ class InvoiceModel extends CacheRepository {
     this.TypeReadyClient,
     this.notes_ready,
     this.reason_suspend,
-    this.reason_notReady
+    this.reason_notReady,
+    this.invoice_source
     //name_city,mcit.namemaincity,mcit.id_maincity
     // this.nameuserApprove,
     // this.date_approve,
@@ -337,6 +338,7 @@ class InvoiceModel extends CacheRepository {
 
     attachFileStatus = AttachFileStatus.init;
     deleteAttachFileStatus = AttachFileStatus.init;
+    invoice_source = jsondata['invoice_source'];
     //  json.decode(
     // jsondata['products']
     // )//  jsondata['products']
@@ -451,6 +453,7 @@ class InvoiceModel extends CacheRepository {
     _data['renew_agent'] = renew_agent;
 
     _data['products'] = products!.map((e) => e.toJson()).toList();
+    _data['invoice_source'] = invoice_source;
     return _data;
   }
 

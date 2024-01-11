@@ -169,6 +169,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                     cardRow(title: 'حالة الفاتورة', value: invoice.stateclient.toString()),
                     cardRow(title: 'فرع الفاتورة', value: invoice.name_regoin_invoice.toString()),
 
+                    invoice.invoice_source != null
+                        ?  cardRow(title: 'مصدر الفاتورة', value: invoice.invoice_source!.toString())
+                        : Container(),
+
                     cardRow(title: 'اسم الموظف', value: invoice.nameUser.toString()),
                     cardRow(title: 'فرع الموظف', value: invoice.name_regoin_invoice.toString()),
                     //cardRow(title: 'حالة الفاتورة', value: invoice.amountPaid.toString()),

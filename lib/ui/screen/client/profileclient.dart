@@ -134,13 +134,14 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
         return Scaffold(
           appBar: AppBar(
             backgroundColor: kMainColor,
+
             title: LayoutBuilder(builder: (context, constraints) {
               return SizedBox(
                 width: constraints.maxWidth,
                 height: appBarSize.height,
                 child: Center(
                   child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 5.0),
                       child: TextScroll(
                         client!.nameEnterprise.toString() + "   ",
                         mode: TextScrollMode.endless,
@@ -173,12 +174,18 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             }),
             centerTitle: true,
             bottom: TabBar(
-              labelPadding: const EdgeInsets.only(left: 2, right: 2),
+              labelPadding: const EdgeInsets.only(left: 8, right:8),
               indicatorSize: TabBarIndicatorSize.label,
               controller: _tabController,
               indicatorColor: kWhiteColor,
               indicatorWeight: 6,
+              physics: AlwaysScrollableScrollPhysics(),
               labelColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              isScrollable: true,
+              labelStyle:TextStyle(fontFamily: kfontfamily2,fontSize: 17,fontWeight: FontWeight.bold,) ,
+              unselectedLabelStyle:TextStyle(fontFamily: kfontfamily2,fontSize: 15,fontWeight: FontWeight.w600) ,
+
               unselectedLabelColor: kWhiteColor,
               onTap: (value) => _currentTabIndex.value = value,
               tabs: <Widget>[

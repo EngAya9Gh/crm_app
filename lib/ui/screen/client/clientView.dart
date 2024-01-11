@@ -116,7 +116,7 @@ class _ClientViewState extends State<ClientView> {
                                   ),
                                   tooltip: (clientModel.tag ?? false) ? "مميز" : "غير مميز",
                                 )
-                              : Container(),
+                              : IgnorePointer(),
                         ],
                       ),
                       TextButton(
@@ -167,46 +167,45 @@ class _ClientViewState extends State<ClientView> {
                   cardRow(title: ' نوع النشاط', value: clientModel.activity_type_title?.toString() ?? "لا يوجد"),
                   clientModel.size_activity != null
                       ? cardRow(title: 'حجم النشاط', value: clientModel.size_activity.toString())
-                      : Container(),
+                      : IgnorePointer(),
                   clientModel.email != null
                       ? cardRow(title: 'البريد الالكتروني', value: clientModel.email.toString())
-                      : Container(),
+                      : IgnorePointer(),
 
                   cardRow(title: ' مدينة العميل', value: clientModel.name_city.toString()),
                   cardRow(title: ' المنطقة', value: clientModel.namemaincity.toString()),
 
                   clientModel.phone == '' || clientModel.phone == null
-                      ? Container()
+                      ? IgnorePointer()
                       : cardRow(title: ' رقم آخر', value: clientModel.phone.toString()),
 
                   cardRow(title: 'حالة العميل', value: clientModel.typeClient.toString()),
                   clientModel.typeClient == 'مستبعد'
                       ? cardRow(value: clientModel.nameuserdoning.toString(), title: 'قام بتحويل حالة العميل')
-                      : Container(),
+                      : IgnorePointer(),
                   clientModel.typeClient == 'مستبعد'
                       ? cardRow(value: clientModel.dateChangetype.toString(), title: 'تاريخ تحويل حالة العميل')
-                      : Container(),
+                      : IgnorePointer(),
                   clientModel.typeClient == 'مستبعد'
                       ? cardRow(value: clientModel.reasonChange.toString(), title: 'تفاصيل الاستبعاد')
-                      : Container(),
+                      : IgnorePointer(),
                   clientModel.typeClient == 'مستبعد'
                       ? cardRow(value: clientModel.NameReason_reject.toString(), title: 'سبب الاستبعاد')
-                      : Container(),
+                      : IgnorePointer(),
                   clientModel.offer_price != null && clientModel.offer_price.toString().trim().isNotEmpty
                       ? cardRow(title: 'مبلغ عرض السعر', value: clientModel.offer_price.toString())
-                      : Container(),
+                      : IgnorePointer(),
 
                   clientModel.offer_price != null && clientModel.offer_price.toString().trim().isNotEmpty
                       ? cardRow(title: 'تاريخ عرض السعر', value: clientModel.date_price.toString())
-                      : Container(),
+                      : IgnorePointer(),
 
                   clientModel.offer_price != null && clientModel.offer_price.toString().trim().isNotEmpty
                       ? cardRow(
                           title: 'الموظف الذي قام بتغيير حالة العميل', value: clientModel.nameuserdoning.toString())
-                      : Container(),
+                      : IgnorePointer(),
 
                   cardRow(title: 'الموظف الذي أضاف العميل', value: getnameshort(clientModel.nameAdduser.toString())),
-                  cardRow(title: 'الموظف', value: getnameshort(clientModel.nameUser.toString())),
 
                   cardRow(title: 'رقم الموظف', value: clientModel.mobileuser.toString()),
 
@@ -214,50 +213,59 @@ class _ClientViewState extends State<ClientView> {
                     context.read<PrivilegeCubit>().checkPrivilege('150') == true && clientModel.fkusertrasfer != null
                         ? cardRow(
                             title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
-                        : Container()
+                        : IgnorePointer()
                   else
                     clientModel.fkusertrasfer != null
                         ? cardRow(
                             title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
-                        : Container(),
+                        : IgnorePointer(),
 
                   context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                           (clientModel.reasonTransfer != null) &&
                           clientModel.fkusertrasfer != null
                       ? cardRow(title: 'تحويل العميل إلى', value: clientModel.nameTransferTo.toString())
-                      : Container(),
+                      : IgnorePointer(),
 
                   context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                           (clientModel.reasonTransfer == null) &&
                           clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
-                      : Container(),
+                      : IgnorePointer(),
 
                   context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                           (clientModel.reasonTransfer != null) &&
                           clientModel.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value: 'معلق')
-                      : Container(),
+                      : IgnorePointer(),
 
                   // (clientModel.reasonTransfer == null) &&
                   clientModel.fkusertrasfer != null
                       ? cardRow(title: 'تاريخ التحويل', value: clientModel.dateTransfer.toString())
-                      : Container(),
+                      : IgnorePointer(),
 
                   clientModel.location.toString() == ''
-                      ? Container()
+                      ? IgnorePointer()
                       : cardRow(title: ' الموقع', value: clientModel.location.toString()),
 
                   clientModel.ismarketing == '1'
                       ? cardRow(title: ' عميل تسويق الكتروني', value: clientModel.ismarketing == '1' ? 'نعم' : '')
-                      : Container(),
+                      : IgnorePointer(),
+                  clientModel.type_record != null && clientModel.type_record.toString().trim().isNotEmpty && clientModel.type_record!=""
+                      ? cardRow(title: 'نوع التسجيل', value: clientModel.type_record.toString())
+                      : IgnorePointer(),
 
+                  clientModel.type_classification != null && clientModel.type_classification.toString().trim().isNotEmpty && clientModel.type_classification!="null"
+                      ? cardRow(title: 'نوع التصنيف', value: clientModel.type_classification.toString())
+                      : IgnorePointer(),
+                  clientModel.reason_class != null && clientModel.reason_class.toString().trim().isNotEmpty && clientModel.reason_class!="null"
+                      ? cardRow(title: 'سبب الإدخال', value: clientModel.reason_class.toString())
+                      : IgnorePointer(),
                   cardRow(
                       title: 'عنوان العميل',
                       value: clientModel.address_client == null ? '' : clientModel.address_client.toString()),
 
                   clientModel.presystem == null || clientModel.presystem.toString().trim().isEmpty
-                      ? Container()
+                      ? IgnorePointer()
                       : cardRow(
                           title: 'نظام سابق',
                           value: clientModel.presystemtitle == null ? '' : clientModel.presystemtitle.toString()),
@@ -273,14 +281,14 @@ class _ClientViewState extends State<ClientView> {
 
                   clientModel.activity_type_fk == null
                       ? cardRow(title: 'نوع النشاط', value: clientModel.activity_type_title.toString())
-                      : Container(),
+                      : IgnorePointer(),
 
                   clientModel.activity_type_fk == null
                       ? cardRow(title: 'وصف النشاط', value: clientModel.descActivController.toString())
-                      : Container(),
+                      : IgnorePointer(),
 
                   widget.clienttransfer == 'transfer'
-                      ? Container()
+                      ? IgnorePointer()
                       : Center(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -304,7 +312,7 @@ class _ClientViewState extends State<ClientView> {
                                   ? SizedBox(
                                       width: 5,
                                     )
-                                  : Container(),
+                                  : IgnorePointer(),
                               clientModel.reasonTransfer == null
                                   ? Expanded(
                                       child: ElevatedButton(
@@ -323,7 +331,7 @@ class _ClientViewState extends State<ClientView> {
                                         child: Text('تحويل العميل'),
                                       ),
                                     )
-                                  : Container(),
+                                  : IgnorePointer(),
                               SizedBox(
                                 height: 3,
                               ),
@@ -339,7 +347,7 @@ class _ClientViewState extends State<ClientView> {
                   //         .checkprivlge('7')==true?
 
                   widget.clienttransfer == null || context.read<PrivilegeCubit>().checkPrivilege('150') == true
-                      ? Container()
+                      ? IgnorePointer()
                       :
                       // Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
 
@@ -487,7 +495,7 @@ class _ClientViewState extends State<ClientView> {
                                 ],
                               ),
                             )
-                          : Container(),
+                          : IgnorePointer(),
                   widget.invoice != null
                       ? widget.invoice!.isApprove == null
                           ? Center(
@@ -649,8 +657,8 @@ class _ClientViewState extends State<ClientView> {
                                 ],
                               ),
                             )
-                          : Container()
-                      : Container(), //:Container(),
+                          : IgnorePointer()
+                      : IgnorePointer(), //:IgnorePointer(),
 
                   //approve finance
                   widget.invoice != null
@@ -732,8 +740,8 @@ class _ClientViewState extends State<ClientView> {
                                     //Navigator.pop(context);
                                   },
                                   child: Text('Approve')))
-                          : Container()
-                      : Container(),
+                          : IgnorePointer()
+                      : IgnorePointer(),
                 ]),
               ),
             ),

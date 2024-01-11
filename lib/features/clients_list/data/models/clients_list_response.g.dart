@@ -65,6 +65,9 @@ _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
       nameReasonReject: json['NameReason_reject'] as String?,
       nameClientRecommend: json['NameClient_recomand'] as String?,
       rejectId: json['fk_rejectClient'] as String?,
+      type_record: json['type_record'] as String?,
+      type_classification: json['type_classification'] as String?,
+      reason_class: json['reason_class'] as String?,
     );
 
 Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
@@ -126,4 +129,7 @@ Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
       'NameReason_reject': instance.nameReasonReject,
       'NameClient_recomand': instance.nameClientRecommend,
       'fk_rejectClient': instance.rejectId,
+      'type_record': instance.type_record,
+      'type_classification': instance.type_classification,
+      'reason_class': instance.reason_class,
     };

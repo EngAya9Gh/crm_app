@@ -10,6 +10,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../../../view_model/privilge_vm.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/action_client_page.dart';
 
@@ -42,6 +43,9 @@ class CardClient extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
+          context.read<UserProvider>().changeClientClassificationTypeStatus(clientModel.type_classification!=null?clientModel.type_classification!:"");
+          context.read<UserProvider>().changeClientRegistrationTypeStatus(clientModel.type_record!=null?clientModel.type_record!:"");
+
           Navigator.push(
               context,
               CupertinoPageRoute(
