@@ -28,7 +28,7 @@ class Api {
     //   http.Response response = await _client.get(
     http.Response response = await _client.get(Uri.parse(url));
     if (json.decode(response.body)["code"] == "200") {
-      
+
       return jsonDecode(response.body)["message"];
     } else {
 

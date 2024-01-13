@@ -1433,7 +1433,7 @@ class invoice_vm extends ChangeNotifier {
       }
 
       final list = await Invoice_Service.getAgentsAndDistributors();
-      agentDistributorsState = agentDistributorsState.changeToLoaded(list);
+      agentDistributorsState = agentDistributorsState.changeToLoaded(list!);
       notifyListeners();
       return;
     } catch (e) {

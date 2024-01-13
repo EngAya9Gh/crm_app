@@ -1,3 +1,4 @@
+
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
@@ -84,6 +85,7 @@ class Invoice_Service {
   static Future<List<AgentDistributorModel>> getAgentsAndDistributors() async {
     final response = await Api().get(url: url + 'agent/get_agent.php');
     final list = List<AgentDistributorModel>.from((response ?? []).map((x) => AgentDistributorModel.fromJson(x)));
+
 
     return list;
   }

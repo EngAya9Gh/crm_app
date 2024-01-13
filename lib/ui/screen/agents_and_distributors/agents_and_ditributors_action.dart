@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
@@ -10,7 +11,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../../common/constants/constants.dart';
 import '../../../constants.dart';
+import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/countrymodel.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -58,9 +61,9 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
     scheduleMicrotask(() {
       viewmodel.resetAgentDistributorActionParams();
 
-      viewmodel.getMainCity(
+      viewmodel.getAllCity(
         fkCountry: fkCountry,
-        id_maincity: agentDistributorModel?.fkCountry,
+        id_maincity: agentDistributorModel?.cityId,
       );
 
       if (agentDistributorModel != null) {
@@ -120,10 +123,10 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                   RowEdit(name: 'النوع', des: '*'),
                                   agentTypeSelector(),
                                   SizedBox(height: 15),
-                                  RowEdit(name: 'البلد', des: '*'),
+                                  RowEdit(name: 'المدينة', des: '*'),
                                   Selector<AgentDistributorViewModel,
-                                      Tuple2<PageState<List<MainCityModel>>, MainCityModel?>>(
-                                    selector: (_, vm) => Tuple2(vm.citiesState, vm.selectedCountry),
+                                      Tuple2<PageState<List<CityModel>>, CityModel?>>(
+                                    selector: (_, vm) => Tuple2(vm.citiesState, vm.selectedCountryFromCity),
                                     builder: (_, values, child) {
                                       final countries = values.item1;
                                       final selectedCountry = values.item2;
@@ -136,7 +139,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                       if (countries.isLoading) {
                                         return Center(
                                           child: IconButton(
-                                            onPressed: () => viewmodel.getMainCity(fkCountry: fkCountry),
+                                            onPressed: () => viewmodel.getAllCity(fkCountry: fkCountry),
                                             icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
                                           ),
                                         );
@@ -146,7 +149,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                           textDirection: TextDirection.rtl,
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(10),
-                                            child: DropdownButtonFormField<MainCityModel?>(
+                                            child: DropdownButtonFormField<CityModel?>(
                                               isExpanded: true,
                                               validator: (value) {
                                                 if (value == null) {
@@ -164,21 +167,38 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                                 focusedBorder: InputBorder.none,
                                                 focusedErrorBorder: InputBorder.none,
                                               ),
-                                              hint: Text("حدد البلد"),
-                                              items: (countries.data ?? []).map((MainCityModel? country) {
-                                                return DropdownMenuItem<MainCityModel?>(
-                                                  child: Text(country?.namemaincity ?? '',
-                                                      textDirection: TextDirection.rtl),
+                                              hint: Text("حدد المدينة"),
+                                              items: (countries.data ?? []).map((CityModel? country) {
+                                                return DropdownMenuItem<CityModel?>(
+                                                  alignment: Alignment.centerRight,
+                                                  child:Container(
+                                                      margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2,bottom: 2),
+                                                      decoration:decoration,
+                                                      child: ListTile(
+                                                        trailing: Text(country?.name_city ?? '', textDirection: TextDirection.rtl)
+                                                      )
+                                                  ) ,
                                                   value: country,
                                                 );
                                               }).toList(),
                                               value: selectedCountry,
-                                              onChanged: (country) {},
-                                              onSaved: (country) {
-                                                if (country == null) {
+                                              selectedItemBuilder: (context){
+                                                return  (countries.data ?? []).map(
+                                                      (item) => DropdownMenuItem<CityModel>(
+                                                    value: item,
+                                                    alignment: Alignment.centerRight,
+                                                    child:   AppText(item?.name_city ?? '', style: context.textTheme.titleSmall,
+                                                    )
+                                                  ),
+                                                ).toList();
+                                              },
+                                              onChanged: (city) {},
+                                              onSaved: (city) {
+                                                if (city == null) {
                                                   return;
                                                 }
-                                                viewmodel.onSelectCountry(country);
+                                                viewmodel.onSelectCity(city);
+                                                viewmodel.onSelectCountry(fkCountry);
                                               },
                                             ),
                                           ),
