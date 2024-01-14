@@ -215,8 +215,7 @@ abstract class $ClientModelCopyWith<$Res> {
       @JsonKey(name: "fk_rejectClient") String? rejectId,
       @JsonKey(name: "type_record") String? type_record,
       @JsonKey(name: "type_classification") String? type_classification,
-      @JsonKey(name: "reason_class") String? reason_class});
-      @JsonKey(name: "fk_rejectClient") String? rejectId,
+      @JsonKey(name: "reason_class") String? reason_class,
       @JsonKey(name: "SerialNumber") String? serialNumber});
 }
 
@@ -612,8 +611,7 @@ abstract class _$$ClientModelImplCopyWith<$Res>
       @JsonKey(name: "fk_rejectClient") String? rejectId,
       @JsonKey(name: "type_record") String? type_record,
       @JsonKey(name: "type_classification") String? type_classification,
-      @JsonKey(name: "reason_class") String? reason_class});
-      @JsonKey(name: "fk_rejectClient") String? rejectId,
+      @JsonKey(name: "reason_class") String? reason_class,
       @JsonKey(name: "SerialNumber") String? serialNumber});
 }
 
@@ -1002,8 +1000,7 @@ class _$ClientModelImpl extends _ClientModel {
       @JsonKey(name: "fk_rejectClient") this.rejectId,
       @JsonKey(name: "type_record") this.type_record,
       @JsonKey(name: "type_classification") this.type_classification,
-      @JsonKey(name: "reason_class") this.reason_class})
-      @JsonKey(name: "fk_rejectClient") this.rejectId,
+      @JsonKey(name: "reason_class") this.reason_class,
       @JsonKey(name: "SerialNumber") this.serialNumber})
       : super._();
 
@@ -1196,7 +1193,7 @@ class _$ClientModelImpl extends _ClientModel {
 
   @override
   String toString() {
-    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegion: $fkRegion, fkCountry: $fkCountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangeType: $dateChangeType, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, nameRegion: $nameRegion, total: $total, amountPaid: $amountPaid, offerPrice: $offerPrice, datePrice: $datePrice, userDo: $userDo, isApprove: $isApprove, nameUserDoing: $nameUserDoing, nameUserTransfer: $nameUserTransfer, fkUserTrasfer: $fkUserTrasfer, mobileUser: $mobileUser, totalPaid: $totalPaid, isMarketing: $isMarketing, addressClient: $addressClient, descriptionActiveController: $descriptionActiveController, preSystem: $preSystem, preSystemTitle: $preSystemTitle, sourceClient: $sourceClient, activityTypeFk: $activityTypeFk, activityTypeTitle: $activityTypeTitle, phone: $phone, userAdd: $userAdd, nameAdduser: $nameAdduser, dateVisitClient: $dateVisitClient, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, nameCity: $nameCity, nameMainCity: $nameMainCity, idMainCity: $idMainCity, customerId: $customerId, userAddEmail: $userAddEmail, dateReceive: $dateReceive, email: $email, sizeActivity: $sizeActivity, fkClientSource: $fkClientSource, nameReasonReject: $nameReasonReject, nameClientRecommend: $nameClientRecommend, rejectId: $rejectId, serialNumber: $serialNumber)';
+    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegion: $fkRegion, fkCountry: $fkCountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangeType: $dateChangeType, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, nameRegion: $nameRegion, total: $total, amountPaid: $amountPaid, offerPrice: $offerPrice, datePrice: $datePrice, userDo: $userDo, isApprove: $isApprove, nameUserDoing: $nameUserDoing, nameUserTransfer: $nameUserTransfer, fkUserTrasfer: $fkUserTrasfer, mobileUser: $mobileUser, totalPaid: $totalPaid, isMarketing: $isMarketing, addressClient: $addressClient, descriptionActiveController: $descriptionActiveController, preSystem: $preSystem, preSystemTitle: $preSystemTitle, sourceClient: $sourceClient, activityTypeFk: $activityTypeFk, activityTypeTitle: $activityTypeTitle, phone: $phone, userAdd: $userAdd, nameAdduser: $nameAdduser, dateVisitClient: $dateVisitClient, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, nameCity: $nameCity, nameMainCity: $nameMainCity, idMainCity: $idMainCity, customerId: $customerId, userAddEmail: $userAddEmail, dateReceive: $dateReceive, email: $email, sizeActivity: $sizeActivity, fkClientSource: $fkClientSource, nameReasonReject: $nameReasonReject, nameClientRecommend: $nameClientRecommend, rejectId: $rejectId, type_record: $type_record, type_classification: $type_classification, reason_class: $reason_class, serialNumber: $serialNumber)';
   }
 
   @override
@@ -1305,8 +1302,7 @@ class _$ClientModelImpl extends _ClientModel {
             (identical(other.rejectId, rejectId) || other.rejectId == rejectId) &&
             (identical(other.type_record, type_record) || other.type_record == type_record) &&
             (identical(other.type_classification, type_classification) || other.type_classification == type_classification) &&
-            (identical(other.reason_class, reason_class) || other.reason_class == reason_class));
-            (identical(other.rejectId, rejectId) || other.rejectId == rejectId) &&
+            (identical(other.reason_class, reason_class) || other.reason_class == reason_class) &&
             (identical(other.serialNumber, serialNumber) || other.serialNumber == serialNumber));
   }
 
@@ -1373,8 +1369,7 @@ class _$ClientModelImpl extends _ClientModel {
         rejectId,
         type_record,
         type_classification,
-        reason_class
-        rejectId,
+        reason_class,
         serialNumber
       ]);
 
@@ -1454,9 +1449,7 @@ abstract class _ClientModel extends ClientModel {
       @JsonKey(name: "fk_rejectClient") final String? rejectId,
       @JsonKey(name: "type_record") final String? type_record,
       @JsonKey(name: "type_classification") final String? type_classification,
-      @JsonKey(name: "reason_class")
-      final String? reason_class}) = _$ClientModelImpl;
-      @JsonKey(name: "fk_rejectClient") final String? rejectId,
+      @JsonKey(name: "reason_class") final String? reason_class,
       @JsonKey(name: "SerialNumber")
       final String? serialNumber}) = _$ClientModelImpl;
   const _ClientModel._() : super._();

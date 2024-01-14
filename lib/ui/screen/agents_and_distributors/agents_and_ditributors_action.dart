@@ -192,13 +192,19 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                                   ),
                                                 ).toList();
                                               },
-                                              onChanged: (city) {},
+                                              onChanged: (city) {
+                                                if (city == null) {
+                                                  return;
+                                                }
+                                                viewmodel.onSelectCity(city!);
+
+                                              },
                                               onSaved: (city) {
                                                 if (city == null) {
                                                   return;
                                                 }
                                                 viewmodel.onSelectCity(city);
-                                                viewmodel.onSelectCountry(fkCountry);
+                                                // viewmodel.onSelectCountry(fkCountry);
                                               },
                                             ),
                                           ),

@@ -13,15 +13,12 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constants.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../features/clients_list/presentation/pages/action_client_page.dart';
-import '../../../features/task_management/presentation/manager/task_cubit.dart';
-import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../../function_global.dart';
+
 import '../../../../constants.dart';
 import '../../../../model/clientmodel.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../task_management/presentation/manager/task_cubit.dart';
+import '../../../task_management/presentation/widgets/add_manual_task_button.dart';
 import '../pages/action_client_page.dart';
 import '../../../../function_global.dart';
 
