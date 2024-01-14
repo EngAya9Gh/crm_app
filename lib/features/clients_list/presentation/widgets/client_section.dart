@@ -1,11 +1,10 @@
-import 'package:crm_smart/model/clientmodel.dart';
+import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,24 +19,29 @@ import '../../../features/clients_list/presentation/pages/action_client_page.dar
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../function_global.dart';
+import '../../../../constants.dart';
+import '../../../../model/clientmodel.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../pages/action_client_page.dart';
+import '../../../../function_global.dart';
 
-class ClientView extends StatefulWidget {
-  ClientView(
-      {this.clienttransfer, required this.invoice, this.typeinvoice, required this.idclient, this.client, Key? key})
-      : super(key: key);
+class ClientSection extends StatefulWidget {
+  ClientSection({this.clienttransfer, required this.invoice, this.typeinvoice, required this.idclient, this.client, Key? key}) : super(key: key);
   String idclient;
   InvoiceModel? invoice;
   String? clienttransfer;
   String? typeinvoice;
-  ClientModel? client;
+  ClientModel1? client;
 
   //bool? itemapprove;
   @override
-  _ClientViewState createState() => _ClientViewState();
+  _ClientSectionState createState() => _ClientSectionState();
 }
 
-class _ClientViewState extends State<ClientView> {
+class _ClientSectionState extends State<ClientSection> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  late ClientModel1 clientModel;
+  bool isUpdate = false;
 
   // late ClientModel clientModel = ClientModel();
 
@@ -63,8 +67,10 @@ class _ClientViewState extends State<ClientView> {
           ),
         );
       }
-      final ClientModel clientModel = state.currentClientModel.data!;
-
+      if(!isUpdate) {
+        clientModel = state.currentClientModel.data!;
+      }
+      print("Client name: ${clientModel.nameClient}");
       return Directionality(
           textDirection: TextDirection.rtl,
           child: Container(
@@ -91,8 +97,7 @@ class _ClientViewState extends State<ClientView> {
                             height: 30,
                             width: 30,
                             //color: kMainColor,
-                            decoration:
-                                BoxDecoration(color: kMainColor, borderRadius: BorderRadius.all(Radius.circular(10))),
+                            decoration: BoxDecoration(color: kMainColor, borderRadius: BorderRadius.all(Radius.circular(10))),
                             child: IconButton(
                               onPressed: () async {
                                 await FlutterPhoneDirectCaller.callNumber(clientModel.mobile.toString());
@@ -105,13 +110,11 @@ class _ClientViewState extends State<ClientView> {
                           (context.read<PrivilegeCubit>().checkPrivilege('133') == true)
                               ? IconButton(
                                   onPressed: () {
-                                    if ((context.read<PrivilegeCubit>().checkPrivilege('147') == true))
-                                      context.read<ClientProvider>().setTagClient();
+                                    if ((context.read<PrivilegeCubit>().checkPrivilege('147') ==
+                                        true)) context.read<ClientProvider>().setTagClient();
                                   },
                                   icon: Icon(
-                                    (clientModel!.tag ?? false)
-                                        ? CupertinoIcons.checkmark_seal_fill
-                                        : CupertinoIcons.checkmark_seal,
+                                    (clientModel.tag ?? false) ? CupertinoIcons.checkmark_seal_fill : CupertinoIcons.checkmark_seal,
                                     color: (clientModel.tag ?? false) ? Colors.amber : null,
                                   ),
                                   tooltip: (clientModel.tag ?? false) ? "مميز" : "غير مميز",
@@ -206,6 +209,7 @@ class _ClientViewState extends State<ClientView> {
                       : IgnorePointer(),
 
                   cardRow(title: 'الموظف الذي أضاف العميل', value: getnameshort(clientModel.nameAdduser.toString())),
+                  cardRow(title: 'الموظف', value: getnameshort(clientModel.nameUser.toString())),
 
                   cardRow(title: 'رقم الموظف', value: clientModel.mobileuser.toString()),
 
@@ -294,20 +298,14 @@ class _ClientViewState extends State<ClientView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Expanded(
-                              //   child: ElevatedButton(
-                              //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                              //     onPressed: () async {
-                              //       // final ClientModel? obj =state.currentClientModel.data;
-                              //       Navigator.push(
-                              //           context,
-                              //           CupertinoPageRoute(
-                              //             builder: (context) => ActionClientPage(client: widget.client,),
-                              //           ));
-                              //     },
-                              //     child: Text('تعديل بيانات العميل'),
-                              //   ),
-                              // ),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  onPressed: () async => _onPressedUpdate(context),
+                                  child: Text('تعديل بيانات العميل'),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
                               clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
                                   ? SizedBox(
                                       width: 5,
@@ -349,7 +347,7 @@ class _ClientViewState extends State<ClientView> {
                   widget.clienttransfer == null || context.read<PrivilegeCubit>().checkPrivilege('150') == true
                       ? IgnorePointer()
                       :
-                      // Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
+                  // Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
 
                       clientModel.reasonTransfer ==
                               Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString()
@@ -521,15 +519,13 @@ class _ClientViewState extends State<ClientView> {
                                                     content: Text(' هل تريد تأكيد العملية؟  '),
                                                     actions: <Widget>[
                                                       ElevatedButton(
-                                                        style: ButtonStyle(
-                                                            backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                                         onPressed: () async {
                                                           // Navigator.of(context,
                                                           //     rootNavigator: true)
                                                           //     .pop(true);
                                                           // update client to approved client
-                                                          Provider.of<invoice_vm>(context, listen: false)
-                                                              .setApproveclient_vm({
+                                                          Provider.of<invoice_vm>(context, listen: false).setApproveclient_vm({
                                                             "id_clients": widget.invoice!.fkIdClient,
                                                             //'idApproveClient':widget.itemapprove!.idApproveClient,
                                                             'date_approve': DateTime.now().toString(),
@@ -722,11 +718,9 @@ class _ClientViewState extends State<ClientView> {
                                                   child: Text('نعم'),
                                                 ),
                                                 new ElevatedButton(
-                                                  style: ButtonStyle(
-                                                      backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
                                                   onPressed: () {
-                                                    Navigator.of(context, rootNavigator: true)
-                                                        .pop(false); // dismisses only the dialog and returns false
+                                                    Navigator.of(context, rootNavigator: true).pop(false); // dismisses only the dialog and returns false
                                                   },
                                                   child: Text('لا'),
                                                 ),
@@ -745,8 +739,27 @@ class _ClientViewState extends State<ClientView> {
                 ]),
               ),
             ),
-          ));
+          ),
+      );
     });
+  }
+
+  _onPressedUpdate(BuildContext context) async {
+    isUpdate = true;
+    print(clientModel.serialNumber);
+    ClientModel result = await Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (context) => ActionClientPage(client: clientModel.mapToClientModel()),
+      ),
+    );
+
+
+    setState(() {
+      clientModel = result.mapToClientModel1();
+    });
+    print(result.serialNumber);
+    print(clientModel.serialNumber);
   }
 
   clear() {
@@ -759,3 +772,139 @@ class _ClientViewState extends State<ClientView> {
     Navigator.pop(context);
   }
 }
+
+//region Extension
+
+extension ClientModelExtension on ClientModel1 {
+  ClientModel mapToClientModel() {
+    return ClientModel(
+      idClients: idClients,
+      nameClient: nameClient,
+      nameEnterprise: nameEnterprise,
+      typeJob: typeJob,
+      city: city,
+      location: location,
+      // fkRegoin: fkRegoin,
+      fkCountry: fkcountry,
+      dateCreate: dateCreate,
+      typeClient: typeClient,
+      fkUser: fkUser,
+      dateTransfer: dateTransfer,
+      mobile: mobile,
+      dateChangeType: dateChangetype,
+      reasonChange: reasonChange,
+      reasonTransfer: reasonTransfer,
+      nameCountry: nameCountry,
+      nameUser: nameUser,
+      nameRegion: name_regoin,
+      total: total,
+      amountPaid: amount_paid,
+      offerPrice: offer_price,
+      datePrice: date_price,
+      userDo: user_do,
+      isApprove: isApprove,
+      nameUserDoing: nameuserdoning,
+      nameUserTransfer: nameusertransfer,
+      fkUserTrasfer: fkusertrasfer,
+      mobileUser: mobileuser,
+      totalPaid: total_paid,
+      isMarketing: ismarketing,
+      addressClient: address_client,
+      descriptionActiveController: descActivController,
+      preSystem: presystem,
+      preSystemTitle: presystemtitle,
+      sourceClient: sourcclient,
+      activityTypeFk: activity_type_fk,
+      activityTypeTitle: activity_type_title,
+      phone: phone,
+      userAdd: user_add,
+      nameAdduser: nameAdduser,
+      dateVisitClient: date_visit_Client,
+      tag: tag,
+      // doneVisit: doneVisit,
+      // doneTransfer: doneTransfer,
+      nameCity: name_city,
+      nameMainCity: namemaincity,
+      idMainCity: id_maincity,
+      // customerId: customerId,
+      // userAddEmail: userAddEmail,
+      // dateReceive: dateReceive,
+      email: email,
+      sizeActivity: size_activity,
+      serialNumber: serialNumber,
+      // fkClientSource: fkClientSource,
+      // nameReasonReject: nameReasonReject,
+      // nameClientRecommend: nameClientRecommend,
+      // rejectId: rejectId,
+    );
+  }
+}
+
+extension ClientModel1Extension on ClientModel {
+  ClientModel1 mapToClientModel1() {
+    return ClientModel1(
+      idClients: idClients,
+      nameClient: nameClient,
+      nameEnterprise: nameEnterprise,
+      typeJob: typeJob,
+      city: city,
+      location: location,
+      fkRegoin: fkRegion,
+      // Note: Assuming you meant to use fkRegion
+      fkcountry: fkCountry,
+      dateCreate: dateCreate,
+      typeClient: typeClient,
+      fkUser: fkUser,
+      dateTransfer: dateTransfer,
+      mobile: mobile,
+      dateChangetype: dateChangeType,
+      reasonChange: reasonChange,
+      reasonTransfer: reasonTransfer,
+      nameCountry: nameCountry,
+      nameUser: nameUser,
+      name_regoin: nameRegion,
+      // Note: Assuming you meant to use nameRegion
+      total: total,
+      amount_paid: amountPaid,
+      offer_price: offerPrice,
+      date_price: datePrice,
+      user_do: userDo,
+      isApprove: isApprove,
+      nameuserdoning: nameUserDoing,
+      nameusertransfer: nameUserTransfer,
+      fkusertrasfer: fkUserTrasfer,
+      mobileuser: mobileUser,
+      total_paid: totalPaid,
+      ismarketing: isMarketing,
+      address_client: addressClient,
+      descActivController: descriptionActiveController,
+      presystem: preSystem,
+      presystemtitle: preSystemTitle,
+      sourcclient: sourceClient,
+      activity_type_fk: activityTypeFk,
+      activity_type_title: activityTypeTitle,
+      phone: phone,
+      user_add: userAdd,
+      nameAdduser: nameAdduser,
+      date_visit_Client: dateVisitClient,
+      tag: tag,
+      // doneVisit: doneVisit,
+      // doneTransfer: doneTransfer,
+      name_city: nameCity,
+      namemaincity: nameMainCity,
+      id_maincity: idMainCity,
+      // customerId: IDcustomer, // Note: Assuming you meant to use IDcustomer
+      // userAddEmail: userAddEmail,
+      // dateReceive: dateReceive,
+      email: email,
+      size_activity: sizeActivity,
+      serialNumber: serialNumber,
+      // fkClientSource: fkClientSource,
+      // nameReasonReject: NameReason_reject,
+      // nameClientRecommend: NameClient_recomand,
+      // rejectId: fk_rejectClient, // Note: Assuming you meant to use fk_rejectClient
+    );
+  }
+}
+
+//endregion

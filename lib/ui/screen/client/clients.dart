@@ -2,7 +2,7 @@ import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/care/comment_view.dart';
-import 'package:crm_smart/ui/screen/client/clientView.dart';
+import 'package:crm_smart/features/clients_list/presentation/widgets/client_section.dart';
 import 'package:crm_smart/ui/screen/invoice/invoiceView.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/tabar.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/tabview.dart';
@@ -27,7 +27,7 @@ class client_dashboard extends StatefulWidget {
   // final controllerUsers = Get.find<AllUserVMController>();
     late UserModel current ;
     final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-    late ClientModel? _clientModel=ClientModel();
+    late ClientModel1? _clientModel=ClientModel1();
     Widget _switchcaseBody(int _selectedIndex){
       var _selectedView;
       switch(_selectedIndex){
@@ -195,7 +195,7 @@ class client_dashboard extends StatefulWidget {
               controller: _tabcontroller,
               children: <Widget>[
 
-                ClientView(
+                ClientSection(
                   idclient:widget.invoiceModel.fkIdClient.toString(),
                   invoice: widget.invoiceModel,
                   typeinvoice:widget.typeinvoice

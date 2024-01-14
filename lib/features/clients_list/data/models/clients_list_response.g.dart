@@ -68,6 +68,7 @@ _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
       type_record: json['type_record'] as String?,
       type_classification: json['type_classification'] as String?,
       reason_class: json['reason_class'] as String?,
+      serialNumber: json['SerialNumber'] as String?,
     );
 
 Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
@@ -132,4 +133,5 @@ Map<String, dynamic> _$$ClientModelImplToJson(_$ClientModelImpl instance) =>
       'type_record': instance.type_record,
       'type_classification': instance.type_classification,
       'reason_class': instance.reason_class,
+      'SerialNumber': instance.serialNumber,
     };

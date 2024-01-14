@@ -24,7 +24,7 @@ class ticketprofile extends StatefulWidget {
   ticketprofile({required this.itemClient,
     Key? key}) : super(key: key);
 
-  ClientModel itemClient;
+  ClientModel1 itemClient;
   @override
   ticketprofileState createState() => ticketprofileState();
 }

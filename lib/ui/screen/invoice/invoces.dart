@@ -18,7 +18,7 @@ class invoices extends StatefulWidget {
   }) : super(key: key);
 
   String fkclient, fkuser;
-  ClientModel itemClient;
+  ClientModel1 itemClient;
 
   @override
   _InvoicesState createState() => _InvoicesState();

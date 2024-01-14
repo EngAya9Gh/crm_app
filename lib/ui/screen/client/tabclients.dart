@@ -25,7 +25,7 @@ class tabclients extends StatefulWidget {
 }
 
 class _tabclientsState extends State<tabclients> {
-  List<ClientModel> _list = [];
+  List<ClientModel1> _list = [];
   String? iduser;
   String? regoin;
   String? activity = '';

@@ -1,7 +1,7 @@
 import 'package:crm_smart/Repository/cache_repo.dart';
 
-class ClientModel extends CacheRepository {
-  ClientModel({
+class ClientModel1 extends CacheRepository {
+  ClientModel1({
     this.idClients,
     this.nameClient,
     this.nameEnterprise,
@@ -133,7 +133,9 @@ class ClientModel extends CacheRepository {
   late final String? type_record;
   late final String? type_classification;
   late final String? reason_class;
-  ClientModel.fromJson(Map<String, dynamic> json) {
+  //ClientModel.fromJson(Map<String, dynamic> json) {
+
+  ClientModel1.fromJson(Map<String, dynamic> json) {
     serialNumber = json['SerialNumber'];
     idClients = json['id_clients'];
     NameReason_reject = json['NameReason_reject'];

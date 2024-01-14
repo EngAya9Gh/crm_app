@@ -60,7 +60,7 @@ class InvoiceView extends StatefulWidget {
 }
 
 class _InvoiceViewState extends State<InvoiceView> {
-  ClientModel? clientmodel;
+  ClientModel1? clientmodel;
   late PrivilegeCubit _privilegeCubit;
 
   Widget _product(String name, String amount, String price) {
@@ -682,7 +682,7 @@ class RejectDialog extends StatefulWidget {
   });
 
   final InvoiceModel invoice;
-  final ClientModel clientModel;
+  final ClientModel1 clientModel;
 
   @override
   State<RejectDialog> createState() => _RejectDialogState();

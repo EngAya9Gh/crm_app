@@ -3,7 +3,7 @@
 import 'package:crm_smart/features/task_management/presentation/pages/task_management_list_page.dart';
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
 import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
-import 'package:crm_smart/ui/screen/client/clientView.dart';
+import 'package:crm_smart/features/clients_list/presentation/widgets/client_section.dart';
 import 'package:crm_smart/ui/screen/client/detail_client.dart';
 import 'package:crm_smart/ui/screen/client/marketing/getLastCommentClient.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
@@ -118,6 +118,7 @@ void route_notifyto(typeNotify,context,
           CupertinoPageRoute(
               builder: (context) => getLastCommentClient()));
       break;
+      // todo: add task
       case "task":
       Navigator.push(context,
           CupertinoPageRoute(

@@ -28,7 +28,7 @@ class invoicesAcceptclient extends StatefulWidget {
 class _invoicesAcceptclientState extends State<invoicesAcceptclient> {
   String? regoin;
   String? typeclientvalue;
-  late ClientModel itemClient;
+  late ClientModel1 itemClient;
   DateTime _selectedDatefrom = DateTime.now();
   DateTime _selectedDateto = DateTime.now();
   // late String typepayController;

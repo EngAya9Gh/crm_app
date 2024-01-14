@@ -15,7 +15,7 @@ import '../../../constants.dart';
 class support_view_invoices extends StatefulWidget {
   support_view_invoices({required this.itemClient, Key? key}) : super(key: key);
 
-  ClientModel itemClient;
+  ClientModel1 itemClient;
 
   @override
   support_view_invoicesState createState() => support_view_invoicesState();

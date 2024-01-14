@@ -26,7 +26,7 @@ class commentView extends StatefulWidget {
     this.event,
   }) : super(key: key);
 
-  ClientModel? client;
+  ClientModel1? client;
   final Event? event;
 
   @override

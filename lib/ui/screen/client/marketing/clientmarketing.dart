@@ -70,7 +70,7 @@ class _clientmarketingState extends State<clientmarketing> {
                       ));
 
                   if (clientModel != null) {
-                    final client = ClientModel(
+                    final client = ClientModel1(
                       NameReason_reject: clientModel.nameReasonReject,
                       date_price: clientModel.datePrice,
                       dateChangetype: clientModel.dateChangeType,

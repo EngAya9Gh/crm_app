@@ -109,7 +109,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     emit(state.copyWith(userPrivilegesState: const PageState.loading()));
 
     final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
-
+    // return Future.value(true);
     return result.fold(
       (exception, message) {
         emit(state.copyWith(userPrivilegesState: const PageState.error()));
@@ -179,6 +179,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     final privilege = state.userPrivilegesState.data
         .firstWhereOrNull((element) => element.fkPrivilege == privilegeId);
     return privilege?.isCheck! ?? false;
+    // return true;
   }
 
   List<LevelModel> _filterPriorityLevels(
