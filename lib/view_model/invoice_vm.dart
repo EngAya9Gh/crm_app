@@ -1685,13 +1685,15 @@ class invoice_vm extends ChangeNotifier {
     File? file,
     required String invoiceId,
     VoidCallback? onSucess,
+     required Function(dynamic value)   onFail,
   }) async {
     try {
       isLoadingCrudFiles = true;
       notifyListeners();
       final data = await Invoice_Service().crudFilesInvoice(files: files, body: body, invoiceId: invoiceId, file: file);
-
+      if(data.error!=''){
       final invoice = currentInvoice!.copyWith(
+
         filesAttach: data.filesAttach,
         imageRecord: (data.imageRecord?.isNotEmpty ?? false) ? urlfile + data.imageRecord! : null,
       );
@@ -1707,9 +1709,17 @@ class invoice_vm extends ChangeNotifier {
       isLoadingCrudFiles = false;
       notifyListeners();
       onSucess?.call();
-    } catch (e) {
+      }else {
+
+        isLoadingCrudFiles = false;
+        notifyListeners();
+        onFail?.call(data.error);
+      }
+
+    } on Exception catch (e) {
       isLoadingCrudFiles = false;
       notifyListeners();
+      onFail?.call(e.runtimeType.toString());
     }
   }
 }

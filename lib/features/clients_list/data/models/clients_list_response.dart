@@ -68,6 +68,9 @@ class ClientModel with _$ClientModel {
     @JsonKey(name: "type_classification") String? type_classification ,
     @JsonKey(name: "reason_class") String? reason_class,
     @JsonKey(name: "SerialNumber") String? serialNumber,
+
+
+
   }) = _ClientModel;
 
   const ClientModel._();

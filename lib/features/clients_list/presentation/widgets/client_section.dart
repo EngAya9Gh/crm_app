@@ -829,10 +829,12 @@ extension ClientModelExtension on ClientModel1 {
       email: email,
       sizeActivity: size_activity,
       serialNumber: serialNumber,
-      // fkClientSource: fkClientSource,
-      // nameReasonReject: nameReasonReject,
-      // nameClientRecommend: nameClientRecommend,
-      // rejectId: rejectId,
+      type_record: type_record,
+      type_classification: type_classification,
+      reason_class: reason_class,
+
+      nameClientRecommend: NameClient_recomand,
+      nameReasonReject: NameReason_reject,
     );
   }
 }
@@ -896,6 +898,12 @@ extension ClientModel1Extension on ClientModel {
       email: email,
       size_activity: sizeActivity,
       serialNumber: serialNumber,
+      type_record: type_record,
+      type_classification: type_classification,
+      reason_class: reason_class,
+      reason_change: reasonChange,
+      NameClient_recomand: nameClientRecommend,
+      NameReason_reject: nameReasonReject,
       // fkClientSource: fkClientSource,
       // nameReasonReject: NameReason_reject,
       // nameClientRecommend: NameClient_recomand,
