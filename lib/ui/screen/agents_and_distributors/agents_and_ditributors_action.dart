@@ -54,6 +54,7 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
       emailController.text = agentDistributorModel!.emailAgent;
       phoneNumberController.text = agentDistributorModel!.mobileAgent;
       descriptionController.text = agentDistributorModel!.description;
+      // descriptionController.text = agentDistributorModel!.description;
     }
     _mainCityProvider = context.read<MainCityProvider>();
     fkCountry = context.read<UserProvider>().currentUser.fkCountry!;
@@ -203,6 +204,8 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                                 if (city == null) {
                                                   return;
                                                 }
+                                                print('city.id_city');
+                                                print(city.id_city);
                                                 viewmodel.onSelectCity(city);
                                                 // viewmodel.onSelectCountry(fkCountry);
                                               },

@@ -114,6 +114,7 @@ class UserProvider extends ChangeNotifier {
       fkuserupdate: '',
       updated_at: '',
       isActive: '1',
+      path: '',
       fkuserAdd: '');
 
   Future<void> getUsersVm() async {

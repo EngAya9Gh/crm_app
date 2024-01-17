@@ -34,6 +34,7 @@ class PrivilegeState {
   }) {
     return PrivilegeState(
       levelsState: levelsState ?? this.levelsState,
+
       userPrivilegesState: userPrivilegesState ?? this.userPrivilegesState,
       addLevelStatus: addLevelStatus ?? this.addLevelStatus,
       privilegesOfLevel: privilegesOfLevel ?? this.privilegesOfLevel,

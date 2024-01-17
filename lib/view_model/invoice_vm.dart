@@ -1691,7 +1691,8 @@ class invoice_vm extends ChangeNotifier {
       isLoadingCrudFiles = true;
       notifyListeners();
       final data = await Invoice_Service().crudFilesInvoice(files: files, body: body, invoiceId: invoiceId, file: file);
-      if(data.error!=''){
+      print('data.error '+data.error);
+      if(data.error=='') {
       final invoice = currentInvoice!.copyWith(
 
         filesAttach: data.filesAttach,
@@ -1711,15 +1712,20 @@ class invoice_vm extends ChangeNotifier {
       onSucess?.call();
       }else {
 
+        currentInvoice = await Invoice_Service().getinvoicebyidInvoice( invoiceId );
         isLoadingCrudFiles = false;
         notifyListeners();
-        onFail?.call(data.error);
+        onFail?.call('error from backend  '+data.error);
       }
 
     } on Exception catch (e) {
+      currentInvoice = await Invoice_Service().getinvoicebyidInvoice( invoiceId );
+
       isLoadingCrudFiles = false;
       notifyListeners();
-      onFail?.call(e.runtimeType.toString());
+      print('exp  ' +e.runtimeType.toString());
+
+      onFail?.call('error from app  '+e.runtimeType.toString());
     }
   }
 }

@@ -39,6 +39,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   @override
   void initState() {
     invoiceVm = context.read<invoice_vm>();
+
     currentInvoice = invoiceVm.currentInvoice!;
     imageRecord = currentInvoice.imageRecord;
     filesAttach = currentInvoice.filesAttach ?? [];
@@ -56,7 +57,14 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     Widget remindButton = TextButton(
       child: Text("cancel"),
       onPressed:  () {
+        invoiceVm = context.read<invoice_vm>();
+
+        currentInvoice = invoiceVm.currentInvoice!;
+        imageRecord = currentInvoice.imageRecord;
+        filesAttach = currentInvoice.filesAttach ?? [];
         Navigator.pop(context);
+        Navigator.pop(context);
+
       },
     );
 
@@ -65,6 +73,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     AlertDialog alert = AlertDialog(
       title: Text("Error"),
       content: Text(mess),
+
       actions: [
         remindButton
       ],
@@ -73,6 +82,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     // show the dialog
     showDialog(
       context: context,
+
       builder: (BuildContext context) {
         return alert;
       },
@@ -611,8 +621,9 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     setState(() {});
   }
   failError(String messsageError) {
+    print('in call');
     showAlertDialog(context,messsageError);
-    Navigator.pop(context);
+    // Navigator.pop(context);
   }
 
   final int maxFilesAttach = 20;

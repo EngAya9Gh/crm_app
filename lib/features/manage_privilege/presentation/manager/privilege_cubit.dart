@@ -36,7 +36,11 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     if (state.levelsState.getDataWhenSuccess != null && !isRefresh) {
       final list =
           _filterPriorityLevels(state.levelsState.data, user.periorty!);
-      emit(state.copyWith(
+      print(list);
+     if(  list.indexWhere((element) => element.idLevel==user.typeAdministration)==-1)
+      list.add(LevelModel(idLevel: user.typeAdministration,nameLevel: user.name_mange,periorty: user.periorty));
+
+     emit(state.copyWith(
           levelsState: PageState.loaded(data: state.levelsState.data),
           priorityState: list));
       return;
@@ -51,7 +55,9 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
       (exception, message) =>
           emit(state.copyWith(levelsState: const PageState.error())),
       (value) {
-        final list = _filterPriorityLevels(value.message ?? [], user.periorty!);
+        final list = _filterPriorityLevels(value.message ??  [], user.periorty!);
+        if(  list.indexWhere((element) => element.idLevel==user.typeAdministration)==-1)
+          list.add(LevelModel(idLevel: user.typeAdministration,nameLevel: user.name_mange,periorty: user.periorty));
 
         emit(state.copyWith(
           levelsState:
@@ -182,7 +188,7 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     // return true;
   }
 
-  List<LevelModel> _filterPriorityLevels(
+  List<LevelModel> _filterPriorityLevels (
       List<LevelModel> levels, final String priority) {
     if (priority == '0') {
       return levels;
@@ -194,6 +200,8 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   }
 
   onChangeLevelId(String? levelModel) {
-    emit(state.copyWith(selectedLevelId: Nullable<String?>.value(levelModel)));
+    emit(state.copyWith(
+        selectedLevelId: Nullable<String?>.value(levelModel))
+    );
   }
 }

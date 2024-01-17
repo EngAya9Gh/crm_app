@@ -121,7 +121,7 @@ appBar: AppBar(
                         top: 10,bottom: 10
                     ),
                     child:
-                    ImageProfile(),
+                     ImageProfile(),
 
                   ),
             Form(

@@ -56,7 +56,8 @@ class _UserProfileState extends State<UserProfile> {
               //         ))
               //     :
               context.read<PrivilegeCubit>().checkPrivilege('50')
-                  ? IconButton(
+                  ?
+                    IconButton(
                       onPressed: () {
                         Navigator.push(
                           context,

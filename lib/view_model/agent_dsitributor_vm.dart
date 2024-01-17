@@ -221,6 +221,7 @@ class AgentDistributorActionParams {
       name: name,
       type: null,
       countryId: countryId,
+      cityId: cityId,
       phoneNumber: phoneNumber,
       description: description,
       email: email, filelogo: null,
@@ -231,6 +232,7 @@ class AgentDistributorActionParams {
         'name_agent': name,
         'type_agent': type?.index.toString(),
         'fk_country': countryId,
+        'cityId': cityId,
         'email_egent': email,
         'mobile_agent': phoneNumber,
         'description': description,
@@ -244,6 +246,7 @@ class AgentDistributorActionParams {
           name == other.name &&
           type == other.type &&
           countryId == other.countryId &&
+          cityId == other.cityId &&
           email == other.email &&
           phoneNumber == other.phoneNumber &&
           description == other.description;
@@ -255,6 +258,7 @@ class AgentDistributorActionParams {
       countryId.hashCode ^
       email.hashCode ^
       phoneNumber.hashCode ^
+      cityId.hashCode ^
       description.hashCode;
 
   @override

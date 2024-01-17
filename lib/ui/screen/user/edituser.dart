@@ -98,6 +98,7 @@ class _EditUserState extends State<EditUser> {
       mobileController.text = widget.userModel.mobile.toString();
       regoinname = widget.userModel.nameRegoin;
       levelname = widget.userModel.name_level;
+      namemanage = widget.userModel.typeAdministration;
       context.read<PrivilegeCubit>().onChangeLevelId(widget.userModel.typeLevel.toString());
       Provider.of<RegionProvider>(context, listen: false).changeValuser(widget.userModel.fkRegoin);
 

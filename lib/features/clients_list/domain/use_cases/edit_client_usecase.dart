@@ -36,7 +36,7 @@ class EditClientParams {
   final String mobile;
   final String anotherPhoneNumber;
   final String addressClient;
-  final String selectedActivityIdType;
+  final String? selectedActivityIdType;
   final String isMarketing;
   final String userActionID;
   final String sourceClient;

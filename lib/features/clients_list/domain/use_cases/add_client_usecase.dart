@@ -31,7 +31,7 @@ class AddClientParams {
   final String mobile;
   final String anotherPhoneNumber;
   final String addressClient;
-  final String selectedActivityIdType;
+  final String? selectedActivityIdType;
   final String isMarketing;
   final String sourceClient;
   final String descriptionActivity;

@@ -282,12 +282,16 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                       },
                                       selectedItem: cart.selectedActivity,
                                       showSearchBox: true,
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return 'هذا الحقل مطلوب.';
-                                        }
+                                        validator:
+                                        (value) {
+
+                                      if(_selectedClientRegistrationTye=='خاطئ')
                                         return null;
-                                      },
+                                      if (value== null) {
+
+                                        return 'هذا الحقل مطلوب.';
+                                      }
+                                    } ,
                                       dropdownSearchDecoration: InputDecoration(
                                         isCollapsed: true,
                                         hintText: 'نوع النشاط*',
@@ -330,7 +334,16 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                   hint: "حجم النشاط*",
                                   itemAsValue: (ActivitySizeType? item) => item?.value,
                                   itemAsString: (item) => item!.value,
-                                  validator: HelperFunctions.instance.requiredFiled,
+                                  validator:
+                                      (value) {
+
+                                    if(_selectedClientRegistrationTye=='خاطئ')
+                                      return null;
+                                    if (value?.trim().isEmpty ?? true) {
+
+                                      return 'هذا الحقل مطلوب.';
+                                    }
+                                  } ,// HelperFunctions.instance.requiredFiled,
                                   value: _selectedActivitySizeType,
                                   onChange: (value) {
                                     if (value == null) {
@@ -348,7 +361,16 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             labelText: "وصف النشاط*",
                             minLines: 3,
                             textInputAction: TextInputAction.newline,
-                            validator: HelperFunctions.instance.requiredFiled,
+                            validator:
+                                (value) {
+
+                              if(_selectedClientRegistrationTye=='خاطئ')
+                                return null;
+                              if (value?.trim().isEmpty ?? true) {
+
+                                return 'هذا الحقل مطلوب.';
+                              }
+                            } ,
                             contentPadding: HWEdgeInsetsDirectional.only(start: 16, end: 10, top: 10, bottom: 10),
                             controller: descriptionActivityController,
                           ),
@@ -425,7 +447,16 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 child: AppTextField(
                                   labelText: "عنوان العميل*",
                                   maxLines: 1,
-                                  validator: HelperFunctions.instance.requiredFiled,
+                                  validator:
+                                      (value) {
+
+                                    if(_selectedClientRegistrationTye=='خاطئ')
+                                      return null;
+                                    if (value?.trim().isEmpty ?? true) {
+
+                                      return 'هذا الحقل مطلوب.';
+                                    }
+                                  } ,
                                   controller: addressClientController,
                                 ),
                               ),
@@ -503,6 +534,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 ) : IgnorePointer();
 
                               }),
+                          15.verticalSpace,
+
                           Selector<UserProvider,String>(
                               selector: (context,userPro)=>userPro.selectedClientRegistrationType,
                               builder:(context,userProvider,child){
@@ -522,7 +555,10 @@ class _ActionClientPageState extends State<ActionClientPage> {
                           }),
 
                           Consumer<UserProvider>(builder: (contex,userPr,child){
-                            return  userPr.selectedClientClassificationType=="أخرى"&&userPr.selectedClientRegistrationType =="خاطئ"||(userPr.selectedClientClassificationType=="أخرى"&&userPr.selectedClientRegistrationType =="خاطئ"&&isEdit)?
+                            return  userPr.selectedClientClassificationType=="أخرى"
+                                &&userPr.selectedClientRegistrationType =="خاطئ"
+                                ||(userPr.selectedClientClassificationType=="أخرى"
+                                    &&userPr.selectedClientRegistrationType =="خاطئ"&&isEdit)?
                             15.verticalSpace:IgnorePointer();
                           }),
                           AppDropdownButtonFormField<String, String>(
@@ -773,7 +809,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       mobile: mobileController.text,
       anotherPhoneNumber: anotherNumberController.text,
       addressClient: addressClientController.text,
-      selectedActivityIdType: activityViewmodel.selectedActivity!.id_activity_type,
+      selectedActivityIdType: activityViewmodel.selectedActivity==null?null: activityViewmodel.selectedActivity?.id_activity_type,
       isMarketing: selectedSourceClient != 'ميداني' ? (selectedSourceClient == "عميل موصى به" ? '2' : '1') : '0',
       sourceClient: selectedSourceClient!,
       descriptionActivity: descriptionActivityController.text,
@@ -821,7 +857,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       mobile: mobileController.text,
       anotherPhoneNumber: anotherNumberController.text,
       addressClient: addressClientController.text,
-      selectedActivityIdType: activityViewmodel.selectedActivity!.id_activity_type,
+      selectedActivityIdType: activityViewmodel.selectedActivity==null?null: activityViewmodel.selectedActivity?.id_activity_type,
       isMarketing: selectedSourceClient != 'ميداني' ? (selectedSourceClient == "عميل موصى به" ? '2' : '1') : '0',
       sourceClient: selectedSourceClient!,
       descriptionActivity: descriptionActivityController.text,
