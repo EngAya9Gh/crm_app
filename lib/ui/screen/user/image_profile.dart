@@ -26,10 +26,11 @@ class ImageProfile extends StatelessWidget {
               child:
               Provider.of<UserProvider>(context,listen: true)
                   .currentUser.path!.isNotEmpty
-                  ? ClipRRect(
+                  ?
+              ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                     child: Image.file(
-                      File(Provider.of<UserProvider>(context,listen: true)
+                    File(Provider.of<UserProvider>(context,listen: true)
                     .currentUser.path!),width: 1000,height: 1000,fit: BoxFit.fill,
                 // fit: BoxFit.fill,
               ),

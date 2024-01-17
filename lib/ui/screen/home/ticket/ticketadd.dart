@@ -90,7 +90,7 @@ class _ticketAddState extends State<ticketAdd> {
                           ),
                           child: Consumer<ClientProvider>(
                             builder: (context, cart, child) {
-                              return DropdownSearch<ClientModel>(
+                              return DropdownSearch<ClientModel1>(
                                 mode: Mode.DIALOG,
                                 // label: " الموظف ",
                                 //hint: 'الموظف',

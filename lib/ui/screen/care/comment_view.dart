@@ -13,6 +13,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/task_management/presentation/manager/task_cubit.dart';
+import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../labeltext.dart';
 import '../../../model/calendar/event.dart';
 import '../../../view_model/event_provider.dart';
@@ -24,7 +26,7 @@ class commentView extends StatefulWidget {
     this.event,
   }) : super(key: key);
 
-  ClientModel? client;
+  ClientModel1? client;
   final Event? event;
 
   @override
@@ -68,6 +70,10 @@ class _commentViewState extends State<commentView> {
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: ListView(children: [
+            AddManualTaskButton(
+              list: commentPublicTypeList,
+              clientId: widget.client?.idClients,
+            ),
             Row(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

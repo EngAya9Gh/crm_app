@@ -1,7 +1,7 @@
 import 'package:crm_smart/Repository/cache_repo.dart';
 
-class ClientModel extends CacheRepository {
-  ClientModel({
+class ClientModel1 extends CacheRepository {
+  ClientModel1({
     this.idClients,
     this.nameClient,
     this.nameEnterprise,
@@ -63,6 +63,9 @@ class ClientModel extends CacheRepository {
     this.fk_rejectClient,
     this.phone,
     this.serialNumber,
+    this.type_record,
+    this.type_classification,
+    this.reason_class,
   });
 
   late final String? idClients;
@@ -127,8 +130,12 @@ class ClientModel extends CacheRepository {
   String? email, size_activity, fk_client_source;
   String? NameReason_reject, NameClient_recomand;
   String? fk_rejectClient;
+  late final String? type_record;
+  late final String? type_classification;
+  late final String? reason_class;
+  //ClientModel.fromJson(Map<String, dynamic> json) {
 
-  ClientModel.fromJson(Map<String, dynamic> json) {
+  ClientModel1.fromJson(Map<String, dynamic> json) {
     serialNumber = json['SerialNumber'];
     idClients = json['id_clients'];
     NameReason_reject = json['NameReason_reject'];
@@ -193,6 +200,9 @@ class ClientModel extends CacheRepository {
     size_activity = json['size_activity'] ;
     email = json['email'];
     nameTransferTo = json['nameTransferTo'] ;
+    type_record = json['type_record'] ;
+    type_classification = json['type_classification'] ;
+    reason_class = json['reason_class'] ;
   }
 
   Map<String, dynamic> toJson() {
@@ -255,6 +265,9 @@ class ClientModel extends CacheRepository {
     _data['size_activity'] = size_activity;
     _data['fk_client_source'] = fk_client_source;
     _data['fk_rejectClient'] = fk_rejectClient;
+    _data['type_record'] = type_record;
+    _data['type_classification'] = type_classification;
+    _data['reason_class'] = reason_class;
     return _data;
   }
 

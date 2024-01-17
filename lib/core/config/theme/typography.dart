@@ -19,13 +19,12 @@ TextTheme appTextTheme(BuildContext context, TextTheme base, Color textColor) {
       fontSize: _FontSize.displaySmall,
       letterSpacing: 0,
       fontFamily: _FontFamily.regular,
-      // height: 44,
     ),
-    headlineLarge: base.headlineLarge?.copyWith(
-      fontSize: _FontSize.headlineLarge,
-      fontFamily: _FontFamily.regular,
-      height: 40,
-    ),
+    // headlineLarge: base.headlineLarge?.copyWith(
+    //   fontSize: _FontSize.headlineLarge,
+    //   fontFamily: _FontFamily.regular,
+    //   height: 40,
+    // ),
     headlineMedium: base.headlineMedium?.copyWith(
       fontSize: _FontSize.headlineMedium,
       fontFamily: _FontFamily.regular,

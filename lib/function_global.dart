@@ -1,9 +1,11 @@
 
 
+import 'package:crm_smart/features/task_management/presentation/pages/task_management_list_page.dart';
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
 import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
-import 'package:crm_smart/ui/screen/client/clientView.dart';
+import 'package:crm_smart/features/clients_list/presentation/widgets/client_section.dart';
 import 'package:crm_smart/ui/screen/client/detail_client.dart';
+import 'package:crm_smart/ui/screen/client/marketing/getLastCommentClient.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/home/approvepage.dart';
 import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
@@ -11,9 +13,7 @@ import 'package:crm_smart/ui/screen/support/support_add.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'model/clientmodel.dart';
-import 'model/invoiceModel.dart';
-import 'model/usermodel.dart';
+
 
 
 String getnameshort(String name){
@@ -88,6 +88,11 @@ String showtext(String typeNotify){
       case "NotReady":
       return "العميل غير جاهز";
 
+      case "checkComment":
+      return "تحديث العملاء";
+      case "task":
+      return "المهام";
+
       case "EditInvoice":
       return "تغيير بيانات الفاتورة";
   }
@@ -107,6 +112,17 @@ void route_notifyto(typeNotify,context,
       Navigator.push(context,
           CupertinoPageRoute(
               builder: (context) => ApproveFinancePage()));
+      break;
+      case "checkComment":
+      Navigator.push(context,
+          CupertinoPageRoute(
+              builder: (context) => getLastCommentClient()));
+      break;
+      // todo: add task
+      case "task":
+      Navigator.push(context,
+          CupertinoPageRoute(
+              builder: (context) => TaskManagementListPage()));
       break;
     case "Transfer" :
       Navigator.push(context,

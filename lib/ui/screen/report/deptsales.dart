@@ -1,3 +1,6 @@
+import 'dart:ui' as myui;
+
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
@@ -5,20 +8,16 @@ import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/rowtitle.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:group_button/group_button.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as myui;
+
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
 class deptsales extends StatefulWidget {
@@ -46,7 +45,7 @@ class _deptsalesState extends State<deptsales> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
+    haveMarketingPrivilege = context.read<PrivilegeCubit>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
@@ -65,8 +64,7 @@ class _deptsalesState extends State<deptsales> {
     //    type='userSum';
     // });
 
-    if(!haveMarketingPrivilege)
-    getData();
+    if (!haveMarketingPrivilege) getData();
   }
 
   Future<void> getData() async {
@@ -78,17 +76,17 @@ class _deptsalesState extends State<deptsales> {
     UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     String paramprivilge = '';
-    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('92') == true) {
+    if (context.read<PrivilegeCubit>().checkPrivilege('92')) {
       labelxx = 'user';
       iduser = usermodel.idUser.toString();
       paramprivilge = '&id_user=${iduser}';
     }
-    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('93') == true) {
+    if (context.read<PrivilegeCubit>().checkPrivilege('93')) {
       labelxx = 'regoin';
       idregoin = usermodel.fkRegoin.toString();
       paramprivilge = '&id_regoin=${idregoin}';
     }
-    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('94') == true) {
+    if (context.read<PrivilegeCubit>().checkPrivilege('94')) {
       if (iduser == '' && idregoin == '') {
         type = 'allregoin';
         labelxx = 'الفرع';
@@ -103,15 +101,13 @@ class _deptsalesState extends State<deptsales> {
       }
     }
 
-    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('92') == true ||
-        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('93') == true ||
-        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('94') == true) {
-      
+    if (context.read<PrivilegeCubit>().checkPrivilege('92') ||
+        context.read<PrivilegeCubit>().checkPrivilege('93') ||
+        context.read<PrivilegeCubit>().checkPrivilege('94')) {
       if (idregoin == '0') {
         type = 'allregoin';
         labelxx = 'الفرع';
       }
-      
 
       String isMarketingParams = '';
       if (isMarketing) {
@@ -143,7 +139,7 @@ class _deptsalesState extends State<deptsales> {
       if (type == 'allregoin') {
         for (int i = 0; i < data.length; i++) {
           tempdata.add(BarModel.fromJson(data[i]));
-          
+
           totalval += tempdata[i].y;
           rowsdata.add(DataRow(
             cells: <DataCell>[
@@ -246,7 +242,7 @@ class _deptsalesState extends State<deptsales> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('94') == true
+                context.read<PrivilegeCubit>().checkPrivilege('94')
                     ? Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -277,8 +273,8 @@ class _deptsalesState extends State<deptsales> {
                       )
                     : Container(),
                 Expanded(
-                  child: Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('94') == true ||
-                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('93') == true
+                  child: context.read<PrivilegeCubit>().checkPrivilege('94') ||
+                          context.read<PrivilegeCubit>().checkPrivilege('93')
                       ? //user
                       Padding(
                           padding: const EdgeInsets.only(
@@ -289,18 +285,17 @@ class _deptsalesState extends State<deptsales> {
                             builder: (context, cart, child) {
                               return Row(
                                 children: [
-                                  if(cart.selectedUser != null)
-                                    ...{
-                                      IconButton(
-                                          onPressed: () {
-                                            iduser = '';
-                                            labelxx = '';
-                                            cart.changevalueuser(null);
-                                            getData();
-                                          },
-                                          icon: Icon(Icons.highlight_off)),
-                                      SizedBox(width: 10),
-                                    },
+                                  if (cart.selectedUser != null) ...{
+                                    IconButton(
+                                        onPressed: () {
+                                          iduser = '';
+                                          labelxx = '';
+                                          cart.changevalueuser(null);
+                                          getData();
+                                        },
+                                        icon: Icon(Icons.highlight_off)),
+                                    SizedBox(width: 10),
+                                  },
                                   Expanded(
                                     child: DropdownSearch<UserModel>(
                                       mode: Mode.DIALOG,

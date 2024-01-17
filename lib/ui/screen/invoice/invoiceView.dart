@@ -21,6 +21,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl.dart' as rt;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -30,6 +31,9 @@ import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/task_management/presentation/manager/task_cubit.dart';
+import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../function_global.dart';
 import '../../../labeltext.dart';
 import '../../widgets/app_photo_viewer.dart';
@@ -56,7 +60,8 @@ class InvoiceView extends StatefulWidget {
 }
 
 class _InvoiceViewState extends State<InvoiceView> {
-  ClientModel? clientmodel;
+  ClientModel1? clientmodel;
+  late PrivilegeCubit _privilegeCubit;
 
   Widget _product(String name, String amount, String price) {
     return Column(
@@ -95,6 +100,7 @@ class _InvoiceViewState extends State<InvoiceView> {
   @override
   void initState() {
     context.read<invoice_vm>().setCurrentInvoice(widget.invoice);
+    _privilegeCubit = GetIt.I<PrivilegeCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ClientProvider>(context, listen: false)
           .get_byIdClient(widget.invoice.fkIdClient.toString(), (value) => clientmodel = value);
@@ -129,6 +135,10 @@ class _InvoiceViewState extends State<InvoiceView> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    AddManualTaskButton(
+                      list: invoicePublicTypeList,
+                      invoiceId: widget.invoice.idInvoice,
+                    ),
                     _product('اسم المنتج', 'الكمية', 'السعر'),
                     for (int index = 0; index < invoice!.products!.length; index++)
                       _product(invoice.products![index].nameProduct.toString(),
@@ -158,6 +168,10 @@ class _InvoiceViewState extends State<InvoiceView> {
                     cardRow(title: 'اسم المؤسسة', value: invoice.name_enterprise.toString()),
                     cardRow(title: 'حالة الفاتورة', value: invoice.stateclient.toString()),
                     cardRow(title: 'فرع الفاتورة', value: invoice.name_regoin_invoice.toString()),
+
+                    invoice.invoice_source != null
+                        ?  cardRow(title: 'مصدر الفاتورة', value: invoice.invoice_source!.toString())
+                        : Container(),
 
                     cardRow(title: 'اسم الموظف', value: invoice.nameUser.toString()),
                     cardRow(title: 'فرع الموظف', value: invoice.name_regoin_invoice.toString()),
@@ -257,7 +271,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                         ? cardRow(title: 'عنوان الفاتورة', value: invoice.address_invoice.toString())
                         : Container(),
 
-                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('76') == true
+                    _privilegeCubit.checkPrivilege('76')
                         ? invoice.clientusername != null && invoice.clientusername.toString().isNotEmpty
                             ? cardRow(
                                 title: 'يوزر العميل',
@@ -312,9 +326,9 @@ class _InvoiceViewState extends State<InvoiceView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('141') == true &&
+                            _privilegeCubit.checkPrivilege('141')  &&
                                         invoice.isApprove == null ||
-                                    Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('31') ==
+                                    _privilegeCubit.checkPrivilege('31') ==
                                             true &&
                                         invoice.isApprove != null
                                 ? CustomButton(
@@ -330,7 +344,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   )
                                 : Container(), // widget.type == 'approved'
 
-                            if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('41') == true &&
+                            if (_privilegeCubit.checkPrivilege('41')  &&
                                 invoice.isApprove != null) ...{
                               10.horizontalSpace,
                               CustomButton(
@@ -347,7 +361,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 },
                               )
                             },
-                            if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('32') == true) ...{
+                            if (_privilegeCubit.checkPrivilege('32') ) ...{
                               10.horizontalSpace,
                               CustomButton(
                                   //width: MediaQuery.of(context).size.width * 0.2,
@@ -424,7 +438,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('116') == true
+                          _privilegeCubit.checkPrivilege('116')
                               ? CustomButton(
                                   //width: MediaQuery.of(context).size.width * 0.2,
                                   text: 'اضافة دفعة للفاتورة',
@@ -439,7 +453,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   },
                                 )
                               : Container(),
-                          if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('115') == true) ...{
+                          if (_privilegeCubit.checkPrivilege('115') ) ...{
                             10.horizontalSpace,
                             CustomButton(
                               //width: MediaQuery.of(context).size.width * 0.2,
@@ -668,7 +682,7 @@ class RejectDialog extends StatefulWidget {
   });
 
   final InvoiceModel invoice;
-  final ClientModel clientModel;
+  final ClientModel1 clientModel;
 
   @override
   State<RejectDialog> createState() => _RejectDialogState();
@@ -1015,7 +1029,7 @@ class _RejectDialogState extends State<RejectDialog> {
                         if (_invoice.file_reject?.isNotEmpty ?? false) return SizedBox.shrink();
                         return
                             // (_invoice.file_reject?.isNotEmpty ?? false)
-                            //   ? (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('145') == true
+                            //   ? (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('145')
                             //       && _invoice.approveBackDone=='0'
                             //       ? Center(
                             //           child: ElevatedButton(

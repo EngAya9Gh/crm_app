@@ -52,7 +52,11 @@ class AppBottomSheet<T> extends StatelessWidget {
                 mainAxisAlignment: showCloseIcon ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
                 textDirection: TextDirection.rtl,
                 children: [
-                  if (showCloseIcon) const SizedBox.shrink(),
+                  if (showCloseIcon)
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Icon(Icons.close, color: Colors.grey),
+                    ),
                   Container(
                     width: 90.w,
                     height: 5.h,
@@ -61,11 +65,7 @@ class AppBottomSheet<T> extends StatelessWidget {
                       borderRadius: BorderRadius.circular(90).r,
                     ),
                   ),
-                  if (showCloseIcon)
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Icon(Icons.close, color: Colors.grey),
-                    ),
+                  if (showCloseIcon) const SizedBox.shrink(),
                 ],
               ),
             ),

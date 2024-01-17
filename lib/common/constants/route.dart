@@ -3,10 +3,12 @@ abstract class EndPoints {
 
   static const baseUrl = "http://smartcrm.ws/aya/api/";
   static const care = _Care();
-  static const client= _Client();
+  static const client = _Client();
   static const users = _Users();
   static const series = _Series();
   static const app = _App();
+  static const privilege = _Privilege();
+  static const task = _Task();
 }
 
 class _App {
@@ -23,7 +25,7 @@ class _Users {
   final updateUser = 'users/updateuser_patch.php';
 }
 
-class _Series{
+class _Series {
   const _Series();
 
   final getUsersSeries = 'series/view_series_manag.php';
@@ -31,7 +33,7 @@ class _Series{
   final getWithdrawalsInvoices = 'series/getInvoice_Approve_back.php';
   final getWithdrawalInvoiceDetails = 'series/view_series_invoice.php';
   final setApproveSeries = 'series/set_approve_series.php';
-  final getWithdrawnDetails  = 'series/view_detail_demand.php';
+  final getWithdrawnDetails = 'series/view_detail_demand.php';
 }
 
 class _Care {
@@ -41,8 +43,13 @@ class _Care {
   final getRecommendedClients = 'care/get_recommand_care.php';
 }
 
-
-
+class _Privilege {
+  const _Privilege();
+  final getPrivileges = "privilge/privGet.php";
+  final updatePrivileges = "updatePermissions";
+  final getLevels = "config/getLevel.php";
+  final addLevel = "privilge/privAdd.php";
+}
 
 class _Client {
   const _Client();
@@ -57,4 +64,13 @@ class _Client {
   final addRejectReasons = "client/reason_client_reject/Add_reasonRejectClient.php";
   final editRejectReasons = "client/reason_client_reject/Edit_reasonRejectClient.php";
   final distinctiveClient = "star_client/get_client_star.php";
+}
+
+class _Task {
+  const _Task();
+
+  final addTask = 'addTask';
+  final filterTasksByAll = 'filterTaskesByAll';
+  final changeStatusTask = 'changeStatuseTask/';
+  final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
 }

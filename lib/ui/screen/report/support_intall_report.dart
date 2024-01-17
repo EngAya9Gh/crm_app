@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
 class support_install_report extends StatefulWidget {
@@ -47,7 +48,7 @@ class _support_install_reportState extends State<support_install_report> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
+    haveMarketingPrivilege = context.read<PrivilegeCubit>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_)async{
       Provider.of<selected_button_provider>(context,listen: false)
           .selectValuebarsalestype(0);

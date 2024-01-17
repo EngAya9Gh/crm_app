@@ -8,8 +8,10 @@ import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import '../../../core/config/theme/theme.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../widgets/custom_widget/row_edit.dart';
@@ -22,7 +24,7 @@ class calender_client extends StatefulWidget {
   _calender_clientState createState() => _calender_clientState();
 }
 
-late ClientModel? clientModel = null;
+late ClientModel1? clientModel = null;
 int isSelectedtypeinstall = 0;
 late String idclient;
 List<InvoiceModel> listfilter = [];
@@ -40,7 +42,7 @@ class _calender_clientState extends State<calender_client> {
       await Provider.of<UserProvider>(context, listen: false).getUsersVm();
 
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      await Provider.of<ClientProvider>(context, listen: false).getClientDateTable_vm();
+      await Provider.of<ClientProvider>(context, listen: false).getClientDateTable_vm(GetIt.I<PrivilegeCubit>());
       Provider.of<EventProvider>(context, listen: false)
           .setvalueClient(Provider.of<ClientProvider>(context, listen: false).listClientAccept);
       Provider.of<EventProvider>(context, listen: false).getevent_AllClient();
@@ -106,7 +108,7 @@ class _calender_clientState extends State<calender_client> {
                                 SizedBox(width: 10),
                               },
                               Expanded(
-                                child: DropdownSearch<ClientModel>(
+                                child: DropdownSearch<ClientModel1>(
                                   mode: Mode.DIALOG,
                                   // label: " الموظف ",
                                   //hint: 'الموظف',
@@ -246,7 +248,7 @@ class _calender_clientState extends State<calender_client> {
   }
 
   Widget dialog(
-    ClientModel client,
+    ClientModel1 client,
   ) {
     return SimpleDialog(
       elevation: 0,

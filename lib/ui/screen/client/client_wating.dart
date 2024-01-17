@@ -1,29 +1,17 @@
-import 'dart:ffi';
-
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/screen/support/support_add.dart';
-import 'package:crm_smart/ui/widgets/client_widget/cardclientAccept.dart';
 import 'package:crm_smart/ui/widgets/client_widget/cardwaiting.dart';
-import 'package:crm_smart/ui/widgets/client_widget/clientAccept.dart';
-import 'package:crm_smart/ui/widgets/client_widget/clientCardNew.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/separatorLine.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
-import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:group_button/group_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../model/usermodel.dart';
@@ -39,7 +27,7 @@ class ClientWaiting extends StatefulWidget {
 class _ClientWaitingState extends State<ClientWaiting> {
   String? regoin;
   String? typeclientvalue;
-  late ClientModel itemClient;
+  late ClientModel1 itemClient;
   late List<MainCityModel> selecteditemmaincity = [];
   late UserModel user;
 
@@ -62,16 +50,28 @@ class _ClientWaitingState extends State<ClientWaiting> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'فواتير العملاء',
-          style: TextStyle(color: kWhiteColor),
+    return Theme(
+      data: context.theme.copyWith(
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: context.theme.elevatedButtonTheme.style!.copyWith(
+              minimumSize: MaterialStatePropertyAll(Size(50, 35.h)),
+            )
         ),
-        centerTitle: true,
+        textButtonTheme: TextButtonThemeData(
+            style: context.theme.textButtonTheme.style!.copyWith(
+              minimumSize: MaterialStatePropertyAll(Size(50, 35.h)),
+            )
+        ),
       ),
-      body: Consumer<PrivilegeProvider>(builder: (context, privilge, child) {
-        return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'فواتير العملاء',
+            style: TextStyle(color: kWhiteColor),
+          ),
+          centerTitle: true,
+        ),
+        body:SafeArea(
           child: Directionality(
             textDirection: TextDirection.rtl,
             child: Padding(
@@ -170,42 +170,42 @@ class _ClientWaitingState extends State<ClientWaiting> {
                           return value.isloading == true
                               ? Center(child: CircularProgressIndicator())
                               : value.listInvoicesAccept.length == 0
-                                  ? Center(child: Text(messageNoData))
-                                  : Column(
-                                      children: [
-                                        Expanded(
-                                          child: ListView.builder(
-                                              scrollDirection: Axis.vertical,
-                                              itemCount: value.listInvoicesAccept.length,
-                                              itemBuilder: (context, index) {
-                                                // itemClient=Provider.of<client_vm>(context,listen: false)
-                                                //     .listClient.firstWhere(
-                                                //         (element) => element.idClients==value.listInvoicesAccept[index].fkIdClient);
-                                                return SingleChildScrollView(
-                                                  child: Padding(
-                                                      padding: const EdgeInsets.all(2),
-                                                      child: widget.type_card == 'support'
-                                                          ? cardWaiting(
-                                                              iteminvoice: value.listInvoicesAccept[index],
-                                                            )
-                                                          : CardInvoiceClient(
-                                                              type: 'profile',
-                                                              invoice: value.listInvoicesAccept[index],
-                                                              //itemClient :  itemClient,
-                                                            )),
-                                                );
-                                              }),
-                                        ),
-                                      ],
-                                    );
+                              ? Center(child: Text(messageNoData))
+                              : Column(
+                            children: [
+                              Expanded(
+                                child: ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    itemCount: value.listInvoicesAccept.length,
+                                    itemBuilder: (context, index) {
+                                      // itemClient=Provider.of<client_vm>(context,listen: false)
+                                      //     .listClient.firstWhere(
+                                      //         (element) => element.idClients==value.listInvoicesAccept[index].fkIdClient);
+                                      return SingleChildScrollView(
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child: widget.type_card == 'support'
+                                                ? cardWaiting(
+                                              iteminvoice: value.listInvoicesAccept[index],
+                                            )
+                                                : CardInvoiceClient(
+                                              type: 'profile',
+                                              invoice: value.listInvoicesAccept[index],
+                                              //itemClient :  itemClient,
+                                            )),
+                                      );
+                                    }),
+                              ),
+                            ],
+                          );
                         }),
                       ),
                     ),
                   ],
                 )),
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 

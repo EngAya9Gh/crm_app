@@ -1,7 +1,7 @@
 name: crm_smart
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.0.10+16
+version: 2.0.0+20
 
 environment:
   sdk: ">=2.15.0 <3.0.0"
@@ -42,6 +42,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   flutter_spinkit: ^5.2.0
   flutter_slidable: ^3.0.0
+  drag_and_drop_lists: ^0.3.3
 
   # DI
   get_it: ^7.6.4

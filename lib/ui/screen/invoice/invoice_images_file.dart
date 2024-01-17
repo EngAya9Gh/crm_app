@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' hide context;
 import 'package:provider/provider.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/privilge_vm.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
@@ -189,7 +190,7 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                 ),
               ),
             ),
-          if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('146') == true)
+          if (context.read<PrivilegeCubit>().checkPrivilege('146') == true)
             Positioned.fill(
               child: Align(
                 alignment: Alignment.topRight,

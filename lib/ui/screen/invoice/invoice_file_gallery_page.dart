@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../labeltext.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/privilge_vm.dart';
@@ -38,6 +39,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   @override
   void initState() {
     invoiceVm = context.read<invoice_vm>();
+
     currentInvoice = invoiceVm.currentInvoice!;
     imageRecord = currentInvoice.imageRecord;
     filesAttach = currentInvoice.filesAttach ?? [];
@@ -49,9 +51,46 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     invoiceVm.isLoadingCrudFiles = false;
     super.deactivate();
   }
+  showAlertDialog(BuildContext context,String mess) {
 
+    // set up the buttons
+    Widget remindButton = TextButton(
+      child: Text("cancel"),
+      onPressed:  () {
+        invoiceVm = context.read<invoice_vm>();
+
+        currentInvoice = invoiceVm.currentInvoice!;
+        imageRecord = currentInvoice.imageRecord;
+        filesAttach = currentInvoice.filesAttach ?? [];
+        Navigator.pop(context);
+        Navigator.pop(context);
+
+      },
+    );
+
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Error"),
+      content: Text(mess),
+
+      actions: [
+        remindButton
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
+
     return Consumer<invoice_vm>(
       builder: (context, value, child) {
         return Scaffold(
@@ -92,6 +131,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                       file: recordCommercialImage,
                       files: files,
                       onSucess: () => Navigator.pop(context),
+                      onFail: (value)=> failError(value),
                     );
                   },
                   child: Text("حفظ", style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.w600)),
@@ -189,7 +229,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                       ),
                                     ),
                                   ),
-                                  if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('146') == true)
+                                  if (context.read<PrivilegeCubit>().checkPrivilege('146'))
                                   Positioned.fill(
                                     child: Align(
                                       alignment: Alignment.topRight,
@@ -481,7 +521,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               //     ),
               //   ),
 
-              if (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('146') == true)
+              if (context.read<PrivilegeCubit>().checkPrivilege('146'))
               Positioned.fill(
                 child: Align(
                   alignment: Alignment.topRight,
@@ -580,6 +620,12 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     filesAttach.removeAt(index);
     setState(() {});
   }
+  failError(String messsageError) {
+    print('in call');
+    showAlertDialog(context,messsageError);
+    // Navigator.pop(context);
+  }
 
   final int maxFilesAttach = 20;
 }
+

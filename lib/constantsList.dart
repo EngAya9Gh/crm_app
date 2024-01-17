@@ -7,6 +7,9 @@ import 'package:crm_smart/ui/screen/home/pageshome/sales.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/support.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'features/task_management/presentation/pages/task_management_list_page.dart';
+import 'features/task_management/presentation/pages/task_management_page.dart';
+
 List<String> listtext = [
   'مشرف مبيعات',
   'موظف مبيعات',
@@ -29,6 +32,7 @@ final List<String> itemCategory = [
   'إدارة',
   'التحصيل',
   'السباقات',
+  'إدارة المهام',
 ];
 
 final List<String> listSelectCategory = [
@@ -48,6 +52,7 @@ final List<Widget> listwidget = [
   managmentpage(),
   financepage(),
   race_page(),
+  TaskManagementListPage(),
 ];
 List<String> sourceClientsList = [
   'ميداني',
@@ -116,4 +121,16 @@ List<String> imageList = [
   'assest/images/administrator.png',
   'assest/images/money.png',
   'assest/images/race.png',
+  'assest/images/managetask1.png',
+];
+
+List<String> clientsClassificationList = [
+  'لايخدمه النظام',
+  'اهتمام مختلف',
+  'أخرى',
+
+];
+List<String> clientsRegistrationTyeList = [
+  'صحيح',
+  'خاطئ',
 ];

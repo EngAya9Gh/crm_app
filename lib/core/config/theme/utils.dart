@@ -6,7 +6,7 @@ ElevatedButtonThemeData _elevatedButtonTheme(ColorScheme scheme, TextTheme textT
         backgroundColor: scheme.primary,
         foregroundColor: scheme.onPrimary,
         disabledBackgroundColor: scheme.grey50,
-        minimumSize: Size(double.infinity, 35.h),
+        // minimumSize: Size(double.infinity, 35.h),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(kbrBorderTextField)),
       ),
     );

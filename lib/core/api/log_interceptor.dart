@@ -13,6 +13,7 @@ enum _StatusType {
 class LoggerInterceptor extends Interceptor with LoggerHelper {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    options.headers[HttpHeaders.authorizationHeader] = 'Bearer 20|PLueBlgrb1VT4p2QMIOVNxuAXpTifd5BCNtFDgFq48af1845';
 
     if (kDebugMode) {
       prettyPrinterI(

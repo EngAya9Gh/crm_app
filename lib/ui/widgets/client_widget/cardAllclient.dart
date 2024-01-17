@@ -14,7 +14,7 @@ import '../../../view_model/client_vm.dart';
 
 class CardAllClient extends StatelessWidget {
   CardAllClient({Key? key, required this.clientModel}) : super(key: key);
-  final ClientModel clientModel;
+  final ClientModel1 clientModel;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,7 @@ class CardAllClient extends StatelessWidget {
                   ));
 
               if (result != null) {
-                final clientConvert = ClientModel(
+                final clientConvert = ClientModel1(
                   NameReason_reject: result.nameReasonReject,
                   date_price: result.datePrice,
                   dateChangetype: result.dateChangeType,

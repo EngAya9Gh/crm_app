@@ -16,10 +16,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
+
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event.dart';
-import '../../../view_model/privilge_vm.dart';
-import 'clientView.dart';
+import '../../../features/clients_list/presentation/widgets/client_section.dart';
 
 class ProfileClient extends StatefulWidget {
   ProfileClient({
@@ -39,7 +40,7 @@ class ProfileClient extends StatefulWidget {
   int tabCareIndex;
   InvoiceModel? invoiceModel;
   String? clientTransfer;
-  ClientModel? client;
+  ClientModel1? client;
   String idCommunication;
   final Event? event;
 
@@ -133,13 +134,14 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
         return Scaffold(
           appBar: AppBar(
             backgroundColor: kMainColor,
+
             title: LayoutBuilder(builder: (context, constraints) {
               return SizedBox(
                 width: constraints.maxWidth,
                 height: appBarSize.height,
                 child: Center(
                   child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 5.0),
                       child: TextScroll(
                         client!.nameEnterprise.toString() + "   ",
                         mode: TextScrollMode.endless,
@@ -172,12 +174,18 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             }),
             centerTitle: true,
             bottom: TabBar(
-              labelPadding: const EdgeInsets.only(left: 2, right: 2),
+              labelPadding: const EdgeInsets.only(left: 8, right:8),
               indicatorSize: TabBarIndicatorSize.label,
               controller: _tabController,
               indicatorColor: kWhiteColor,
               indicatorWeight: 6,
+              physics: AlwaysScrollableScrollPhysics(),
               labelColor: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              isScrollable: true,
+              labelStyle:TextStyle(fontFamily: kfontfamily2,fontSize: 17,fontWeight: FontWeight.bold,) ,
+              unselectedLabelStyle:TextStyle(fontFamily: kfontfamily2,fontSize: 15,fontWeight: FontWeight.w600) ,
+
               unselectedLabelColor: kWhiteColor,
               onTap: (value) => _currentTabIndex.value = value,
               tabs: <Widget>[
@@ -191,32 +199,29 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             ),
             // toolbarHeight: 75,
           ),
-          body:
-          ValueListenableBuilder<int>(
+          body: ValueListenableBuilder<int>(
               valueListenable: _currentTabIndex,
               builder: (context, currentIndex, _) {
                 return Column(
                   children: [
-
                     if ((client!.tag ?? false) && currentIndex != 0) ...{
                       SizedBox(height: 20),
-
-                      (Provider.of<PrivilegeProvider>(context, listen: false)
-                          .checkPrivilege('133') == true)?
-                      Icon(
-                        CupertinoIcons.checkmark_seal_fill,
-                        color: Colors.amber,
-                      ):Container(),
-                    } ,
+                      (context.read<PrivilegeCubit>().checkPrivilege('133'))
+                          ? Icon(
+                              CupertinoIcons.checkmark_seal_fill,
+                              color: Colors.amber,
+                            )
+                          : Container(),
+                    },
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.only(bottom: 1),
-                        padding: const EdgeInsets.only(top: 25, left: 5, right: 5),
+                        padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
                         height: MediaQuery.of(context).size.height * 0.85,
                         child: TabBarView(
                           controller: _tabController,
                           children: <Widget>[
-                            ClientView(
+                            ClientSection(
                               client: client,
                               clienttransfer: widget.clientTransfer,
                               idclient: client.idClients.toString(),

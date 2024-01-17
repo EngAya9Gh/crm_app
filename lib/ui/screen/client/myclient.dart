@@ -26,7 +26,7 @@ class _MyClientPageState extends State<MyClientPage> {
   }
   @override
   void didChangeDependencies() async{
-    List<ClientModel> list= Provider.of<ClientProvider>(context,listen: false).listClient;
+    List<ClientModel1> list= Provider.of<ClientProvider>(context,listen: false).listClient;
     await    Provider.of<ClientProvider>(context, listen: false)
         .getclientByIdUser_vm(list);
     // Future.delayed(Duration(milliseconds: 10)).then((_) async {

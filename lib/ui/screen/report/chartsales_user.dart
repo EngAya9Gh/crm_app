@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as myui;
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../helper/number_formatter.dart';
 import 'is_marketing_chekbox.dart';
 
@@ -44,7 +45,7 @@ class _BarChartAPIState extends State<BarChartAPI> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<PrivilegeProvider>().checkPrivilege('55');
+    haveMarketingPrivilege = context.read<PrivilegeCubit>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(2);
       Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(1);
@@ -66,15 +67,15 @@ class _BarChartAPIState extends State<BarChartAPI> {
     String idregoin = usermodel.fkRegoin.toString();
 
     String paramprivilge = '';
-    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('80') == true)
+    if (context.read<PrivilegeCubit>().checkPrivilege('80') == true)
       paramprivilge = '&id_user=${iduser}';
     else {
-      if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('81') == true)
+      if (context.read<PrivilegeCubit>().checkPrivilege('81') == true)
         paramprivilge = '&id_regoin=${idregoin}';
     }
-    if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('82') == true ||
-        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('80') == true ||
-        Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('81') == true) {
+    if (context.read<PrivilegeCubit>().checkPrivilege('82') == true ||
+        context.read<PrivilegeCubit>().checkPrivilege('80') == true ||
+        context.read<PrivilegeCubit>().checkPrivilege('81') == true) {
       var data;
       String params = '';
       if (typeproduct == 'أجهزة') params = '&product=0';

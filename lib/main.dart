@@ -110,10 +110,6 @@ void main() async {
         create: (_) => config_vm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-      ChangeNotifierProxyProvider<UserProvider, level_vm>(
-        create: (_) => level_vm(),
-        update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
-      ),
       ChangeNotifierProvider<LoadProvider>(create: (_) => LoadProvider()),
       ChangeNotifierProxyProvider<UserProvider, product_vm>(
         create: (_) => product_vm(),
@@ -121,10 +117,6 @@ void main() async {
       ),
       ChangeNotifierProvider<manage_provider>(create: (_) => manage_provider()),
       // ChangeNotifierProvider<privilge_vm>(create: (_) => privilge_vm()),
-      ChangeNotifierProxyProvider<UserProvider, PrivilegeProvider>(
-        create: (_) => PrivilegeProvider(),
-        update: (ctx, value, prev) => prev!..setCurrentUser(value.currentUser),
-      ),
       ChangeNotifierProxyProvider<UserProvider, RegionProvider>(
         create: (_) => RegionProvider(),
         update: (ctx, value, prev) => prev!..setCurrentUser(value.currentUser),
@@ -221,7 +213,7 @@ class _MyAppState extends State<MyApp> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset('assest/images/image3.png'),
+                        Image.asset('assest/images/logo_crm_long.png'),
                         20.verticalSpace,
                         AppLoader(),
                       ],

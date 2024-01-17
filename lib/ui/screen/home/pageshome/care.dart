@@ -3,24 +3,21 @@ import 'package:crm_smart/ui/screen/care/care_clientaccept.dart';
 import 'package:crm_smart/ui/screen/care/care_page_view.dart';
 import 'package:crm_smart/ui/screen/care/view_installed.dart';
 import 'package:crm_smart/ui/screen/care/view_welcome.dart';
-import 'package:crm_smart/ui/screen/client/client_accept.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketclientview.dart';
 import 'package:crm_smart/ui/screen/report/care_report.dart';
 import 'package:crm_smart/ui/screen/report/not_using_system.dart';
-import 'package:crm_smart/ui/screen/report/wrong_number.dart';
-import 'package:crm_smart/ui/screen/report/report_rate.dart';
-import 'package:crm_smart/ui/screen/report/support_intall_report.dart';
 import 'package:crm_smart/ui/screen/report/repeat_report.dart';
-import 'package:crm_smart/ui/screen/support/support_view.dart';
+import 'package:crm_smart/ui/screen/report/report_rate.dart';
+import 'package:crm_smart/ui/screen/report/wrong_number.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../constants.dart';
+import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../labeltext.dart';
-import '../../../../view_model/client_vm.dart';
 import '../widgethomeitem.dart';
 
 class carepage extends StatefulWidget {
@@ -33,16 +30,17 @@ class carepage extends StatefulWidget {
 class _carepageState extends State<carepage> {
   int lengthInstall = 0;
   int lengthWelcome = 0;
+  late PrivilegeCubit _privilegeCubit;
 
   @override
   void initState() {
+    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
-      Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
       //
-      Provider.of<communication_vm>(context, listen: false)
-          .setvaluepriv(Provider.of<PrivilegeProvider>(context, listen: false).privilegeList);
+      Provider.of<communication_vm>(context, listen: false).setvaluepriv(GetIt.I<PrivilegeCubit>());
       //  Provider.of<ticket_vm>(context,listen: false)
       //      .getclientticket_filter('جديدة');
       // await Provider.of<communication_vm>(context, listen: false)
@@ -89,7 +87,7 @@ class _carepageState extends State<carepage> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('44') == true
+            context.read<PrivilegeCubit>().checkPrivilege('44') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -101,7 +99,7 @@ class _carepageState extends State<carepage> {
                     title: 'العملاء المشتركين')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('9') == true
+            context.read<PrivilegeCubit>().checkPrivilege('9') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -112,7 +110,7 @@ class _carepageState extends State<carepage> {
                     title: 'التواصل الدوري')
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('137') == true
+            context.read<PrivilegeCubit>().checkPrivilege('137') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -123,7 +121,7 @@ class _carepageState extends State<carepage> {
                     title: 'قائمة العملاء المميزين',
                   )
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('29') == true
+            context.read<PrivilegeCubit>().checkPrivilege('29') == true
                 ? buildSelectCategory(
                     // subtitle:   Provider.of<communication_vm>(
                     //     context, listen: true).listwelcomenumber.length.toString(),
@@ -136,7 +134,7 @@ class _carepageState extends State<carepage> {
                     title: 'الترحيب بالعملاء')
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('30') == true
+            context.read<PrivilegeCubit>().checkPrivilege('30') == true
                 ? buildSelectCategory(
                     // subtitle:
                     // Provider.of<communication_vm>(
@@ -153,7 +151,7 @@ class _carepageState extends State<carepage> {
                     title: ' جودة التركيب والتدريب')
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('33') == true
+            context.read<PrivilegeCubit>().checkPrivilege('33') == true
                 ? buildSelectCategory(
                     // subtitle: Provider.of<ticket_vm>(context,listen: true)
                     //     .listticket_clientfilter.length.toString(),
@@ -165,7 +163,7 @@ class _carepageState extends State<carepage> {
                     },
                     title: 'تذاكر العملاء  ')
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('102') == true
+            context.read<PrivilegeCubit>().checkPrivilege('102') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -175,7 +173,7 @@ class _carepageState extends State<carepage> {
                     },
                     title: 'تقرير العناية بالعملاء')
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('103') == true
+            context.read<PrivilegeCubit>().checkPrivilege('103') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -185,7 +183,7 @@ class _carepageState extends State<carepage> {
                     },
                     title: 'تقرير مستوى التقييم')
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('104') == true
+            context.read<PrivilegeCubit>().checkPrivilege('104') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -195,7 +193,7 @@ class _carepageState extends State<carepage> {
                     },
                     title: label_repeat_comm)
                 : Container(), //'تقرير الاتصال الدوري '
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('105') == true
+            context.read<PrivilegeCubit>().checkPrivilege('105') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -205,7 +203,7 @@ class _carepageState extends State<carepage> {
                     },
                     title: label_not_use)
                 : Container(), //' عملاء لا يستخدمون النظام '
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('106') == true
+            context.read<PrivilegeCubit>().checkPrivilege('106') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,

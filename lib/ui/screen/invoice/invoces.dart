@@ -18,7 +18,7 @@ class invoices extends StatefulWidget {
   }) : super(key: key);
 
   String fkclient, fkuser;
-  ClientModel itemClient;
+  ClientModel1 itemClient;
 
   @override
   _InvoicesState createState() => _InvoicesState();
@@ -29,7 +29,7 @@ class _InvoicesState extends State<invoices> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 2, right: 2),
+        padding: const EdgeInsets.only(left: 2, right: 2,top: 20),
         child: Column(
           children: [
             CustomButton(

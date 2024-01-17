@@ -49,7 +49,8 @@ class AgentDistributorModel {
   String typeAgent;
   String emailAgent;
   String mobileAgent;
-  String fkCountry;
+  String ?fkCountry;
+  String ?cityId;
   String description;
   String imageAgent;
 
@@ -62,7 +63,8 @@ class AgentDistributorModel {
     required this.typeAgent,
     required this.emailAgent,
     required this.mobileAgent,
-    required this.fkCountry,
+     this.fkCountry,
+     this.cityId,
     required this.description,
     required this.imageAgent,
   });
@@ -74,6 +76,7 @@ class AgentDistributorModel {
         emailAgent: json["email_egent"],
         mobileAgent: json["mobile_agent"],
         fkCountry: json["fk_country"],
+        cityId: json["cityId"],
         description: json["description"],
         imageAgent: json["image_agent"].toString().trim().isEmpty || json["image_agent"] == null
             ? json["image_agent"]
@@ -88,12 +91,13 @@ class AgentDistributorModel {
         "email_egent": emailAgent,
         "mobile_agent": mobileAgent,
         "fk_country": fkCountry,
+        "cityId": cityId,
         "description": description,
         "image_agent": imageAgent,
       };
 
   @override
   String toString() {
-    return 'AgentDistributorModel{idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailEgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry, description: $description, imageAgent: $imageAgent}';
+    return 'AgentDistributorModel{idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailEgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry,cityId: $cityId, description: $description, imageAgent: $imageAgent}';
   }
 }

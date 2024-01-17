@@ -1,3 +1,4 @@
+
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
@@ -84,6 +85,7 @@ class Invoice_Service {
   static Future<List<AgentDistributorModel>> getAgentsAndDistributors() async {
     final response = await Api().get(url: url + 'agent/get_agent.php');
     final list = List<AgentDistributorModel>.from((response ?? []).map((x) => AgentDistributorModel.fromJson(x)));
+
 
     return list;
   }
@@ -193,6 +195,7 @@ class Invoice_Service {
     return prodlist;
   }
 
+
   Future<List<InvoiceModel>> getinvoicebyregoin(String regoin) async {
     var data = await Api().get(url: url + 'client/invoice/getinvoicebyregoin.php?fk_regoin=$regoin');
     
@@ -259,6 +262,12 @@ class Invoice_Service {
       return InvoiceModel(products: []);
     }
   }
+  Future<InvoiceModel> getinvoicebyidInvoice(String idinvoice) async {
+    var data = await Api().get(url: url + 'client/invoice/getInvoiceID.php?id_invoice=$idinvoice');
+
+    List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
+    return prodlist[0];
+  }
 
   Future<AttachmentInvoiceResponse> crudFilesInvoice({
     required Map<String, dynamic> body,
@@ -270,10 +279,12 @@ class Invoice_Service {
       final data = await Api().postCrudInvoiceFile(
           'array', url + "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId", body, file,
           files: files);
-
+      print(data);
       return AttachmentInvoiceResponse.fromJson(data[0]);
     } catch (e) {
-      rethrow;
+      print('err'+e.runtimeType.toString());
+
+        rethrow;
     }
   }
 

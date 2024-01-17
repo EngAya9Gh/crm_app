@@ -9,7 +9,7 @@ class cardAccept extends StatelessWidget {
       { Key? key,
         // required this.iduser,
         required this.itemClient}) : super(key: key);
-  ClientModel itemClient;
+  ClientModel1 itemClient;
   //InvoiceModel iteminvoice;
   //String iduser;
 

@@ -12,6 +12,7 @@ class Assets {
   static const String imagesMoney = 'assest/images/money.png';
   static const String imagesRace = 'assest/images/race.png';
   static const String imagesSocialCare = 'assest/images/social-care.png';
+  static const String imagesT1 = 'assest/images/task.png';
   static const String imagesTechnicalSupport = 'assest/images/technical-support.png';
   static const String imagesUpdateApp = 'assest/images/update_app.jpg';
 

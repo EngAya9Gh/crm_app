@@ -31,12 +31,14 @@ class AddClientParams {
   final String mobile;
   final String anotherPhoneNumber;
   final String addressClient;
-  final String selectedActivityIdType;
+  final String? selectedActivityIdType;
   final String isMarketing;
   final String sourceClient;
   final String descriptionActivity;
   final UserModel user;
-
+  final String ?type_record;
+  final String ?type_classification;
+  final String ?reason_class;
   AddClientParams({
     this.email,
     this.selectedActivitySizeType,
@@ -54,6 +56,9 @@ class AddClientParams {
     required this.sourceClient,
     required this.descriptionActivity,
     required this.user,
+    this.type_record,
+    this.type_classification,
+    this.reason_class,
   });
 
   Map<String, dynamic> toMap() {
@@ -79,6 +84,9 @@ class AddClientParams {
       "type_client": "تفاوض",
       "fk_user": user.idUser,
       "user_add": user.idUser,
+      "type_record": type_record,
+      "type_classification": type_classification,
+      "reason_class": reason_class,
     }..removeWhere((key, value) => value == null);
 
     params = params.map((key, value) => MapEntry(key, value.toString()));

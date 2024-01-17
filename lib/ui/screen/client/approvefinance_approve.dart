@@ -1,16 +1,11 @@
-import 'package:crm_smart/constantsList.dart';
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/cardapprove.dart';
 import 'package:crm_smart/ui/widgets/client_widget/cardapprove1.dart';
-import 'package:crm_smart/view_model/approve_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class ApproveFinancePage extends StatefulWidget {
   ApproveFinancePage({Key? key}) : super(key: key);
@@ -41,7 +36,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
       // await   Provider.of<invoice_vm>(context, listen: false)
       //        .getinvoices();
 ///////////////////////////////////////////////////////
-      if (Provider.of<PrivilegeProvider>(context, listen: false).checkPrivilege('111') == true)
+      if (context.read<PrivilegeCubit>().checkPrivilege('111') == true)
         _invoiceViewModel.getinvoice_Local('مشترك', 'not approved', 'finance');
       // else{
       //   if( Provider.of<privilge_vm>(context,listen: false)
@@ -156,8 +151,9 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                   height: MediaQuery.of(context).size.height * 0.9,
                   child: Consumer<invoice_vm>(
                     builder: (context, value, child) {
-                      final list =
-                          _searchTextField.text.isEmpty ? value.listInvoicesAccept_admin : value.listApproveFinanceFilter;
+                      final list = _searchTextField.text.isEmpty
+                          ? value.listInvoicesAccept_admin
+                          : value.listApproveFinanceFilter;
 
                       return value.isloading == true
                           ? Center(child: CircularProgressIndicator())

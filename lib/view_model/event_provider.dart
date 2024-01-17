@@ -36,7 +36,7 @@ class EventProvider extends ChangeNotifier {
   PageState<List<AppointmentModel>> appointmentsState = PageState();
 
   // List<InvoiceModel> listinvoices = [];
-  List<ClientModel> listclient = [];
+  List<ClientModel1> listclient = [];
 
   void setvalue_save() {
     is_save = !is_save;
@@ -53,7 +53,7 @@ class EventProvider extends ChangeNotifier {
     selectedFkUser = null;
   }
 
-  void setvalueClient(List<ClientModel> list) {
+  void setvalueClient(List<ClientModel1> list) {
     listclient = list;
     notifyListeners();
   }
@@ -146,7 +146,7 @@ class EventProvider extends ChangeNotifier {
     this.fkCountry = fkCountry;
   }
 
-  // Future<void> getevent_vm(// List<PrivilgeModel> privilgelist
+  // Future<void> getevent_vm(// List<PrivilegeModel> privilgelist
   //     ) async {
   //   loadEvents = false;
   //   notifyListeners();

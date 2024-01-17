@@ -1,11 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:crm_smart/common/models/page_state/bloc_status.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../model/usermodel.dart';
+import '../../../task_management/data/models/user_region_department.dart';
+import '../../../task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart';
 import '../../domain/use_cases/action_user_usecase.dart';
 import '../../domain/use_cases/get_allusers_usecase.dart';
 
@@ -13,10 +17,15 @@ part 'users_state.dart';
 
 @injectable
 class UsersCubit extends Cubit<UsersState> {
-  UsersCubit(this._getAllUsersUsecase, this._actionUserUsecase) : super(UsersState());
+  UsersCubit(
+    this._getAllUsersUsecase,
+    this._actionUserUsecase,
+    this._getUsersByDepartmentAndRegionUsecase,
+  ) : super(UsersState());
 
   final GetAllUsersUsecase _getAllUsersUsecase;
   final ActionUserUsecase _actionUserUsecase;
+  final GetUsersByDepartmentAndRegionUsecase _getUsersByDepartmentAndRegionUsecase;
 
   void getAllUsers() async {
     emit(state.copyWith(allUsersList: const PageState.loading()));
@@ -88,6 +97,20 @@ class UsersCubit extends Cubit<UsersState> {
 
         onSuccess.call(null);
       },
+    );
+  }
+
+  getUsersByDepartmentAndRegion({required String? regionId, required String? departmentId}) async {
+    emit(state.copyWith(usersByDepartmentAndRegion: const PageState.loading()));
+
+    final result = await _getUsersByDepartmentAndRegionUsecase(GetUsersByDepartmentAndRegionParams(
+      departmentId: departmentId,
+      regionId: regionId,
+    ));
+
+    result.fold(
+      (exception, message) => emit(state.copyWith(usersByDepartmentAndRegion: const PageState.error())),
+      (value) => emit(state.copyWith(usersByDepartmentAndRegion: PageState.loaded(data: value.data ?? []))),
     );
   }
 }

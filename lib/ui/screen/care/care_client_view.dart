@@ -7,6 +7,8 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/task_management/presentation/manager/task_cubit.dart';
+import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import 'communcation_view_widget.dart';
 
 class care_client_view extends StatefulWidget {
@@ -58,6 +60,10 @@ class _care_client_viewState extends State<care_client_view> {
         child: Builder(builder: (context) {
           return Column(
             children: [
+              AddManualTaskButton(
+                list: carePublicTypeList,
+                clientId: widget.fk_client,
+              ),
               TabBar(
                 controller: DefaultTabController.of(context),
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),

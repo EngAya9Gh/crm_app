@@ -10,27 +10,38 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../../../view_model/privilge_vm.dart';
+import '../../../../view_model/user_vm_provider.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/action_client_page.dart';
 
-class CardClient extends StatelessWidget {
+class CardClient extends StatefulWidget {
   CardClient({Key? key, required this.clientModel}) : super(key: key);
-  final ClientModel clientModel;
+  ClientModel clientModel;
 
+  @override
+  State<CardClient> createState() => _CardClientState();
+}
+
+class _CardClientState extends State<CardClient> {
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: ValueKey(clientModel.idClients),
+      key: ValueKey(widget.clientModel.idClients),
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
         extentRatio: 0.35,
         children: [
           SlidableAction(
             onPressed: (actionContext) async {
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                    builder: (context) => ActionClientPage(client: clientModel),
-                  ));
+              ClientModel clientModel = await Navigator.push(
+                context,
+                CupertinoPageRoute(
+                  builder: (context) => ActionClientPage(client: widget.clientModel),
+                ),
+              );
+              setState(() {
+                widget.clientModel = clientModel;
+              });
             },
             backgroundColor: context.colorScheme.primaryContainer,
             foregroundColor: Colors.white,
@@ -41,10 +52,13 @@ class CardClient extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
+          // context.read<UserProvider>().changeClientClassificationTypeStatus(clientModel.type_classification!=null?clientModel.type_classification!:"");
+          // context.read<UserProvider>().changeClientRegistrationTypeStatus(clientModel.type_record!=null?clientModel.type_record!:"");
+
           Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) => ProfileClient(idClient: clientModel.idClients.toString()),
+                builder: (context) => ProfileClient(idClient: widget.clientModel.idClients.toString()),
               ));
         },
         child: Container(
@@ -69,11 +83,11 @@ class CardClient extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        clientModel.nameEnterprise.toString(),
+                        widget.clientModel.nameEnterprise.toString(),
                         style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
                       ),
                     ),
-                    if ((clientModel.tag ?? false) && context.read<PrivilegeProvider>().checkPrivilege('133'))
+                    if ((widget.clientModel.tag ?? false) && context.read<PrivilegeCubit>().checkPrivilege('133'))
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,
@@ -81,9 +95,9 @@ class CardClient extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  DateTime.tryParse(clientModel.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(clientModel.dateCreate!))
-                      : clientModel.dateCreate.toString(),
+                  DateTime.tryParse(widget.clientModel.dateCreate!) != null
+                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(widget.clientModel.dateCreate!))
+                      : widget.clientModel.dateCreate.toString(),
                   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
                   textDirection: TextDirection.ltr,
                 ),

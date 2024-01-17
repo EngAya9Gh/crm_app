@@ -134,6 +134,14 @@ mixin _$ClientModel {
   String? get nameClientRecommend => throw _privateConstructorUsedError;
   @JsonKey(name: "fk_rejectClient")
   String? get rejectId => throw _privateConstructorUsedError;
+  @JsonKey(name: "type_record")
+  String? get type_record => throw _privateConstructorUsedError;
+  @JsonKey(name: "type_classification")
+  String? get type_classification => throw _privateConstructorUsedError;
+  @JsonKey(name: "reason_class")
+  String? get reason_class => throw _privateConstructorUsedError;
+  @JsonKey(name: "SerialNumber")
+  String? get serialNumber => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -204,7 +212,11 @@ abstract class $ClientModelCopyWith<$Res> {
       @JsonKey(name: "fk_client_source") String? fkClientSource,
       @JsonKey(name: "NameReason_reject") String? nameReasonReject,
       @JsonKey(name: "NameClient_recomand") String? nameClientRecommend,
-      @JsonKey(name: "fk_rejectClient") String? rejectId});
+      @JsonKey(name: "fk_rejectClient") String? rejectId,
+      @JsonKey(name: "type_record") String? type_record,
+      @JsonKey(name: "type_classification") String? type_classification,
+      @JsonKey(name: "reason_class") String? reason_class,
+      @JsonKey(name: "SerialNumber") String? serialNumber});
 }
 
 /// @nodoc
@@ -277,6 +289,10 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
     Object? nameReasonReject = freezed,
     Object? nameClientRecommend = freezed,
     Object? rejectId = freezed,
+    Object? type_record = freezed,
+    Object? type_classification = freezed,
+    Object? reason_class = freezed,
+    Object? serialNumber = freezed,
   }) {
     return _then(_value.copyWith(
       idClients: freezed == idClients
@@ -507,6 +523,22 @@ class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
           ? _value.rejectId
           : rejectId // ignore: cast_nullable_to_non_nullable
               as String?,
+      type_record: freezed == type_record
+          ? _value.type_record
+          : type_record // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type_classification: freezed == type_classification
+          ? _value.type_classification
+          : type_classification // ignore: cast_nullable_to_non_nullable
+              as String?,
+      reason_class: freezed == reason_class
+          ? _value.reason_class
+          : reason_class // ignore: cast_nullable_to_non_nullable
+              as String?,
+      serialNumber: freezed == serialNumber
+          ? _value.serialNumber
+          : serialNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -576,7 +608,11 @@ abstract class _$$ClientModelImplCopyWith<$Res>
       @JsonKey(name: "fk_client_source") String? fkClientSource,
       @JsonKey(name: "NameReason_reject") String? nameReasonReject,
       @JsonKey(name: "NameClient_recomand") String? nameClientRecommend,
-      @JsonKey(name: "fk_rejectClient") String? rejectId});
+      @JsonKey(name: "fk_rejectClient") String? rejectId,
+      @JsonKey(name: "type_record") String? type_record,
+      @JsonKey(name: "type_classification") String? type_classification,
+      @JsonKey(name: "reason_class") String? reason_class,
+      @JsonKey(name: "SerialNumber") String? serialNumber});
 }
 
 /// @nodoc
@@ -647,6 +683,10 @@ class __$$ClientModelImplCopyWithImpl<$Res>
     Object? nameReasonReject = freezed,
     Object? nameClientRecommend = freezed,
     Object? rejectId = freezed,
+    Object? type_record = freezed,
+    Object? type_classification = freezed,
+    Object? reason_class = freezed,
+    Object? serialNumber = freezed,
   }) {
     return _then(_$ClientModelImpl(
       idClients: freezed == idClients
@@ -877,6 +917,22 @@ class __$$ClientModelImplCopyWithImpl<$Res>
           ? _value.rejectId
           : rejectId // ignore: cast_nullable_to_non_nullable
               as String?,
+      type_record: freezed == type_record
+          ? _value.type_record
+          : type_record // ignore: cast_nullable_to_non_nullable
+              as String?,
+      type_classification: freezed == type_classification
+          ? _value.type_classification
+          : type_classification // ignore: cast_nullable_to_non_nullable
+              as String?,
+      reason_class: freezed == reason_class
+          ? _value.reason_class
+          : reason_class // ignore: cast_nullable_to_non_nullable
+              as String?,
+      serialNumber: freezed == serialNumber
+          ? _value.serialNumber
+          : serialNumber // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -941,7 +997,11 @@ class _$ClientModelImpl extends _ClientModel {
       @JsonKey(name: "fk_client_source") this.fkClientSource,
       @JsonKey(name: "NameReason_reject") this.nameReasonReject,
       @JsonKey(name: "NameClient_recomand") this.nameClientRecommend,
-      @JsonKey(name: "fk_rejectClient") this.rejectId})
+      @JsonKey(name: "fk_rejectClient") this.rejectId,
+      @JsonKey(name: "type_record") this.type_record,
+      @JsonKey(name: "type_classification") this.type_classification,
+      @JsonKey(name: "reason_class") this.reason_class,
+      @JsonKey(name: "SerialNumber") this.serialNumber})
       : super._();
 
   factory _$ClientModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -1118,10 +1178,22 @@ class _$ClientModelImpl extends _ClientModel {
   @override
   @JsonKey(name: "fk_rejectClient")
   final String? rejectId;
+  @override
+  @JsonKey(name: "type_record")
+  final String? type_record;
+  @override
+  @JsonKey(name: "type_classification")
+  final String? type_classification;
+  @override
+  @JsonKey(name: "reason_class")
+  final String? reason_class;
+  @override
+  @JsonKey(name: "SerialNumber")
+  final String? serialNumber;
 
   @override
   String toString() {
-    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegion: $fkRegion, fkCountry: $fkCountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangeType: $dateChangeType, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, nameRegion: $nameRegion, total: $total, amountPaid: $amountPaid, offerPrice: $offerPrice, datePrice: $datePrice, userDo: $userDo, isApprove: $isApprove, nameUserDoing: $nameUserDoing, nameUserTransfer: $nameUserTransfer, fkUserTrasfer: $fkUserTrasfer, mobileUser: $mobileUser, totalPaid: $totalPaid, isMarketing: $isMarketing, addressClient: $addressClient, descriptionActiveController: $descriptionActiveController, preSystem: $preSystem, preSystemTitle: $preSystemTitle, sourceClient: $sourceClient, activityTypeFk: $activityTypeFk, activityTypeTitle: $activityTypeTitle, phone: $phone, userAdd: $userAdd, nameAdduser: $nameAdduser, dateVisitClient: $dateVisitClient, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, nameCity: $nameCity, nameMainCity: $nameMainCity, idMainCity: $idMainCity, customerId: $customerId, userAddEmail: $userAddEmail, dateReceive: $dateReceive, email: $email, sizeActivity: $sizeActivity, fkClientSource: $fkClientSource, nameReasonReject: $nameReasonReject, nameClientRecommend: $nameClientRecommend, rejectId: $rejectId)';
+    return 'ClientModel(idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegion: $fkRegion, fkCountry: $fkCountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangeType: $dateChangeType, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, nameRegion: $nameRegion, total: $total, amountPaid: $amountPaid, offerPrice: $offerPrice, datePrice: $datePrice, userDo: $userDo, isApprove: $isApprove, nameUserDoing: $nameUserDoing, nameUserTransfer: $nameUserTransfer, fkUserTrasfer: $fkUserTrasfer, mobileUser: $mobileUser, totalPaid: $totalPaid, isMarketing: $isMarketing, addressClient: $addressClient, descriptionActiveController: $descriptionActiveController, preSystem: $preSystem, preSystemTitle: $preSystemTitle, sourceClient: $sourceClient, activityTypeFk: $activityTypeFk, activityTypeTitle: $activityTypeTitle, phone: $phone, userAdd: $userAdd, nameAdduser: $nameAdduser, dateVisitClient: $dateVisitClient, tag: $tag, doneVisit: $doneVisit, doneTransfer: $doneTransfer, nameCity: $nameCity, nameMainCity: $nameMainCity, idMainCity: $idMainCity, customerId: $customerId, userAddEmail: $userAddEmail, dateReceive: $dateReceive, email: $email, sizeActivity: $sizeActivity, fkClientSource: $fkClientSource, nameReasonReject: $nameReasonReject, nameClientRecommend: $nameClientRecommend, rejectId: $rejectId, type_record: $type_record, type_classification: $type_classification, reason_class: $reason_class, serialNumber: $serialNumber)';
   }
 
   @override
@@ -1227,7 +1299,11 @@ class _$ClientModelImpl extends _ClientModel {
             (identical(other.fkClientSource, fkClientSource) || other.fkClientSource == fkClientSource) &&
             (identical(other.nameReasonReject, nameReasonReject) || other.nameReasonReject == nameReasonReject) &&
             (identical(other.nameClientRecommend, nameClientRecommend) || other.nameClientRecommend == nameClientRecommend) &&
-            (identical(other.rejectId, rejectId) || other.rejectId == rejectId));
+            (identical(other.rejectId, rejectId) || other.rejectId == rejectId) &&
+            (identical(other.type_record, type_record) || other.type_record == type_record) &&
+            (identical(other.type_classification, type_classification) || other.type_classification == type_classification) &&
+            (identical(other.reason_class, reason_class) || other.reason_class == reason_class) &&
+            (identical(other.serialNumber, serialNumber) || other.serialNumber == serialNumber));
   }
 
   @JsonKey(ignore: true)
@@ -1290,7 +1366,11 @@ class _$ClientModelImpl extends _ClientModel {
         fkClientSource,
         nameReasonReject,
         nameClientRecommend,
-        rejectId
+        rejectId,
+        type_record,
+        type_classification,
+        reason_class,
+        serialNumber
       ]);
 
   @JsonKey(ignore: true)
@@ -1366,8 +1446,12 @@ abstract class _ClientModel extends ClientModel {
       @JsonKey(name: "fk_client_source") final String? fkClientSource,
       @JsonKey(name: "NameReason_reject") final String? nameReasonReject,
       @JsonKey(name: "NameClient_recomand") final String? nameClientRecommend,
-      @JsonKey(name: "fk_rejectClient")
-      final String? rejectId}) = _$ClientModelImpl;
+      @JsonKey(name: "fk_rejectClient") final String? rejectId,
+      @JsonKey(name: "type_record") final String? type_record,
+      @JsonKey(name: "type_classification") final String? type_classification,
+      @JsonKey(name: "reason_class") final String? reason_class,
+      @JsonKey(name: "SerialNumber")
+      final String? serialNumber}) = _$ClientModelImpl;
   const _ClientModel._() : super._();
 
   factory _ClientModel.fromJson(Map<String, dynamic> json) =
@@ -1544,6 +1628,18 @@ abstract class _ClientModel extends ClientModel {
   @override
   @JsonKey(name: "fk_rejectClient")
   String? get rejectId;
+  @override
+  @JsonKey(name: "type_record")
+  String? get type_record;
+  @override
+  @JsonKey(name: "type_classification")
+  String? get type_classification;
+  @override
+  @JsonKey(name: "reason_class")
+  String? get reason_class;
+  @override
+  @JsonKey(name: "SerialNumber")
+  String? get serialNumber;
   @override
   @JsonKey(ignore: true)
   _$$ClientModelImplCopyWith<_$ClientModelImpl> get copyWith =>

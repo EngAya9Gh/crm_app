@@ -22,4 +22,9 @@ class ManageModel {
     _data['fk_country'] = fk_country;
     return _data;
   }
+
+  @override
+  String toString() {
+    return 'ManageModel{idmange: $idmange, name_mange: $name_mange, fk_country: $fk_country}';
+  }
 }

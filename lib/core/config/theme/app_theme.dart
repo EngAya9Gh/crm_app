@@ -45,7 +45,9 @@ class AppTheme {
       primaryColor: _lightColorScheme.primary,
       bottomSheetTheme: _bottomSheetThemeData(_builtInLightTheme),
       navigationBarTheme: _bottomNavigationBarThemeData(_builtInLightTheme),
-
+      datePickerTheme: _builtInDarkTheme.datePickerTheme.copyWith(
+        headerHelpStyle: textTheme.titleLarge
+      )
     );
   }
 

@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../features/clients_list/presentation/pages/clients_list_page.dart';
+import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../client/agents_distributors_invoices_view.dart';
 import '../../client/calender_client.dart';
@@ -31,13 +32,6 @@ class sales extends StatefulWidget {
 }
 
 class _salesState extends State<sales> {
-  @override
-  void initState() {
-    Provider.of<PrivilegeProvider>(context, listen: false).getPrivilegeUserCurrent();
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +53,7 @@ class _salesState extends State<sales> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('36') == true
+            context.read<PrivilegeCubit>().checkPrivilege('36') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -74,7 +68,7 @@ class _salesState extends State<sales> {
                     title: ' قائمة العملاء',
                   )
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
+            context.read<PrivilegeCubit>().checkPrivilege('39') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -86,7 +80,7 @@ class _salesState extends State<sales> {
                     title: 'فواتير العملاء')
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('119') == true
+            context.read<PrivilegeCubit>().checkPrivilege('119') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -96,7 +90,7 @@ class _salesState extends State<sales> {
                     },
                     title: 'آخر تحديثات العملاء')
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('39') == true
+            context.read<PrivilegeCubit>().checkPrivilege('39') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -111,7 +105,7 @@ class _salesState extends State<sales> {
                     },
                     title: 'ديون العملاء')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('120') == true
+            context.read<PrivilegeCubit>().checkPrivilege('120') == true
                 ? buildSelectCategory(
                     onTap: () {
                       Navigator.push(context, CupertinoPageRoute(builder: (context) => calender_client()));
@@ -136,7 +130,7 @@ class _salesState extends State<sales> {
                 },
                 title: 'موافقات تحويل العملاء'), //تاريخ الفاتورة جنبو اسم المؤسسة
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('40') == true
+            context.read<PrivilegeCubit>().checkPrivilege('40') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -147,7 +141,7 @@ class _salesState extends State<sales> {
                     title: ' طلبات موافقة المشرفين ')
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('111') == true
+            context.read<PrivilegeCubit>().checkPrivilege('111') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -158,7 +152,7 @@ class _salesState extends State<sales> {
                     title: ' طلبات اعتماد المالية ')
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('85') == true
+            context.read<PrivilegeCubit>().checkPrivilege('85') == true
                 ? buildSelectCategory(
                     onTap: () {
                       Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartAPI()));
@@ -170,7 +164,7 @@ class _salesState extends State<sales> {
                   )
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('86') == true
+            context.read<PrivilegeCubit>().checkPrivilege('86') == true
                 ? buildSelectCategory(
                     onTap: () {
                       Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartregoinsales()));
@@ -181,7 +175,7 @@ class _salesState extends State<sales> {
                     colorarrow: Colors.black,
                   )
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('88') == true
+            context.read<PrivilegeCubit>().checkPrivilege('88') == true
                 ? buildSelectCategory(
                     onTap: () {
                       Navigator.push(context, CupertinoPageRoute(builder: (context) => salesproduct()));
@@ -192,7 +186,7 @@ class _salesState extends State<sales> {
                     colorarrow: Colors.black,
                   )
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('91') == true
+            context.read<PrivilegeCubit>().checkPrivilege('91') == true
                 ? buildSelectCategory(
                     onTap: () {
                       Navigator.push(context, CupertinoPageRoute(builder: (context) => deptsales()));
@@ -203,7 +197,7 @@ class _salesState extends State<sales> {
                     colorarrow: Colors.black,
                   )
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('95') == true
+            context.read<PrivilegeCubit>().checkPrivilege('95') == true
                 ? buildSelectCategory(
                     onTap: () {
                       Navigator.push(context, CupertinoPageRoute(builder: (context) => sales_reportstate()));
@@ -215,7 +209,7 @@ class _salesState extends State<sales> {
                   )
                 : Container(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('14') == true
+            context.read<PrivilegeCubit>().checkPrivilege('14') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -225,7 +219,7 @@ class _salesState extends State<sales> {
                     },
                     title: 'الفواتير المحذوفة')
                 : Container(),
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('143') == true
+            context.read<PrivilegeCubit>().checkPrivilege('143') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
@@ -237,7 +231,7 @@ class _salesState extends State<sales> {
                   )
                 : SizedBox.shrink(),
 
-            Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('35') == true
+            context.read<PrivilegeCubit>().checkPrivilege('35') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,

@@ -14,17 +14,20 @@ enum ADType { distributor, agent }
 
 class AgentDistributorViewModel extends ChangeNotifier {
   PageState<List<AgentDistributorModel>> agentDistributorsState = PageState();
-  PageState<List<MainCityModel>> citiesState = PageState();
+  PageState<List<MainCityModel>> citiesState0 = PageState();
+  PageState<List<CityModel>> citiesState = PageState();
 
   AgentDistributorActionParams agentDistributorActionParams =
       AgentDistributorActionParams.init();
 
   MainCityModel? selectedCountry;
+  CityModel? selectedCountryFromCity;
   bool isLoadingAction = false;
 
   void resetAgentDistributorActionParams() {
     agentDistributorActionParams = AgentDistributorActionParams.reset();
     selectedCountry = null;
+    selectedCountryFromCity = null;
     isLoadingAction = false;
     notifyListeners();
   }
@@ -37,38 +40,50 @@ class AgentDistributorViewModel extends ChangeNotifier {
       }
       final list  = await Invoice_Service.getAgentsAndDistributors();
 
-      agentDistributorsState = agentDistributorsState.changeToLoaded(list);
+
+      agentDistributorsState = agentDistributorsState.changeToLoaded(list!);
       notifyListeners();
     } catch (e) {
+      print(e.toString());
       agentDistributorsState = agentDistributorsState.changeToFailed;
       notifyListeners();
     }
   }
-
-  Future<void> getMainCity({required String fkCountry, String? id_maincity}) async {
+  List<CityModel> listcity = [];
+  Future<void> getAllCity({ String ?fkCountry, String? id_maincity}) async {
     try {
       if (!citiesState.isLoading) {
         citiesState = citiesState.changeToLoading;
         notifyListeners();
       }
+      List<dynamic> data = [];
+      data = await Api().get(url: url + 'config/getcity.php?fk_country=${fkCountry!}');
 
-      final response = await Api().get(url: url + 'config/getmaincity.php?fk_country=$fkCountry');
-      final list = List<MainCityModel>.from(
-          (response ?? []).map((x) => MainCityModel.fromJson(x)));
-      citiesState = citiesState.changeToLoaded(list);
-      if (id_maincity != null) {
-        final country =
-            list.firstWhereOrNull((element) => element.id_maincity == id_maincity);
-        if (country != null) {
-          selectedCountry = country;
+      if (data != null) {
+        for (int i = 0; i < data.length; i++) {
+          listcity.add(CityModel.fromJson(data[i]));
+          print(listcity[i].name_city);
         }
+
       }
+    if (id_maincity != null) {
+    final country =
+    listcity.firstWhereOrNull((element) => element.id_city == id_maincity);
+    if (country != null) {
+      selectedCountryFromCity = country;
+    }
+    }
+      citiesState = citiesState.changeToLoaded(listcity);
+      print("#######################################");
+      print(listcity);
+      print(listcity.length);
       notifyListeners();
     } catch (e) {
       citiesState = citiesState.changeToFailed;
       notifyListeners();
     }
   }
+
 
   Future<void> actionAgentDistributor({
     required VoidCallback onSuccess,
@@ -97,7 +112,7 @@ class AgentDistributorViewModel extends ChangeNotifier {
       resetAgentDistributorActionParams();
       getAgentsAndDistributors();
     } catch (e, stackTrace) {
-      
+
       isLoadingAction = false;
       notifyListeners();
     }
@@ -115,11 +130,14 @@ class AgentDistributorViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  onSelectCountry(MainCityModel countryModel) {
+  onSelectCountry(String? countryId) {
     agentDistributorActionParams = agentDistributorActionParams.copyWith(
-        countryId: countryModel.id_maincity);
+        countryId:countryId);
   }
-
+  onSelectCity(CityModel cityModel) {
+    agentDistributorActionParams = agentDistributorActionParams.copyWith(
+        cityId: cityModel.id_city);
+  }
   onSaveName(String name) {
     agentDistributorActionParams =
         agentDistributorActionParams.copyWith(name: name);
@@ -149,6 +167,7 @@ class AgentDistributorActionParams {
   String? name;
   ADType? type;
   String? countryId;
+  String? cityId;
   String? email;
   String? phoneNumber;
   String? description;
@@ -168,17 +187,18 @@ class AgentDistributorActionParams {
   AgentDistributorActionParams({
     required this.name,
     required this.type,
-    required this.countryId,
+    this.countryId,
     this.email,
     this.phoneNumber,
     this.description,
-    required filelogo,
+    required filelogo, this.cityId,
   });
 
   AgentDistributorActionParams copyWith({
     String? name,
     ADType? type,
     String? countryId,
+    String? cityId,
     String? email,
     String? phoneNumber,
     String? description,
@@ -188,6 +208,7 @@ class AgentDistributorActionParams {
       name: name ?? this.name,
       type: type ?? this.type,
       countryId: countryId ?? this.countryId,
+      cityId: cityId ?? this.cityId,
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       description: description ?? this.description,
@@ -200,6 +221,7 @@ class AgentDistributorActionParams {
       name: name,
       type: null,
       countryId: countryId,
+      cityId: cityId,
       phoneNumber: phoneNumber,
       description: description,
       email: email, filelogo: null,
@@ -210,6 +232,7 @@ class AgentDistributorActionParams {
         'name_agent': name,
         'type_agent': type?.index.toString(),
         'fk_country': countryId,
+        'cityId': cityId,
         'email_egent': email,
         'mobile_agent': phoneNumber,
         'description': description,
@@ -223,6 +246,7 @@ class AgentDistributorActionParams {
           name == other.name &&
           type == other.type &&
           countryId == other.countryId &&
+          cityId == other.cityId &&
           email == other.email &&
           phoneNumber == other.phoneNumber &&
           description == other.description;
@@ -234,6 +258,7 @@ class AgentDistributorActionParams {
       countryId.hashCode ^
       email.hashCode ^
       phoneNumber.hashCode ^
+      cityId.hashCode ^
       description.hashCode;
 
   @override

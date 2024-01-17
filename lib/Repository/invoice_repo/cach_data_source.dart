@@ -101,7 +101,7 @@ class cahe_data_source_client{
   Map<String, CachedItem> cacheMap = Map();
 
 
-  Future<List<ClientModel>?> getCache(String Key,int INTERVAL) async {
+  Future<List<ClientModel1>?> getCache(String Key,int INTERVAL) async {
     CachedItem? cachedItem = cacheMap[Key];
 
     if (cachedItem != null && cachedItem.isValid(INTERVAL )) {
@@ -115,7 +115,7 @@ class cahe_data_source_client{
     }
   }
 
-  Future<void> saveToCache(List<ClientModel> data, String key) async {
+  Future<void> saveToCache(List<ClientModel1> data, String key) async {
     cacheMap[key] = CachedItem(data);
   }
 

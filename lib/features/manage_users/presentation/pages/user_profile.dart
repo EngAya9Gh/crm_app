@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
+
 import '../../../../constants.dart';
 import '../../../../function_global.dart';
 import '../../../../ui/screen/user/editprofile.dart';
 import '../../../../ui/screen/user/row_edit2.dart';
 import '../../../../ui/widgets/container_boxShadows.dart';
 import '../../../../ui/widgets/custom_widget/text_uitil.dart';
-import '../../../../view_model/privilge_vm.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'action_user_page.dart';
 
 class UserProfile extends StatefulWidget {
@@ -55,25 +55,25 @@ class _UserProfileState extends State<UserProfile> {
               //           color: kWhiteColor,
               //         ))
               //     :
-              Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('50') == true
-                      ? IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (_) => BlocProvider.value(
-                                  value: context.read<UsersCubit>(),
-                                  child: ActionUserPage(userModel: user),
-                                ),
-                              ),
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            color: kWhiteColor,
-                          ))
-                      :
-              IconButton(
+              context.read<PrivilegeCubit>().checkPrivilege('50')
+                  ?
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (_) => BlocProvider.value(
+                              value: context.read<UsersCubit>(),
+                              child: ActionUserPage(userModel: user),
+                            ),
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.edit,
+                        color: kWhiteColor,
+                      ))
+                  : IconButton(
                       onPressed: () {
                         Navigator.push(context, CupertinoPageRoute(builder: (context) => edit_profile()));
                       },

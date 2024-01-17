@@ -36,13 +36,15 @@ class EditClientParams {
   final String mobile;
   final String anotherPhoneNumber;
   final String addressClient;
-  final String selectedActivityIdType;
+  final String? selectedActivityIdType;
   final String isMarketing;
   final String userActionID;
   final String sourceClient;
   final String descriptionActivity;
   final String clientId;
-
+  final String ?type_record;
+  final String ?type_classification;
+  final String ?reason_class;
   EditClientParams({
     this.email,
     this.selectedActivitySizeType,
@@ -67,6 +69,9 @@ class EditClientParams {
     required this.sourceClient,
     required this.descriptionActivity,
     required this.clientId,
+    this.type_record,
+    this.type_classification,
+    this.reason_class,
   });
 
   Map<String, dynamic> toMap() {
@@ -93,6 +98,9 @@ class EditClientParams {
       "date_changetype": dateChangeType,
       "date_price": datePrice,
       "fk_rejectClient": rejectId,
+      "type_record": type_record,
+      "type_classification": type_classification,
+      "reason_class": reason_class,
     }..removeWhere((key, value) => value == null || value == "");
 
     params = params.map((key, value) => MapEntry(key, value.toString()));

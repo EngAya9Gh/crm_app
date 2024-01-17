@@ -1,27 +1,29 @@
+import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/model/privilgemodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/clientService.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../api/api.dart';
 import '../constants.dart';
+import '../features/manage_privilege/data/models/privilege_model.dart';
 
 const CACHE_ClientByUser_KEY = "CACHE_Client_KEY";
 const CACHE_ClientByUser_INTERVAL = 60 * 1000; // 1 MINUTE IN MILLIS
 
 class ClientProvider extends ChangeNotifier {
-  List<ClientModel> listClient = [];
-  List<ClientModel> listClientAccept = [];
-  List<ClientModel> listClientAprroveTransfer = [];
-  List<ClientModel> listClientbyCurrentUser = [];
-  List<ClientModel> listClientbyRegoin = [];
-  List<ClientModel> listClientfilter = [];
-  List<ClientModel> listClientMarketing = [];
-  List<ClientModel> listClientMarketingFilter = [];
+  List<ClientModel1> listClient = [];
+  List<ClientModel1> listClientAccept = [];
+  List<ClientModel1> listClientAprroveTransfer = [];
+  List<ClientModel1> listClientbyCurrentUser = [];
+  List<ClientModel1> listClientbyRegoin = [];
+  List<ClientModel1> listClientfilter = [];
+  List<ClientModel1> listClientMarketing = [];
+  List<ClientModel1> listClientMarketingFilter = [];
   bool isapproved = false;
 
   // client_vm(UserModel? currentUser){
@@ -49,13 +51,6 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setvaluepriv(privilgelistparam) {
-    privilgelist = privilgelistparam;
-    notifyListeners();
-  }
-
-  List<PrivilgeModel> privilgelist = [];
-
   Future<void> getclienttypeInstall() async {}
 
   Future<void> getclient_Local(String searchfilter
@@ -66,7 +61,7 @@ class ClientProvider extends ChangeNotifier {
     // notifyListeners();
 
     notifyListeners();
-    List<ClientModel> _list = await ClientService().getAcceptClient(usercurrent!.fkCountry.toString());
+    List<ClientModel1> _list = await ClientService().getAcceptClient(usercurrent!.fkCountry.toString());
     _list.forEach((element) {
       if (element.typeClient == searchfilter && element.isApprove != null) listClientAccept.add(element);
     });
@@ -81,7 +76,7 @@ class ClientProvider extends ChangeNotifier {
     listClientAccept = [];
 
     notifyListeners();
-    List<ClientModel> _list = await ClientService().getAcceptClient(usercurrent!.fkCountry.toString());
+    List<ClientModel1> _list = await ClientService().getAcceptClient(usercurrent!.fkCountry.toString());
 
     isloading = false;
     listClientAccept = List.from(_list);
@@ -98,15 +93,15 @@ class ClientProvider extends ChangeNotifier {
     return false;
   }
 
-  ClientModel? selectedclient;
+  ClientModel1? selectedclient;
 
-  void changevalueclient(ClientModel? s) {
+  void changevalueclient(ClientModel1? s) {
     selectedclient = s;
     notifyListeners();
   }
 
   Future<void> getfilterview(String? regoin) async {
-    List<ClientModel> list = [];
+    List<ClientModel1> list = [];
     await getclient_Local('مشترك');
     if (regoin != null) {
       if (regoin != '0') {
@@ -128,7 +123,7 @@ class ClientProvider extends ChangeNotifier {
     isloading = true;
     listClientAccept = [];
     List<int> listval = [];
-    List<ClientModel> _list = [];
+    List<ClientModel1> _list = [];
     notifyListeners();
     if (listparam!.isEmpty)
       _list = await ClientService().getAllClientsupport(usercurrent!.fkCountry.toString(), null);
@@ -251,7 +246,7 @@ class ClientProvider extends ChangeNotifier {
       listClientMarketing = List.from(listClientfilter);
     }
     if (filteractivity != '') {
-      List<ClientModel> listclientfilterTemp = [];
+      List<ClientModel1> listclientfilterTemp = [];
 
       if (listClientfilter.isNotEmpty) {
         listClientfilter.forEach((element) {
@@ -275,7 +270,7 @@ class ClientProvider extends ChangeNotifier {
     String? idUser,
     String? typeClient,
   }) {
-    final list = List<ClientModel>.from(listClientMarketingFilter).toList();
+    final list = List<ClientModel1>.from(listClientMarketingFilter).toList();
 
     if (region == '0') {
       region = null;
@@ -311,7 +306,7 @@ class ClientProvider extends ChangeNotifier {
     String? idUser,
     String? typeClient,
   }) {
-    final list = List<ClientModel>.from(listClient).toList();
+    final list = List<ClientModel1>.from(listClient).toList();
 
     if (region == '0') {
       region = null;
@@ -357,19 +352,19 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getClientDateTable_vm() async {
+  Future<void> getClientDateTable_vm(PrivilegeCubit privilegeCubit) async {
     isloading = true;
     notifyListeners();
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '8').isCheck == '1' ? true : false;
+    bool res = privilegeCubit.checkPrivilege('8');
     if (res) {
       listClientAccept = await ClientService().getClientDateTable(usercurrent!.fkCountry.toString());
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == '15').isCheck == '1' ? true : false;
+      res = privilegeCubit.checkPrivilege('15');
       if (res) {
         listClientAccept = await ClientService()
             .getClientDateTable_regoin(usercurrent!.fkCountry.toString(), usercurrent!.fkRegoin.toString());
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == '16').isCheck == '1' ? true : false;
+        res = privilegeCubit.checkPrivilege('16');
         if (res) {
           listClientAccept = await ClientService().getClientDateTable_user(usercurrent!.idUser.toString());
         }
@@ -394,11 +389,11 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getallclientTransfer() async {
+  Future<void> getallclientTransfer(PrivilegeCubit privilegeCubit) async {
     isloading = true;
     notifyListeners();
     String param = '';
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '150').isCheck == '1' ? true : false;
+    bool res = privilegeCubit.checkPrivilege('150');
     if (res)
       param = 'id_regoin= ' + usercurrent!.fkRegoin.toString();
     else
@@ -410,20 +405,20 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getallclientAcceptwithprev() async {
+  Future<void> getallclientAcceptwithprev(PrivilegeCubit privilegeCubit) async {
     listClient = [];
-    bool res = privilgelist.firstWhere((element) => element.fkPrivileg == '1').isCheck == '1' ? true : false;
+    bool res = privilegeCubit.checkPrivilege('1');
     if (res) {
       listClient = List.from(listClientAccept);
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == '6').isCheck == '1' ? true : false;
+      res = privilegeCubit.checkPrivilege('6');
       if (res) {
         listClientAccept.forEach((element) {
           if (element.fkUser == usercurrent!.idUser.toString()) ;
           listClient.add(element);
         });
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == '38').isCheck == '1' ? true : false;
+        res = privilegeCubit.checkPrivilege('38');
         if (res) {
           listClientAccept.forEach((element) {
             if (element.fkRegoin == usercurrent!.fkRegoin.toString()) ;
@@ -437,7 +432,7 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclient_vm() async {
+  Future<void> getclient_vm(PrivilegeCubit privilegeCubit) async {
     clear();
     listClientfilter = [];
     isloading = true;
@@ -447,22 +442,17 @@ class ClientProvider extends ChangeNotifier {
     final String allClientByRegionPrivilege = '15';
     final String allClientByUserPrivilege = '16';
 
-    bool res =
-        privilgelist.firstWhere((element) => element.fkPrivileg == allClientPrivilege).isCheck == '1' ? true : false;
+    bool res = privilegeCubit.checkPrivilege(allClientPrivilege);
     if (res) {
       listClient = await ClientService().getAllClient(usercurrent!.fkCountry.toString());
       listClientfilter = List.from(listClient);
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByRegionPrivilege).isCheck == '1'
-          ? true
-          : false;
+      res = privilegeCubit.checkPrivilege(allClientByRegionPrivilege);
       if (res) {
         listClient = await ClientService().getAllClientByRegoin(usercurrent!.fkRegoin.toString());
         listClientfilter = List.from(listClient);
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByUserPrivilege).isCheck == '1'
-            ? true
-            : false;
+        res = privilegeCubit.checkPrivilege(allClientByUserPrivilege);
         if (res) {
           listClient = await ClientService().getClientbyuser(usercurrent!.idUser.toString());
           listClientfilter = List.from(listClient);
@@ -474,7 +464,7 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclientMarketing_vm() async {
+  Future<void> getclientMarketing_vm(PrivilegeCubit privilegeCubit) async {
     clear();
     listClientfilter = [];
     isloading = true;
@@ -485,21 +475,17 @@ class ClientProvider extends ChangeNotifier {
     final String allClientByUserPrivilege = '129';
 
     bool res =
-        privilgelist.firstWhere((element) => element.fkPrivileg == allClientPrivilege).isCheck == '1' ? true : false;
+    privilegeCubit.checkPrivilege(allClientPrivilege);
     if (res) {
       listClient = await ClientService().getAllClientmarket(usercurrent!.fkCountry.toString());
       listClientfilter = List.from(listClient);
     } else {
-      res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByRegionPrivilege).isCheck == '1'
-          ? true
-          : false;
+      res = privilegeCubit.checkPrivilege(allClientByRegionPrivilege);
       if (res) {
         listClient = await ClientService().getClientmarket_regoin(usercurrent!.fkRegoin.toString());
         listClientfilter = List.from(listClient);
       } else {
-        res = privilgelist.firstWhere((element) => element.fkPrivileg == allClientByUserPrivilege).isCheck == '1'
-            ? true
-            : false;
+        res = privilegeCubit.checkPrivilege(allClientByUserPrivilege);
         if (res) {
           listClient = await ClientService().getClientmarket_user(usercurrent!.idUser.toString());
           listClientfilter = List.from(listClient);
@@ -511,10 +497,10 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  PageState<ClientModel?> currentClientModel = PageState();
+  PageState<ClientModel1?> currentClientModel = PageState();
 
-  Future<void> get_byIdClient(String idClient, [ValueChanged<ClientModel>? onData]) async {
-    ClientModel? inv;
+  Future<void> get_byIdClient(String idClient, [ValueChanged<ClientModel1>? onData]) async {
+    ClientModel1? inv;
     try {
       currentClientModel = currentClientModel.changeToLoading;
       notifyListeners();
@@ -540,11 +526,11 @@ class ClientProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getclientMarketing() async {
+  Future<void> getclientMarketing(PrivilegeCubit privilegeCubit) async {
     listClientMarketing = [];
     isloading_marketing = true;
     notifyListeners();
-    await getclientMarketing_vm();
+    await getclientMarketing_vm(privilegeCubit);
     if (listClient.isNotEmpty) {
       listClient.forEach((element) {
         if (element.ismarketing == '1') {
@@ -558,7 +544,7 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclientByIdUser_vm(List<ClientModel> list) async {
+  Future<void> getclientByIdUser_vm(List<ClientModel1> list) async {
     //عملائي
     listClientbyCurrentUser = [];
     if (list.isNotEmpty) {
@@ -597,7 +583,7 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getclientByRegoin(List<ClientModel> list) async {
+  Future<void> getclientByRegoin(List<ClientModel1> list) async {
     //if(listClientbyRegoin.isEmpty)
     listClientbyRegoin = [];
     if (list.isNotEmpty) {
@@ -614,7 +600,7 @@ class ClientProvider extends ChangeNotifier {
   }
 
   Future<String> addclient_vm(Map<String, dynamic?> body, String username, String regoin) async {
-    ClientModel res = await ClientService().addClient(body);
+    ClientModel1 res = await ClientService().addClient(body);
     //if (res!="false") {
     // body.addAll({
     //   'id_clients':res,
@@ -635,11 +621,11 @@ class ClientProvider extends ChangeNotifier {
   }
 
   Future<bool> updateclient_vm(Map<String, dynamic?> body, String? idClient,
-      {ValueChanged<ClientModel>? onSuccess}) async {
+      {ValueChanged<ClientModel1>? onSuccess}) async {
     try {
       isloading = true;
       notifyListeners();
-      ClientModel data = await ClientService().updateClient(body, idClient!);
+      ClientModel1 data = await ClientService().updateClient(body, idClient!);
 
       int index = listClient.indexWhere((element) => element.idClients == idClient);
 
@@ -701,7 +687,7 @@ class ClientProvider extends ChangeNotifier {
   Future<void> setfkUserclient_vm(Map<String, dynamic?> body, String? idClient) async {
     isloading = true;
     notifyListeners();
-    ClientModel res = await ClientService().setfkuserClient(body, idClient!);
+    ClientModel1 res = await ClientService().setfkuserClient(body, idClient!);
 
     int index = listClient.indexWhere((element) => element.idClients == idClient);
     if (index != -1) listClient[index] = res;
@@ -718,8 +704,8 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchProducts(String productName) async {
-    List<ClientModel> clientlistsearch = [];
+  Future<void> searchProducts(String productName,PrivilegeCubit privilegeCubit) async {
+    List<ClientModel1> clientlistsearch = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
     // productName[0].toUpperCase() +
@@ -746,14 +732,14 @@ class ClientProvider extends ChangeNotifier {
       //     });
       //   }
     } else
-      getclient_vm();
+      getclient_vm(privilegeCubit);
 
     notifyListeners();
     //return clientlistsearch;
   }
 
-  Future<void> searchmarket(String productName) async {
-    List<ClientModel> clientlistsearch = [];
+  Future<void> searchmarket(String productName,PrivilegeCubit privilegeCubit) async {
+    List<ClientModel1> clientlistsearch = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
 
@@ -765,7 +751,7 @@ class ClientProvider extends ChangeNotifier {
       });
       listClientMarketing = clientlistsearch;
     } else
-      getclientMarketing();
+      getclientMarketing(privilegeCubit);
 
     notifyListeners();
     //return clientlistsearch;
@@ -773,7 +759,7 @@ class ClientProvider extends ChangeNotifier {
 
   //listClientAccept
   Future<void> searchclientAccept(String productName) async {
-    List<ClientModel> clientlistsearch = [];
+    List<ClientModel1> clientlistsearch = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
     // productName[0].toUpperCase() +
@@ -792,7 +778,7 @@ class ClientProvider extends ChangeNotifier {
     //return clientlistsearch;
   }
 
-  List<ClientModel> listClientAcceptFilter = [];
+  List<ClientModel1> listClientAcceptFilter = [];
 
   void onSearch(String query) {
     final list = List.of(listClientAccept);
@@ -806,7 +792,7 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<ClientModel> listClientFilterSearch = [];
+  List<ClientModel1> listClientFilterSearch = [];
 
   void onSearchListClientFilter(String query) {
     final list = List.of(listClientfilter);
@@ -853,7 +839,7 @@ class ClientProvider extends ChangeNotifier {
     }
   }
 
-  onUpdateListsMarketing(ClientModel clientModel) {
+  onUpdateListsMarketing(ClientModel1 clientModel) {
     bool isExist = listClient.any((element) => element.idClients == clientModel.idClients);
     if (!isExist) {
       listClient.insert(0, clientModel);

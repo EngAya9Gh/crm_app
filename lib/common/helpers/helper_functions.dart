@@ -16,6 +16,7 @@ class HelperFunctions {
   bool hasReachedMax<T>(List<T>? list) => (list ?? []).length < kPerPage;
 
   String? requiredFiled(String? value) {
+
     if (value?.trim().isEmpty ?? true) {
       return "هذا الحقل مطلوب.";
     }
