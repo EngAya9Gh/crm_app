@@ -109,7 +109,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
     descriptionActivityController = TextEditingController(text: widget.client?.descriptionActiveController);
     reasonController = TextEditingController(text: widget.client?.reasonChange);
     offerPriceController = TextEditingController(text: widget.client?.offerPrice);
-    reasonClassController = TextEditingController(text: widget.client?.reason_class!=null?widget.client?.reason_class!="null"?widget.client?.reason_class!:"":null);
+    reasonClassController = TextEditingController(text: widget.client?.reason_class!=null?widget.client?.reason_class!=""?widget.client?.reason_class!:"":null);
 
     _selectedActivitySizeType = widget.client?.sizeActivity;
 
@@ -162,7 +162,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       }
       _clientTypeProvider.changevalue(_clientTypeProvider.selectedValuemanag);
     });
-
+   // _userProvider.changeClientRegistrationTypeStatus(_selectedClientsClassification.toString());
     reasonReject = ValueNotifier(widget.client?.rejectId);
     super.initState();
   }

@@ -72,7 +72,7 @@ class UserProvider extends ChangeNotifier {
   String get selectedClientRegistrationType=>_selectedClientRegistrationType!;
   String get selectedClientClassificationType=>_selectedClientClassificationType!;
 
-  void changeClientRegistrationTypeStatus( String selectedClientRegistrationType){
+  void changeClientRegistrationTypeStatus( String? selectedClientRegistrationType){
     _selectedClientRegistrationType=selectedClientRegistrationType;
     notifyListeners();
   }
