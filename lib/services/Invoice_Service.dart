@@ -202,6 +202,12 @@ class Invoice_Service {
     List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
     return prodlist;
   }
+  Future<List<InvoiceModel>> getmyinvoice_myregoin(String regoin,String userid) async {
+    var data = await Api().get(url: url + 'client/invoice/getmyinvoice_myregoin.php?fk_regoin=$regoin&fk_idUser=$userid');
+
+    List<InvoiceModel> prodlist = await compute<List<dynamic>, List<InvoiceModel>>(convertToInvoices, data);
+    return prodlist;
+  }
 
   Future<List<InvoiceModel>> getinvoiceMarketing(String fk_country) async {
     var data = await Api().get(url: url + 'client/invoice/getMarketingInvoice.php?fk_country=$fk_country');

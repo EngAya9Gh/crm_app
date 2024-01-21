@@ -1001,6 +1001,9 @@ class invoice_vm extends ChangeNotifier {
     if (res) {
       listinvoices = await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
     } else {
+      if(privilegeCubit.checkPrivilege('38') &&privilegeCubit.checkPrivilege('6'))
+        listinvoices = await Invoice_Service().getmyinvoice_myregoin(usercurrent!.fkRegoin!,usercurrent!.idUser.toString());
+      else{
       res = privilegeCubit.checkPrivilege('38');
       if (res) {
         listinvoices = await Invoice_Service().getinvoicebyregoin(usercurrent!.fkRegoin!);
@@ -1009,6 +1012,7 @@ class invoice_vm extends ChangeNotifier {
         if (res) {
           listinvoices = await Invoice_Service().getinvoicebyiduser(usercurrent!.idUser.toString());
         }
+      }
       }
     }
     listInvoicesAccept = List.from(listinvoices);
