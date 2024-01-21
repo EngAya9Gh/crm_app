@@ -993,17 +993,17 @@ class _ActionClientPageState extends State<ActionClientPage> {
             .read<ClientProvider>()
             .get_byIdClient(widget.client!.idClients!)
             .whenComplete(() {
+          // Navigator.pushReplacement(
+          //     context,
+          //     CupertinoPageRoute(
+          //       builder: (context) => ProfileClient(
+          //         idClient: widget.client?.idClients,
+          //         client: widget.client,
+          //       ),
+          //     ));
           Navigator.pop(context, widget.client!);
         });
         // Navigator.pop(context, client);
-        // Navigator.pushReplacement(
-        //     context,
-        //     CupertinoPageRoute(
-        //       builder: (context) => ProfileClient(
-        //         idClient: widget.client?.idClients,
-        //         client: widget.client,
-        //       ),
-        //     ));
       },
     ));
   }

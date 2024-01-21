@@ -43,14 +43,18 @@ class _ClientViewState extends State<ClientView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   // late ClientModel clientModel = ClientModel();
+  @override
+  void initState() {
+    widget.client = widget.client ??
+        Provider.of<ClientProvider>(context, listen: true)
+            .listClient
+            .firstWhere((element) => element.idClients == widget.idclient);
+    // // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // clientModel = widget.client ??
-    //     Provider.of<client_vm>(context, listen: true)
-    //         .listClient
-    //         .firstWhere((element) => element.idClients == widget.idclient);
-
     return Consumer<ClientProvider>(builder: (context, state, _) {
       if (state.currentClientModel.isLoading ||
           state.currentClientModel.isInit) {
@@ -418,6 +422,9 @@ class _ClientViewState extends State<ClientView> {
                                   backgroundColor:
                                       MaterialStateProperty.all(kMainColor)),
                               onPressed: () async {
+                                // await context
+                                //     .read<ClientProvider>()
+                                //     .get_byIdClient(widget.client!.idClients!);
                                 // var client = clientModel;
                                 // // final ClientModel? obj =
                                 // //     state.currentClientModel.data!;
@@ -425,7 +432,7 @@ class _ClientViewState extends State<ClientView> {
                                     context,
                                     CupertinoPageRoute(
                                       builder: (context) => ActionClientPage(
-                                        client: widget.client!,
+                                        client: widget.client,
                                         // client,
                                       ),
                                     ));
