@@ -77,3 +77,13 @@ class EditClientEvent extends ClientsListEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
+
+class EditTypeClientEvent extends ClientsListEvent {
+  final ChangeTypeClient editClientParams;
+  final ValueChanged<ClientModel>? onSuccess;
+
+  EditTypeClientEvent(this.editClientParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}

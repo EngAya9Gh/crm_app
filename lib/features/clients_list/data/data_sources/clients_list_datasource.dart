@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crm_smart/core/api/client.dart';
 import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
 import 'package:dio/dio.dart';
+import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../common/constants/route.dart';
@@ -169,4 +170,27 @@ class ClientsListDatasource {
 
     return throwAppException(fun);
   }
+
+    Future<ResponseWrapper<ClientModel>> changeTypeClient(Map<String, dynamic> body,Map<String, dynamic> params) async {
+    fun() async {
+      final dio = GetIt.I<Dio>();
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
+
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.client.changeTypeClient,
+          data: body,
+          queryParameters: params,
+          clientMethod: ClientMethod.post,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      final client = ClientModel.fromJson(response.data['message'][0]);
+      return ResponseWrapper(message: client, data: client);
+    }
+
+    return throwAppException(fun);
+  }
+
 }

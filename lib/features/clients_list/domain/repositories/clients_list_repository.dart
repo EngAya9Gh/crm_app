@@ -10,5 +10,7 @@ abstract class ClientsListRepository{
   Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsWithFilter(Map<String, dynamic> body);
   Future<Result<ResponseWrapper<ClientModel>>> addClient(Map<String, dynamic> body);
   Future<Result<ResponseWrapper<ClientModel>>> editClient(Map<String, dynamic> body,Map<String, dynamic> params);
+  Future<Result<ResponseWrapper<ClientModel>>> changeTypeClient(Map<String, dynamic> body,Map<String, dynamic> params);
   Future<Result<ResponseWrapper<List<RecommendedClient>>>> getRecommendedClients();
+
 }

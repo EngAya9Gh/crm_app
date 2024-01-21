@@ -24,7 +24,7 @@ class ClientsListState {
       clientsListController: clientsListController ?? this.clientsListController,
       getClientsWithFilterParams: restFilter ? null : getClientsWithFilterParams ?? this.getClientsWithFilterParams,
       recommendedClientsState: recommendedClientsState ?? this.recommendedClientsState,
-      actionClientBlocStatus: actionClientBlocStatus ?? this.actionClientBlocStatus,
+      actionClientBlocStatus: actionClientBlocStatus ??   this.actionClientBlocStatus,
     );
   }
 }

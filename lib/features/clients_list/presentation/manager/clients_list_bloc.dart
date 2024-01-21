@@ -13,6 +13,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/models/clients_list_response.dart';
+import '../../domain/use_cases/changeTypeClient.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
@@ -28,6 +29,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._getRecommendedClientsUsecase,
     this._addClientUserUsecase,
     this._editClientUserUsecase,
+    this._changeTypeClientUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
@@ -36,12 +38,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
     on<AddClientEvent>(_onAddClientEvent);
     on<EditClientEvent>(_onEditClientEvent);
+    on<EditTypeClientEvent >(_onEditTypeClientEvent);
   }
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
   final GetRecommendedClientsUsecase _getRecommendedClientsUsecase;
   final AddClientUserUsecase _addClientUserUsecase;
   final EditClientUserUsecase _editClientUserUsecase;
+  final ChangeTypeClientUsecase _changeTypeClientUsecase;
 
   FutureOr<void> _onGetAllClientsListEvent(GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
     final GetClientsWithFilterParams getClientsWithFilterParams =
@@ -140,6 +144,24 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
             .map((e) => e.idClients == event.editClientParams.clientId ? value.data! : e)
             .toList();
         event.onSuccess?.call(value.data!);
+      },
+    );
+  }
+
+  FutureOr<void> _onEditTypeClientEvent(EditTypeClientEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
+
+    final response = await _changeTypeClientUsecase(event.editClientParams);
+
+    response.fold(
+      (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (value) {
+        emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
+        state.clientsListController.itemList =
+            (state.clientsListController.itemList ?? [])
+            .map((e) => e. == event.editClientParams.id_clients ? value.data! : e)
+            .toList();
+            event.onSuccess?.call(value.data!);
       },
     );
   }

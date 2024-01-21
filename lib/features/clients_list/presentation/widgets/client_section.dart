@@ -1,3 +1,6 @@
+import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
@@ -9,18 +12,32 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import 'package:intl/intl.dart' as intl;
 
+import '../../../../common/helpers/helper_functions.dart';
 import '../../../../constants.dart';
 import '../../../../model/clientmodel.dart';
+import '../../../../view_model/datetime_vm.dart';
+import '../../../../view_model/typeclient.dart';
+import '../../../app/presentation/widgets/app_drop_down.dart';
+import '../../../app/presentation/widgets/app_elvated_button.dart';
+import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../manage_withdrawals/data/models/reject_reason.dart';
+import '../../../manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../task_management/presentation/widgets/add_manual_task_button.dart';
+import '../manager/clients_list_bloc.dart';
 import '../pages/action_client_page.dart';
 import '../../../../function_global.dart';
+import 'dart:ui' as myui;
 
 class ClientSection extends StatefulWidget {
   ClientSection({this.clienttransfer, required this.invoice, this.typeinvoice, required this.idclient, this.client, Key? key}) : super(key: key);
@@ -39,11 +56,251 @@ class _ClientSectionState extends State<ClientSection> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   late ClientModel1 clientModel;
   bool isUpdate = false;
+  late final ClientTypeProvider _clientTypeProvider;
+  late ManageWithdrawalsCubit _manageWithdrawalsCubit;
+
+  late ValueNotifier<String?> reasonReject;
+
+  final _globalKey = GlobalKey<FormState>();
+  late final TextEditingController reasonController;
+  late final TextEditingController offerPriceController;
+  DateTime dateOfferPrice = DateTime.now();
 
   // late ClientModel clientModel = ClientModel();
+  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        currentDate: currentDate,
+        initialDate: currentDate,
+        firstDate: DateTime(2015),
+        lastDate: DateTime(3000));
+    if (pickedDate != null) {
+      setState(() {
+        dateOfferPrice = pickedDate;
+      });
+      context.read<datetime_vm>().setdatetimevalue1(dateOfferPrice);
+    }
+  }
 
   @override
+ void initState() {
+    // TODO: implement initState
+
+    reasonReject = ValueNotifier(widget.client?.fk_rejectClient);
+    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()..getReasonReject();
+
+    _clientTypeProvider = context.read<ClientTypeProvider>();
+
+    _clientTypeProvider.type_of_client = widget.client?.typeClient == "تفاوض" ||
+        widget.client?.typeClient == "عرض سعر" ||
+        widget.client?.typeClient == "مستبعد"
+        ? ['تفاوض', 'عرض سعر', 'مستبعد']
+        : [];
+
+    if (widget.client?.typeClient == "تفاوض" ||
+        widget.client?.typeClient == "عرض سعر" ||
+        widget.client?.typeClient == "مستبعد") {
+      _clientTypeProvider.selectedValuemanag = widget.client?.typeClient.toString();
+    }
+    if (widget.client?.typeClient == "مشترك") {
+      _clientTypeProvider.selectedValuemanag = null;
+    }
+    _clientTypeProvider.changevalue(_clientTypeProvider.selectedValuemanag);
+    reasonController = TextEditingController(text: widget.client?.reasonChange);
+    offerPriceController = TextEditingController(text: widget.client?.offer_price);
+    super.initState();
+
+  }
+  showAlertDialog(BuildContext context ) {
+
+    // set up the buttons
+    Widget remindButton = TextButton(
+      child: Text("cancel"),
+      onPressed:  () {
+
+
+      },
+    );
+
+    Widget dialog = SimpleDialog(
+        titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
+        insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        title: Center(child: Text('', style: TextStyle(fontFamily: kfontfamily2))),
+        children: [
+          StatefulBuilder(
+            builder: (BuildContext context, void Function(void Function()) refresh) {
+
+              return Directionality(
+                textDirection:  myui.TextDirection.rtl,
+                child: Form(
+                  key: _globalKey,
+                  child:Consumer<ClientTypeProvider>(builder: (context, clientTypeProvider, child) {
+                    return Column(
+                      children: [
+                        SizedBox(height: 10),
+                        if (context.read<PrivilegeCubit>().checkPrivilege('27')  ) ...{
+                          AppDropdownButtonFormField<String, String>(
+                            items: clientTypeProvider.type_of_client,
+                            onChange: (status) {
+                              clientTypeProvider.changevalue(status.toString());
+                            },
+                            hint: "حالة العميل",
+                            itemAsValue: (String? item) => item,
+                            itemAsString: (item) => item!,
+                            value: clientTypeProvider.selectedValuemanag,
+                          ),
+                          10.verticalSpace,
+                        },
+                        if (context.read<PrivilegeCubit>().checkPrivilege('27') &&
+
+                            clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: AppTextField(
+                                  labelText: "عرض سعر",
+                                  maxLines: 1,
+                                  controller: offerPriceController,
+                                  textInputType: TextInputType.number,
+                                ),
+                              ),
+                              10.horizontalSpace,
+                              Expanded(
+                                flex: 5,
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (dateOfferPrice == DateTime(1, 1, 1)) {
+                                      return 'يرجى تعيين التاريخ ';
+                                    }
+                                    return null;
+                                  },
+                                  style: context.textTheme.titleSmall.r?.copyWith(
+                                    color: context.colorScheme.onBackground,
+                                    decoration: TextDecoration.none,
+                                    decorationColor: context.colorScheme.borderTextField,
+                                  ),
+                                  textAlignVertical: TextAlignVertical.center,
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                      prefixIcon: Icon(
+                                        Icons.date_range,
+                                        color: kMainColor,
+                                      ),
+                                      hintStyle: const TextStyle(
+                                          color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                      hintText: intl.DateFormat("yyyy/MM/dd")
+                                          .format(Provider.of<datetime_vm>(context, listen: true).valuedateTime),
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(color: context.colorScheme.primary),
+                                        borderRadius: BorderRadius.circular(10).r,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: context.colorScheme.primary),
+                                        borderRadius: BorderRadius.circular(10).r,
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: context.colorScheme.primary),
+                                        borderRadius: BorderRadius.circular(10).r,
+                                      ),
+                                      filled: false,
+                                      isDense: true,
+                                      isCollapsed: true),
+                                  readOnly: true,
+                                  onTap: () {
+                                    _selectDate(context, DateTime.now());
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          10.verticalSpace,
+                        },
+                        if (context.read<PrivilegeCubit>().checkPrivilege('27') &&
+
+                            clientTypeProvider.selectedValuemanag == "مستبعد") ...{
+                          BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+                            builder: (context, state) {
+                              return ValueListenableBuilder<String?>(
+                                  valueListenable: reasonReject,
+                                  builder: (context, value, _) {
+                                    return AppDropdownButtonFormField<RejectReason, String>(
+                                      items: state.rejectReasonsStat.getDataWhenSuccess ?? [],
+                                      onChange: (reason) {
+                                        reasonReject.value = reason;
+                                      },
+                                      hint: "أسباب الاستبعاد",
+                                      itemAsValue: (RejectReason? item) => item!.idRejectClient!,
+                                      itemAsString: (item) => item!.nameReasonReject!,
+                                      value: value,
+                                      validator: HelperFunctions.instance.requiredFiled,
+                                    );
+                                  });
+                            },
+                          ),
+                          10.verticalSpace,
+                          AppTextField(
+                            labelText: "سبب الاستبعاد",
+                            maxLines: 1,
+                            controller: reasonController,
+                            validator: HelperFunctions.instance.requiredFiled,
+                          ),
+                          10.verticalSpace,
+                        },
+
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                            onPressed: () async => _onPressedUpdate(context),
+                            child: Text('تعديل بيانات العميل'),
+                          ),
+                        ),
+                        10.verticalSpace,
+                        BlocBuilder<ClientsListBloc, ClientsListState>(
+                          builder: (context, state) {
+                            return AppElevatedButton(
+                              isLoading: state.actionClientBlocStatus.isLoading(),
+                              text: "حفظ",
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                              ),
+                              onPressed: () {
+                                if (!_globalKey.currentState!.validate()) {
+                                  return;
+                                }
+
+                                final EditClientParams editClientParams = EditClientParams(
+
+                                );
+                                _clientsListBloc.add(EditTypeClientEvent(
+                                  editClientParams,
+                                  onSuccess: (client){
+
+                                    Navigator.pop(context, client);
+                                  },
+                                ));
+                              },
+                            );
+                          },
+                        )
+              ]
+              );})));})]);
+
+
+    // show the dialog
+    showDialog(
+      context: context,
+
+      builder: (BuildContext context) {
+        return dialog;
+      },
+    );
+  }
+  @override
   Widget build(BuildContext context) {
+
     // clientModel = widget.client ??
     //     Provider.of<client_vm>(context, listen: true)
     //         .listClient
@@ -302,6 +559,18 @@ class _ClientSectionState extends State<ClientSection> {
                                   child: Text('تعديل بيانات العميل'),
                                 ),
                               ),
+                              clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"?
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  onPressed: () async =>  showAlertDialog(context ),
+                                      // showDialog<void>
+                                      // (context: context,
+                                      // builder: (context) =>  dialog),
+
+                               child: Text('اجراءات'),
+                                ),
+                              ):Container(),
                               const SizedBox(width: 8),
                               clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
                                   ? SizedBox(

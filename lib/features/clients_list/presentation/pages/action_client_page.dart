@@ -212,7 +212,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
             child: Directionality(
               textDirection: TextDirection.rtl,
               child: Consumer<ClientTypeProvider>(builder: (context, clientTypeProvider, child) {
-                return Column(
+                return
+                  Column(
                   children: [
                     Expanded(
                       child: ListView(
@@ -634,120 +635,120 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               );
                             },
                           ),
-                          10.verticalSpace,
-                          if (_privilegeCubit.checkPrivilege('27') && isShowingClientStatus && isEdit) ...{
-                            AppDropdownButtonFormField<String, String>(
-                              items: clientTypeProvider.type_of_client,
-                              onChange: (status) {
-                                clientTypeProvider.changevalue(status.toString());
-                              },
-                              hint: "حالة العميل",
-                              itemAsValue: (String? item) => item,
-                              itemAsString: (item) => item!,
-                              value: clientTypeProvider.selectedValuemanag,
-                            ),
-                            10.verticalSpace,
-                          },
-                          if (_privilegeCubit.checkPrivilege('27') &&
-                              isEdit &&
-                              clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: AppTextField(
-                                    labelText: "عرض سعر",
-                                    maxLines: 1,
-                                    controller: offerPriceController,
-                                    textInputType: TextInputType.number,
-                                  ),
-                                ),
-                                10.horizontalSpace,
-                                Expanded(
-                                  flex: 5,
-                                  child: TextFormField(
-                                    validator: (value) {
-                                      if (dateOfferPrice == DateTime(1, 1, 1)) {
-                                        return 'يرجى تعيين التاريخ ';
-                                      }
-                                      return null;
-                                    },
-                                    style: context.textTheme.titleSmall.r?.copyWith(
-                                      color: context.colorScheme.onBackground,
-                                      decoration: TextDecoration.none,
-                                      decorationColor: context.colorScheme.borderTextField,
-                                    ),
-                                    textAlignVertical: TextAlignVertical.center,
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                        prefixIcon: Icon(
-                                          Icons.date_range,
-                                          color: kMainColor,
-                                        ),
-                                        hintStyle: const TextStyle(
-                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                        hintText: intl.DateFormat("yyyy/MM/dd")
-                                            .format(Provider.of<datetime_vm>(context, listen: true).valuedateTime),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(color: context.colorScheme.primary),
-                                          borderRadius: BorderRadius.circular(10).r,
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: context.colorScheme.primary),
-                                          borderRadius: BorderRadius.circular(10).r,
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: context.colorScheme.primary),
-                                          borderRadius: BorderRadius.circular(10).r,
-                                        ),
-                                        filled: false,
-                                        isDense: true,
-                                        isCollapsed: true),
-                                    readOnly: true,
-                                    onTap: () {
-                                      _selectDate(context, DateTime.now());
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            10.verticalSpace,
-                          },
-                          if (_privilegeCubit.checkPrivilege('27') &&
-                              isEdit &&
-                              clientTypeProvider.selectedValuemanag == "مستبعد") ...{
-                            BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-                              builder: (context, state) {
-                                return ValueListenableBuilder<String?>(
-                                    valueListenable: reasonReject,
-                                    builder: (context, value, _) {
-                                      return AppDropdownButtonFormField<RejectReason, String>(
-                                        items: state.rejectReasonsStat.getDataWhenSuccess ?? [],
-                                        onChange: (reason) {
-                                          reasonReject.value = reason;
-                                        },
-                                        hint: "أسباب الاستبعاد",
-                                        itemAsValue: (RejectReason? item) => item!.idRejectClient!,
-                                        itemAsString: (item) => item!.nameReasonReject!,
-                                        value: value,
-                                        validator: HelperFunctions.instance.requiredFiled,
-                                      );
-                                    });
-                              },
-                            ),
-                            10.verticalSpace,
-                            AppTextField(
-                              labelText: "سبب الاستبعاد",
-                              maxLines: 1,
-                              controller: reasonController,
-                              validator: HelperFunctions.instance.requiredFiled,
-                            ),
-                            10.verticalSpace,
-                          },
-                        ],
+                       //   10.verticalSpace,
+                    //       if (_privilegeCubit.checkPrivilege('27') && isShowingClientStatus && isEdit) ...{
+                    //         AppDropdownButtonFormField<String, String>(
+                    //           items: clientTypeProvider.type_of_client,
+                    //           onChange: (status) {
+                    //             clientTypeProvider.changevalue(status.toString());
+                    //           },
+                    //           hint: "حالة العميل",
+                    //           itemAsValue: (String? item) => item,
+                    //           itemAsString: (item) => item!,
+                    //           value: clientTypeProvider.selectedValuemanag,
+                    //         ),
+                    //         10.verticalSpace,
+                    //       },
+                    //       if (_privilegeCubit.checkPrivilege('27') &&
+                    //           isEdit &&
+                    //           clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
+                    //         Row(
+                    //           crossAxisAlignment: CrossAxisAlignment.center,
+                    //           children: [
+                    //             Expanded(
+                    //               flex: 3,
+                    //               child: AppTextField(
+                    //                 labelText: "عرض سعر",
+                    //                 maxLines: 1,
+                    //                 controller: offerPriceController,
+                    //                 textInputType: TextInputType.number,
+                    //               ),
+                    //             ),
+                    //             10.horizontalSpace,
+                    //             Expanded(
+                    //               flex: 5,
+                    //               child: TextFormField(
+                    //                 validator: (value) {
+                    //                   if (dateOfferPrice == DateTime(1, 1, 1)) {
+                    //                     return 'يرجى تعيين التاريخ ';
+                    //                   }
+                    //                   return null;
+                    //                 },
+                    //                 style: context.textTheme.titleSmall.r?.copyWith(
+                    //                   color: context.colorScheme.onBackground,
+                    //                   decoration: TextDecoration.none,
+                    //                   decorationColor: context.colorScheme.borderTextField,
+                    //                 ),
+                    //                 textAlignVertical: TextAlignVertical.center,
+                    //                 textAlign: TextAlign.center,
+                    //                 decoration: InputDecoration(
+                    //                     prefixIcon: Icon(
+                    //                       Icons.date_range,
+                    //                       color: kMainColor,
+                    //                     ),
+                    //                     hintStyle: const TextStyle(
+                    //                         color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                    //                     hintText: intl.DateFormat("yyyy/MM/dd")
+                    //                         .format(Provider.of<datetime_vm>(context, listen: true).valuedateTime),
+                    //                     border: OutlineInputBorder(
+                    //                       borderSide: BorderSide(color: context.colorScheme.primary),
+                    //                       borderRadius: BorderRadius.circular(10).r,
+                    //                     ),
+                    //                     focusedBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(color: context.colorScheme.primary),
+                    //                       borderRadius: BorderRadius.circular(10).r,
+                    //                     ),
+                    //                     enabledBorder: OutlineInputBorder(
+                    //                       borderSide: BorderSide(color: context.colorScheme.primary),
+                    //                       borderRadius: BorderRadius.circular(10).r,
+                    //                     ),
+                    //                     filled: false,
+                    //                     isDense: true,
+                    //                     isCollapsed: true),
+                    //                 readOnly: true,
+                    //                 onTap: () {
+                    //                   _selectDate(context, DateTime.now());
+                    //                 },
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //         10.verticalSpace,
+                    //       },
+                    //       if (_privilegeCubit.checkPrivilege('27') &&
+                    //           isEdit &&
+                    //           clientTypeProvider.selectedValuemanag == "مستبعد") ...{
+                    //         BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+                    //           builder: (context, state) {
+                    //             return ValueListenableBuilder<String?>(
+                    //                 valueListenable: reasonReject,
+                    //                 builder: (context, value, _) {
+                    //                   return AppDropdownButtonFormField<RejectReason, String>(
+                    //                     items: state.rejectReasonsStat.getDataWhenSuccess ?? [],
+                    //                     onChange: (reason) {
+                    //                       reasonReject.value = reason;
+                    //                     },
+                    //                     hint: "أسباب الاستبعاد",
+                    //                     itemAsValue: (RejectReason? item) => item!.idRejectClient!,
+                    //                     itemAsString: (item) => item!.nameReasonReject!,
+                    //                     value: value,
+                    //                     validator: HelperFunctions.instance.requiredFiled,
+                    //                   );
+                    //                 });
+                    //           },
+                    //         ),
+                    //         10.verticalSpace,
+                    //         AppTextField(
+                    //           labelText: "سبب الاستبعاد",
+                    //           maxLines: 1,
+                    //           controller: reasonController,
+                    //           validator: HelperFunctions.instance.requiredFiled,
+                    //         ),
+                    //         10.verticalSpace,
+                    //       },
+                     ],
                       ),
-                    ),
+                     ),
                     10.verticalSpace,
                     BlocBuilder<ClientsListBloc, ClientsListState>(
                       builder: (context, state) {
