@@ -43,13 +43,19 @@ class CardClient extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () {
-          context.read<UserProvider>().changeClientClassificationTypeStatus(clientModel.type_classification!=null?clientModel.type_classification!:"");
-          context.read<UserProvider>().changeClientRegistrationTypeStatus(clientModel.type_record!=null?clientModel.type_record!:"");
+          context.read<UserProvider>().changeClientClassificationTypeStatus(
+              clientModel.type_classification != null
+                  ? clientModel.type_classification!
+                  : "");
+          context.read<UserProvider>().changeClientRegistrationTypeStatus(
+              clientModel.type_record != null ? clientModel.type_record! : "");
 
           Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) => ProfileClient(idClient: clientModel.idClients.toString()),
+                builder: (context) => ProfileClient(
+                    idClient: clientModel.idClients.toString(),
+                    client: clientModel),
               ));
         },
         child: Container(
@@ -75,10 +81,13 @@ class CardClient extends StatelessWidget {
                     Expanded(
                       child: Text(
                         clientModel.nameEnterprise.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: kfontfamily2),
                       ),
                     ),
-                    if ((clientModel.tag ?? false) && context.read<PrivilegeCubit>().checkPrivilege('133'))
+                    if ((clientModel.tag ?? false) &&
+                        context.read<PrivilegeCubit>().checkPrivilege('133'))
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,
@@ -87,9 +96,13 @@ class CardClient extends StatelessWidget {
                 ),
                 Text(
                   DateTime.tryParse(clientModel.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(clientModel.dateCreate!))
+                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
+                          .format(DateTime.parse(clientModel.dateCreate!))
                       : clientModel.dateCreate.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: kfontfamily2,
+                      color: kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
               ],

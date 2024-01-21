@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/clientmodel.dart';
+//import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/care/care_client_view.dart';
@@ -40,7 +40,7 @@ class ProfileClient extends StatefulWidget {
   int tabCareIndex;
   InvoiceModel? invoiceModel;
   String? clientTransfer;
-  ClientModel? client;
+  var client;
   String idCommunication;
   final Event? event;
 
@@ -48,7 +48,8 @@ class ProfileClient extends StatefulWidget {
   _ProfileClientState createState() => _ProfileClientState();
 }
 
-class _ProfileClientState extends State<ProfileClient> with TickerProviderStateMixin {
+class _ProfileClientState extends State<ProfileClient>
+    with TickerProviderStateMixin {
   late UserModel current;
 
   // late ClientModel _clientModel = ClientModel();
@@ -61,7 +62,8 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
     indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<comment_vm>(context, listen: false).getComment(widget.idClient.toString());
+      Provider.of<comment_vm>(context, listen: false)
+          .getComment(widget.idClient.toString());
 
       Provider.of<invoice_vm>(context, listen: false)
         ..get_invoiceclientlocal(widget.idClient, '')
@@ -69,16 +71,20 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
       // Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
 
-      await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(widget.idClient.toString());
+      await Provider.of<ClientProvider>(context, listen: false)
+          .get_byIdClient(widget.idClient.toString());
 
       Provider.of<communication_vm>(context, listen: false)
-          .getCommunicationclient(widget.idClient.toString(), widget.idCommunication);
+          .getCommunicationclient(
+              widget.idClient.toString(), widget.idCommunication);
 
-      Provider.of<ticket_vm>(context, listen: false).getclient_ticket(widget.idClient.toString());
+      Provider.of<ticket_vm>(context, listen: false)
+          .getclient_ticket(widget.idClient.toString());
     });
 
     super.initState();
-    _tabController = TabController(length: 6, vsync: this, initialIndex: indexTab);
+    _tabController =
+        TabController(length: 6, vsync: this, initialIndex: indexTab);
     _tabController.addListener(onChangeTab);
   }
 
@@ -115,7 +121,8 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
 
     return Consumer<ClientProvider>(
       builder: (context, state, _) {
-        if (state.currentClientModel.isLoading || state.currentClientModel.isInit) {
+        if (state.currentClientModel.isLoading ||
+            state.currentClientModel.isInit) {
           return Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
@@ -123,7 +130,9 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
           return Scaffold(
             body: Center(
               child: IconButton(
-                onPressed: () => context.read<ClientProvider>().get_byIdClient(widget.idClient.toString()),
+                onPressed: () => context
+                    .read<ClientProvider>()
+                    .get_byIdClient(widget.idClient.toString()),
                 icon: Icon(Icons.refresh),
               ),
             ),
@@ -148,7 +157,8 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
                         velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
                         delayBefore: Duration(milliseconds: 2000),
                         pauseBetween: Duration(milliseconds: 1000),
-                        style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
+                        style: TextStyle(
+                            color: kWhiteColor, fontFamily: kfontfamily2),
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
                       )
@@ -174,7 +184,7 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
             }),
             centerTitle: true,
             bottom: TabBar(
-              labelPadding: const EdgeInsets.only(left: 8, right:8),
+              labelPadding: const EdgeInsets.only(left: 8, right: 8),
               indicatorSize: TabBarIndicatorSize.label,
               controller: _tabController,
               indicatorColor: kWhiteColor,
@@ -183,9 +193,15 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
               labelColor: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 8),
               isScrollable: true,
-              labelStyle:TextStyle(fontFamily: kfontfamily2,fontSize: 17,fontWeight: FontWeight.bold,) ,
-              unselectedLabelStyle:TextStyle(fontFamily: kfontfamily2,fontSize: 15,fontWeight: FontWeight.w600) ,
-
+              labelStyle: TextStyle(
+                fontFamily: kfontfamily2,
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+              unselectedLabelStyle: TextStyle(
+                  fontFamily: kfontfamily2,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600),
               unselectedLabelColor: kWhiteColor,
               onTap: (value) => _currentTabIndex.value = value,
               tabs: <Widget>[
@@ -216,18 +232,22 @@ class _ProfileClientState extends State<ProfileClient> with TickerProviderStateM
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.only(bottom: 1),
-                        padding: const EdgeInsets.only(top: 0, left: 5, right: 5),
+                        padding:
+                            const EdgeInsets.only(top: 0, left: 5, right: 5),
                         height: MediaQuery.of(context).size.height * 0.85,
                         child: TabBarView(
                           controller: _tabController,
                           children: <Widget>[
                             ClientView(
-                              client: client,
+                              client: widget.client,
                               clienttransfer: widget.clientTransfer,
                               idclient: client.idClients.toString(),
                               invoice: null, //widget.invoiceModel,
                             ),
-                            invoices(itemClient: client, fkclient: client.idClients.toString(), fkuser: ''),
+                            invoices(
+                                itemClient: client,
+                                fkclient: client.idClients.toString(),
+                                fkuser: ''),
                             commentView(client: client, event: widget.event),
 
                             support_view_invoices(itemClient: client),

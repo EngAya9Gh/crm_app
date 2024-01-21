@@ -1,5 +1,7 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart'
+    as cl;
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart' as cl;
+
 import '../../../features/clients_list/presentation/pages/action_client_page.dart';
 import '../../../view_model/client_vm.dart';
 
@@ -143,7 +145,9 @@ class CardAllClient extends StatelessWidget {
                   user_do: result.userDo,
                 );
 
-                context.read<ClientProvider>().onUpdateListsMarketing(clientConvert);
+                context
+                    .read<ClientProvider>()
+                    .onUpdateListsMarketing(clientConvert);
               }
             },
             backgroundColor: context.colorScheme.primaryContainer,
@@ -158,7 +162,8 @@ class CardAllClient extends StatelessWidget {
           Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) => ProfileClient(idClient: clientModel.idClients.toString()),
+                builder: (context) =>
+                    ProfileClient(idClient: clientModel.idClients.toString()),
               ));
         },
         child: Container(
@@ -180,24 +185,32 @@ class CardAllClient extends StatelessWidget {
               children: [
                 Text(
                   DateTime.tryParse(clientModel.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(clientModel.dateCreate!))
+                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
+                          .format(DateTime.parse(clientModel.dateCreate!))
                       : clientModel.dateCreate.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: kfontfamily2,
+                      color: kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
-                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                  Expanded(
-                    child: Text(
-                      clientModel.nameEnterprise.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
-                    ),
-                  ),
-                  if (clientModel.tag ?? false)
-                    Icon(
-                      CupertinoIcons.checkmark_seal_fill,
-                      color: Colors.amber,
-                    )
-                ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          clientModel.nameEnterprise.toString(),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: kfontfamily2),
+                        ),
+                      ),
+                      if (clientModel.tag ?? false)
+                        Icon(
+                          CupertinoIcons.checkmark_seal_fill,
+                          color: Colors.amber,
+                        )
+                    ]),
                 //Row(),
               ],
             ),

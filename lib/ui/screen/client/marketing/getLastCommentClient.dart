@@ -1,7 +1,3 @@
-import 'dart:async';
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +11,9 @@ import '../../../../features/manage_privilege/presentation/manager/privilege_cub
 import '../../../../model/usermodel.dart';
 import '../../../../provider/selected_button_provider.dart';
 import '../../../../view_model/lastcommentclient_vm.dart';
-import '../../../../view_model/privilge_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
-import '../../report/is_marketing_chekbox.dart';
 import '../IsmarketCheck_last.dart';
 import '../profileclient.dart';
-import 'LastcommentPage.dart';
 
 class getLastCommentClient extends StatefulWidget {
   const getLastCommentClient({Key? key}) : super(key: key);
@@ -44,9 +37,11 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
       //haveMarketingPrivilege = context.read<privilge_vm>().checkprivlge('155');
 
       context.read<UserProvider>().changevalueuser(null, true);
-      Provider.of<lastcommentclient_vm>(context, listen: false).setvaluepriv(GetIt.I<PrivilegeCubit>(), false);
+      Provider.of<lastcommentclient_vm>(context, listen: false)
+          .setvaluepriv(GetIt.I<PrivilegeCubit>(), false);
       // if(!haveMarketingPrivilege)
-      Provider.of<lastcommentclient_vm>(context, listen: false).getLastcommentClientModel();
+      Provider.of<lastcommentclient_vm>(context, listen: false)
+          .getLastcommentClientModel();
 
       // scheduleMicrotask(() {
     });
@@ -62,7 +57,8 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
         body: Padding(
           padding: const EdgeInsets.only(top: 16.0),
           child: ModalProgressHUD(
-            inAsyncCall: Provider.of<lastcommentclient_vm>(context, listen: true).isload,
+            inAsyncCall:
+                Provider.of<lastcommentclient_vm>(context, listen: true).isload,
             child: Column(
               children: [
                 Padding(
@@ -72,24 +68,31 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                     children: [
                       Text(
                         'عدد العملاء',
-                        style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontFamily: kfontfamily2,
+                            fontWeight: FontWeight.bold),
                       ),
                       Text(
                         Provider.of<lastcommentclient_vm>(context, listen: true)
                             .list_LastcommentClientModel
                             .length
                             .toString(),
-                        style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontFamily: kfontfamily2,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                 ),
-                Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                Consumer<selected_button_provider>(
+                    builder: (context, selectedProvider, child) {
                   return GroupButton(
                       controller: GroupButtonController(
                         selectedIndex: selectedProvider.isbarsales,
                       ),
-                      options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
+                      options: GroupButtonOptions(
+                          buttonWidth: 75,
+                          borderRadius: BorderRadius.circular(10)),
                       buttons: ['تفاوض', 'مشترك', 'مستبعد', 'عرض سعر'],
                       onSelected: (_, index, isselected) {
                         switch (index) {
@@ -111,7 +114,9 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                         }
 
                         selectedProvider.selectValuebarsales(index);
-                        Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
+                        Provider.of<lastcommentclient_vm>(context,
+                                listen: false)
+                            .getData(type, idUser);
                       });
                 }),
                 Padding(
@@ -128,7 +133,9 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                 onPressed: () {
                                   idUser = '';
                                   cart.changevalueuser(null);
-                                  Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
+                                  Provider.of<lastcommentclient_vm>(context,
+                                          listen: false)
+                                      .getData(type, idUser);
                                 },
                                 icon: Icon(Icons.highlight_off)),
                             SizedBox(width: 10),
@@ -136,14 +143,18 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                           Expanded(
                             child: DropdownSearch<UserModel>(
                               mode: Mode.DIALOG,
-                              filterFn: (user, filter) => user!.getfilteruser(filter!),
-                              compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                              filterFn: (user, filter) =>
+                                  user!.getfilteruser(filter!),
+                              compareFn: (item, selectedItem) =>
+                                  item?.idUser == selectedItem?.idUser,
                               items: cart.usersMarketingManagement,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 idUser = data!.idUser;
                                 cart.changevalueuser(data);
-                                Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
+                                Provider.of<lastcommentclient_vm>(context,
+                                        listen: false)
+                                    .getData(type, idUser);
                               },
                               selectedItem: cart.selectedUser,
                               showSearchBox: true,
@@ -153,7 +164,9 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                 alignLabelWithHint: true,
                                 fillColor: Colors.grey.withOpacity(0.2),
                                 contentPadding: EdgeInsets.all(0),
-                                border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                border: UnderlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.grey)),
                               ),
                               // InputDecoration(border: InputBorder.none),
                             ),
@@ -166,9 +179,12 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                 IsMarketingCheckbox_last(
                   onChange: (value) {
                     isMarketing = value;
-                    Provider.of<lastcommentclient_vm>(context, listen: false).setvaluepriv(GetIt.I<PrivilegeCubit>(), isMarketing);
-                    Provider.of<lastcommentclient_vm>(context, listen: false).getLastcommentClientModel();
-                    Provider.of<lastcommentclient_vm>(context, listen: false).getData(type, idUser);
+                    Provider.of<lastcommentclient_vm>(context, listen: false)
+                        .setvaluepriv(GetIt.I<PrivilegeCubit>(), isMarketing);
+                    Provider.of<lastcommentclient_vm>(context, listen: false)
+                        .getLastcommentClientModel();
+                    Provider.of<lastcommentclient_vm>(context, listen: false)
+                        .getData(type, idUser);
                   },
                 ),
                 Row(
@@ -187,15 +203,22 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                             enabledBorder: InputBorder.none,
                             hintText: "المؤسسة, العميل, الهاتف,....",
                           ),
-                          onChanged: Provider.of<lastcommentclient_vm>(context, listen: false).onSearch,
+                          onChanged: Provider.of<lastcommentclient_vm>(context,
+                                  listen: false)
+                              .onSearch,
                         ),
                       ),
                     ),
                     IconButton(
                         onPressed: () {
-                          Provider.of<lastcommentclient_vm>(context, listen: false).getLastcommentClientModel();
+                          Provider.of<lastcommentclient_vm>(context,
+                                  listen: false)
+                              .getLastcommentClientModel();
                         },
-                        icon: Icon(Provider.of<lastcommentclient_vm>(context, listen: false).order == 'ASC'
+                        icon: Icon(Provider.of<lastcommentclient_vm>(context,
+                                        listen: false)
+                                    .order ==
+                                'ASC'
                             ? Icons.account_tree_rounded
                             : Icons.account_tree_outlined))
                   ],
@@ -203,15 +226,18 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                 Expanded(
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount:
-                          Provider.of<lastcommentclient_vm>(context, listen: false).list_LastcommentClientModel.length,
+                      itemCount: Provider.of<lastcommentclient_vm>(context,
+                              listen: false)
+                          .list_LastcommentClientModel
+                          .length,
                       itemBuilder: (context, index) {
                         return SingleChildScrollView(
                             child: Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
+                                    borderRadius: BorderRadius.only(
+                                        bottomRight: Radius.circular(0)),
                                     boxShadow: <BoxShadow>[
                                       BoxShadow(
                                         offset: Offset(1.0, 1.0),
@@ -229,11 +255,19 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                             CupertinoPageRoute(
                                                 builder: (context) => ProfileClient(
                                                     tabIndex: 2,
-                                                    client: Provider.of<lastcommentclient_vm>(context, listen: false)
-                                                        .list_LastcommentClientModel[index]
+                                                    client: Provider.of<
+                                                                lastcommentclient_vm>(
+                                                            context,
+                                                            listen: false)
+                                                        .list_LastcommentClientModel[
+                                                            index]
                                                         .client_obj,
-                                                    idClient: Provider.of<lastcommentclient_vm>(context, listen: false)
-                                                        .list_LastcommentClientModel[index]
+                                                    idClient: Provider.of<
+                                                                lastcommentclient_vm>(
+                                                            context,
+                                                            listen: false)
+                                                        .list_LastcommentClientModel[
+                                                            index]
                                                         .client_obj
                                                         .idClients)));
                                         // Navigator.push(
@@ -251,7 +285,8 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(5)),
                                           ),
                                           //height: 70,//MediaQuery.of(context).size.height*0.15,
                                           child: Padding(
@@ -260,58 +295,83 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                               direction: Axis.vertical,
                                               children: [
                                                 Column(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
                                                     Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          Provider.of<lastcommentclient_vm>(context, listen: false)
-                                                              .list_LastcommentClientModel[index]
-                                                              .client_obj!
+                                                          Provider.of<lastcommentclient_vm>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .list_LastcommentClientModel[
+                                                                  index]
+                                                              .client_obj
                                                               .name_regoin
                                                               .toString(),
                                                           style: TextStyle(
                                                               //fontWeight: FontWeight.bold,
                                                               fontSize: 12,
-                                                              fontFamily: kfontfamily2,
-                                                              color: kMainColor),
+                                                              fontFamily:
+                                                                  kfontfamily2,
+                                                              color:
+                                                                  kMainColor),
                                                         ),
                                                         Text(
-                                                          int.parse(Provider.of<lastcommentclient_vm>(context,
-                                                                          listen: false)
-                                                                      .list_LastcommentClientModel[index]
+                                                          int.parse(Provider.of<
+                                                                              lastcommentclient_vm>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .list_LastcommentClientModel[
+                                                                          index]
                                                                       .hoursLastComment
                                                                       .toString()) <
                                                                   0
                                                               ? 'لا يوجد اي تعليق'
-                                                              : Provider.of<lastcommentclient_vm>(context,
-                                                                          listen: false)
-                                                                      .list_LastcommentClientModel[index]
+                                                              : Provider.of<lastcommentclient_vm>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
+                                                                      .list_LastcommentClientModel[
+                                                                          index]
                                                                       .hoursLastComment
                                                                       .toString() +
                                                                   ' يوم ',
                                                           style: TextStyle(
                                                               fontSize: 12,
                                                               //fontWeight: FontWeight.bold,
-                                                              fontFamily: kfontfamily2,
-                                                              color: kMainColor),
+                                                              fontFamily:
+                                                                  kfontfamily2,
+                                                              color:
+                                                                  kMainColor),
                                                         ),
                                                       ],
                                                     ),
                                                     Row(
-                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          Provider.of<lastcommentclient_vm>(context, listen: false)
-                                                              .list_LastcommentClientModel[index]
-                                                              .client_obj!
+                                                          Provider.of<lastcommentclient_vm>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .list_LastcommentClientModel[
+                                                                  index]
+                                                              .client_obj
                                                               .nameEnterprise
                                                               .toString(),
                                                           style: TextStyle(
-                                                            fontWeight: FontWeight.bold,
+                                                            fontWeight:
+                                                                FontWeight.bold,
                                                             fontSize: 12,
-                                                            fontFamily: kfontfamily2,
+                                                            fontFamily:
+                                                                kfontfamily2,
                                                           ),
                                                         ),
                                                         Text(
@@ -319,8 +379,10 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                           style: TextStyle(
                                                               fontSize: 12,
                                                               //fontWeight: FontWeight.bold,
-                                                              fontFamily: kfontfamily2,
-                                                              color: kMainColor),
+                                                              fontFamily:
+                                                                  kfontfamily2,
+                                                              color:
+                                                                  kMainColor),
                                                         ),
                                                       ],
                                                     ),
