@@ -98,7 +98,8 @@ class TaskCubit extends Cubit<TaskState> {
     ));
 
     result.fold(
-      (exception, message) => emit(state.copyWith(addTaskStatus: BlocStatus.fail(error: message))),
+      (exception, message) => emit(state.copyWith(
+          addTaskStatus: BlocStatus.fail(error: message))),
       (value) {
         onSuccess();
         emit(state.copyWith(addTaskStatus: const BlocStatus.success(), isResetAddTask: true));
@@ -109,7 +110,8 @@ class TaskCubit extends Cubit<TaskState> {
   getTasks({VoidCallback? onSuccess}) async {
     emit(state.copyWith(tasksState: const PageState.loading()));
 
-    final result = await _filterTaskUsecase(FilterTaskParams(
+    final result = await _filterTaskUsecase(
+      FilterTaskParams(
       assignedTo: state.filterAssignTo?.idUser?.toString(),
       assignedBy: state.filterAssignFrom?.idUser?.toString(),
       startDateFrom: state.filterFromDate,
@@ -124,7 +126,8 @@ class TaskCubit extends Cubit<TaskState> {
     ));
 
     result.fold(
-      (exception, message) => emit(state.copyWith(tasksState: const PageState.error())),
+      (exception, message) => emit(state.copyWith(
+          tasksState: const PageState.error())),
       (value) {
         List<TaskModel> list = value.data ?? [];
         if (state.selectedStatus != null) {
@@ -204,16 +207,19 @@ class TaskCubit extends Cubit<TaskState> {
   }
 
   onChangeTaskStatusStage(
-      TaskModel taskModel, TaskStatusType taskStatusType, VoidCallback onSuccess, String userId) async {
+      TaskModel taskModel, TaskStatusType taskStatusType,
+      VoidCallback onSuccess, String userId) async {
     emit(state.copyWith(changeTaskStatus: const BlocStatus.loading()));
-    final response = await _changeStatusTaskUsecase(ChangeStatusTaskParams(
+    final response = await _changeStatusTaskUsecase(
+        ChangeStatusTaskParams(
       taskStatusType.next.id.toString(),
       taskModel.id.toString(),
       userId,
     ));
 
     response.fold(
-      (exception, message) => emit(state.copyWith(changeTaskStatus: BlocStatus.fail(error: message))),
+      (exception, message) => emit(state.copyWith(
+          changeTaskStatus: BlocStatus.fail(error: message))),
       (value) {
         List<TaskModel> taskList = state.tasksList;
         if (state.selectedStatus != null) {
@@ -221,7 +227,8 @@ class TaskCubit extends Cubit<TaskState> {
         } else {
           taskList = taskList
               .map((e) => e.id == taskModel.id
-                  ? e.copyWith(name: taskStatusType.next.name, taskStatuseId: taskStatusType.next.id)
+                  ? e.copyWith(name: taskStatusType.next.name,
+                    taskStatuseId: taskStatusType.next.id)
                   : e)
               .toList();
         }
@@ -229,7 +236,8 @@ class TaskCubit extends Cubit<TaskState> {
 
         allTasks = allTasks
             .map((e) => e.id == taskModel.id
-                ? e.copyWith(name: taskStatusType.next.name, taskStatuseId: taskStatusType.next.id)
+                ? e.copyWith(name: taskStatusType.next.name,
+            taskStatuseId: taskStatusType.next.id)
                 : e)
             .toList();
 

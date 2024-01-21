@@ -229,7 +229,8 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
         List<InvoiceWithdrawalSeries> list = state.withdrawalInvoiceDetails.getDataWhenSuccess ?? [];
         list = list
             .map((e) =>
-                e.fkUser == seriesParams.id_user ? e.copyWith(withdrawalStatus: seriesParams.withdrawalStatus) : e)
+                e.fkUser == seriesParams.id_user ?
+                e.copyWith(withdrawalStatus: seriesParams.withdrawalStatus) : e)
             .toList();
 
         List<InvoiceModel> listInvoice = state.withdrawalsInvoices.getDataWhenSuccess ?? [];
@@ -261,10 +262,12 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
   getWithdrawnDetails(final String fkInvoice) async {
     emit(state.copyWith(withdrawnDetailsState: PageState.loading()));
-    final response = await _getWithdrawnDetailsUsecase(GetWithdrawnDetailsParams(fkInvoice));
+    final response = await _getWithdrawnDetailsUsecase(
+        GetWithdrawnDetailsParams(fkInvoice));
 
     await response.fold(
-      (exception, message) async => emit(state.copyWith(withdrawnDetailsState: PageState.error())),
+      (exception, message) async =>
+          emit(state.copyWith(withdrawnDetailsState: PageState.error())),
       (result) async {
         try {
           final data = result.message!;

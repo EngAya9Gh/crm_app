@@ -34,6 +34,8 @@ import '../../../manage_withdrawals/data/models/reject_reason.dart';
 import '../../../manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../task_management/presentation/widgets/add_manual_task_button.dart';
+import '../../domain/use_cases/ChangeTypeClient.dart';
+import '../../domain/use_cases/edit_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import '../pages/action_client_page.dart';
 import '../../../../function_global.dart';
@@ -54,7 +56,7 @@ class ClientSection extends StatefulWidget {
 
 class _ClientSectionState extends State<ClientSection> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  late ClientModel1 clientModel;
+  late ClientModel1 clientModel1;
   bool isUpdate = false;
   late final ClientTypeProvider _clientTypeProvider;
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
@@ -93,13 +95,13 @@ class _ClientSectionState extends State<ClientSection> {
 
     _clientTypeProvider.type_of_client = widget.client?.typeClient == "تفاوض" ||
         widget.client?.typeClient == "عرض سعر" ||
-        widget.client?.typeClient == "مستبعد"
-        ? ['تفاوض', 'عرض سعر', 'مستبعد']
+        widget.client?.typeClient == "معلق استبعاد"
+        ? ['تفاوض', 'عرض سعر', 'معلق استبعاد']
         : [];
 
     if (widget.client?.typeClient == "تفاوض" ||
         widget.client?.typeClient == "عرض سعر" ||
-        widget.client?.typeClient == "مستبعد") {
+        widget.client?.typeClient == "معلق استبعاد") {
       _clientTypeProvider.selectedValuemanag = widget.client?.typeClient.toString();
     }
     if (widget.client?.typeClient == "مشترك") {
@@ -131,162 +133,208 @@ class _ClientSectionState extends State<ClientSection> {
           StatefulBuilder(
             builder: (BuildContext context, void Function(void Function()) refresh) {
 
-              return Directionality(
-                textDirection:  myui.TextDirection.rtl,
-                child: Form(
-                  key: _globalKey,
-                  child:Consumer<ClientTypeProvider>(builder: (context, clientTypeProvider, child) {
-                    return Column(
-                      children: [
-                        SizedBox(height: 10),
-                        if (context.read<PrivilegeCubit>().checkPrivilege('27')  ) ...{
-                          AppDropdownButtonFormField<String, String>(
-                            items: clientTypeProvider.type_of_client,
-                            onChange: (status) {
-                              clientTypeProvider.changevalue(status.toString());
-                            },
-                            hint: "حالة العميل",
-                            itemAsValue: (String? item) => item,
-                            itemAsString: (item) => item!,
-                            value: clientTypeProvider.selectedValuemanag,
-                          ),
-                          10.verticalSpace,
-                        },
-                        if (context.read<PrivilegeCubit>().checkPrivilege('27') &&
-
-                            clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: AppTextField(
-                                  labelText: "عرض سعر",
-                                  maxLines: 1,
-                                  controller: offerPriceController,
-                                  textInputType: TextInputType.number,
-                                ),
-                              ),
-                              10.horizontalSpace,
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  validator: (value) {
-                                    if (dateOfferPrice == DateTime(1, 1, 1)) {
-                                      return 'يرجى تعيين التاريخ ';
-                                    }
-                                    return null;
-                                  },
-                                  style: context.textTheme.titleSmall.r?.copyWith(
-                                    color: context.colorScheme.onBackground,
-                                    decoration: TextDecoration.none,
-                                    decorationColor: context.colorScheme.borderTextField,
-                                  ),
-                                  textAlignVertical: TextAlignVertical.center,
-                                  textAlign: TextAlign.center,
-                                  decoration: InputDecoration(
-                                      prefixIcon: Icon(
-                                        Icons.date_range,
-                                        color: kMainColor,
-                                      ),
-                                      hintStyle: const TextStyle(
-                                          color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                      hintText: intl.DateFormat("yyyy/MM/dd")
-                                          .format(Provider.of<datetime_vm>(context, listen: true).valuedateTime),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
-                                      ),
-                                      filled: false,
-                                      isDense: true,
-                                      isCollapsed: true),
-                                  readOnly: true,
-                                  onTap: () {
-                                    _selectDate(context, DateTime.now());
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          10.verticalSpace,
-                        },
-                        if (context.read<PrivilegeCubit>().checkPrivilege('27') &&
-
-                            clientTypeProvider.selectedValuemanag == "مستبعد") ...{
-                          BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-                            builder: (context, state) {
-                              return ValueListenableBuilder<String?>(
-                                  valueListenable: reasonReject,
-                                  builder: (context, value, _) {
-                                    return AppDropdownButtonFormField<RejectReason, String>(
-                                      items: state.rejectReasonsStat.getDataWhenSuccess ?? [],
-                                      onChange: (reason) {
-                                        reasonReject.value = reason;
-                                      },
-                                      hint: "أسباب الاستبعاد",
-                                      itemAsValue: (RejectReason? item) => item!.idRejectClient!,
-                                      itemAsString: (item) => item!.nameReasonReject!,
-                                      value: value,
-                                      validator: HelperFunctions.instance.requiredFiled,
-                                    );
-                                  });
-                            },
-                          ),
-                          10.verticalSpace,
-                          AppTextField(
-                            labelText: "سبب الاستبعاد",
-                            maxLines: 1,
-                            controller: reasonController,
-                            validator: HelperFunctions.instance.requiredFiled,
-                          ),
-                          10.verticalSpace,
-                        },
-
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                            onPressed: () async => _onPressedUpdate(context),
-                            child: Text('تعديل بيانات العميل'),
-                          ),
-                        ),
-                        10.verticalSpace,
-                        BlocBuilder<ClientsListBloc, ClientsListState>(
-                          builder: (context, state) {
-                            return AppElevatedButton(
-                              isLoading: state.actionClientBlocStatus.isLoading(),
-                              text: "حفظ",
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-                              ),
-                              onPressed: () {
-                                if (!_globalKey.currentState!.validate()) {
-                                  return;
-                                }
-
-                                final EditClientParams editClientParams = EditClientParams(
-
-                                );
-                                _clientsListBloc.add(EditTypeClientEvent(
-                                  editClientParams,
-                                  onSuccess: (client){
-
-                                    Navigator.pop(context, client);
-                                  },
-                                ));
+              return BlocProvider(
+                  create: (context) => _manageWithdrawalsCubit,
+                  child:   Directionality(
+                  textDirection:  myui.TextDirection.rtl,
+                  child: Form(
+                    key: _globalKey,
+                    child:Consumer<ClientTypeProvider>(builder: (context, clientTypeProvider, child) {
+                      return Column(
+                        children: [
+                          SizedBox(height: 10),
+                          if (context.read<PrivilegeCubit>().checkPrivilege('27')  ) ...{
+                            AppDropdownButtonFormField<String, String>(
+                              items: clientTypeProvider.type_of_client,
+                              onChange: (status) {
+                                clientTypeProvider.changevalue(status.toString());
                               },
-                            );
+                              hint: "حالة العميل",
+                              itemAsValue: (String? item) => item,
+                              itemAsString: (item) => item!,
+                              value: clientTypeProvider.selectedValuemanag,
+                            ),
+                            10.verticalSpace,
                           },
-                        )
-              ]
-              );})));})]);
+                          if (context.read<PrivilegeCubit>().checkPrivilege('27') &&
+
+                              clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  flex: 3,
+                                  child: AppTextField(
+                                    labelText: "عرض سعر",
+                                    maxLines: 1,
+                                    controller: offerPriceController,
+                                    textInputType: TextInputType.number,
+                                  ),
+                                ),
+                                10.horizontalSpace,
+                                Expanded(
+                                  flex: 5,
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (dateOfferPrice == DateTime(1, 1, 1)) {
+                                        return 'يرجى تعيين التاريخ ';
+                                      }
+                                      return null;
+                                    },
+                                    style: context.textTheme.titleSmall.r?.copyWith(
+                                      color: context.colorScheme.onBackground,
+                                      decoration: TextDecoration.none,
+                                      decorationColor: context.colorScheme.borderTextField,
+                                    ),
+                                    textAlignVertical: TextAlignVertical.center,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                        prefixIcon: Icon(
+                                          Icons.date_range,
+                                          color: kMainColor,
+                                        ),
+                                        hintStyle: const TextStyle(
+                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                        hintText: intl.DateFormat("yyyy/MM/dd")
+                                            .format(Provider.of<datetime_vm>(context, listen: true).valuedateTime),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(color: context.colorScheme.primary),
+                                          borderRadius: BorderRadius.circular(10).r,
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: context.colorScheme.primary),
+                                          borderRadius: BorderRadius.circular(10).r,
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: context.colorScheme.primary),
+                                          borderRadius: BorderRadius.circular(10).r,
+                                        ),
+                                        filled: false,
+                                        isDense: true,
+                                        isCollapsed: true),
+                                    readOnly: true,
+                                    onTap: () {
+                                      _selectDate(context, DateTime.now());
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            10.verticalSpace,
+                          },
+                          if (context.read<PrivilegeCubit>().checkPrivilege('27') &&
+
+                              clientTypeProvider.selectedValuemanag == "معلق استبعاد") ...{
+                            BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+                              builder: (context, state) {
+                                return ValueListenableBuilder<String?>(
+                                    valueListenable: reasonReject,
+                                    builder: (context, value, _) {
+                                      return AppDropdownButtonFormField<RejectReason, String>(
+                                        items: state.rejectReasonsStat.getDataWhenSuccess ?? [],
+                                        onChange: (reason) {
+                                          reasonReject.value = reason;
+                                        },
+                                        hint: "أسباب الاستبعاد",
+                                        itemAsValue: (RejectReason? item) => item!.idRejectClient!,
+                                        itemAsString: (item) => item!.nameReasonReject!,
+                                        value: value,
+                                        validator: HelperFunctions.instance.requiredFiled,
+                                      );
+                                    });
+                              },
+                            ),
+                            10.verticalSpace,
+                            AppTextField(
+                              labelText: "سبب الاستبعاد",
+                              maxLines: 1,
+                              controller: reasonController,
+                              validator: HelperFunctions.instance.requiredFiled,
+                            ),
+                            10.verticalSpace,
+                          },
+                          10.verticalSpace,
+                           clientModel1.typeClient!="معلق استبعاد"  ?
+
+                          BlocBuilder<ClientsListBloc, ClientsListState>(
+                            builder: (context, state) {
+                              return AppElevatedButton(
+                                isLoading: state.actionClientBlocStatus.isLoading(),
+                                text: "حفظ",
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                                ),
+                                onPressed: () async {
+                                  if (!_globalKey.currentState!.validate()) {
+                                    return;
+                                  }
+
+                                 // code comment #
+                                 //  final ChangeTypeClient changeTypeClientParams =
+                                 //  ChangeTypeClient(
+                                 //
+                                 //    type_client: widget.client?.typeClient != "مشترك" && widget.client?.typeClient != "منسحب"
+                                 //        ? _clientTypeProvider.selectedValuemanag!
+                                 //        : widget.client!.typeClient!,
+                                 //    clientId: widget.client!.idClients!,
+                                 //    id_user: _userProvider.currentUser.idUser!,
+                                 //    fk_rejectClient: reasonReject.value,
+                                 //
+                                 //
+                                 //    reason_change: reasonController.text,
+                                 //
+                                 //    offer_price: offerPriceController.text,
+                                 //    // dateChangeType: _clientTypeProvider.selectedValuemanag != null ?
+                                 //    // formatter.format(DateTime.now()) : null,
+                                 //    date_price: _clientTypeProvider.selectedValuemanag == "عرض سعر" ? dateOfferPrice.toIso8601String() : null,
+                                 //
+                                 //  );
+                                 //  _clientsListBloc.add(
+                                 //      changeTypeClientEvent(
+                                 //    changeTypeClientParams,
+                                 //    onSuccess: (client){
+                                 //
+                                 //      setState(() {
+                                 //        clientModel1 = client.mapToClientModel1();
+                                 //      });
+                                 //
+                                 //    },
+                                 //  ));
+                                },
+                              );
+                            },
+                          ):
+                           BlocBuilder<ClientsListBloc, ClientsListState>(
+                             builder: (context, state) {
+                               return Row(
+                                 children: [
+                                   AppElevatedButton(
+                                     isLoading: state.actionClientBlocStatus.isLoading(),
+                                     text: "موافقة",
+                                     style: ElevatedButton.styleFrom(
+                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                                     ),
+                                     onPressed: () async {
+
+                                     },
+                                   ),
+                                   AppElevatedButton(
+                                     isLoading: state.actionClientBlocStatus.isLoading(),
+                                     text: "رفض",
+                                     style: ElevatedButton.styleFrom(
+                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                                     ),
+                                     onPressed: () async {
+
+                                     },
+                                   ),
+                                 ],
+                               );
+                             },
+                           )
+                ]
+                );}))),
+              );})]);
 
 
     // show the dialog
@@ -322,9 +370,9 @@ class _ClientSectionState extends State<ClientSection> {
         );
       }
       if(!isUpdate) {
-        clientModel = state.currentClientModel.data!;
+        clientModel1 = state.currentClientModel.data!;
       }
-      print("Client name: ${clientModel.nameClient}");
+      print("Client name: ${clientModel1.nameClient}");
       return Directionality(
           textDirection: TextDirection.rtl,
           child: Container(
@@ -335,7 +383,7 @@ class _ClientSectionState extends State<ClientSection> {
                 child: Column(children: [
                   AddManualTaskButton(
                     list: clientPublicTypeList,
-                    clientId: clientModel.idClients,
+                    clientId: clientModel1.idClients,
                   ),
                   // InkWell(
                   //     onTap: ()async{
@@ -354,7 +402,7 @@ class _ClientSectionState extends State<ClientSection> {
                             decoration: BoxDecoration(color: kMainColor, borderRadius: BorderRadius.all(Radius.circular(10))),
                             child: IconButton(
                               onPressed: () async {
-                                await FlutterPhoneDirectCaller.callNumber(clientModel.mobile.toString());
+                                await FlutterPhoneDirectCaller.callNumber(clientModel1.mobile.toString());
                               },
                               icon: Icon(Icons.call),
                               iconSize: 15,
@@ -368,20 +416,20 @@ class _ClientSectionState extends State<ClientSection> {
                                         true)) context.read<ClientProvider>().setTagClient();
                                   },
                                   icon: Icon(
-                                    (clientModel.tag ?? false) ? CupertinoIcons.checkmark_seal_fill : CupertinoIcons.checkmark_seal,
-                                    color: (clientModel.tag ?? false) ? Colors.amber : null,
+                                    (clientModel1.tag ?? false) ? CupertinoIcons.checkmark_seal_fill : CupertinoIcons.checkmark_seal,
+                                    color: (clientModel1.tag ?? false) ? Colors.amber : null,
                                   ),
-                                  tooltip: (clientModel.tag ?? false) ? "مميز" : "غير مميز",
+                                  tooltip: (clientModel1.tag ?? false) ? "مميز" : "غير مميز",
                                 )
                               : IgnorePointer(),
                         ],
                       ),
                       TextButton(
                         onPressed: () async {
-                          await FlutterPhoneDirectCaller.callNumber(clientModel.mobile.toString());
+                          await FlutterPhoneDirectCaller.callNumber(clientModel1.mobile.toString());
                         },
                         child: Text(
-                          clientModel.mobile.toString(),
+                          clientModel1.mobile.toString(),
                           style: TextStyle(fontFamily: kfontfamily2, color: kMainColor),
                         ),
                       ),
@@ -400,149 +448,149 @@ class _ClientSectionState extends State<ClientSection> {
                   ),
                   GestureDetector(
                       onLongPress: () async {
-                        await Clipboard.setData(ClipboardData(text: clientModel.serialNumber.toString()))
+                        await Clipboard.setData(ClipboardData(text: clientModel1.serialNumber.toString()))
                             .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text(
                                   "تم النسخ إلى الحافظة",
                                   textDirection: TextDirection.rtl,
                                 ))));
                       },
-                      child: cardRow(title: 'الرقم المرجعي', value: clientModel.serialNumber.toString())),
-                  cardRow(title: 'تاريخ الاضافة', value: clientModel.dateCreate.toString()),
+                      child: cardRow(title: 'الرقم المرجعي', value: clientModel1.serialNumber.toString())),
+                  cardRow(title: 'تاريخ الاضافة', value: clientModel1.dateCreate.toString()),
                   cardRow(
                     title: 'المؤسسة',
-                    value: clientModel.nameEnterprise.toString(),
+                    value: clientModel1.nameEnterprise.toString(),
                     isExpanded: true,
                   ),
                   cardRow(
                     title: 'اسم العميل',
-                    value: clientModel.nameClient.toString(),
+                    value: clientModel1.nameClient.toString(),
                     isExpanded: true,
                   ),
-                  cardRow(title: ' الفرع', value: clientModel.name_regoin.toString()),
+                  cardRow(title: ' الفرع', value: clientModel1.name_regoin.toString()),
 
-                  cardRow(title: ' نوع النشاط', value: clientModel.activity_type_title?.toString() ?? "لا يوجد"),
-                  clientModel.size_activity != null
-                      ? cardRow(title: 'حجم النشاط', value: clientModel.size_activity.toString())
+                  cardRow(title: ' نوع النشاط', value: clientModel1.activity_type_title?.toString() ?? "لا يوجد"),
+                  clientModel1.size_activity != null
+                      ? cardRow(title: 'حجم النشاط', value: clientModel1.size_activity.toString())
                       : IgnorePointer(),
-                  clientModel.email != null
-                      ? cardRow(title: 'البريد الالكتروني', value: clientModel.email.toString())
+                  clientModel1.email != null
+                      ? cardRow(title: 'البريد الالكتروني', value: clientModel1.email.toString())
                       : IgnorePointer(),
 
-                  cardRow(title: ' مدينة العميل', value: clientModel.name_city.toString()),
-                  cardRow(title: ' المنطقة', value: clientModel.namemaincity.toString()),
+                  cardRow(title: ' مدينة العميل', value: clientModel1.name_city.toString()),
+                  cardRow(title: ' المنطقة', value: clientModel1.namemaincity.toString()),
 
-                  clientModel.phone == '' || clientModel.phone == null
+                  clientModel1.phone == '' || clientModel1.phone == null
                       ? IgnorePointer()
-                      : cardRow(title: ' رقم آخر', value: clientModel.phone.toString()),
+                      : cardRow(title: ' رقم آخر', value: clientModel1.phone.toString()),
 
-                  cardRow(title: 'حالة العميل', value: clientModel.typeClient.toString()),
-                  clientModel.typeClient == 'مستبعد'
-                      ? cardRow(value: clientModel.nameuserdoning.toString(), title: 'قام بتحويل حالة العميل')
+                  cardRow(title: 'حالة العميل', value: clientModel1.typeClient.toString()),
+                  clientModel1.typeClient == 'مستبعد'
+                      ? cardRow(value: clientModel1.nameuserdoning.toString(), title: 'قام بتحويل حالة العميل')
                       : IgnorePointer(),
-                  clientModel.typeClient == 'مستبعد'
-                      ? cardRow(value: clientModel.dateChangetype.toString(), title: 'تاريخ تحويل حالة العميل')
+                  clientModel1.typeClient == 'مستبعد'
+                      ? cardRow(value: clientModel1.dateChangetype.toString(), title: 'تاريخ تحويل حالة العميل')
                       : IgnorePointer(),
-                  clientModel.typeClient == 'مستبعد'
-                      ? cardRow(value: clientModel.reasonChange.toString(), title: 'تفاصيل الاستبعاد')
+                  clientModel1.typeClient == 'مستبعد'
+                      ? cardRow(value: clientModel1.reasonChange.toString(), title: 'تفاصيل الاستبعاد')
                       : IgnorePointer(),
-                  clientModel.typeClient == 'مستبعد'
-                      ? cardRow(value: clientModel.NameReason_reject.toString(), title: 'سبب الاستبعاد')
+                  clientModel1.typeClient == 'مستبعد'
+                      ? cardRow(value: clientModel1.NameReason_reject.toString(), title: 'سبب الاستبعاد')
                       : IgnorePointer(),
-                  clientModel.offer_price != null && clientModel.offer_price.toString().trim().isNotEmpty
-                      ? cardRow(title: 'مبلغ عرض السعر', value: clientModel.offer_price.toString())
-                      : IgnorePointer(),
-
-                  clientModel.offer_price != null && clientModel.offer_price.toString().trim().isNotEmpty
-                      ? cardRow(title: 'تاريخ عرض السعر', value: clientModel.date_price.toString())
+                  clientModel1.offer_price != null && clientModel1.offer_price.toString().trim().isNotEmpty
+                      ? cardRow(title: 'مبلغ عرض السعر', value: clientModel1.offer_price.toString())
                       : IgnorePointer(),
 
-                  clientModel.offer_price != null && clientModel.offer_price.toString().trim().isNotEmpty
+                  clientModel1.offer_price != null && clientModel1.offer_price.toString().trim().isNotEmpty
+                      ? cardRow(title: 'تاريخ عرض السعر', value: clientModel1.date_price.toString())
+                      : IgnorePointer(),
+
+                  clientModel1.offer_price != null && clientModel1.offer_price.toString().trim().isNotEmpty
                       ? cardRow(
-                          title: 'الموظف الذي قام بتغيير حالة العميل', value: clientModel.nameuserdoning.toString())
+                          title: 'الموظف الذي قام بتغيير حالة العميل', value: clientModel1.nameuserdoning.toString())
                       : IgnorePointer(),
 
-                  cardRow(title: 'الموظف الذي أضاف العميل', value: getnameshort(clientModel.nameAdduser.toString())),
-                  cardRow(title: 'الموظف', value: getnameshort(clientModel.nameUser.toString())),
+                  cardRow(title: 'الموظف الذي أضاف العميل', value: getnameshort(clientModel1.nameAdduser.toString())),
+                  cardRow(title: 'الموظف', value: getnameshort(clientModel1.nameUser.toString())),
 
-                  cardRow(title: 'رقم الموظف', value: clientModel.mobileuser.toString()),
+                  cardRow(title: 'رقم الموظف', value: clientModel1.mobileuser.toString()),
 
-                  if (clientModel.reasonTransfer != null)
-                    context.read<PrivilegeCubit>().checkPrivilege('150') == true && clientModel.fkusertrasfer != null
+                  if (clientModel1.reasonTransfer != null)
+                    context.read<PrivilegeCubit>().checkPrivilege('150') == true && clientModel1.fkusertrasfer != null
                         ? cardRow(
-                            title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+                            title: 'قام بتحويل العميل', value: getnameshort(clientModel1.nameusertransfer.toString()))
                         : IgnorePointer()
                   else
-                    clientModel.fkusertrasfer != null
+                    clientModel1.fkusertrasfer != null
                         ? cardRow(
-                            title: 'قام بتحويل العميل', value: getnameshort(clientModel.nameusertransfer.toString()))
+                            title: 'قام بتحويل العميل', value: getnameshort(clientModel1.nameusertransfer.toString()))
                         : IgnorePointer(),
 
                   context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-                          (clientModel.reasonTransfer != null) &&
-                          clientModel.fkusertrasfer != null
-                      ? cardRow(title: 'تحويل العميل إلى', value: clientModel.nameTransferTo.toString())
+                          (clientModel1.reasonTransfer != null) &&
+                          clientModel1.fkusertrasfer != null
+                      ? cardRow(title: 'تحويل العميل إلى', value: clientModel1.nameTransferTo.toString())
                       : IgnorePointer(),
 
                   context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-                          (clientModel.reasonTransfer == null) &&
-                          clientModel.fkusertrasfer != null
+                          (clientModel1.reasonTransfer == null) &&
+                          clientModel1.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
                       : IgnorePointer(),
 
                   context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-                          (clientModel.reasonTransfer != null) &&
-                          clientModel.fkusertrasfer != null
+                          (clientModel1.reasonTransfer != null) &&
+                          clientModel1.fkusertrasfer != null
                       ? cardRow(title: 'حالة التحويل', value: 'معلق')
                       : IgnorePointer(),
 
                   // (clientModel.reasonTransfer == null) &&
-                  clientModel.fkusertrasfer != null
-                      ? cardRow(title: 'تاريخ التحويل', value: clientModel.dateTransfer.toString())
+                  clientModel1.fkusertrasfer != null
+                      ? cardRow(title: 'تاريخ التحويل', value: clientModel1.dateTransfer.toString())
                       : IgnorePointer(),
 
-                  clientModel.location.toString() == ''
+                  clientModel1.location.toString() == ''
                       ? IgnorePointer()
-                      : cardRow(title: ' الموقع', value: clientModel.location.toString()),
+                      : cardRow(title: ' الموقع', value: clientModel1.location.toString()),
 
-                  clientModel.ismarketing == '1'
-                      ? cardRow(title: ' عميل تسويق الكتروني', value: clientModel.ismarketing == '1' ? 'نعم' : '')
+                  clientModel1.ismarketing == '1'
+                      ? cardRow(title: ' عميل تسويق الكتروني', value: clientModel1.ismarketing == '1' ? 'نعم' : '')
                       : IgnorePointer(),
-                  clientModel.type_record != null && clientModel.type_record.toString().trim().isNotEmpty && clientModel.type_record!=""
-                      ? cardRow(title: 'نوع التسجيل', value: clientModel.type_record.toString())
+                  clientModel1.type_record != null && clientModel1.type_record.toString().trim().isNotEmpty && clientModel1.type_record!=""
+                      ? cardRow(title: 'نوع التسجيل', value: clientModel1.type_record.toString())
                       : IgnorePointer(),
 
-                  clientModel.type_classification != null && clientModel.type_classification.toString().trim().isNotEmpty && clientModel.type_classification!="null"
-                      ? cardRow(title: 'نوع التصنيف', value: clientModel.type_classification.toString())
+                  clientModel1.type_classification != null && clientModel1.type_classification.toString().trim().isNotEmpty && clientModel1.type_classification!="null"
+                      ? cardRow(title: 'نوع التصنيف', value: clientModel1.type_classification.toString())
                       : IgnorePointer(),
-                  clientModel.reason_class != null && clientModel.reason_class.toString().trim().isNotEmpty && clientModel.reason_class!="null"
-                      ? cardRow(title: 'سبب الإدخال', value: clientModel.reason_class.toString())
+                  clientModel1.reason_class != null && clientModel1.reason_class.toString().trim().isNotEmpty && clientModel1.reason_class!="null"
+                      ? cardRow(title: 'سبب الإدخال', value: clientModel1.reason_class.toString())
                       : IgnorePointer(),
                   cardRow(
                       title: 'عنوان العميل',
-                      value: clientModel.address_client == null ? '' : clientModel.address_client.toString()),
+                      value: clientModel1.address_client == null ? '' : clientModel1.address_client.toString()),
 
-                  clientModel.presystem == null || clientModel.presystem.toString().trim().isEmpty
+                  clientModel1.presystem == null || clientModel1.presystem.toString().trim().isEmpty
                       ? IgnorePointer()
                       : cardRow(
                           title: 'نظام سابق',
-                          value: clientModel.presystemtitle == null ? '' : clientModel.presystemtitle.toString()),
+                          value: clientModel1.presystemtitle == null ? '' : clientModel1.presystemtitle.toString()),
 
                   cardRow(
                       title: 'مصدر العميل',
-                      value: clientModel.sourcclient == null ? '' : clientModel.sourcclient.toString()),
-                  if (clientModel.sourcclient == 'عميل موصى به')
+                      value: clientModel1.sourcclient == null ? '' : clientModel1.sourcclient.toString()),
+                  if (clientModel1.sourcclient == 'عميل موصى به')
                     cardRow(
                         title: 'تمت التوصية من:',
                         value:
-                            clientModel.NameClient_recomand == null ? '' : clientModel.NameClient_recomand.toString()),
+                            clientModel1.NameClient_recomand == null ? '' : clientModel1.NameClient_recomand.toString()),
 
-                  clientModel.activity_type_fk == null
-                      ? cardRow(title: 'نوع النشاط', value: clientModel.activity_type_title.toString())
+                  clientModel1.activity_type_fk == null
+                      ? cardRow(title: 'نوع النشاط', value: clientModel1.activity_type_title.toString())
                       : IgnorePointer(),
 
-                  clientModel.activity_type_fk == null
-                      ? cardRow(title: 'وصف النشاط', value: clientModel.descActivController.toString())
+                  clientModel1.activity_type_fk == null
+                      ? cardRow(title: 'وصف النشاط', value: clientModel1.descActivController.toString())
                       : IgnorePointer(),
 
                   widget.clienttransfer == 'transfer'
@@ -559,7 +607,7 @@ class _ClientSectionState extends State<ClientSection> {
                                   child: Text('تعديل بيانات العميل'),
                                 ),
                               ),
-                              clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"?
+                              clientModel1.typeClient == "عرض سعر" || clientModel1.typeClient == "تفاوض" ||clientModel1.typeClient=='معلق استبعاد'?
                               Expanded(
                                 child: ElevatedButton(
                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
@@ -572,12 +620,12 @@ class _ClientSectionState extends State<ClientSection> {
                                 ),
                               ):Container(),
                               const SizedBox(width: 8),
-                              clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
+                              clientModel1.typeClient == "عرض سعر" || clientModel1.typeClient == "تفاوض"
                                   ? SizedBox(
                                       width: 5,
                                     )
                                   : IgnorePointer(),
-                              clientModel.reasonTransfer == null
+                              clientModel1.reasonTransfer == null
                                   ? Expanded(
                                       child: ElevatedButton(
                                         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
@@ -586,8 +634,8 @@ class _ClientSectionState extends State<ClientSection> {
                                               context,
                                               CupertinoPageRoute(
                                                   builder: (context) => transferClient(
-                                                        name_enterprise: clientModel.nameEnterprise.toString(),
-                                                        idclient: clientModel.idClients.toString(),
+                                                        name_enterprise: clientModel1.nameEnterprise.toString(),
+                                                        idclient: clientModel1.idClients.toString(),
                                                         type: "client",
                                                       ),
                                                   fullscreenDialog: true));
@@ -615,7 +663,7 @@ class _ClientSectionState extends State<ClientSection> {
                       :
                   // Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('150') == true &&
 
-                      clientModel.reasonTransfer ==
+                      clientModel1.reasonTransfer ==
                               Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString()
                           ? Center(
                               child: Row(
@@ -657,7 +705,7 @@ class _ClientSectionState extends State<ClientSection> {
                                                             // 'nameusertransfer':
                                                             // Provider.of<user_vm_provider>(context,listen: false)
                                                             //     .currentUser.nameUser.toString(),//الموظف الذي حول العميل
-                                                            'name_enterprise': clientModel.nameEnterprise,
+                                                            'name_enterprise': clientModel1.nameEnterprise,
                                                             'fk_regoin':
                                                                 Provider.of<UserProvider>(context, listen: false)
                                                                     .currentUser
@@ -724,11 +772,11 @@ class _ClientSectionState extends State<ClientSection> {
                                                                 Provider.of<UserProvider>(context, listen: false)
                                                                     .currentUser
                                                                     .nameUser,
-                                                            'fkuserclient': clientModel.fkUser.toString(), //صاحب العميل
+                                                            'fkuserclient': clientModel1.fkUser.toString(), //صاحب العميل
                                                             'reason_transfer': reason_transfer.toString(),
                                                             'fkusertrasfer': reason_transfer.toString(),
                                                             'date_transfer': reason_transfer.toString(),
-                                                            'name_enterprise': clientModel.nameEnterprise,
+                                                            'name_enterprise': clientModel1.nameEnterprise,
                                                           }, widget.idclient).then((value) =>
                                                                       value != false ? clear() : error() // clear()
                                                                   // _scaffoldKey.currentState!.showSnackBar(
@@ -1012,20 +1060,19 @@ class _ClientSectionState extends State<ClientSection> {
 
   _onPressedUpdate(BuildContext context) async {
     isUpdate = true;
-    print(clientModel.serialNumber);
+    print(clientModel1.serialNumber);
     ClientModel result = await Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (context) => ActionClientPage(client: clientModel.mapToClientModel()),
+        builder: (context) =>
+            ActionClientPage(client: clientModel1.mapToClientModel()),
       ),
     );
-
-
     setState(() {
-      clientModel = result.mapToClientModel1();
+      clientModel1 = result.mapToClientModel1();
     });
     print(result.serialNumber);
-    print(clientModel.serialNumber);
+    print(clientModel1.serialNumber);
   }
 
   clear() {

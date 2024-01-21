@@ -783,20 +783,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
     );
   }
 
-  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    final DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3000));
-    if (pickedDate != null) {
-      setState(() {
-        dateOfferPrice = pickedDate;
-      });
-      context.read<datetime_vm>().setdatetimevalue1(dateOfferPrice);
-    }
-  }
 
   bool get isShowingClientStatus => widget.client?.typeClient != "مشترك" && widget.client?.typeClient != "منسحب";
 

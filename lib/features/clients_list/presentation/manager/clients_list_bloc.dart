@@ -38,7 +38,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
     on<AddClientEvent>(_onAddClientEvent);
     on<EditClientEvent>(_onEditClientEvent);
-    on<EditTypeClientEvent >(_onEditTypeClientEvent);
+    on<changeTypeClientEvent >(_onEditTypeClientEvent);
   }
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
@@ -148,21 +148,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onEditTypeClientEvent(EditTypeClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onEditTypeClientEvent(changeTypeClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
-    final response = await _changeTypeClientUsecase(event.editClientParams);
-
-    response.fold(
-      (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
-      (value) {
-        emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
-        state.clientsListController.itemList =
-            (state.clientsListController.itemList ?? [])
-            .map((e) => e. == event.editClientParams.id_clients ? value.data! : e)
-            .toList();
-            event.onSuccess?.call(value.data!);
-      },
-    );
+    final response = await _changeTypeClientUsecase(
+        event.changeTypeClientParams);
+      /// code response
   }
 }

@@ -129,7 +129,8 @@ class ManageWithdrawalsDatasource {
 
       return ResponseWrapper<WithdrawnDetailsModel>.fromJson(
         jsonDecode(response.data),
-        (json) => WithdrawnDetailsModel.fromJson(json[0] as Map<String, dynamic>),
+        (json) =>
+            WithdrawnDetailsModel.fromJson(json[0] as Map<String, dynamic>),
       );
     }
 

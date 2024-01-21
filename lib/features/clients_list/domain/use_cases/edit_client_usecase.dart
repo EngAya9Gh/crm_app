@@ -107,5 +107,5 @@ class EditClientParams {
     return params;
   }
 
-  Map<String, dynamic> get toParams => {'id_clients': clientId};
+  Map<String, dynamic> get toParams  => {'id_clients': clientId};
 }

@@ -19,15 +19,22 @@ class ChangeTypeClientUsecase extends UseCase<Result<ResponseWrapper<void>>, Cha
 }
 
 class ChangeTypeClient {
-  ChangeTypeClient(this.type_client, this.id_clients, this.userId,this.fk_rejectClient,this.reason_change,this.offer_price,this.date_price);
+  ChangeTypeClient({
+     required this.type_client,
+      required this.id_clients,
+      required this.userId,
+     required this.fk_rejectClient,
+     required this.reason_change,
+     required this.offer_price,
+     required this.date_price});
 
-  final String type_client;
-  final String id_clients;
-  final String userId;
-  final String fk_rejectClient;
-  final String reason_change;
-  final String offer_price;
-  final String date_price;
+    String? type_client;
+    String id_clients;
+    String userId;
+    String? fk_rejectClient;
+    String? reason_change;
+    String? offer_price;
+    String? date_price;
 
   Map<String, dynamic> get toMap => {
     'type_client': type_client,
