@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import '../../../../constants.dart';
+import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'action_user_page.dart';
 
 class ManageUserPage extends StatefulWidget {
@@ -48,7 +49,9 @@ class _ManageUserPageState extends State<ManageUserPage> {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            floatingActionButton: FloatingActionButton(
+            floatingActionButton:
+            context.read<PrivilegeCubit>().checkPrivilege('49')?
+            FloatingActionButton(
               onPressed: () => Navigator.push(
                 context,
                 CupertinoPageRoute(
@@ -60,7 +63,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
               child: Icon(CupertinoIcons.add,color: AppColors.white),
               heroTag: "add user",
               backgroundColor: kMainColor,
-            ),
+            ):Container(),
             appBar: AppBar(
               title: Text('إدارة المستخدمين', style: TextStyle(color: kWhiteColor)),
               centerTitle: true,

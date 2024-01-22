@@ -35,7 +35,7 @@ class manage_provider extends ChangeNotifier {
           listtext.add(ManageModel.fromJson(data[i]));
         }
       }
-      selectedValuemanag = '1';
+      // selectedValuemanag = '1';
       notifyListeners();
       //return data;
     }

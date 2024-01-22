@@ -55,9 +55,16 @@ class _UserProfileState extends State<UserProfile> {
               //           color: kWhiteColor,
               //         ))
               //     :
-              context.read<PrivilegeCubit>().checkPrivilege('50')
-                  ?
-                    IconButton(
+              //180
+              (context.read<PrivilegeCubit>().checkPrivilege('50')
+              &&
+                  ( user.typeLevel==context.read<UserProvider>().currentUser.typeLevel &&
+                  int.parse(user.periorty.toString())==
+                  int.parse(context.read<UserProvider>().currentUser.periorty.toString())
+                  ))
+                  ||
+                  (context.read<PrivilegeCubit>().checkPrivilege('180'))
+                  ? IconButton(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -75,7 +82,8 @@ class _UserProfileState extends State<UserProfile> {
                       ))
                   : IconButton(
                       onPressed: () {
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => edit_profile()));
+                        Navigator.push(context, CupertinoPageRoute(
+                        builder: (context) => edit_profile()));
                       },
                       icon: const Icon(
                         Icons.edit,

@@ -25,18 +25,18 @@ class ImageProfile extends StatelessWidget {
               radius: 85.0,
               child:
               Provider.of<UserProvider>(context,listen: true)
-                  .currentUser.path!.isNotEmpty
+                  .currentUser.path.toString()!.isNotEmpty
                   ?
               ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                     child: Image.file(
                     File(Provider.of<UserProvider>(context,listen: true)
-                    .currentUser.path!),width: 1000,height: 1000,fit: BoxFit.fill,
+                    .currentUser.path.toString()!),width: 1000,height: 1000,fit: BoxFit.fill,
                 // fit: BoxFit.fill,
               ),
                   )
                   : Provider.of<UserProvider>(context,listen: true)
-                  .currentUser.img_image!.isNotEmpty
+                  .currentUser.img_image.toString()!.isNotEmpty
                   ? ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                 child:
@@ -52,30 +52,6 @@ class ImageProfile extends StatelessWidget {
                   .currentUser.nameUser
                   .toString()
                   .substring(0, 1))),
-        // CircleAvatar(
-        //     radius: 85.0,
-        //     child:
-        //     Provider.of<user_vm_provider>(context,listen: true)
-        //         .currentUser!.path!.isNotEmpty
-        //    ? Image.file(File(Provider.of<user_vm_provider>(context,listen: true)
-        //           .currentUser!.path!),
-        //      // fit: BoxFit.fill,
-        //    )
-        //    : Provider.of<user_vm_provider>(context,listen: true)
-        //         .currentUser!.img_image!.isNotEmpty
-        //    ? ClipRRect(
-        //       borderRadius: BorderRadius.circular(100),
-        //       child: CachedNetworkImage(
-        //         progressIndicatorBuilder: (context, url, progress) => Center(
-        //           child: CircularProgressIndicator(
-        //             value: progress.progress,),),
-        //         imageUrl: Provider.of<user_vm_provider>(context,listen: true)
-        //           .currentUser!.img_image!       ),
-        //    )
-        //         :Text(Provider.of<user_vm_provider>(context,listen: true)
-        //         .currentUser!.nameUser
-        //         .toString()
-        //         .substring(0, 1))),
 
         Positioned(
             bottom: 20.0,

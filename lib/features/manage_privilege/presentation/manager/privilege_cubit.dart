@@ -32,13 +32,14 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   final UpdatePrivilegeUsecase _updatePrivilegeUsecase;
   final AddLevelUsecase _addLevelUsecase;
 
-  getLevels(UserModel user, {bool isRefresh = false}) async {
+  getLevels(UserModel user ,{bool isRefresh = false} ) async {
     if (state.levelsState.getDataWhenSuccess != null && !isRefresh) {
       final list =
-          _filterPriorityLevels(state.levelsState.data, user.periorty!);
+          _filterPriorityLevels(state.levelsState.data, user.periorty! );
       print(list);
-     if(  list.indexWhere((element) => element.idLevel==user.typeAdministration)==-1)
-      list.add(LevelModel(idLevel: user.typeAdministration,nameLevel: user.name_mange,periorty: user.periorty));
+     if(  list.indexWhere((element) => element.idLevel==user.typeLevel)==-1)
+      list.add(LevelModel(idLevel: user.typeLevel,nameLevel: user.name_level,
+          periorty: user.periorty));
 
      emit(state.copyWith(
           levelsState: PageState.loaded(data: state.levelsState.data),
@@ -55,9 +56,9 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
       (exception, message) =>
           emit(state.copyWith(levelsState: const PageState.error())),
       (value) {
-        final list = _filterPriorityLevels(value.message ??  [], user.periorty!);
-        if(  list.indexWhere((element) => element.idLevel==user.typeAdministration)==-1)
-          list.add(LevelModel(idLevel: user.typeAdministration,nameLevel: user.name_mange,periorty: user.periorty));
+        final list = _filterPriorityLevels(value.message ??  [], user.periorty! );
+        if(  list.indexWhere((element) => element.idLevel==user.typeLevel)==-1)
+          list.add(LevelModel(idLevel: user.typeLevel,nameLevel: user.name_level,periorty: user.periorty));
 
         emit(state.copyWith(
           levelsState:
@@ -189,14 +190,22 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   }
 
   List<LevelModel> _filterPriorityLevels (
-      List<LevelModel> levels, final String priority) {
+      List<LevelModel> levels, final String priority ) {
     if (priority == '0') {
       return levels;
     }
+    final isPrev=checkPrivilege("180");
+
+    if(isPrev)
     return levels
         .where((element) =>
-            int.parse(element.periorty ?? '1') > int.parse(priority))
+            int.parse(element.periorty ?? '1') >= int.parse(priority))
         .toList();
+else
+      return levels
+          .where((element) =>
+      int.parse(element.periorty ?? '1') > int.parse(priority))
+          .toList();
   }
 
   onChangeLevelId(String? levelModel) {

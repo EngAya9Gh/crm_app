@@ -62,9 +62,11 @@ class _ActionUserPageState extends State<ActionUserPage> {
     });
 
     if (user != null) {
+      nameManage = user!.typeAdministration.toString();
+      context.read<manage_provider>().changevalue(nameManage!);
       scheduleMicrotask(() {
-        nameManage = user!.typeAdministration.toString();
-        context.read<manage_provider>().changevalue(nameManage!);
+
+        debugPrint(''+context.read<manage_provider>().selectedValuemanag.toString());
         context.read<MainCityProvider>().getmaincity(regions: user!.maincitylist_user);
         emailController.text = user!.email.toString();
         mobileController.text = user!.mobile.toString();
