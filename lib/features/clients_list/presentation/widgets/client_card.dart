@@ -9,14 +9,14 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-import '../../../../view_model/privilge_vm.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/action_client_page.dart';
 
 class CardClient extends StatefulWidget {
-  CardClient({Key? key, required this.clientModel}) : super(key: key);
+  CardClient({Key? key, required this.clientModel, required this.isSwitch})
+      : super(key: key);
   ClientModel clientModel;
+  final bool isSwitch;
 
   @override
   State<CardClient> createState() => _CardClientState();
@@ -32,17 +32,20 @@ class _CardClientState extends State<CardClient> {
         extentRatio: 0.35,
         children: [
           SlidableAction(
-            onPressed: (actionContext) async {
-              ClientModel clientModel = await Navigator.push(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => ActionClientPage(client: widget.clientModel),
-                ),
-              );
-              setState(() {
-                widget.clientModel = clientModel;
-              });
-            },
+            onPressed: widget.isSwitch
+                ? null
+                : (actionContext) async {
+                    ClientModel clientModel = await Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) =>
+                            ActionClientPage(client: widget.clientModel),
+                      ),
+                    );
+                    setState(() {
+                      widget.clientModel = clientModel;
+                    });
+                  },
             backgroundColor: context.colorScheme.primaryContainer,
             foregroundColor: Colors.white,
             icon: Icons.edit_rounded,
@@ -51,16 +54,19 @@ class _CardClientState extends State<CardClient> {
         ],
       ),
       child: InkWell(
-        onTap: () {
-          // context.read<UserProvider>().changeClientClassificationTypeStatus(clientModel.type_classification!=null?clientModel.type_classification!:"");
-          // context.read<UserProvider>().changeClientRegistrationTypeStatus(clientModel.type_record!=null?clientModel.type_record!:"");
+        onTap: widget.isSwitch
+            ? null
+            : () {
+                // context.read<UserProvider>().changeClientClassificationTypeStatus(clientModel.type_classification!=null?clientModel.type_classification!:"");
+                // context.read<UserProvider>().changeClientRegistrationTypeStatus(clientModel.type_record!=null?clientModel.type_record!:"");
 
-          Navigator.push(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => ProfileClient(idClient: widget.clientModel.idClients.toString()),
-              ));
-        },
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                      builder: (context) => ProfileClient(
+                          idClient: widget.clientModel.idClients.toString()),
+                    ));
+              },
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -84,10 +90,13 @@ class _CardClientState extends State<CardClient> {
                     Expanded(
                       child: Text(
                         widget.clientModel.nameEnterprise.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: kfontfamily2),
                       ),
                     ),
-                    if ((widget.clientModel.tag ?? false) && context.read<PrivilegeCubit>().checkPrivilege('133'))
+                    if ((widget.clientModel.tag ?? false) &&
+                        context.read<PrivilegeCubit>().checkPrivilege('133'))
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,
@@ -96,11 +105,42 @@ class _CardClientState extends State<CardClient> {
                 ),
                 Text(
                   DateTime.tryParse(widget.clientModel.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(widget.clientModel.dateCreate!))
+                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
+                          DateTime.parse(widget.clientModel.dateCreate!))
                       : widget.clientModel.dateCreate.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                  textAlign: widget.isSwitch ? TextAlign.left : TextAlign.right,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: kfontfamily2,
+                      color: kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
+                if (widget.isSwitch == true)
+                  SizedBox(
+                    height: 10,
+                  ),
+                if (widget.isSwitch == true)
+                  Row(
+                    children: [
+                      Text(
+                        widget.clientModel.addressClient ?? "",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: kfontfamily2,
+                            color: kMainColor),
+                        textDirection: TextDirection.ltr,
+                      ),
+                      Spacer(),
+                      Text(
+                        widget.clientModel.activityTypeTitle ?? "",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: kfontfamily2,
+                            color: kMainColor),
+                        textDirection: TextDirection.ltr,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
