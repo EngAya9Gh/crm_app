@@ -28,6 +28,7 @@ class ClientsListPage extends StatefulWidget {
   State<ClientsListPage> createState() => _ClientsListPageState();
   String? privilege, _privilegeRegion;
   bool isSwitch = false;
+  int scroll = 0;
 }
 
 class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
@@ -55,15 +56,16 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
     widget._privilegeRegion =
         _privilegeCubit.checkPrivilege('15') ? userModel.fkRegoin : null;
     debugPrint("privilege....${widget.privilege}");
+
     _clientsListBloc.state.clientsListController
         .addPageRequestListener((pageKey) {
-      // if (isSwitch) {
-      // _clientsListBloc.add(GetAllClientsListEvent(
-      //     fkCountry: fkCountry,
-      //     page: pageKey,
-      //     userPrivilegeId: widget.privilege,
-      //     regionPrivilegeId: widget._privilegeRegion));
-      //  }
+      //
+      widget.scroll = pageKey;
+      _clientsListBloc.add(GetAllClientsListEvent(
+          fkCountry: fkCountry,
+          page: pageKey,
+          userPrivilegeId: widget.privilege,
+          regionPrivilegeId: widget._privilegeRegion));
     });
     initSearch();
   }
@@ -85,6 +87,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
     _clientsListBloc.add(SearchEvent(query: query));
   }
 
+  void fetchData() {}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,17 +209,18 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                             widget.isSwitch = !widget.isSwitch;
                             widget.isSwitch = value;
                           });
-                          if (widget.isSwitch == true) {
-                            debugPrint("all");
+                          _clientsListBloc.add(ResetClientList());
+                          if (widget.isSwitch == false) {
                             _clientsListBloc
                                 .state.clientsListController.itemList = [];
-                            _clientsListBloc.add(GetAllClientsListEvent(
+
+                            _clientsListBloc.add(GetMyClientsListEvent(
                                 fkCountry: fkCountry,
                                 page: 1,
-                                userPrivilegeId: null,
+                                userPrivilegeId: widget.privilege,
                                 regionPrivilegeId: widget._privilegeRegion));
-                          }
-                          if (widget.isSwitch == false) {
+                          } else if (widget.isSwitch == true) {
+                            _clientsListBloc.add(ResetClientList());
                             final String? _privilege =
                                 _privilegeCubit.checkPrivilege('16')
                                     ? userModel.idUser
@@ -227,10 +231,10 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                             _clientsListBloc
                                 .state.clientsListController.itemList = [];
                             debugPrint("one${_privilege}");
-                            _clientsListBloc.add(GetAllClientsListEvent(
+                            _clientsListBloc.add(GetMyClientsListEvent(
                                 fkCountry: fkCountry,
                                 page: 1,
-                                userPrivilegeId: _privilege,
+                                // userPrivilegeId: _privilege,
                                 regionPrivilegeId: widget._privilegeRegion));
                             debugPrint("one${_privilege}");
                             //}

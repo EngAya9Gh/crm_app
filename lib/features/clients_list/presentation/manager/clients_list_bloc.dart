@@ -13,13 +13,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/models/clients_list_response.dart';
-import '../../domain/use_cases/changeTypeClient.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
+import '../../domain/use_cases/changeTypeClient.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 
 part 'clients_list_event.dart';
-
 part 'clients_list_state.dart';
 
 @injectable
@@ -32,13 +31,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._changeTypeClientUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
+    on<GetMyClientsListEvent>(_onGetMyClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
     on<SearchEvent>(_onSearchEvent);
     on<ResetClientList>(_onResetClientList);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
     on<AddClientEvent>(_onAddClientEvent);
     on<EditClientEvent>(_onEditClientEvent);
-    on<changeTypeClientEvent >(_onEditTypeClientEvent);
+    on<changeTypeClientEvent>(_onEditTypeClientEvent);
   }
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
@@ -47,34 +47,72 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final EditClientUserUsecase _editClientUserUsecase;
   final ChangeTypeClientUsecase _changeTypeClientUsecase;
 
-  FutureOr<void> _onGetAllClientsListEvent(GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
-    final GetClientsWithFilterParams getClientsWithFilterParams =
-        state.getClientsWithFilterParams?.copyWith(page: Nullable.value(event.page)) ??
-            GetClientsWithFilterParams(
-              country: event.fkCountry,
-              page: event.page,
-              regionPrivilegeId: event.regionPrivilegeId,
-              userPrivilegeId: event.userPrivilegeId,
-            );
+  FutureOr<void> _onGetAllClientsListEvent(
+      GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
+    final GetClientsWithFilterParams getClientsWithFilterParams = state
+            .getClientsWithFilterParams
+            ?.copyWith(page: Nullable.value(event.page)) ??
+        GetClientsWithFilterParams(
+          country: event.fkCountry,
+          page: event.page,
+          regionPrivilegeId: event.regionPrivilegeId,
+          userPrivilegeId: event.userPrivilegeId,
+        );
 
-    final response = await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
+    final response =
+        await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
 
     response.fold(
       (exception, message) => state.clientsListController.error = exception,
       (value) {
-        final hasReachedMax = HelperFunctions.instance.hasReachedMax(value.message);
+        final hasReachedMax =
+            HelperFunctions.instance.hasReachedMax(value.message);
         if (hasReachedMax) {
           state.clientsListController.appendLastPage(value.message ?? []);
         } else {
           final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
           state.clientsListController.appendPage(value.message ?? [], nextPage);
         }
-        emit(state.copyWith(getClientsWithFilterParams: getClientsWithFilterParams));
+        emit(state.copyWith(
+            getClientsWithFilterParams: getClientsWithFilterParams));
       },
     );
   }
 
-  FutureOr<void> _onUpdateGetClientsParamsEvent(UpdateGetClientsParamsEvent event, Emitter<ClientsListState> emit) {
+  FutureOr<void> _onGetMyClientsListEvent(
+      GetMyClientsListEvent event, Emitter<ClientsListState> emit) async {
+    final GetClientsWithFilterParams getClientsWithFilterParams = state
+            .getClientsWithFilterParams
+            ?.copyWith(page: Nullable.value(event.page)) ??
+        GetClientsWithFilterParams(
+          country: event.fkCountry,
+          page: event.page,
+          regionPrivilegeId: event.regionPrivilegeId,
+          userPrivilegeId: event.userPrivilegeId,
+        );
+
+    final response =
+        await _getClientsWithFilterUserUsecase(getClientsWithFilterParams);
+
+    response.fold(
+      (exception, message) => state.clientsListController.error = exception,
+      (value) {
+        final hasReachedMax =
+            HelperFunctions.instance.hasReachedMax(value.message);
+        if (hasReachedMax) {
+          state.clientsListController.appendLastPage(value.message ?? []);
+        } else {
+          final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
+          state.clientsListController.appendPage(value.message ?? [], nextPage);
+        }
+        emit(state.copyWith(
+            getClientsWithFilterParams: getClientsWithFilterParams));
+      },
+    );
+  }
+
+  FutureOr<void> _onUpdateGetClientsParamsEvent(
+      UpdateGetClientsParamsEvent event, Emitter<ClientsListState> emit) {
     emit(state.copyWith(
       getClientsWithFilterParams: event.getClientsWithFilterParams,
       restFilter: event.resetFilter,
@@ -83,24 +121,30 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     state.clientsListController.refresh();
   }
 
-  FutureOr<void> _onSearchEvent(SearchEvent event, Emitter<ClientsListState> emit) {
+  FutureOr<void> _onSearchEvent(
+      SearchEvent event, Emitter<ClientsListState> emit) {
     emit(state.copyWith(
-      getClientsWithFilterParams: state.getClientsWithFilterParams?.copyWith(query: Nullable.value(event.query)),
+      getClientsWithFilterParams: state.getClientsWithFilterParams
+          ?.copyWith(query: Nullable.value(event.query)),
     ));
 
     state.clientsListController.refresh();
   }
 
-  FutureOr<void> _onResetClientList(ResetClientList event, Emitter<ClientsListState> emit) {
+  FutureOr<void> _onResetClientList(
+      ResetClientList event, Emitter<ClientsListState> emit) {
     emit(state.copyWith(
-      clientsListController: PagingController(firstPageKey: 1, invisibleItemsThreshold: 10),
+      clientsListController:
+          PagingController(firstPageKey: 1, invisibleItemsThreshold: 10),
       restFilter: true,
     ));
   }
 
-  FutureOr<void> _onGetRecommendedClientsEvent(GetRecommendedClientsEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onGetRecommendedClientsEvent(
+      GetRecommendedClientsEvent event, Emitter<ClientsListState> emit) async {
     if (state.recommendedClientsState.isLoaded) {
-      emit(state.copyWith(recommendedClientsState: state.recommendedClientsState));
+      emit(state.copyWith(
+          recommendedClientsState: state.recommendedClientsState));
       return;
     }
     emit(state.copyWith(recommendedClientsState: PageState.loading()));
@@ -108,51 +152,68 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     final response = await _getRecommendedClientsUsecase();
 
     response.fold(
-      (exception, message) => emit(state.copyWith(recommendedClientsState: PageState.error())),
+      (exception, message) =>
+          emit(state.copyWith(recommendedClientsState: PageState.error())),
       (value) {
-        emit(state.copyWith(recommendedClientsState: PageState.loaded(data: value.message ?? [])));
+        emit(state.copyWith(
+            recommendedClientsState:
+                PageState.loaded(data: value.message ?? [])));
         event.onSuccess?.call(value.message ?? []);
       },
     );
   }
 
-  FutureOr<void> _onAddClientEvent(AddClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onAddClientEvent(
+      AddClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
     final response = await _addClientUserUsecase(event.addClientParams);
 
     response.fold(
-      (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) => emit(state.copyWith(
+          actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
-        emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
-        state.clientsListController.itemList = [value.data!, ...state.clientsListController.itemList ?? []];
+        emit(
+            state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
+        state.clientsListController.itemList = [
+          value.data!,
+          ...state.clientsListController.itemList ?? []
+        ];
         event.onSuccess?.call(value.data!);
       },
     );
   }
 
-  FutureOr<void> _onEditClientEvent(EditClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onEditClientEvent(
+      EditClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
     final response = await _editClientUserUsecase(event.editClientParams);
 
     response.fold(
-      (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+      (exception, message) => emit(state.copyWith(
+          actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
-        emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
-        state.clientsListController.itemList = (state.clientsListController.itemList ?? [])
-            .map((e) => e.idClients == event.editClientParams.clientId ? value.data! : e)
-            .toList();
+        emit(
+            state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
+        state.clientsListController.itemList =
+            (state.clientsListController.itemList ?? [])
+                .map((e) => e.idClients == event.editClientParams.clientId
+                    ? value.data!
+                    : e)
+                .toList();
         event.onSuccess?.call(value.data!);
       },
     );
   }
 
-  FutureOr<void> _onEditTypeClientEvent(changeTypeClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onEditTypeClientEvent(
+      changeTypeClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
-    final response = await _changeTypeClientUsecase(
-        event.changeTypeClientParams);
-      /// code response
+    final response =
+        await _changeTypeClientUsecase(event.changeTypeClientParams);
+
+    /// code response
   }
 }

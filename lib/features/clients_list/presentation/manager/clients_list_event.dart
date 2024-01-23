@@ -21,6 +21,23 @@ class GetAllClientsListEvent extends ClientsListEvent {
   List<Object?> get props => [fkCountry, page];
 }
 
+class GetMyClientsListEvent extends ClientsListEvent {
+  final String fkCountry;
+  final String? userPrivilegeId;
+  final String? regionPrivilegeId;
+  final int page;
+
+  GetMyClientsListEvent({
+    required this.fkCountry,
+    required this.page,
+    this.regionPrivilegeId,
+    this.userPrivilegeId,
+  });
+
+  @override
+  List<Object?> get props => [fkCountry, page];
+}
+
 class UpdateGetClientsParamsEvent extends ClientsListEvent {
   final GetClientsWithFilterParams getClientsWithFilterParams;
   final bool resetFilter;
