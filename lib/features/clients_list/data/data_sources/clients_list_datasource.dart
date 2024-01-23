@@ -152,7 +152,7 @@ class ClientsListDatasource {
   }
 
 
-  Future<ResponseWrapper<ClientModel>> editClient(Map<String, dynamic> body,Map<String, dynamic> params) async {
+  Future<ResponseWrapper<ClientModel>> editClient1(Map<String, dynamic> body,Map<String, dynamic> params) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(

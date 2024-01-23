@@ -39,6 +39,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<AddClientEvent>(_onAddClientEvent);
     on<EditClientEvent>(_onEditClientEvent);
     on<changeTypeClientEvent >(_onEditTypeClientEvent);
+    on<SwitchEvent >(_onSwitchEvent);
   }
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
@@ -47,7 +48,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final EditClientUserUsecase _editClientUserUsecase;
   final ChangeTypeClientUsecase _changeTypeClientUsecase;
 
-  FutureOr<void> _onGetAllClientsListEvent(GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onGetAllClientsListEvent(
+      GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
     final GetClientsWithFilterParams getClientsWithFilterParams =
         state.getClientsWithFilterParams?.copyWith(page: Nullable.value(event.page)) ??
             GetClientsWithFilterParams(
@@ -69,7 +71,11 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
           final nextPage = (state.clientsListController.nextPageKey ?? 1) + 1;
           state.clientsListController.appendPage(value.message ?? [], nextPage);
         }
-        emit(state.copyWith(getClientsWithFilterParams: getClientsWithFilterParams));
+        emit(state.copyWith(
+            getClientsWithFilterParams: getClientsWithFilterParams,
+            // myclient: myclient
+
+        ));
       },
     );
   }
@@ -82,10 +88,27 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
     state.clientsListController.refresh();
   }
+  FutureOr<void> _onSwitchEvent(SwitchEvent event, Emitter<ClientsListState> emit) {
+    print('object');
+    print(state.myclient_parm);
+    print(event.mycl);
+    emit(
+        state.copyWith(
+
+          myclient: event.mycl,
+
+    ));
+    print('myclient_parm');
+    print(state.myclient_parm);
+
+
+  }
 
   FutureOr<void> _onSearchEvent(SearchEvent event, Emitter<ClientsListState> emit) {
     emit(state.copyWith(
-      getClientsWithFilterParams: state.getClientsWithFilterParams?.copyWith(query: Nullable.value(event.query)),
+
+      getClientsWithFilterParams:
+      state.getClientsWithFilterParams?.copyWith(query: Nullable.value(event.query)),
     ));
 
     state.clientsListController.refresh();
@@ -140,6 +163,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
         emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
+
         state.clientsListController.itemList = (state.clientsListController.itemList ?? [])
             .map((e) => e.idClients == event.editClientParams.clientId ? value.data! : e)
             .toList();

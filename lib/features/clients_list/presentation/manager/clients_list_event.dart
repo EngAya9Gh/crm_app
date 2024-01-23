@@ -42,6 +42,14 @@ class SearchEvent extends ClientsListEvent {
   @override
   List<Object?> get props => [query];
 }
+class SwitchEvent extends ClientsListEvent {
+ bool mycl;
+
+    SwitchEvent({required this.mycl});
+
+  @override
+  List<Object?> get props => [mycl];
+}
 
 class ResetClientList extends ClientsListEvent {
   @override

@@ -67,7 +67,9 @@ class UsersCubit extends Cubit<UsersState> {
     final response = await _actionUserUsecase(addUserParams);
 
     response.fold(
-      (exception, message) => emit(state.copyWith(actionUserState: BlocStatus.fail(error: message))),
+      (exception, message) => emit(
+          state.copyWith(
+          actionUserState: BlocStatus.fail(error: message))),
       (value) {
         final user = value.message!;
 

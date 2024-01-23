@@ -46,7 +46,7 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
 
   @override
   Future<Result<ResponseWrapper<ClientModel>>> editClient(Map<String, dynamic> body, Map<String, dynamic> params) {
-    return toApiResult(() => datasource.editClient(body, params));
+    return toApiResult(() => datasource.editClient1(body, params));
   }
 
   @override

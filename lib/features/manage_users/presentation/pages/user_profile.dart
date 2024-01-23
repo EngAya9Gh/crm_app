@@ -63,7 +63,10 @@ class _UserProfileState extends State<UserProfile> {
                   int.parse(context.read<UserProvider>().currentUser.periorty.toString())
                   ))
                   ||
-                  (context.read<PrivilegeCubit>().checkPrivilege('180'))
+                  (context.read<PrivilegeCubit>().checkPrivilege('180')&&
+                      int.parse(context.read<UserProvider>().currentUser.periorty.toString()) <=
+                          int.parse(user.periorty.toString())
+                  )
                   ? IconButton(
                       onPressed: () {
                         Navigator.push(

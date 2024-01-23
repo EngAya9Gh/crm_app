@@ -68,7 +68,7 @@ class CommunicationListBloc extends Bloc<CommunicationListEvent, CommunicationLi
   }
 
   FutureOr<void> _onOnChangeRegionEvent(OnChangeRegionEvent event, Emitter<CommunicationListState> emit) {
-    emit(state.copyWith(selectedCityId: Nullable.value(event.selectedRegionId)));
+    emit(state.copyWith(selectedCityId1: Nullable.value(event.selectedRegionId)));
 
     add(GetCommunicationListEvent(event.fkCountry, query: event.query));
   }

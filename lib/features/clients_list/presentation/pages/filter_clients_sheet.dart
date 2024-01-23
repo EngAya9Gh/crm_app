@@ -28,9 +28,10 @@ import '../../../../view_model/user_vm_provider.dart';
 import 'action_client_page.dart';
 
 class FilterClientsSheet extends StatefulWidget {
-  const FilterClientsSheet({Key? key, required this.onFilter});
+    FilterClientsSheet({Key? key, required this.onFilter,required this.val});
 
   final ValueChanged<GetClientsWithFilterParams> onFilter;
+   bool val=false;
 
   @override
   State<FilterClientsSheet> createState() => _FilterClientsSheetState();
@@ -102,7 +103,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             20.verticalSpace,
             Row(
               children: [
-                if (_privilegeCubit.checkPrivilege('8')) ...{
+                if (_privilegeCubit.checkPrivilege('8')||widget.val) ...{
                   Expanded(
                     child: Consumer<RegionProvider>(
                       builder: (context, regionVm, child) {
@@ -155,7 +156,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               ],
             ),
             10.verticalSpace,
-            if (_privilegeCubit.checkPrivilege('15') || _privilegeCubit.checkPrivilege('8')) ...{
+            if (_privilegeCubit.checkPrivilege('15') || _privilegeCubit.checkPrivilege('8')||widget.val) ...{
               Consumer<UserProvider>(
                 builder: (context, userVm, child) {
                   return ValueListenableBuilder<int?>(
@@ -281,8 +282,22 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
+
                   Navigator.pop(context);
+                  // if(_clientsListBloc.state.myclient_parm)
+                  if(widget.val)
                   widget.onFilter(
+                    _clientsListBloc.state.getClientsWithFilterParams!.copyWith(
+                      regionId: Nullable.value(_regionNotifier.value),
+                      activityTypeId: Nullable.value(_activityNotifier.value),
+                      typeClient: Nullable.value(_statusNotifier.value),
+                      userId: Nullable.value(_userNotifier.value),
+                      userPrivilegeId: Nullable.value(null),
+                      regionPrivilegeId:Nullable.value( null),
+                    ),
+                  );
+                  else
+                    widget.onFilter(
                     _clientsListBloc.state.getClientsWithFilterParams!.copyWith(
                       regionId: Nullable.value(_regionNotifier.value),
                       activityTypeId: Nullable.value(_activityNotifier.value),

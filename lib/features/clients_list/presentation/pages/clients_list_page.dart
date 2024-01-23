@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../common/models/nullable.dart';
 import '../../../../constants.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/activity_vm.dart';
@@ -23,6 +24,7 @@ import '../../../manage_privilege/data/models/privilege_model.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
+import '../widgets/client_card_pluse.dart';
 import 'action_client_page.dart';
 
 class ClientsListPage extends StatefulWidget {
@@ -37,6 +39,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
   late final String fkCountry;
   late final UserModel userModel;
   late PrivilegeCubit _privilegeCubit;
+  bool value1 = false;
 
   @override
   void initState() {
@@ -46,7 +49,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
     fkCountry = userModel.fkCountry.toString();
     _clientsListBloc = context.read<ClientsListBloc>();
     _clientsListBloc.state.clientsListController.addPageRequestListener((pageKey) {
-
+      _clientsListBloc.state.myclient_parm=false;
       _clientsListBloc.add(
         GetAllClientsListEvent(
         fkCountry: fkCountry,
@@ -153,8 +156,10 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                           AppBottomSheet.show(
                             context: context,
                             child: FilterClientsSheet(
+                              val: value1,
                               onFilter: (value) {
-                                _clientsListBloc.add(UpdateGetClientsParamsEvent(getClientsWithFilterParams: value));
+                                _clientsListBloc.add(
+                                    UpdateGetClientsParamsEvent(getClientsWithFilterParams: value));
                               },
                             ),
                           );
@@ -176,30 +181,84 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                 ),
               ),
               5.verticalSpace,
+              SwitchListTile(
+                value: value1,
+                onChanged: (value) {
+                  setState(() {
+                    value1=value;
+                  });
+                  print(value);
+
+
+                    _clientsListBloc.add( SwitchEvent(mycl: value) );
+
+                  print( '_clientsListBloc.state.myclient_parm');
+                  print( _clientsListBloc.state.myclient_parm);
+
+                  if(value)
+                    _clientsListBloc.add(
+                        UpdateGetClientsParamsEvent(
+                            getClientsWithFilterParams:
+                            _clientsListBloc.state.getClientsWithFilterParams!.copyWith(
+                              country:Nullable.value(fkCountry),
+                              userPrivilegeId: Nullable.value(null),
+                              regionPrivilegeId:Nullable.value( null),
+
+                            ) ) );
+                  else
+                    _clientsListBloc.add(
+                        UpdateGetClientsParamsEvent(
+                            getClientsWithFilterParams:
+                            _clientsListBloc.state.getClientsWithFilterParams!.copyWith(
+                              userPrivilegeId: Nullable.value(_privilegeCubit.checkPrivilege('16') ? userModel.idUser : null),
+                              regionPrivilegeId:Nullable.value( _privilegeCubit.checkPrivilege('15') ? userModel.fkRegoin : null),
+                              country:Nullable.value(fkCountry),
+
+                            ) )
+
+                    );
+                  print( '_clientsListBloc.state.myclient_parm222');
+                  print( _clientsListBloc.state.myclient_parm);
+                },
+                title: Text("كل العملاء"),
+              ),
+              5.verticalSpace,
               BlocBuilder<ClientsListBloc, ClientsListState>(
                 builder: (context, state) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 30.0, right: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'عدد العملاء',
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                  return Column(
+                    children: [
+                      // SwitchListTile(value: value, onChanged: (v){setState(() {
+                      //   value=v;
+                      // });}),
+
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30.0, right: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'عدد العملاء',
+                              style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              (_clientsListBloc.state.clientsListController.itemList ?? []).length.toString(),
+                              style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        Text(
-                          (_clientsListBloc.state.clientsListController.itemList ?? []).length.toString(),
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   );
                 },
               ),
+
+
               Expanded(
                 child: CustomPagedListView<int, ClientModel>.separated(
                   pagingController: _clientsListBloc.state.clientsListController,
-                  itemBuilder: (context, client, index) => CardClient(clientModel: client),
+                  itemBuilder: (context, client, index) =>
+                    value1==true?
+                    CardClient_pluse(clientModel: client):  CardClient(clientModel: client),
                   separatorBuilder: (context, index) => 10.verticalSpace,
                   padding: EdgeInsets.only(left: 10, right: 10, top: 10),
                 ),

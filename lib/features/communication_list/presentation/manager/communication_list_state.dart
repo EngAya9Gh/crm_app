@@ -17,12 +17,12 @@ class CommunicationListState extends Equatable {
   CommunicationListState copyWith({
     PageState<List<DistinctiveClient>>? communicationListState,
     List<DistinctiveClient>? allCommunicationsState,
-    Nullable<String?>? selectedCityId,
+    Nullable<String?>? selectedCityId1,
   }) {
     return CommunicationListState(
       communicationListState: communicationListState ?? this.communicationListState,
       allCommunicationsState: allCommunicationsState ?? this.allCommunicationsState,
-      selectedCityId: selectedCityId != null ? selectedCityId.value : this.selectedCityId,
+      selectedCityId: selectedCityId1 != null ? selectedCityId1.value : this.selectedCityId,
     );
   }
 }
