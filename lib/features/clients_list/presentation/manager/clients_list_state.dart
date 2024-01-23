@@ -5,6 +5,7 @@ class ClientsListState {
     PagingController<int, ClientModel>? clientsListController,
     this.getClientsWithFilterParams,
     this.recommendedClientsState = const PageState.init(),
+    this.similarClientsState = const PageState.init(),
     this.actionClientBlocStatus = const BlocStatus.initial(),
       this.myclient_parm=false,
 
@@ -13,6 +14,7 @@ class ClientsListState {
   final PagingController<int, ClientModel> clientsListController;
   final GetClientsWithFilterParams? getClientsWithFilterParams;
   final PageState<List<RecommendedClient>> recommendedClientsState;
+  final PageState<List<SimilarClient>> similarClientsState;
   final BlocStatus actionClientBlocStatus;
   bool myclient_parm ;
 
@@ -20,6 +22,7 @@ class ClientsListState {
     PagingController<int, ClientModel>? clientsListController,
     GetClientsWithFilterParams? getClientsWithFilterParams,
     PageState<List<RecommendedClient>>? recommendedClientsState,
+    PageState<List<SimilarClient>>? similarClientsState,
     final BlocStatus? actionClientBlocStatus,
     bool restFilter = false,
     bool myclient=false
@@ -29,6 +32,7 @@ class ClientsListState {
       clientsListController: clientsListController ?? this.clientsListController,
       getClientsWithFilterParams: restFilter ? null : getClientsWithFilterParams ?? this.getClientsWithFilterParams,
       recommendedClientsState: recommendedClientsState ?? this.recommendedClientsState,
+        similarClientsState: similarClientsState ?? this.similarClientsState,
       actionClientBlocStatus: actionClientBlocStatus ??   this.actionClientBlocStatus,
       myclient_parm: myclient
     );

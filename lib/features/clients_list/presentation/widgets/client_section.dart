@@ -258,7 +258,8 @@ class _ClientSectionState extends State<ClientSection> {
 
                           BlocBuilder<ClientsListBloc, ClientsListState>(
                             builder: (context, state) {
-                              return AppElevatedButton(
+                              return
+                                AppElevatedButton(
                                 isLoading: state.actionClientBlocStatus.isLoading(),
                                 text: "حفظ",
                                 style: ElevatedButton.styleFrom(
@@ -335,7 +336,9 @@ class _ClientSectionState extends State<ClientSection> {
                            ):Container()
                 ]
                 );}))),
-              );})]);
+              );})]
+
+    );
 
 
     // show the dialog

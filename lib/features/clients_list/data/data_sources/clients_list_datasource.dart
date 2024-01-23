@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crm_smart/core/api/client.dart';
 import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
+import 'package:crm_smart/features/clients_list/data/models/similarClient.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -34,6 +35,32 @@ class ClientsListDatasource {
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return ClientModel.fromJson(e as Map<String, dynamic>);
+          }));
+        },
+      );
+    }
+
+    return throwAppException(fun);
+  }
+  Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(Map<String, dynamic> body) async {
+    fun() async {
+      final dio = GetIt.I<Dio>();
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
+
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.client.similarClientsList,
+          queryParameters: body,
+          clientMethod: ClientMethod.get,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      return ResponseWrapper<List<SimilarClient>>.fromJson(
+        response.data,
+        (json) {
+          return List.from((json as List<dynamic>).map((e) {
+            return SimilarClient.fromJson(e as Map<String, dynamic>);
           }));
         },
       );

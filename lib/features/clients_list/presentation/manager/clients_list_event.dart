@@ -20,6 +20,15 @@ class GetAllClientsListEvent extends ClientsListEvent {
   @override
   List<Object?> get props => [fkCountry, page];
 }
+class GetSimilarClientsListEvent extends ClientsListEvent {
+  GetSimilarClientsListParams getClientsWithFilterParams;
+  final ValueChanged<List<SimilarClient>>? onSuccess;
+
+  GetSimilarClientsListEvent(this.getClientsWithFilterParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => [getClientsWithFilterParams];
+}
 
 class UpdateGetClientsParamsEvent extends ClientsListEvent {
   final GetClientsWithFilterParams getClientsWithFilterParams;

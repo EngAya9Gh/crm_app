@@ -7,6 +7,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/clients_list_repository.dart';
 import '../data_sources/clients_list_datasource.dart';
+import '../models/similarClient.dart';
 
 @Injectable(as: ClientsListRepository)
 class ClientsListRepositoryImpl implements ClientsListRepository {
@@ -53,6 +54,13 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   Future<Result<ResponseWrapper<ClientModel>>> changeTypeClient(Map<String, dynamic> body, Map<String, dynamic> params) {
     // TODO: implement changeTypeClient
     return toApiResult(() => datasource.changeTypeClient(body, params));
+
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<SimilarClient>>>> getSimilarClients(Map<String, dynamic> body) {
+    // TODO: implement getSimilarClients
+    return toApiResult(() => datasource.getSimilarClientsList(body));
 
   }
 }

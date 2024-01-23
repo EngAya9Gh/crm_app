@@ -12,6 +12,7 @@ import 'package:crm_smart/model/companyModel.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,11 +37,15 @@ import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../app/presentation/widgets/app_scaffold.dart';
+import '../../../app/presentation/widgets/app_text.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/clients_list_response.dart';
 import '../../data/models/recommended_client.dart';
+import '../../data/models/similarClient.dart';
+import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../manager/clients_list_bloc.dart';
+import '../widgets/client_card.dart';
 
 class ActionClientPage extends StatefulWidget {
   const ActionClientPage({Key? key, this.client}) : super(key: key);
@@ -835,9 +840,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
       },
     ));
   }
-
+  late final AddClientParams addClientParams;
   void _onAddClient() {
-    final AddClientParams addClientParams = AddClientParams(
+     addClientParams = AddClientParams(
       nameClient: nameClientController.text,
       nameEnterprise: nameEnterpriseController.text,
       city: selectedCity!,
@@ -858,11 +863,17 @@ class _ActionClientPageState extends State<ActionClientPage> {
       type_classification: context.read<UserProvider>().selectedClientClassificationType,
       reason_class:  reasonClassController!.text,
     );
+    showAlertDialog(context );
+     Navigator.push(
+         context,
+         CupertinoPageRoute(
+           builder: (context) => similar_dailog(
+             phone:mobileController.text,
+             name_enterprise:nameEnterpriseController.text,
+             nameClient:  nameClientController.text, addClientParams: addClientParams,
 
-    _clientsListBloc.add(AddClientEvent(
-      addClientParams,
-      onSuccess: (client) => Navigator.pop(context, client),
-    ));
+           ),
+         ));
   }
 
   Widget _customPopupItemBuilderForCityList(BuildContext context, CityModel item, bool isSelected) {
@@ -875,7 +886,184 @@ class _ActionClientPageState extends State<ActionClientPage> {
         )
     );
   }
+
+
 }
+class similar_dailog extends StatefulWidget {
+    similar_dailog({Key? key,required this.nameClient,required this.name_enterprise,required this.phone,required this.addClientParams}) : super(key: key);
+  String nameClient,name_enterprise,phone;
+    AddClientParams addClientParams;
+  @override
+  State<similar_dailog> createState() => _similar_dailogState();
+}
+
+class _similar_dailogState extends State<similar_dailog> {
+  late final ClientsListBloc _clientsListBloc;
+
+  @override
+  void initState() {
+    _clientsListBloc = context.read<ClientsListBloc>()..add(
+        GetSimilarClientsListEvent(
+            GetSimilarClientsListParams(
+                name_client:widget.nameClient ,
+              name_enterprise:widget.name_enterprise ,
+              phone:widget.phone ,
+
+            )  ) );
+
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'قائمة عملاء المتشابهين')),
+      body: Directionality(
+        textDirection: TextDirection.rtl,
+        child: BlocBuilder<ClientsListBloc, ClientsListState>(
+          builder: (context, state) {
+            return state.similarClientsState.when(
+              init: () => Center(child: CircularProgressIndicator()),
+              loading: () => Center(child: CircularProgressIndicator()),
+              loaded: (data) => Column(
+                children: [
+
+                  Padding(
+                    padding: HWEdgeInsets.symmetric(horizontal: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText("عدد العملاء"),
+                        AppText(data.length.toString()),
+                      ],
+                    ),
+                  ),
+
+                  Expanded(
+                    child: ListView.separated(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      itemBuilder: (BuildContext context, int index) =>
+                          CardSimilar(
+                            smClient:
+
+                        state.similarClientsState.data[index],
+                      ),
+                      separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
+                      itemCount: state.similarClientsState.data.length,
+                    ),
+                  ),
+
+                  15.verticalSpace,
+                  BlocBuilder<ClientsListBloc, ClientsListState>(
+                    builder: (context, state) {
+
+                      return
+                        Row(
+                          children: [
+                            AppElevatedButton(
+                              isLoading: state.actionClientBlocStatus.isLoading(),
+                              text: "إضافة",
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                              ),
+                              onPressed: () {
+                                _clientsListBloc.add(
+                                    AddClientEvent(
+                                        widget.addClientParams,
+                                        onSuccess: (client) {
+
+                                          Navigator.pop(context, client);
+                                          Navigator.pop(context, client);
+
+                                        }
+                                    ));
+                              },
+                            ),
+                            AppElevatedButton(
+                              isLoading: state.actionClientBlocStatus.isLoading(),
+                              text: "رجوع",
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+
+                              },
+                            ),
+                          ],
+                        );
+                    },
+                  )
+                ],
+              ),
+              empty: () => Text("Empty "),
+              error: (exception) => Text("Exception"),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+class CardSimilar extends StatelessWidget {
+    CardSimilar({Key? key,  required this.smClient}) : super(key: key);
+    SimilarClient smClient;
+  @override
+  Widget build(BuildContext context) {
+    return  Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10).r,
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            offset: Offset(1.0, 1.0),
+            blurRadius: 8.0,
+            color: Colors.black87.withOpacity(0.1),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    smClient.name_enterprise.toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                  ),
+                ),
+                Text(
+                  smClient.phone.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text(
+                  smClient.name_client.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                ),
+                Text(
+                  DateTime.tryParse( smClient.dateCreate!) != null
+                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse( smClient.clientModel.dateCreate!))
+                      :  smClient.dateCreate.toString(),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                  textDirection: TextDirection.ltr,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 Widget customPopupItemBuilderForActivityTypeList(BuildContext context, ActivityModel item, bool isSelected) {
   return Container(
       margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2,bottom: 2),
@@ -885,4 +1073,6 @@ Widget customPopupItemBuilderForActivityTypeList(BuildContext context, ActivityM
         trailing: Text(item.name_activity_type!, style: context.textTheme.titleSmall,textDirection: TextDirection.rtl,),
       )
   );
+
+
 }

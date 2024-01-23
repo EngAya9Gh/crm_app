@@ -13,10 +13,12 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/models/clients_list_response.dart';
+import '../../data/models/similarClient.dart';
 import '../../domain/use_cases/changeTypeClient.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
+import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 
 part 'clients_list_event.dart';
 
@@ -30,12 +32,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._addClientUserUsecase,
     this._editClientUserUsecase,
     this._changeTypeClientUsecase,
+    this._getSimilarClientsUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
     on<SearchEvent>(_onSearchEvent);
     on<ResetClientList>(_onResetClientList);
     on<GetRecommendedClientsEvent>(_onGetRecommendedClientsEvent);
+    on<GetSimilarClientsListEvent>(_onGetSimilarClientsEvent);
     on<AddClientEvent>(_onAddClientEvent);
     on<EditClientEvent>(_onEditClientEvent);
     on<changeTypeClientEvent >(_onEditTypeClientEvent);
@@ -44,6 +48,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
   final GetRecommendedClientsUsecase _getRecommendedClientsUsecase;
+  final GetSimilarClientsUsecase _getSimilarClientsUsecase;
   final AddClientUserUsecase _addClientUserUsecase;
   final EditClientUserUsecase _editClientUserUsecase;
   final ChangeTypeClientUsecase _changeTypeClientUsecase;
@@ -76,6 +81,30 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
             // myclient: myclient
 
         ));
+      },
+    );
+  }
+  FutureOr<void> _onGetSimilarClientsEvent(
+      GetSimilarClientsListEvent event, Emitter<ClientsListState> emit) async {
+    // emit(state.copyWith(
+    //   getClientsWithFilterParams: event.getClientsWithFilterParams,
+    //   restFilter: event.resetFilter,
+    // ));
+    final GetSimilarClientsListParams getClientsWithFilterParams =
+          event.getClientsWithFilterParams ;
+    if (state.similarClientsState.isLoaded) {
+      emit(state.copyWith(similarClientsState: state.similarClientsState));
+      return;
+    }
+    emit(state.copyWith(similarClientsState: PageState.loading()));
+
+    final response = await _getSimilarClientsUsecase(getClientsWithFilterParams);
+
+    response.fold(
+          (exception, message) => emit(state.copyWith(similarClientsState: PageState.error())),
+          (value) {
+        emit(state.copyWith(similarClientsState: PageState.loaded(data: value.message ?? [])));
+        event.onSuccess?.call(value.message ?? []);
       },
     );
   }

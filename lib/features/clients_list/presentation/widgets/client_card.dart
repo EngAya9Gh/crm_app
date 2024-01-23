@@ -61,7 +61,8 @@ class _CardClientState extends State<CardClient> {
                 builder: (context) => ProfileClient(idClient: widget.clientModel.idClients.toString()),
               ));
         },
-        child: Container(
+        child:
+        Container(
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10).r,

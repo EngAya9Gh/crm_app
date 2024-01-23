@@ -55,6 +55,7 @@ class _Client {
   const _Client();
 
   final allClientsList = 'client/getClientAll.php';
+  final similarClientsList = 'SimilarClientsNames';
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final allClientsWithFilter = 'client/getclientAll_filter.php';
