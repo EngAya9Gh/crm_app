@@ -304,6 +304,7 @@ class _ClientSectionState extends State<ClientSection> {
                               );
                             },
                           ):
+                           context.read<PrivilegeCubit>().checkPrivilege('177')?
                            BlocBuilder<ClientsListBloc, ClientsListState>(
                              builder: (context, state) {
                                return Row(
@@ -331,7 +332,7 @@ class _ClientSectionState extends State<ClientSection> {
                                  ],
                                );
                              },
-                           )
+                           ):Container()
                 ]
                 );}))),
               );})]);

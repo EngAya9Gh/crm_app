@@ -233,6 +233,7 @@ class _MyAppState extends State<MyApp> {
                 );
               // String idcurrentuser= snapshot.data!.getString("id_user").toString();
               else {
+
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
                   title: 'Smart CRM',

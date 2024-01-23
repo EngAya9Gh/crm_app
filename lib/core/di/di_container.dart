@@ -19,14 +19,17 @@ Future<GetIt> configureDependencies() async => $initGetIt(_getIt);
 
 @module
 abstract class AppModule {
+  String? token=null;
 
   BaseOptions get dioOption => BaseOptions(
     baseUrl: EndPoints.baseUrl,
     connectTimeout: const Duration(seconds: 20),
     receiveTimeout: const Duration(seconds: 20),
     // headers: <String, String>{
-    //   HttpHeaders.acceptHeader: 'application/json',
+    //   //HttpHeaders.acceptHeader: 'application/json',
+    //   // 'Authorization': 'Bearer $token'
     // },
+
   );
 
   @singleton
