@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:crm_smart/core/api/client.dart';
 import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
-import 'package:crm_smart/features/clients_list/data/models/similarClient.dart';
+import '../../../../model/similar_client.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -50,20 +50,31 @@ class ClientsListDatasource {
       final response = await _clientApi.request(
         RequestConfig(
           endpoint: EndPoints.client.similarClientsList,
-          queryParameters: body,
-          clientMethod: ClientMethod.get,
+          data: body,
+
+          clientMethod: ClientMethod.post,
           responseType: ResponseType.json,
         ),
       );
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      final client = response.data;//ClientModel.fromJson(response.data);
+      List<SimilarClient> listres=List.from((client as List<dynamic>).map((e) {
+                  return SimilarClient.fromJson(e as Map<String, dynamic>);
+             }));
+      return ResponseWrapper<List<SimilarClient>>(message: null, data: listres);
 
-      return ResponseWrapper<List<SimilarClient>>.fromJson(
-        response.data,
-        (json) {
-          return List.from((json as List<dynamic>).map((e) {
-            return SimilarClient.fromJson(e as Map<String, dynamic>);
-          }));
-        },
-      );
+      // return List.from((client as List<dynamic>).map((e) {
+      //           return SimilarClient.fromJson(e as Map<String, dynamic>);
+      //      }));
+      // return ResponseWrapper<List<SimilarClient>>.fromJson(
+      //   response.data,
+      //   (json) {
+      //     return List.from((json as List<dynamic>).map((e) {
+      //       return SimilarClient.fromJson(e as Map<String, dynamic>);
+      //     }));
+      //   },
+       //);
+
     }
 
     return throwAppException(fun);
@@ -198,23 +209,46 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-    Future<ResponseWrapper<ClientModel>> changeTypeClient(Map<String, dynamic> body,Map<String, dynamic> params) async {
+    Future<ResponseWrapper<ClientModel>> changeTypeClient(Map<String, dynamic> body,Map<String, dynamic> params,String id) async {
     fun() async {
       final dio = GetIt.I<Dio>();
       dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
-          endpoint: EndPoints.client.changeTypeClient,
+          endpoint: EndPoints.client.changeTypeClient+id,
           data: body,
           queryParameters: params,
           clientMethod: ClientMethod.post,
           responseType: ResponseType.json,
         ),
       );
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      final client = ClientModel.fromJson(response.data['data'][0]);
+      final client1 = ClientModel.fromJson( response.data['message'][0]);
+      return ResponseWrapper(message:client1, data: client);
+    }
 
-      final client = ClientModel.fromJson(response.data['message'][0]);
-      return ResponseWrapper(message: client, data: client);
+    return throwAppException(fun);
+  }
+  Future<ResponseWrapper<ClientModel>> approveClient_Reject(Map<String, dynamic> body,Map<String, dynamic> params,String id) async {
+    fun() async {
+      final dio = GetIt.I<Dio>();
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
+
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.client.approveClient_reject_admin+id,
+          data: body,
+          queryParameters: params,
+          clientMethod: ClientMethod.post,
+          responseType: ResponseType.json,
+        ),
+      );
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      final client  = ClientModel.fromJson(response.data['data'][0]);
+      final client1 = ClientModel.fromJson( response.data['message'][0]);
+      return ResponseWrapper(message:client1, data: client);
     }
 
     return throwAppException(fun);

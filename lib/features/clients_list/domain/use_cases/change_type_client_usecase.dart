@@ -4,22 +4,26 @@ import 'package:injectable/injectable.dart';
 import '../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/api/result.dart';
 import '../../../../core/use_case/use_case.dart';
+import '../../data/models/clients_list_response.dart';
 import '../repositories/clients_list_repository.dart';
 
 @injectable
-class ChangeTypeClientUsecase extends UseCase<Result<ResponseWrapper<void>>, ChangeTypeClient> {
+class ChangeTypeClientUsecase extends UseCase<Result<ResponseWrapper<ClientModel>>, ChangeTypeClientParam> {
   ChangeTypeClientUsecase(this.repository);
 
   final ClientsListRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<void>>> call(ChangeTypeClient params) {
-    return repository.changeTypeClient( params.toMap , params.toParams);
+  Future<Result<ResponseWrapper<ClientModel>>> call(ChangeTypeClientParam params) {
+    return repository.changeTypeClient
+      (params.toMap ,
+        params.toParams,
+        params.id_clients.toString());
   }
 }
 
-class ChangeTypeClient {
-  ChangeTypeClient({
+class ChangeTypeClientParam {
+  ChangeTypeClientParam({
      required this.type_client,
       required this.id_clients,
       required this.userId,

@@ -2,6 +2,7 @@ import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
+import 'package:crm_smart/features/clients_list/domain/use_cases/change_type_client_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
@@ -34,7 +35,8 @@ import '../../../manage_withdrawals/data/models/reject_reason.dart';
 import '../../../manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../domain/use_cases/ChangeTypeClient.dart';
+import '../../domain/use_cases/change_type_client_usecase.dart';
+import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import '../pages/action_client_page.dart';
@@ -60,7 +62,8 @@ class _ClientSectionState extends State<ClientSection> {
   bool isUpdate = false;
   late final ClientTypeProvider _clientTypeProvider;
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
-
+  late final ClientsListBloc _clientsListBloc;
+  late final ChangeTypeClientParam changeTypeClientParams;
   late ValueNotifier<String?> reasonReject;
 
   final _globalKey = GlobalKey<FormState>();
@@ -90,7 +93,7 @@ class _ClientSectionState extends State<ClientSection> {
 
     reasonReject = ValueNotifier(widget.client?.fk_rejectClient);
     _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()..getReasonReject();
-
+    _clientsListBloc = context.read<ClientsListBloc>();
     _clientTypeProvider = context.read<ClientTypeProvider>();
 
     _clientTypeProvider.type_of_client = widget.client?.typeClient == "تفاوض" ||
@@ -271,36 +274,37 @@ class _ClientSectionState extends State<ClientSection> {
                                   }
 
                                  // code comment #
-                                 //  final ChangeTypeClient changeTypeClientParams =
-                                 //  ChangeTypeClient(
-                                 //
-                                 //    type_client: widget.client?.typeClient != "مشترك" && widget.client?.typeClient != "منسحب"
-                                 //        ? _clientTypeProvider.selectedValuemanag!
-                                 //        : widget.client!.typeClient!,
-                                 //    clientId: widget.client!.idClients!,
-                                 //    id_user: _userProvider.currentUser.idUser!,
-                                 //    fk_rejectClient: reasonReject.value,
-                                 //
-                                 //
-                                 //    reason_change: reasonController.text,
-                                 //
-                                 //    offer_price: offerPriceController.text,
-                                 //    // dateChangeType: _clientTypeProvider.selectedValuemanag != null ?
-                                 //    // formatter.format(DateTime.now()) : null,
-                                 //    date_price: _clientTypeProvider.selectedValuemanag == "عرض سعر" ? dateOfferPrice.toIso8601String() : null,
-                                 //
-                                 //  );
-                                 //  _clientsListBloc.add(
-                                 //      changeTypeClientEvent(
-                                 //    changeTypeClientParams,
-                                 //    onSuccess: (client){
-                                 //
-                                 //      setState(() {
-                                 //        clientModel1 = client.mapToClientModel1();
-                                 //      });
-                                 //
-                                 //    },
-                                 //  ));
+                                 changeTypeClientParams =
+                                  ChangeTypeClientParam(
+
+                                    type_client:  _clientTypeProvider.selectedValuemanag!,
+                                        //!= "مشترك" && widget.client?.typeClient != "منسحب"
+                                        //? _clientTypeProvider.selectedValuemanag!
+                                       // : widget.client!.typeClient!,
+                                    // clientId: widget.client!.idClients!,
+                                    userId:  Provider.of<UserProvider>(context, listen: false).currentUser.idUser!,
+                                    fk_rejectClient: reasonReject.value,
+
+
+                                    reason_change: reasonController.text,
+
+                                    offer_price: offerPriceController.text,
+                                    // dateChangeType: _clientTypeProvider.selectedValuemanag != null ?
+                                    // formatter.format(DateTime.now()) : null,
+                                    date_price: _clientTypeProvider.selectedValuemanag == "عرض سعر" ? dateOfferPrice.toIso8601String() : null,
+                                    id_clients: widget.client!.idClients.toString(),
+
+                                  );
+                                   _clientsListBloc.add(
+                                       ChangeTypeClientEvent(
+                                           changeTypeClientParams,
+                                           onSuccess: (client) {
+                                             Navigator.pop(context, client);
+                                             //Navigator.pop(context, client);
+
+                                           }
+
+                                   ));
                                 },
                               );
                             },
@@ -317,7 +321,20 @@ class _ClientSectionState extends State<ClientSection> {
                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
                                      ),
                                      onPressed: () async {
+                                       _clientsListBloc.add(
+                                           ApproveRejectClientEvent(
+                                               ApproveRejectClientPararm(
+                                                   id_clients:widget.idclient.toString(),
+                                                 isAppprove: '1',
+                                                 userId:  Provider.of<UserProvider>(context, listen: false).currentUser.idUser!,
+                                               ),
+                                               onSuccess: (client) {
+                                                 Navigator.pop(context, client);
+                                               //  Navigator.pop(context, client);
 
+                                               }
+
+                                           ));
                                      },
                                    ),
                                    AppElevatedButton(
@@ -327,6 +344,20 @@ class _ClientSectionState extends State<ClientSection> {
                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
                                      ),
                                      onPressed: () async {
+                                       _clientsListBloc.add(
+                                           ApproveRejectClientEvent(
+                                               ApproveRejectClientPararm(
+                                                 id_clients:widget.idclient.toString(),
+                                                 isAppprove: '0',
+                                                 userId:  Provider.of<UserProvider>(context, listen: false).currentUser.idUser!,
+                                               ),
+                                               onSuccess: (client) {
+                                                 Navigator.pop(context, client);
+                                                 //  Navigator.pop(context, client);
+
+                                               }
+
+                                           ));
 
                                      },
                                    ),

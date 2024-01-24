@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/helpers/helper_functions.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
@@ -42,7 +44,8 @@ import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/clients_list_response.dart';
 import '../../data/models/recommended_client.dart';
-import '../../data/models/similarClient.dart';
+
+import '../../../../model/similar_client.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import '../widgets/client_card.dart';
@@ -63,7 +66,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
   late final ClientTypeProvider _clientTypeProvider;
   late final UserProvider _userProvider;
   final intl.DateFormat formatter = intl.DateFormat('yyyy-MM-dd');
-
+    // late final AddClientParams addClientParams;
   late final TextEditingController nameClientController;
   late final TextEditingController descriptionActivityController;
   late final TextEditingController nameEnterpriseController;
@@ -840,8 +843,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
       },
     ));
   }
-  late final AddClientParams addClientParams;
+
   void _onAddClient() {
+      final AddClientParams addClientParams;
      addClientParams = AddClientParams(
       nameClient: nameClientController.text,
       nameEnterprise: nameEnterpriseController.text,
@@ -863,14 +867,15 @@ class _ActionClientPageState extends State<ActionClientPage> {
       type_classification: context.read<UserProvider>().selectedClientClassificationType,
       reason_class:  reasonClassController!.text,
     );
-    showAlertDialog(context );
+
      Navigator.push(
          context,
          CupertinoPageRoute(
            builder: (context) => similar_dailog(
              phone:mobileController.text,
              name_enterprise:nameEnterpriseController.text,
-             nameClient:  nameClientController.text, addClientParams: addClientParams,
+             nameClient:  nameClientController.text,
+             addClientParams: addClientParams,
 
            ),
          ));
@@ -902,6 +907,7 @@ class _similar_dailogState extends State<similar_dailog> {
 
   @override
   void initState() {
+    scheduleMicrotask(() {
     _clientsListBloc = context.read<ClientsListBloc>()..add(
         GetSimilarClientsListEvent(
             GetSimilarClientsListParams(
@@ -910,14 +916,26 @@ class _similar_dailogState extends State<similar_dailog> {
               phone:widget.phone ,
 
             )  ) );
-
+    });
     // TODO: implement initState
     super.initState();
   }
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _clientsListBloc.add(ResetClientList());
+
+    super.dispose();
+  }
+  @override
+  void deactivate() {
+    _clientsListBloc.add(ResetClientList());
+    super.deactivate();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'قائمة عملاء المتشابهين')),
+      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'قائمة العملاء المتشابهين')),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<ClientsListBloc, ClientsListState>(
@@ -959,6 +977,7 @@ class _similar_dailogState extends State<similar_dailog> {
 
                       return
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             AppElevatedButton(
                               isLoading: state.actionClientBlocStatus.isLoading(),
@@ -993,7 +1012,9 @@ class _similar_dailogState extends State<similar_dailog> {
                           ],
                         );
                     },
-                  )
+                  ),
+                  15.verticalSpace,
+
                 ],
               ),
               empty: () => Text("Empty "),
@@ -1040,18 +1061,26 @@ class CardSimilar extends StatelessWidget {
                   smClient.phone.toString(),
                   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
                 ),
+                // Text(
+                //   smClient.phone.toString(),
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                // ),
               ],
             ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
               children: [
-                Text(
-                  smClient.name_client.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                Expanded(
+                  child: Text(
+                    smClient.name_client.toString(),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                  ),
                 ),
                 Text(
-                  DateTime.tryParse( smClient.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse( smClient.clientModel.dateCreate!))
-                      :  smClient.dateCreate.toString(),
+                  DateTime.tryParse( smClient.date_create!) != null
+                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse( smClient.date_create!))
+                      :  smClient.date_create.toString(),
                   style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
                   textDirection: TextDirection.ltr,
                 ),

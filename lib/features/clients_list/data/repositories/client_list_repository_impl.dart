@@ -7,7 +7,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/clients_list_repository.dart';
 import '../data_sources/clients_list_datasource.dart';
-import '../models/similarClient.dart';
+import '../../../../model/similar_client.dart';
 
 @Injectable(as: ClientsListRepository)
 class ClientsListRepositoryImpl implements ClientsListRepository {
@@ -51,9 +51,9 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<ClientModel>>> changeTypeClient(Map<String, dynamic> body, Map<String, dynamic> params) {
+  Future<Result<ResponseWrapper<ClientModel>>> changeTypeClient(Map<String, dynamic> body, Map<String, dynamic> params,String id) {
     // TODO: implement changeTypeClient
-    return toApiResult(() => datasource.changeTypeClient(body, params));
+    return toApiResult(() => datasource.changeTypeClient(body, params,id));
 
   }
 
@@ -62,5 +62,11 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
     // TODO: implement getSimilarClients
     return toApiResult(() => datasource.getSimilarClientsList(body));
 
+  }
+
+  @override
+  Future<Result<ResponseWrapper<ClientModel>>> approveClientReject_admin(Map<String, dynamic> body, Map<String, dynamic> params, String id) {
+    // TODO: implement approveClientReject_admin
+    return toApiResult(() => datasource.approveClient_Reject(body,params,id));
   }
 }

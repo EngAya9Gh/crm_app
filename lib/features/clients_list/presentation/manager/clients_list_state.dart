@@ -3,6 +3,7 @@ part of 'clients_list_bloc.dart';
 class ClientsListState {
   ClientsListState({
     PagingController<int, ClientModel>? clientsListController,
+    this.getSimilarClientsParams,
     this.getClientsWithFilterParams,
     this.recommendedClientsState = const PageState.init(),
     this.similarClientsState = const PageState.init(),
@@ -13,6 +14,7 @@ class ClientsListState {
 
   final PagingController<int, ClientModel> clientsListController;
   final GetClientsWithFilterParams? getClientsWithFilterParams;
+  final GetSimilarClientsListParams? getSimilarClientsParams;
   final PageState<List<RecommendedClient>> recommendedClientsState;
   final PageState<List<SimilarClient>> similarClientsState;
   final BlocStatus actionClientBlocStatus;
@@ -21,6 +23,7 @@ class ClientsListState {
   ClientsListState copyWith({
     PagingController<int, ClientModel>? clientsListController,
     GetClientsWithFilterParams? getClientsWithFilterParams,
+    GetSimilarClientsListParams? getSimilarClientsParams,
     PageState<List<RecommendedClient>>? recommendedClientsState,
     PageState<List<SimilarClient>>? similarClientsState,
     final BlocStatus? actionClientBlocStatus,
@@ -31,6 +34,7 @@ class ClientsListState {
 
       clientsListController: clientsListController ?? this.clientsListController,
       getClientsWithFilterParams: restFilter ? null : getClientsWithFilterParams ?? this.getClientsWithFilterParams,
+        getSimilarClientsParams: restFilter ? null : getSimilarClientsParams ?? this.getSimilarClientsParams,
       recommendedClientsState: recommendedClientsState ?? this.recommendedClientsState,
         similarClientsState: similarClientsState ?? this.similarClientsState,
       actionClientBlocStatus: actionClientBlocStatus ??   this.actionClientBlocStatus,

@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/constants/route.dart';
+import '../api/client.dart';
 import '../api/log_interceptor.dart';
 import 'di_container.config.dart';
 
@@ -14,12 +15,16 @@ final GetIt _getIt = GetIt.I;
   initializerName: r'$initGetIt',
   preferRelativeImports: true,
   asExtension: false,
+  // ignoreUnregisteredTypes: [ClientApi],
+  // ignoreUnregisteredTypesInPackages:['ClientApi'],
+
 )
+
 Future<GetIt> configureDependencies() async => $initGetIt(_getIt);
 
 @module
 abstract class AppModule {
-  String? token=null;
+
 
   BaseOptions get dioOption => BaseOptions(
     baseUrl: EndPoints.baseUrl,

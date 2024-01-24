@@ -13,8 +13,9 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../data/models/clients_list_response.dart';
-import '../../data/models/similarClient.dart';
-import '../../domain/use_cases/changeTypeClient.dart';
+import '../../../../model/similar_client.dart';
+import '../../domain/use_cases/approve_reject_client_usecase.dart';
+import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
@@ -33,6 +34,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._editClientUserUsecase,
     this._changeTypeClientUsecase,
     this._getSimilarClientsUsecase,
+    this._approveRejectClientUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
@@ -42,8 +44,9 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<GetSimilarClientsListEvent>(_onGetSimilarClientsEvent);
     on<AddClientEvent>(_onAddClientEvent);
     on<EditClientEvent>(_onEditClientEvent);
-    on<changeTypeClientEvent >(_onEditTypeClientEvent);
+    on<ChangeTypeClientEvent >(_onEditTypeClientEvent);
     on<SwitchEvent >(_onSwitchEvent);
+    on<ApproveRejectClientEvent >(_onApproveRejectClientEvent);
   }
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
@@ -52,6 +55,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final AddClientUserUsecase _addClientUserUsecase;
   final EditClientUserUsecase _editClientUserUsecase;
   final ChangeTypeClientUsecase _changeTypeClientUsecase;
+  final ApproveRejectClientUsecase _approveRejectClientUsecase;
 
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
@@ -97,14 +101,15 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       return;
     }
     emit(state.copyWith(similarClientsState: PageState.loading()));
-
+   print('getClientsWithFilterParams');
+   print(getClientsWithFilterParams.name_enterprise.toString());
     final response = await _getSimilarClientsUsecase(getClientsWithFilterParams);
 
     response.fold(
           (exception, message) => emit(state.copyWith(similarClientsState: PageState.error())),
           (value) {
-        emit(state.copyWith(similarClientsState: PageState.loaded(data: value.message ?? [])));
-        event.onSuccess?.call(value.message ?? []);
+        emit(state.copyWith(similarClientsState: PageState.loaded(data: value.data?? [])));
+        event.onSuccess?.call(value.data?? []);
       },
     );
   }
@@ -147,6 +152,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     emit(state.copyWith(
       clientsListController: PagingController(firstPageKey: 1, invisibleItemsThreshold: 10),
       restFilter: true,
+      similarClientsState: PageState.init()
     ));
   }
 
@@ -201,11 +207,43 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     );
   }
 
-  FutureOr<void> _onEditTypeClientEvent(changeTypeClientEvent event, Emitter<ClientsListState> emit) async {
+  FutureOr<void> _onEditTypeClientEvent(ChangeTypeClientEvent event, Emitter<ClientsListState> emit) async {
     emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
 
     final response = await _changeTypeClientUsecase(
         event.changeTypeClientParams);
       /// code response
+    response.fold(
+          (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+          (value) {
+        emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
+        //
+        // state.clientsListController.itemList =
+        //     (state.clientsListController.itemList ?? [])
+        //     .map((e) => e.idClients == event.changeTypeClientParams.id_clients ? value.data! : e)
+        //     .toList();
+        event.onSuccess?.call(value.data!);
+      },
+    );
+  }
+
+  FutureOr<void> _onApproveRejectClientEvent(ApproveRejectClientEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(actionClientBlocStatus: const BlocStatus.loading()));
+
+    final response = await _approveRejectClientUsecase(
+        event.approveRejectClientParams);
+      /// code response
+    response.fold(
+          (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
+          (value) {
+        emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
+        //
+        // state.clientsListController.itemList =
+        //     (state.clientsListController.itemList ?? [])
+        //     .map((e) => e.idClients == event.changeTypeClientParams.id_clients ? value.data! : e)
+        //     .toList();
+        event.onSuccess?.call(value.data!);
+      },
+    );
   }
 }

@@ -48,8 +48,9 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
 
     fkCountry = userModel.fkCountry.toString();
     _clientsListBloc = context.read<ClientsListBloc>();
+    _clientsListBloc.state.myclient_parm=false;
     _clientsListBloc.state.clientsListController.addPageRequestListener((pageKey) {
-      _clientsListBloc.state.myclient_parm=false;
+
       _clientsListBloc.add(
         GetAllClientsListEvent(
         fkCountry: fkCountry,

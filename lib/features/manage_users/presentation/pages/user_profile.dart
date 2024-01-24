@@ -59,14 +59,20 @@ class _UserProfileState extends State<UserProfile> {
               (context.read<PrivilegeCubit>().checkPrivilege('50')
               &&
                   ( user.typeLevel==context.read<UserProvider>().currentUser.typeLevel &&
-                  int.parse(user.periorty.toString())==
-                  int.parse(context.read<UserProvider>().currentUser.periorty.toString())
+                  int.parse(context.read<UserProvider>().currentUser.periorty.toString())==
+                  int.parse(user.periorty.toString())
                   ))
                   ||
                   (context.read<PrivilegeCubit>().checkPrivilege('180')&&
                       int.parse(context.read<UserProvider>().currentUser.periorty.toString()) <=
                           int.parse(user.periorty.toString())
                   )
+                  // ||
+                  // (context.read<PrivilegeCubit>().checkPrivilege('50')&&
+                  //     (user.typeLevel==context.read<UserProvider>().currentUser.typeLevel&&
+                  //     int.parse(context.read<UserProvider>().currentUser.periorty.toString()) <=
+                  //         int.parse(user.periorty.toString()))
+                  // )
                   ? IconButton(
                       onPressed: () {
                         Navigator.push(

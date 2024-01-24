@@ -1,11 +1,12 @@
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/clients_list/data/models/similarClient.dart';
+import '../../../../model/similar_client.dart';
 import 'package:crm_smart/features/clients_list/domain/repositories/clients_list_repository.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../data/models/recommended_client.dart';
+import '../../../../model/similar_client.dart';
 
 @injectable
 class GetSimilarClientsUsecase extends
