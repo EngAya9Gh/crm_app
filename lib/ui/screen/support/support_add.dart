@@ -74,20 +74,6 @@ class _support_addState extends State<support_add> {
     _eventProvider = context.read<EventProvider>();
     _privilegeCubit = GetIt.I<PrivilegeCubit>();
 
-    // if (widget.idinvoice != '') {
-    //   // _invoice = Provider
-    //   //     .of<invoice_vm>(context, listen: false)
-    //   //     .listinvoices
-    //   //     .firstWhere(
-    //   //         (element) =>
-    //   //     element.idInvoice == widget.idinvoice);
-    //   // _textsupport.text = _invoice!.reason_date.toString();
-    // _timeController.text = DateTime.now().hour.toString()+':'
-    // + DateTime.now().minute.toString();
-    // formatDate(
-    // DateTime(2019, 08, 1, DateTime.now().hour, DateTime.now().minute),
-    // [hh, ':', nn, " ", am]).toString();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       //_ticketModel=_list.firstWhere((element) => element.fkClient)
       Provider.of<datetime_vm>(context, listen: false)

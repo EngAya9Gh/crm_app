@@ -224,11 +224,10 @@ class ClientsListDatasource {
         ),
       );
       dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
-      final client = ClientModel.fromJson(response.data['data'][0]);
-      final client1 = ClientModel.fromJson( response.data['message'][0]);
-      return ResponseWrapper(message:client1, data: client);
+      final client = ClientModel.fromJson(response.data['data']);
+      final client1 =  response.data['success'];
+      return ResponseWrapper(message:client, data: client);
     }
-
     return throwAppException(fun);
   }
   Future<ResponseWrapper<ClientModel>> approveClient_Reject(Map<String, dynamic> body,Map<String, dynamic> params,String id) async {
@@ -246,9 +245,9 @@ class ClientsListDatasource {
         ),
       );
       dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
-      final client  = ClientModel.fromJson(response.data['data'][0]);
-      final client1 = ClientModel.fromJson( response.data['message'][0]);
-      return ResponseWrapper(message:client1, data: client);
+      final client  = ClientModel.fromJson(response.data['data']);
+      // final client1 = ClientModel.fromJson( response.data['message']);
+      return ResponseWrapper(message:client, data: client);
     }
 
     return throwAppException(fun);

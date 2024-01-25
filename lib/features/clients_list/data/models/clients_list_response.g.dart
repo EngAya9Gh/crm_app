@@ -8,7 +8,7 @@ part of 'clients_list_response.dart';
 
 _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
     _$ClientModelImpl(
-      idClients: json['id_clients'] as String?,
+      idClients: json['id_clients'].toString()  ,
       nameClient: json['name_client'] as String?,
       nameEnterprise: json['name_enterprise'] as String?,
       typeJob: json['type_job'] as String?,
@@ -31,7 +31,7 @@ _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
       amountPaid: json['amount_paid'] as String?,
       offerPrice: json['offer_price'] as String?,
       datePrice: json['date_price'] as String?,
-      userDo: json['user_do'] as String?,
+      userDo: json['user_do'].toString(),
       isApprove: json['isApprove'] as String?,
       nameUserDoing: json['nameuserdoning'] as String?,
       nameUserTransfer: json['nameusertransfer'] as String?,
@@ -64,7 +64,7 @@ _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
       fkClientSource: json['fk_client_source'] as String?,
       nameReasonReject: json['NameReason_reject'] as String?,
       nameClientRecommend: json['NameClient_recomand'] as String?,
-      rejectId: json['fk_rejectClient'] as String?,
+      rejectId: json['fk_rejectClient'].toString() ,
       type_record: json['type_record'] as String?,
       type_classification: json['type_classification'] as String?,
       reason_class: json['reason_class'] as String?,

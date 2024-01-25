@@ -202,6 +202,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                             getClientsWithFilterParams:
                             _clientsListBloc.state.getClientsWithFilterParams!.copyWith(
                               country:Nullable.value(fkCountry),
+                              typeClient:Nullable.value( 'مشترك'),
                               userPrivilegeId: Nullable.value(null),
                               regionPrivilegeId:Nullable.value( null),
 

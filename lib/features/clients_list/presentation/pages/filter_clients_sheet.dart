@@ -290,7 +290,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     _clientsListBloc.state.getClientsWithFilterParams!.copyWith(
                       regionId: Nullable.value(_regionNotifier.value),
                       activityTypeId: Nullable.value(_activityNotifier.value),
-                      typeClient: Nullable.value(_statusNotifier.value),
+                      typeClient: Nullable.value('مشترك'),
                       userId: Nullable.value(_userNotifier.value),
                       userPrivilegeId: Nullable.value(null),
                       regionPrivilegeId:Nullable.value( null),

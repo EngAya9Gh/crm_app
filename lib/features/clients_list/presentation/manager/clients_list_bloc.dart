@@ -152,6 +152,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     emit(state.copyWith(
       clientsListController: PagingController(firstPageKey: 1, invisibleItemsThreshold: 10),
       restFilter: true,
+
       similarClientsState: PageState.init()
     ));
   }
@@ -216,12 +217,16 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     response.fold(
           (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
           (value) {
-        emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
+
+        emit(state.copyWith(
+            changeTypeClientParams: null,
+            actionClientBlocStatus: const BlocStatus.success()));
         //
         // state.clientsListController.itemList =
         //     (state.clientsListController.itemList ?? [])
         //     .map((e) => e.idClients == event.changeTypeClientParams.id_clients ? value.data! : e)
         //     .toList();
+
         event.onSuccess?.call(value.data!);
       },
     );
