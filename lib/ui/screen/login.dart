@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/services/AuthService.dart';
 import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
@@ -122,7 +124,14 @@ class _loginState extends State<login> {
                         if (res!="false") {
                           SharedPreferences preferences  = await SharedPreferences.getInstance();
                           preferences.setBool(kKeepMeLoggedIn, true);
-                          preferences.setString("id_user",res!);
+                          String id=jsonDecode(res!)["message"].toString();
+                          String tk=jsonDecode(res!)["data"]!;
+                          print('tk');
+                          print(id);
+                          print(tk);
+                          preferences.setString("id_user",id!);
+                          preferences.setString("token_user",tk);
+
                           // preferences.set("map_clientlist",res!);
                           await Provider.of<UserProvider>(context, listen: false).getcurrentuser();
                           Provider.of<AuthProvider>(context,listen: false)

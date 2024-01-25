@@ -198,8 +198,9 @@ class UserProvider extends ChangeNotifier {
     try {
       await _getUsersVm();
       String? id = prefs.getString('id_user');
+      print(id.toString());
       if (id != null) {
-        final index = allUsers.indexWhere((element) => element.idUser == id && element.isActive == '1');
+        final index =   allUsers.indexWhere((element) => element.idUser == id && element.isActive == '1');
         if (index >= 0) {
           currentUser = allUsers[index];
           final response = await GetIt.I<PrivilegeCubit>().getUserPrivileges(currentUser.typeLevel.toString());

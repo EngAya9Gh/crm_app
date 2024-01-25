@@ -69,6 +69,30 @@ class Api {
     }
   }
 
+  Future<dynamic> postNew({
+    required String url,
+    @required dynamic body,
+    String? token,
+  }) async {
+    Map<String, String> headers = {};
+
+    if (token != null) {
+      headers.addAll({'Authorization': 'Bearer $token'});
+    }
+    http.Response response = await _client.post(
+      Uri.parse(url),
+      body: body,
+      headers: headers,
+    );
+    String result = response.body;
+    print(result);
+     if (json.decode(result)["success"]) {
+      return result ;
+    } else {
+      throw Exception('${json.decode(result)["message"]}');
+    }
+  }
+
   Future<File?> checkExist(String filename) async {
     String dir = (await getDownloadsDirectory())!.path;
     File file = File('$dir/$filename');

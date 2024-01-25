@@ -11,6 +11,7 @@ const kfontfamily = 'Pacifico';
 const kfontfamily2 = 'Cairo-Regular';
 const kfontfamily3 = 'Amiri';
 const url = 'http://smartcrm.ws/test/api/';
+const url_laravel = 'http://test.smartcrm.ws/api/';
 const urlimage = 'http://smartcrm.ws/test/api/imagesApp/profile/';
 const urlfile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
 const urlfilelogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/enums/status_code.dart';
 import 'api_utils.dart';
 
@@ -11,9 +12,15 @@ enum _StatusType {
 }
 
 class LoggerInterceptor extends Interceptor with LoggerHelper {
+
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    options.headers[HttpHeaders.authorizationHeader] = 'Bearer 20|PLueBlgrb1VT4p2QMIOVNxuAXpTifd5BCNtFDgFq48af1845';
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async{
+
+   final prefs = await SharedPreferences.getInstance();
+   final token= prefs.getString('token_user');
+   print('token inside interceptor');
+   print(token);
+    options.headers[HttpHeaders.authorizationHeader] = token;//'Bearer 20|PLueBlgrb1VT4p2QMIOVNxuAXpTifd5BCNtFDgFq48af1845';
 
     if (kDebugMode) {
       prettyPrinterI(

@@ -1,6 +1,8 @@
 
 
 
+import 'dart:convert';
+
 import 'package:crm_smart/api/api.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -12,11 +14,12 @@ class  AuthServices{
     String? result;
     try{
       result= await Api()
-        .post( url:url+"Auth/send_otp.php",body: {
+        .postNew( url:url_laravel+"checkEmail",body: {
           'email':email
     } );
-   // 
-    return result=="done"? true:false;}
+   //
+      print(result);
+    return jsonDecode(result!)["message"]=="Done"? true:false;}
         catch(e){
 
           return false;
@@ -30,12 +33,12 @@ class  AuthServices{
 
       
       // 
-      result = await Api().post(url: url + "Auth/check_otp.php", body: {
+      result = await Api().postNew(url: url_laravel + "login", body: {
         'email': email,
         'otp': otp,
         'token': fcm,
       });
-      return result != "code is wrong" ? result : "false";
+      return jsonDecode(result!)["message"]!= "code is wrong" ? result : "false";
     }
     catch(e){
 
