@@ -215,6 +215,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                               userPrivilegeId: Nullable.value(_privilegeCubit.checkPrivilege('16') ? userModel.idUser : null),
                               regionPrivilegeId:Nullable.value( _privilegeCubit.checkPrivilege('15') ? userModel.fkRegoin : null),
                               country:Nullable.value(fkCountry),
+                              typeClient:Nullable.value( null),
 
                             ) )
 

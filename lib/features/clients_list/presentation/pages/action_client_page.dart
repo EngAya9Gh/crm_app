@@ -210,7 +210,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
               valueListenable: clientName,
               builder: (context, value, _) {
                 return SmartCrmAppBar(
-                  appBarParams: AppBarParams(title: isEdit ? value : "إضافة عميل"),
+                  appBarParams: AppBarParams(
+                      title: isEdit ? value : "إضافة عميل"),
                 );
               },
             ),

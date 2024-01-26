@@ -51,6 +51,7 @@ class ClientApi {
       receiveDataWhenStatusError: _client.options.receiveDataWhenStatusError,
       requestEncoder: _client.options.requestEncoder,
       validateStatus: _client.options.validateStatus,
+
     );
 
     switch (settings.clientMethod) {
@@ -66,6 +67,7 @@ class ClientApi {
         break;
       case ClientMethod.post:
         function() => _client.postUri<T>(
+
               requestUrl,
               onReceiveProgress: onReceiveProgress,
               onSendProgress: onSendProgress,

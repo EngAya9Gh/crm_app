@@ -184,7 +184,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       (exception, message) => emit(state.copyWith(actionClientBlocStatus: BlocStatus.fail(error: message ?? ''))),
       (value) {
         emit(state.copyWith(actionClientBlocStatus: const BlocStatus.success()));
-        state.clientsListController.itemList = [value.data!, ...state.clientsListController.itemList ?? []];
+        state.clientsListController.itemList =
+        [value.data!, ...state.clientsListController.itemList ?? []];
         event.onSuccess?.call(value.data!);
       },
     );

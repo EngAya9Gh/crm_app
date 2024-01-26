@@ -16,6 +16,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/links/presentation/pages/manage_links_page.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/manage_users/presentation/pages/manage_users_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';
@@ -108,6 +109,17 @@ class _managmentpageState extends State<managmentpage> {
                 Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageRejectReasonsPage()));
               },
               title: 'إدارة أسباب الاستبعاد',
+            ),
+            buildSelectCategory(
+              colorbag: Colors.white,
+              colortitle: Colors.black,
+              colorarrow: Colors.black,
+              onTap: () {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) =>
+                        ManageLinkPage()));
+              },
+              title: 'الروابط الهامة',
             ),
             _privilegeCubit.checkPrivilege('4') == true
                 ? buildSelectCategory(

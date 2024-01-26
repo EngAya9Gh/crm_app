@@ -67,7 +67,8 @@ class TaskDatasource {
 
       return ResponseWrapper<List<TaskModel>>(
         data: List.from(
-            (response.data['data'] as List<dynamic>).map((e) => TaskModel.fromJson(e as Map<String, dynamic>))),
+            (response.data['data'] as List<dynamic>).map((e) =>
+                TaskModel.fromJson(e as Map<String, dynamic>))),
         message: [],
       );
     }

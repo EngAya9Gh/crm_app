@@ -36,7 +36,8 @@ class _CardClientState extends State<CardClient> {
               ClientModel clientModel = await Navigator.push(
                 context,
                 CupertinoPageRoute(
-                  builder: (context) => ActionClientPage(client: widget.clientModel),
+                  builder: (context) =>
+                      ActionClientPage(client: widget.clientModel),
                 ),
               );
               setState(() {

@@ -58,22 +58,13 @@ class ClientsListDatasource {
       );
       dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
       final client = response.data;//ClientModel.fromJson(response.data);
-      List<SimilarClient> listres=List.from((client as List<dynamic>).map((e) {
+      List<SimilarClient> listres=
+      List.from((client as List<dynamic>).map((e) {
                   return SimilarClient.fromJson(e as Map<String, dynamic>);
              }));
-      return ResponseWrapper<List<SimilarClient>>(message: null, data: listres);
+      return ResponseWrapper<List<SimilarClient>>
+        (message: null, data: listres);
 
-      // return List.from((client as List<dynamic>).map((e) {
-      //           return SimilarClient.fromJson(e as Map<String, dynamic>);
-      //      }));
-      // return ResponseWrapper<List<SimilarClient>>.fromJson(
-      //   response.data,
-      //   (json) {
-      //     return List.from((json as List<dynamic>).map((e) {
-      //       return SimilarClient.fromJson(e as Map<String, dynamic>);
-      //     }));
-      //   },
-       //);
 
     }
 
@@ -182,7 +173,8 @@ class ClientsListDatasource {
         ),
       );
 
-      final client = ClientModel.fromJson(response.data['message'][0]);
+      final client = ClientModel.fromJson(
+          response.data['message'][0]);
       return ResponseWrapper(message: client, data: client);
     }
 
@@ -246,7 +238,6 @@ class ClientsListDatasource {
       );
       dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
       final client  = ClientModel.fromJson(response.data['data']);
-      // final client1 = ClientModel.fromJson( response.data['message']);
       return ResponseWrapper(message:client, data: client);
     }
 

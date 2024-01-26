@@ -224,6 +224,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                     ),
                     Expanded(
                       child: ListView.separated(
+
                         itemCount: state.tasksList.length,
                         shrinkWrap: true,
                         padding: HWEdgeInsets.only(bottom: 20),

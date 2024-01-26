@@ -156,7 +156,8 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                           .add(GetCommunicationListEvent(fkCountry!, query: _searchTextField.text)),
                       child: ListView.separated(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        itemBuilder: (BuildContext context, int index) => communicationWidget(
+                        itemBuilder: (BuildContext context, int index) =>
+                            communicationWidget(
                           state.communicationListState.data[index],
                         ),
                         separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
@@ -195,30 +196,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Row(
-              //   children: [
-              //     // Text(
-              //     //   "${communication.idInvoice}#",
-              //     //   style: TextStyle(color: Colors.amber, fontFamily: kfontfamily2),
-              //     //   textDirection: TextDirection.rtl,
-              //     //   textAlign: TextAlign.start,
-              //     // ),
-              //     // SizedBox(width: 15),
-              //     // Expanded(
-              //     //   child: TextScroll(
-              //     //     communication.nameClient ?? '',
-              //     //     mode: TextScrollMode.endless,
-              //     //     velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
-              //     //     delayBefore: Duration(milliseconds: 2000),
-              //     //     pauseBetween: Duration(milliseconds: 1000),
-              //     //     style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.w600),
-              //     //     textAlign: TextAlign.center,
-              //     //     textDirection: TextDirection.rtl,
-              //     //   ),
-              //     // ),
-              //   ],
-              // ),
-              // SizedBox(height: 15),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -247,20 +225,7 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       ],
                     ),
                   ),
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //     color: kMainColor,
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  //   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  //   margin: EdgeInsetsDirectional.only(start: 10),
-                  //   child: Center(
-                  //     child: Text(
-                  //       "دوري",
-                  //       style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-                  //     ),
-                  //   ),
-                  // ),
+
                 ],
               ),
               SizedBox(height: 15),

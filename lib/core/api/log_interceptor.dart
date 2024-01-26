@@ -20,13 +20,13 @@ class LoggerInterceptor extends Interceptor with LoggerHelper {
    final token= prefs.getString('token_user');
    print('token inside interceptor');
    print(token);
-    options.headers[HttpHeaders.authorizationHeader] = token;//'Bearer 20|PLueBlgrb1VT4p2QMIOVNxuAXpTifd5BCNtFDgFq48af1845';
+    options.headers[HttpHeaders.authorizationHeader] = 'Bearer '+token.toString();//'Bearer 20|PLueBlgrb1VT4p2QMIOVNxuAXpTifd5BCNtFDgFq48af1845';
 
     if (kDebugMode) {
       prettyPrinterI(
         "***|| INFO Request ${options.path} ||***"
         "\n HTTP Method: ${options.method}"
-        "\n token : ${options.headers[HttpHeaders.authorizationHeader]?.substring(0, 20)}"
+        // "\n token : ${options.headers[HttpHeaders.authorizationHeader]?.substring(0, 20)}"
         "\n query param : ${options.queryParameters}"
         "\n body : ${options.data is FormData ? (options.data as FormData).fields : options.data}"
         "\n url: ${options.path}"

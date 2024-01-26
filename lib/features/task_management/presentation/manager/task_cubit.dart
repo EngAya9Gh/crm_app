@@ -102,7 +102,9 @@ class TaskCubit extends Cubit<TaskState> {
           addTaskStatus: BlocStatus.fail(error: message))),
       (value) {
         onSuccess();
-        emit(state.copyWith(addTaskStatus: const BlocStatus.success(), isResetAddTask: true));
+        emit(state.copyWith(
+            addTaskStatus: const BlocStatus.success(),
+            isResetAddTask: true));
       },
     );
   }
@@ -131,7 +133,8 @@ class TaskCubit extends Cubit<TaskState> {
       (value) {
         List<TaskModel> list = value.data ?? [];
         if (state.selectedStatus != null) {
-          list = list.where((element) => element.name == state.selectedStatus?.name).toList();
+          list = list.where((element) =>
+          element.name == state.selectedStatus?.name).toList();
         }
         onSuccess?.call();
 

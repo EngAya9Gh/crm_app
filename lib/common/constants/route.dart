@@ -5,6 +5,7 @@ abstract class EndPoints {
   static const care = _Care();
   static const client = _Client();
   static const users = _Users();
+  static const link = _Links();
   static const series = _Series();
   static const app = _App();
   static const privilege = _Privilege();
@@ -23,6 +24,13 @@ class _Users {
   final allUsers = 'users/getUser.php';
   final addUser = 'users/addUser.php';
   final updateUser = 'users/updateuser_patch.php';
+}
+class _Links {
+  const _Links();
+
+  final getLink = 'getAllLink';
+  final addLink = 'addLink';
+  final updateLink = 'editLink/';
 }
 
 class _Series {
