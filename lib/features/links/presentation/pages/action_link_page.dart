@@ -118,7 +118,8 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                         if (state.actionLinkState.isLoading())
                           return Center(child: CircularProgressIndicator());
 
-                        return custom_button_new(
+                        return
+                          custom_button_new(
                           onpress: () {
                             final isValid = _formKey.currentState!.validate();
                             if (!isValid) return;

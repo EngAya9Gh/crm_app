@@ -6,6 +6,7 @@ abstract class EndPoints {
   static const client = _Client();
   static const users = _Users();
   static const link = _Links();
+  static const company = _Company();
   static const series = _Series();
   static const app = _App();
   static const privilege = _Privilege();
@@ -31,6 +32,13 @@ class _Links {
   final getLink = 'getAllLink';
   final addLink = 'addLink';
   final updateLink = 'editLink/';
+}
+class _Company {
+  const _Company();
+
+  final getComment = 'getCommentsViaCompanyId/';
+  final addComment = 'addCommentToCompany/';
+
 }
 
 class _Series {

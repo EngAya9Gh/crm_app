@@ -115,7 +115,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
         data = await Api().post(
           url: url + endPoint,
           body: {'type': type},
-          token: null,
+
         );
       } catch (e, st) {
         setState(() {

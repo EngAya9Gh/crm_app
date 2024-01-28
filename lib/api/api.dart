@@ -4,14 +4,27 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Api {
+  class Api {
   static final http.Client _client = http.Client();
 
   // final client = RetryClient(http.Client());
   // headers: {
   // "Accept": "application/json",
   // "Access-Control-Allow-Origin": "*"}
+ static String? token=null  ;
+  Api() {
+    if(token!=null)
+    get_token();
+
+  }
+
+  Future<void> get_token() async {
+    final prefs = await  SharedPreferences.getInstance();
+    token= prefs.getString('token_user');
+    print('inside get_token () .... ');
+  }
   Future<dynamic> get({required String url}) async {
     // final client = RetryClient(http.Client());
     // try {
@@ -26,7 +39,12 @@ class Api {
 //private, max-age=3600
     // "Cache-Control": "no-cache"
     //   http.Response response = await _client.get(
-    http.Response response = await _client.get(Uri.parse(url));
+    http.Response response = await _client.get(
+        Uri.parse(url),
+      headers:  {'Authorization': 'Bearer $token'}
+
+
+    );
     if (json.decode(response.body)["code"] == "200") {
 
       return jsonDecode(response.body)["message"];
@@ -40,8 +58,9 @@ class Api {
   Future<dynamic> post({
     required String url,
     @required dynamic body,
-    String? token,
+
   }) async {
+
     Map<String, String> headers = {};
 
     if (token != null) {
@@ -72,7 +91,7 @@ class Api {
   Future<dynamic> postNew({
     required String url,
     @required dynamic body,
-    String? token,
+
   }) async {
     Map<String, String> headers = {};
 
@@ -159,7 +178,7 @@ class Api {
 
   Future<dynamic> postRequestWithFile(String type, String url, Map<String, dynamic> data, File? file, File? filelogo,
       {List<File>? files}) async {
-    var request = http.MultipartRequest("POST", Uri.parse(url));
+    var request = http.MultipartRequest("POST", Uri.parse(url) );
     if (file != null) {
       var length = await file.length();
       var stream = http.ByteStream(file.openRead());
@@ -217,7 +236,6 @@ class Api {
   Future<dynamic> delete({
     required String url,
     @required dynamic body,
-    @required String? token,
   }) async {
     Map<String, String> headers = {};
     if (token != null) {

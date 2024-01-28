@@ -384,7 +384,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
         response = await Api().post(
           url: url + 'target/add_target.php',
           body: body,
-          token: null,
+
         );
       } else {
         final body = {
@@ -398,7 +398,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
         response = await Api().post(
           url: url + 'target/update_target.php?id_target=${branchRaceModel?.idTarget}',
           body: body,
-          token: null,
+
         );
       }
 

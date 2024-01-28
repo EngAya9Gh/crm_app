@@ -239,7 +239,7 @@ class UserProvider extends ChangeNotifier {
     try {
       var data = await Api().post(
         url: url + "users/delete_user.php?id_user=$userId",
-        token: null,
+
         body: null,
       );
 

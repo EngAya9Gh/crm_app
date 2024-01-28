@@ -248,7 +248,6 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
     var data = await Api().post(
       url: requestUrl.toString(),
       body: body,
-      token: null,
     );
 
     List<EmployeeReportModel> list = convertListFromJson(data, (json) => EmployeeReportModel.fromJson(json));
