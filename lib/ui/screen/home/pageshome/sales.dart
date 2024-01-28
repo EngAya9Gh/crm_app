@@ -23,6 +23,7 @@ import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_i
 import '../../client/agents_distributors_invoices_view.dart';
 import '../../client/calender_client.dart';
 import '../../client/marketing/getLastCommentClient.dart';
+import '../../config/company_view.dart';
 
 class sales extends StatefulWidget {
   const sales({Key? key}) : super(key: key);
@@ -163,6 +164,19 @@ class _salesState extends State<sales> {
                     colorarrow: Colors.black,
                   )
                 : Container(),
+            buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute<void>(
+                      builder: (BuildContext context) => company_view(type: 'ticket'),
+                    ),
+                  );
+                },
+                title: 'الشركات المنافسة'),
 
             context.read<PrivilegeCubit>().checkPrivilege('86') == true
                 ? buildSelectCategory(

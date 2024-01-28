@@ -110,17 +110,17 @@ class _managmentpageState extends State<managmentpage> {
               },
               title: 'إدارة أسباب الاستبعاد',
             ),
-            buildSelectCategory(
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) =>
-                        ManageLinkPage()));
-              },
-              title: 'الروابط الهامة',
-            ),
+            // buildSelectCategory(
+            //   colorbag: Colors.white,
+            //   colortitle: Colors.black,
+            //   colorarrow: Colors.black,
+            //   onTap: () {
+            //     Navigator.push(context,
+            //         CupertinoPageRoute(builder: (context) =>
+            //             ManageLinkPage()));
+            //   },
+            //   title: 'الروابط الهامة',
+            // ),
             _privilegeCubit.checkPrivilege('4') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
@@ -256,19 +256,7 @@ class _managmentpageState extends State<managmentpage> {
                   );
                 },
                 title: 'أنواع النشاط'),
-            buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<void>(
-                      builder: (BuildContext context) => company_view(type: 'ticket'),
-                    ),
-                  );
-                },
-                title: 'الشركات المنافسة'),
+
             _privilegeCubit.checkPrivilege('113') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,

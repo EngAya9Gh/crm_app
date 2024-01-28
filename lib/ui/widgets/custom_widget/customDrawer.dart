@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../features/links/presentation/pages/manage_links_page.dart';
 import '../animated_dialog.dart';
 import '../delete_acconut_dialog.dart';
 
@@ -138,6 +139,25 @@ class CustomDrawer extends StatelessWidget {
                   context,
                   CupertinoPageRoute<void>(builder: (BuildContext context) => usertest_view()),
                 );
+                // ProductView();
+              },
+            ),
+            ListTile(
+              title: Text(
+                'الروابط الهامة',
+                style: TextStyle(
+                  fontFamily: kfontfamily2,
+                  fontSize: 20,
+                ),
+              ),
+              leading: Icon(
+                Icons.supervised_user_circle,
+                color: kMainColor,
+              ),
+              onTap: () {
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) =>
+                        ManageLinkPage()));
                 // ProductView();
               },
             ),

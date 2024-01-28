@@ -20,7 +20,7 @@ class CommentCompanyDatasource {
   Future<ResponseWrapper<List<CompanyCommentModel>>> getCommment(String fk) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
@@ -29,7 +29,7 @@ class CommentCompanyDatasource {
           responseType: ResponseType.json,
         ),
       );
-      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
 
       return ResponseWrapper<List<CompanyCommentModel>>(
         data: List.from(
@@ -45,7 +45,7 @@ class CommentCompanyDatasource {
     required Map<String, dynamic> body,required String fk
   }) async {
     final dio = GetIt.I<Dio>();
-    dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
+    dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
 
     fun() async {
       final response = await _clientApi.request(
@@ -57,7 +57,7 @@ class CommentCompanyDatasource {
           responseType: ResponseType.json,
         ),
       );
-      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
 
       return ResponseWrapper<CompanyCommentModel>.fromJson(
         response.data,

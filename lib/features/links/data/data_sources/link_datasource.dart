@@ -19,7 +19,7 @@ class LinkDatasource {
   Future<ResponseWrapper<List<LinkImportantModel>>> getLink() async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
@@ -28,7 +28,7 @@ class LinkDatasource {
           responseType: ResponseType.json,
         ),
       );
-      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
       //
       // return ResponseWrapper<List<LinkImportantModel>>.fromJson(
       //   response.data['data'],
@@ -54,7 +54,7 @@ class LinkDatasource {
     required Map<String, dynamic> body
   }) async {
     final dio = GetIt.I<Dio>();
-    dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
+    dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
 
     fun() async {
       final response = await _clientApi.request(
@@ -66,7 +66,7 @@ class LinkDatasource {
           responseType: ResponseType.json,
         ),
       );
-      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
 
       return ResponseWrapper<LinkImportantModel>.fromJson(
         response.data,
@@ -82,7 +82,7 @@ class LinkDatasource {
     required String id,
   }) async {
     final dio = GetIt.I<Dio>();
-    dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
+    dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
 
     fun() async {
       final response = await _clientApi.request(
@@ -93,7 +93,7 @@ class LinkDatasource {
           responseType: ResponseType.json,
         ),
       );
-      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
 
       return ResponseWrapper<LinkImportantModel>.fromJson(
         response.data,

@@ -110,6 +110,7 @@ class _comment_companyState extends State<comment_company> {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     content: Text('تم')));
                                 // Navigator.pop(context,value);
+                                _commentController.text='';
                               },
                               addcommentParams: AddCommentParams(
                               user_id: context.read<UserProvider>().currentUser.idUser.toString(),
