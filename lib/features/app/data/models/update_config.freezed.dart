@@ -24,6 +24,7 @@ mixin _$UpdateConfig {
   String? get idVersion => throw _privateConstructorUsedError;
   @JsonKey(name: "name_version")
   String? get nameVersion => throw _privateConstructorUsedError;
+
   @JsonKey(name: "link_version")
   String? get linkVersion => throw _privateConstructorUsedError;
   @JsonKey(name: "type_version", fromJson: UpdateConfig.typeVersionFromJson)

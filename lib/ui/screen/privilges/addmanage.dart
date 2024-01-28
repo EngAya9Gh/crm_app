@@ -93,7 +93,7 @@ class _addmanageState extends State<addmanage> {
                           else{
                             Provider.of<manage_provider>(context,listen: false)
                                 .update_manage({
-                              'fk_country':widget.fk_country,
+                              'fk_country':widget.fk_country.toString(),
                               'name_mange':namelevel.text
                             },widget.idmange.toString()).then(
                                     (value) =>  value!="error"

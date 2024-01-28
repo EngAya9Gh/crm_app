@@ -491,86 +491,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             15.verticalSpace,
                           },
 
-                          AppDropdownButtonFormField<String, String>(
-                            items: clientsRegistrationTyeList,
-                            hint: "نوع التسجيل*",
-                            itemAsValue: (String? item) => item!,
-                            itemAsString: (item) => item!,
-                            validator: HelperFunctions.instance.requiredFiled,
-                            value: _selectedClientRegistrationTye,
 
-
-                            onChange: (value) {
-                              if (value == null) {
-                                return;
-                              }
-                              _selectedClientRegistrationTye = value;
-                              _userProvider.changeClientRegistrationTypeStatus(value);
-
-                              // if(value!="خاطئ"){
-                              //   _userProvider.changeClientClassificationTypeStatus("null");
-                              //   reasonClassController.clear();
-                              //   reasonClassController.text="null";
-                              // }
-                            },
-                          ),
-
-                          15.verticalSpace,
-
-                          Selector<UserProvider,String>(
-                              selector: (context,userPro)=>userPro.selectedClientRegistrationType,
-                              builder:(context,userProvider,child){
-                                return  (userProvider=="خاطئ")||(_selectedClientRegistrationTye=="خاطئ"&&isEdit)?
-                                AppDropdownButtonFormField<String, String>(
-                                  items: clientsClassificationList,
-                                  hint: "نوع التصنيف*",
-                                  itemAsValue: (String? item) => item!,
-                                  itemAsString: (item) => item!,
-                                  validator: HelperFunctions.instance.requiredFiled,
-                                  value: _selectedClientsClassification,
-
-
-                                  onChange: (value) {
-                                    if (value == null) {
-                                      return;
-                                    }
-
-                                    _userProvider.changeClientClassificationTypeStatus(value);
-                                    if(value!="أخرى"){
-                                      reasonClassController.clear();
-                                      reasonClassController.text="null";
-                                    }
-                                  },
-                                ) : IgnorePointer();
-
-                              }),
-                          15.verticalSpace,
-
-                          Selector<UserProvider,String>(
-                              selector: (context,userPro)=>userPro.selectedClientRegistrationType,
-                              builder:(context,userProvider,child){
-                                return  userProvider=="أخرى"||(_selectedClientRegistrationTye=="خاطئ"&&isEdit)?
-                                15.verticalSpace:IgnorePointer();
-
-                              }),
-                          Consumer<UserProvider>(builder: (contex,userPr,child){
-                            print(userPr.selectedClientClassificationType);
-                            return  (userPr.selectedClientClassificationType=="أخرى"&&userPr.selectedClientRegistrationType =="خاطئ")||(userPr.selectedClientClassificationType=="أخرى"&&userPr.selectedClientRegistrationType =="خاطئ"&&isEdit)?
-                            AppTextField(
-                              labelText: "ادخل السبب",
-                              maxLines: 1,
-                              validator: HelperFunctions.instance.requiredFiled,
-                              controller: reasonClassController,
-                            ) : IgnorePointer();
-                          }),
-
-                          Consumer<UserProvider>(builder: (contex,userPr,child){
-                            return  userPr.selectedClientClassificationType=="أخرى"
-                                &&userPr.selectedClientRegistrationType =="خاطئ"
-                                ||(userPr.selectedClientClassificationType=="أخرى"
-                                    &&userPr.selectedClientRegistrationType =="خاطئ"&&isEdit)?
-                            15.verticalSpace:IgnorePointer();
-                          }),
                           AppDropdownButtonFormField<String, String>(
                             items: sourceClientsList,
                             onChange: (value) {
@@ -629,6 +550,93 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             ),
                             15.verticalSpace,
                           },
+                          if (selectedSourceClient != 'ميداني' &&selectedSourceClient != 'عميل موصى به'&&
+                              selectedSourceClient !=null) ...{
+                          AppDropdownButtonFormField<String, String>(
+                            items: clientsRegistrationTyeList,
+                            hint: "نوع التسجيل*",
+                            itemAsValue: (String? item) => item!,
+                            itemAsString: (item) => item!,
+                            validator: HelperFunctions.instance.requiredFiled,
+                            value: _selectedClientRegistrationTye,
+
+
+                            onChange: (value) {
+                              if (value == null) {
+                                return;
+                              }
+                              _selectedClientRegistrationTye = value;
+                              _userProvider.changeClientRegistrationTypeStatus(value);
+
+                              // if(value!="خاطئ"){
+                              //   _userProvider.changeClientClassificationTypeStatus("null");
+                              //   reasonClassController.clear();
+                              //   reasonClassController.text="null";
+                              // }
+                            },
+                          ),
+                            15.verticalSpace,
+                          },
+    if (selectedSourceClient != 'ميداني' &&selectedSourceClient != 'عميل موصى به'&&
+    selectedSourceClient !=null) ...{
+                          Selector<UserProvider,String>(
+                              selector: (context,userPro)=>userPro.selectedClientRegistrationType,
+                              builder:(context,userProvider,child){
+                                return  (userProvider=="خاطئ")||(_selectedClientRegistrationTye=="خاطئ"&&isEdit)?
+                                AppDropdownButtonFormField<String, String>(
+                                  items: clientsClassificationList,
+                                  hint: "نوع التصنيف*",
+                                  itemAsValue: (String? item) => item!,
+                                  itemAsString: (item) => item!,
+                                  validator: HelperFunctions.instance.requiredFiled,
+                                  value: _selectedClientsClassification,
+
+
+                                  onChange: (value) {
+                                    if (value == null) {
+                                      return;
+                                    }
+
+                                    _userProvider.changeClientClassificationTypeStatus(value);
+                                    if(value!="أخرى"){
+                                      reasonClassController.clear();
+                                      reasonClassController.text="null";
+                                    }
+                                  },
+                                ) : IgnorePointer();
+
+                              }),
+                          15.verticalSpace,
+    },
+    if (selectedSourceClient != 'ميداني' &&selectedSourceClient != 'عميل موصى به'&&
+    selectedSourceClient !=null) ...{ Selector<UserProvider,String>(
+                              selector: (context,userPro)=>userPro.selectedClientRegistrationType,
+                              builder:(context,userProvider,child){
+                                return  userProvider=="أخرى"||(_selectedClientRegistrationTye=="خاطئ"&&isEdit)?
+                                15.verticalSpace:IgnorePointer();
+
+                              }),},
+    if (selectedSourceClient != 'ميداني' &&selectedSourceClient != 'عميل موصى به'&&
+    selectedSourceClient !=null) ...{   Consumer<UserProvider>(builder: (contex,userPr,child){
+                            print(userPr.selectedClientClassificationType);
+                            return  (userPr.selectedClientClassificationType=="أخرى"&&userPr.selectedClientRegistrationType =="خاطئ")||(userPr.selectedClientClassificationType=="أخرى"&&userPr.selectedClientRegistrationType =="خاطئ"&&isEdit)?
+                            AppTextField(
+                              labelText: "ادخل السبب",
+                              maxLines: 1,
+                              validator: HelperFunctions.instance.requiredFiled,
+                              controller: reasonClassController,
+                            ) : IgnorePointer();
+                          }),
+    },
+                          Consumer<UserProvider>(builder: (contex,userPr,child){
+                            return  userPr.selectedClientClassificationType=="أخرى"
+                                &&userPr.selectedClientRegistrationType =="خاطئ"
+                                ||(userPr.selectedClientClassificationType=="أخرى"
+                                    &&userPr.selectedClientRegistrationType =="خاطئ"&&isEdit)?
+                            15.verticalSpace:IgnorePointer();
+                          }),
+
+
                           Consumer<CompanyProvider>(
                             builder: (context, company, _) {
                               return AppDropdownButtonFormField<CompanyModel, String>(

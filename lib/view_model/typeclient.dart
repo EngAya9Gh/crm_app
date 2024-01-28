@@ -9,6 +9,7 @@ import '../constants.dart';
 
 class ClientTypeProvider extends ChangeNotifier{
   List<String> type_of_client=[];
+  List<String> type_record_client=['صحيح','خاطئ'];
   List<String> type_of_welcome=['الكل','تم الترحيب','لم يتم الترحيب'];
   List<String> type_of_install_iso=['الكل','تم التأكد من الجودة',
     'انتظار الجودة'];

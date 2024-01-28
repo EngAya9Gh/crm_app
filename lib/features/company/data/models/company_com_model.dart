@@ -22,18 +22,29 @@ class CompanyCommentModel{
 
 
   });
-
+  //
   factory CompanyCommentModel.fromJson(jsonData) {
     return CompanyCommentModel(
-      id_comment_company: jsonData['id_comment_company'].toString(),
+       id_comment_company:  jsonData['id_comment_company'].toString(),
       fk_user: jsonData['fk_user'].toString(),
       nameUser: jsonData['nameUser'].toString(),
-      imgImage: jsonData['imgImage'].toString(),
+      imgImage: jsonData['img_image'].toString(),
 
-      fk_company : jsonData['fk_company '].toString(),
+      fk_company : jsonData['fk_company'].toString(),
       content: jsonData['content'].toString(),
       date_comment: jsonData!['date_comment'],
 
     );
   }
+  // factory CompanyCommentModel.fromJson( jsonData) {
+  //   return CompanyCommentModel(
+  //     id_comment_company: int.parse(jsonData['id_comment_company']).toString(),
+  //     fk_user: int.parse(jsonData['fk_user']).toString(),
+  //     nameUser: jsonData['nameUser'].toString(),
+  //     imgImage: jsonData['img_image'].toString(),
+  //     fk_company: int.parse(jsonData['fk_company']).toString(),
+  //     content: jsonData['content'].toString(),
+  //     date_comment: jsonData['date_comment'],
+  //   );
+  // }
 }

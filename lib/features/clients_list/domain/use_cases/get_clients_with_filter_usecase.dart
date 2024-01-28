@@ -27,6 +27,7 @@ class GetClientsWithFilterParams {
   final int perPage;
   final int? regionId;
   final String? typeClient;
+  final String? typeClient_record;
   final int? userId;
   final int? activityTypeId;
   final String? userPrivilegeId;
@@ -42,6 +43,7 @@ class GetClientsWithFilterParams {
     this.activityTypeId,
     this.userPrivilegeId,
     this.regionPrivilegeId,
+    this.typeClient_record,
     this.query,
     this.perPage = kPerPage,
   });
@@ -53,6 +55,7 @@ class GetClientsWithFilterParams {
       'row_in_page': perPage,
       'fk_regoin': regionId,
       'type_client': typeClient,
+      'type_record': typeClient_record,
       'fk_user': userId,
       'activity_type_fk': activityTypeId,
       'fk_user_prv': userPrivilegeId,
@@ -70,6 +73,7 @@ class GetClientsWithFilterParams {
     Nullable<int?>? perPage,
     Nullable<int?>? regionId,
     Nullable<String?>? typeClient,
+    Nullable<String?>? typeClient_record,
     Nullable<int?>? userId,
     Nullable<int?>? activityTypeId,
     Nullable<String?>? userPrivilegeId,
@@ -82,6 +86,7 @@ class GetClientsWithFilterParams {
       perPage: perPage != null ? perPage.value! : this.perPage,
       regionId: regionId != null ? regionId.value : this.regionId,
       typeClient: typeClient != null ? typeClient.value : this.typeClient,
+      typeClient_record: typeClient_record != null ? typeClient_record.value : this.typeClient_record,
       userId: userId != null ? userId.value : this.userId,
       activityTypeId: activityTypeId != null ? activityTypeId.value : this.activityTypeId,
       userPrivilegeId: userPrivilegeId != null ? userPrivilegeId.value : this.userPrivilegeId,

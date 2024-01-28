@@ -72,7 +72,11 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
     });
     initSearch();
   }
-
+@override void deactivate() {
+    // TODO: implement deactivate
+  _taskCubit.resetAll( );
+    super.deactivate();
+  }
   @override
   void dispose() {
     disposeSearch();
@@ -355,7 +359,9 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                                         .copyWith(color: context.colorScheme.grey500),
                                                   ),
                                                   AppText(
-                                                    '${task.assignedByUser?.nameRegoin}',
+                                                    '${task.assignedByUser?.nameRegoin==''?
+                                                    task.assigendRegionFrom.toString():
+                                                    task.assignedByUser?.nameRegoin}',
                                                     style: context.textTheme.bodySmall!
                                                         .copyWith(color: context.colorScheme.grey800),
                                                   ),
@@ -369,7 +375,9 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                                         .copyWith(color: context.colorScheme.grey500),
                                                   ),
                                                   AppText(
-                                                    '${task.assignedToUser?.nameRegoin}',
+                                                    '${task.assignedToUser?.nameRegoin==''?
+                                                    task.assigendRegionTo.toString()
+                                                    :task.assignedToUser?.nameRegoin}',
                                                     style: context.textTheme.bodySmall!
                                                         .copyWith(color: context.colorScheme.grey800),
                                                   ),
@@ -392,7 +400,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                                         .copyWith(color: context.colorScheme.grey500),
                                                   ),
                                                   AppText(
-                                                    '${task.assignedByUser?.nameMange}',
+                                                    '${task.assignedByUser?.nameMange==''?
+                                                    task.assigendDepartmentFromName:task.assignedByUser?.nameMange }',
                                                     style: context.textTheme.bodySmall!
                                                         .copyWith(color: context.colorScheme.grey800),
                                                   ),
@@ -406,7 +415,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                                         .copyWith(color: context.colorScheme.grey500),
                                                   ),
                                                   AppText(
-                                                    '${task.assignedToUser?.nameMange}',
+                                                    '${task.assignedToUser?.nameMange==''?
+                                                    task.assigendDepartmentToName:task.assignedToUser?.nameMange}',
                                                     style: context.textTheme.bodySmall!
                                                         .copyWith(color: context.colorScheme.grey800),
                                                   ),

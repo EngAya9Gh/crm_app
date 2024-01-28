@@ -38,7 +38,6 @@ class CommentCompanyDatasource {
         message: [],
       );
     }
-
     return throwAppException(fun);
   }
 

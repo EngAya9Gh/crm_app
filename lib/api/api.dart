@@ -15,16 +15,17 @@ import 'package:shared_preferences/shared_preferences.dart';
   // "Access-Control-Allow-Origin": "*"}
  static String? token=null  ;
   Api() {
-    if(token!=null)
+    if(token==null)
     get_token();
-
   }
 
   Future<void> get_token() async {
+
     final prefs = await  SharedPreferences.getInstance();
     token= prefs.getString('token_user');
     print('inside get_token () .... ');
   }
+
   Future<dynamic> get({required String url}) async {
     // final client = RetryClient(http.Client());
     // try {
@@ -42,12 +43,14 @@ import 'package:shared_preferences/shared_preferences.dart';
     http.Response response = await _client.get(
         Uri.parse(url),
       headers:  {'Authorization': 'Bearer $token'}
+   );
+    print('token in get');
+    print(token);
 
-
-    );
     if (json.decode(response.body)["code"] == "200") {
-
+       // print(jsonDecode(response.body)["message"]);
       return jsonDecode(response.body)["message"];
+
     } else {
 
 
@@ -66,6 +69,8 @@ import 'package:shared_preferences/shared_preferences.dart';
     if (token != null) {
       headers.addAll({'Authorization': 'Bearer $token'});
     }
+      print('headers');
+      print(headers);
     http.Response response = await _client.post(
       Uri.parse(url),
       body: body,
@@ -104,7 +109,7 @@ import 'package:shared_preferences/shared_preferences.dart';
       headers: headers,
     );
     String result = response.body;
-    print(result);
+    // print(result);
      if (json.decode(result)["success"]) {
       return result ;
     } else {

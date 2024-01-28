@@ -42,6 +42,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   late ValueNotifier<int?> _activityNotifier;
   late ValueNotifier<int?> _userNotifier;
   late ValueNotifier<String?> _statusNotifier;
+  late ValueNotifier<String?> _recordTypeNotifier;
   late ClientsListBloc _clientsListBloc;
   late final UserModel userModel;
   late PrivilegeCubit _privilegeCubit;
@@ -55,6 +56,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
     _activityNotifier = ValueNotifier(_clientsListBloc.state.getClientsWithFilterParams?.activityTypeId);
     _userNotifier = ValueNotifier(_clientsListBloc.state.getClientsWithFilterParams?.userId);
     _statusNotifier = ValueNotifier(_clientsListBloc.state.getClientsWithFilterParams?.typeClient);
+    _recordTypeNotifier = ValueNotifier(_clientsListBloc.state.getClientsWithFilterParams?.typeClient_record);
     super.initState();
   }
 
@@ -81,16 +83,18 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                 ),
                 ListenableBuilder(
                   listenable:
-                  Listenable.merge([_regionNotifier, _activityNotifier, _userNotifier, _statusNotifier]),
+                  Listenable.merge([_regionNotifier, _activityNotifier, _userNotifier, _statusNotifier,_recordTypeNotifier]),
                   builder: (context, child) => AppTextButton(
                     onPressed: _regionNotifier.value != null ||
                         _activityNotifier.value != null ||
                         _userNotifier.value != null ||
+                        _recordTypeNotifier.value != null ||
                         _statusNotifier.value != null
                         ? () {
                       _regionNotifier.value = null;
                       _activityNotifier.value = null;
                       _userNotifier.value = null;
+                      _recordTypeNotifier.value = null;
                       _statusNotifier.value = null;
                     }
                         : null,
@@ -103,34 +107,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             20.verticalSpace,
             Row(
               children: [
-                if (_privilegeCubit.checkPrivilege('8')||widget.val) ...{
-                  Expanded(
-                    child: Consumer<RegionProvider>(
-                      builder: (context, regionVm, child) {
-                        return ValueListenableBuilder<int?>(
-                          valueListenable: _regionNotifier,
-                          builder: (context, value, child) {
-                            return AppDropdownButtonFormField<RegionModel, String?>(
-                              items: regionVm.listRegionFilter,
-                              value: value?.toString(),
-                              itemAsString: (item) => item!.regionName,
-                              itemAsValue: (item) => item!.regionId,
-                              onChange: (value) {
-                                if (value == null) {
-                                  return;
-                                }
 
-                                _regionNotifier.value = int.parse(value);
-                              },
-                              hint: "الفرع",
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                  10.horizontalSpace,
-                },
                 Consumer<ClientTypeProvider>(
                   builder: (context, clientTypeVm, child) {
                     return Expanded(
@@ -152,9 +129,66 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                           }),
                     );
                   },
+                ),
+                10.horizontalSpace,
+
+                Consumer<ClientTypeProvider>(
+                  builder: (context, clientTypeVm, child) {
+                    return Expanded(
+                      child: ValueListenableBuilder<String?>(
+                          valueListenable: _recordTypeNotifier,
+                          builder: (context, value, _) {
+                            return AppDropdownButtonFormField<String, String>(
+                              hint: 'التسجيل',
+                              items: clientTypeVm.type_record_client,
+                              itemAsValue: (item) => item,
+                              itemAsString: (item) => item!,
+                              value: value,
+                              onChange: (value) {
+                                if (value == null) return;
+
+                                _recordTypeNotifier.value = value;
+                              },
+                            );
+                          }),
+                    );
+                  },
                 )
               ],
             ),
+            10.verticalSpace,
+           Row(
+             children: [
+               if (_privilegeCubit.checkPrivilege('8')||widget.val) ...{
+                 Expanded(
+                   child: Consumer<RegionProvider>(
+                     builder: (context, regionVm, child) {
+                       return ValueListenableBuilder<int?>(
+                         valueListenable: _regionNotifier,
+                         builder: (context, value, child) {
+                           return AppDropdownButtonFormField<RegionModel, String?>(
+                             items: regionVm.listRegionFilter,
+                             value: value?.toString(),
+                             itemAsString: (item) => item!.regionName,
+                             itemAsValue: (item) => item!.regionId,
+                             onChange: (value) {
+                               if (value == null) {
+                                 return;
+                               }
+
+                               _regionNotifier.value = int.parse(value);
+                             },
+                             hint: "الفرع",
+                           );
+                         },
+                       );
+                     },
+                   ),
+                 ),
+                 10.horizontalSpace,
+               },
+             ],
+           ),
             10.verticalSpace,
             if (_privilegeCubit.checkPrivilege('15') || _privilegeCubit.checkPrivilege('8')||widget.val) ...{
               Consumer<UserProvider>(
@@ -290,6 +324,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     _clientsListBloc.state.getClientsWithFilterParams!.copyWith(
                       regionId: Nullable.value(_regionNotifier.value),
                       activityTypeId: Nullable.value(_activityNotifier.value),
+                      typeClient_record: Nullable.value(_recordTypeNotifier.value),
                       typeClient: Nullable.value('مشترك'),
                       userId: Nullable.value(_userNotifier.value),
                       userPrivilegeId: Nullable.value(null),
@@ -302,6 +337,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                       regionId: Nullable.value(_regionNotifier.value),
                       activityTypeId: Nullable.value(_activityNotifier.value),
                       typeClient: Nullable.value(_statusNotifier.value),
+                      typeClient_record: Nullable.value(_recordTypeNotifier.value),
                       userId: Nullable.value(_userNotifier.value),
                     ),
                   );

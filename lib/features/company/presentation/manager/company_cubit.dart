@@ -59,21 +59,21 @@ class CompanyCubit extends Cubit<CompanyState> {
           state.copyWith(
               actionLinkState: BlocStatus.fail(error: message))),
           (value) {
-        final link = value.data!;
+        final comment_data = value.data!;
 
-        if (link.id == '0') {
+        if (comment_data.id == '0') {
           onSuccess.call("repeat");
           return;
         }
-        List<CompanyCommentModel> users = state.allComments;
+        List<CompanyCommentModel> comment = state.allComments;
 
-
-        final usersState = PageState.loaded(data: users);
+        comment.insert(0, comment_data);
+        final usersState = PageState.loaded(data: comment);
         emit(
           state.copyWith(
             actionLinkState: BlocStatus.success(),
             allLinkList: usersState,
-            allLinks: users,
+            allLinks: comment,
             // currentLink: updateLink != null ? link : null,
           ),
         );

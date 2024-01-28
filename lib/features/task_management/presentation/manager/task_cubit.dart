@@ -128,7 +128,8 @@ class TaskCubit extends Cubit<TaskState> {
     ));
 
     result.fold(
-      (exception, message) => emit(state.copyWith(
+      (exception, message) =>
+          emit(state.copyWith(
           tasksState: const PageState.error())),
       (value) {
         List<TaskModel> list = value.data ?? [];
@@ -208,6 +209,9 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(isResetTasksState: true));
     getTasks(onSuccess: onSuccess);
   }
+  resetAll( ) {
+    emit(state.copyWith(isResetTasksState: true)); }
+
 
   onChangeTaskStatusStage(
       TaskModel taskModel, TaskStatusType taskStatusType,

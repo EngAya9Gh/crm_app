@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../../../common/helpers/helper_functions.dart';
+import '../../../../constants.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/commentmodel.dart';
 import '../../../../ui/screen/care/card_comment.dart';
@@ -64,6 +65,8 @@ class _comment_companyState extends State<comment_company> {
             ])),
         body: Column(
           children: [
+            20.verticalSpace,
+
             Form(
               key: _formKey,
               child: BlocBuilder<CompanyCubit, CompanyState>(
@@ -73,49 +76,53 @@ class _comment_companyState extends State<comment_company> {
 
                   return Directionality(
                     textDirection: TextDirection.rtl,
-                    child: Row(
-                      // padding: HWEdgeInsets.symmetric(horizontal: 10),
-                      children: [
-                        20.verticalSpace,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        // padding: HWEdgeInsets.symmetric(horizontal: 10),
+                        children: [
 
-                        AppTextField(
+                          Flexible(
+                            child: AppTextField(
 
-                          labelText: "اترك تعليق*",
-                          validator: HelperFunctions.instance.requiredFiled,
-                          controller: _commentController,
-                          minLines: 5,
-                          contentPadding: HWEdgeInsets.all(5),
-                        ),
-                        20.verticalSpace,
-
-                      custom_button_new(
-                        onpress: () {
-                          final isValid = _formKey.currentState!.validate();
-                          if (!isValid) return;
-                          _companyCubit.actionComment(
-
-                            onSuccess: (String? value) {
-                              if (value != null) {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text('errorً')));
-                                return;
-                              }
-
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                  content: Text('تم')));
-                              // Navigator.pop(context,value);
-                            },
-                            addcommentParams: AddCommentParams(
-                            user_id: context.read<UserProvider>().currentUser.idUser.toString(),
-                              content: _commentController.text,
-                              fk_company: widget.idCompany.toString(),
-
+                              labelText: "اترك تعليق*",
+                              validator: HelperFunctions.instance.requiredFiled,
+                              controller: _commentController,
+                              minLines: 5,
+                              contentPadding: HWEdgeInsets.all(5),
+                            ),
                           ),
-                          );
-                        },
-                        text: "حفظ",
+                          20.horizontalSpace,
+
+                          IconButton(
+                          onPressed: () {
+                            final isValid = _formKey.currentState!.validate();
+                            if (!isValid) return;
+                            _companyCubit.actionComment(
+
+                              onSuccess: (String? value) {
+                                if (value != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text('errorً')));
+                                  return;
+                                }
+
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text('تم')));
+                                // Navigator.pop(context,value);
+                              },
+                              addcommentParams: AddCommentParams(
+                              user_id: context.read<UserProvider>().currentUser.idUser.toString(),
+                                content: _commentController.text,
+                                fk_company: widget.idCompany.toString(),
+
+                            ),
+                            );
+                          },
+                            icon: Icon(Icons.send, color: kMainColor),
+                        ),
+                        ],
                       ),
-                      ],
                     ),
                   );
                 },
@@ -142,8 +149,8 @@ class _comment_companyState extends State<comment_company> {
                               fkUser: comment.fk_user.toString(),
                               fkClient: 'fkClient',
                               content: comment.content.toString(),
-                              nameUser: comment.fk_user.toString(),
-                              imgImage: comment.fk_user.toString(),
+                              nameUser: comment.nameUser.toString(),
+                              imgImage:comment.imgImage!=''? urlimage+ comment.imgImage.toString():'',
                               nameEnterprise:'',
                               date_comment: comment.date_comment.toString());
                           return   cardcomment(
@@ -155,7 +162,7 @@ class _comment_companyState extends State<comment_company> {
                         separatorBuilder: (context, index) =>  7.verticalSpace,
                       ),
                     ),
-                    empty: () => Center(child: AppText("link isEmpty!!")),
+                    empty: () => Center(child: AppText("comment isEmpty!!")),
                     error: (exception) => Center(
                       child: IconButton(
                         onPressed: () => _companyCubit

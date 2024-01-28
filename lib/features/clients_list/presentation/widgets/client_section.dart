@@ -194,6 +194,12 @@ class _ClientSectionState extends State<ClientSection> {
                                 Expanded(
                                   flex: 3,
                                   child: AppTextField(
+                                    validator: (value) {
+                                      if (offerPriceController.text.isEmpty ) {
+                                        return 'حقل مطلوب';
+                                      }
+                                      return null;
+                                    },
                                     labelText: "عرض سعر",
                                     maxLines: 1,
                                     controller: offerPriceController,
@@ -750,6 +756,7 @@ class _ClientSectionState extends State<ClientSection> {
                         title: ' عميل تسويق الكتروني',
                         value: clientModel1.ismarketing == '1' ? 'نعم' : '')
                     : IgnorePointer(),
+
                 clientModel1.type_record != null &&
                         clientModel1.type_record.toString().trim().isNotEmpty &&
                         clientModel1.type_record != ""

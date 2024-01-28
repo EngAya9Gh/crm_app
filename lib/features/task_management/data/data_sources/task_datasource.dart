@@ -64,11 +64,15 @@ class TaskDatasource {
       );
 
       dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
-
+      if(response.data['data']!=false)
       return ResponseWrapper<List<TaskModel>>(
         data: List.from(
             (response.data['data'] as List<dynamic>).map((e) =>
                 TaskModel.fromJson(e as Map<String, dynamic>))),
+        message: [],
+      );
+      return ResponseWrapper<List<TaskModel>>(
+        data: [],
         message: [],
       );
     }
