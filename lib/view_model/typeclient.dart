@@ -14,6 +14,7 @@ class ClientTypeProvider extends ChangeNotifier{
   List<String> type_of_install_iso=['الكل','تم التأكد من الجودة',
     'انتظار الجودة'];
   List<String> typeOfClientFilter=['الكل','مشترك','تفاوض','عرض سعر','مستبعد','منسحب','معلق استبعاد'];
+  List<String> typeOfLinks=['فيديوهات تعريفية','ملفات تعريفية','مواقع جغرافية','مواقع ويب','روابط الأنظمة','صفحات سوشيال ميديا','أرقام تواصل'];
  // List<String> type_of_client=['تفاوض','عرض سعر','مستبعد','منسحب'];
   List<ReasonModel> type_of_out=[]; //أسباب الانسحاب
   List<String> listtype_install=['الكل','بالإنتظار','تم التركيب','معلق'];
