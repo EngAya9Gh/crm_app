@@ -22,7 +22,7 @@ class TaskDatasource {
   Future<ResponseWrapper<bool>> addTask(Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       FormData formData = FormData();
       if (body['file_path'] != null) {
@@ -42,7 +42,7 @@ class TaskDatasource {
         ),
       );
 
-      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
       return ResponseWrapper<bool>(message: true, data: true);
     }
 
@@ -52,7 +52,7 @@ class TaskDatasource {
   Future<ResponseWrapper<List<TaskModel>>> filterTask(Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
@@ -63,7 +63,7 @@ class TaskDatasource {
         ),
       );
 
-      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
       if(response.data['data']!=false)
       return ResponseWrapper<List<TaskModel>>(
         data: List.from(
@@ -83,7 +83,7 @@ class TaskDatasource {
   Future<ResponseWrapper<void>> changeStatusTask(String taskId, Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
@@ -94,7 +94,7 @@ class TaskDatasource {
         ),
       );
 
-      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
 
       return ResponseWrapper<void>(data: [], message: []);
     }
@@ -106,7 +106,7 @@ class TaskDatasource {
       Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
@@ -117,7 +117,7 @@ class TaskDatasource {
         ),
       );
 
-      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
 
       final data = jsonDecode(jsonEncode(response.data));
       return ResponseWrapper<List<UserRegionDepartment>>(

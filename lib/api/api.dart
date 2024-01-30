@@ -67,7 +67,7 @@ import 'package:shared_preferences/shared_preferences.dart';
     Map<String, String> headers = {};
 
     if (token != null) {
-      headers.addAll({'Authorization': 'Bearer $token'});
+      headers.addAll({'AuthToken': 'Bearer $token'});
     }
       print('headers');
       print(headers);

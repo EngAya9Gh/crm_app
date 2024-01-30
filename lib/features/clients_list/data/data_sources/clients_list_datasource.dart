@@ -45,7 +45,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
@@ -56,7 +56,7 @@ class ClientsListDatasource {
           responseType: ResponseType.json,
         ),
       );
-      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
       final client = response.data;//ClientModel.fromJson(response.data);
       List<SimilarClient> listres=
       List.from((client as List<dynamic>).map((e) {
@@ -204,7 +204,7 @@ class ClientsListDatasource {
     Future<ResponseWrapper<ClientModel>> changeTypeClient(Map<String, dynamic> body,Map<String, dynamic> params,String id) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
@@ -215,7 +215,7 @@ class ClientsListDatasource {
           responseType: ResponseType.json,
         ),
       );
-      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
       final client = ClientModel.fromJson(response.data['data']);
       final client1 =  response.data['success'];
       return ResponseWrapper(message:client, data: client);
@@ -225,7 +225,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> approveClient_Reject(Map<String, dynamic> body,Map<String, dynamic> params,String id) async {
     fun() async {
       final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://new.smartcrm.ws/api/';
+      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
       final response = await _clientApi.request(
         RequestConfig(
@@ -236,7 +236,7 @@ class ClientsListDatasource {
           responseType: ResponseType.json,
         ),
       );
-      dio.options.baseUrl = 'http://smartcrm.ws/aya/api/';
+      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
       final client  = ClientModel.fromJson(response.data['data']);
       return ResponseWrapper(message:client, data: client);
     }

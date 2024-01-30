@@ -20,8 +20,8 @@ class LoggerInterceptor extends Interceptor with LoggerHelper {
    final token= prefs.getString('token_user');
    print('token inside interceptor');
    print(token);
-    options.headers[HttpHeaders.authorizationHeader] = 'Bearer '+token.toString();//'Bearer 20|PLueBlgrb1VT4p2QMIOVNxuAXpTifd5BCNtFDgFq48af1845';
-
+    options.headers['AuthToken'] = 'Bearer '+token.toString();//'Bearer 20|PLueBlgrb1VT4p2QMIOVNxuAXpTifd5BCNtFDgFq48af1845';
+//HttpHeaders.authorizationHeader
     if (kDebugMode) {
       prettyPrinterI(
         "***|| INFO Request ${options.path} ||***"
