@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/manage_participates/presentation/pages/participate_list_page.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/pages/level_page.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/config/activity_view.dart';
@@ -272,6 +273,22 @@ class _managmentpageState extends State<managmentpage> {
                     },
                     title: 'المتعاونين')
                 : Container(),
+            _privilegeCubit.checkPrivilege('113') == true
+                ? buildSelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<void>(
+                          builder: (BuildContext context) => ParticipateListPage(),
+                        ),
+                      );
+                    },
+                    title: ' بستخدام بلوك المتعاونين')
+                : Container(),
+
             _privilegeCubit.checkPrivilege('114') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,

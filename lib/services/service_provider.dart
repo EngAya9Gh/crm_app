@@ -1,4 +1,5 @@
 import 'package:crm_smart/features/app/presentation/bloc/app_manager_cubit.dart';
+import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_bloc.dart';
 import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,7 +23,8 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => GetIt.I<ClientsListBloc>()),
         BlocProvider(create: (context) => GetIt.I<AppManagerCubit>()),
         BlocProvider(create: (context) => GetIt.I<PrivilegeCubit>()),
-        BlocProvider(create: (context) => GetIt.I<TaskCubit>())
+        BlocProvider(create: (context) => GetIt.I<TaskCubit>()),
+         BlocProvider(create: (context) => GetIt.I<ParticipateListBloc>())
       ],
       child: child,
     );

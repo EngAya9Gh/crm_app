@@ -11,6 +11,7 @@ abstract class EndPoints {
   static const app = _App();
   static const privilege = _Privilege();
   static const task = _Task();
+  static const participate = _Participate();
 }
 
 class _App {
@@ -92,4 +93,12 @@ class _Task {
   final filterTasksByAll = 'filterTaskesByAll';
   final changeStatusTask = 'changeStatuseTask/';
   final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
+}
+
+class _Participate {
+  const _Participate();
+
+  final allParticipates = 'agent/get_participate.php';
+  final addParticipate = 'agent/addparticipate.php';
+  final updateParticipate = 'agent/update_participate.php?id_participate';
 }
