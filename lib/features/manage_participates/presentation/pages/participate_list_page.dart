@@ -1,11 +1,13 @@
 import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_bloc.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
+import 'package:crm_smart/features/manage_participates/presentation/pages/action_participate_page.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +19,9 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/utils/responsive_padding.dart';
-import '../../../../model/maincitymodel.dart';
-import '../../../../ui/screen/client/profileclient.dart';
 import '../../../../view_model/maincity_vm.dart';
-import '../../../app/presentation/widgets/app_drop_down.dart';
-// import '../../data/models/distinctive_client.dart';
-// import '../manager/communication_list_bloc.dart';
+import '../../../app/presentation/widgets/app_text_button.dart';
+
 
 class ParticipateListPage extends StatefulWidget {
   const ParticipateListPage({Key? key}) : super(key: key);
@@ -71,7 +70,26 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'المتعاونين')),
+      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'المتعاونين',
+        action: [
+             AppTextButton(
+                text: "إضافة متعاون",
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      CupertinoPageRoute<void>(
+                        builder: (BuildContext context) => ActionParticipate(
+                          
+                        ),
+                        fullscreenDialog: true,
+                      ),
+                     );
+                },
+                appButtonStyle: AppButtonStyle.secondary,
+              ),
+          ],)),
+
+      
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<ParticipateListBloc, ParticipateListState>(
@@ -152,109 +170,55 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
           },
         ),
       ),
-      floatingActionButton:
-          // Provider.of<privilge_vm>(context,listen: true)
-          //     .checkprivlge('74')==true ?
-          FloatingActionButton(
-        child: Icon(Icons.add,color: AppColors.white),
-        onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   CupertinoPageRoute<void>(
-          //     builder: (BuildContext context) => addParticipate(
-          //       id_participate: null,
-          //       name_participate: '',
-          //       mobile_participate: '',
-          //       namebank_participate: '',
-          //       numberbank_participate: '',
-          //     ),
-          //     fullscreenDialog: true,
-          //   ),
-          // );
-        },
-        backgroundColor: kMainColor,
-      ),
+      
       
     );
   }
 
   Widget paticipateWidget(ParticipateModel participate) {
-    return InkWell(
+    return  InkWell(
       onTap: () {
-        // Navigator.of(context).push(
-        //   CupertinoPageRoute(
-        //     builder: (context) => ProfileClient(
-        //       idClient: communication.fkClient,
-        //       tabIndex: 3,
-        //       tabCareIndex: 2,
-        //       // idCommunication: communication.idCommunication!,
-        //     ),
-        //   ),
-        // );
-      },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-                Center(child: Text(participate.name_participate))
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Expanded(
-              //       child: Row(
-              //         children: [
-              //           Text(
-              //             " اسم الشركة: ",
-              //             // style: TextStyle(fontFamily: kfontfamily2),
-              //             style: TextStyle(color: kMainColor, fontFamily: kfontfamily2),
-              //             textDirection: TextDirection.rtl,
-              //             textAlign: TextAlign.start,
-              //           ),
-              //           Expanded(
-              //             child: TextScroll(
-              //               participate.nameEnterprise ?? "",
-              //               mode: TextScrollMode.endless,
-              //               velocity: Velocity(pixelsPerSecond: Offset(30, 0)),
-              //               delayBefore: Duration(milliseconds: 2000),
-              //               pauseBetween: Duration(milliseconds: 1000),
-              //               style: TextStyle(fontFamily: kfontfamily2),
-              //               textAlign: TextAlign.center,
-              //               textDirection: TextDirection.rtl,
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
+    Navigator.push(
+        context,
+        CupertinoPageRoute(
+            builder: (context) => ActionParticipate(
+              participate: participate)));
+  },
+   child: Container(
+    width: double.infinity,
+    decoration: BoxDecoration(
+      color: Colors.white,
+      boxShadow: <BoxShadow>[
+        BoxShadow(
+          offset: Offset(1.0, 1.0),
+          blurRadius: 8.0,
+          color: Colors.black87.withOpacity(0.2),
+        ),
+      ],
+      borderRadius: BorderRadius.all(Radius.circular(4)),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(14.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+        ),
 
-              //   ],
-              // ),
-              // SizedBox(height: 15),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Text(
-              //       participate.nameRegoin ?? '',
-              //       style: TextStyle(color: Colors.black, fontFamily: kfontfamily2),
-              //       textDirection: TextDirection.rtl,
-              //       textAlign: TextAlign.start,
-              //     ),
-              //     SizedBox(width: 15),
-              //     Text(
-              //       intl.DateFormat("yyyy MMM dd hh:mm a", "ar").format(participate.dateCreate ?? DateTime.now()),
-              //       style: TextStyle(color: kMainColor, fontFamily: kfontfamily2),
-              //       textDirection: TextDirection.rtl,
-              //       textAlign: TextAlign.start,
-              //     ),
-              //   ],
-              // ),
-          
-            ],
+        //color: kMainColor,
+        child: Padding(
+          padding: EdgeInsets.all(4),
+          child: Center(
+            child: Text(
+              participate.name_participate,
+              style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+            ),
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
+                                  
   }
 }

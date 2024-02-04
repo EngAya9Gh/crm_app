@@ -21,15 +21,13 @@ class ParticipateListUsecase
 }
 
 class GetParticipateListParams {
-  // final String country;
-  // final String? citId;
+
 
   GetParticipateListParams(
-    // {required this.country, this.citId}
+ 
     );
 
   Map<String, dynamic> toMap() => {
-        // 'fk_country': this.country,
-        // if (citId != null) "fk_city": "$citId",
+      
       };
 }

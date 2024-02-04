@@ -6,4 +6,6 @@ import '../../../../common/models/response_wrapper/response_wrapper.dart';
 
 abstract class ParticipateListRepository{
   Future<Result<ResponseWrapper<List<ParticipateModel>>>> getParticipateList(Map<String, dynamic> body);
+    Future<Result<ResponseWrapper<ParticipateModel>>> addParticipate(Map<String, dynamic> body);
+  Future<Result<ResponseWrapper<ParticipateModel>>> editParticipate(Map<String, dynamic> body,Map<String, dynamic> params);
 }

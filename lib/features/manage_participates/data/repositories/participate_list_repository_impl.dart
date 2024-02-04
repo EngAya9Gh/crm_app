@@ -19,4 +19,14 @@ class ParticipateListRepositoryImpl implements ParticipateListRepository {
   Future<Result<ResponseWrapper<List<ParticipateModel>>>> getParticipateList(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getParticipateList(body));
   }
+  
+  @override
+  Future<Result<ResponseWrapper<ParticipateModel>>> addParticipate(Map<String, dynamic> body) {
+    return toApiResult(() => datasource.addParticipate(body));
+  }
+  
+  @override
+  Future<Result<ResponseWrapper<ParticipateModel>>> editParticipate(Map<String, dynamic> body, Map<String, dynamic> params) {
+    return toApiResult(() => datasource.editParticipate(body, params));
+  }
 }

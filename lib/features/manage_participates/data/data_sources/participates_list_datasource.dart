@@ -45,4 +45,47 @@ class ParticipatesListDatasource {
     return throwAppException(fun);
   }
 
+    Future<ResponseWrapper<ParticipateModel>> addParticipate(Map<String, dynamic> body) async {
+    fun() async {
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.participate.addParticipate,
+          data: body,
+          clientMethod: ClientMethod.post,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      final client = ParticipateModel.fromJson(
+          response.data['message'][0]);
+  
+      return ResponseWrapper(message: client, data: client);
+    }
+
+    return throwAppException(fun);
+  }
+
+
+  Future<ResponseWrapper<ParticipateModel>> editParticipate(Map<String, dynamic> body,Map<String, dynamic> params) async {
+    fun() async {
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.participate.updateParticipate,
+          data: body,
+          queryParameters: params,
+          clientMethod: ClientMethod.post,
+          responseType: ResponseType.json,
+        ),
+      );
+
+      final client = ParticipateModel.fromJson(response.data['message'][0]);
+   
+      
+      return ResponseWrapper(message: client, data: client);
+    }
+
+    return throwAppException(fun);
+  }
+
+
 }
