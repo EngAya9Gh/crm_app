@@ -93,6 +93,9 @@ String showtext(String typeNotify){
       case "task":
       return "المهام";
 
+    case "exclude":
+      return "موافقة الاستبعاد";
+
       case "EditInvoice":
       return "تغيير بيانات الفاتورة";
   }
@@ -258,6 +261,15 @@ void route_notifyto(typeNotify,context,
           CupertinoPageRoute(
               builder: (context) => ProfileClient(
                 tabIndex: 5,
+                idClient: data==null?datanotify: data['idclient'],
+              )
+          ));
+      break;
+      case "exclude":
+      Navigator.push(context,
+          CupertinoPageRoute(
+              builder: (context) => ProfileClient(
+                tabIndex: 0,
                 idClient: data==null?datanotify: data['idclient'],
               )
           ));
