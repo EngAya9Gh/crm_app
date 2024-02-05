@@ -18,7 +18,7 @@ import '../../features/app/data/data_sources/app_datasource.dart' as _i51;
 import '../../features/app/data/repositories/app_repository_impl.dart' as _i53;
 import '../../features/app/domain/repositories/app_repository.dart' as _i52;
 import '../../features/app/domain/use_cases/get_version_usecase.dart' as _i69;
-import '../../features/app/presentation/bloc/app_manager_cubit.dart' as _i81;
+import '../../features/app/presentation/bloc/app_manager_cubit.dart' as _i82;
 import '../../features/clients_list/data/data_sources/clients_list_datasource.dart'
     as _i7;
 import '../../features/clients_list/data/repositories/client_list_repository_impl.dart'
@@ -79,10 +79,14 @@ import '../../features/manage_participates/data/repositories/participate_list_re
     as _i76;
 import '../../features/manage_participates/domain/repositories/participate_list_repository.dart'
     as _i75;
+import '../../features/manage_participates/domain/use_cases/add_participate_usecase.dart'
+    as _i81;
+import '../../features/manage_participates/domain/use_cases/edit_paraticipate_usecase.dart'
+    as _i83;
 import '../../features/manage_participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i77;
 import '../../features/manage_participates/presentation/manager/participate_list_bloc.dart'
-    as _i82;
+    as _i84;
 import '../../features/manage_privilege/data/data_sources/privilege_datasource.dart'
     as _i32;
 import '../../features/manage_privilege/data/repositories/privilege_repository_impl.dart'
@@ -154,7 +158,7 @@ import '../../features/task_management/domain/use_cases/get_users_by_department_
 import '../../features/task_management/presentation/manager/task_cubit.dart'
     as _i79;
 import '../api/client.dart' as _i6;
-import 'di_container.dart' as _i83;
+import 'di_container.dart' as _i85;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -343,11 +347,18 @@ Future<_i1.GetIt> $initGetIt(
         gh<_i45.ActionUserUsecase>(),
         gh<_i68.GetUsersByDepartmentAndRegionUsecase>(),
       ));
-  gh.singleton<_i81.AppManagerCubit>(
-      _i81.AppManagerCubit(gh<_i69.GetVersionUseCase>()));
-  gh.factory<_i82.ParticipateListBloc>(
-      () => _i82.ParticipateListBloc(gh<_i77.ParticipateListUsecase>()));
+  gh.factory<_i81.AddParticipateUserUsecase>(() =>
+      _i81.AddParticipateUserUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.singleton<_i82.AppManagerCubit>(
+      _i82.AppManagerCubit(gh<_i69.GetVersionUseCase>()));
+  gh.factory<_i83.EditParticipateUserUsecase>(() =>
+      _i83.EditParticipateUserUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i84.ParticipateListBloc>(() => _i84.ParticipateListBloc(
+        gh<_i77.ParticipateListUsecase>(),
+        gh<_i81.AddParticipateUserUsecase>(),
+        gh<_i83.EditParticipateUserUsecase>(),
+      ));
   return getIt;
 }
 
-class _$AppModule extends _i83.AppModule {}
+class _$AppModule extends _i85.AppModule {}

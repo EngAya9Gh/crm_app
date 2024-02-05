@@ -4,31 +4,32 @@ import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../common/models/page_state/bloc_status.dart';
+
 
 class ParticipateListState extends Equatable {
-  const ParticipateListState({
+   ParticipateListState({
     this.particiPateListState = const PageState.init(),
     this.allParticipateState = const <ParticipateModel>[],
-    // this.selectedCityId,
+    this.actionParticipateBlocStatus = const BlocStatus.initial(),
   });
 
   final PageState<List<ParticipateModel>> particiPateListState;
   final List<ParticipateModel> allParticipateState;
-  // final String? selectedCityId;
+  final BlocStatus actionParticipateBlocStatus;
 
   @override
-  List<Object?> get props => [particiPateListState];
-  // List<Object?> get props => [ParticipateListState, selectedCityId];
-
+  List<Object?> get props => [particiPateListState,allParticipateState,actionParticipateBlocStatus];
   ParticipateListState copyWith({
     PageState<List<ParticipateModel>>? particiPateListState,
     List<ParticipateModel>? allParticipateState,
-    // Nullable<String?>? selectedCityId1,
+    BlocStatus? actionParticipateBlocStatus
   }) {
-    return ParticipateListState(
+ 
+   return ParticipateListState(
       particiPateListState: particiPateListState ?? this.particiPateListState,
       allParticipateState: allParticipateState ?? this.allParticipateState,
-      // selectedCityId: selectedCityId1 != null ? selectedCityId1.value : this.selectedCityId,
+      actionParticipateBlocStatus: actionParticipateBlocStatus ??   this.actionParticipateBlocStatus
     );
   }
 }

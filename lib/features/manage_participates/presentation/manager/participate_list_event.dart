@@ -2,6 +2,11 @@
 // part of 'communication_list_bloc.dart';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../data/models/participatModel.dart';
+import '../../domain/use_cases/add_participate_usecase.dart';
+import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 
 abstract class ParticipateEvent extends Equatable {
   const ParticipateEvent();
@@ -17,7 +22,7 @@ class GetParticipateListEvent extends ParticipateEvent {
   });
 
   @override
-  List<Object?> get props => [fkCountry];
+  List<Object?> get props => [fkCountry,query];
 }
 
 class SearchEvent extends ParticipateEvent {
@@ -29,13 +34,25 @@ class SearchEvent extends ParticipateEvent {
   List<Object?> get props => [query];
 }
 
-class OnChangeRegionEvent extends ParticipateEvent {
-  final String? selectedRegionId;
-  final String fkCountry;
-  final String query;
+class AddParticipateEvent extends ParticipateEvent {
+  final AddParaticipateParams addParticipateParams;
 
-  OnChangeRegionEvent(this.selectedRegionId, this.fkCountry, this.query);
+  final ValueChanged<ParticipateModel>? onSuccess;
+
+  AddParticipateEvent(this.addParticipateParams, {this.onSuccess});
 
   @override
-  List<Object?> get props => [selectedRegionId, fkCountry, query];
+  List<Object?> get props => throw UnimplementedError();
 }
+
+class EditParticipateEvent extends ParticipateEvent {
+  final EditParticipateParams editParticipateParams;
+  final ValueChanged<ParticipateModel>? onSuccess;
+
+  EditParticipateEvent(this.editParticipateParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
+
+
