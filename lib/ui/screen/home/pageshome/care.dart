@@ -105,7 +105,8 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => care_page_view()));
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) => care_page_view()));
                     },
                     title: 'التواصل الدوري')
                 : Container(),

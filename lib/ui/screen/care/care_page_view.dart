@@ -59,7 +59,8 @@ class _care_page_viewState extends State<care_page_view> {
     }
 
     if (type == 'wait') {
-      Provider.of<communication_vm>(context, listen: false).getCommunicationallrepeatpage(fkCountry, myClientsParam);
+      Provider.of<communication_vm>(context, listen: false)
+          .getCommunicationallrepeatpage(fkCountry, myClientsParam);
     } else {
       if (type == 'done') {
         String parmater =
