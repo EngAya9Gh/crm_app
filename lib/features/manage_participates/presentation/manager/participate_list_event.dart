@@ -54,5 +54,23 @@ class EditParticipateEvent extends ParticipateEvent {
   @override
   List<Object?> get props => throw UnimplementedError();
 }
+class SwitchProfileTabs extends ParticipateEvent{
+  final TabEvent indexTab;
+   SwitchProfileTabs(this.indexTab);
+    @override
+  List<Object?> get props => [indexTab];
+}
+class ChanageCurrentParticipate extends ParticipateEvent{
+  late final ParticipateModel participateModel;
+   ChanageCurrentParticipate(this.participateModel);
+    @override
+  List<Object?> get props => [participateModel];
+}
 
+enum TabEvent {
+  DataTabSelected,
+  ClientTabSelected,
+  InvoiceTabSelected,
+  CommentTabSelected,
+}
 

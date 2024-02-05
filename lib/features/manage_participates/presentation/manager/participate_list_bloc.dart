@@ -28,6 +28,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     on<SearchEvent>(_onSearchEvent);
     on<AddParticipateEvent>(_onAddParticipateEvent);
     on<EditParticipateEvent>(_onEditParticipateEvent);
+    on<ChanageCurrentParticipate>(_onChangeCurrentParticipate);
+    on<SwitchProfileTabs>(_onSwitchProfileTabs);
+   
      
   }
 
@@ -124,6 +127,16 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     );
   }
 
+  FutureOr<void> _onSwitchProfileTabs(SwitchProfileTabs event, Emitter<ParticipateListState> emit) async {
+      emit(state.copyWith(currentProfileTab:event.indexTab));
+        
+      
+  }
 
+   FutureOr<void> _onChangeCurrentParticipate(ChanageCurrentParticipate event, Emitter<ParticipateListState> emit) async {
+      emit(state.copyWith(currentPaticipate:event.participateModel));
+        
+      
+  }
 
 }

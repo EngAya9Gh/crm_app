@@ -21,6 +21,7 @@ import '../../../../constants.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../view_model/maincity_vm.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
+import '../widgets/participate_slidable_card.dart';
 
 
 class ParticipateListPage extends StatefulWidget {
@@ -152,9 +153,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           itemBuilder: (BuildContext context, int index) =>
-                              paticipateWidget(
-                            state.particiPateListState.data[index],
-                          ),
+                            ParticipateSlidableCard(participate:  state.particiPateListState.data[index]),
                           separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
                           itemCount: state.particiPateListState.data.length,
                         ),
@@ -175,50 +174,5 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
     );
   }
 
-  Widget paticipateWidget(ParticipateModel participate) {
-    return  InkWell(
-      onTap: () {
-    Navigator.push(
-        context,
-        CupertinoPageRoute(
-            builder: (context) => ActionParticipate(
-              participate: participate)));
-  },
-   child: Container(
-    width: double.infinity,
-    decoration: BoxDecoration(
-      color: Colors.white,
-      boxShadow: <BoxShadow>[
-        BoxShadow(
-          offset: Offset(1.0, 1.0),
-          blurRadius: 8.0,
-          color: Colors.black87.withOpacity(0.2),
-        ),
-      ],
-      borderRadius: BorderRadius.all(Radius.circular(4)),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(14.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-        ),
 
-        //color: kMainColor,
-        child: Padding(
-          padding: EdgeInsets.all(4),
-          child: Center(
-            child: Text(
-              participate.name_participate,
-              style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
-            ),
-          ),
-        ),
-      ),
-    ),
-  ),
-);
-                                  
-  }
 }
