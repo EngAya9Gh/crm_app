@@ -409,10 +409,11 @@ class invoice_vm extends ChangeNotifier {
     await _cancelableFuture?.cancel();
 
     if (listSelectedMainCity!.isEmpty && state == 'الكل') {
-      _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
-          'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'}));
+      //       _cancelableFuture = CancelableOperation.fromFuture(Invoice_Service().getinvoicemaincity(
+      //     'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}', {'all': 'all'}));
 
-      listInvoicesAccept = await _cancelableFuture?.value ?? [];
+
+      // listInvoicesAccept = await _cancelableFuture?.value ?? [];
     } else {
       String params = '';
       // if (listparam.toString().isNotEmpty)

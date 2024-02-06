@@ -1,28 +1,30 @@
 
 // part of 'communication_list_bloc.dart';
 
+import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../data/models/participatModel.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
+import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
 
 abstract class ParticipateEvent extends Equatable {
   const ParticipateEvent();
 }
 
 class GetParticipateListEvent extends ParticipateEvent {
-  final String fkCountry;
   final String query;
 
   GetParticipateListEvent(
-    this.fkCountry, {
+    {
     required this.query,
   });
 
   @override
-  List<Object?> get props => [fkCountry,query];
+  List<Object?> get props => [
+  query];
 }
 
 class SearchEvent extends ParticipateEvent {
@@ -72,5 +74,62 @@ enum TabEvent {
   ClientTabSelected,
   InvoiceTabSelected,
   CommentTabSelected,
+
 }
 
+// enum TabEvent {
+//   DataTabSelected(''),
+//   ClientTabSelected(''),
+//   InvoiceTabSelected(''),
+//   CommentTabSelected('');
+
+//  const TabEvent(this.title);
+//   final String title;
+// }
+
+class GetParticipateClientListEvent extends ParticipateEvent {
+  final GetParticipateClientListParams getParticipateClientListParams;
+  final String query;
+
+  GetParticipateClientListEvent(
+    {
+    required this.query,
+    required this.getParticipateClientListParams,
+  });
+
+  @override
+  List<Object?> get props => [query,getParticipateClientListParams];
+}
+
+class SearchClientEvent extends ParticipateEvent {
+  final String query;
+
+  SearchClientEvent(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}
+
+class GetParticipateInvoiceListEvent extends ParticipateEvent {
+  final GetParticipateInvoiceListParams getParticipateInvoiceListParams;
+  final String query;
+
+  GetParticipateInvoiceListEvent(
+   
+    {
+    required this.query,
+required this.getParticipateInvoiceListParams,
+  });
+
+  @override
+  List<Object?> get props => [query,getParticipateInvoiceListParams];
+}
+
+class SearchInvoiceEvent extends ParticipateEvent {
+  final String query;
+
+  SearchInvoiceEvent(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}

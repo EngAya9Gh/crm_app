@@ -2,7 +2,9 @@
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_bloc.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
+import 'package:crm_smart/features/manage_participates/presentation/pages/participate_client_list_page.dart';
 import 'package:crm_smart/features/manage_participates/presentation/pages/participate_info.dart';
+import 'package:crm_smart/features/manage_participates/presentation/pages/participate_invoice_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,8 +95,8 @@ class _ParticipateProfilePageState extends State<ParticipateProfilePage> with Ti
             children: [
               // Replace with your tab content widgets
               ParticipateInfo(),
-              Center(child: Text('العملاء')),
-              Center(child: Text('الفواتير')),
+              ParticipateClientListPage(participateId: state.currentPaticipate!=null?state.currentPaticipate!.id_participate!:''),
+              ParticipateInvoiceListPage(participateId: state.currentPaticipate!=null?state.currentPaticipate!.id_participate!:''),
               Center(child: Text('التعليقات')),
             ],
           );
