@@ -83,10 +83,14 @@ import '../../features/manage_participates/domain/use_cases/add_participate_usec
     as _i81;
 import '../../features/manage_participates/domain/use_cases/edit_paraticipate_usecase.dart'
     as _i83;
+import '../../features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart'
+    as _i84;
+import '../../features/manage_participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+    as _i85;
 import '../../features/manage_participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i77;
 import '../../features/manage_participates/presentation/manager/participate_list_bloc.dart'
-    as _i84;
+    as _i86;
 import '../../features/manage_privilege/data/data_sources/privilege_datasource.dart'
     as _i32;
 import '../../features/manage_privilege/data/repositories/privilege_repository_impl.dart'
@@ -158,7 +162,7 @@ import '../../features/task_management/domain/use_cases/get_users_by_department_
 import '../../features/task_management/presentation/manager/task_cubit.dart'
     as _i79;
 import '../api/client.dart' as _i6;
-import 'di_container.dart' as _i85;
+import 'di_container.dart' as _i87;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -353,12 +357,18 @@ Future<_i1.GetIt> $initGetIt(
       _i82.AppManagerCubit(gh<_i69.GetVersionUseCase>()));
   gh.factory<_i83.EditParticipateUserUsecase>(() =>
       _i83.EditParticipateUserUsecase(gh<_i75.ParticipateListRepository>()));
-  gh.factory<_i84.ParticipateListBloc>(() => _i84.ParticipateListBloc(
+  gh.factory<_i84.ParticipateClientListUsecase>(() =>
+      _i84.ParticipateClientListUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i85.ParticipateInvoiceListUsecase>(() =>
+      _i85.ParticipateInvoiceListUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i86.ParticipateListBloc>(() => _i86.ParticipateListBloc(
         gh<_i77.ParticipateListUsecase>(),
         gh<_i81.AddParticipateUserUsecase>(),
         gh<_i83.EditParticipateUserUsecase>(),
+        gh<_i84.ParticipateClientListUsecase>(),
+        gh<_i85.ParticipateInvoiceListUsecase>(),
       ));
   return getIt;
 }
 
-class _$AppModule extends _i85.AppModule {}
+class _$AppModule extends _i87.AppModule {}

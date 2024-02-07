@@ -57,7 +57,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
   Widget build(BuildContext context) {
     return Scaffold(
         //AppScaffold
-
+        
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(kToolbarHeight),
           child: ValueListenableBuilder<String?>(
@@ -67,9 +67,9 @@ class _ActionParticipateState extends State<ActionParticipate> {
                 appBarParams:
                     AppBarParams(title: isEdit ? value : "إضافة متعاون"),
               );
-            },
-          ),
-        ),
+                        },
+                ),
+              ),
         key: _scaffoldKey,
         body: 
         // ModalProgressHUD(

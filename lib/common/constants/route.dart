@@ -101,4 +101,7 @@ class _Participate {
   final allParticipates = 'agent/get_participate.php';
   final addParticipate = 'agent/addparticipate.php';
   final updateParticipate = 'agent/update_participate.php';
+
+  final allParticipateClients = 'getParticipateClints';
+  final allParticipateInvoices = 'getParticipateInvoices';
 }

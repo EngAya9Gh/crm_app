@@ -1,98 +1,54 @@
+
+
 import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/config/theme/theme.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
+import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
-import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
+import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_bloc.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
-import 'package:crm_smart/features/manage_participates/presentation/pages/action_participate_page.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:provider/provider.dart';
-import 'package:text_scroll/text_scroll.dart';
+import '../widgets/client_card.dart';
 
-import '../../../../constants.dart';
-import '../../../../core/utils/responsive_padding.dart';
-import '../../../../view_model/maincity_vm.dart';
-import '../../../app/presentation/widgets/app_text_button.dart';
-import '../widgets/participate_slidable_card.dart';
-
-
-class ParticipateListPage extends StatefulWidget {
-  const ParticipateListPage({Key? key}) : super(key: key);
+class ParticipateClientListPage extends StatefulWidget {
+  String participateId;
+   ParticipateClientListPage({Key? key,required this.participateId}) : super(key: key);
 
   @override
-  State<ParticipateListPage> createState() => _ParticipateListPageState();
+  State<ParticipateClientListPage> createState() => _ParticipateClientListPageState();
 }
 
-class _ParticipateListPageState extends State<ParticipateListPage> {
-  late ParticipateListBloc _participateListBloc;
-
+class _ParticipateClientListPageState extends State<ParticipateClientListPage> {
+   late ParticipateListBloc _participateListBloc;
   late TextEditingController _searchTextField;
-
 
   @override
   void initState() {
-    _searchTextField = TextEditingController()..addListener(onSearch);
+     _searchTextField = TextEditingController()..addListener(onSearch);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _participateListBloc = context.read<ParticipateListBloc>()
-        ..add(GetParticipateListEvent(
-          // fkCountry!,
-         query: _searchTextField.text));
+        ..add(GetParticipateClientListEvent(
+         query: _searchTextField.text, getParticipateClientListParams: GetParticipateClientListParams(
+          idParticipate:widget.participateId
+         )));
     });
-
-    super.initState();
   }
-
-  @override
-  void dispose() {
-    _searchTextField
-      ..removeListener(onSearch)
-      ..dispose();
-    super.dispose();
-  }
-
-  void onSearch() {
+    void onSearch() {
     print("search");
-    _participateListBloc.add(SearchEvent(_searchTextField.text));
+    _participateListBloc.add(SearchClientEvent(_searchTextField.text));
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'المتعاونين',
-        action: [
-             AppTextButton(
-                text: "إضافة متعاون",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute<void>(
-                        builder: (BuildContext context) => ActionParticipate(
-                          
-                        ),
-                        fullscreenDialog: true,
-                      ),
-                     );
-                },
-                appButtonStyle: AppButtonStyle.secondary,
-              ),
-          ],)),
-
-      
-      body: Directionality(
+    return   Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<ParticipateListBloc, ParticipateListState>(
           builder: (context, state) {
         
-            return state.particiPateListState.when(
+            return state.particiPateClientsListState.when(
               init: () => Center(child: CircularProgressIndicator()),
               loading: () => Center(child: CircularProgressIndicator()),
               loaded: (data) => Padding(
@@ -137,7 +93,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppText("عدد المتعاونين"),
+                          AppText("عدد العملاء"),
                           AppText(data.length.toString()),
                         ],
                       ),
@@ -151,9 +107,10 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           itemBuilder: (BuildContext context, int index) =>
-                            ParticipateSlidableCard(participate:  state.particiPateListState.data[index]),
+                            ClientCard(client:state.particiPateClientsListState.data[index]),
+                            // ClientCard(client:state.particiPateClientsListState.data[index]),
                           separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
-                          itemCount: state.particiPateListState.data.length,
+                          itemCount: state.particiPateClientsListState.data.length,
                         ),
                       ),
                     ),
@@ -166,11 +123,8 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
           
           },
         ),
-      ),
+      );
       
-      
-    );
+
   }
-
-
 }
