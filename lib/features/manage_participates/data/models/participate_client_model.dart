@@ -11,13 +11,15 @@ class ParticipateClientModel extends Equatable {
   String? fkUser;
   String? offerPrice;
   String? datePrice;
+  String? dateCreate;
+  bool? tag;
   String? nameCountry;
   String? nameRegoin;
   String? nameUser;
   int? fkCountry;
 
   ParticipateClientModel(
-      {this.idClients,
+     {this.idClients,
       this.nameClient,
       this.nameEnterprise,
       this.typeClient,
@@ -25,6 +27,8 @@ class ParticipateClientModel extends Equatable {
       this.fkUser,
       this.offerPrice,
       this.datePrice,
+      this.dateCreate,
+      this.tag,
       this.nameCountry,
       this.nameRegoin,
       this.nameUser,
@@ -39,6 +43,8 @@ class ParticipateClientModel extends Equatable {
     fkUser = json['fk_user'];
     offerPrice = json['offer_price'];
     datePrice = json['date_price'];
+    dateCreate = json['date_create'];
+    tag = json['tag'];
     nameCountry = json['nameCountry'];
     nameRegoin = json['name_regoin'];
     nameUser = json['nameUser'];
@@ -55,6 +61,8 @@ class ParticipateClientModel extends Equatable {
     data['fk_user'] = this.fkUser;
     data['offer_price'] = this.offerPrice;
     data['date_price'] = this.datePrice;
+    data['date_create'] = this.dateCreate;
+    data['tag'] = this.tag;
     data['nameCountry'] = this.nameCountry;
     data['name_regoin'] = this.nameRegoin;
     data['nameUser'] = this.nameUser;
@@ -63,5 +71,5 @@ class ParticipateClientModel extends Equatable {
   }
   
   @override
-  List<Object?> get props => [idClients,nameClient,nameEnterprise,typeClient,fkRegoin,fkUser,offerPrice,datePrice,nameCountry,nameRegoin,nameUser,fkCountry];
+  List<Object?> get props => [idClients,nameClient,nameEnterprise,typeClient,fkRegoin,fkUser,offerPrice,datePrice,dateCreate,tag,nameCountry,nameRegoin,nameUser,fkCountry];
 }

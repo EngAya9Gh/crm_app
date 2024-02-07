@@ -21,7 +21,7 @@ import '../../../../constants.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../view_model/maincity_vm.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
-import '../widgets/participate_slidable_card.dart';
+import '../widgets/participate_card.dart';
 
 
 class ParticipateListPage extends StatefulWidget {
@@ -151,7 +151,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           itemBuilder: (BuildContext context, int index) =>
-                            ParticipateSlidableCard(participate:  state.particiPateListState.data[index]),
+                            ParticipateCard(participate:  state.particiPateListState.data[index]),
                           separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
                           itemCount: state.particiPateListState.data.length,
                         ),

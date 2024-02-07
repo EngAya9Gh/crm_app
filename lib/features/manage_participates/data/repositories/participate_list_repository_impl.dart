@@ -5,6 +5,7 @@ import 'package:crm_smart/features/manage_participates/data/data_sources/partici
 import 'package:crm_smart/features/manage_participates/data/models/participate_client_model.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/features/manage_participates/domain/repositories/participate_list_repository.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 
 import '../models/participate_invoice_model.dart';
@@ -39,5 +40,10 @@ class ParticipateListRepositoryImpl implements ParticipateListRepository {
   @override
   Future<Result<ResponseWrapper<List<ParticipateInvoiceModel>>>> getParticipateInvoicesList(String participateId) {
     return   toApiResult(() => datasource.getParticipateInvoicesList(participateId));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<InvoiceModel>>> getInvoiceDataById(Map<String, dynamic> params) {
+    return toApiResult(() => datasource.getInvoiceDataById(params));
   }
 }

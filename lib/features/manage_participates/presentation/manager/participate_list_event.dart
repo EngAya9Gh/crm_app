@@ -2,12 +2,14 @@
 // part of 'communication_list_bloc.dart';
 
 import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../data/models/participatModel.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
+import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
 
 abstract class ParticipateEvent extends Equatable {
@@ -132,4 +134,12 @@ class SearchInvoiceEvent extends ParticipateEvent {
 
   @override
   List<Object?> get props => [query];
+}
+class GetInvoiceByIdEvent extends ParticipateEvent{
+  late final GetInvoiceByIdParams getInvoiceByIdParams;
+  final ValueChanged<InvoiceModel>? onSuccess;
+
+  GetInvoiceByIdEvent(this.getInvoiceByIdParams, {this.onSuccess});
+    @override
+  List<Object?> get props => [getInvoiceByIdParams];
 }

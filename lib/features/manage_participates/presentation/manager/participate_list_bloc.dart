@@ -15,6 +15,7 @@ import '../../../../common/models/page_state/bloc_status.dart';
 import '../../data/models/participate_invoice_model.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
+import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
 import '../../domain/use_cases/get_participate_list_usecase.dart';
 
@@ -29,7 +30,8 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     this._addParticipateUserUsecase,
     this._editParticipateUserUsecase,
     this._getParticipateClientListUsecase,
-    this._getParticipateInvoiceListUsecase
+    this._getParticipateInvoiceListUsecase,
+    this._getInvoiceByIdUsecase
     ) : super(ParticipateListState()) {
     on<GetParticipateListEvent>(_onGetParticipateListEvent);
     on<SearchEvent>(_onSearchEvent);
@@ -41,6 +43,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     on<GetParticipateInvoiceListEvent>(_onGetParticipateInvoiceListEvent);
     on<SearchClientEvent>(_onSearchClientEvent);
     on<SearchInvoiceEvent>(_onSearchInvoiceEvent);
+    on<GetInvoiceByIdEvent>(_getInvoiceById);
    
      
   }
@@ -50,6 +53,8 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   final EditParticipateUserUsecase _editParticipateUserUsecase;
   final ParticipateClientListUsecase _getParticipateClientListUsecase;
   final ParticipateInvoiceListUsecase _getParticipateInvoiceListUsecase;
+  final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
+
   FutureOr<void> _onGetParticipateListEvent(
       GetParticipateListEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(particiPateListState: PageState.loading()));
@@ -92,9 +97,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     return list;
   }
 
-  
-
-   FutureOr<void> _onAddParticipateEvent(AddParticipateEvent event, Emitter<ParticipateListState> emit) async {
+  FutureOr<void> _onAddParticipateEvent(AddParticipateEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(actionParticipateBlocStatus:BlocStatus.loading()));
   
     final response = await _addParticipateUserUsecase(event.addParticipateParams);
@@ -147,7 +150,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       
   }
 
-   FutureOr<void> _onChangeCurrentParticipate(ChanageCurrentParticipate event, Emitter<ParticipateListState> emit) async {
+  FutureOr<void> _onChangeCurrentParticipate(ChanageCurrentParticipate event, Emitter<ParticipateListState> emit) async {
       emit(state.copyWith(currentPaticipate:event.participateModel));
   }
   
@@ -194,7 +197,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       return list;
   }
 
-   FutureOr<void> _onGetParticipateInvoiceListEvent(
+  FutureOr<void> _onGetParticipateInvoiceListEvent(
       GetParticipateInvoiceListEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(particiPateInvoicesListState: PageState.loading()));
 
@@ -221,7 +224,8 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       },
     );
   }
-   FutureOr<void> _onSearchInvoiceEvent(SearchInvoiceEvent event, Emitter<ParticipateListState> emit) async {
+  
+  FutureOr<void> _onSearchInvoiceEvent(SearchInvoiceEvent event, Emitter<ParticipateListState> emit) async {
         emit(state.copyWith(particiPateInvoicesListState: PageState.loaded(data: filterInvoiceList(event.query))));
       }
 
@@ -229,9 +233,26 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         List<ParticipateInvoiceModel> list = List<ParticipateInvoiceModel>.from(l ?? state.allParticipateInvoicesState);
         list = list
             .where((element) =>
-                (element.nameUser!.toLowerCase().contains(query) ?? false) 
+                (element.nameEnterpriseinv!=null&&element.nameEnterpriseinv!.toLowerCase().contains(query) ?? false)||
+                (element.idInvoice!=null&&element.idInvoice!.toString().contains(query) ?? false)|| 
+                (element.addressInvoice!=null&&element.addressInvoice!.toLowerCase().contains(query) ?? false) 
                 )
             .toList();
         return list;
   }
+  
+  FutureOr<void>_getInvoiceById(GetInvoiceByIdEvent event, Emitter<ParticipateListState> emit)async{
+    emit(state.copyWith(dialogProgressState: const BlocStatus.loading()));
+   final response = await _getInvoiceByIdUsecase(GetInvoiceByIdParams(idInvoice: event.getInvoiceByIdParams.idInvoice));
+
+      response.fold(
+      (exception, message) => emit(state.copyWith(dialogProgressState: BlocStatus.fail(error: message ?? ''))),
+      (value) {
+       emit(state.copyWith(dialogProgressState: const BlocStatus.success()));
+         emit(state.copyWith( currentInvoice: value.data));
+      event.onSuccess?.call(value.data!);
+      },
+    );
+  }
+
 }

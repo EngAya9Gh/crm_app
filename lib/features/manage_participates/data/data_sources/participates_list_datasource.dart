@@ -6,7 +6,10 @@
 
 
 
+import 'dart:convert';
+
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -149,6 +152,37 @@ class ParticipatesListDatasource {
       //     }));
       //   },
       // );
+    }
+
+    return throwAppException(fun);
+  }
+
+    Future<ResponseWrapper<InvoiceModel>> getInvoiceDataById(Map<String, dynamic> param) async {
+    fun() async {
+      
+      final response = await _clientApi.request(
+        RequestConfig(
+          endpoint: EndPoints.participate.IvoiceByID,
+          queryParameters: param,
+          clientMethod: ClientMethod.get,
+          responseType: ResponseType.json,
+        ),
+      );
+     
+     final invoice = InvoiceModel.fromJson(jsonDecode(response.data)['message'][0]);
+     return ResponseWrapper(message: invoice, data: invoice);
+      // return 
+      // ResponseWrapper<List<InvoiceModel>>.fromJson(
+      //   response.data['message'],
+      //   (json) {
+      //     return 
+      //     List.from((json as List<dynamic>).map((e) {
+      //       return InvoiceModel.fromJson(json as Map<String, dynamic>);
+      //     })
+      //     );
+      //   },
+      // );
+      //  return ResponseWrapper(message: client, data: client);
     }
 
     return throwAppException(fun);

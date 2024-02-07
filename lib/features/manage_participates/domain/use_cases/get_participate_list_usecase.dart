@@ -21,13 +21,11 @@ class ParticipateListUsecase
 }
 
 class GetParticipateListParams {
-
-
-  GetParticipateListParams(
- 
-    );
-
-  Map<String, dynamic> toMap() => {
-      
-      };
+  GetParticipateListParams( );
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> params = { }..removeWhere((key, value) => value == null);
+    params = params.map((key, value) => MapEntry(key, value.toString()));
+    return params;
+  }
+   Map<String, dynamic> get toParams  => {};
 }

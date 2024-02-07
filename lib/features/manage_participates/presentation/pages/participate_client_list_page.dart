@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/client_card.dart';
+import '../widgets/participate_client_card.dart';
 
 class ParticipateClientListPage extends StatefulWidget {
   String participateId;
@@ -107,7 +107,7 @@ class _ParticipateClientListPageState extends State<ParticipateClientListPage> {
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           itemBuilder: (BuildContext context, int index) =>
-                            ClientCard(client:state.particiPateClientsListState.data[index]),
+                            ParticipateClientCard(client:state.particiPateClientsListState.data[index]),
                             // ClientCard(client:state.particiPateClientsListState.data[index]),
                           separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
                           itemCount: state.particiPateClientsListState.data.length,
