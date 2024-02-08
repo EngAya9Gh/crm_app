@@ -18,7 +18,7 @@ import '../../features/app/data/data_sources/app_datasource.dart' as _i51;
 import '../../features/app/data/repositories/app_repository_impl.dart' as _i53;
 import '../../features/app/domain/repositories/app_repository.dart' as _i52;
 import '../../features/app/domain/use_cases/get_version_usecase.dart' as _i69;
-import '../../features/app/presentation/bloc/app_manager_cubit.dart' as _i82;
+import '../../features/app/presentation/bloc/app_manager_cubit.dart' as _i83;
 import '../../features/clients_list/data/data_sources/clients_list_datasource.dart'
     as _i7;
 import '../../features/clients_list/data/repositories/client_list_repository_impl.dart'
@@ -79,18 +79,24 @@ import '../../features/manage_participates/data/repositories/participate_list_re
     as _i76;
 import '../../features/manage_participates/domain/repositories/participate_list_repository.dart'
     as _i75;
-import '../../features/manage_participates/domain/use_cases/add_participate_usecase.dart'
+import '../../features/manage_participates/domain/use_cases/add_participate_comment_usecase.dart'
     as _i81;
+import '../../features/manage_participates/domain/use_cases/add_participate_usecase.dart'
+    as _i82;
 import '../../features/manage_participates/domain/use_cases/edit_paraticipate_usecase.dart'
-    as _i83;
-import '../../features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart'
     as _i84;
-import '../../features/manage_participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+import '../../features/manage_participates/domain/use_cases/get_invoice_by_id_usecase.dart'
     as _i85;
+import '../../features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart'
+    as _i86;
+import '../../features/manage_participates/domain/use_cases/get_participate_comment_list_usecase.dart'
+    as _i87;
+import '../../features/manage_participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+    as _i88;
 import '../../features/manage_participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i77;
 import '../../features/manage_participates/presentation/manager/participate_list_bloc.dart'
-    as _i86;
+    as _i89;
 import '../../features/manage_privilege/data/data_sources/privilege_datasource.dart'
     as _i32;
 import '../../features/manage_privilege/data/repositories/privilege_repository_impl.dart'
@@ -162,7 +168,7 @@ import '../../features/task_management/domain/use_cases/get_users_by_department_
 import '../../features/task_management/presentation/manager/task_cubit.dart'
     as _i79;
 import '../api/client.dart' as _i6;
-import 'di_container.dart' as _i87;
+import 'di_container.dart' as _i90;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -351,24 +357,33 @@ Future<_i1.GetIt> $initGetIt(
         gh<_i45.ActionUserUsecase>(),
         gh<_i68.GetUsersByDepartmentAndRegionUsecase>(),
       ));
-  gh.factory<_i81.AddParticipateUserUsecase>(() =>
-      _i81.AddParticipateUserUsecase(gh<_i75.ParticipateListRepository>()));
-  gh.singleton<_i82.AppManagerCubit>(
-      _i82.AppManagerCubit(gh<_i69.GetVersionUseCase>()));
-  gh.factory<_i83.EditParticipateUserUsecase>(() =>
-      _i83.EditParticipateUserUsecase(gh<_i75.ParticipateListRepository>()));
-  gh.factory<_i84.ParticipateClientListUsecase>(() =>
-      _i84.ParticipateClientListUsecase(gh<_i75.ParticipateListRepository>()));
-  gh.factory<_i85.ParticipateInvoiceListUsecase>(() =>
-      _i85.ParticipateInvoiceListUsecase(gh<_i75.ParticipateListRepository>()));
-  gh.factory<_i86.ParticipateListBloc>(() => _i86.ParticipateListBloc(
+  gh.factory<_i81.AddParticipateCommentUsecase>(() =>
+      _i81.AddParticipateCommentUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i82.AddParticipateUserUsecase>(() =>
+      _i82.AddParticipateUserUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.singleton<_i83.AppManagerCubit>(
+      _i83.AppManagerCubit(gh<_i69.GetVersionUseCase>()));
+  gh.factory<_i84.EditParticipateUserUsecase>(() =>
+      _i84.EditParticipateUserUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i85.GetInvoiceByIdUsecase>(
+      () => _i85.GetInvoiceByIdUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i86.ParticipateClientListUsecase>(() =>
+      _i86.ParticipateClientListUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i87.ParticipateCommentListUsecase>(() =>
+      _i87.ParticipateCommentListUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i88.ParticipateInvoiceListUsecase>(() =>
+      _i88.ParticipateInvoiceListUsecase(gh<_i75.ParticipateListRepository>()));
+  gh.factory<_i89.ParticipateListBloc>(() => _i89.ParticipateListBloc(
         gh<_i77.ParticipateListUsecase>(),
-        gh<_i81.AddParticipateUserUsecase>(),
-        gh<_i83.EditParticipateUserUsecase>(),
-        gh<_i84.ParticipateClientListUsecase>(),
-        gh<_i85.ParticipateInvoiceListUsecase>(),
+        gh<_i82.AddParticipateUserUsecase>(),
+        gh<_i84.EditParticipateUserUsecase>(),
+        gh<_i86.ParticipateClientListUsecase>(),
+        gh<_i88.ParticipateInvoiceListUsecase>(),
+        gh<_i85.GetInvoiceByIdUsecase>(),
+        gh<_i87.ParticipateCommentListUsecase>(),
+        gh<_i81.AddParticipateCommentUsecase>(),
       ));
   return getIt;
 }
 
-class _$AppModule extends _i87.AppModule {}
+class _$AppModule extends _i90.AppModule {}

@@ -11,10 +11,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../widgets/client_card.dart';
+import '../widgets/participate_client_card.dart';
 
 class ParticipateClientListPage extends StatefulWidget {
-  String participateId;
+   final String participateId;
    ParticipateClientListPage({Key? key,required this.participateId}) : super(key: key);
 
   @override
@@ -30,12 +30,9 @@ class _ParticipateClientListPageState extends State<ParticipateClientListPage> {
      _searchTextField = TextEditingController()..addListener(onSearch);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _participateListBloc = context.read<ParticipateListBloc>()
-        ..add(GetParticipateClientListEvent(
-         query: _searchTextField.text, getParticipateClientListParams: GetParticipateClientListParams(
-          idParticipate:widget.participateId
-         )));
+      _participateListBloc = context.read<ParticipateListBloc>();
     });
+    super.initState();
   }
     void onSearch() {
     print("search");
@@ -101,13 +98,14 @@ class _ParticipateClientListPageState extends State<ParticipateClientListPage> {
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async => _participateListBloc
-                            .add(GetParticipateListEvent(
-                              // fkCountry!, 
-                              query: _searchTextField.text)),
+                            .add(GetParticipateClientListEvent(
+                                    query: _searchTextField.text, getParticipateClientListParams: GetParticipateClientListParams(
+                                    idParticipate:widget.participateId
+                                  ))),
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           itemBuilder: (BuildContext context, int index) =>
-                            ClientCard(client:state.particiPateClientsListState.data[index]),
+                            ParticipateClientCard(client:state.particiPateClientsListState.data[index]),
                             // ClientCard(client:state.particiPateClientsListState.data[index]),
                           separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
                           itemCount: state.particiPateClientsListState.data.length,

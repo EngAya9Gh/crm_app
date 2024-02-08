@@ -3,42 +3,54 @@
 import 'package:equatable/equatable.dart';
 
 class ParticipateInvoiceModel extends Equatable {
- int? idInvoice;
+  int? idInvoice;
   String? dateCreate;
   int? fkIdClient;
   String? fkIdUser;
   String? notes;
   String? total;
   String? dateinstallDone;
-  String? stateclient;
   String? dateApprove;
   String? addressInvoice;
   String? invoiceSource;
   String? amountPaid;
   String? renewYear;
-  String? nameCountry;
+  String? dateFApprove;
+  String? stateclient;
+  String? approveBackDone;
+  String? isApprove;
   String? nameRegoin;
+  String? nameEnterpriseinv;
+  String? currencyName;
+  String? nameCountry;
   String? nameUser;
   int? fkCountry;
+  String? nameEnterprise;
 
   ParticipateInvoiceModel(
-       {this.idInvoice,
+     {this.idInvoice,
       this.dateCreate,
       this.fkIdClient,
       this.fkIdUser,
       this.notes,
       this.total,
       this.dateinstallDone,
-      this.stateclient,
       this.dateApprove,
       this.addressInvoice,
       this.invoiceSource,
       this.amountPaid,
       this.renewYear,
-      this.nameCountry,
+      this.dateFApprove,
+      this.stateclient,
+      this.approveBackDone,
+      this.isApprove,
       this.nameRegoin,
+      this.nameEnterpriseinv,
+      this.currencyName,
+      this.nameCountry,
       this.nameUser,
-      this.fkCountry});
+      this.fkCountry,
+      this.nameEnterprise});
 
   ParticipateInvoiceModel.fromJson(Map<String, dynamic> json) {
     idInvoice = json['id_invoice'];
@@ -48,16 +60,22 @@ class ParticipateInvoiceModel extends Equatable {
     notes = json['notes'];
     total = json['total'];
     dateinstallDone = json['dateinstall_done'];
-    stateclient = json['stateclient'];
     dateApprove = json['date_approve'];
     addressInvoice = json['address_invoice'];
     invoiceSource = json['invoice_source'];
     amountPaid = json['amount_paid'];
     renewYear = json['renew_year'];
-    nameCountry = json['nameCountry'];
+    dateFApprove = json['Date_FApprove'];
+    stateclient = json['stateclient'];
+    approveBackDone = json['approve_back_done'];
+    isApprove = json['isApprove'];
     nameRegoin = json['name_regoin'];
+    nameEnterpriseinv = json['name_enterpriseinv'];
+    currencyName = json['currency_name'];
+    nameCountry = json['nameCountry'];
     nameUser = json['nameUser'];
     fkCountry = json['fk_country'];
+    nameEnterprise = json['name_enterprise'];
   }
 
   Map<String, dynamic> toJson() {
@@ -69,16 +87,22 @@ class ParticipateInvoiceModel extends Equatable {
     data['notes'] = this.notes;
     data['total'] = this.total;
     data['dateinstall_done'] = this.dateinstallDone;
-    data['stateclient'] = this.stateclient;
     data['date_approve'] = this.dateApprove;
     data['address_invoice'] = this.addressInvoice;
     data['invoice_source'] = this.invoiceSource;
     data['amount_paid'] = this.amountPaid;
     data['renew_year'] = this.renewYear;
-    data['nameCountry'] = this.nameCountry;
+    data['Date_FApprove'] = this.dateFApprove;
+    data['stateclient'] = this.stateclient;
+    data['approve_back_done'] = this.approveBackDone;
+    data['isApprove'] = this.isApprove;
     data['name_regoin'] = this.nameRegoin;
+    data['name_enterpriseinv'] = this.nameEnterpriseinv;
+    data['currency_name'] = this.currencyName;
+    data['nameCountry'] = this.nameCountry;
     data['nameUser'] = this.nameUser;
     data['fk_country'] = this.fkCountry;
+    data['name_enterprise'] = this.nameEnterprise;
     return data;
   }
   

@@ -13,15 +13,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
 
-class ParticipateSlidableCard extends StatefulWidget {
+class ParticipateCard extends StatefulWidget {
   final ParticipateModel participate;
-  const ParticipateSlidableCard({required this.participate,Key? key}) : super(key: key);
+  const ParticipateCard({required this.participate,Key? key}) : super(key: key);
 
   @override
-  State<ParticipateSlidableCard> createState() => _ParticipateSlidableCardState();
+  State<ParticipateCard> createState() => _ParticipateCardState();
 }
 
-class _ParticipateSlidableCardState extends State<ParticipateSlidableCard> {
+class _ParticipateCardState extends State<ParticipateCard> {
   @override
   Widget build(BuildContext context) {
      
@@ -49,7 +49,7 @@ class _ParticipateSlidableCardState extends State<ParticipateSlidableCard> {
       Navigator.push(
           context,
           CupertinoPageRoute(
-              builder: (context) => ParticipateProfilePage()));
+              builder: (context) => ParticipateProfilePage( participateId: widget.participate.id_participate??'0')));
 
       },
        child: Container(

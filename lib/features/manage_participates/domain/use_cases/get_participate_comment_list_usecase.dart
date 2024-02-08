@@ -4,28 +4,28 @@ import 'package:crm_smart/features/manage_participates/domain/repositories/parti
 import 'package:injectable/injectable.dart';
 
 import '../../../../common/models/response_wrapper/response_wrapper.dart';
-import '../../data/models/participate_invoice_model.dart';
+import '../../data/models/participate_comments_model.dart';
 
 
 @injectable
-class ParticipateInvoiceListUsecase
-    extends UseCase<Result<ResponseWrapper<List<ParticipateInvoiceModel>>>, GetParticipateInvoiceListParams> {
-  ParticipateInvoiceListUsecase(this.repository);
+class ParticipateCommentListUsecase
+    extends UseCase<Result<ResponseWrapper<List<ParticipateCommentModel>>>, GetParticipateCommentListParams> {
+  ParticipateCommentListUsecase(this.repository);
 
   final ParticipateListRepository repository;
   
 
   @override
-  Future<Result<ResponseWrapper<List<ParticipateInvoiceModel>>>> call(GetParticipateInvoiceListParams params) {
+  Future<Result<ResponseWrapper<List<ParticipateCommentModel>>>> call(GetParticipateCommentListParams params) {
     
-    return repository.getParticipateInvoicesList(params.idParticipate.toString());
+    return repository.getParticipateCommentsList(params.idParticipate.toString());
   }
 }
 
-class GetParticipateInvoiceListParams {
+class GetParticipateCommentListParams {
  final String? idParticipate;
 
-  GetParticipateInvoiceListParams(
+  GetParticipateCommentListParams(
     {this.idParticipate}
   );
 

@@ -1,27 +1,20 @@
 import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_bloc.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
 import 'package:crm_smart/features/manage_participates/presentation/pages/action_participate_page.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
-import 'package:text_scroll/text_scroll.dart';
-
-import '../../../../constants.dart';
 import '../../../../core/utils/responsive_padding.dart';
-import '../../../../view_model/maincity_vm.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
-import '../widgets/participate_slidable_card.dart';
+import '../widgets/participate_card.dart';
 
 
 class ParticipateListPage extends StatefulWidget {
@@ -151,7 +144,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           itemBuilder: (BuildContext context, int index) =>
-                            ParticipateSlidableCard(participate:  state.particiPateListState.data[index]),
+                            ParticipateCard(participate:  state.particiPateListState.data[index]),
                           separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
                           itemCount: state.particiPateListState.data.length,
                         ),

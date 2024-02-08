@@ -1,8 +1,10 @@
 
+import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_comment_list_usecase.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_bloc.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
 import 'package:crm_smart/features/manage_participates/presentation/pages/participate_client_list_page.dart';
+import 'package:crm_smart/features/manage_participates/presentation/pages/participate_comment_list_page.dart';
 import 'package:crm_smart/features/manage_participates/presentation/pages/participate_info.dart';
 import 'package:crm_smart/features/manage_participates/presentation/pages/participate_invoice_list_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,18 +12,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:text_scroll/text_scroll.dart';
 
+import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
+import '../../domain/use_cases/get_participate_client_list_usecase.dart';
+
 class ParticipateProfilePage extends StatefulWidget {
-  const ParticipateProfilePage({Key? key}) : super(key: key);
+  const ParticipateProfilePage({Key? key,required this.participateId}) : super(key: key);
+ final String participateId;
 
   @override
   State<ParticipateProfilePage> createState() => _ParticipateProfilePageState();
 }
 
 class _ParticipateProfilePageState extends State<ParticipateProfilePage> with TickerProviderStateMixin{
+  late ParticipateListBloc _participateListBloc;
     late TabController _tabController;
     @override
   void initState() {
-    
+     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _participateListBloc = context.read<ParticipateListBloc>() ..add(GetParticipateClientListEvent(
+         query: '', getParticipateClientListParams: GetParticipateClientListParams(
+          idParticipate:widget.participateId
+         ))
+         );
+      _participateListBloc.add(GetParticipateInvoiceListEvent(
+         query: '', getParticipateInvoiceListParams: GetParticipateInvoiceListParams(
+          idParticipate:widget.participateId
+         ))); 
+      _participateListBloc.add(GetParticipateCommentListEvent(
+         getParticipateCommentListParams: GetParticipateCommentListParams(
+          idParticipate:widget.participateId
+         )));
+
+    });
     super.initState();
     _tabController = TabController(length: TabEvent.values.length, vsync: this, initialIndex: 0);
     // _tabController.addListener(onChangeTab);
@@ -97,7 +119,7 @@ class _ParticipateProfilePageState extends State<ParticipateProfilePage> with Ti
               ParticipateInfo(),
               ParticipateClientListPage(participateId: state.currentPaticipate!=null?state.currentPaticipate!.id_participate!:''),
               ParticipateInvoiceListPage(participateId: state.currentPaticipate!=null?state.currentPaticipate!.id_participate!:''),
-              Center(child: Text('التعليقات')),
+              ParticipateCommentListPage(participateId: state.currentPaticipate!=null?state.currentPaticipate!.id_participate!:''),
             ],
           );
         },

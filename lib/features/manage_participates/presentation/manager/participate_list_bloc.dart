@@ -12,10 +12,14 @@ import 'package:injectable/injectable.dart';
 
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import '../../../../common/models/page_state/bloc_status.dart';
+import '../../data/models/participate_comments_model.dart';
 import '../../data/models/participate_invoice_model.dart';
+import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
+import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
+import '../../domain/use_cases/get_participate_comment_list_usecase.dart';
 import '../../domain/use_cases/get_participate_list_usecase.dart';
 
 
@@ -29,7 +33,10 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     this._addParticipateUserUsecase,
     this._editParticipateUserUsecase,
     this._getParticipateClientListUsecase,
-    this._getParticipateInvoiceListUsecase
+    this._getParticipateInvoiceListUsecase,
+    this._getInvoiceByIdUsecase,
+    this._getParticipateCommentListUsecase,
+    this._addParticipateCommentUsecase,
     ) : super(ParticipateListState()) {
     on<GetParticipateListEvent>(_onGetParticipateListEvent);
     on<SearchEvent>(_onSearchEvent);
@@ -41,6 +48,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     on<GetParticipateInvoiceListEvent>(_onGetParticipateInvoiceListEvent);
     on<SearchClientEvent>(_onSearchClientEvent);
     on<SearchInvoiceEvent>(_onSearchInvoiceEvent);
+    on<GetInvoiceByIdEvent>(_getInvoiceById);
+    on<GetParticipateCommentListEvent>(_onGetParticipateCommentListEvent);
+    on<AddParticipateCommentEvent>(_onAddParticipateCommentEvent);
    
      
   }
@@ -50,6 +60,10 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   final EditParticipateUserUsecase _editParticipateUserUsecase;
   final ParticipateClientListUsecase _getParticipateClientListUsecase;
   final ParticipateInvoiceListUsecase _getParticipateInvoiceListUsecase;
+  final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
+  final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
+  final AddParticipateCommentUsecase _addParticipateCommentUsecase;
+
   FutureOr<void> _onGetParticipateListEvent(
       GetParticipateListEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(particiPateListState: PageState.loading()));
@@ -92,9 +106,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     return list;
   }
 
-  
-
-   FutureOr<void> _onAddParticipateEvent(AddParticipateEvent event, Emitter<ParticipateListState> emit) async {
+  FutureOr<void> _onAddParticipateEvent(AddParticipateEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(actionParticipateBlocStatus:BlocStatus.loading()));
   
     final response = await _addParticipateUserUsecase(event.addParticipateParams);
@@ -147,7 +159,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       
   }
 
-   FutureOr<void> _onChangeCurrentParticipate(ChanageCurrentParticipate event, Emitter<ParticipateListState> emit) async {
+  FutureOr<void> _onChangeCurrentParticipate(ChanageCurrentParticipate event, Emitter<ParticipateListState> emit) async {
       emit(state.copyWith(currentPaticipate:event.participateModel));
   }
   
@@ -194,7 +206,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       return list;
   }
 
-   FutureOr<void> _onGetParticipateInvoiceListEvent(
+  FutureOr<void> _onGetParticipateInvoiceListEvent(
       GetParticipateInvoiceListEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(particiPateInvoicesListState: PageState.loading()));
 
@@ -221,7 +233,8 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       },
     );
   }
-   FutureOr<void> _onSearchInvoiceEvent(SearchInvoiceEvent event, Emitter<ParticipateListState> emit) async {
+  
+  FutureOr<void> _onSearchInvoiceEvent(SearchInvoiceEvent event, Emitter<ParticipateListState> emit) async {
         emit(state.copyWith(particiPateInvoicesListState: PageState.loaded(data: filterInvoiceList(event.query))));
       }
 
@@ -229,9 +242,78 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         List<ParticipateInvoiceModel> list = List<ParticipateInvoiceModel>.from(l ?? state.allParticipateInvoicesState);
         list = list
             .where((element) =>
-                (element.nameUser!.toLowerCase().contains(query) ?? false) 
+                (element.nameEnterpriseinv!=null&&element.nameEnterpriseinv!.toLowerCase().contains(query) ?? false)||
+                (element.idInvoice!=null&&element.idInvoice!.toString().contains(query) ?? false)|| 
+                (element.addressInvoice!=null&&element.addressInvoice!.toLowerCase().contains(query) ?? false) 
                 )
             .toList();
         return list;
   }
+  
+  FutureOr<void>_getInvoiceById(GetInvoiceByIdEvent event, Emitter<ParticipateListState> emit)async{
+    emit(state.copyWith(dialogProgressState: const BlocStatus.loading()));
+   final response = await _getInvoiceByIdUsecase(GetInvoiceByIdParams(idInvoice: event.getInvoiceByIdParams.idInvoice));
+
+      response.fold(
+      (exception, message) => emit(state.copyWith(dialogProgressState: BlocStatus.fail(error: message ?? ''))),
+      (value) {
+       emit(state.copyWith(dialogProgressState: const BlocStatus.success()));
+         emit(state.copyWith( currentInvoice: value.data));
+      event.onSuccess?.call(value.data!);
+      },
+    );
+  }
+
+  FutureOr<void> _onGetParticipateCommentListEvent( GetParticipateCommentListEvent event, Emitter<ParticipateListState> emit) async {
+    emit(state.copyWith(particiPateCommentsListState: PageState.loading()));
+
+    final response = await _getParticipateCommentListUsecase(event.getParticipateCommentListParams );
+
+    response.fold(
+      (exception, message) => emit(state.copyWith(particiPateCommentsListState: PageState.error())),
+      (value) {
+
+        emit(
+          state.copyWith(
+            particiPateCommentsListState: PageState.loaded(data: value.data ?? []),
+            allParticipateCommentsState: value.data,
+          ),
+        );
+      },
+    );
+  }
+
+  FutureOr<void>  _onAddParticipateCommentEvent(AddParticipateCommentEvent event, Emitter<ParticipateListState> emit) async {
+    emit(state.copyWith(actionCommentState: BlocStatus.loading()));
+    final response = await _addParticipateCommentUsecase(event.addParticipateCommentParams);
+    response.fold(
+          (exception, message) => emit(
+          state.copyWith(actionCommentState: BlocStatus.fail(error: message))),
+          (value) {
+        final commentData = value.data!;
+
+        if (commentData.id.toString() == '0') {
+          event.onSuccess?.call("repeat");
+          return;
+        }
+        List<ParticipateCommentModel> comment = state.allParticipateCommentsState;
+
+        comment.insert(0, commentData);
+        final usersState = PageState.loaded(data: comment);
+        emit(
+          state.copyWith(
+            actionCommentState: BlocStatus.success(),
+            particiPateCommentsListState: usersState,
+            allParticipateCommentsState: comment,
+            // currentLink: updateLink != null ? link : null,
+          ),
+        );
+      event.onSuccess?.call(null);
+        
+      },
+    );
+  }
+
+
+
 }
