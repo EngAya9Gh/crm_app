@@ -7,10 +7,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import '../../data/models/participatModel.dart';
+import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
+import '../../domain/use_cases/get_participate_comment_list_usecase.dart';
 
 abstract class ParticipateEvent extends Equatable {
   const ParticipateEvent();
@@ -142,4 +144,25 @@ class GetInvoiceByIdEvent extends ParticipateEvent{
   GetInvoiceByIdEvent(this.getInvoiceByIdParams, {this.onSuccess});
     @override
   List<Object?> get props => [getInvoiceByIdParams];
+}
+class GetParticipateCommentListEvent extends ParticipateEvent {
+  final GetParticipateCommentListParams getParticipateCommentListParams;
+
+
+  GetParticipateCommentListEvent(
+    {required this.getParticipateCommentListParams});
+
+  @override
+  List<Object?> get props => [
+    // query,
+  getParticipateCommentListParams];
+}
+
+class AddParticipateCommentEvent extends ParticipateEvent {
+  final AddParticipateCommentParams addParticipateCommentParams;
+  final ValueChanged<String?>? onSuccess;
+  AddParticipateCommentEvent(this.addParticipateCommentParams, {this.onSuccess});
+  
+  @override
+  List<Object?> get props => throw UnimplementedError();
 }

@@ -1,7 +1,5 @@
 
 
-
-import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/features/manage_participates/presentation/widgets/text_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

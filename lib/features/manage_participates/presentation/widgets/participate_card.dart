@@ -49,7 +49,7 @@ class _ParticipateCardState extends State<ParticipateCard> {
       Navigator.push(
           context,
           CupertinoPageRoute(
-              builder: (context) => ParticipateProfilePage()));
+              builder: (context) => ParticipateProfilePage( participateId: widget.participate.id_participate??'0')));
 
       },
        child: Container(

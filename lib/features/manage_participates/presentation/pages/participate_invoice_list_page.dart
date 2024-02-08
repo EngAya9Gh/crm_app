@@ -1,11 +1,8 @@
 
 
-import 'package:crm_smart/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/core/utils/dialog_manager.dart';
 import 'package:crm_smart/features/manage_participates/domain/use_cases/get_invoice_by_id_usecase.dart';
 import 'package:crm_smart/ui/screen/invoice/invoiceView.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import '../../../../common/models/page_state/page_state.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_text.dart';
@@ -40,12 +37,9 @@ class _ParticipateInvoiceListPageState extends State<ParticipateInvoiceListPage>
      _searchTextField = TextEditingController()..addListener(onSearch);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _participateListBloc = context.read<ParticipateListBloc>()
-        ..add(GetParticipateInvoiceListEvent(
-         query: _searchTextField.text, getParticipateInvoiceListParams: GetParticipateInvoiceListParams(
-          idParticipate:widget.participateId
-         )));
+      _participateListBloc = context.read<ParticipateListBloc>();
     });
+    super.initState();
   }
     void onSearch() {
     print("search");
@@ -54,7 +48,7 @@ class _ParticipateInvoiceListPageState extends State<ParticipateInvoiceListPage>
   @override
   Widget build(BuildContext context) {
     return   ModalProgressHUD(
-       inAsyncCall: _participateListBloc.state.dialogProgressState.isLoading(),
+       inAsyncCall:context.read<ParticipateListBloc>().state.dialogProgressState.isLoading(),
       dismissible: false, // Prevent user from dismissing while loading
       progressIndicator: CircularProgressIndicator(),
       child: Directionality(
@@ -114,9 +108,10 @@ class _ParticipateInvoiceListPageState extends State<ParticipateInvoiceListPage>
                       Expanded(
                         child: RefreshIndicator(
                           onRefresh: () async => _participateListBloc
-                              .add(GetParticipateListEvent(
-                                // fkCountry!, 
-                                query: _searchTextField.text)),
+                              .add(GetParticipateInvoiceListEvent(
+                                    query: _searchTextField.text, getParticipateInvoiceListParams: GetParticipateInvoiceListParams(
+                                      idParticipate:widget.participateId
+                                    ))),
                           child: ListView.separated(
                             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                             itemBuilder: (BuildContext context, int index) =>

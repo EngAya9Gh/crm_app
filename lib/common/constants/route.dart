@@ -105,4 +105,6 @@ class _Participate {
   final allParticipateClients = 'getParticipateClints';
   final allParticipateInvoices = 'getParticipateInvoices';
   final IvoiceByID = 'client/invoice/getInvoiceID.php';
+  final allParticipateComments = 'getParticipateComments';
+    final addParticipateComment = 'addCommentParticipate';
 }

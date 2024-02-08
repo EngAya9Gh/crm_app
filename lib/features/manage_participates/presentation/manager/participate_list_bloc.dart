@@ -12,11 +12,14 @@ import 'package:injectable/injectable.dart';
 
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import '../../../../common/models/page_state/bloc_status.dart';
+import '../../data/models/participate_comments_model.dart';
 import '../../data/models/participate_invoice_model.dart';
+import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
+import '../../domain/use_cases/get_participate_comment_list_usecase.dart';
 import '../../domain/use_cases/get_participate_list_usecase.dart';
 
 
@@ -31,7 +34,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     this._editParticipateUserUsecase,
     this._getParticipateClientListUsecase,
     this._getParticipateInvoiceListUsecase,
-    this._getInvoiceByIdUsecase
+    this._getInvoiceByIdUsecase,
+    this._getParticipateCommentListUsecase,
+    this._addParticipateCommentUsecase,
     ) : super(ParticipateListState()) {
     on<GetParticipateListEvent>(_onGetParticipateListEvent);
     on<SearchEvent>(_onSearchEvent);
@@ -44,6 +49,8 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     on<SearchClientEvent>(_onSearchClientEvent);
     on<SearchInvoiceEvent>(_onSearchInvoiceEvent);
     on<GetInvoiceByIdEvent>(_getInvoiceById);
+    on<GetParticipateCommentListEvent>(_onGetParticipateCommentListEvent);
+    on<AddParticipateCommentEvent>(_onAddParticipateCommentEvent);
    
      
   }
@@ -54,6 +61,8 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   final ParticipateClientListUsecase _getParticipateClientListUsecase;
   final ParticipateInvoiceListUsecase _getParticipateInvoiceListUsecase;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
+  final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
+  final AddParticipateCommentUsecase _addParticipateCommentUsecase;
 
   FutureOr<void> _onGetParticipateListEvent(
       GetParticipateListEvent event, Emitter<ParticipateListState> emit) async {
@@ -254,5 +263,57 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       },
     );
   }
+
+  FutureOr<void> _onGetParticipateCommentListEvent( GetParticipateCommentListEvent event, Emitter<ParticipateListState> emit) async {
+    emit(state.copyWith(particiPateCommentsListState: PageState.loading()));
+
+    final response = await _getParticipateCommentListUsecase(event.getParticipateCommentListParams );
+
+    response.fold(
+      (exception, message) => emit(state.copyWith(particiPateCommentsListState: PageState.error())),
+      (value) {
+
+        emit(
+          state.copyWith(
+            particiPateCommentsListState: PageState.loaded(data: value.data ?? []),
+            allParticipateCommentsState: value.data,
+          ),
+        );
+      },
+    );
+  }
+
+  FutureOr<void>  _onAddParticipateCommentEvent(AddParticipateCommentEvent event, Emitter<ParticipateListState> emit) async {
+    emit(state.copyWith(actionCommentState: BlocStatus.loading()));
+    final response = await _addParticipateCommentUsecase(event.addParticipateCommentParams);
+    response.fold(
+          (exception, message) => emit(
+          state.copyWith(actionCommentState: BlocStatus.fail(error: message))),
+          (value) {
+        final commentData = value.data!;
+
+        if (commentData.id.toString() == '0') {
+          event.onSuccess?.call("repeat");
+          return;
+        }
+        List<ParticipateCommentModel> comment = state.allParticipateCommentsState;
+
+        comment.insert(0, commentData);
+        final usersState = PageState.loaded(data: comment);
+        emit(
+          state.copyWith(
+            actionCommentState: BlocStatus.success(),
+            particiPateCommentsListState: usersState,
+            allParticipateCommentsState: comment,
+            // currentLink: updateLink != null ? link : null,
+          ),
+        );
+      event.onSuccess?.call(null);
+        
+      },
+    );
+  }
+
+
 
 }

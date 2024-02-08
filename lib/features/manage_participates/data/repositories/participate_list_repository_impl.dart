@@ -8,6 +8,7 @@ import 'package:crm_smart/features/manage_participates/domain/repositories/parti
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 
+import '../models/participate_comments_model.dart';
 import '../models/participate_invoice_model.dart';
 
 
@@ -46,4 +47,14 @@ class ParticipateListRepositoryImpl implements ParticipateListRepository {
   Future<Result<ResponseWrapper<InvoiceModel>>> getInvoiceDataById(Map<String, dynamic> params) {
     return toApiResult(() => datasource.getInvoiceDataById(params));
   }
+
+  @override
+  Future<Result<ResponseWrapper<List<ParticipateCommentModel>>>> getParticipateCommentsList(String participateId) {
+    return   toApiResult(() => datasource.getParticipateCommentsList(participateId));
+  }
+
+  @override
+  Future<Result<ResponseWrapper<ParticipateCommentModel>>> addCompanyComment(Map<String, dynamic> body) {
+    return toApiResult(() => datasource.addComment(body: body));
+    }
 }
