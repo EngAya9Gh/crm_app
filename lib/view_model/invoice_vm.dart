@@ -1297,6 +1297,8 @@ class invoice_vm extends ChangeNotifier {
     required String date_client_visit,
     required String fk_user,
     required String fk_client,
+    required String type_date,
+
     required ValueChanged<String> onSuccess,
   }) async {
     isloadingdone = true;
@@ -1311,6 +1313,7 @@ class invoice_vm extends ChangeNotifier {
       date_client_visit: date_client_visit,
       fk_user: fk_user,
       fk_client: fk_client,
+      type_date: fk_client,
     );
 
     onSuccess.call(data);

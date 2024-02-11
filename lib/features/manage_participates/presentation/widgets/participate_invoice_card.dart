@@ -283,28 +283,28 @@ void dispose() {
                     ),
                   ),
                 ),
-                if (widget.invoice.approveBackDone != null && widget.isFromWithdrawalsInvoicesList)
-                  Container(
-                    width: double.infinity,
-                    height: 30,
-                    decoration: BoxDecoration(
-                      color: WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].color,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 8.0,
-                          color: Colors.black87.withOpacity(0.2),
-                        ),
-                      ],
-                      borderRadius:
-                          BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
-                    ),
-                    child: Center(
-                        child: Text(
-                      WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].text,
-                      style: context.textTheme.titleSmall!.copyWith(color: Colors.white, fontFamily: kfontfamily2),
-                    )),
-                  ),
+                // if (widget.invoice.approveBackDone != null && widget.isFromWithdrawalsInvoicesList)
+                //   Container(
+                //     width: double.infinity,
+                //     height: 30,
+                //     decoration: BoxDecoration(
+                //       color: WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].color,
+                //       boxShadow: <BoxShadow>[
+                //         BoxShadow(
+                //           offset: Offset(1.0, 1.0),
+                //           blurRadius: 8.0,
+                //           color: Colors.black87.withOpacity(0.2),
+                //         ),
+                //       ],
+                //       borderRadius:
+                //           BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+                //     ),
+                //     child: Center(
+                //         child: Text(
+                //       WithdrawalStatus.values[int.parse(widget.invoice.approveBackDone!)].text,
+                //       style: context.textTheme.titleSmall!.copyWith(color: Colors.white, fontFamily: kfontfamily2),
+                //     )),
+                //   ),
               ],
             ),
           ),

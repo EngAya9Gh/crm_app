@@ -53,30 +53,30 @@ class ParticipateInvoiceModel extends Equatable {
       this.nameEnterprise});
 
   ParticipateInvoiceModel.fromJson(Map<String, dynamic> json) {
-    idInvoice = json['id_invoice'];
-    dateCreate = json['date_create'];
-    fkIdClient = json['fk_idClient'];
-    fkIdUser = json['fk_idUser'];
-    notes = json['notes'];
-    total = json['total'];
-    dateinstallDone = json['dateinstall_done'];
-    dateApprove = json['date_approve'];
-    addressInvoice = json['address_invoice'];
-    invoiceSource = json['invoice_source'];
-    amountPaid = json['amount_paid'];
-    renewYear = json['renew_year'];
-    dateFApprove = json['Date_FApprove'];
-    stateclient = json['stateclient'];
-    approveBackDone = json['approve_back_done'];
-    isApprove = json['isApprove'];
-    nameRegoin = json['name_regoin'];
-    nameEnterpriseinv = json['name_enterpriseinv'];
-    currencyName = json['currency_name'];
-    nameCountry = json['nameCountry'];
-    nameUser = json['nameUser'];
-    fkCountry = json['fk_country'];
-    nameEnterprise = json['name_enterprise'];
-  }
+          idInvoice = json['id_invoice'];
+            dateCreate = json['date_create'];
+        fkIdClient = json['fk_idClient'];
+        fkIdUser = json['fk_idUser'];
+        notes = json['notes'];
+        total = json['total'];
+        dateinstallDone = json['dateinstall_done'];
+        dateApprove = json['date_approve'];
+        addressInvoice = json['address_invoice'];
+        invoiceSource = json['invoice_source'];
+        amountPaid = json['amount_paid'];
+        renewYear = json['renew_year'];
+        dateFApprove = json['Date_FApprove'];
+        stateclient = json['stateclient'];
+        approveBackDone = json['approve_back_done']!=null?json['approve_back_done'].toString():json['approve_back_done'];
+        isApprove = json['isApprove'];
+        nameRegoin = json['name_regoin'];
+        nameEnterpriseinv = json['name_enterpriseinv'];
+        currencyName = json['currency_name'];
+        nameCountry = json['nameCountry'];
+        nameUser = json['nameUser'];
+        fkCountry = json['fk_country'];
+        nameEnterprise = json['name_enterprise'];
+      }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
