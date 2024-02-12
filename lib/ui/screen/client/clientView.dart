@@ -288,12 +288,13 @@ class _ClientViewState extends State<ClientView> {
                                   onPressed: () async {
                                     final ClientsListResponse clientsListResponse = ClientsListResponse.fromJson(
                                         state.currentClientModel.data!.toJson());
-                                    final ClientModel? obj = state.currentClientModel.data;
-                                    Navigator.push(
+                                    final ClientsListResponse editedClient = await Navigator.push(
                                         context,
                                         CupertinoPageRoute(
                                           builder: (context) => ActionClientPage(client: clientsListResponse,),
                                         ));
+                                    final ClientModel editedClientModel = ClientModel.fromJson(editedClient.toJson());
+                                    context.read<ClientProvider>().updateClient(editedClientModel);
                                   },
                                   child: Text('تعديل بيانات العميل'),
                                 ),

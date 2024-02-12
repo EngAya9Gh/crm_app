@@ -891,4 +891,10 @@ class ClientProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  Future<void> updateClient(ClientModel clientModel) async {
+    currentClientModel = currentClientModel.copyWith(data: clientModel);
+
+    notifyListeners();
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:crm_smart/Repository/cache_repo.dart';
+import 'package:equatable/equatable.dart';
 
-class ClientModel extends CacheRepository {
+class ClientModel extends Equatable {
   ClientModel({
     this.idClients,
     this.nameClient,
@@ -272,4 +273,60 @@ class ClientModel extends CacheRepository {
   String toString() {
     return 'ClientModel{idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegoin: $fkRegoin, fkcountry: $fkcountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangetype: $dateChangetype, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, name_regoin: $name_regoin, total: $total, amount_paid: $amount_paid, offer_price: $offer_price, date_price: $date_price, user_do: $user_do, isApprove: $isApprove, nameuserdoning: $nameuserdoning, nameusertransfer: $nameusertransfer, fkusertrasfer: $fkusertrasfer, mobileuser: $mobileuser, total_paid: $total_paid, ismarketing: $ismarketing, address_client: $address_client, descActivController: $descActivController, presystem: $presystem, presystemtitle: $presystemtitle, sourcclient: $sourcclient, activity_type_fk: $activity_type_fk, activity_type_title: $activity_type_title, phone: $phone, user_add: $user_add, nameAdduser: $nameAdduser, date_visit_Client: $date_visit_Client, name_city: $name_city, namemaincity: $namemaincity, id_maincity: $id_maincity}';
   }
+
+  @override
+  List<Object?> get props => [
+        idClients,
+        nameClient,
+        nameEnterprise,
+        typeJob,
+        city,
+        location,
+        fkRegoin,
+        fkcountry,
+        dateCreate,
+        typeClient,
+        fkUser,
+        dateTransfer,
+        mobile,
+        dateChangetype,
+        reasonChange,
+        reasonTransfer,
+        nameCountry,
+        nameUser,
+        name_regoin,
+        total,
+        amount_paid,
+        offer_price,
+        date_price,
+        user_do,
+        isApprove,
+        nameuserdoning,
+        nameusertransfer,
+        fkusertrasfer,
+        mobileuser,
+        total_paid,
+        ismarketing,
+        address_client,
+        descActivController,
+        presystem,
+        presystemtitle,
+        sourcclient,
+        activity_type_fk,
+        activity_type_title,
+        phone,
+        user_add,
+        nameAdduser,
+        date_visit_Client,
+        name_city,
+        namemaincity,
+        id_maincity,
+        email,
+        size_activity,
+        fk_client_source,
+        NameReason_reject,
+        NameClient_recomand,
+        fk_rejectClient,
+        serialNumber,
+      ];
 }
