@@ -5,8 +5,8 @@ part 'clients_list_response.freezed.dart';
 part 'clients_list_response.g.dart';
 
 @freezed
-class ClientModel with _$ClientModel {
-  const factory ClientModel({
+class ClientsListResponse with _$ClientModel {
+  const factory ClientsListResponse({
     @JsonKey(name: "id_clients") String? idClients,
     @JsonKey(name: "name_client") String? nameClient,
     @JsonKey(name: "name_enterprise") String? nameEnterprise,
@@ -49,7 +49,7 @@ class ClientModel with _$ClientModel {
     @JsonKey(name: "user_add") String? userAdd,
     @JsonKey(name: "nameAdduser") String? nameAdduser,
     @JsonKey(name: "date_visit_Client") String? dateVisitClient,
-    @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) bool? tag,
+    @JsonKey(name: "tag", fromJson: ClientsListResponse.tagFromJson) bool? tag,
     @JsonKey(name: "done_visit") String? doneVisit,
     @JsonKey(name: "done_transfer") String? doneTransfer,
     @JsonKey(name: "name_city") String? nameCity,
@@ -66,11 +66,11 @@ class ClientModel with _$ClientModel {
     @JsonKey(name: "fk_rejectClient") String? rejectId,
   }) = _ClientModel;
 
-  const ClientModel._();
+  const ClientsListResponse._();
 
   static tagFromJson(String? tag) {
     return tag == "true";
   }
 
-  factory ClientModel.fromJson(Map<String, dynamic> json) => _$ClientModelFromJson(json);
+  factory ClientsListResponse.fromJson(Map<String, dynamic> json) => _$ClientModelFromJson(json);
 }

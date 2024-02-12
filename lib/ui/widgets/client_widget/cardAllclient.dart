@@ -26,7 +26,7 @@ class CardAllClient extends StatelessWidget {
         children: [
           SlidableAction(
             onPressed: (actionContext) async {
-              final client = cl.ClientModel(
+              final client = cl.ClientsListResponse(
                 nameReasonReject: clientModel.NameReason_reject,
                 datePrice: clientModel.date_price,
                 dateChangeType: clientModel.dateChangetype,
@@ -81,7 +81,7 @@ class CardAllClient extends StatelessWidget {
                 userDo: clientModel.user_do,
               );
 
-              final cl.ClientModel? result = await Navigator.push(
+              final cl.ClientsListResponse? result = await Navigator.push(
                   context,
                   CupertinoPageRoute(
                     builder: (context) => ActionClientPage(client: client),

@@ -7,13 +7,13 @@ import '../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../data/models/clients_list_response.dart';
 
 @injectable
-class GetAllClientsListUseCase extends UseCase<Result<ResponseWrapper<List<ClientModel>>>, GetAllClientsListParams> {
+class GetAllClientsListUseCase extends UseCase<Result<ResponseWrapper<List<ClientsListResponse>>>, GetAllClientsListParams> {
   GetAllClientsListUseCase(this.repository);
 
   final ClientsListRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> call(GetAllClientsListParams params) {
+  Future<Result<ResponseWrapper<List<ClientsListResponse>>>> call(GetAllClientsListParams params) {
     return repository.getAllClients(params.toMap());
   }
 }

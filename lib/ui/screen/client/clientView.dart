@@ -15,6 +15,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../features/clients_list/data/models/clients_list_response.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/clients_list/presentation/pages/action_client_page.dart';
 import '../../../function_global.dart';
@@ -281,25 +282,30 @@ class _ClientViewState extends State<ClientView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Expanded(
-                              //   child: ElevatedButton(
-                              //     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-                              //     onPressed: () async {
-                              //       // final ClientModel? obj =state.currentClientModel.data;
-                              //       Navigator.push(
-                              //           context,
-                              //           CupertinoPageRoute(
-                              //             builder: (context) => ActionClientPage(client: widget.client,),
-                              //           ));
-                              //     },
-                              //     child: Text('تعديل بيانات العميل'),
-                              //   ),
-                              // ),
-                              clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
-                                  ? SizedBox(
-                                      width: 5,
-                                    )
-                                  : Container(),
+                              Expanded(
+                                child: ElevatedButton(
+                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  onPressed: () async {
+                                    final ClientsListResponse clientsListResponse = ClientsListResponse.fromJson(
+                                        state.currentClientModel.data!.toJson());
+                                    final ClientModel? obj = state.currentClientModel.data;
+                                    Navigator.push(
+                                        context,
+                                        CupertinoPageRoute(
+                                          builder: (context) => ActionClientPage(client: clientsListResponse,),
+                                        ));
+                                  },
+                                  child: Text('تعديل بيانات العميل'),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              // clientModel.typeClient == "عرض سعر" || clientModel.typeClient == "تفاوض"
+                              //     ? SizedBox(
+                              //         width: 5,
+                              //       )
+                              //     : Container(),
                               clientModel.reasonTransfer == null
                                   ? Expanded(
                                       child: ElevatedButton(

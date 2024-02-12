@@ -63,7 +63,7 @@ class _clientmarketingState extends State<clientmarketing> {
             ? FloatingActionButton(
                 backgroundColor: kMainColor,
                 onPressed: () async {
-                  final cl.ClientModel? clientModel = await Navigator.push(
+                  final cl.ClientsListResponse? clientModel = await Navigator.push(
                       context,
                       CupertinoPageRoute(
                         builder: (context) => ActionClientPage(),

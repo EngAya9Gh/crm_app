@@ -15,22 +15,22 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   ClientsListRepositoryImpl(this.datasource);
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getAllClients(Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<List<ClientsListResponse>>>> getAllClients(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getAllClientsList(body));
   }
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByRegion(Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<List<ClientsListResponse>>>> getClientsByRegion(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getClientsByRegionList(body));
   }
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsByUser(Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<List<ClientsListResponse>>>> getClientsByUser(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getClientsByUserList(body));
   }
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> getClientsWithFilter(Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<List<ClientsListResponse>>>> getClientsWithFilter(Map<String, dynamic> body) {
     return toApiResult(() => datasource.getAllClientsWithFilterList(body));
   }
 
@@ -40,12 +40,12 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<ClientModel>>> addClient(Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<ClientsListResponse>>> addClient(Map<String, dynamic> body) {
     return toApiResult(() => datasource.addClient(body));
   }
 
   @override
-  Future<Result<ResponseWrapper<ClientModel>>> editClient(Map<String, dynamic> body, Map<String, dynamic> params) {
+  Future<Result<ResponseWrapper<ClientsListResponse>>> editClient(Map<String, dynamic> body, Map<String, dynamic> params) {
     return toApiResult(() => datasource.editClient(body, params));
   }
 }

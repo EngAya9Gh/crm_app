@@ -194,7 +194,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                 },
               ),
               Expanded(
-                child: CustomPagedListView<int, ClientModel>.separated(
+                child: CustomPagedListView<int, ClientsListResponse>.separated(
                   pagingController: _clientsListBloc.state.clientsListController,
                   itemBuilder: (context, client, index) => CardClient(clientModel: client),
                   separatorBuilder: (context, index) => 10.verticalSpace,

@@ -15,7 +15,7 @@ import '../pages/action_client_page.dart';
 
 class CardClient extends StatelessWidget {
   CardClient({Key? key, required this.clientModel}) : super(key: key);
-  final ClientModel clientModel;
+  final ClientsListResponse clientModel;
 
   @override
   Widget build(BuildContext context) {

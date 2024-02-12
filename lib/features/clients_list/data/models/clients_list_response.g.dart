@@ -50,7 +50,7 @@ _$ClientModelImpl _$$ClientModelImplFromJson(Map<String, dynamic> json) =>
       userAdd: json['user_add'] as String?,
       nameAdduser: json['nameAdduser'] as String?,
       dateVisitClient: json['date_visit_Client'] as String?,
-      tag: ClientModel.tagFromJson(json['tag'] as String?),
+      tag: ClientsListResponse.tagFromJson(json['tag'] as String?),
       doneVisit: json['done_visit'] as String?,
       doneTransfer: json['done_transfer'] as String?,
       nameCity: json['name_city'] as String?,

@@ -43,7 +43,7 @@ import '../manager/clients_list_bloc.dart';
 
 class ActionClientPage extends StatefulWidget {
   const ActionClientPage({Key? key, this.client}) : super(key: key);
-  final ClientModel? client;
+  final ClientsListResponse? client;
 
   @override
   State<ActionClientPage> createState() => _ActionClientPageState();

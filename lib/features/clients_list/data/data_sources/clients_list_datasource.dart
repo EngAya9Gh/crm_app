@@ -17,7 +17,7 @@ class ClientsListDatasource {
 
   ClientsListDatasource(this._clientApi);
 
-  Future<ResponseWrapper<List<ClientModel>>> getAllClientsList(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<ClientsListResponse>>> getAllClientsList(Map<String, dynamic> body) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -28,11 +28,11 @@ class ClientsListDatasource {
         ),
       );
 
-      return ResponseWrapper<List<ClientModel>>.fromJson(
+      return ResponseWrapper<List<ClientsListResponse>>.fromJson(
         response.data,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
-            return ClientModel.fromJson(e as Map<String, dynamic>);
+            return ClientsListResponse.fromJson(e as Map<String, dynamic>);
           }));
         },
       );
@@ -41,7 +41,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<ClientModel>>> getClientsByRegionList(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<ClientsListResponse>>> getClientsByRegionList(Map<String, dynamic> body) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -52,11 +52,11 @@ class ClientsListDatasource {
         ),
       );
 
-      return ResponseWrapper<List<ClientModel>>.fromJson(
+      return ResponseWrapper<List<ClientsListResponse>>.fromJson(
         response.data,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
-            return ClientModel.fromJson(e as Map<String, dynamic>);
+            return ClientsListResponse.fromJson(e as Map<String, dynamic>);
           }));
         },
       );
@@ -65,7 +65,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<ClientModel>>> getClientsByUserList(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<ClientsListResponse>>> getClientsByUserList(Map<String, dynamic> body) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -76,11 +76,11 @@ class ClientsListDatasource {
         ),
       );
 
-      return ResponseWrapper<List<ClientModel>>.fromJson(
+      return ResponseWrapper<List<ClientsListResponse>>.fromJson(
         response.data,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
-            return ClientModel.fromJson(e as Map<String, dynamic>);
+            return ClientsListResponse.fromJson(e as Map<String, dynamic>);
           }));
         },
       );
@@ -89,7 +89,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<ClientModel>>> getAllClientsWithFilterList(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<ClientsListResponse>>> getAllClientsWithFilterList(Map<String, dynamic> body) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -100,11 +100,11 @@ class ClientsListDatasource {
         ),
       );
 
-      return ResponseWrapper<List<ClientModel>>.fromJson(
+      return ResponseWrapper<List<ClientsListResponse>>.fromJson(
         response.data,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
-            return ClientModel.fromJson(e as Map<String, dynamic>);
+            return ClientsListResponse.fromJson(e as Map<String, dynamic>);
           }));
         },
       );
@@ -132,7 +132,7 @@ class ClientsListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<ClientModel>> addClient(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<ClientsListResponse>> addClient(Map<String, dynamic> body) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -143,7 +143,7 @@ class ClientsListDatasource {
         ),
       );
 
-      final client = ClientModel.fromJson(response.data['message'][0]);
+      final client = ClientsListResponse.fromJson(response.data['message'][0]);
       return ResponseWrapper(message: client, data: client);
     }
 
@@ -151,7 +151,7 @@ class ClientsListDatasource {
   }
 
 
-  Future<ResponseWrapper<ClientModel>> editClient(Map<String, dynamic> body,Map<String, dynamic> params) async {
+  Future<ResponseWrapper<ClientsListResponse>> editClient(Map<String, dynamic> body,Map<String, dynamic> params) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -163,7 +163,7 @@ class ClientsListDatasource {
         ),
       );
 
-      final client = ClientModel.fromJson(response.data['message'][0]);
+      final client = ClientsListResponse.fromJson(response.data['message'][0]);
       return ResponseWrapper(message: client, data: client);
     }
 

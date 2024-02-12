@@ -8,13 +8,13 @@ import '../../../../model/usermodel.dart';
 import '../../data/models/clients_list_response.dart';
 
 @injectable
-class AddClientUserUsecase extends UseCase<Result<ResponseWrapper<ClientModel>>, AddClientParams> {
+class AddClientUserUsecase extends UseCase<Result<ResponseWrapper<ClientsListResponse>>, AddClientParams> {
   AddClientUserUsecase(this.repository);
 
   final ClientsListRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<ClientModel>>> call(AddClientParams params) {
+  Future<Result<ResponseWrapper<ClientsListResponse>>> call(AddClientParams params) {
     return repository.addClient(params.toMap());
   }
 }

@@ -10,13 +10,13 @@ import '../../data/models/clients_list_response.dart';
 
 @injectable
 class GetClientsWithFilterUserUsecase
-    extends UseCase<Result<ResponseWrapper<List<ClientModel>>>, GetClientsWithFilterParams> {
+    extends UseCase<Result<ResponseWrapper<List<ClientsListResponse>>>, GetClientsWithFilterParams> {
   GetClientsWithFilterUserUsecase(this.repository);
 
   final ClientsListRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> call(GetClientsWithFilterParams params) {
+  Future<Result<ResponseWrapper<List<ClientsListResponse>>>> call(GetClientsWithFilterParams params) {
     return repository.getClientsWithFilter(params.toMap());
   }
 }

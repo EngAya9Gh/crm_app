@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ClientModel _$ClientModelFromJson(Map<String, dynamic> json) {
+ClientsListResponse _$ClientModelFromJson(Map<String, dynamic> json) {
   return _ClientModel.fromJson(json);
 }
 
@@ -104,7 +104,7 @@ mixin _$ClientModel {
   String? get nameAdduser => throw _privateConstructorUsedError;
   @JsonKey(name: "date_visit_Client")
   String? get dateVisitClient => throw _privateConstructorUsedError;
-  @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson)
+  @JsonKey(name: "tag", fromJson: ClientsListResponse.tagFromJson)
   bool? get tag => throw _privateConstructorUsedError;
   @JsonKey(name: "done_visit")
   String? get doneVisit => throw _privateConstructorUsedError;
@@ -137,15 +137,15 @@ mixin _$ClientModel {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ClientModelCopyWith<ClientModel> get copyWith =>
+  $ClientModelCopyWith<ClientsListResponse> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $ClientModelCopyWith<$Res> {
   factory $ClientModelCopyWith(
-          ClientModel value, $Res Function(ClientModel) then) =
-      _$ClientModelCopyWithImpl<$Res, ClientModel>;
+          ClientsListResponse value, $Res Function(ClientsListResponse) then) =
+      _$ClientModelCopyWithImpl<$Res, ClientsListResponse>;
   @useResult
   $Res call(
       {@JsonKey(name: "id_clients") String? idClients,
@@ -190,7 +190,7 @@ abstract class $ClientModelCopyWith<$Res> {
       @JsonKey(name: "user_add") String? userAdd,
       @JsonKey(name: "nameAdduser") String? nameAdduser,
       @JsonKey(name: "date_visit_Client") String? dateVisitClient,
-      @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) bool? tag,
+      @JsonKey(name: "tag", fromJson: ClientsListResponse.tagFromJson) bool? tag,
       @JsonKey(name: "done_visit") String? doneVisit,
       @JsonKey(name: "done_transfer") String? doneTransfer,
       @JsonKey(name: "name_city") String? nameCity,
@@ -208,7 +208,7 @@ abstract class $ClientModelCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ClientModelCopyWithImpl<$Res, $Val extends ClientModel>
+class _$ClientModelCopyWithImpl<$Res, $Val extends ClientsListResponse>
     implements $ClientModelCopyWith<$Res> {
   _$ClientModelCopyWithImpl(this._value, this._then);
 
@@ -562,7 +562,7 @@ abstract class _$$ClientModelImplCopyWith<$Res>
       @JsonKey(name: "user_add") String? userAdd,
       @JsonKey(name: "nameAdduser") String? nameAdduser,
       @JsonKey(name: "date_visit_Client") String? dateVisitClient,
-      @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) bool? tag,
+      @JsonKey(name: "tag", fromJson: ClientsListResponse.tagFromJson) bool? tag,
       @JsonKey(name: "done_visit") String? doneVisit,
       @JsonKey(name: "done_transfer") String? doneTransfer,
       @JsonKey(name: "name_city") String? nameCity,
@@ -927,7 +927,7 @@ class _$ClientModelImpl extends _ClientModel {
       @JsonKey(name: "user_add") this.userAdd,
       @JsonKey(name: "nameAdduser") this.nameAdduser,
       @JsonKey(name: "date_visit_Client") this.dateVisitClient,
-      @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) this.tag,
+      @JsonKey(name: "tag", fromJson: ClientsListResponse.tagFromJson) this.tag,
       @JsonKey(name: "done_visit") this.doneVisit,
       @JsonKey(name: "done_transfer") this.doneTransfer,
       @JsonKey(name: "name_city") this.nameCity,
@@ -1074,7 +1074,7 @@ class _$ClientModelImpl extends _ClientModel {
   @JsonKey(name: "date_visit_Client")
   final String? dateVisitClient;
   @override
-  @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson)
+  @JsonKey(name: "tag", fromJson: ClientsListResponse.tagFromJson)
   final bool? tag;
   @override
   @JsonKey(name: "done_visit")
@@ -1307,7 +1307,7 @@ class _$ClientModelImpl extends _ClientModel {
   }
 }
 
-abstract class _ClientModel extends ClientModel {
+abstract class _ClientModel extends ClientsListResponse {
   const factory _ClientModel(
       {@JsonKey(name: "id_clients") final String? idClients,
       @JsonKey(name: "name_client") final String? nameClient,
@@ -1352,7 +1352,7 @@ abstract class _ClientModel extends ClientModel {
       @JsonKey(name: "user_add") final String? userAdd,
       @JsonKey(name: "nameAdduser") final String? nameAdduser,
       @JsonKey(name: "date_visit_Client") final String? dateVisitClient,
-      @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) final bool? tag,
+      @JsonKey(name: "tag", fromJson: ClientsListResponse.tagFromJson) final bool? tag,
       @JsonKey(name: "done_visit") final String? doneVisit,
       @JsonKey(name: "done_transfer") final String? doneTransfer,
       @JsonKey(name: "name_city") final String? nameCity,
@@ -1500,7 +1500,7 @@ abstract class _ClientModel extends ClientModel {
   @JsonKey(name: "date_visit_Client")
   String? get dateVisitClient;
   @override
-  @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson)
+  @JsonKey(name: "tag", fromJson: ClientsListResponse.tagFromJson)
   bool? get tag;
   @override
   @JsonKey(name: "done_visit")

@@ -60,7 +60,7 @@ class GetRecommendedClientsEvent extends ClientsListEvent {
 class AddClientEvent extends ClientsListEvent {
   final AddClientParams addClientParams;
 
-  final ValueChanged<ClientModel>? onSuccess;
+  final ValueChanged<ClientsListResponse>? onSuccess;
 
   AddClientEvent(this.addClientParams, {this.onSuccess});
 
@@ -70,7 +70,7 @@ class AddClientEvent extends ClientsListEvent {
 
 class EditClientEvent extends ClientsListEvent {
   final EditClientParams editClientParams;
-  final ValueChanged<ClientModel>? onSuccess;
+  final ValueChanged<ClientsListResponse>? onSuccess;
 
   EditClientEvent(this.editClientParams, {this.onSuccess});
 
