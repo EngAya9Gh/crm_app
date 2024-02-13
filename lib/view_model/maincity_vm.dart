@@ -11,6 +11,7 @@ class MainCityProvider extends ChangeNotifier {
   List<MainCityModel> listmaincityfilter = [];
   List<MainCityModel> listCurrentUserMainCityFilter = [];
   List<CityModel> listcity = [];
+  List<CityModel> filteredCitiesList = [];
 
   late String? selectedValuemanag = null;
 
@@ -24,6 +25,7 @@ class MainCityProvider extends ChangeNotifier {
   void changeitemlist(List<MainCityModel> s, {bool isInit = false}) {
     selecteditemmaincity = s;
     if (!isInit) notifyListeners();
+    filterCitiesByMainCity(selectedMainCities: s);
   }
 
   filterMainCityByCurrentUserMainCityList(UserModel user) {
@@ -165,7 +167,7 @@ class MainCityProvider extends ChangeNotifier {
     if (listcity.isEmpty) {
       List<dynamic> data = [];
       data = await Api().get(url: url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
-      
+
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));
@@ -175,5 +177,32 @@ class MainCityProvider extends ChangeNotifier {
       onSuccess?.call();
       notifyListeners();
     }
+  }
+
+  filterCitiesByMainCity({required List<MainCityModel> selectedMainCities}) {
+    filteredCitiesList = listcity.where((city) {
+      return selectedMainCities.any((mainCity) => mainCity.id_maincity == city.fk_maincity);
+    }).toList();
+
+    filteredCitiesList.forEach((element) {
+      print(element.name_city);
+    });
+
+
+    notifyListeners();
+  }
+
+  // fetch cities by main city
+  Future<List<CityModel>> fetchCitiesByMainCity() async {
+    List<CityModel> cities = [];
+    final List<String> selectedMainCitiesIds = listCurrentUserMainCityFilter.map((e) => e.id_maincity).toList();
+    final response = await Api().post(
+      url: "http://test.smartcrm.ws/api/getCitiesFromMainCitiesIds",
+      body: {"mainCitiesIds": selectedMainCitiesIds.toString()},
+    );
+
+    print("response: $response");
+
+    return cities;
   }
 }

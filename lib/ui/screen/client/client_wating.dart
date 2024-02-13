@@ -82,6 +82,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         // privilge.checkprivlge('1') == true ? //regoin
+                        // region
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8.0, right: 8),
@@ -114,10 +115,27 @@ class _ClientWaitingState extends State<ClientWaiting> {
                             ),
                           ),
                         ),
+                        // cities
+                        InkWell(
+                            onTap: () {
 
-                        ///regoin
+                              context.read<MainCityProvider>().fetchCitiesByMainCity();
+
+                              context.read<MainCityProvider>().listCurrentUserMainCityFilter.forEach((element) {
+                                print("listCurrentUserMainCityFilter = ${element.namemaincity}");
+                              });
+
+
+                              // context.read<MainCityProvider>().listcity.forEach((element) {
+                              //   print("city = ${element.name_city}");
+                              // });
+                              // context.read<MainCityProvider>().listmaincity.forEach((element) {
+                              //   print("main city  = ${element.namemaincity}");
+                              // });
+                            },
+                            child: Text("number of cities = ${context.watch<MainCityProvider>().filteredCitiesList.length}")),
+                        // state
                         Expanded(
-                          //state
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20.0, right: 8),
                             child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
