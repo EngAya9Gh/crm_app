@@ -68,9 +68,9 @@ class CityModel {
 
   factory CityModel.fromJson(Map<String, dynamic> json) {
     return CityModel(
-      id_city: json["id_city"],
+      id_city: json["id_city"].toString(),
       name_city: json["name_city"],
-      fk_maincity: json["fk_maincity"],
+      fk_maincity: json["fk_maincity"].toString(),
     );
   }
 

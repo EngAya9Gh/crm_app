@@ -36,6 +36,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
     user = context.read<UserProvider>().currentUser;
     context.read<MainCityProvider>().filterMainCityByCurrentUserMainCityList(user);
     selecteditemmaincity = context.read<MainCityProvider>().selecteditemmaincity;
+    context.read<MainCityProvider>().getCitiesFromMainCitiesIds();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<invoice_vm>(context, listen: false).listInvoicesAccept = [];
@@ -90,7 +91,6 @@ class _ClientWaitingState extends State<ClientWaiting> {
                               builder: (context, cart, child) {
                                 return DropdownSearch<MainCityModel>.multiSelection(
                                   mode: Mode.DIALOG,
-                                  filterFn: (user, filter) => user!.getfilteruser(filter!),
                                   compareFn: (item, selectedItem) => item?.id_maincity == selectedItem?.id_maincity,
                                   items: cart.listCurrentUserMainCityFilter,
                                   showSelectedItems: true,
@@ -115,25 +115,6 @@ class _ClientWaitingState extends State<ClientWaiting> {
                             ),
                           ),
                         ),
-                        // cities
-                        InkWell(
-                            onTap: () {
-
-                              context.read<MainCityProvider>().fetchCitiesByMainCity();
-
-                              context.read<MainCityProvider>().listCurrentUserMainCityFilter.forEach((element) {
-                                print("listCurrentUserMainCityFilter = ${element.namemaincity}");
-                              });
-
-
-                              // context.read<MainCityProvider>().listcity.forEach((element) {
-                              //   print("city = ${element.name_city}");
-                              // });
-                              // context.read<MainCityProvider>().listmaincity.forEach((element) {
-                              //   print("main city  = ${element.namemaincity}");
-                              // });
-                            },
-                            child: Text("number of cities = ${context.watch<MainCityProvider>().filteredCitiesList.length}")),
                         // state
                         Expanded(
                           child: Padding(
@@ -159,6 +140,37 @@ class _ClientWaitingState extends State<ClientWaiting> {
                           ),
                         ), //الحالة
                       ],
+                    ),
+                    SizedBox(height: 10),
+                    // filtered cities
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0, right: 8),
+                      child: Consumer<MainCityProvider>(
+                        builder: (context, cart, child) {
+                          return DropdownSearch<CityModel>.multiSelection(
+                            mode: Mode.DIALOG,
+                            compareFn: (item, selectedItem) => item?.id_city == selectedItem?.id_city,
+                            items: cart.filteredCitiesList,
+                            // showSelectedItems: true,
+                            selectedItems: cart.filteredCitiesList,
+                            itemAsString: (u) => u!.userAsString(),
+                            onChanged: (data) {
+                              // selecteditemmaincity = data;
+                              // cart.changeitemlist(data);
+                              filtershow();
+                            },
+                            showSearchBox: true,
+                            dropdownSearchDecoration: InputDecoration(
+                              isCollapsed: true,
+                              hintText: 'المنطقة',
+                              alignLabelWithHint: true,
+                              fillColor: Colors.grey.withOpacity(0.2),
+                              contentPadding: EdgeInsets.all(0),
+                              border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     search_widget('waitsupport', hintnamefilter, ''),
                     Padding(
