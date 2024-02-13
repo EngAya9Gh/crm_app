@@ -18,7 +18,7 @@ class ParticipateCommenttCard extends StatelessWidget {
   final  ParticipateCommentModel comment;
   @override
   Widget build(BuildContext context) {
-    print("image  ${comment.imgImage!=''? urlimage+ comment.imgImage.toString():''}");
+    
     return   Padding(
         padding: EdgeInsets.all(2),
         child:  Row(

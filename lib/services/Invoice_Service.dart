@@ -145,15 +145,16 @@ class Invoice_Service {
     required String date_client_visit,
     required String fk_user,
     required String fk_client,
+    required String type_date,
   }) async {
     var result = await Api().post(url: url + "client/invoice/add_date_install.php", body: {
       'date_client_visit': date_client_visit,
       'fk_user': fk_user,
       'is_done': '0',
       'fk_invoice': id_invoice,
-      'fk_client': fk_client.toString()
+      'fk_client': fk_client.toString(),
+      'type_date': type_date.toString(),
     });
-
     return result;
   }
 

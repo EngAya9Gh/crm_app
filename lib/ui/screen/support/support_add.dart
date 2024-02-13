@@ -58,6 +58,15 @@ class _support_addState extends State<support_add> {
 
   late EventProvider _eventProvider;
 
+ List<String> list_installation_type = [
+    'ميداني',
+    'اون لاين',
+  ];
+  late String? selectInstallationType ;
+    String? Value_installation_type=null ;
+  //   void changeInstallationvalue(String? s) {
+   
+  // }
   @override
   void dispose() {
     _textsupport.dispose();
@@ -81,7 +90,7 @@ class _support_addState extends State<support_add> {
 
       //  Provider.of<typeclient>(context,listen: false).getreasons('ticket');
     });
-
+    selectInstallationType=null;
     super.initState();
   }
 
@@ -212,9 +221,34 @@ class _support_addState extends State<support_add> {
                         ],
                       ),
                       SizedBox(height: 10),
+                      RowEdit(name: "نوع التركيب", des: '*'),
+                      DropdownButton<String>(
+                                isExpanded: true,
+                                hint: Text('نوع التركيب'),
+                                items: list_installation_type.map((level_one) {
+                                  return DropdownMenuItem(
+                                    child: Text(level_one),
+                                    value: level_one,
+                                  );
+                                }).toList(),
+                                value: selectInstallationType==null?null: selectInstallationType,
+                                onChanged: (value) {
+                                   setState(() {
+                                      selectInstallationType = value.toString();
+                                      Value_installation_type = value.toString();
+                                    });
+                                     Provider.of<datetime_vm>(context, listen: false).notifyListeners();
+                                },
+                              ),
+                      
+                      SizedBox(height: 10),
                       CustomButton(
                         text: "حفظ",
                         onTap: () async {
+                          if(Value_installation_type==null||Value_installation_type!.isEmpty){
+                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('من فضلك اختر نوع التركيب ')));
+                          return;
+                          }
                           DateTime datetask = DateTime(_currentDate.year, _currentDate.month, _currentDate.day,
                               selectedTime.hour, selectedTime.minute);
                           if (_globalKey.currentState!.validate()) {
@@ -232,6 +266,7 @@ class _support_addState extends State<support_add> {
                               fk_client: widget.idClient!,
                               fk_user: idUser!,
                               date_client_visit: datetask.toString(),
+                              type_date:Value_installation_type!,
                               onSuccess: (value) {
                                 DateTime temp = datetask.hour >= 21 ? datetask.subtract(Duration(hours: 3)) : datetask;
 
@@ -1063,7 +1098,8 @@ class _support_addState extends State<support_add> {
     selectedTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-
+    selectInstallationType =null;
+    Value_installation_type =null;
     // setState(() {
     //  });
   }

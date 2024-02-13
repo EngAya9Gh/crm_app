@@ -183,38 +183,128 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                 ? Colors.green.withOpacity(0.15)
                                 : Colors.indigo.withOpacity(0.15),
                           ),
-                          child: ListTile(
-                            title: Text('${value[index].title}',
+                          child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0), // Match ListTile padding
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${value[index].title}',
                                 style: Theme.of(context).textTheme.titleMedium?.copyWith(fontFamily: kfontfamily2)),
-                            subtitle: Text(
-                                '${intl.DateFormat("hh:mm a").format(value[index].from)}'
+                Text('${intl.DateFormat("hh:mm a").format(value[index].from)}'
                                 ' - '
                                 '${intl.DateFormat("hh:mm a").format(value[index].to)}',
                                 textDirection: TextDirection.ltr,
                                 textAlign: TextAlign.end,
                                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: kfontfamily2)),
-                            trailing: (value[index].isDone ?? false)
-                                ? SizedBox()
-                                : TextButton(
-                                    child: Text("تمت الزيارة",
-                                        style: context.textTheme.labelLarge?.copyWith(
-                                            color: context.theme.primaryColor,
-                                            fontFamily: kfontfamily2,
-                                            fontWeight: FontWeight.w600)),
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                          builder: (context) => ProfileClient(
-                                            idClient: value[index].fkIdClient,
-                                            event: value[index],
-                                            tabIndex: 2,
-                                          ),
-                                        ),
-                                      );
-                                    },
+
+                             ],
+            ),
+          ),       
+                 const SizedBox(width: 16), 
+                 (value[index].isDone ?? false)?SizedBox():
+                   SizedBox(width: 100, 
+                   child: Column(children: [
+                            InkWell(
+                              
+                              child: Text("تمت الزيارة",
+                                  style: context.textTheme.labelLarge?.copyWith(
+                                      color: context.theme.primaryColor,
+                                      fontFamily: kfontfamily2,
+                                      fontWeight: FontWeight.w600)),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                    builder: (context) => ProfileClient(
+                                      idClient: value[index].fkIdClient,
+                                      event: value[index],
+                                      tabIndex: 2,
+                                    ),
                                   ),
-                          ),
+                                );
+                              },
+                              ),
+                              const SizedBox(height: 4),
+                              InkWell(
+                               child: Text("إعادة جدولة",
+                                   style: context.textTheme.labelLarge?.copyWith(
+                                       color: context.theme.primaryColor,
+                                       fontFamily: kfontfamily2,
+                                       fontWeight: FontWeight.w600)),
+                               onTap: () {
+                                 Navigator.push(
+                                   context,
+                                   CupertinoPageRoute(
+                                     builder: (context) => ProfileClient(
+                                       idClient: value[index].fkIdClient,
+                                       event: value[index],
+                                       tabIndex: 2,
+                                     ),
+                                   ),
+                                 );
+                               },
+                             ),
+                              const SizedBox(height: 4),
+                              InkWell(
+                               child: Text("إلغاء",
+                                   style: context.textTheme.labelLarge?.copyWith(
+                                       color: context.theme.primaryColor,
+                                       fontFamily: kfontfamily2,
+                                       fontWeight: FontWeight.w600)),
+                               onTap: () {
+                                 Navigator.push(
+                                   context,
+                                   CupertinoPageRoute(
+                                     builder: (context) => ProfileClient(
+                                       idClient: value[index].fkIdClient,
+                                       event: value[index],
+                                       tabIndex: 2,
+                                     ),
+                                   ),
+                                 );
+                               },
+                             ),
+
+                   ],))
+          
+        ]))
+                          
+                          // ListTile(
+                          //   title: Text('${value[index].title}',
+                          //       style: Theme.of(context).textTheme.titleMedium?.copyWith(fontFamily: kfontfamily2)),
+                          //   subtitle: Text(
+                          //       '${intl.DateFormat("hh:mm a").format(value[index].from)}'
+                          //       ' - '
+                          //       '${intl.DateFormat("hh:mm a").format(value[index].to)}',
+                          //       textDirection: TextDirection.ltr,
+                          //       textAlign: TextAlign.end,
+                          //       style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: kfontfamily2)),
+                          //   trailing: (value[index].isDone ?? false)
+                          //       ? SizedBox()
+                          //       : TextButton(
+                          //           child: Text("تمت الزيارة",
+                          //               style: context.textTheme.labelLarge?.copyWith(
+                          //                   color: context.theme.primaryColor,
+                          //                   fontFamily: kfontfamily2,
+                          //                   fontWeight: FontWeight.w600)),
+                          //           onPressed: () {
+                          //             Navigator.push(
+                          //               context,
+                          //               CupertinoPageRoute(
+                          //                 builder: (context) => ProfileClient(
+                          //                   idClient: value[index].fkIdClient,
+                          //                   event: value[index],
+                          //                   tabIndex: 2,
+                          //                 ),
+                          //               ),
+                          //             );
+                          //           },
+                          //         ),
+                          // ),
+                        
                         ),
                       );
                     },
