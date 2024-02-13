@@ -43,7 +43,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
       Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_install('الكل');
       typeclientvalue = 'الكل';
       // Provider.of<ClientProvider>(context, listen: false).getallclientAccept();
-      Provider.of<invoice_vm>(context, listen: false).getfilter_maincity(selecteditemmaincity, typeclientvalue);
+      Provider.of<invoice_vm>(context, listen: false).filterInvoices(listSelectedMainCity: selecteditemmaincity, state: typeclientvalue);
     });
 
     super.initState();
@@ -155,8 +155,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                             selectedItems: cart.filteredCitiesList,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
-                              // selecteditemmaincity = data;
-                              // cart.changeitemlist(data);
+                              context.read<MainCityProvider>().selectedCities = data;
                               filtershow();
                             },
                             showSearchBox: true,
@@ -261,7 +260,9 @@ class _ClientWaitingState extends State<ClientWaiting> {
       selecteditemmaincity = user.maincitylist_user?.map((e) => e.asMainCity).toList() ?? [];
     }
 
-    Provider.of<invoice_vm>(context, listen: false).getfilter_maincity(selecteditemmaincity, typeclientvalue);
+    final List<CityModel> cities = context.read<MainCityProvider>().selectedCities;
+      context.read<invoice_vm>().filterInvoices(listSelectedMainCity: selecteditemmaincity, state: typeclientvalue, selectedCities: cities);
+    // Provider.of<invoice_vm>(context, listen: false).getfilter_maincity(selecteditemmaincity, typeclientvalue);
 
     //.getclienttype_filter(typeclientvalue,regoin,'only');
 
