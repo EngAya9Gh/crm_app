@@ -10,7 +10,7 @@ class Event {
   final bool isAllDay;
   final String? fkIdClient;
   final String? idinvoice;
-  final bool? isDone;
+  final String? isDone;
   final String? idClientsDate;
 
   const Event({
@@ -28,7 +28,7 @@ class Event {
 
   @override
   String toString() {
-    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice}';
+    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone}';
   }
 
   Event copyWith({
@@ -40,7 +40,7 @@ class Event {
     bool? isAllDay,
     String? fkIdClient,
     String? idinvoice,
-    bool? isDone,
+    String? isDone,
     String? idClientsDate,
   }) {
     return Event(

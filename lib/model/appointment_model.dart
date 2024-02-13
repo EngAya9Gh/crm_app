@@ -6,7 +6,7 @@ class AppointmentModel {
   final DateTime? dateClientVisit;
   final DateTime? from;
   final DateTime? to;
-  final bool? isDone;
+  final String? isDone;
   final String? fkClient;
   final String? fkInvoice;
   final String? nameEnterprise;
@@ -28,7 +28,7 @@ class AppointmentModel {
       idClientsDate: map['idclients_date'],
       fkUser: map['fk_user'],
       dateClientVisit: DateTime.tryParse(map['date_client_visit']),
-      isDone: map['is_done'] == '1',
+      isDone: map['is_done'] ,
       fkClient: map['fk_client'],
       fkInvoice: map['fk_invoice'],
       nameEnterprise: map['name_enterprise'],

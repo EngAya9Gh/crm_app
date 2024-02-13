@@ -157,6 +157,31 @@ class Invoice_Service {
     });
     return result;
   }
+  Future<dynamic> editScheduleInstallation({
+    required String scheduleId,
+    required String dateClientVisit,
+   required String processReason,
+    required String typeSchedule,
+  }) async {
+    print("URL::$url_laravel + rescheduleOrCancelVisitClient/+$scheduleId");
+    var result = await Api().post(url: url_laravel + "rescheduleOrCancelVisitClient/"+scheduleId, body: {
+      'typeProcess': 'reschedule',
+      'date_client_visit': dateClientVisit,
+      'processReason':processReason,
+      'type_date': typeSchedule.toString(),
+    });
+    print("URL result::$result");
+    return result;
+  }
+
+   Future<dynamic> cancelScheduleInstallation({
+    required String scheduleId,
+  }) async {
+    var result = await Api().post(url: url_laravel + "rescheduleOrCancelVisitClient/"+scheduleId, body: {
+      'typeProcess': 'cancel'
+    });
+    return result;
+  }
 
   Future<InvoiceModel> setdatedone(Map<String, dynamic> body, String id_invoice) async {
     var result = await Api().post(url: url + "client/invoice/setdateinstall.php?id_invoice=$id_invoice", body: body);
