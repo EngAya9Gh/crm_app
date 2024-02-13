@@ -366,6 +366,17 @@ class EventProvider extends ChangeNotifier {
   void editEvent(Event newEvent, Event oldEvent) {
     final index = _events.indexOf(oldEvent);
     _events[index] = newEvent;
+
+     final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+      events,
+      key: (item) => (item as Event).from,
+      value: (item) => events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+    );
+
+    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    )..addAll(mapEvents);
     notifyListeners();
   }
 
@@ -388,7 +399,7 @@ class EventProvider extends ChangeNotifier {
         onFailure();
         return;
       }
-      list[index] = list[index].copyWith(isDone: true);
+      list[index] = list[index].copyWith(isDone: "1");
       eventDataSource[event.from] = list;
       notifyListeners();
       onSuccess();
@@ -413,7 +424,7 @@ class EventProvider extends ChangeNotifier {
 
     notifyListeners();
   }
-
+  
   checkAndActionEvent(Event event) {
     if (events.any((element) => element.fkIdClient == event.fkIdClient)) {
       _events = _events.map((e) => e.fkIdClient == event.fkIdClient ? event : e).toList();

@@ -176,9 +176,14 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
                           decoration: BoxDecoration(
                             border: Border.all(width: 0.5),
                             borderRadius: BorderRadius.circular(12.0),
-                            color: (value[index].isDone ?? false)
-                                ? Colors.green.withOpacity(0.15)
-                                : Colors.indigo.withOpacity(0.15),
+                            // color: (value[index].isDone ?? false)
+                            //     ? Colors.green.withOpacity(0.15)
+                            //     : Colors.indigo.withOpacity(0.15),
+                            color: (value[index].isDone =="1")? Colors.green.withOpacity(0.15) :
+                                   (value[index].isDone =="0")? Colors.indigo.withOpacity(0.15):
+                                   (value[index].isDone =="2")?Colors.red.withOpacity(0.15):
+                                   (value[index].isDone =="3")?Colors.blue.withOpacity(0.15):
+                                   Colors.grey.withOpacity(0.15),
                           ),
                           child: ListTile(
                             onTap: () {

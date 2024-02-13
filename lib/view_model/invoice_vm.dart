@@ -1313,7 +1313,7 @@ class invoice_vm extends ChangeNotifier {
       date_client_visit: date_client_visit,
       fk_user: fk_user,
       fk_client: fk_client,
-      type_date: fk_client,
+      type_date: type_date,
     );
 
     onSuccess.call(data);
@@ -1327,6 +1327,42 @@ class invoice_vm extends ChangeNotifier {
     // listinvoices[index]= InvoiceModel.fromJson(body);
     // //listClient.removeAt(index);
     isloadingdone = false;
+    notifyListeners();
+  }
+
+   Future<void> editSchedule_vm({
+    required String scheduleId,
+    required String dateClientVisit,
+    required String processReason,
+    required String typeDate,
+    required ValueChanged<String> onSuccess,
+  }) async {
+    isloadingRescheduleOrCancel = true;
+    notifyListeners();
+ 
+    final data = await Invoice_Service().editScheduleInstallation(
+      scheduleId: scheduleId,
+      dateClientVisit: dateClientVisit,
+      typeSchedule: typeDate,
+      processReason: processReason
+    );
+
+    onSuccess.call(data);
+    isloadingRescheduleOrCancel = false;
+    notifyListeners();
+  }
+
+  Future<void> cancelSchedule_vm({
+    required String scheduleId,
+   required ValueChanged<String> onSuccess,
+  }) async {
+    isloadingRescheduleOrCancel = true;
+    notifyListeners();
+    final data = await Invoice_Service().cancelScheduleInstallation(
+      scheduleId: scheduleId 
+    );
+   onSuccess.call(data);
+    isloadingRescheduleOrCancel = false;
     notifyListeners();
   }
 
@@ -1385,6 +1421,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   bool isloadingdone = false;
+  bool isloadingRescheduleOrCancel = false;
 
   Future<bool> setdatedone_vm(Map<String, dynamic?> body, String? id_invoice) async {
     try {

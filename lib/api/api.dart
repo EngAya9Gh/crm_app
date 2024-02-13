@@ -86,7 +86,7 @@ import 'package:shared_preferences/shared_preferences.dart';
     // int length=result.length;
     // result=result.substring(idx,idxEnd+1);//set approve is run but set don date not run
 
-    if (json.decode(result)["code"] == "200") {
+    if (json.decode(result)["code"].toString() == "200") {
       return jsonDecode(result)["message"];
     } else {
       throw Exception('${json.decode(result)["message"]}');
