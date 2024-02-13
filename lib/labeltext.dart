@@ -41,7 +41,7 @@ const String label_clienttype='حالة العميل';
 const String label_clientnameuser='اسم الموظف';
 const String label_clientadd='إضافة العميل';
 
-const String label_empty='Value is Empty';
+const String label_empty='هذا الحقل مطلوب';
 /////////////////////////////////////////
 
 const String label_amount_paid='المبلغ المدفوع';
