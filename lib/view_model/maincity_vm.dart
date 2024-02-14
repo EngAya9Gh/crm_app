@@ -1,8 +1,9 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
-import 'package:crm_smart/model/managmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 
 import '../constants.dart';
 
@@ -11,6 +12,8 @@ class MainCityProvider extends ChangeNotifier {
   List<MainCityModel> listmaincityfilter = [];
   List<MainCityModel> listCurrentUserMainCityFilter = [];
   List<CityModel> listcity = [];
+  List<CityModel> filteredCitiesList = [];
+  List<CityModel> selectedCities = [];
 
   late String? selectedValuemanag = null;
 
@@ -19,19 +22,27 @@ class MainCityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  late List<MainCityModel> selecteditemmaincity = [];
+  late List<MainCityModel> selectedRegions = [];
 
-  void changeitemlist(List<MainCityModel> s, {bool isInit = false}) {
-    selecteditemmaincity = s;
+  Future<void> changeitemlist(List<MainCityModel> s,
+      {bool isInit = false}) async {
+    selectedRegions = s;
+    isloading = true;
+    if (!isInit) notifyListeners();
+    await getCitiesFromRegions();
+    isloading = false;
     if (!isInit) notifyListeners();
   }
 
   filterMainCityByCurrentUserMainCityList(UserModel user) {
     final list = List.of(listmaincity);
-    final listMainCityUser = user.maincitylist_user?.map((e) => e.fk_maincity!).toList() ?? [];
+    final listMainCityUser =
+        user.maincitylist_user?.map((e) => e.fk_maincity!).toList() ?? [];
 
-    listCurrentUserMainCityFilter = list.where((element) => listMainCityUser.contains(element.id_maincity)).toList();
-    selecteditemmaincity = listCurrentUserMainCityFilter;
+    listCurrentUserMainCityFilter = list
+        .where((element) => listMainCityUser.contains(element.id_maincity))
+        .toList();
+    selectedRegions = listCurrentUserMainCityFilter;
   }
 
   UserModel? usercurrent;
@@ -48,14 +59,20 @@ class MainCityProvider extends ChangeNotifier {
     notifyListeners();
     if (listmaincity.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'config/getmaincity.php?fk_country=${usercurrent!.fkCountry}');
+      data = await Api().get(
+          url: url +
+              'config/getmaincity.php?fk_country=${usercurrent!.fkCountry}');
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listmaincity.add(MainCityModel.fromJson(data[i]));
         }
       }
-      listmaincityfilter = List.from(listmaincity); // [...listregoin];listregoin.tolist();
-      listmaincityfilter.insert(0, MainCityModel(id_maincity: '0', namemaincity: 'الكل', fk_country: ''));
+      listmaincityfilter =
+          List.from(listmaincity); // [...listregoin];listregoin.tolist();
+      listmaincityfilter.insert(
+          0,
+          MainCityModel(
+              id_maincity: '0', namemaincity: 'الكل', fk_country: ''));
       listCurrentUserMainCityFilter = List.from(listmaincity);
 
       selectedValuemanag = '1';
@@ -63,7 +80,7 @@ class MainCityProvider extends ChangeNotifier {
     }
 
     if (regions != null) {
-      selecteditemmaincity = regions.map((e) => e.asMainCity).toList();
+      selectedRegions = regions.map((e) => e.asMainCity).toList();
       notifyListeners();
     }
   }
@@ -88,22 +105,27 @@ class MainCityProvider extends ChangeNotifier {
     return res;
   }
 
-  Future<String> update_maincity(Map<String, dynamic?> body, String id_maincity) async {
+  Future<String> update_maincity(
+      Map<String, dynamic?> body, String id_maincity) async {
     //name_mange
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url + 'config/update_maincity.php?id_maincity=${id_maincity}', //users/addmangemt.php
+        url: url +
+            'config/update_maincity.php?id_maincity=${id_maincity}', //users/addmangemt.php
         body: body);
     body.addAll({
       'id_maincity': id_maincity,
     });
-    final index = listmaincity.indexWhere((element) => element.id_maincity == id_maincity);
-    final indexListCurrentUser =
-        listCurrentUserMainCityFilter.indexWhere((element) => element.id_maincity == id_maincity);
+    final index = listmaincity
+        .indexWhere((element) => element.id_maincity == id_maincity);
+    final indexListCurrentUser = listCurrentUserMainCityFilter
+        .indexWhere((element) => element.id_maincity == id_maincity);
     listmaincity[index] = MainCityModel.fromJson(body);
 
-    if (indexListCurrentUser != -1) listCurrentUserMainCityFilter[indexListCurrentUser] = MainCityModel.fromJson(body);
+    if (indexListCurrentUser != -1)
+      listCurrentUserMainCityFilter[indexListCurrentUser] =
+          MainCityModel.fromJson(body);
     isloading = false;
     notifyListeners();
 
@@ -132,7 +154,8 @@ class MainCityProvider extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url + 'config/updatecity.php?id_city=${id_city}', //users/addmangemt.php
+        url: url +
+            'config/updatecity.php?id_city=${id_city}', //users/addmangemt.php
         body: body);
     final index = listcity.indexWhere((element) => element.id_city == id_city);
     listcity[index] = CityModel.fromJson(body);
@@ -146,8 +169,9 @@ class MainCityProvider extends ChangeNotifier {
     listcity = [];
     if (listcity.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'config/getcity.php?fk_maincity=${fkmain}');
-      
+      data = await Api()
+          .get(url: url + 'config/getcity.php?fk_maincity=${fkmain}');
+
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));
@@ -164,8 +188,9 @@ class MainCityProvider extends ChangeNotifier {
     notifyListeners();
     if (listcity.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
-      
+      data = await Api().get(
+          url: url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
+
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listcity.add(CityModel.fromJson(data[i]));
@@ -175,5 +200,33 @@ class MainCityProvider extends ChangeNotifier {
       onSuccess?.call();
       notifyListeners();
     }
+  }
+
+  Future<void> getCitiesFromRegions() async {
+    final List<String> regionsIds = _getAllRegionsIds();
+    final Response response = await _fetchCitiesFromApi(regionsIds);
+    filteredCitiesList = _filterCities(response.data["data"]);
+    selectedCities = filteredCitiesList;
+    print("length => ${filteredCitiesList.length}");
+    notifyListeners();
+  }
+
+  List<String> _getAllRegionsIds() {
+    return selectedRegions.map((e) => e.id_maincity).toList();
+  }
+
+  Future<Response<dynamic>> _fetchCitiesFromApi(
+      List<String> mainCitiesIds) async {
+    return await GetIt.I<Dio>().post(
+      'http://test.smartcrm.ws/api/getCitiesFromMainCitiesIds',
+      // todo: cooperate with backend to remove cities magic numbers
+      data: {'mainCitiesIds': mainCitiesIds.toString()}, // 1 is the "All" city
+    );
+  }
+
+  List<CityModel> _filterCities(List<dynamic> citiesData) {
+    return List<CityModel>.from(citiesData.map((cityData) {
+      return CityModel.fromJson(cityData);
+    }));
   }
 }

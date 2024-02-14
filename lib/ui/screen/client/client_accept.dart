@@ -40,8 +40,9 @@ class _ClientAcceptState extends State<ClientAccept> {
 
       //  Provider.of<client_vm>(context,listen: false)
       //     .getallclientAccept();
-      Provider.of<ClientProvider>(context, listen: false)
-          .getfilterviewSupport(Provider.of<MainCityProvider>(context, listen: false).selecteditemmaincity);
+      Provider.of<ClientProvider>(context, listen: false).getfilterviewSupport(
+          Provider.of<MainCityProvider>(context, listen: false)
+              .selectedRegions);
     });
 
     super.initState();
@@ -84,18 +85,21 @@ class _ClientAcceptState extends State<ClientAccept> {
                           padding: const EdgeInsets.all(8.0),
                           child: Consumer<MainCityProvider>(
                             builder: (context, cart, child) {
-                              return DropdownSearch<MainCityModel>.multiSelection(
+                              return DropdownSearch<
+                                  MainCityModel>.multiSelection(
                                 showFavoriteItems: true,
                                 mode: Mode.DIALOG,
-                                filterFn: (user, filter) => user!.getfilteruser(filter!),
-                                compareFn: (item, selectedItem) => item?.id_maincity == selectedItem?.id_maincity,
+                                filterFn: (user, filter) =>
+                                    user!.getfilteruser(filter!),
+                                compareFn: (item, selectedItem) =>
+                                    item?.id_maincity ==
+                                    selectedItem?.id_maincity,
                                 // itemAsString: (UserModel u) => u.userAsStringByName(),
                                 items: cart.listmaincityfilter,
                                 // showSelectedItems: true,
-                                selectedItems: cart.selecteditemmaincity,
+                                selectedItems: cart.selectedRegions,
                                 itemAsString: (u) => u!.userAsString(),
                                 onChanged: (data) {
-
                                   selecteditemmaincity = data;
                                   cart.changeitemlist(data);
                                   filtershow();
@@ -114,7 +118,9 @@ class _ClientAcceptState extends State<ClientAccept> {
                                   // focusedBorder: OutlineInputBorder(
                                   //     borderRadius: BorderRadius.circular(10),
                                   //     borderSide: const BorderSide(color: Colors.white)),
-                                  border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                  border: UnderlineInputBorder(
+                                      borderSide:
+                                          const BorderSide(color: Colors.grey)),
                                   // OutlineInputBorder(
                                   //     borderRadius: BorderRadius.circular(10),
                                   //     borderSide: const BorderSide( color: Colors.white)),
@@ -135,7 +141,8 @@ class _ClientAcceptState extends State<ClientAccept> {
                         )),
                     height: 50,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                      padding: const EdgeInsets.only(
+                          top: 2, left: 8, right: 8, bottom: 2),
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.grey.withOpacity(0.2),
@@ -164,14 +171,20 @@ class _ClientAcceptState extends State<ClientAccept> {
                       children: [
                         Text(
                           'عدد العملاء',
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
                         ),
-                        Consumer<ClientProvider>(builder: (context, value, child) {
-                          final list =
-                          _searchTextField.text.isEmpty ? value.listClientAccept : value.listClientAcceptFilter;
+                        Consumer<ClientProvider>(
+                            builder: (context, value, child) {
+                          final list = _searchTextField.text.isEmpty
+                              ? value.listClientAccept
+                              : value.listClientAcceptFilter;
                           return Text(
                             list.length.toString(),
-                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontFamily: kfontfamily2,
+                                fontWeight: FontWeight.bold),
                           );
                         }),
                       ],
@@ -184,31 +197,34 @@ class _ClientAcceptState extends State<ClientAccept> {
                     height: MediaQuery.of(context).size.height * 0.73,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<ClientProvider>(builder: (context, value, child) {
-                        final list =
-                        _searchTextField.text.isEmpty ? value.listClientAccept : value.listClientAcceptFilter;
+                      child: Consumer<ClientProvider>(
+                          builder: (context, value, child) {
+                        final list = _searchTextField.text.isEmpty
+                            ? value.listClientAccept
+                            : value.listClientAcceptFilter;
 
                         return value.isloading == true
                             ? Center(child: CircularProgressIndicator())
                             : list.length == 0
-                            ? Center(child: Text(messageNoData))
-                            : Column(
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: list.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(2),
-                                      child: cardAccept(
-                                        itemClient: list[index],
+                                ? Center(child: Text(messageNoData))
+                                : Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.vertical,
+                                            itemCount: list.length,
+                                            itemBuilder: (context, index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                child: cardAccept(
+                                                  itemClient: list[index],
+                                                ),
+                                              );
+                                            }),
                                       ),
-                                    );
-                                  }),
-                            ),
-                          ],
-                        );
+                                    ],
+                                  );
                       }),
                     ),
                   ),
@@ -220,11 +236,11 @@ class _ClientAcceptState extends State<ClientAccept> {
   }
 
   void filtershow() {
-
     //
     //   Provider.of<invoice_vm>(context,listen: false)
     //       .getclienttype_filter(typeclientvalue!,regoin,'only');
-    Provider.of<ClientProvider>(context, listen: false).getfilterviewSupport(selecteditemmaincity);
+    Provider.of<ClientProvider>(context, listen: false)
+        .getfilterviewSupport(selecteditemmaincity);
     //   if(regoin==null)
     //  Provider.of<invoice_vm>(context,listen: false).getclienttype_filter(typepayController,regoin);
     // else {

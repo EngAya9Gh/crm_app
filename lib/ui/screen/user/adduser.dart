@@ -48,7 +48,9 @@ class _addUserState extends State<addUser> {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       // controllerUsers= Provider.of<user_vm_provider>
       //   (context,listen: false).userall!;
-      context.read<PrivilegeCubit>().getLevels(context.read<UserProvider>().currentUser);
+      context
+          .read<PrivilegeCubit>()
+          .getLevels(context.read<UserProvider>().currentUser);
       // Provider.of<level_vm>(context, listen: false).get_periorty();
       Provider.of<manage_provider>(context, listen: false).getmanage();
 
@@ -103,7 +105,11 @@ class _addUserState extends State<addUser> {
             child: ContainerShadows(
               width: double.infinity,
               padding: EdgeInsets.only(
-                  top: 25, right: 10, left: 10, bottom: 35), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+                  top: 25,
+                  right: 10,
+                  left: 10,
+                  bottom:
+                      35), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
 
               margin: EdgeInsets.only(left: 20, right: 20, top: 25, bottom: 10),
               child: Directionality(
@@ -159,7 +165,8 @@ class _addUserState extends State<addUser> {
                       height: 15,
                     ),
                     RowEdit(name: label_manage, des: '*'),
-                    Consumer<manage_provider>(builder: (context, mangelist, child) {
+                    Consumer<manage_provider>(
+                        builder: (context, mangelist, child) {
                       return DropdownButtonFormField(
                         isExpanded: true,
                         hint: Text("حددالإدارة"),
@@ -217,13 +224,16 @@ class _addUserState extends State<addUser> {
                           isExpanded: true,
                           items: state.priorityState.map((level_one) {
                             return DropdownMenuItem(
-                              child: Text(level_one.nameLevel ?? ''), //label of item
+                              child: Text(
+                                  level_one.nameLevel ?? ''), //label of item
                               value: level_one.idLevel, //value of item
                             );
                           }).toList(),
                           value: state.selectedLevelId,
                           onChanged: (value) {
-                            context.read<PrivilegeCubit>().onChangeLevelId(value.toString());
+                            context
+                                .read<PrivilegeCubit>()
+                                .onChangeLevelId(value.toString());
                           },
                           validator: (value) {
                             if (value == null) {
@@ -285,11 +295,13 @@ class _addUserState extends State<addUser> {
                       builder: (context, cart, child) {
                         return DropdownSearch<MainCityModel>.multiSelection(
                           mode: Mode.DIALOG,
-                          filterFn: (user, filter) => user!.getfilteruser(filter!),
-                          compareFn: (item, selectedItem) => item?.id_maincity == selectedItem?.id_maincity,
+                          filterFn: (user, filter) =>
+                              user!.getfilteruser(filter!),
+                          compareFn: (item, selectedItem) =>
+                              item?.id_maincity == selectedItem?.id_maincity,
                           items: cart.listmaincityfilter,
                           showSelectedItems: true,
-                          selectedItems: cart.selecteditemmaincity,
+                          selectedItems: cart.selectedRegions,
                           itemAsString: (u) => u!.userAsString(),
                           onChanged: (data) {
                             cart.changeitemlist(data);
@@ -301,7 +313,9 @@ class _addUserState extends State<addUser> {
                             alignLabelWithHint: true,
                             fillColor: Colors.grey.withOpacity(0.2),
                             contentPadding: EdgeInsets.all(0),
-                            border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                            border: UnderlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)),
                           ),
                         );
                       },
@@ -335,47 +349,79 @@ class _addUserState extends State<addUser> {
                           }
                           if (state.levelsState.isLoading) {
                             return IconButton(
-                                onPressed: () =>
-                                    context.read<PrivilegeCubit>().getLevels(context.read<UserProvider>().currentUser),
+                                onPressed: () => context
+                                    .read<PrivilegeCubit>()
+                                    .getLevels(context
+                                        .read<UserProvider>()
+                                        .currentUser),
                                 icon: Icon(Icons.refresh));
                           }
                           return custom_button_new(
                             // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),
                             onpress: () {
                               _formKey.currentState!.save();
-                              final validate = _formKey.currentState!.validate();
+                              final validate =
+                                  _formKey.currentState!.validate();
                               if (!validate) {
                                 return;
                               }
 
-                              final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
-                              final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
+                              final selectedRegion = context
+                                  .read<MainCityProvider>()
+                                  .selectedRegions;
+                              final selectedMainCityIds = selectedRegion
+                                  .map((e) => e.id_maincity)
+                                  .toList();
                               bool hasChanges = selectedMainCityIds.isNotEmpty;
 
-                              String? regoin = Provider.of<RegionProvider>(context, listen: false).selectedValueuser;
+                              String? regoin = Provider.of<RegionProvider>(
+                                      context,
+                                      listen: false)
+                                  .selectedValueuser;
                               String? regoinname = regoin == null
                                   ? ""
-                                  : Provider.of<RegionProvider>(context, listen: false)
+                                  : Provider.of<RegionProvider>(context,
+                                          listen: false)
                                       .listRegion
-                                      .firstWhere((element) => element.regionId == regoin)
+                                      .firstWhere((element) =>
+                                          element.regionId == regoin)
                                       .regionName;
 
                               String? level = state.selectedLevelId;
                               String? levelname = state.levelsState.data
-                                  .firstWhereOrNull((element) => element.idLevel == level)
+                                  .firstWhereOrNull(
+                                      (element) => element.idLevel == level)
                                   ?.nameLevel;
 
-                              String? id_country =
-                                  Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
+                              String? id_country = Provider.of<UserProvider>(
+                                      context,
+                                      listen: false)
+                                  .currentUser
+                                  .fkCountry;
                               if (level != null &&
-                                  emailController.text.toString().trim().isNotEmpty &&
-                                  nameController.text.toString().trim().isNotEmpty &&
-                                  mobileController.text.toString().trim().isNotEmpty) {
-                                Provider.of<LoadProvider>(context, listen: false).changeboolValueUser(true);
+                                  emailController.text
+                                      .toString()
+                                      .trim()
+                                      .isNotEmpty &&
+                                  nameController.text
+                                      .toString()
+                                      .trim()
+                                      .isNotEmpty &&
+                                  mobileController.text
+                                      .toString()
+                                      .trim()
+                                      .isNotEmpty) {
+                                Provider.of<LoadProvider>(context,
+                                        listen: false)
+                                    .changeboolValueUser(true);
                                 Map<String, String?> body = {
                                   "nameUser": nameController.text,
-                                  'email': emailController.text != null ? emailController.text : "",
-                                  'mobile': mobileController.text != null ? mobileController.text : "",
+                                  'email': emailController.text != null
+                                      ? emailController.text
+                                      : "",
+                                  'mobile': mobileController.text != null
+                                      ? mobileController.text
+                                      : "",
                                   'fk_country': id_country,
                                   'type_administration': namemanage,
                                   // != null
@@ -384,17 +430,32 @@ class _addUserState extends State<addUser> {
                                   'type_level': level,
                                   'name_level': levelname,
                                   'name_regoin': regoinname,
-                                  'fkuserAdd':
-                                      Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
+                                  'fkuserAdd': Provider.of<UserProvider>(
+                                          context,
+                                          listen: false)
+                                      .currentUser
+                                      .idUser
+                                      .toString(),
                                   'fk_regoin': regoin != null ? regoin : "null",
                                 };
-                                Provider.of<UserProvider>(context, listen: false)
-                                    .addUserVm(body, hasChanges ? _getMainCityParams(selectedMainCityIds) : "",
-                                        selectedRegion.map((e) => e.asUserRegion()).toList())
-                                    .then((value) => value != "repeat" ? clear() : error());
+                                Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .addUserVm(
+                                        body,
+                                        hasChanges
+                                            ? _getMainCityParams(
+                                                selectedMainCityIds)
+                                            : "",
+                                        selectedRegion
+                                            .map((e) => e.asUserRegion())
+                                            .toList())
+                                    .then((value) =>
+                                        value != "repeat" ? clear() : error());
                               } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(content: Text('تأكد من الخيارات من فضلك')));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content:
+                                            Text('تأكد من الخيارات من فضلك')));
                               }
                             },
                             text:
@@ -428,12 +489,15 @@ class _addUserState extends State<addUser> {
   }
 
   void error() {
-    Provider.of<LoadProvider>(context, listen: false).changeboolValueUser(false);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('الموظف مضاف مسبقاً')));
+    Provider.of<LoadProvider>(context, listen: false)
+        .changeboolValueUser(false);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('الموظف مضاف مسبقاً')));
   }
 
   void clear() {
-    Provider.of<LoadProvider>(context, listen: false).changeboolValueUser(false);
+    Provider.of<LoadProvider>(context, listen: false)
+        .changeboolValueUser(false);
     // controllerUsers.add(
     //     UserModel.fromJson( body)
     // );
@@ -441,7 +505,8 @@ class _addUserState extends State<addUser> {
     nameController.text = "";
     mobileController.text = "";
     emailController.text = "";
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_Addeduser)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(label_Addeduser)));
     Navigator.pop(context);
   }
 }

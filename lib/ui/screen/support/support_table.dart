@@ -122,27 +122,32 @@ class _support_tableState extends State<support_table> {
                     builder: (context, cart, child) {
                       return DropdownSearch<MainCityModel>.multiSelection(
                         mode: Mode.DIALOG,
-                        filterFn: (user, filter) => user!.getfilteruser(filter!),
-                        compareFn: (item, selectedItem) => item?.id_maincity == selectedItem?.id_maincity,
+                        filterFn: (user, filter) =>
+                            user!.getfilteruser(filter!),
+                        compareFn: (item, selectedItem) =>
+                            item?.id_maincity == selectedItem?.id_maincity,
                         // itemAsString: (UserModel u) => u.userAsStringByName(),
                         items: cart.listmaincityfilter,
                         showSelectedItems: true,
-                        selectedItems: cart.selecteditemmaincity,
+                        selectedItems: cart.selectedRegions,
                         itemAsString: (u) => u!.userAsString(),
                         onChanged: (data) {
-                          for (int i = 0; i < data.length; i++) 
-                          
-                          // selecteditemmaincity=data;
+                          for (int i = 0; i < data.length; i++)
 
-                          cart.changeitemlist(data);
+                            // selecteditemmaincity=data;
 
-                          if (data.any((element) => element.id_maincity == '0')) {
-                            _eventProvider.onChangeFkMainCity(cart.listmaincityfilter
+                            cart.changeitemlist(data);
+
+                          if (data
+                              .any((element) => element.id_maincity == '0')) {
+                            _eventProvider.onChangeFkMainCity(cart
+                                .listmaincityfilter
                                 .where((element) => element.id_maincity != "0")
                                 .map((e) => e.id_maincity)
                                 .toList());
                           } else {
-                            _eventProvider.onChangeFkMainCity(data.map((e) => e.id_maincity).toList());
+                            _eventProvider.onChangeFkMainCity(
+                                data.map((e) => e.id_maincity).toList());
                           }
                           // Provider.of<EventProvider>(context, listen: false).getevents('', data, "regoin");
                         },
@@ -160,7 +165,8 @@ class _support_tableState extends State<support_table> {
                           // focusedBorder: OutlineInputBorder(
                           //     borderRadius: BorderRadius.circular(10),
                           //     borderSide: const BorderSide(color: Colors.white)),
-                          border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                          border: UnderlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey)),
                           // OutlineInputBorder(
                           //     borderRadius: BorderRadius.circular(10),
                           //     borderSide: const BorderSide( color: Colors.white)),
@@ -176,10 +182,13 @@ class _support_tableState extends State<support_table> {
                     builder: (context, user, event, child) {
                       return Row(
                         children: [
-                          if (event.selectedFkUser != null && event.appointmentsState.isSuccess) ...{
+                          if (event.selectedFkUser != null &&
+                              event.appointmentsState.isSuccess) ...{
                             IconButton(
                               onPressed: () {
-                                context.read<UserProvider>().changevalueuser(null);
+                                context
+                                    .read<UserProvider>()
+                                    .changevalueuser(null);
                                 _eventProvider.onChangeFkUser('');
                               },
                               icon: Icon(Icons.highlight_off),
@@ -192,15 +201,19 @@ class _support_tableState extends State<support_table> {
                               // label: " الموظف ",
                               //hint: 'الموظف',
                               //onFind: (String filter) => cart.getfilteruser(filter),
-                              filterFn: (user, filter) => user!.getfilteruser(filter!),
-                              compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                              filterFn: (user, filter) =>
+                                  user!.getfilteruser(filter!),
+                              compareFn: (item, selectedItem) =>
+                                  item?.idUser == selectedItem?.idUser,
                               showSelectedItems: true,
                               // itemAsString: (UserModel u) => u.userAsStringByName(),
                               items: user.usersSupportManagement,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
                                 iduser = data!.idUser!;
-                                context.read<UserProvider>().changevalueuser(data);
+                                context
+                                    .read<UserProvider>()
+                                    .changevalueuser(data);
                                 _eventProvider.onChangeFkUser(iduser);
                                 // Provider.of<EventProvider>(context, listen: false).getevents(iduser, [], "user");
 
@@ -221,7 +234,9 @@ class _support_tableState extends State<support_table> {
                                 // focusedBorder: OutlineInputBorder(
                                 //     borderRadius: BorderRadius.circular(10),
                                 //     borderSide: const BorderSide(color: Colors.white)),
-                                border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                border: UnderlineInputBorder(
+                                    borderSide:
+                                        const BorderSide(color: Colors.grey)),
                                 // OutlineInputBorder(
                                 //     borderRadius: BorderRadius.circular(10),
                                 //     borderSide: const BorderSide( color: Colors.white)),
