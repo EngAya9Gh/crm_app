@@ -54,20 +54,25 @@ class _ActionUserPageState extends State<ActionUserPage> {
   void initState() {
     _usersCubit = context.read<UsersCubit>();
     scheduleMicrotask(() {
-      context.read<PrivilegeCubit>().getLevels(context.read<UserProvider>().currentUser);
+      context
+          .read<PrivilegeCubit>()
+          .getLevels(context.read<UserProvider>().currentUser);
       Provider.of<manage_provider>(context, listen: false).getmanage();
-      Provider.of<RegionProvider>(context, listen: false).changeValuser(null, true);
+      Provider.of<RegionProvider>(context, listen: false)
+          .changeValuser(null, true);
       context.read<MainCityProvider>().changeitemlist([], isInit: true);
       if (user == null) context.read<MainCityProvider>().getmaincity();
     });
 
     if (user != null) {
-
       scheduleMicrotask(() {
         nameManage = user!.typeAdministration.toString();
         context.read<manage_provider>().changevalue(nameManage!);
-        debugPrint(''+context.read<manage_provider>().selectedValuemanag.toString());
-        context.read<MainCityProvider>().getmaincity(regions: user!.maincitylist_user);
+        debugPrint(
+            '' + context.read<manage_provider>().selectedValuemanag.toString());
+        context
+            .read<MainCityProvider>()
+            .getmaincity(regions: user!.maincitylist_user);
         emailController.text = user!.email.toString();
         mobileController.text = user!.mobile.toString();
 
@@ -76,7 +81,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
 
         print('user!.typeLevel.toString()');
         print(user!.typeLevel.toString());
-        context.read<PrivilegeCubit>().onChangeLevelId(user!.typeLevel.toString());
+        context
+            .read<PrivilegeCubit>()
+            .onChangeLevelId(user!.typeLevel.toString());
         print(context.read<PrivilegeCubit>().state.selectedLevelId);
         context.read<RegionProvider>().changeValuser(user!.fkRegoin);
 
@@ -183,7 +190,9 @@ class _ActionUserPageState extends State<ActionUserPage> {
                       }).toList(),
                       value: state.selectedLevelId,
                       onChanged: (value) {
-                         context.read<PrivilegeCubit>().onChangeLevelId(value.toString());
+                        context
+                            .read<PrivilegeCubit>()
+                            .onChangeLevelId(value.toString());
                       },
                       validator: (value) {
                         if (value == null) {
@@ -229,7 +238,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
                         .map((e) => e.toMap())
                         .toList();
 
-                    final selectedItems = cart.selecteditemmaincity.map((e) => e.toMap()).toList();
+                    final selectedItems =
+                        cart.selectedRegions.map((e) => e.toMap()).toList();
                     selectedItems.forEachIndexed((index, element) {
                       selectedItems[index]['value'] = element['id_maincity'];
                       selectedItems[index]['parameter'] = 'id_maincity';
@@ -239,7 +249,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
                       dropdownHintText: 'ابحث هنا... ',
                       showLabelInMenu: true,
                       primaryColor: kMainColor,
-                      labelStyle: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      labelStyle: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                       items: items,
                       multiSelectValuesAsWidget: true,
                       label: 'اختر المناطق',
@@ -257,7 +268,10 @@ class _ActionUserPageState extends State<ActionUserPage> {
                           return;
                         }
 
-                        final list = jsonDecode(value).map<MainCityModel>((e) => MainCityModel.fromJson(e)).toList();
+                        final list = jsonDecode(value)
+                            .map<MainCityModel>(
+                                (e) => MainCityModel.fromJson(e))
+                            .toList();
                         cart.changeitemlist(list);
                       },
                     );
@@ -283,9 +297,12 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 if (isEdit) ...{
                   Center(
                       child: GroupButton(
-                    controller: GroupButtonController(selectedIndex: int.parse(isActive)),
+                    controller: GroupButtonController(
+                        selectedIndex: int.parse(isActive)),
                     options: GroupButtonOptions(
-                        buttonWidth: 110, selectedColor: kMainColor, borderRadius: BorderRadius.circular(10)),
+                        buttonWidth: 110,
+                        selectedColor: kMainColor,
+                        borderRadius: BorderRadius.circular(10)),
                     buttons: ['غير نشط', 'نشط'],
                     onSelected: (_, index, isselected) {
                       setState(() {
@@ -300,7 +317,8 @@ class _ActionUserPageState extends State<ActionUserPage> {
                     width: 250.w,
                     child: BlocBuilder<UsersCubit, UsersState>(
                       builder: (context, state) {
-                        if (state.actionUserState.isLoading()) return Center(child: CircularProgressIndicator());
+                        if (state.actionUserState.isLoading())
+                          return Center(child: CircularProgressIndicator());
 
                         return custom_button_new(
                           onpress: () => onAction(context),
@@ -324,27 +342,35 @@ class _ActionUserPageState extends State<ActionUserPage> {
     if (!validate) {
       return;
     }
-    final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
-    final oldRegion = user?.maincitylist_user?.map((e) => e.asMainCity).toList();
+    final selectedRegion = context.read<MainCityProvider>().selectedRegions;
+    final oldRegion =
+        user?.maincitylist_user?.map((e) => e.asMainCity).toList();
 
-    final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
+    final selectedMainCityIds =
+        selectedRegion.map((e) => e.id_maincity).toList();
     final userMainCityIds = oldRegion?.map((e) => e.id_maincity).toList();
 
     bool hasChanges;
     if ((userMainCityIds?.isEmpty ?? true) && selectedMainCityIds.isNotEmpty) {
       hasChanges = true;
     } else {
-      hasChanges = !const DeepCollectionEquality.unordered().equals(selectedMainCityIds, userMainCityIds);
+      hasChanges = !const DeepCollectionEquality.unordered()
+          .equals(selectedMainCityIds, userMainCityIds);
     }
 
     final regionVm = context.read<RegionProvider>();
     String? region = regionVm.selectedValueuser;
-    String? regionName =
-        region == null ? "" : regionVm.listRegion.firstWhere((element) => element.regionId == region).regionName;
+    String? regionName = region == null
+        ? ""
+        : regionVm.listRegion
+            .firstWhere((element) => element.regionId == region)
+            .regionName;
 
     final levelVm = context.read<PrivilegeCubit>();
     String? level = levelVm.state.selectedLevelId;
-    String levelName = levelVm.state.levelsState.data.firstWhere((element) => element.idLevel == level).nameLevel!;
+    String levelName = levelVm.state.levelsState.data
+        .firstWhere((element) => element.idLevel == level)
+        .nameLevel!;
 
     final currentUser = context.read<UserProvider>().currentUser;
     final fkCountry = currentUser.fkCountry;
@@ -363,18 +389,22 @@ class _ActionUserPageState extends State<ActionUserPage> {
         regionName: regionName,
         fkUserAction: userID!,
         fkRegion: region!,
-        selectedMainCityIds: isEdit ? (hasChanges ? selectedMainCityIds : []) : selectedMainCityIds,
+        selectedMainCityIds: isEdit
+            ? (hasChanges ? selectedMainCityIds : [])
+            : selectedMainCityIds,
         isActive: isActive,
         userId: user?.idUser,
       ),
       mainCityList: selectedRegion.map((e) => e.asUserRegion()).toList(),
       onSuccess: (String? value) {
         if (value != null) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('الموظف مضاف مسبقاً')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('الموظف مضاف مسبقاً')));
           return;
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(isEdit ? label_Edituser : label_Addeduser)));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(isEdit ? label_Edituser : label_Addeduser)));
         Navigator.pop(context);
       },
     );

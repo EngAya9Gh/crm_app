@@ -53,7 +53,7 @@ class invoice_vm extends ChangeNotifier {
   bool isloading = false;
   bool isloading_marketing = false;
   UserModel? usercurrent;
-
+  String? typeClientValue;
   invoice_vm() {
     //get_invoicesbyRegoin("");
   }
@@ -437,7 +437,6 @@ class invoice_vm extends ChangeNotifier {
   Future<void> filterInvoices({
     List<MainCityModel>? listSelectedRegions,
     List<CityModel> selectedCities = const [],
-    String? state,
   }) async {
     isloading = true;
     notifyListeners();
@@ -445,7 +444,7 @@ class invoice_vm extends ChangeNotifier {
     _cancelableFuture = await InvoiceFilter.execute(
       listSelectedRegions: listSelectedRegions,
       selectedCities: selectedCities,
-      state: state,
+      state: typeClientValue,
       url:
           'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
     );

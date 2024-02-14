@@ -20,7 +20,6 @@ import '../../../constants.dart';
 import '../../../labeltext.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../provider/manage_provider.dart';
-import '../../../view_model/level_vm.dart';
 import '../../../view_model/maincity_vm.dart';
 
 class EditUser extends StatefulWidget {
@@ -68,9 +67,9 @@ class _EditUserState extends State<EditUser> {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       // controllerUsers= Provider.of<user_vm_provider>
       //   (context,listen: false).userall!;
-      context.read<PrivilegeCubit>().getLevels(context.read<UserProvider>().currentUser,
-
-      );
+      context.read<PrivilegeCubit>().getLevels(
+            context.read<UserProvider>().currentUser,
+          );
       Provider.of<manage_provider>(context, listen: false).getmanage();
       //Provider.of<regoin_vm>(context,listen: false).getregoin();
     });
@@ -92,17 +91,23 @@ class _EditUserState extends State<EditUser> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
       namemanage = widget.userModel.typeAdministration.toString();
-      Provider.of<manage_provider>(context, listen: false).changevalue(namemanage!);
+      Provider.of<manage_provider>(context, listen: false)
+          .changevalue(namemanage!);
 
-      context.read<MainCityProvider>().getmaincity(regions: widget.userModel.maincitylist_user);
+      context
+          .read<MainCityProvider>()
+          .getmaincity(regions: widget.userModel.maincitylist_user);
       emailController.text = widget.userModel.email.toString();
 
       mobileController.text = widget.userModel.mobile.toString();
       regoinname = widget.userModel.nameRegoin;
       levelname = widget.userModel.name_level;
       namemanage = widget.userModel.typeAdministration;
-      context.read<PrivilegeCubit>().onChangeLevelId(widget.userModel.typeLevel.toString());
-      Provider.of<RegionProvider>(context, listen: false).changeValuser(widget.userModel.fkRegoin);
+      context
+          .read<PrivilegeCubit>()
+          .onChangeLevelId(widget.userModel.typeLevel.toString());
+      Provider.of<RegionProvider>(context, listen: false)
+          .changeValuser(widget.userModel.fkRegoin);
 
       setState(() {
         isAcive = widget.userModel.isActive!;
@@ -131,8 +136,9 @@ class _EditUserState extends State<EditUser> {
                 }
                 if (state.levelsState.isLoading) {
                   return IconButton(
-                      onPressed: () =>
-                          context.read<PrivilegeCubit>().getLevels(context.read<UserProvider>().currentUser),
+                      onPressed: () => context
+                          .read<PrivilegeCubit>()
+                          .getLevels(context.read<UserProvider>().currentUser),
                       icon: Icon(Icons.refresh));
                 }
                 return IconButton(
@@ -143,42 +149,59 @@ class _EditUserState extends State<EditUser> {
                       return;
                     }
 
-                    final selectedRegion = context.read<MainCityProvider>().selecteditemmaincity;
-                    final oldRegion = widget.userModel.maincitylist_user?.map((e) => e.asMainCity).toList();
+                    final selectedRegion =
+                        context.read<MainCityProvider>().selectedRegions;
+                    final oldRegion = widget.userModel.maincitylist_user
+                        ?.map((e) => e.asMainCity)
+                        .toList();
 
-                    final selectedMainCityIds = selectedRegion.map((e) => e.id_maincity).toList();
-                    final userMainCityIds = oldRegion?.map((e) => e.id_maincity).toList();
+                    final selectedMainCityIds =
+                        selectedRegion.map((e) => e.id_maincity).toList();
+                    final userMainCityIds =
+                        oldRegion?.map((e) => e.id_maincity).toList();
 
                     bool hasChanges;
-                    if ((userMainCityIds?.isEmpty ?? true) && selectedMainCityIds.isNotEmpty) {
+                    if ((userMainCityIds?.isEmpty ?? true) &&
+                        selectedMainCityIds.isNotEmpty) {
                       hasChanges = true;
                     } else {
-                      hasChanges =
-                          !const DeepCollectionEquality.unordered().equals(selectedMainCityIds, userMainCityIds);
+                      hasChanges = !const DeepCollectionEquality.unordered()
+                          .equals(selectedMainCityIds, userMainCityIds);
                     }
 
-                    fkregoin = Provider.of<RegionProvider>(context, listen: false).selectedValueuser;
+                    fkregoin =
+                        Provider.of<RegionProvider>(context, listen: false)
+                            .selectedValueuser;
                     fklevel = state.selectedLevelId;
                     regoinname = fkregoin == null
                         ? ""
                         : Provider.of<RegionProvider>(context, listen: false)
                             .listRegion
-                            .firstWhere((element) => element.regionId == fkregoin)
+                            .firstWhere(
+                                (element) => element.regionId == fkregoin)
                             .regionName;
 
-                    levelname =
-                        state.levelsState.data.firstWhereOrNull((element) => element.idLevel == fklevel)?.nameLevel;
+                    levelname = state.levelsState.data
+                        .firstWhereOrNull(
+                            (element) => element.idLevel == fklevel)
+                        ?.nameLevel;
 
                     //String id_country=Provider.of<country_vm>(context,listen: false).id_country;
 
-                    if (levelname != null && emailController.text.toString().trim().isNotEmpty) {
+                    if (levelname != null &&
+                        emailController.text.toString().trim().isNotEmpty) {
                       // Provider.of<LoadProvider>(context, listen: false)
                       //     .changeboolUpdateUser(true);
                       Map<String, String?> body = {
-                        'email': emailController.text != null ? emailController.text : "",
-                        'mobile': mobileController.text != null ? mobileController.text : "",
+                        'email': emailController.text != null
+                            ? emailController.text
+                            : "",
+                        'mobile': mobileController.text != null
+                            ? mobileController.text
+                            : "",
                         //'fk_country': id_country,
-                        'type_administration': namemanage, //!= null ? namemanage : "",
+                        'type_administration':
+                            namemanage, //!= null ? namemanage : "",
                         'type_level': fklevel,
                         'fk_regoin': fkregoin != null ? fkregoin : "null",
                         'name_regoin': regoinname,
@@ -186,27 +209,39 @@ class _EditUserState extends State<EditUser> {
 
                         'isActive': isAcive,
                         "updated_at": DateTime.now().toString(),
-                        "fkuserupdate": Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
+                        "fkuserupdate":
+                            Provider.of<UserProvider>(context, listen: false)
+                                .currentUser
+                                .idUser
+                                .toString(),
                       };
 
-                      Provider.of<UserProvider>(context, listen: false).updateUserVm(
-                          body,
-                          // controllerUsers[widget.index]
-                          widget.userModel.idUser,
-                          null,
-                          hasChanges ? selectedRegion.map((e) => e.asUserRegion()).toList() : [],
-                          hasChanges ? _getMainCityParams(selectedMainCityIds) : ""
-                          // Provider.of<user_vm_provider>(context,listen: false)
-                          //     .currentUser!.path!.isNotEmpty?
-                          // File(
-                          //     Provider.of<user_vm_provider>(context,listen: false)
-                          //     .currentUser!.path!):null
-                          );
+                      Provider.of<UserProvider>(context, listen: false)
+                          .updateUserVm(
+                              body,
+                              // controllerUsers[widget.index]
+                              widget.userModel.idUser,
+                              null,
+                              hasChanges
+                                  ? selectedRegion
+                                      .map((e) => e.asUserRegion())
+                                      .toList()
+                                  : [],
+                              hasChanges
+                                  ? _getMainCityParams(selectedMainCityIds)
+                                  : ""
+                              // Provider.of<user_vm_provider>(context,listen: false)
+                              //     .currentUser!.path!.isNotEmpty?
+                              // File(
+                              //     Provider.of<user_vm_provider>(context,listen: false)
+                              //     .currentUser!.path!):null
+                              );
                       //.then((value) => value != "error" //   ?
                       clear(body);
                       // : error());
                     } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('حدد مستوى للصلاحية من فضلك')));
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('حدد مستوى للصلاحية من فضلك')));
                     }
                   },
                   icon: const Icon(
@@ -230,7 +265,11 @@ class _EditUserState extends State<EditUser> {
             child: ContainerShadows(
               width: double.infinity,
               padding: EdgeInsets.only(
-                  top: 50, right: 20, left: 20, bottom: 50), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+                  top: 50,
+                  right: 20,
+                  left: 20,
+                  bottom:
+                      50), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
               margin: EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 10),
               child: Directionality(
                 textDirection: TextDirection.rtl,
@@ -259,7 +298,8 @@ class _EditUserState extends State<EditUser> {
                     ),
                     RowEdit(name: label_manage, des: '*'),
 
-                    Consumer<manage_provider>(builder: (context, mangelist, child) {
+                    Consumer<manage_provider>(
+                        builder: (context, mangelist, child) {
                       return DropdownButtonFormField(
                         isExpanded: true,
                         hint: Text("حددالإدارة"),
@@ -303,7 +343,9 @@ class _EditUserState extends State<EditUser> {
                           onChanged: (value) {
                             // name_level=
                             //  setState(() {
-                            context.read<PrivilegeCubit>().onChangeLevelId(value.toString());
+                            context
+                                .read<PrivilegeCubit>()
+                                .onChangeLevelId(value.toString());
                             // });
                           },
                           validator: (value) {
@@ -360,11 +402,13 @@ class _EditUserState extends State<EditUser> {
                       builder: (context, cart, child) {
                         return DropdownSearch<MainCityModel>.multiSelection(
                           mode: Mode.DIALOG,
-                          filterFn: (user, filter) => user!.getfilteruser(filter!),
-                          compareFn: (item, selectedItem) => item?.id_maincity == selectedItem?.id_maincity,
+                          filterFn: (user, filter) =>
+                              user!.getfilteruser(filter!),
+                          compareFn: (item, selectedItem) =>
+                              item?.id_maincity == selectedItem?.id_maincity,
                           items: cart.listmaincityfilter,
                           showSelectedItems: true,
-                          selectedItems: cart.selecteditemmaincity,
+                          selectedItems: cart.selectedRegions,
                           itemAsString: (u) => u!.userAsString(),
                           onChanged: (data) {
                             cart.changeitemlist(data);
@@ -376,7 +420,9 @@ class _EditUserState extends State<EditUser> {
                             alignLabelWithHint: true,
                             fillColor: Colors.grey.withOpacity(0.2),
                             contentPadding: EdgeInsets.all(0),
-                            border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                            border: UnderlineInputBorder(
+                                borderSide:
+                                    const BorderSide(color: Colors.grey)),
                           ),
                         );
                       },
@@ -420,7 +466,9 @@ class _EditUserState extends State<EditUser> {
                           // int.tryParse( typeinstallController!)
                         ),
                         options: GroupButtonOptions(
-                            buttonWidth: 110, selectedColor: kMainColor, borderRadius: BorderRadius.circular(10)),
+                            buttonWidth: 110,
+                            selectedColor: kMainColor,
+                            borderRadius: BorderRadius.circular(10)),
                         buttons: ['غير نشط', 'نشط'],
                         onSelected: (_, index, isselected) {
                           setState(() {
@@ -466,7 +514,8 @@ class _EditUserState extends State<EditUser> {
     // descriptionController.text = "";
     // mobileController.text = "";
     // emailController.text = "";
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_Edituser)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(label_Edituser)));
     Navigator.pop(context);
   }
 
@@ -481,7 +530,8 @@ class _EditUserState extends State<EditUser> {
   error() {
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changeboolUpdateUser(false);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_errorAddProd)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(label_errorAddProd)));
     Navigator.pop(context);
   }
 
