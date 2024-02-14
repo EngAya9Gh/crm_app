@@ -24,10 +24,13 @@ class MainCityProvider extends ChangeNotifier {
 
   late List<MainCityModel> selecteditemmaincity = [];
 
-  void changeitemlist(List<MainCityModel> s, {bool isInit = false}) {
+  Future<void> changeitemlist(List<MainCityModel> s, {bool isInit = false}) async {
     selecteditemmaincity = s;
+    isloading = true;
     if (!isInit) notifyListeners();
-    getCitiesFromRegions();
+    await getCitiesFromRegions();
+    isloading = false;
+    if (!isInit) notifyListeners();
   }
 
   filterMainCityByCurrentUserMainCityList(UserModel user) {
@@ -185,6 +188,7 @@ class MainCityProvider extends ChangeNotifier {
     final List<String> regionsIds = _getAllRegionsIds();
     final Response response = await _fetchCitiesFromApi(regionsIds);
     filteredCitiesList = _filterCities(response.data["data"]);
+    selectedCities = filteredCitiesList;
     print("length => ${filteredCitiesList.length}");
     notifyListeners();
   }

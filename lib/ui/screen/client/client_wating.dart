@@ -96,9 +96,9 @@ class _ClientWaitingState extends State<ClientWaiting> {
                                   showSelectedItems: true,
                                   selectedItems: cart.selecteditemmaincity,
                                   itemAsString: (u) => u!.userAsString(),
-                                  onChanged: (data) {
+                                  onChanged: (data) async {
                                     selectedRegions = data;
-                                    cart.changeitemlist(data);
+                                    await cart.changeitemlist(data);
                                     filtershow();
                                   },
                                   showSearchBox: true,
@@ -245,7 +245,8 @@ class _ClientWaitingState extends State<ClientWaiting> {
     }
 
     final List<CityModel> cities = context.read<MainCityProvider>().selectedCities;
-      context.read<invoice_vm>().filterInvoices(listSelectedRegions: selectedRegions, state: typeclientvalue, selectedCities: cities);
+    print('cities => $cities');
+    context.read<invoice_vm>().filterInvoices(listSelectedRegions: selectedRegions, state: typeclientvalue, selectedCities: cities);
 
   }
 }
