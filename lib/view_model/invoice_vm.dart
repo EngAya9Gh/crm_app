@@ -434,15 +434,15 @@ class invoice_vm extends ChangeNotifier {
 
   CancelableOperation<List<InvoiceModel>>? _cancelableFuture;
 
-  Future<void> filterInvoices(
-      {List<MainCityModel>? listSelectedMainCity,
-      List<CityModel> selectedCities = const [],
-      String? state}) async {
+  Future<void> filterInvoices({
+    List<MainCityModel>? listSelectedRegions,
+    List<CityModel> selectedCities = const [],
+    String? state,
+  }) async {
     String type = '';
-    List<String> citiesIds = [];
     isloading = true;
     notifyListeners();
-    bool isAllMainCities = false;
+    bool isAllRegions = false;
     String params = '';
     String url =
         'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}';
@@ -450,39 +450,43 @@ class invoice_vm extends ChangeNotifier {
 
     await _cancelableFuture?.cancel();
 
-    if (listSelectedMainCity!.isNotEmpty) {
+    if (listSelectedRegions!.isNotEmpty) {
       // handle if all main cities selected
-      isAllMainCities = _checkIfAllMainCities(listSelectedMainCity);
-
-      // get selected cities ids
-      citiesIds = _getSelectedCitiesIds(
-        listSelectedMainCity: listSelectedMainCity,
-        selectedCities: selectedCities,
-      );
-
+      isAllRegions = _checkIfAllRegions(listSelectedRegions);
       // prepare params
-      params = _prepareSelectedMainCitiesParams(
-        listSelectedMainCity: listSelectedMainCity,
-        listval: citiesIds,
+      params = _prepareQueryParams(
+        listSelectedMainCity: listSelectedRegions,
         selectedCities: selectedCities,
       );
-
-      // handle state and type
-      type = _getTypeFromState(isAllMainCities, state);
-      state = _handleState(state);
-
-
-      // todo: handle if selected cities is not empty
-      // prepare data
-      data = _prepareData(type, state, params);
-
-      // todo: handle if selected cities is not empty
-      // prepare url
-      url = _prepareUrl(url, state, params, type);
-
+      print("params => $params");
     }
-      url = "client/invoice/getinvoicemaincity.php?city_fks=(1)=11&city_fks=(1)=56&city_fks=(1)=81";
-      print('url: $url');
+
+    // handle state and type
+    type = _handleRequestBody(
+      isAllRegions: isAllRegions,
+      selectedCities: selectedCities,
+      type: type,
+      state: state,
+    );
+    print("type => $type");
+
+    state = _handleState(state);
+    print("state => $state");
+
+    // prepare url
+    url = _prepareUrl(
+      params: params,
+      url: url,
+      state: state,
+    );
+    print("url => $url");
+
+    // prepare data
+    data = _prepareData(
+      isFilterByCities: selectedCities.isNotEmpty,
+      type: type,
+    );
+    print("data => $data");
 
     //
     _cancelableFuture = CancelableOperation.fromFuture(
@@ -493,9 +497,69 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, String> _prepareData(String type, String? state, String params) {
+  bool _checkIfAllRegions(List<MainCityModel> listSelectedMainCity) =>
+      listSelectedMainCity.any((element) => element.id_maincity == '0');
+
+  String _prepareQueryParams({
+    required List<MainCityModel> listSelectedMainCity,
+    required List<CityModel> selectedCities,
+  }) {
+    if (selectedCities.isNotEmpty) {
+      final ids = selectedCities.map((val) => val.id_city).join(', ');
+      return '&city_fks=($ids)';
+    }
+    return listSelectedMainCity.map((val) {
+      return '&maincity_fks[]=${val.id_maincity}';
+    }).join('');
+  }
+
+  String _handleRequestBody({
+    required List<CityModel> selectedCities,
+    required String type,
+    required bool isAllRegions,
+    String? state,
+  }) {
+    if (selectedCities.isNotEmpty) {
+      return _handleBodyTypeForCities();
+    }
+    return _handleBodyTypeForRegions(isAllRegions, state);
+  }
+
+  String _handleBodyTypeForCities() {
+    return 'allmixCity';
+  }
+
+  String _handleBodyTypeForRegions(bool isAllRegions, String? state) {
+    if (isAllRegions && state == 'الكل')
+      return 'all';
+    else if (isAllRegions && state != 'الكل')
+      return 'allmaincity';
+    else if (!isAllRegions && state == 'الكل')
+      return 'allstate';
+    else if (!isAllRegions && state != 'الكل') return 'allmix';
+    return 'allmaincity';
+  }
+
+  Map<String, String> _prepareData({
+    required String type,
+    required bool isFilterByCities,
+  }) {
+    if (isFilterByCities) {
+      return _prepareDataForCities(type);
+    }
+    return _prepareDataForRegions(type);
+  }
+
+  Map<String, String> _prepareDataForCities(String type) {
+    if (type == 'allmixCity') {
+      return {'allmixCity': 'allmixCity'};
+    }
+    return {'allmixCity': 'allmixCity'};
+  }
+
+  Map<String, String> _prepareDataForRegions(String type) {
     if (type == 'all') {
-      return {'all': 'all'};
+      return {};
     } else if (type == 'allmaincity') {
       return {'allmaincity': 'allmaincity'};
     } else if (type == 'allstate') {
@@ -506,17 +570,12 @@ class invoice_vm extends ChangeNotifier {
     return {'allmaincity': 'allmaincity'};
   }
 
-  String _prepareUrl(String url, String? state, String params, String type) {
-    if (type == 'all') {
-      return url;
-    } else if (type == 'allmaincity') {
-      return url += '&state=${state.toString()}';
-    } else if (type == 'allstate') {
-      return url += params;
-    } else if (type == 'allmix') {
-      return url += '&state=${state.toString()}$params';
-    }
-    return url;
+  String _prepareUrl({
+    required String url,
+    required String params,
+    String? state,
+  }) {
+    return url + params + '&state=${state.toString()}';
   }
 
   String? _handleState(String? state) {
@@ -532,41 +591,6 @@ class invoice_vm extends ChangeNotifier {
       default:
         return state;
     }
-  }
-
-  List<String> _getSelectedCitiesIds({
-    required List<MainCityModel> listSelectedMainCity,
-    required List<CityModel> selectedCities,
-  }) {
-    if (selectedCities.isNotEmpty) {
-      return selectedCities.map((e) => e.id_city).toList();
-    }
-    return listSelectedMainCity.map((e) => e.id_maincity).toList();
-  }
-
-  String _prepareSelectedMainCitiesParams({
-    required List<MainCityModel> listSelectedMainCity,
-    required List<String> listval,
-    required List<CityModel> selectedCities,
-  }) {
-    if (selectedCities.isNotEmpty) {
-      return listval.map((val) => '&city_fks=(1)=$val').join();
-    }
-    return listval.map((val) => '&maincity_fks[]=$val').join();
-  }
-
-  bool _checkIfAllMainCities(List<MainCityModel> listSelectedMainCity) =>
-      listSelectedMainCity.any((element) => element.id_maincity == '0');
-
-  String _getTypeFromState(bool isAllMainCities, String? state) {
-    if (isAllMainCities && state == 'الكل')
-      return 'all';
-    else if (isAllMainCities && state != 'الكل')
-      return 'allmaincity';
-    else if (!isAllMainCities && state == 'الكل')
-      return 'allstate';
-    else if (!isAllMainCities && state != 'الكل') return 'allmix';
-    return 'allmaincity';
   }
 
   Future<void> getclienttype_filter(

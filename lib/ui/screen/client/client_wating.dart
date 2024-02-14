@@ -28,22 +28,22 @@ class _ClientWaitingState extends State<ClientWaiting> {
   String? regoin;
   String? typeclientvalue;
   late ClientModel1 itemClient;
-  late List<MainCityModel> selecteditemmaincity = [];
+  late List<MainCityModel> selectedRegions = [];
   late UserModel user;
 
   @override
   void initState() {
     user = context.read<UserProvider>().currentUser;
     context.read<MainCityProvider>().filterMainCityByCurrentUserMainCityList(user);
-    selecteditemmaincity = context.read<MainCityProvider>().selecteditemmaincity;
-    context.read<MainCityProvider>().getCitiesFromMainCitiesIds();
+    selectedRegions = context.read<MainCityProvider>().selecteditemmaincity;
+    context.read<MainCityProvider>().getCitiesFromRegions();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<invoice_vm>(context, listen: false).listInvoicesAccept = [];
       Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_install('الكل');
       typeclientvalue = 'الكل';
       // Provider.of<ClientProvider>(context, listen: false).getallclientAccept();
-      Provider.of<invoice_vm>(context, listen: false).filterInvoices(listSelectedMainCity: selecteditemmaincity, state: typeclientvalue);
+      Provider.of<invoice_vm>(context, listen: false).filterInvoices(listSelectedRegions: selectedRegions, state: typeclientvalue);
     });
 
     super.initState();
@@ -97,7 +97,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                                   selectedItems: cart.selecteditemmaincity,
                                   itemAsString: (u) => u!.userAsString(),
                                   onChanged: (data) {
-                                    selecteditemmaincity = data;
+                                    selectedRegions = data;
                                     cart.changeitemlist(data);
                                     filtershow();
                                   },
@@ -240,32 +240,12 @@ class _ClientWaitingState extends State<ClientWaiting> {
 
   void filtershow() {
 
-    //    Provider.of<invoice_vm>(context,listen: false)
-    //       .getfilterinvoice(regoin);
-    // Provider.of<client_vm>(context,listen: false)
-    //     .getfilterview(regoin);
-    //  String filter='';
-    //  switch(typeclientvalue){
-    //    case '0':
-    //      filter='الكل';
-    //      break;
-    //    case '1':
-    //      filter='بالإنتظار';
-    //      break;
-    //    case '2':
-    //      filter='تم التركيب';
-    //      break;
-    //  }
-    if(selecteditemmaincity.isEmpty){
-      selecteditemmaincity = user.maincitylist_user?.map((e) => e.asMainCity).toList() ?? [];
+    if(selectedRegions.isEmpty){
+      selectedRegions = user.maincitylist_user?.map((e) => e.asMainCity).toList() ?? [];
     }
 
     final List<CityModel> cities = context.read<MainCityProvider>().selectedCities;
-      context.read<invoice_vm>().filterInvoices(listSelectedMainCity: selecteditemmaincity, state: typeclientvalue, selectedCities: cities);
-    // Provider.of<invoice_vm>(context, listen: false).getfilter_maincity(selecteditemmaincity, typeclientvalue);
+      context.read<invoice_vm>().filterInvoices(listSelectedRegions: selectedRegions, state: typeclientvalue, selectedCities: cities);
 
-    //.getclienttype_filter(typeclientvalue,regoin,'only');
-
-    // }
   }
 }

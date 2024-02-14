@@ -27,7 +27,7 @@ class MainCityProvider extends ChangeNotifier {
   void changeitemlist(List<MainCityModel> s, {bool isInit = false}) {
     selecteditemmaincity = s;
     if (!isInit) notifyListeners();
-    getCitiesFromMainCitiesIds();
+    getCitiesFromRegions();
   }
 
   filterMainCityByCurrentUserMainCityList(UserModel user) {
@@ -181,14 +181,15 @@ class MainCityProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getCitiesFromMainCitiesIds() async {
-    final List<String> mainCitiesIds = _getAllMainCitiesIds();
-    final Response response = await _fetchCitiesFromApi(mainCitiesIds);
+  Future<void> getCitiesFromRegions() async {
+    final List<String> regionsIds = _getAllRegionsIds();
+    final Response response = await _fetchCitiesFromApi(regionsIds);
     filteredCitiesList = _filterCities(response.data["data"]);
     print("length => ${filteredCitiesList.length}");
+    notifyListeners();
   }
 
-  List<String> _getAllMainCitiesIds() {
+  List<String> _getAllRegionsIds() {
     return selecteditemmaincity.map((e) => e.id_maincity).toList();
   }
 
