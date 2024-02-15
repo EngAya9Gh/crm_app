@@ -15,7 +15,6 @@ import 'package:crm_smart/ui/widgets/widgetlogo.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,19 +101,21 @@ class _InvoiceViewState extends State<InvoiceView> {
     context.read<invoice_vm>().setCurrentInvoice(widget.invoice);
     _privilegeCubit = GetIt.I<PrivilegeCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientProvider>(context, listen: false)
-          .get_byIdClient(widget.invoice.fkIdClient.toString(), (value) => clientmodel = value);
+      await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(
+          widget.invoice.fkIdClient.toString(), (value) => clientmodel = value);
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final list = Provider.of<invoice_vm>(context, listen: true).listInvoicesAccept;
+    final list =
+        Provider.of<invoice_vm>(context, listen: true).listInvoicesAccept;
 
     if (list.any((element) => element.idInvoice == widget.invoice.idInvoice))
-      widget.invoice =
-          list.firstWhereOrNull((element) => element.idInvoice == widget.invoice.idInvoice) ?? widget.invoice;
+      widget.invoice = list.firstWhereOrNull(
+              (element) => element.idInvoice == widget.invoice.idInvoice) ??
+          widget.invoice;
 
     return Scaffold(
       appBar: widget.type == 'approved'
@@ -140,9 +141,13 @@ class _InvoiceViewState extends State<InvoiceView> {
                       invoiceId: widget.invoice.idInvoice,
                     ),
                     _product('اسم المنتج', 'الكمية', 'السعر'),
-                    for (int index = 0; index < invoice!.products!.length; index++)
-                      _product(invoice.products![index].nameProduct.toString(),
-                          invoice.products![index].amount.toString(), invoice.products![index].price.toString()),
+                    for (int index = 0;
+                        index < invoice!.products!.length;
+                        index++)
+                      _product(
+                          invoice.products![index].nameProduct.toString(),
+                          invoice.products![index].amount.toString(),
+                          invoice.products![index].price.toString()),
                     Container(
                       color: Colors.amberAccent,
                       child: Row(
@@ -164,40 +169,70 @@ class _InvoiceViewState extends State<InvoiceView> {
                       height: 10,
                     ),
 
-                    cardRow(title: 'اسم العميل', value: invoice.nameClient.toString()),
-                    cardRow(title: 'اسم المؤسسة', value: invoice.name_enterprise.toString()),
-                    cardRow(title: 'حالة الفاتورة', value: invoice.stateclient.toString()),
-                    cardRow(title: 'فرع الفاتورة', value: invoice.name_regoin_invoice.toString()),
+                    cardRow(
+                        title: 'اسم العميل',
+                        value: invoice.nameClient.toString()),
+                    cardRow(
+                        title: 'اسم المؤسسة',
+                        value: invoice.name_enterprise.toString()),
+                    cardRow(
+                        title: 'حالة الفاتورة',
+                        value: invoice.stateclient.toString()),
+                    cardRow(
+                        title: 'فرع الفاتورة',
+                        value: invoice.name_regoin_invoice.toString()),
 
                     invoice.invoice_source != null
-                        ?  cardRow(title: 'مصدر الفاتورة', value: invoice.invoice_source!.toString())
+                        ? cardRow(
+                            title: 'مصدر الفاتورة',
+                            value: invoice.invoice_source!.toString())
                         : Container(),
 
-                    cardRow(title: 'اسم الموظف', value: invoice.nameUser.toString()),
-                    cardRow(title: 'فرع الموظف', value: invoice.name_regoin_invoice.toString()),
+                    cardRow(
+                        title: 'اسم الموظف',
+                        value: invoice.nameUser.toString()),
+                    cardRow(
+                        title: 'فرع الموظف',
+                        value: invoice.name_regoin_invoice.toString()),
                     //cardRow(title: 'حالة الفاتورة', value: invoice.amountPaid.toString()),
 
                     invoice.date_approve.toString() == null
-                        ? cardRow(title: 'تاريخ عقد الإشتراك', value: invoice.date_approve.toString())
+                        ? cardRow(
+                            title: 'تاريخ عقد الإشتراك',
+                            value: invoice.date_approve.toString())
                         : Container(),
 
-                    cardRow(title: 'المبلغ المدفوع', value: invoice.amountPaid.toString()),
+                    cardRow(
+                        title: 'المبلغ المدفوع',
+                        value: invoice.amountPaid.toString()),
                     cardRow(
                         title: ' المبلغ المتبقي',
-                        value: ((num.tryParse(invoice.total?.toString() ?? "0") ?? 0) -
-                                (num.tryParse(invoice.amountPaid?.toString() ?? "0") ?? 0))
-                            .toStringAsFixed(2)),
+                        value:
+                            ((num.tryParse(invoice.total?.toString() ?? "0") ??
+                                        0) -
+                                    (num.tryParse(
+                                            invoice.amountPaid?.toString() ??
+                                                "0") ??
+                                        0))
+                                .toStringAsFixed(2)),
 
                     invoice.renewYear != '0' && invoice.renewYear != null
-                        ? cardRow(title: ' التجديد السنوي', value: invoice.renewYear.toString())
+                        ? cardRow(
+                            title: ' التجديد السنوي',
+                            value: invoice.renewYear.toString())
                         : Container(),
                     invoice.renew2year != '0' && invoice.renew2year != null
-                        ? cardRow(title: 'تجديد الموارد البشرية', value: invoice.renew2year.toString())
+                        ? cardRow(
+                            title: 'تجديد الموارد البشرية',
+                            value: invoice.renew2year.toString())
                         : Container(),
 
-                    invoice.renewPlus.toString() == '' || invoice.renewPlus == null
+                    invoice.renewPlus.toString() == '' ||
+                            invoice.renewPlus == null
                         ? Container()
-                        : cardRow(title: 'تجديد الفرع الإضافي', value: invoice.renewPlus.toString()),
+                        : cardRow(
+                            title: 'تجديد الفرع الإضافي',
+                            value: invoice.renewPlus.toString()),
 
                     invoice.typeInstallation.toString() == '' ||
                             invoice.typeInstallation == null ||
@@ -207,10 +242,16 @@ class _InvoiceViewState extends State<InvoiceView> {
                             title: 'نوع التركيب',
                             value: invoice.typeInstallation.toString() == '0'
                                 ? 'ميداني'
-                                : (invoice.typeInstallation.toString() == '2' ? 'عميل موصى به' : 'اونلاين'),
+                                : (invoice.typeInstallation.toString() == '2'
+                                    ? 'عميل موصى به'
+                                    : 'اونلاين'),
                           ),
 
-                    cardRow(title: ' طريقة الدفع', value: invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
+                    cardRow(
+                        title: ' طريقة الدفع',
+                        value: invoice.typePay.toString() == '0'
+                            ? 'نقدا'
+                            : 'تحويل'),
                     //nameuserApprove
 
                     cardRow(
@@ -222,33 +263,48 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 : 'SAR'),
 
                     invoice.nameuserApprove != null
-                        ? cardRow(title: 'معتمد الفاتورة', value: getnameshort(invoice.nameuserApprove.toString()))
+                        ? cardRow(
+                            title: 'معتمد الفاتورة',
+                            value: getnameshort(
+                                invoice.nameuserApprove.toString()))
                         : Container(),
 
                     invoice.nameuserApprove != null
-                        ? cardRow(title: 'تاريخ اعتماد الفاتورة', value: invoice.date_approve.toString())
+                        ? cardRow(
+                            title: 'تاريخ اعتماد الفاتورة',
+                            value: invoice.date_approve.toString())
                         : Container(),
                     invoice.date_lastuserupdate != null
                         ? cardRow(
                             title: 'تاريخ آخر تعديل',
-                            value: invoice.date_lastuserupdate != null ? invoice.date_lastuserupdate.toString() : '')
+                            value: invoice.date_lastuserupdate != null
+                                ? invoice.date_lastuserupdate.toString()
+                                : '')
                         : Container(),
                     invoice.date_lastuserupdate != null
                         ? cardRow(
                             title: 'آخر تعديل من قبل',
                             value: invoice.date_lastuserupdate != null
-                                ? getnameshort(invoice.lastuserupdateName.toString())
+                                ? getnameshort(
+                                    invoice.lastuserupdateName.toString())
                                 : '')
                         : Container(),
 
                     invoice.date_change_back != null
-                        ? cardRow(title: 'تاريخ الإنسحاب', value: invoice.date_change_back.toString())
+                        ? cardRow(
+                            title: 'تاريخ الإنسحاب',
+                            value: invoice.date_change_back.toString())
                         : Container(),
                     invoice.date_change_back != null
-                        ? cardRow(title: 'تم الإنسحاب عن طريق', value: getnameshort(invoice.nameuserback.toString()))
+                        ? cardRow(
+                            title: 'تم الإنسحاب عن طريق',
+                            value:
+                                getnameshort(invoice.nameuserback.toString()))
                         : Container(),
                     invoice.fkuser_back != null
-                        ? cardRow(title: 'المبلغ المسترجع', value: invoice.value_back.toString())
+                        ? cardRow(
+                            title: 'المبلغ المسترجع',
+                            value: invoice.value_back.toString())
                         : Container(),
                     invoice.fkuser_back != null
                         ? cardRow(
@@ -257,42 +313,67 @@ class _InvoiceViewState extends State<InvoiceView> {
                             isExpanded: true,
                           )
                         : Container(),
-                    invoice.numbarnch.toString().trim().isNotEmpty && invoice.numbarnch != null
-                        ? cardRow(title: 'عدد الفروع', value: invoice.numbarnch.toString())
+                    invoice.numbarnch.toString().trim().isNotEmpty &&
+                            invoice.numbarnch != null
+                        ? cardRow(
+                            title: 'عدد الفروع',
+                            value: invoice.numbarnch.toString())
                         : Container(),
                     //invoice!.nummostda != null||
-                    invoice.nummostda.toString().trim().isNotEmpty && invoice.nummostda != null
-                        ? cardRow(title: 'عدد المستودعات ', value: invoice.nummostda.toString())
+                    invoice.nummostda.toString().trim().isNotEmpty &&
+                            invoice.nummostda != null
+                        ? cardRow(
+                            title: 'عدد المستودعات ',
+                            value: invoice.nummostda.toString())
                         : Container(),
-                    invoice.numusers.toString().trim().isNotEmpty && invoice.numusers != null
-                        ? cardRow(title: 'عدد المستخدمين', value: invoice.numusers.toString())
+                    invoice.numusers.toString().trim().isNotEmpty &&
+                            invoice.numusers != null
+                        ? cardRow(
+                            title: 'عدد المستخدمين',
+                            value: invoice.numusers.toString())
                         : Container(),
                     invoice.address_invoice.toString() == ''
-                        ? cardRow(title: 'عنوان الفاتورة', value: invoice.address_invoice.toString())
+                        ? cardRow(
+                            title: 'عنوان الفاتورة',
+                            value: invoice.address_invoice.toString())
                         : Container(),
 
                     _privilegeCubit.checkPrivilege('76')
-                        ? invoice.clientusername != null && invoice.clientusername.toString().isNotEmpty
+                        ? invoice.clientusername != null &&
+                                invoice.clientusername.toString().isNotEmpty
                             ? cardRow(
                                 title: 'يوزر العميل',
-                                value: invoice.clientusername == null ? '' : invoice.clientusername.toString())
+                                value: invoice.clientusername == null
+                                    ? ''
+                                    : invoice.clientusername.toString())
                             : Container()
                         : Container(),
 
-                    invoice.imagelogo != null && invoice.imagelogo.toString().isNotEmpty
-                        ? widgetlogo(title: 'شعار المؤسسة', value: invoice.imagelogo.toString())
+                    invoice.imagelogo != null &&
+                            invoice.imagelogo.toString().isNotEmpty
+                        ? widgetlogo(
+                            title: 'شعار المؤسسة',
+                            value: invoice.imagelogo.toString())
                         : Container(),
 
                     invoice.participal != null
                         ? Column(
                             children: [
-                              cardRow(value: invoice.participal!.name_participate.toString(), title: 'اسم المتعاون'),
-                              cardRow(value: invoice.rate_participate.toString(), title: 'نسبة المتعاون'),
                               cardRow(
-                                  value: invoice.participal!.numberbank_participate.toString(),
+                                  value: invoice.participal!.name_participate
+                                      .toString(),
+                                  title: 'اسم المتعاون'),
+                              cardRow(
+                                  value: invoice.rate_participate.toString(),
+                                  title: 'نسبة المتعاون'),
+                              cardRow(
+                                  value: invoice
+                                      .participal!.numberbank_participate
+                                      .toString(),
                                   title: 'رقم بنك المتعاون'),
                               cardRow(
-                                  value: invoice.participal!.mobile_participate.toString(),
+                                  value: invoice.participal!.mobile_participate
+                                      .toString(),
                                   title: 'رقم موبايل المتعاون'),
                             ],
                           )
@@ -301,22 +382,34 @@ class _InvoiceViewState extends State<InvoiceView> {
                         ? Column(
                             children: [
                               cardRow(
-                                  value: invoice.agent_distibutor!.nameAgent.toString(),
-                                  title: invoice.agent_distibutor!.typeAgent == '1' ? 'اسم الوكيل' : 'اسم الموزع'),
+                                  value: invoice.agent_distibutor!.nameAgent
+                                      .toString(),
+                                  title:
+                                      invoice.agent_distibutor!.typeAgent == '1'
+                                          ? 'اسم الوكيل'
+                                          : 'اسم الموزع'),
                               if (invoice.rate_participate != null)
                                 cardRow(
                                     value: invoice.rate_participate.toString(),
-                                    title: invoice.agent_distibutor!.typeAgent == '1' ? 'نسبة الوكيل' : 'نسبة الموزع'),
+                                    title:
+                                        invoice.agent_distibutor!.typeAgent ==
+                                                '1'
+                                            ? 'نسبة الوكيل'
+                                            : 'نسبة الموزع'),
                               cardRow(
-                                  value: invoice.agent_distibutor!.mobileAgent.toString(),
-                                  title: invoice.agent_distibutor!.typeAgent == '1'
-                                      ? 'رقم موبايل الوكيل'
-                                      : 'رقم موبايل الموزع'),
+                                  value: invoice.agent_distibutor!.mobileAgent
+                                      .toString(),
+                                  title:
+                                      invoice.agent_distibutor!.typeAgent == '1'
+                                          ? 'رقم موبايل الوكيل'
+                                          : 'رقم موبايل الموزع'),
                             ],
                           )
                         : Container(),
 
-                    if (invoice.participal == null && invoice.agent_distibutor == null && invoice.type_seller == "3")
+                    if (invoice.participal == null &&
+                        invoice.agent_distibutor == null &&
+                        invoice.type_seller == "3")
                       cardRow(value: "موظف", title: "نوع البائع"),
 
                     if (widget.showActions) ...{
@@ -326,7 +419,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           //crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            _privilegeCubit.checkPrivilege('141')  &&
+                            _privilegeCubit.checkPrivilege('141') &&
                                         invoice.isApprove == null ||
                                     _privilegeCubit.checkPrivilege('31') ==
                                             true &&
@@ -339,12 +432,15 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             context,
                                             CupertinoPageRoute(
                                                 builder: (context) =>
-                                                    addinvoice(invoice: invoice, itemClient: clientmodel!)));
+                                                    addinvoice(
+                                                        invoice: invoice,
+                                                        itemClient:
+                                                            clientmodel!)));
                                     },
                                   )
                                 : Container(), // widget.type == 'approved'
 
-                            if (_privilegeCubit.checkPrivilege('41')  &&
+                            if (_privilegeCubit.checkPrivilege('41') &&
                                 invoice.isApprove != null) ...{
                               10.horizontalSpace,
                               CustomButton(
@@ -361,7 +457,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 },
                               )
                             },
-                            if (_privilegeCubit.checkPrivilege('32') ) ...{
+                            if (_privilegeCubit.checkPrivilege('32')) ...{
                               10.horizontalSpace,
                               CustomButton(
                                   //width: MediaQuery.of(context).size.width * 0.2,
@@ -376,19 +472,25 @@ class _InvoiceViewState extends State<InvoiceView> {
                                           actions: <Widget>[
                                             new TextButton(
                                               onPressed: () {
-                                                Navigator.of(context, rootNavigator: true)
-                                                    .pop(false); // dismisses only the dialog and returns false
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(
+                                                        false); // dismisses only the dialog and returns false
                                               },
                                               child: Text('لا'),
                                             ),
                                             TextButton(
                                               onPressed: () async {
-                                                Navigator.of(context, rootNavigator: true).pop(true);
+                                                Navigator.of(context,
+                                                        rootNavigator: true)
+                                                    .pop(true);
                                                 // dismisses only the dialog and returns true
                                                 // if(itemProd.idInvoice!=null)
 
-                                                DateTime _currentDate = DateTime.now();
-                                                final rt.DateFormat formatter = rt.DateFormat('yyyy-MM-dd');
+                                                DateTime _currentDate =
+                                                    DateTime.now();
+                                                final rt.DateFormat formatter =
+                                                    rt.DateFormat('yyyy-MM-dd');
                                                 // Provider.of<invoice_vm>(context, listen: false)
                                                 //     .addlistinvoicedeleted(DeletedinvoiceModel(
                                                 //   fkClient: invoice.fkIdClient.toString(),
@@ -408,19 +510,34 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                 //       .currentUser
                                                 //       .nameUser, //name user that doing delete
                                                 // ));
-                                                Provider.of<invoice_vm>(context, listen: false).delete_invoice({
-                                                  "id_invoice": invoice.idInvoice.toString(),
-                                                  'fk_regoin': invoice.fk_regoin.toString(),
-                                                  'fkcountry': invoice.fk_country.toString(),
-                                                  "fkUserdo": Provider.of<UserProvider>(context, listen: false)
-                                                      .currentUser
-                                                      .idUser
+                                                Provider.of<invoice_vm>(context,
+                                                        listen: false)
+                                                    .delete_invoice({
+                                                  "id_invoice": invoice
+                                                      .idInvoice
                                                       .toString(),
-                                                  "name_enterprise": clientmodel?.nameEnterprise.toString(),
-                                                  "nameUserdo": Provider.of<UserProvider>(context, listen: false)
-                                                      .currentUser
-                                                      .nameUser
+                                                  'fk_regoin': invoice.fk_regoin
                                                       .toString(),
+                                                  'fkcountry': invoice
+                                                      .fk_country
+                                                      .toString(),
+                                                  "fkUserdo":
+                                                      Provider.of<UserProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .currentUser
+                                                          .idUser
+                                                          .toString(),
+                                                  "name_enterprise": clientmodel
+                                                      ?.nameEnterprise
+                                                      .toString(),
+                                                  "nameUserdo":
+                                                      Provider.of<UserProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .currentUser
+                                                          .nameUser
+                                                          .toString(),
                                                 }, invoice.idInvoice);
                                                 Navigator.pop(context);
                                               },
@@ -453,7 +570,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   },
                                 )
                               : Container(),
-                          if (_privilegeCubit.checkPrivilege('115') ) ...{
+                          if (_privilegeCubit.checkPrivilege('115')) ...{
                             10.horizontalSpace,
                             CustomButton(
                               //width: MediaQuery.of(context).size.width * 0.2,
@@ -479,57 +596,104 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     children: [
                                       Expanded(
                                         child: ElevatedButton(
-                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        kMainColor)),
                                             onPressed: () async {
                                               await showDialog(
                                                 context: context,
                                                 builder: (context) {
                                                   return ModalProgressHUD(
-                                                    inAsyncCall: Provider.of<invoice_vm>(context).isapproved,
+                                                    inAsyncCall:
+                                                        Provider.of<invoice_vm>(
+                                                                context)
+                                                            .isapproved,
                                                     child: AlertDialog(
                                                       title: Text(''),
-                                                      content: Text('تأكيد العملية'),
+                                                      content:
+                                                          Text('تأكيد العملية'),
                                                       actions: <Widget>[
                                                         new ElevatedButton(
                                                           style: ButtonStyle(
-                                                              backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                              backgroundColor:
+                                                                  MaterialStateProperty
+                                                                      .all(
+                                                                          kMainColor)),
                                                           onPressed: () {
-                                                            Navigator.of(context, rootNavigator: true).pop(
-                                                                false); // dismisses only the dialog and returns false
+                                                            Navigator.of(
+                                                                    context,
+                                                                    rootNavigator:
+                                                                        true)
+                                                                .pop(
+                                                                    false); // dismisses only the dialog and returns false
                                                           },
                                                           child: Text('لا'),
                                                         ),
                                                         ElevatedButton(
                                                           style: ButtonStyle(
-                                                              backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                              backgroundColor:
+                                                                  MaterialStateProperty
+                                                                      .all(
+                                                                          kMainColor)),
                                                           onPressed: () async {
                                                             // Navigator.of(context,
                                                             //     rootNavigator: true)
                                                             //     .pop(true);
                                                             // update client to approved client
-                                                            Provider.of<invoice_vm>(context, listen: false)
-                                                                .setApproveclient_vm({
-                                                              "id_clients": invoice.fkIdClient,
-                                                              'date_approve': DateTime.now().toString(),
-                                                              //'idApproveClient':widget.itemapprove!.idApproveClient,
-                                                              "fk_user": invoice.fkIdUser, //صاحب العميل
-                                                              "fk_regoin": invoice.fk_regoin,
-                                                              "regoin": invoice.name_regoin,
-                                                              "fk_country": invoice.fk_country,
-                                                              "isApprove": "1",
-                                                              "name_enterprise": invoice.name_enterprise,
-                                                              "fkusername": invoice.nameUser, //موظف المبيعات
-                                                              //"message":"",//
-                                                              "nameuserApproved":
-                                                                  Provider.of<UserProvider>(context, listen: false)
+                                                            Provider.of<invoice_vm>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .setApproveclient_vm(
+                                                                    {
+                                                                  "id_clients":
+                                                                      invoice
+                                                                          .fkIdClient,
+                                                                  'date_approve':
+                                                                      DateTime.now()
+                                                                          .toString(),
+                                                                  //'idApproveClient':widget.itemapprove!.idApproveClient,
+                                                                  "fk_user": invoice
+                                                                      .fkIdUser, //صاحب العميل
+                                                                  "fk_regoin":
+                                                                      invoice
+                                                                          .fk_regoin,
+                                                                  "regoin": invoice
+                                                                      .name_regoin,
+                                                                  "fk_country":
+                                                                      invoice
+                                                                          .fk_country,
+                                                                  "isApprove":
+                                                                      "1",
+                                                                  "name_enterprise":
+                                                                      invoice
+                                                                          .name_enterprise,
+                                                                  "fkusername":
+                                                                      invoice
+                                                                          .nameUser, //موظف المبيعات
+                                                                  //"message":"",//
+                                                                  "nameuserApproved": Provider.of<
+                                                                              UserProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
                                                                       .currentUser
                                                                       .nameUser,
-                                                              "iduser_approve":
-                                                                  Provider.of<UserProvider>(context, listen: false)
+                                                                  "iduser_approve": Provider.of<
+                                                                              UserProvider>(
+                                                                          context,
+                                                                          listen:
+                                                                              false)
                                                                       .currentUser
                                                                       .idUser //معتمد الاشتراك
-                                                            }, invoice.idInvoice).then((value) =>
-                                                                        value != false ? clear() : error() // clear()
+                                                                },
+                                                                    invoice
+                                                                        .idInvoice).then(
+                                                                    (value) => value !=
+                                                                            false
+                                                                        ? clear()
+                                                                        : error() // clear()
                                                                     // _scaffoldKey.currentState!.showSnackBar(
                                                                     //     SnackBar(content: Text('هناك مشكلة ما')))
                                                                     );
@@ -559,31 +723,47 @@ class _InvoiceViewState extends State<InvoiceView> {
                                       Expanded(
                                         child: ElevatedButton(
                                             style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        Colors.redAccent)),
                                             onPressed: () async {
-                                              Provider.of<invoice_vm>(context, listen: false).setApproveclient_vm({
-                                                "id_clients": invoice.fkIdClient,
+                                              Provider.of<invoice_vm>(context,
+                                                      listen: false)
+                                                  .setApproveclient_vm({
+                                                "id_clients":
+                                                    invoice.fkIdClient,
                                                 //'idApproveClient':widget.itemapprove!.idApproveClient,
                                                 "fk_user": invoice.fkIdUser,
                                                 "fk_regoin": invoice.fk_regoin,
                                                 "regoin": invoice.name_regoin,
-                                                "fk_country": invoice.fk_country,
+                                                "fk_country":
+                                                    invoice.fk_country,
                                                 "isApprove": "0",
-                                                "name_enterprise": invoice.name_enterprise,
-                                                "fkusername": invoice.nameUser, //موظف المبيعات
+                                                "name_enterprise":
+                                                    invoice.name_enterprise,
+                                                "fkusername": invoice
+                                                    .nameUser, //موظف المبيعات
                                                 //"message":"",//
-                                                "nameuserApproved": Provider.of<UserProvider>(context, listen: false)
-                                                    .currentUser
-                                                    .nameUser,
-                                                "iduser_approve": Provider.of<UserProvider>(context, listen: false)
-                                                    .currentUser
-                                                    .idUser //معتمد الاشتراك
+                                                "nameuserApproved":
+                                                    Provider.of<UserProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .currentUser
+                                                        .nameUser,
+                                                "iduser_approve":
+                                                    Provider.of<UserProvider>(
+                                                            context,
+                                                            listen: false)
+                                                        .currentUser
+                                                        .idUser //معتمد الاشتراك
                                               }, invoice.idInvoice).then(
-                                                  (value) => value != false ? clear() : error() // clear()
-                                                  // _scaffoldKey.currentState!.showSnackBar(
-                                                  //     SnackBar(content: Text('هناك مشكلة ما'))
-                                                  // )
-                                                  );
+                                                      (value) => value != false
+                                                          ? clear()
+                                                          : error() // clear()
+                                                      // _scaffoldKey.currentState!.showSnackBar(
+                                                      //     SnackBar(content: Text('هناك مشكلة ما'))
+                                                      // )
+                                                      );
                                               // Navigator.pushAndRemoveUntil(context,
                                               //     CupertinoPageRoute(builder: (context)=>Home()),
                                               //         (route) => true
@@ -648,7 +828,11 @@ class _InvoiceViewState extends State<InvoiceView> {
                         text: 'مرفقات الفاتورة',
                         icon: Icons.file_present_rounded,
                         onTap: () async {
-                          Navigator.push(context, CupertinoPageRoute(builder: (context) => InvoiceFileGalleryPage()));
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      InvoiceFileGalleryPage()));
                         },
                       ),
                       SizedBox(height: 20),
@@ -700,19 +884,23 @@ class _RejectDialogState extends State<RejectDialog> {
     _invoice = widget.invoice;
     if (_invoice.desc_reason_back?.isNotEmpty ?? false)
       descresaonController.text = _invoice.desc_reason_back.toString();
-    if (_invoice.value_back?.isNotEmpty ?? false) valueBackController.text = _invoice.value_back.toString();
+    if (_invoice.value_back?.isNotEmpty ?? false)
+      valueBackController.text = _invoice.value_back.toString();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      typeclient_provider = Provider.of<ClientTypeProvider>(context, listen: false);
+      typeclient_provider =
+          Provider.of<ClientTypeProvider>(context, listen: false);
       typeclient_provider.getreasons('client');
 
-      typeclient_provider.selectedValueOut = _invoice.reason_back == null ? null : _invoice.reason_back.toString();
+      typeclient_provider.selectedValueOut =
+          _invoice.reason_back == null ? null : _invoice.reason_back.toString();
       // typeclient_provider.changevalueOut(typeclient_provider.selectedValueOut.toString());
       String val = (_invoice.date_change_back?.isNotEmpty ?? false)
           ? _invoice.date_change_back.toString()
           : formatter.format(DateTime.now());
       _currentDate = DateTime.parse(val);
-      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDate);
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue1(_currentDate);
     });
     super.initState();
   }
@@ -745,7 +933,8 @@ class _RejectDialogState extends State<RejectDialog> {
       setState(() {
         _currentDate = pickedDate;
       });
-    Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDate);
+    Provider.of<datetime_vm>(context, listen: false)
+        .setdatetimevalue1(_currentDate);
   }
 
   final _globalKey = GlobalKey<FormState>();
@@ -754,7 +943,8 @@ class _RejectDialogState extends State<RejectDialog> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
       builder: (context) => PickImageBottomSheet(
         onPickFile: (context, file) {
           selectedFile = file;
@@ -772,12 +962,15 @@ class _RejectDialogState extends State<RejectDialog> {
       titlePadding: const EdgeInsets.fromLTRB(24.0, 10.0, 24.0, 10.0),
       insetPadding: EdgeInsets.only(left: 0, right: 0, bottom: 10),
       contentPadding: EdgeInsets.only(left: 25, right: 25, bottom: 20, top: 10),
-      title: Center(child: Text('تحويل العميل إلى منسحب', style: TextStyle(fontFamily: kfontfamily2))),
+      title: Center(
+          child: Text('تحويل العميل إلى منسحب',
+              style: TextStyle(fontFamily: kfontfamily2))),
       children: [
         Directionality(
           textDirection: myui.TextDirection.rtl,
           child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setState) {
+            builder: (BuildContext context,
+                void Function(void Function()) setState) {
               return Form(
                 key: _globalKey,
                 child: Column(
@@ -831,9 +1024,14 @@ class _RejectDialogState extends State<RejectDialog> {
                           Icons.date_range,
                           color: kMainColor,
                         ),
-                        hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                        hintStyle: const TextStyle(
+                            color: Colors.black45,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                         hintText: //_currentDate.toString(),
-                            Provider.of<datetime_vm>(context, listen: true).valuedateTime.toString(),
+                            Provider.of<datetime_vm>(context, listen: true)
+                                .valuedateTime
+                                .toString(),
                         filled: true,
                         fillColor: Colors.grey.shade200,
                       ),
@@ -858,31 +1056,37 @@ class _RejectDialogState extends State<RejectDialog> {
                                 Positioned.fill(
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(15),
-                                    child: Image.file(selectedFile!, fit: BoxFit.cover),
+                                    child: Image.file(selectedFile!,
+                                        fit: BoxFit.cover),
                                   ),
                                 ),
                                 Positioned.fill(
                                   child: Align(
                                     alignment: Alignment.topRight,
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
                                             InkWell(
                                               onTap: () => pickImage(),
-                                              borderRadius: BorderRadius.circular(90),
+                                              borderRadius:
+                                                  BorderRadius.circular(90),
                                               child: Container(
                                                 height: 40,
                                                 width: 40,
-                                                margin: EdgeInsets.only(top: 10, right: 15),
+                                                margin: EdgeInsets.only(
+                                                    top: 10, right: 15),
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey.shade50,
                                                   shape: BoxShape.circle,
                                                 ),
                                                 alignment: Alignment.center,
-                                                child: Icon(Icons.attachment_rounded,
-                                                    color: Colors.grey.shade700, size: 20),
+                                                child: Icon(
+                                                    Icons.attachment_rounded,
+                                                    color: Colors.grey.shade700,
+                                                    size: 20),
                                               ),
                                             ),
                                           ],
@@ -891,11 +1095,13 @@ class _RejectDialogState extends State<RejectDialog> {
                                           onTap: () {
                                             deleteFile();
                                           },
-                                          borderRadius: BorderRadius.circular(90),
+                                          borderRadius:
+                                              BorderRadius.circular(90),
                                           child: Container(
                                             height: 40,
                                             width: 40,
-                                            margin: EdgeInsets.only(top: 10, left: 15),
+                                            margin: EdgeInsets.only(
+                                                top: 10, left: 15),
                                             decoration: BoxDecoration(
                                               color: Colors.grey.shade50,
                                               shape: BoxShape.circle,
@@ -929,24 +1135,41 @@ class _RejectDialogState extends State<RejectDialog> {
                                             //     fit: BoxFit.cover,
                                             //   ),
                                             // ),
-                                            _invoice.file_reject!.mimeType?.contains("image") == true
+                                            _invoice.file_reject!.mimeType
+                                                        ?.contains("image") ==
+                                                    true
                                                 ? InkWell(
-                                                    onTap: () => AppPhotoViewer(
-                                                      imageSource: ImageSourceViewer.network,
-                                                      urls: [urlfile + _invoice.file_reject!],
+                                                    onTap: () => AppFileViewer(
+                                                      imageSource:
+                                                          ImageSourceViewer
+                                                              .network,
+                                                      urls: [
+                                                        urlfile +
+                                                            _invoice
+                                                                .file_reject!
+                                                      ],
                                                     ).show(context),
-                                                    child: FancyImageShimmerViewer(
-                                                      imageUrl: urlfile + _invoice.file_reject!,
+                                                    child:
+                                                        FancyImageShimmerViewer(
+                                                      imageUrl: urlfile +
+                                                          _invoice.file_reject!,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   )
                                                 : InkWell(
-                                                    onTap: () => openFile(_invoice.file_reject!),
+                                                    onTap: () => openFile(
+                                                        _invoice.file_reject!),
                                                     child: Container(
                                                         width: double.infinity,
-                                                        decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
-                                                        child: Icon(Icons.picture_as_pdf_rounded,
-                                                            color: Colors.grey, size: 30)),
+                                                        decoration: BoxDecoration(
+                                                            color: kMainColor
+                                                                .withOpacity(
+                                                                    0.1)),
+                                                        child: Icon(
+                                                            Icons
+                                                                .picture_as_pdf_rounded,
+                                                            color: Colors.grey,
+                                                            size: 30)),
                                                   ),
                                       ),
                                       Positioned.fill(
@@ -956,11 +1179,13 @@ class _RejectDialogState extends State<RejectDialog> {
                                             children: [
                                               InkWell(
                                                 onTap: () => pickImage(),
-                                                borderRadius: BorderRadius.circular(90),
+                                                borderRadius:
+                                                    BorderRadius.circular(90),
                                                 child: Container(
                                                   height: 40,
                                                   width: 40,
-                                                  margin: EdgeInsets.only(top: 10, right: 15),
+                                                  margin: EdgeInsets.only(
+                                                      top: 10, right: 15),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey.shade50,
                                                     shape: BoxShape.circle,
@@ -977,11 +1202,13 @@ class _RejectDialogState extends State<RejectDialog> {
                                                 onTap: () {
                                                   deleteImageReject();
                                                 },
-                                                borderRadius: BorderRadius.circular(90),
+                                                borderRadius:
+                                                    BorderRadius.circular(90),
                                                 child: Container(
                                                   height: 40,
                                                   width: 40,
-                                                  margin: EdgeInsets.only(top: 10, right: 15),
+                                                  margin: EdgeInsets.only(
+                                                      top: 10, right: 15),
                                                   decoration: BoxDecoration(
                                                     color: Colors.grey.shade50,
                                                     shape: BoxShape.circle,
@@ -1007,14 +1234,17 @@ class _RejectDialogState extends State<RejectDialog> {
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.attachment_rounded, color: Colors.grey.shade700, size: 35),
+                                      Icon(Icons.attachment_rounded,
+                                          color: Colors.grey.shade700,
+                                          size: 35),
                                       SizedBox(height: 0),
                                       Text(
                                         'Attach file',
-                                        style: context.textTheme.titleMedium?.copyWith(
-                                            fontFamily: kfontfamily2,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.grey.shade600),
+                                        style: context.textTheme.titleMedium
+                                            ?.copyWith(
+                                                fontFamily: kfontfamily2,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.grey.shade600),
                                       )
                                     ],
                                   ),
@@ -1026,7 +1256,8 @@ class _RejectDialogState extends State<RejectDialog> {
                         if (value.isloading) {
                           return Center(child: CircularProgressIndicator());
                         }
-                        if (_invoice.file_reject?.isNotEmpty ?? false) return SizedBox.shrink();
+                        if (_invoice.file_reject?.isNotEmpty ?? false)
+                          return SizedBox.shrink();
                         return
                             // (_invoice.file_reject?.isNotEmpty ?? false)
                             //   ? (Provider.of<PrivilegeProvider>(context, listen: true).checkPrivilege('145')
@@ -1062,41 +1293,70 @@ class _RejectDialogState extends State<RejectDialog> {
                             children: [
                               Expanded(
                                 child: ElevatedButton(
-                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              kMainColor)),
                                   onPressed: () async {
-                                    if ((selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) ||
-                                        typeclient_provider.selectedValueOut == null) {
+                                    if ((selectedFile == null &&
+                                            (_invoice.file_reject?.isEmpty ??
+                                                true)) ||
+                                        typeclient_provider.selectedValueOut ==
+                                            null) {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(content: Text("من فضلك قم بملىء الخيارات")));
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "من فضلك قم بملىء الخيارات")));
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
                                       _globalKey.currentState!.save();
 
-                                      await Provider.of<invoice_vm>(context, listen: false).set_state_back({
+                                      await Provider.of<invoice_vm>(context,
+                                              listen: false)
+                                          .set_state_back({
                                         'type_back': 'back',
-                                        'fk_regoin': _invoice.fk_regoin.toString(),
-                                        'fkcountry': _invoice.fk_country.toString(),
-                                        "fkUserdo": Provider.of<UserProvider>(context, listen: false)
+                                        'fk_regoin':
+                                            _invoice.fk_regoin.toString(),
+                                        'fkcountry':
+                                            _invoice.fk_country.toString(),
+                                        "fkUserdo": Provider.of<UserProvider>(
+                                                context,
+                                                listen: false)
                                             .currentUser
                                             .idUser
                                             .toString(),
-                                        "name_enterprise": widget.clientModel.nameEnterprise.toString(),
-                                        "nameUserdo": Provider.of<UserProvider>(context, listen: false)
+                                        "name_enterprise": widget
+                                            .clientModel.nameEnterprise
+                                            .toString(),
+                                        "nameUserdo": Provider.of<UserProvider>(
+                                                context,
+                                                listen: false)
                                             .currentUser
                                             .nameUser
                                             .toString(),
-                                        "fk_client": _invoice.fkIdClient.toString(),
-                                        "reason_back": typeclient_provider.selectedValueOut.toString(),
-                                        "fkuser_back": Provider.of<UserProvider>(context, listen: false)
-                                            .currentUser
-                                            .idUser
+                                        "fk_client":
+                                            _invoice.fkIdClient.toString(),
+                                        "reason_back": typeclient_provider
+                                            .selectedValueOut
                                             .toString(),
-                                        "desc_reason_back": descresaonController.text.toString(),
-                                        "date_change_back": _currentDate.toString(),
-                                        "value_back": valueBackController.text.toString(),
-                                      }, _invoice.idInvoice.toString(), selectedFile);
-                                      Navigator.of(context, rootNavigator: true).pop(false);
+                                        "fkuser_back":
+                                            Provider.of<UserProvider>(context,
+                                                    listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                        "desc_reason_back": descresaonController
+                                            .text
+                                            .toString(),
+                                        "date_change_back":
+                                            _currentDate.toString(),
+                                        "value_back":
+                                            valueBackController.text.toString(),
+                                      }, _invoice.idInvoice.toString(),
+                                              selectedFile);
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop(false);
                                     }
                                   },
                                   child: Text('انسحاب'),
@@ -1105,41 +1365,70 @@ class _RejectDialogState extends State<RejectDialog> {
                               20.horizontalSpace,
                               Expanded(
                                 child: ElevatedButton(
-                                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              kMainColor)),
                                   onPressed: () async {
-                                    if ((selectedFile == null && (_invoice.file_reject?.isEmpty ?? true)) ||
-                                        typeclient_provider.selectedValueOut == null) {
+                                    if ((selectedFile == null &&
+                                            (_invoice.file_reject?.isEmpty ??
+                                                true)) ||
+                                        typeclient_provider.selectedValueOut ==
+                                            null) {
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(content: Text("من فضلك قم بملىء الخيارات")));
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  "من فضلك قم بملىء الخيارات")));
                                       return;
                                     }
                                     if (_globalKey.currentState!.validate()) {
                                       _globalKey.currentState!.save();
 
-                                      await Provider.of<invoice_vm>(context, listen: false).set_state_back({
+                                      await Provider.of<invoice_vm>(context,
+                                              listen: false)
+                                          .set_state_back({
                                         'type_back': 'return',
-                                        'fk_regoin': _invoice.fk_regoin.toString(),
-                                        'fkcountry': _invoice.fk_country.toString(),
-                                        "fkUserdo": Provider.of<UserProvider>(context, listen: false)
+                                        'fk_regoin':
+                                            _invoice.fk_regoin.toString(),
+                                        'fkcountry':
+                                            _invoice.fk_country.toString(),
+                                        "fkUserdo": Provider.of<UserProvider>(
+                                                context,
+                                                listen: false)
                                             .currentUser
                                             .idUser
                                             .toString(),
-                                        "name_enterprise": widget.clientModel.nameEnterprise.toString(),
-                                        "nameUserdo": Provider.of<UserProvider>(context, listen: false)
+                                        "name_enterprise": widget
+                                            .clientModel.nameEnterprise
+                                            .toString(),
+                                        "nameUserdo": Provider.of<UserProvider>(
+                                                context,
+                                                listen: false)
                                             .currentUser
                                             .nameUser
                                             .toString(),
-                                        "fk_client": _invoice.fkIdClient.toString(),
-                                        "reason_back": typeclient_provider.selectedValueOut.toString(),
-                                        "fkuser_back": Provider.of<UserProvider>(context, listen: false)
-                                            .currentUser
-                                            .idUser
+                                        "fk_client":
+                                            _invoice.fkIdClient.toString(),
+                                        "reason_back": typeclient_provider
+                                            .selectedValueOut
                                             .toString(),
-                                        "desc_reason_back": descresaonController.text.toString(),
-                                        "date_change_back": _currentDate.toString(),
-                                        "value_back": valueBackController.text.toString(),
-                                      }, _invoice.idInvoice.toString(), selectedFile);
-                                      Navigator.of(context, rootNavigator: true).pop(false);
+                                        "fkuser_back":
+                                            Provider.of<UserProvider>(context,
+                                                    listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                        "desc_reason_back": descresaonController
+                                            .text
+                                            .toString(),
+                                        "date_change_back":
+                                            _currentDate.toString(),
+                                        "value_back":
+                                            valueBackController.text.toString(),
+                                      }, _invoice.idInvoice.toString(),
+                                              selectedFile);
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop(false);
                                     }
                                   },
                                   child: Text('ارجاع'),
@@ -1187,7 +1476,8 @@ class _RejectDialogState extends State<RejectDialog> {
         }
 
         File file;
-        file = await Api().downloadFile(urlfile + attachFile, pp.basename(attachFile));
+        file = await Api()
+            .downloadFile(urlfile + attachFile, pp.basename(attachFile));
         if (file.existsSync()) {
           final result = await OpenFile.open(file.path);
 

@@ -23,13 +23,13 @@ import '../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../ui/widgets/app_photo_viewer.dart';
 import '../../../../ui/widgets/custom_widget/RowWidget.dart';
 import '../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
-import '../../../../view_model/privilge_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class WithdrawnDetailsPage extends StatefulWidget {
-  const WithdrawnDetailsPage({Key? key, required this.invoice}) : super(key: key);
+  const WithdrawnDetailsPage({Key? key, required this.invoice})
+      : super(key: key);
 
   final InvoiceModel invoice;
 
@@ -67,16 +67,23 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                     Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) => InvoiceView(invoice: widget.invoice, showActions: false)),
+                          builder: (context) => InvoiceView(
+                              invoice: widget.invoice, showActions: false)),
                     );
                     break;
                   case 1:
-                    Navigator.push(context,
-                        CupertinoPageRoute(builder: (context) => ProfileClient(idClient: widget.invoice.fkIdClient)));
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => ProfileClient(
+                                idClient: widget.invoice.fkIdClient)));
                     break;
                   case 2:
-                    Navigator.push(context,
-                        CupertinoPageRoute(builder: (context) => WithdrawalActionsPage(invoice: widget.invoice)));
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => WithdrawalActionsPage(
+                                invoice: widget.invoice)));
                 }
               },
               itemBuilder: (context) => [
@@ -132,7 +139,8 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                       Container(
                         height: 150.h,
                         width: double.infinity,
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15)),
                         child:
                             // ClipRRect(
                             //     borderRadius: BorderRadius.circular(15),
@@ -141,9 +149,10 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                             //     CachedNetworkImage(imageUrl: urlfile + data.fileReject!, fit: BoxFit.cover)),
                             ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: data.fileReject!.mimeType?.contains("image") == true
+                          child: data.fileReject!.mimeType?.contains("image") ==
+                                  true
                               ? InkWell(
-                                  onTap: () => AppPhotoViewer(
+                                  onTap: () => AppFileViewer(
                                     imageSource: ImageSourceViewer.network,
                                     urls: [urlfile + data.fileReject!],
                                   ).show(context),
@@ -156,32 +165,47 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                   onTap: () => openFile(data.fileReject!),
                                   child: Container(
                                       width: double.infinity,
-                                      decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
-                                      child: Icon(Icons.picture_as_pdf_rounded, color: Colors.grey, size: 30)),
+                                      decoration: BoxDecoration(
+                                          color: kMainColor.withOpacity(0.1)),
+                                      child: Icon(Icons.picture_as_pdf_rounded,
+                                          color: Colors.grey, size: 30)),
                                 ),
                         ),
                       ),
                       20.verticalSpacingRadius,
-                      cardRow(title: 'اسم الموظف الذي قام بالانسحاب', value: data.nameUser.toString()),
-                      cardRow(title: 'سبب الإنسحاب', value: data.reasonBack.toString()),
-                      cardRow(title: 'وصف سبب الإنسحاب', value: data.descReasonBack.toString()),
-                      cardRow(title: 'المبلغ المسترجع', value: data.valueBack.toString()),
+                      cardRow(
+                          title: 'اسم الموظف الذي قام بالانسحاب',
+                          value: data.nameUser.toString()),
+                      cardRow(
+                          title: 'سبب الإنسحاب',
+                          value: data.reasonBack.toString()),
+                      cardRow(
+                          title: 'وصف سبب الإنسحاب',
+                          value: data.descReasonBack.toString()),
+                      cardRow(
+                          title: 'المبلغ المسترجع',
+                          value: data.valueBack.toString()),
                       cardRow(
                           title: 'تاريخ الإنسحاب',
                           value:
                               "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
                       cardRow(
                           title: 'الحالة',
-                          value: WithdrawalStatus.values[int.parse(data.approveBackDone!)].text,
+                          value: WithdrawalStatus
+                              .values[int.parse(data.approveBackDone!)].text,
                           withDivider: false),
-                      if (context.read<PrivilegeCubit>().checkPrivilege('145') &&
+                      if (context
+                              .read<PrivilegeCubit>()
+                              .checkPrivilege('145') &&
                           state.currentInvoice?.approveBackDone == '0') ...{
                         Spacer(),
                         if (state.deleteWithdrawnRequestStatus.isLoading())
                           Center(child: CircularProgressIndicator.adaptive())
                         else
                           ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red)),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.red)),
                             onPressed: () async {
                               _manageWithdrawalsCubit.deleteWithdrawalRequest(
                                 widget.invoice.idInvoice!,
@@ -203,7 +227,8 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
               loading: Center(child: CircularProgressIndicator()),
               error: (error) => Center(
                 child: IconButton(
-                  onPressed: () => _manageWithdrawalsCubit.getWithdrawnDetails(widget.invoice.idInvoice!),
+                  onPressed: () => _manageWithdrawalsCubit
+                      .getWithdrawnDetails(widget.invoice.idInvoice!),
                   icon: Icon(Icons.refresh_rounded),
                 ),
               ),
@@ -231,7 +256,8 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
         }
 
         File file;
-        file = await Api().downloadFile(urlfile + attachFile, pp.basename(attachFile));
+        file = await Api()
+            .downloadFile(urlfile + attachFile, pp.basename(attachFile));
         if (file.existsSync()) {
           final result = await OpenFile.open(file.path);
 

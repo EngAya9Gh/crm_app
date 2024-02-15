@@ -251,7 +251,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                       : ((imageRecord?.isNotEmpty ?? false) &&
                               !isDeleteRecordCommercialImageNetworkImage)
                           ? InkWell(
-                              onTap: () => AppPhotoViewer(urls: [imageRecord!])
+                              onTap: () => AppFileViewer(urls: [imageRecord!])
                                   .show(context),
                               child: Stack(
                                 children: [
@@ -461,7 +461,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   child:
                       fileAttach.file!.path.mimeType?.contains("image") == true
                           ? InkWell(
-                              onTap: () => AppPhotoViewer(
+                              onTap: () => AppFileViewer(
                                 imageSource: ImageSourceViewer.file,
                                 files: [File(fileAttach.file!.path)],
                               ).show(context),
@@ -533,7 +533,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   child:
                       fileAttach.fileAttach!.mimeType?.contains("image") == true
                           ? InkWell(
-                              onTap: () => AppPhotoViewer(
+                              onTap: () => AppFileViewer(
                                 imageSource: ImageSourceViewer.network,
                                 urls: [urlfile + fileAttach.fileAttach!],
                               ).show(context),

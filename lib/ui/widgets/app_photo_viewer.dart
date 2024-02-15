@@ -1,9 +1,11 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 enum ImageSourceViewer {
   network,
@@ -11,8 +13,8 @@ enum ImageSourceViewer {
   file,
 }
 
-class AppPhotoViewer extends StatelessWidget {
-  const AppPhotoViewer({
+class AppFileViewer extends StatelessWidget {
+  const AppFileViewer({
     Key? key,
     this.urls = const [],
     this.files = const [],
@@ -44,7 +46,7 @@ class AppPhotoViewer extends StatelessWidget {
   show(BuildContext context) {
     Navigator.of(context).push(
       CupertinoPageRoute(
-          builder: (context) => AppPhotoViewer(
+          builder: (context) => AppFileViewer(
                 urls: urls,
                 imageSource: imageSource,
                 files: files,
@@ -151,35 +153,40 @@ class AppPhotoViewer extends StatelessWidget {
         children: [
           PageView.builder(
             itemCount: urls.isNotEmpty ? urls.length : files.length,
-            itemBuilder: (context, index) => PhotoView(
-              imageProvider: imageSource == ImageSourceViewer.network
-                  ? CachedNetworkImageProvider(urls[index])
-                  : imageSource == ImageSourceViewer.asset
-                      ? AssetImage(urls[index]) as ImageProvider
-                      : FileImage(files[index]),
-              loadingBuilder: loadingBuilder,
-              backgroundDecoration: backgroundDecoration,
-              wantKeepAlive: wantKeepAlive,
-              gaplessPlayback: gaplessPlayback,
-              heroAttributes: heroAttributes,
-              scaleStateChangedCallback: scaleStateChangedCallback,
-              enableRotation: enableRotation,
-              maxScale: maxScale,
-              minScale: minScale,
-              initialScale: initialScale,
-              basePosition: basePosition,
-              scaleStateCycle: scaleStateCycle,
-              onTapUp: onTapUp,
-              onTapDown: onTapDown,
-              onScaleEnd: onScaleEnd,
-              customSize: customSize,
-              gestureDetectorBehavior: gestureDetectorBehavior,
-              tightMode: tightMode,
-              filterQuality: filterQuality,
-              disableGestures: disableGestures,
-              errorBuilder: errorBuilder,
-              enablePanAlways: enablePanAlways,
-            ),
+            itemBuilder: (context, index) => _checkIfPdf()
+                ? _FileHandler(
+                    file: urls.isNotEmpty ? urls[index] : files[index],
+                    imageSource: imageSource,
+                  )
+                : PhotoView(
+                    imageProvider: imageSource == ImageSourceViewer.network
+                        ? CachedNetworkImageProvider(urls[index])
+                        : imageSource == ImageSourceViewer.asset
+                            ? AssetImage(urls[index]) as ImageProvider
+                            : FileImage(files[index]),
+                    loadingBuilder: loadingBuilder,
+                    backgroundDecoration: backgroundDecoration,
+                    wantKeepAlive: wantKeepAlive,
+                    gaplessPlayback: gaplessPlayback,
+                    heroAttributes: heroAttributes,
+                    scaleStateChangedCallback: scaleStateChangedCallback,
+                    enableRotation: enableRotation,
+                    maxScale: maxScale,
+                    minScale: minScale,
+                    initialScale: initialScale,
+                    basePosition: basePosition,
+                    scaleStateCycle: scaleStateCycle,
+                    onTapUp: onTapUp,
+                    onTapDown: onTapDown,
+                    onScaleEnd: onScaleEnd,
+                    customSize: customSize,
+                    gestureDetectorBehavior: gestureDetectorBehavior,
+                    tightMode: tightMode,
+                    filterQuality: filterQuality,
+                    disableGestures: disableGestures,
+                    errorBuilder: errorBuilder,
+                    enablePanAlways: enablePanAlways,
+                  ),
           ),
           Align(
             alignment: AlignmentDirectional.topStart,
@@ -187,7 +194,9 @@ class AppPhotoViewer extends StatelessWidget {
               height: 30,
               width: 30,
               margin: EdgeInsetsDirectional.only(start: 24, top: 60),
-              decoration: BoxDecoration(color: context.theme.colorScheme.background, shape: BoxShape.circle),
+              decoration: BoxDecoration(
+                  color: context.theme.colorScheme.background,
+                  shape: BoxShape.circle),
               child: InkWell(
                 onTap: () {
                   Navigator.pop(context);
@@ -205,5 +214,35 @@ class AppPhotoViewer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _checkIfPdf() {
+    if (urls.isNotEmpty) {
+      return urls[0].endsWith('.pdf');
+    } else {
+      return files[0].path.endsWith('.pdf');
+    }
+  }
+}
+
+class _FileHandler extends StatelessWidget {
+  const _FileHandler({
+    Key? key,
+    required this.file,
+    required this.imageSource,
+  });
+
+  final dynamic file;
+  final ImageSourceViewer imageSource;
+
+  @override
+  Widget build(BuildContext context) {
+    return imageSource == ImageSourceViewer.file
+        ? SfPdfViewer.file(
+            file,
+          )
+        : SfPdfViewer.network(
+            file,
+          );
   }
 }

@@ -985,7 +985,7 @@ class _addinvoiceState extends State<addinvoice> {
                                                         false) &&
                                                     !isDeleteCompanyLogo)
                                                 ? InkWell(
-                                                    onTap: () => AppPhotoViewer(
+                                                    onTap: () => AppFileViewer(
                                                         urls: [
                                                           _invoice!.imagelogo!
                                                         ]).show(context),
@@ -1151,7 +1151,7 @@ class _addinvoiceState extends State<addinvoice> {
                                                     false) &&
                                                 !isDeleteRecordCommercial)
                                             ? InkWell(
-                                                onTap: () => AppPhotoViewer(
+                                                onTap: () => AppFileViewer(
                                                     urls: [
                                                       _invoice!.imageRecord!
                                                     ]).show(context),
