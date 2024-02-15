@@ -54,6 +54,7 @@ class invoice_vm extends ChangeNotifier {
   bool isloading_marketing = false;
   UserModel? usercurrent;
   String? typeClientValue;
+
   invoice_vm() {
     //get_invoicesbyRegoin("");
   }
@@ -1230,8 +1231,22 @@ class invoice_vm extends ChangeNotifier {
       String? idInvoice, File? file, File? myfilelogo, List<File> files) async {
     isloadingdone = true;
     notifyListeners();
-    InvoiceModel data = await Invoice_Service()
-        .updateInvoice(body, idInvoice!, file, myfilelogo, files);
+    // upload files first
+    final res1 = await Api().postCrudInvoiceFile(
+      'array',
+      url + "FilesInvoice/crud_files_invoice.php?fk_invoice=$idInvoice",
+      body,
+      file,
+      files: files,
+    );
+    InvoiceModel data = await Invoice_Service().updateInvoice(
+      body,
+      idInvoice!,
+      file,
+      myfilelogo,
+      [], // send empty list to avoid upload files again
+    );
+
     final index = listinvoiceClient
         .indexWhere((element) => element.idInvoice == idInvoice);
     // body.addAll({
@@ -1397,7 +1412,7 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-   Future<void> editSchedule_vm({
+  Future<void> editSchedule_vm({
     required String scheduleId,
     required String dateClientVisit,
     required String processReason,
@@ -1408,11 +1423,10 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
 
     final data = await Invoice_Service().editScheduleInstallation(
-      scheduleId: scheduleId,
-      dateClientVisit: dateClientVisit,
-      typeSchedule: typeDate,
-      processReason: processReason
-    );
+        scheduleId: scheduleId,
+        dateClientVisit: dateClientVisit,
+        typeSchedule: typeDate,
+        processReason: processReason);
 
     onSuccess.call(data);
     isloadingRescheduleOrCancel = false;
@@ -1421,14 +1435,13 @@ class invoice_vm extends ChangeNotifier {
 
   Future<void> cancelSchedule_vm({
     required String scheduleId,
-   required ValueChanged<String> onSuccess,
+    required ValueChanged<String> onSuccess,
   }) async {
     isloadingRescheduleOrCancel = true;
     notifyListeners();
-    final data = await Invoice_Service().cancelScheduleInstallation(
-      scheduleId: scheduleId
-    );
-   onSuccess.call(data);
+    final data = await Invoice_Service()
+        .cancelScheduleInstallation(scheduleId: scheduleId);
+    onSuccess.call(data);
     isloadingRescheduleOrCancel = false;
     notifyListeners();
   }

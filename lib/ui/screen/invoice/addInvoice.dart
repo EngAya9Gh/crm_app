@@ -85,7 +85,8 @@ class _addinvoiceState extends State<addinvoice> {
   final TextEditingController userclientController = TextEditingController();
   final TextEditingController nummostawdaController = TextEditingController();
   final TextEditingController numTaxController = TextEditingController();
-  final TextEditingController renewAdditionalOfBranchesController = TextEditingController();
+  final TextEditingController renewAdditionalOfBranchesController =
+      TextEditingController();
   final TextEditingController renewAgentController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
   final TextEditingController logoController = TextEditingController();
@@ -101,7 +102,8 @@ class _addinvoiceState extends State<addinvoice> {
   ValueNotifier<File?> recordCommercialImageNotifier = ValueNotifier(null);
   InvoiceModel? _invoice = null;
   ValueNotifier<bool> isDeleteCompanyLogoNetworkImage = ValueNotifier(false);
-  ValueNotifier<bool> isDeleteRecordCommercialImageNetworkImage = ValueNotifier(false);
+  ValueNotifier<bool> isDeleteRecordCommercialImageNetworkImage =
+      ValueNotifier(false);
 
   ValueNotifier<bool> isNumberOfBranchesBiggerThanOne = ValueNotifier(false);
   List<String> deletedFiles = [];
@@ -134,7 +136,8 @@ class _addinvoiceState extends State<addinvoice> {
     amount_paidController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
-      Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
+      Provider.of<LoadProvider>(context, listen: false)
+          .changebooladdinvoice(false);
 
       invoiceViewmodel.listproductinvoic = [];
       invoiceViewmodel.set_total('0'.toString());
@@ -150,31 +153,45 @@ class _addinvoiceState extends State<addinvoice> {
       });
 
       if (_invoice != null) {
-        selectedInvoiceSource = _invoice!.invoice_source==null?'':_invoice!.invoice_source;
+        selectedInvoiceSource =
+            _invoice!.invoice_source == null ? '' : _invoice!.invoice_source;
         invoiceViewmodel.initAttachFiles(_invoice!.filesAttach ?? []);
         //in mode edit
         totalController = _invoice!.total.toString();
         // Provider.of<invoice_vm>(context,listen: false).set_total(totalController.toString());
-        numuserController.text = _invoice!.numusers == null ? '' : _invoice!.numusers.toString();
-        nummostawdaController.text = _invoice!.nummostda == null ? '' : _invoice!.nummostda.toString();
+        numuserController.text =
+            _invoice!.numusers == null ? '' : _invoice!.numusers.toString();
+        nummostawdaController.text =
+            _invoice!.nummostda == null ? '' : _invoice!.nummostda.toString();
 
-        numbranchController.text = _invoice!.numbarnch == null ? '' : _invoice!.numbarnch.toString();
-        renewAdditionalOfBranchesController.text = _invoice!.renewPlus == null ? '' : _invoice!.renewPlus.toString();
-        renewAgentController.text = _invoice!.renewPlus == null ? '' : _invoice!.renew_agent.toString();
-        numTaxController.text = _invoice!.numTax == null ? '' : _invoice!.numTax.toString();
-        userclientController.text = _invoice!.clientusername == null ? '' : _invoice!.clientusername.toString();
-        addressController.text = _invoice!.address_invoice == null ? '' : _invoice!.address_invoice.toString();
+        numbranchController.text =
+            _invoice!.numbarnch == null ? '' : _invoice!.numbarnch.toString();
+        renewAdditionalOfBranchesController.text =
+            _invoice!.renewPlus == null ? '' : _invoice!.renewPlus.toString();
+        renewAgentController.text =
+            _invoice!.renewPlus == null ? '' : _invoice!.renew_agent.toString();
+        numTaxController.text =
+            _invoice!.numTax == null ? '' : _invoice!.numTax.toString();
+        userclientController.text = _invoice!.clientusername == null
+            ? ''
+            : _invoice!.clientusername.toString();
+        addressController.text = _invoice!.address_invoice == null
+            ? ''
+            : _invoice!.address_invoice.toString();
 
         amount_paidController.text = _invoice!.amountPaid.toString();
         renewController.text = _invoice!.renewYear.toString();
         renew2Controller.text = _invoice!.renew2year.toString();
 
         typepayController = _invoice!.typePay.toString();
-        currencyController = _invoice!.currency_name == null ? 1 : int.parse(_invoice!.currency_name.toString());
+        currencyController = _invoice!.currency_name == null
+            ? 1
+            : int.parse(_invoice!.currency_name.toString());
 
         typeinstallController = _invoice!.typeInstallation.toString();
 
-        if (_invoice!.ready_install != null) readyinstallController = _invoice!.ready_install!;
+        if (_invoice!.ready_install != null)
+          readyinstallController = _invoice!.ready_install!;
 
         noteController.text = _invoice!.notes.toString();
         imageController.text = _invoice!.imageRecord.toString();
@@ -182,7 +199,8 @@ class _addinvoiceState extends State<addinvoice> {
           ..listproductinvoic = _invoice!.products!
           ..initAdditionalInformation(_invoice!);
 
-        sellerCommissionRate.text = _invoice?.rate_participate != null && _invoice?.rate_participate != ""
+        sellerCommissionRate.text = _invoice?.rate_participate != null &&
+                _invoice?.rate_participate != ""
             ? _invoice!.rate_participate.toString()
             : "";
         // invoiceViewmodel.onChangeSelectedIndex(_invoice!.participate_fk);
@@ -192,7 +210,7 @@ class _addinvoiceState extends State<addinvoice> {
         //     .listinvoiceClient.add(
 
         invoiceViewmodel.initAttachFiles([]);
-        selectedInvoiceSource="";
+        selectedInvoiceSource = "";
         _invoice = InvoiceModel(
           products: [],
           renewYear: renewController.text,
@@ -223,14 +241,16 @@ class _addinvoiceState extends State<addinvoice> {
 
         if (amountPaid > total) {
           amount_paidController.text = total.toString();
-          amount_paidController.selection =
-              TextSelection.fromPosition(TextPosition(offset: amount_paidController.text.length));
+          amount_paidController.selection = TextSelection.fromPosition(
+              TextPosition(offset: amount_paidController.text.length));
         }
       });
-      Provider.of<selected_button_provider>(context, listen: false).selectValuetypepay(int.parse(typepayController));
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuetypepay(int.parse(typepayController));
 
       context.read<selected_button_provider>()
-        ..selectValuereadyinstall(int.parse(readyinstallController), isInit: true)
+        ..selectValuereadyinstall(int.parse(readyinstallController),
+            isInit: true)
         ..selectValuetypeinstall(int.parse(typeinstallController.toString()))
         ..selectValueCurrency(int.parse(currencyController.toString()));
     });
@@ -276,11 +296,14 @@ class _addinvoiceState extends State<addinvoice> {
 
                     children: [
                       ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(kMainColor)),
                           onPressed: () {
                             Navigator.of(context).pushAndRemoveUntil(
                                 CupertinoPageRoute(
-                                  builder: (context) => add_invoiceProduct(invoice: _invoice
+                                  builder: (context) => add_invoiceProduct(
+                                      invoice: _invoice
                                       // Provider.of<invoice_vm>(context,listen: false)
                                       //     .listinvoiceClient[widget.indexinvoice],
                                       // indexinvoic:  widget.indexinvoice,
@@ -320,7 +343,8 @@ class _addinvoiceState extends State<addinvoice> {
                             fontWeight: FontWeight.normal,
                             textstring:
                                 // widget.indexinvoice>=0?
-                                Provider.of<invoice_vm>(context, listen: true).total,
+                                Provider.of<invoice_vm>(context, listen: true)
+                                    .total,
                             //     .listinvoiceClient[widget.indexinvoice]
                             //_invoice!.total.toString(),//totalController,
                             underline: TextDecoration.none,
@@ -354,13 +378,16 @@ class _addinvoiceState extends State<addinvoice> {
                           if (value?.trim().isEmpty ?? true) {
                             return label_empty;
                           }
-                          if (num.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
+                          if (num.tryParse(value.toString()) == null)
+                            return 'من فضلك ادخل عدد';
 
                           if (num.parse(value!) <= 0) {
                             return "يجب إدخال قيمة مناسبة";
                           }
 
-                          final total = num.tryParse(context.read<invoice_vm>().total) ?? 0;
+                          final total =
+                              num.tryParse(context.read<invoice_vm>().total) ??
+                                  0;
                           final amountPaid = num.tryParse(value) ?? 0;
 
                           if (amountPaid > total) {
@@ -384,25 +411,35 @@ class _addinvoiceState extends State<addinvoice> {
                       ),
                       Consumer<invoice_vm>(
                         builder: (context, data, _) {
-                          bool invoiceHaveProductsOfTypePrograms = data.listproductinvoic
-                              .any((element) => element.type == ProductType.program.index.toString());
-                          return RowEdit(name: label_renew, des: invoiceHaveProductsOfTypePrograms ? "*" : ' ');
+                          bool invoiceHaveProductsOfTypePrograms =
+                              data.listproductinvoic.any((element) =>
+                                  element.type ==
+                                  ProductType.program.index.toString());
+                          return RowEdit(
+                              name: label_renew,
+                              des: invoiceHaveProductsOfTypePrograms
+                                  ? "*"
+                                  : ' ');
                         },
                       ),
                       Consumer<invoice_vm>(
                         builder: (context, data, _) {
-                          bool invoiceHaveProductsOfTypePrograms = data.listproductinvoic
-                              .any((element) => element.type == ProductType.program.index.toString());
+                          bool invoiceHaveProductsOfTypePrograms =
+                              data.listproductinvoic.any((element) =>
+                                  element.type ==
+                                  ProductType.program.index.toString());
 
                           return EditTextFormField(
                             hintText: label_renew,
                             obscureText: false,
                             vaild: (value) {
-                              if ((value?.trim() == '0' || (value?.trim().isEmpty ?? true)) &&
+                              if ((value?.trim() == '0' ||
+                                      (value?.trim().isEmpty ?? true)) &&
                                   invoiceHaveProductsOfTypePrograms) {
                                 return 'الحقل مطلوب.';
                               }
-                              if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
+                              if (double.tryParse(value.toString()) == null)
+                                return 'من فضلك ادخل عدد';
 
                               if (num.parse(value!) < 0) {
                                 return "يجب إدخال قيمة أكبر من 0.";
@@ -428,19 +465,26 @@ class _addinvoiceState extends State<addinvoice> {
                       Consumer<invoice_vm>(
                         builder: (context, data, _) {
                           bool invoiceHaveProductsOfTypeResources =
-                              data.listproductinvoic.any((element) => element.typeProdRenew == "resources");
-                          return RowEdit(name: label_renew2year, des: invoiceHaveProductsOfTypeResources ? "*" : ' ');
+                              data.listproductinvoic.any((element) =>
+                                  element.typeProdRenew == "resources");
+                          return RowEdit(
+                              name: label_renew2year,
+                              des: invoiceHaveProductsOfTypeResources
+                                  ? "*"
+                                  : ' ');
                         },
                       ),
                       Consumer<invoice_vm>(builder: (_, data, __) {
                         bool invoiceHaveProductsOfTypeResources =
-                            data.listproductinvoic.any((element) => element.typeProdRenew == "resources");
+                            data.listproductinvoic.any((element) =>
+                                element.typeProdRenew == "resources");
 
                         return EditTextFormField(
                           hintText: label_renew2year,
                           obscureText: false,
                           vaild: (value) {
-                            if ((value?.trim() == '0' || (value?.trim().isEmpty ?? true)) &&
+                            if ((value?.trim() == '0' ||
+                                    (value?.trim().isEmpty ?? true)) &&
                                 invoiceHaveProductsOfTypeResources) {
                               return 'الحقل مطلوب.';
                             }
@@ -457,7 +501,9 @@ class _addinvoiceState extends State<addinvoice> {
                           controller: renew2Controller,
                           //اسم المؤسسة
                           label: label_renew2year,
-                          inputformate: [FilteringTextInputFormatter.digitsOnly],
+                          inputformate: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           onChanged: (val) {
                             // nameprod = val;
                           },
@@ -465,7 +511,6 @@ class _addinvoiceState extends State<addinvoice> {
                       }),
                       SizedBox(height: 5),
                       RowEdit(name: label_invoice_source, des: '*'),
-
 
                       AppDropdownButtonFormField<String, String>(
                         items: sourceClientsList,
@@ -483,12 +528,17 @@ class _addinvoiceState extends State<addinvoice> {
                         borderColor: Colors.grey.shade200,
                         iconColor: Colors.grey,
                         isFilledColor: true,
-                        styleForHintText: TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-
+                        styleForHintText: TextStyle(
+                            color: Colors.black45,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                         validator: HelperFunctions.instance.requiredFiled,
                         itemAsValue: (String? item) => item,
                         itemAsString: (item) => item!,
-                        value: selectedInvoiceSource!=null&& selectedInvoiceSource!.isNotEmpty?selectedInvoiceSource:null,
+                        value: selectedInvoiceSource != null &&
+                                selectedInvoiceSource!.isNotEmpty
+                            ? selectedInvoiceSource
+                            : null,
                       ),
                       SizedBox(height: 5),
                       if (widget.invoice == null) ...{
@@ -507,7 +557,8 @@ class _addinvoiceState extends State<addinvoice> {
                           label: "التعليق",
                           minLines: 4,
                           maxline: 8,
-                          paddcustom: EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                          paddcustom:
+                              EdgeInsets.symmetric(vertical: 20, horizontal: 0),
                         ),
                         10.verticalSpace,
                       },
@@ -526,19 +577,23 @@ class _addinvoiceState extends State<addinvoice> {
                           ],
                           color: Colors.white,
                         ),
-                        child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                        child: Consumer<selected_button_provider>(
+                            builder: (context, selectedProvider, child) {
                           return Directionality(
                             textDirection: TextDirection.ltr,
                             child: GroupButton(
                                 controller: GroupButtonController(
-                                  selectedIndex: selectedProvider.isSelectedtypepay,
+                                  selectedIndex:
+                                      selectedProvider.isSelectedtypepay,
                                   //
                                   // typepayController==null
                                   //    ? 0
                                   //    :
                                   //int.tryParse( typepayController!)
                                 ),
-                                options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                                options: GroupButtonOptions(
+                                    buttonWidth: 110,
+                                    borderRadius: BorderRadius.circular(10)),
                                 buttons: ['نقدا', 'تحويل'],
                                 onSelected: (_, index, isselected) {
                                   //setState(() {
@@ -567,22 +622,27 @@ class _addinvoiceState extends State<addinvoice> {
                           ],
                           color: Colors.white,
                         ),
-                        child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                        child: Consumer<selected_button_provider>(
+                            builder: (context, selectedProvider, child) {
                           return Directionality(
                             textDirection: TextDirection.ltr,
                             child: GroupButton(
                                 controller: GroupButtonController(
-                                  selectedIndex: selectedProvider.isSelectedtypeinstall,
+                                  selectedIndex:
+                                      selectedProvider.isSelectedtypeinstall,
                                   // typeinstallController==null
                                   //     ? 0 :
                                   // int.tryParse( typeinstallController!)
                                 ),
-                                options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                                options: GroupButtonOptions(
+                                    buttonWidth: 110,
+                                    borderRadius: BorderRadius.circular(10)),
                                 buttons: ['ميداني', 'اونلاين'],
                                 onSelected: (_, index, isselected) {
                                   //setState(() {
                                   typeinstallController = index.toString();
-                                  selectedProvider.selectValuetypeinstall(index);
+                                  selectedProvider
+                                      .selectValuetypeinstall(index);
                                   //  });
                                 }),
                           );
@@ -650,17 +710,21 @@ class _addinvoiceState extends State<addinvoice> {
                           ],
                           color: Colors.white,
                         ),
-                        child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                        child: Consumer<selected_button_provider>(
+                            builder: (context, selectedProvider, child) {
                           return Directionality(
                             textDirection: TextDirection.ltr,
                             child: GroupButton(
                                 controller: GroupButtonController(
-                                  selectedIndex: selectedProvider.isSelectCurrency,
+                                  selectedIndex:
+                                      selectedProvider.isSelectCurrency,
                                   // typeinstallController==null
                                   //     ? 0 :
                                   // int.tryParse( typeinstallController!)
                                 ),
-                                options: GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
+                                options: GroupButtonOptions(
+                                    buttonWidth: 110,
+                                    borderRadius: BorderRadius.circular(10)),
                                 buttons: [' USD دولار', '  SAR ريال'],
                                 onSelected: (_, index, isselected) {
                                   //setState(() {
@@ -694,7 +758,9 @@ class _addinvoiceState extends State<addinvoice> {
                                 RowEdit(name: 'عدد الفروع', des: ''),
                                 EditTextFormField(
                                   inputType: TextInputType.number,
-                                  inputformate: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                                  inputformate: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   paddcustom: EdgeInsets.all(16),
                                   hintText: '',
                                   obscureText: false,
@@ -709,7 +775,9 @@ class _addinvoiceState extends State<addinvoice> {
                                 RowEdit(name: 'عدد المستودعات', des: ''),
                                 EditTextFormField(
                                   inputType: TextInputType.number,
-                                  inputformate: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                                  inputformate: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   paddcustom: EdgeInsets.all(16),
                                   hintText: '',
                                   obscureText: false,
@@ -728,7 +796,9 @@ class _addinvoiceState extends State<addinvoice> {
                                 RowEdit(name: 'عدد المستخدمين', des: ''),
                                 EditTextFormField(
                                   inputType: TextInputType.number,
-                                  inputformate: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                                  inputformate: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   paddcustom: EdgeInsets.all(16),
                                   hintText: '',
                                   obscureText: false,
@@ -743,7 +813,9 @@ class _addinvoiceState extends State<addinvoice> {
                                 RowEdit(name: 'الرقم الضريبي', des: ''),
                                 EditTextFormField(
                                   inputType: TextInputType.number,
-                                  inputformate: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                                  inputformate: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   paddcustom: EdgeInsets.all(16),
                                   hintText: '',
                                   obscureText: false,
@@ -773,20 +845,25 @@ class _addinvoiceState extends State<addinvoice> {
                                 offstage: !value,
                                 child: Column(
                                   children: [
-                                    RowEdit(name: 'تجديد الفروع الاضافي', des: "*"),
+                                    RowEdit(
+                                        name: 'تجديد الفروع الاضافي', des: "*"),
                                     EditTextFormField(
                                       inputType: TextInputType.number,
-                                      inputformate: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                                      inputformate: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                       paddcustom: EdgeInsets.all(16),
                                       hintText: '',
                                       obscureText: false,
-                                      controller: renewAdditionalOfBranchesController,
+                                      controller:
+                                          renewAdditionalOfBranchesController,
                                       vaild: (text) {
                                         if (!value) {
                                           return null;
                                         }
 
-                                        if ((text?.trim().isEmpty ?? true) && value) {
+                                        if ((text?.trim().isEmpty ?? true) &&
+                                            value) {
                                           return 'الحقل مطلوب.';
                                         }
                                         if (text?.isEmpty ?? true) return null;
@@ -802,12 +879,14 @@ class _addinvoiceState extends State<addinvoice> {
                               ),
                             );
                           }),
-                      context.read<PrivilegeCubit>().checkPrivilege('76') == true &&
+                      context.read<PrivilegeCubit>().checkPrivilege('76') ==
+                                  true &&
                               _invoice!.idInvoice != null &&
                               _invoice!.userinstall != null
                           ? RowEdit(name: 'يوزر العميل', des: '')
                           : Container(),
-                      context.read<PrivilegeCubit>().checkPrivilege('76') == true &&
+                      context.read<PrivilegeCubit>().checkPrivilege('76') ==
+                                  true &&
                               _invoice!.idInvoice != null &&
                               _invoice!.userinstall != null
                           ? EditTextFormField(
@@ -825,38 +904,50 @@ class _addinvoiceState extends State<addinvoice> {
                           valueListenable: companyLogoNotifier,
                           builder: (context, companyLogo, _) {
                             return ValueListenableBuilder<bool>(
-                                valueListenable: isDeleteCompanyLogoNetworkImage,
+                                valueListenable:
+                                    isDeleteCompanyLogoNetworkImage,
                                 builder: (context, isDeleteCompanyLogo, _) {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       if (companyLogo != null ||
-                                          ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogo)) ...{
+                                          ((_invoice!.imagelogo?.isNotEmpty ??
+                                                  false) &&
+                                              !isDeleteCompanyLogo)) ...{
                                         Column(
                                           children: [
                                             InkWell(
-                                              onTap: () => pickImage((context, file) => onPickCompanyLogo(file)),
-                                              borderRadius: BorderRadius.circular(90),
+                                              onTap: () => pickImage(
+                                                  (context, file) =>
+                                                      onPickCompanyLogo(file)),
+                                              borderRadius:
+                                                  BorderRadius.circular(90),
                                               child: Container(
                                                 height: 40,
                                                 width: 40,
-                                                margin: EdgeInsets.only(top: 10, right: 15),
+                                                margin: EdgeInsets.only(
+                                                    top: 10, right: 15),
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey.shade200,
                                                   shape: BoxShape.circle,
                                                 ),
                                                 alignment: Alignment.center,
-                                                child: Icon(Icons.attachment_rounded,
-                                                    color: Colors.grey.shade700, size: 20),
+                                                child: Icon(
+                                                    Icons.attachment_rounded,
+                                                    color: Colors.grey.shade700,
+                                                    size: 20),
                                               ),
                                             ),
                                             InkWell(
-                                              onTap: () => onDeleteCompanyLogo(),
-                                              borderRadius: BorderRadius.circular(90),
+                                              onTap: () =>
+                                                  onDeleteCompanyLogo(),
+                                              borderRadius:
+                                                  BorderRadius.circular(90),
                                               child: Container(
                                                 height: 40,
                                                 width: 40,
-                                                margin: EdgeInsets.only(top: 10, right: 15),
+                                                margin: EdgeInsets.only(
+                                                    top: 10, right: 15),
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey.shade200,
                                                   shape: BoxShape.circle,
@@ -883,34 +974,62 @@ class _addinvoiceState extends State<addinvoice> {
                                         alignment: Alignment.center,
                                         child: companyLogo != null
                                             ? ClipOval(
-                                                child:
-                                                    Image.file(companyLogo, fit: BoxFit.cover, height: 150, width: 150))
-                                            : ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogo)
+                                                child: Image.file(companyLogo,
+                                                    fit: BoxFit.cover,
+                                                    height: 150,
+                                                    width: 150))
+                                            : ((_invoice!.imagelogo
+                                                            ?.isNotEmpty ??
+                                                        false) &&
+                                                    !isDeleteCompanyLogo)
                                                 ? InkWell(
-                                                    onTap: () =>
-                                                        AppPhotoViewer(urls: [_invoice!.imagelogo!]).show(context),
+                                                    onTap: () => AppPhotoViewer(
+                                                        urls: [
+                                                          _invoice!.imagelogo!
+                                                        ]).show(context),
                                                     child: ClipOval(
-                                                      child: FancyImageShimmerViewer(
-                                                        imageUrl: _invoice!.imagelogo!,
+                                                      child:
+                                                          FancyImageShimmerViewer(
+                                                        imageUrl: _invoice!
+                                                            .imagelogo!,
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
                                                   )
                                                 : InkWell(
-                                                    borderRadius: BorderRadius.circular(15),
-                                                    onTap: () => pickImage((context, file) => onPickCompanyLogo(file)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    onTap: () => pickImage(
+                                                        (context, file) =>
+                                                            onPickCompanyLogo(
+                                                                file)),
                                                     child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
                                                       children: [
-                                                        Icon(Icons.attachment_rounded,
-                                                            color: Colors.grey.shade700, size: 35),
+                                                        Icon(
+                                                            Icons
+                                                                .attachment_rounded,
+                                                            color: Colors
+                                                                .grey.shade700,
+                                                            size: 35),
                                                         SizedBox(height: 0),
                                                         Text(
                                                           'Attach logo',
-                                                          style: context.textTheme.titleMedium?.copyWith(
-                                                              fontFamily: kfontfamily2,
-                                                              fontWeight: FontWeight.w700,
-                                                              color: Colors.grey.shade600),
+                                                          style: context
+                                                              .textTheme
+                                                              .titleMedium
+                                                              ?.copyWith(
+                                                                  fontFamily:
+                                                                      kfontfamily2,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Colors
+                                                                      .grey
+                                                                      .shade600),
                                                         )
                                                       ],
                                                     ),
@@ -927,8 +1046,10 @@ class _addinvoiceState extends State<addinvoice> {
                           valueListenable: recordCommercialImageNotifier,
                           builder: (context, recordCommercialImage, _) {
                             return ValueListenableBuilder<bool>(
-                                valueListenable: isDeleteRecordCommercialImageNetworkImage,
-                                builder: (context, isDeleteRecordCommercial, _) {
+                                valueListenable:
+                                    isDeleteRecordCommercialImageNetworkImage,
+                                builder:
+                                    (context, isDeleteRecordCommercial, _) {
                                   return Container(
                                     height: 200,
                                     decoration: BoxDecoration(
@@ -941,47 +1062,78 @@ class _addinvoiceState extends State<addinvoice> {
                                             children: [
                                               Positioned.fill(
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(15),
-                                                  child: Image.file(recordCommercialImage, fit: BoxFit.cover),
+                                                  borderRadius:
+                                                      BorderRadius.circular(15),
+                                                  child: Image.file(
+                                                      recordCommercialImage,
+                                                      fit: BoxFit.cover),
                                                 ),
                                               ),
                                               Positioned.fill(
                                                 child: Align(
                                                   alignment: Alignment.topRight,
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: [
                                                       InkWell(
                                                         onTap: () => pickImage(
-                                                            (context, file) => onPickCommercialRecordImage(file)),
-                                                        borderRadius: BorderRadius.circular(90),
+                                                            (context, file) =>
+                                                                onPickCommercialRecordImage(
+                                                                    file)),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(90),
                                                         child: Container(
                                                           height: 40,
                                                           width: 40,
-                                                          margin: EdgeInsets.only(top: 10, right: 15),
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.grey.shade50,
-                                                            shape: BoxShape.circle,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: 10,
+                                                                  right: 15),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors
+                                                                .grey.shade50,
+                                                            shape:
+                                                                BoxShape.circle,
                                                           ),
-                                                          alignment: Alignment.center,
-                                                          child: Icon(Icons.attachment_rounded,
-                                                              color: Colors.grey.shade700, size: 20),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Icon(
+                                                              Icons
+                                                                  .attachment_rounded,
+                                                              color: Colors.grey
+                                                                  .shade700,
+                                                              size: 20),
                                                         ),
                                                       ),
                                                       InkWell(
-                                                        onTap: () => onDeleteCommercialRecordImage(),
-                                                        borderRadius: BorderRadius.circular(90),
+                                                        onTap: () =>
+                                                            onDeleteCommercialRecordImage(),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(90),
                                                         child: Container(
                                                           height: 40,
                                                           width: 40,
-                                                          margin: EdgeInsets.only(top: 10, left: 15),
-                                                          decoration: BoxDecoration(
-                                                            color: Colors.grey.shade50,
-                                                            shape: BoxShape.circle,
+                                                          margin:
+                                                              EdgeInsets.only(
+                                                                  top: 10,
+                                                                  left: 15),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors
+                                                                .grey.shade50,
+                                                            shape:
+                                                                BoxShape.circle,
                                                           ),
-                                                          alignment: Alignment.center,
+                                                          alignment:
+                                                              Alignment.center,
                                                           child: Icon(
-                                                            Icons.delete_rounded,
+                                                            Icons
+                                                                .delete_rounded,
                                                             color: Colors.red,
                                                             size: 20,
                                                           ),
@@ -993,59 +1145,110 @@ class _addinvoiceState extends State<addinvoice> {
                                               ),
                                             ],
                                           )
-                                        : ((_invoice!.imageRecord?.isNotEmpty ?? false) && !isDeleteRecordCommercial)
+                                        : ((_invoice!.imageRecord?.isNotEmpty ??
+                                                    false) &&
+                                                !isDeleteRecordCommercial)
                                             ? InkWell(
-                                                onTap: () =>
-                                                    AppPhotoViewer(urls: [_invoice!.imageRecord!]).show(context),
+                                                onTap: () => AppPhotoViewer(
+                                                    urls: [
+                                                      _invoice!.imageRecord!
+                                                    ]).show(context),
                                                 child: Stack(
                                                   children: [
                                                     Positioned.fill(
                                                       child: ClipRRect(
-                                                        borderRadius: BorderRadius.circular(15),
-                                                        child: FancyImageShimmerViewer(
-                                                          imageUrl: _invoice!.imageRecord!,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                        child:
+                                                            FancyImageShimmerViewer(
+                                                          imageUrl: _invoice!
+                                                              .imageRecord!,
                                                           fit: BoxFit.cover,
                                                         ),
                                                       ),
                                                     ),
-                                                    if (context.read<PrivilegeCubit>().checkPrivilege('146'))
+                                                    if (context
+                                                        .read<PrivilegeCubit>()
+                                                        .checkPrivilege('146'))
                                                       Positioned.fill(
                                                         child: Align(
-                                                          alignment: Alignment.topRight,
+                                                          alignment: Alignment
+                                                              .topRight,
                                                           child: Row(
                                                             children: [
                                                               InkWell(
-                                                                onTap: () => pickImage((context, file) =>
-                                                                    onPickCommercialRecordImage(file)),
-                                                                borderRadius: BorderRadius.circular(90),
-                                                                child: Container(
+                                                                onTap: () => pickImage((context,
+                                                                        file) =>
+                                                                    onPickCommercialRecordImage(
+                                                                        file)),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            90),
+                                                                child:
+                                                                    Container(
                                                                   height: 40,
                                                                   width: 40,
-                                                                  margin: EdgeInsets.only(top: 10, right: 15),
-                                                                  decoration: BoxDecoration(
-                                                                    color: Colors.grey.shade50,
-                                                                    shape: BoxShape.circle,
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          top:
+                                                                              10,
+                                                                          right:
+                                                                              15),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade50,
+                                                                    shape: BoxShape
+                                                                        .circle,
                                                                   ),
-                                                                  alignment: Alignment.center,
-                                                                  child: Icon(Icons.attachment_rounded,
-                                                                      color: Colors.grey.shade700, size: 20),
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .attachment_rounded,
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .shade700,
+                                                                      size: 20),
                                                                 ),
                                                               ),
                                                               InkWell(
-                                                                onTap: () => onDeleteCommercialRecordImage(),
-                                                                borderRadius: BorderRadius.circular(90),
-                                                                child: Container(
+                                                                onTap: () =>
+                                                                    onDeleteCommercialRecordImage(),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            90),
+                                                                child:
+                                                                    Container(
                                                                   height: 40,
                                                                   width: 40,
-                                                                  margin: EdgeInsets.only(top: 10, right: 15),
-                                                                  decoration: BoxDecoration(
-                                                                    color: Colors.grey.shade50,
-                                                                    shape: BoxShape.circle,
+                                                                  margin: EdgeInsets
+                                                                      .only(
+                                                                          top:
+                                                                              10,
+                                                                          right:
+                                                                              15),
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .shade50,
+                                                                    shape: BoxShape
+                                                                        .circle,
                                                                   ),
-                                                                  alignment: Alignment.center,
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .center,
                                                                   child: Icon(
-                                                                    Icons.delete_rounded,
-                                                                    color: Colors.red,
+                                                                    Icons
+                                                                        .delete_rounded,
+                                                                    color: Colors
+                                                                        .red,
                                                                     size: 20,
                                                                   ),
                                                                 ),
@@ -1058,21 +1261,35 @@ class _addinvoiceState extends State<addinvoice> {
                                                 ),
                                               )
                                             : InkWell(
-                                                borderRadius: BorderRadius.circular(15),
-                                                onTap: () =>
-                                                    pickImage((context, file) => onPickCommercialRecordImage(file)),
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                onTap: () => pickImage((context,
+                                                        file) =>
+                                                    onPickCommercialRecordImage(
+                                                        file)),
                                                 child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
                                                   children: [
-                                                    Icon(Icons.attachment_rounded,
-                                                        color: Colors.grey.shade700, size: 35),
+                                                    Icon(
+                                                        Icons
+                                                            .attachment_rounded,
+                                                        color: Colors
+                                                            .grey.shade700,
+                                                        size: 35),
                                                     SizedBox(height: 0),
                                                     Text(
                                                       'Attach image',
-                                                      style: context.textTheme.titleMedium?.copyWith(
-                                                          fontFamily: kfontfamily2,
-                                                          fontWeight: FontWeight.w700,
-                                                          color: Colors.grey.shade600),
+                                                      style: context
+                                                          .textTheme.titleMedium
+                                                          ?.copyWith(
+                                                              fontFamily:
+                                                                  kfontfamily2,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: Colors.grey
+                                                                  .shade600),
                                                     )
                                                   ],
                                                 ),
@@ -1102,7 +1319,8 @@ class _addinvoiceState extends State<addinvoice> {
                                 padding: EdgeInsets.only(left: 2, right: 2),
                                 margin: EdgeInsets.zero,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(12)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
                                   boxShadow: <BoxShadow>[
                                     BoxShadow(
                                       offset: Offset(1.0, 1.0),
@@ -1113,15 +1331,21 @@ class _addinvoiceState extends State<addinvoice> {
                                   color: Colors.white,
                                 ),
                                 child: GroupButton(
-                                  controller: GroupButtonController(selectedIndex: selectedSellerType?.index),
+                                  controller: GroupButtonController(
+                                      selectedIndex: selectedSellerType?.index),
                                   options: GroupButtonOptions(
-                                    buttonWidth: (MediaQuery.of(context).size.width - 130) / 4,
+                                    buttonWidth:
+                                        (MediaQuery.of(context).size.width -
+                                                130) /
+                                            4,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   buttons: ['موزع', 'وكيل', 'متعاون', 'موظف'],
                                   onSelected: (_, index, isselected) {
                                     invoiceViewmodel.onChangeSellerType(
-                                        SellerType.values.firstWhere((element) => element.index == index));
+                                        SellerType.values.firstWhere(
+                                            (element) =>
+                                                element.index == index));
                                   },
                                 ),
                               ),
@@ -1131,28 +1355,36 @@ class _addinvoiceState extends State<addinvoice> {
                       Consumer<invoice_vm>(builder: (context, invoice, _) {
                         final sellerStatus = invoice.sellerStatus;
                         final selectedSellerType = invoice.selectedSellerType;
-                        final bool isCollaborate = selectedSellerType == SellerType.collaborator;
+                        final bool isCollaborate =
+                            selectedSellerType == SellerType.collaborator;
 
-                        final collaboratesList = invoice.collaboratorsState.data ?? [];
-                        final agentsList = invoice.agentDistributorsState.data ?? [];
+                        final collaboratesList =
+                            invoice.collaboratorsState.data ?? [];
+                        final agentsList =
+                            invoice.agentDistributorsState.data ?? [];
                         List<AgentDistributorModel> agentsListtemp = [];
 
                         agentsList.forEach((element) {
-                          if (element.typeAgent == invoice.selectedSellerType!.index.toString())
+                          if (element.typeAgent ==
+                              invoice.selectedSellerType!.index.toString())
                             agentsListtemp.add(element);
                         });
-                        final selectedAgent = selectedSellerType == SellerType.distributor
-                            ? invoice.selectedDistributor
-                            : invoice.selectedAgent;
+                        final selectedAgent =
+                            selectedSellerType == SellerType.distributor
+                                ? invoice.selectedDistributor
+                                : invoice.selectedAgent;
 
-                        final selectedCollaborate = invoice.selectedCollaborator;
-                        if (selectedSellerType != null && selectedSellerType != SellerType.employee)
+                        final selectedCollaborate =
+                            invoice.selectedCollaborator;
+                        if (selectedSellerType != null &&
+                            selectedSellerType != SellerType.employee)
                           return Column(
                             children: [
                               RowEdit(
                                   name: selectedSellerType == SellerType.agent
                                       ? "اسم الوكيل"
-                                      : selectedSellerType == SellerType.collaborator
+                                      : selectedSellerType ==
+                                              SellerType.collaborator
                                           ? "اسم المتعاون"
                                           : "اسم الموزع"),
                               SizedBox(height: 5),
@@ -1184,9 +1416,11 @@ class _addinvoiceState extends State<addinvoice> {
                                   return Column(
                                     children: [
                                       RowEdit(
-                                          name: selectedSellerType == SellerType.agent
+                                          name: selectedSellerType ==
+                                                  SellerType.agent
                                               ? "نسبة عمولة الوكيل"
-                                              : selectedSellerType == SellerType.collaborator
+                                              : selectedSellerType ==
+                                                      SellerType.collaborator
                                                   ? "نسبة عمولة المتعاون"
                                                   : "نسبة عمولة الموزع"),
                                       SizedBox(height: 5),
@@ -1197,13 +1431,15 @@ class _addinvoiceState extends State<addinvoice> {
                                         readOnly: false,
                                         validator: (text) {
                                           if (text?.trim().isEmpty ?? true) {
-                                            if (selectedSellerType == SellerType.employee) {
+                                            if (selectedSellerType ==
+                                                SellerType.employee) {
                                               return null;
                                             }
                                             return "هذا الحقل مطلوب.";
                                           }
 
-                                          if (num.tryParse(text ?? "0") == null) return "أدخل رقم صحيح.";
+                                          if (num.tryParse(text ?? "0") == null)
+                                            return "أدخل رقم صحيح.";
 
                                           if (num.parse(text!) <= 0) {
                                             return "يجب إدخال قيمة أكبر من 0.";
@@ -1214,30 +1450,44 @@ class _addinvoiceState extends State<addinvoice> {
                                           return null;
                                         },
                                         keyboardType: TextInputType.number,
-                                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.all(10),
                                           hintStyle: const TextStyle(
-                                              color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                              color: Colors.black45,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
                                           hintText: '',
                                           filled: true,
                                           fillColor: Colors.grey.shade200,
                                           enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                              borderSide: const BorderSide(color: Colors.white)),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.white)),
                                           focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                              borderSide: const BorderSide(color: Colors.white)),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.white)),
                                           errorBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                              borderSide: const BorderSide(color: Colors.white)),
-                                          focusedErrorBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10),
-                                              borderSide: const BorderSide(color: Colors.white)),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              borderSide: const BorderSide(
+                                                  color: Colors.white)),
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.white)),
                                         ),
                                       ),
                                       SizedBox(height: 10),
-                                      if (selectedSellerType == SellerType.agent) ...{
+                                      if (selectedSellerType ==
+                                          SellerType.agent) ...{
                                         RowEdit(name: "نسبة الوكيل من التجديد"),
                                         SizedBox(height: 5),
                                         TextFormField(
@@ -1247,13 +1497,15 @@ class _addinvoiceState extends State<addinvoice> {
                                           readOnly: false,
                                           validator: (text) {
                                             if (text?.trim().isEmpty ?? true) {
-                                              if (selectedSellerType != SellerType.agent) {
+                                              if (selectedSellerType !=
+                                                  SellerType.agent) {
                                                 return null;
                                               }
                                               return "هذا الحقل مطلوب.";
                                             }
 
-                                            if (num.tryParse(text ?? "0") == null) return "أدخل رقم صحيح.";
+                                            if (num.tryParse(text ?? "0") ==
+                                                null) return "أدخل رقم صحيح.";
 
                                             if (num.parse(text!) <= 0) {
                                               return "يجب إدخال قيمة أكبر من 0.";
@@ -1264,26 +1516,43 @@ class _addinvoiceState extends State<addinvoice> {
                                             return null;
                                           },
                                           keyboardType: TextInputType.number,
-                                          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly
+                                          ],
                                           decoration: InputDecoration(
                                             contentPadding: EdgeInsets.all(10),
                                             hintStyle: const TextStyle(
-                                                color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                                color: Colors.black45,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
                                             hintText: '',
                                             filled: true,
                                             fillColor: Colors.grey.shade200,
                                             enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10),
-                                                borderSide: const BorderSide(color: Colors.white)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                    color: Colors.white)),
                                             focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10),
-                                                borderSide: const BorderSide(color: Colors.white)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                    color: Colors.white)),
                                             errorBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10),
-                                                borderSide: const BorderSide(color: Colors.white)),
-                                            focusedErrorBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(10),
-                                                borderSide: const BorderSide(color: Colors.white)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                borderSide: const BorderSide(
+                                                    color: Colors.white)),
+                                            focusedErrorBorder:
+                                                OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    borderSide:
+                                                        const BorderSide(
+                                                            color:
+                                                                Colors.white)),
                                           ),
                                         ),
                                       },
@@ -1303,36 +1572,47 @@ class _addinvoiceState extends State<addinvoice> {
                           children: [
                             TextButton(
                               style: ButtonStyle(
-                                padding: MaterialStateProperty.all(const EdgeInsets.all(0)),
+                                padding: MaterialStateProperty.all(
+                                    const EdgeInsets.all(0)),
                                 elevation: MaterialStateProperty.all(8),
                                 shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(75))),
-                                backgroundColor: MaterialStateProperty.all(Colors.lightBlue),
-                                shadowColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onSurface),
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(75))),
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.lightBlue),
+                                shadowColor: MaterialStateProperty.all(
+                                    Theme.of(context).colorScheme.onSurface),
                               ),
                               child: Text(
                                 'حفظ',
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () async {
-                                final validate = _globalKey.currentState!.validate();
+                                final validate =
+                                    _globalKey.currentState!.validate();
                                 if (validate) {
-                                  typepayController = Provider.of<selected_button_provider>(context, listen: false)
-                                      .isSelectedtypepay
-                                      .toString();
+                                  typepayController =
+                                      Provider.of<selected_button_provider>(
+                                              context,
+                                              listen: false)
+                                          .isSelectedtypepay
+                                          .toString();
 
-                                  typeinstallController = Provider.of<selected_button_provider>(context, listen: false)
-                                      .isSelectedtypeinstall
-                                      .toString();
-                                  // if (invoiceViewmodel.selectedSellerType == null) {
-                                  //   ScaffoldMessenger.of(context)
-                                  //       .showSnackBar(SnackBar(content: Text('من فضلك اختر نوع البائع')));
-                                  //   return;
-                                  // }
+                                  typeinstallController =
+                                      Provider.of<selected_button_provider>(
+                                              context,
+                                              listen: false)
+                                          .isSelectedtypeinstall
+                                          .toString();
 
-                                  if ((_invoice!.products != null) && (_invoice!.products!.isNotEmpty)) {
-                                    Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(true);
-                                    totalController = _invoice!.total.toString();
+                                  if ((_invoice!.products != null) &&
+                                      (_invoice!.products!.isNotEmpty)) {
+                                    Provider.of<LoadProvider>(context,
+                                            listen: false)
+                                        .changebooladdinvoice(true);
+                                    totalController =
+                                        _invoice!.total.toString();
                                     _globalKey.currentState!.save();
                                     List<ProductsInvoice>? _products = [];
                                     _products = _invoice!.products;
@@ -1346,86 +1626,162 @@ class _addinvoiceState extends State<addinvoice> {
                                     if (_invoice?.idInvoice != null) {
                                       String? invoiceID = _invoice!.idInvoice;
                                       final body = {
-                                        "name_enterprise": widget.itemClient.nameEnterprise,
-                                        "name_client": widget.itemClient.nameClient.toString(),
+                                        "name_enterprise":
+                                            widget.itemClient.nameEnterprise,
+                                        "name_client": widget
+                                            .itemClient.nameClient
+                                            .toString(),
                                         "nameUser": user.currentUser.nameUser,
-                                        "renew_year": renewController.text.toString(),
-                                        "renew2year": renew2Controller.text.toString(),
-                                        "type_pay": typepayController.toString(),
+                                        "renew_year":
+                                            renewController.text.toString(),
+                                        "renew2year":
+                                            renew2Controller.text.toString(),
+                                        "type_pay":
+                                            typepayController.toString(),
                                         // "date_create": DateTime.now().toString(),
-                                        "type_installation": typeinstallController.toString(),
-                                        "ready_install": _invoice!.ready_install,
+                                        "type_installation":
+                                            typeinstallController.toString(),
+                                        "ready_install":
+                                            _invoice!.ready_install,
                                         // "user_not_ready_install": Provider.of<user_vm_provider>(context, listen: false)
                                         //     .currentUser
                                         //     .idUser
                                         //     .toString(),
-                                        "currency_name": currencyController.toString(),
+                                        "currency_name":
+                                            currencyController.toString(),
 
                                         /////////////////////////////////////////////////////////////////////
-                                        "amount_paid": amount_paidController.text.toString(),
-                                        'fk_regoin': widget.invoice!.fk_regoin.toString(),
-                                        'fk_regoin_invoice': widget.invoice?.fk_regoin_invoice,
-                                        'region_invoice_name': widget.invoice!.name_regoin_invoice,
-                                        'fkcountry': widget.invoice!.fk_country.toString(),
-                                        "fk_idClient": widget.itemClient.idClients.toString(),
+                                        "amount_paid": amount_paidController
+                                            .text
+                                            .toString(),
+                                        'fk_regoin': widget.invoice!.fk_regoin
+                                            .toString(),
+                                        'fk_regoin_invoice':
+                                            widget.invoice?.fk_regoin_invoice,
+                                        'region_invoice_name':
+                                            widget.invoice!.name_regoin_invoice,
+                                        'fkcountry': widget.invoice!.fk_country
+                                            .toString(),
+                                        "fk_idClient": widget
+                                            .itemClient.idClients
+                                            .toString(),
                                         "fk_idUser": user.currentUser.idUser,
-                                        "image_record": widget.invoice!.imageRecord.toString(),
-                                        "lastuserupdate": Provider.of<UserProvider>(context, listen: false)
-                                            .currentUser
-                                            .idUser
+                                        "image_record": widget
+                                            .invoice!.imageRecord
                                             .toString(),
-                                        "lastnameuser": Provider.of<UserProvider>(context, listen: false)
-                                            .currentUser
-                                            .nameUser
-                                            .toString(),
+                                        "lastuserupdate":
+                                            Provider.of<UserProvider>(context,
+                                                    listen: false)
+                                                .currentUser
+                                                .idUser
+                                                .toString(),
+                                        "lastnameuser":
+                                            Provider.of<UserProvider>(context,
+                                                    listen: false)
+                                                .currentUser
+                                                .nameUser
+                                                .toString(),
                                         "total": totalController,
                                         "notes": noteController.text.toString(),
                                         "id_invoice": invoiceID,
-                                        'imagelogo': widget.invoice!.imagelogo.toString(),
-                                        'numbarnch': numbranchController.text.toString(),
-                                        'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
-                                        'nummostda': nummostawdaController.text.toString(),
-                                        'numusers': numuserController.text.toString(),
-                                        'numTax': numTaxController.text.toString(),
-                                        'address_invoice': addressController.text.toString(),
-                                        'clientusername': userclientController.text.toString(),
-                                        'date_lastuserupdate': DateTime.now().toString(),
+                                        'imagelogo': widget.invoice!.imagelogo
+                                            .toString(),
+                                        'numbarnch':
+                                            numbranchController.text.toString(),
+                                        'renew_pluse':
+                                            renewAdditionalOfBranchesController
+                                                .text
+                                                .toString(),
+                                        'nummostda': nummostawdaController.text
+                                            .toString(),
+                                        'numusers':
+                                            numuserController.text.toString(),
+                                        'numTax':
+                                            numTaxController.text.toString(),
+                                        'address_invoice':
+                                            addressController.text.toString(),
+                                        'clientusername': userclientController
+                                            .text
+                                            .toString(),
+                                        'date_lastuserupdate':
+                                            DateTime.now().toString(),
                                         'invoice_source': selectedInvoiceSource,
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
-                                            invoiceViewmodel.selectedCollaborator?.id_participate != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
-                                            invoiceViewmodel.selectedAgent != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
-                                            invoiceViewmodel.selectedDistributor != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                        if (invoiceViewmodel.selectedSellerType ==
+                                                SellerType.collaborator &&
+                                            invoiceViewmodel.selectedCollaborator
+                                                    ?.id_participate !=
+                                                null)
+                                          'type_seller': invoiceViewmodel
+                                              .selectedSellerType?.index
+                                              .toString()
+                                        else if (invoiceViewmodel
+                                                    .selectedSellerType ==
+                                                SellerType.agent &&
+                                            invoiceViewmodel.selectedAgent !=
+                                                null)
+                                          'type_seller':
+                                              invoiceViewmodel
+                                                  .selectedSellerType?.index
+                                                  .toString()
+                                        else if (invoiceViewmodel
+                                                    .selectedSellerType ==
+                                                SellerType.distributor &&
+                                            invoiceViewmodel
+                                                    .selectedDistributor !=
+                                                null)
+                                          'type_seller': invoiceViewmodel
+                                              .selectedSellerType?.index
+                                              .toString()
                                         else
                                           'type_seller': "3",
                                         // widget.invoice?.type_seller != "3" ? null.toString() : '3',
                                         // type seller is employee,
 
-                                        if (sellerCommissionRate.text.isNotEmpty &&
-                                            invoiceViewmodel.selectedSellerType != SellerType.employee)
-                                          'rate_participate': sellerCommissionRate.text,
+                                        if (sellerCommissionRate
+                                                .text.isNotEmpty &&
+                                            invoiceViewmodel
+                                                    .selectedSellerType !=
+                                                SellerType.employee)
+                                          'rate_participate':
+                                              sellerCommissionRate.text,
 
-                                        if (renewAgentController.text.isNotEmpty &&
-                                            invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                          'renew_agent': renewAgentController.text,
+                                        if (renewAgentController
+                                                .text.isNotEmpty &&
+                                            invoiceViewmodel
+                                                    .selectedSellerType ==
+                                                SellerType.agent)
+                                          'renew_agent':
+                                              renewAgentController.text,
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-                                          'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+                                        if (invoiceViewmodel
+                                                .selectedSellerType ==
+                                            SellerType.agent)
+                                          'fk_agent': invoiceViewmodel
+                                              .selectedAgent?.idAgent
+                                              .toString()
+                                        else if (invoiceViewmodel
+                                                .selectedSellerType ==
+                                            SellerType.distributor)
+                                          'fk_agent': invoiceViewmodel
+                                              .selectedDistributor?.idAgent
+                                              .toString(),
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                          'participate_fk':
-                                              invoiceViewmodel.selectedCollaborator?.id_participate.toString()
+                                        if (invoiceViewmodel
+                                                .selectedSellerType ==
+                                            SellerType.collaborator)
+                                          'participate_fk': invoiceViewmodel
+                                              .selectedCollaborator
+                                              ?.id_participate
+                                              .toString()
                                         else
                                           'participate_fk': null.toString(),
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator ||
-                                            invoiceViewmodel.selectedSellerType == SellerType.employee)
+                                        if (invoiceViewmodel
+                                                    .selectedSellerType ==
+                                                SellerType.collaborator ||
+                                            invoiceViewmodel
+                                                    .selectedSellerType ==
+                                                SellerType.employee)
                                           'fk_agent': null.toString(),
 
                                         ...deleteFilesMap,
@@ -1442,91 +1798,167 @@ class _addinvoiceState extends State<addinvoice> {
                                             recordCommercialImageNotifier.value,
                                             companyLogoNotifier.value,
                                             invoiceViewmodel.filesAttach
-                                                .where((element) => element.file != null)
+                                                .where((element) =>
+                                                    element.file != null)
                                                 .map((e) => File(e.file!.path))
                                                 .toList(),
                                           )
                                           .then((value) => value != false
-                                              ? clear(context, invoiceID.toString(), _products)
+                                              ? clear(
+                                                  context,
+                                                  invoiceID.toString(),
+                                                  _products)
                                               : error(context));
                                     } else {
                                       var body = {
-                                        "name_enterprise": widget.itemClient.nameEnterprise,
-                                        "name_client": widget.itemClient.nameClient.toString(),
+                                        "name_enterprise":
+                                            widget.itemClient.nameEnterprise,
+                                        "name_client": widget
+                                            .itemClient.nameClient
+                                            .toString(),
                                         "nameUser": user.currentUser.nameUser,
                                         "comment": comment.text,
                                         //widget.itemClient.nameUser,
-                                        "renew_year": renewController.text.toString(),
-                                        "renew2year": renew2Controller.text.toString(),
+                                        "renew_year":
+                                            renewController.text.toString(),
+                                        "renew2year":
+                                            renew2Controller.text.toString(),
                                         "type_pay": typepayController,
-                                        "date_create": DateTime.now().toString(),
+                                        "date_create":
+                                            DateTime.now().toString(),
                                         //formatter.format(_currentDate),
-                                        "type_installation": typeinstallController.toString(),
-                                        "ready_install": readyinstallController.toString(),
-                                        "currency_name": currencyController.toString(),
+                                        "type_installation":
+                                            typeinstallController.toString(),
+                                        "ready_install":
+                                            readyinstallController.toString(),
+                                        "currency_name":
+                                            currencyController.toString(),
 
-                                        "amount_paid": amount_paidController.text.toString(),
-                                        "image_record": recordCommercialImageNotifier.value?.path.toString() ?? '',
-                                        "fk_idClient": widget.itemClient.idClients.toString(),
+                                        "amount_paid": amount_paidController
+                                            .text
+                                            .toString(),
+                                        "image_record":
+                                            recordCommercialImageNotifier
+                                                    .value?.path
+                                                    .toString() ??
+                                                '',
+                                        "fk_idClient": widget
+                                            .itemClient.idClients
+                                            .toString(),
                                         "fk_idUser": user.currentUser.idUser,
                                         //the same user that create a client not current user
                                         "total": totalController.toString(),
                                         "notes": noteController.text.toString(),
-                                        'fk_regoin': widget.itemClient.fkRegoin.toString(),
-                                        'fk_regoin_invoice': user.currentUser.fkRegoin,
-                                        'region_invoice_name': user.currentUser.nameRegoin,
-                                        'fkcountry': widget.itemClient.fkcountry.toString(),
-                                        'numbarnch': numbranchController.text.toString(),
-                                        'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
-                                        'nummostda': nummostawdaController.text.toString(),
-                                        'numusers': numuserController.text.toString(),
-                                        'address_invoice': addressController.text.toString(),
+                                        'fk_regoin': widget.itemClient.fkRegoin
+                                            .toString(),
+                                        'fk_regoin_invoice':
+                                            user.currentUser.fkRegoin,
+                                        'region_invoice_name':
+                                            user.currentUser.nameRegoin,
+                                        'fkcountry': widget.itemClient.fkcountry
+                                            .toString(),
+                                        'numbarnch':
+                                            numbranchController.text.toString(),
+                                        'renew_pluse':
+                                            renewAdditionalOfBranchesController
+                                                .text
+                                                .toString(),
+                                        'nummostda': nummostawdaController.text
+                                            .toString(),
+                                        'numusers':
+                                            numuserController.text.toString(),
+                                        'address_invoice':
+                                            addressController.text.toString(),
                                         'invoice_source': selectedInvoiceSource,
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
-                                            invoiceViewmodel.selectedCollaborator?.id_participate != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
-                                            invoiceViewmodel.selectedAgent != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
-                                            invoiceViewmodel.selectedDistributor != null)
-                                          'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+                                        if (invoiceViewmodel.selectedSellerType ==
+                                                SellerType.collaborator &&
+                                            invoiceViewmodel.selectedCollaborator
+                                                    ?.id_participate !=
+                                                null)
+                                          'type_seller': invoiceViewmodel
+                                              .selectedSellerType?.index
+                                              .toString()
+                                        else if (invoiceViewmodel
+                                                    .selectedSellerType ==
+                                                SellerType.agent &&
+                                            invoiceViewmodel.selectedAgent !=
+                                                null)
+                                          'type_seller':
+                                              invoiceViewmodel
+                                                  .selectedSellerType?.index
+                                                  .toString()
+                                        else if (invoiceViewmodel
+                                                    .selectedSellerType ==
+                                                SellerType.distributor &&
+                                            invoiceViewmodel
+                                                    .selectedDistributor !=
+                                                null)
+                                          'type_seller': invoiceViewmodel
+                                              .selectedSellerType?.index
+                                              .toString()
                                         else
-                                          'type_seller': '3', // type seller is employee,
+                                          'type_seller':
+                                              '3', // type seller is employee,
 
-                                        if (sellerCommissionRate.text.isNotEmpty &&
-                                            invoiceViewmodel.selectedSellerType != SellerType.employee)
-                                          'rate_participate': sellerCommissionRate.text,
+                                        if (sellerCommissionRate
+                                                .text.isNotEmpty &&
+                                            invoiceViewmodel
+                                                    .selectedSellerType !=
+                                                SellerType.employee)
+                                          'rate_participate':
+                                              sellerCommissionRate.text,
 
-                                        if (renewAgentController.text.isNotEmpty &&
-                                            invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                          'renew_agent': renewAgentController.text,
+                                        if (renewAgentController
+                                                .text.isNotEmpty &&
+                                            invoiceViewmodel
+                                                    .selectedSellerType ==
+                                                SellerType.agent)
+                                          'renew_agent':
+                                              renewAgentController.text,
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.agent)
-                                          'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
-                                        else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
-                                          'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+                                        if (invoiceViewmodel
+                                                .selectedSellerType ==
+                                            SellerType.agent)
+                                          'fk_agent': invoiceViewmodel
+                                              .selectedAgent?.idAgent
+                                              .toString()
+                                        else if (invoiceViewmodel
+                                                .selectedSellerType ==
+                                            SellerType.distributor)
+                                          'fk_agent': invoiceViewmodel
+                                              .selectedDistributor?.idAgent
+                                              .toString(),
 
-                                        if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
-                                          'participate_fk':
-                                              invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
+                                        if (invoiceViewmodel
+                                                .selectedSellerType ==
+                                            SellerType.collaborator)
+                                          'participate_fk': invoiceViewmodel
+                                              .selectedCollaborator
+                                              ?.id_participate
+                                              .toString(),
                                         ...deleteFilesMap,
                                       };
                                       if (readyinstallController == '0')
                                         body.addAll({
-                                          'date_not_readyinstall': DateTime.now().toString(),
-                                          'user_not_ready_install': Provider.of<UserProvider>(context, listen: false)
-                                              .currentUser
-                                              .idUser
-                                              .toString(),
+                                          'date_not_readyinstall':
+                                              DateTime.now().toString(),
+                                          'user_not_ready_install':
+                                              Provider.of<UserProvider>(context,
+                                                      listen: false)
+                                                  .currentUser
+                                                  .idUser
+                                                  .toString(),
                                         });
                                       else
                                         body.addAll({
-                                          'date_readyinstall': DateTime.now().toString(),
-                                          'user_ready_install': Provider.of<UserProvider>(context, listen: false)
-                                              .currentUser
-                                              .idUser
-                                              .toString(),
+                                          'date_readyinstall':
+                                              DateTime.now().toString(),
+                                          'user_ready_install':
+                                              Provider.of<UserProvider>(context,
+                                                      listen: false)
+                                                  .currentUser
+                                                  .idUser
+                                                  .toString(),
                                         });
                                       log(body.toString());
                                       invoiceViewmodel.add_invoiceclient_vm(
@@ -1534,28 +1966,41 @@ class _addinvoiceState extends State<addinvoice> {
                                         recordCommercialImageNotifier.value,
                                         companyLogoNotifier.value,
                                         invoiceViewmodel.filesAttach
-                                            .where((element) => element.file != null)
+                                            .where((element) =>
+                                                element.file != null)
                                             .map((e) => File(e.file!.path))
                                             .toList(),
-                                        onAddInvoiceSuccess: (InvoiceModel invoice) {
+                                        onAddInvoiceSuccess:
+                                            (InvoiceModel invoice) {
                                           final commentModel = CommentModel(
                                             idComment: "idComment",
                                             fkUser: user.currentUser.idUser!,
-                                            fkClient: widget.itemClient.idClients!,
+                                            fkClient:
+                                                widget.itemClient.idClients!,
                                             content: comment.text,
-                                            nameUser: user.currentUser.nameUser!,
-                                            imgImage: user.currentUser.img_image,
-                                            nameEnterprise: invoice.name_enterprise!,
-                                            date_comment: DateTime.now().toIso8601String(),
+                                            nameUser:
+                                                user.currentUser.nameUser!,
+                                            imgImage:
+                                                user.currentUser.img_image,
+                                            nameEnterprise:
+                                                invoice.name_enterprise!,
+                                            date_comment: DateTime.now()
+                                                .toIso8601String(),
                                           );
-                                          context.read<comment_vm>().addCommentFromAddInvoice(commentModel);
+                                          context
+                                              .read<comment_vm>()
+                                              .addCommentFromAddInvoice(
+                                                  commentModel);
                                         },
-                                      ).then((value) =>
-                                          value != "false" ? clear(context, value, _products) : error(context));
+                                      ).then((value) => value != "false"
+                                          ? clear(context, value, _products)
+                                          : error(context));
                                     }
                                   } else {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(content: Text('من فضلك ادخل منتجات')));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content:
+                                                Text('من فضلك ادخل منتجات')));
                                   }
                                 }
                               },
@@ -1575,11 +2020,13 @@ class _addinvoiceState extends State<addinvoice> {
     );
   }
 
-  clear(BuildContext context, String value, List<ProductsInvoice>? _products) async {
+  clear(BuildContext context, String value,
+      List<ProductsInvoice>? _products) async {
     _products = _invoice!.products ?? [];
 
     for (int i = 0; i < _products.length; i++) {
-      if (_products[i].idInvoiceProduct == null || _products[i].idInvoiceProduct == "null") {
+      if (_products[i].idInvoiceProduct == null ||
+          _products[i].idInvoiceProduct == "null") {
         Map<String, dynamic> body = _products[i].toJson();
         // if(value!="")//update
         // {}
@@ -1600,12 +2047,14 @@ class _addinvoiceState extends State<addinvoice> {
 
         Map<String, dynamic> body = _products[i].toJson();
 
-        bool res = await invoiceViewmodel.update_invoiceProduct_vm(body, _products[i].idInvoiceProduct.toString());
+        bool res = await invoiceViewmodel.update_invoiceProduct_vm(
+            body, _products[i].idInvoiceProduct.toString());
       }
     }
 
     //for loop
-    int index1 = invoiceViewmodel.listinvoices.indexWhere((element) => element.idInvoice == value);
+    int index1 = invoiceViewmodel.listinvoices
+        .indexWhere((element) => element.idInvoice == value);
 
     // _invoice=Provider.of<invoice_vm>(context,listen: false)
     //     .listinvoices[index1];
@@ -1625,13 +2074,16 @@ class _addinvoiceState extends State<addinvoice> {
       invoiceViewmodel.setCurrentInvoice(invoiceTemp, needRefresh: true);
     }
     invoiceViewmodel.updatelistproducetInvoice();
-    Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
+    Provider.of<LoadProvider>(context, listen: false)
+        .changebooladdinvoice(false);
     Navigator.pop(context);
   }
 
   error(context) {
-    Provider.of<LoadProvider>(context, listen: false).changebooladdinvoice(false);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
+    Provider.of<LoadProvider>(context, listen: false)
+        .changebooladdinvoice(false);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
   }
 
   final intl.DateFormat formatter = intl.DateFormat('yyyy-MM-dd');
@@ -1679,12 +2131,14 @@ class _addinvoiceState extends State<addinvoice> {
     return DropdownSearch<ParticipateModel>(
       mode: Mode.DIALOG,
       filterFn: (user, filter) => user!.getFilterParticipate(filter ?? ''),
-      compareFn: (item, selectedItem) => item?.id_participate == selectedItem?.id_participate,
+      compareFn: (item, selectedItem) =>
+          item?.id_participate == selectedItem?.id_participate,
       showSelectedItems: true,
       items: participates,
       itemAsString: (u) => u!.name_participate,
       onChanged: (seller) {
-        invoiceViewmodel.onChangeSelectedCollaborator(seller as ParticipateModel);
+        invoiceViewmodel
+            .onChangeSelectedCollaborator(seller as ParticipateModel);
       },
       selectedItem: selectedValue,
       showSearchBox: true,
@@ -1704,7 +2158,8 @@ class _addinvoiceState extends State<addinvoice> {
         alignLabelWithHint: true,
         fillColor: Colors.grey.withOpacity(0.2),
         contentPadding: EdgeInsets.all(0),
-        border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+        border: UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey)),
       ),
     );
   }
@@ -1742,16 +2197,20 @@ class _addinvoiceState extends State<addinvoice> {
               focusedBorder: InputBorder.none,
               focusedErrorBorder: InputBorder.none,
             ),
-            hint: Text(selectedSellerType == SellerType.distributor ? "اختر الموزع" : "اختر الوكيل"),
+            hint: Text(selectedSellerType == SellerType.distributor
+                ? "اختر الموزع"
+                : "اختر الوكيل"),
             items: sellerNames.map((item) {
               if (T == ParticipateModel) {
                 return DropdownMenuItem(
-                  child: Text((item as ParticipateModel).name_participate, textDirection: TextDirection.rtl),
+                  child: Text((item as ParticipateModel).name_participate,
+                      textDirection: TextDirection.rtl),
                   value: item,
                 );
               } else {
                 return DropdownMenuItem(
-                  child: Text((item as AgentDistributorModel).nameAgent, textDirection: TextDirection.rtl),
+                  child: Text((item as AgentDistributorModel).nameAgent,
+                      textDirection: TextDirection.rtl),
                   value: item,
                 );
               }
@@ -1763,9 +2222,11 @@ class _addinvoiceState extends State<addinvoice> {
               }
 
               if (T == ParticipateModel) {
-                invoiceViewmodel.onChangeSelectedCollaborator(seller as ParticipateModel);
+                invoiceViewmodel
+                    .onChangeSelectedCollaborator(seller as ParticipateModel);
               } else {
-                invoiceViewmodel.onChangeSelectedAgent(seller as AgentDistributorModel);
+                invoiceViewmodel
+                    .onChangeSelectedAgent(seller as AgentDistributorModel);
               }
             },
             onSaved: (seller) {},
@@ -1779,7 +2240,8 @@ class _addinvoiceState extends State<addinvoice> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
       builder: (context) => PickImageBottomSheet(onPickFile: onPickFile),
     );
   }
@@ -1789,7 +2251,8 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   void onDeleteCommercialRecordImage() {
-    if ((_invoice!.imageRecord?.isNotEmpty ?? false) && !isDeleteRecordCommercialImageNetworkImage.value) {
+    if ((_invoice!.imageRecord?.isNotEmpty ?? false) &&
+        !isDeleteRecordCommercialImageNetworkImage.value) {
       isDeleteRecordCommercialImageNetworkImage.value = true;
       return;
     }
@@ -1801,7 +2264,8 @@ class _addinvoiceState extends State<addinvoice> {
   }
 
   void onDeleteCompanyLogo() {
-    if ((_invoice!.imagelogo?.isNotEmpty ?? false) && !isDeleteCompanyLogoNetworkImage.value) {
+    if ((_invoice!.imagelogo?.isNotEmpty ?? false) &&
+        !isDeleteCompanyLogoNetworkImage.value) {
       isDeleteCompanyLogoNetworkImage.value = true;
       return;
     }
