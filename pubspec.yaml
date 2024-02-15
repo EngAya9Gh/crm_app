@@ -81,6 +81,9 @@ dependencies:
   package_info_plus: ^4.2.0
   store_redirect: ^2.0.1
 
+  # pdf
+  syncfusion_flutter_pdfviewer: ^20.4.54
+
 
 dependency_overrides:
   firebase_core_platform_interface: 4.5.1
