@@ -432,7 +432,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                             context,
                                             CupertinoPageRoute(
                                                 builder: (context) =>
-                                                    addinvoice(
+                                                    AddInvoice(
                                                         invoice: invoice,
                                                         itemClient:
                                                             clientmodel!)));

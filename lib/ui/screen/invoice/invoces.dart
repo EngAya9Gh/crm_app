@@ -1,9 +1,7 @@
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,14 +27,17 @@ class _InvoicesState extends State<invoices> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 2, right: 2,top: 20),
+        padding: const EdgeInsets.only(left: 2, right: 2, top: 20),
         child: Column(
           children: [
             CustomButton(
               text: 'إنشاء فاتورة جديدة',
               onTap: () async {
                 Navigator.push(
-                    context, CupertinoPageRoute(builder: (context) => addinvoice(itemClient: widget.itemClient)));
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) =>
+                            AddInvoice(itemClient: widget.itemClient)));
               },
             ),
             Expanded(
@@ -52,7 +53,8 @@ class _InvoicesState extends State<invoices> {
                   return ListView.separated(
                     itemCount: listInvoice.length,
                     padding: EdgeInsets.only(top: 10, bottom: 10),
-                    separatorBuilder: (BuildContext context, int index) => const Divider(indent: 2,endIndent: 2),
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(indent: 2, endIndent: 2),
                     itemBuilder: (BuildContext context, int index) => Builder(
                       builder: (context) => CardInvoiceClient(
                         type: '',
