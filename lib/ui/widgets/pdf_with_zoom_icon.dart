@@ -42,6 +42,9 @@ class PdfWithZoomIcon extends StatelessWidget {
             iconSize: 30,
             onPressed: () {
               return AppFileViewer(
+                imageSource: file != null
+                    ? ImageSourceViewer.file
+                    : ImageSourceViewer.network,
                 files: file != null ? [file!] : [],
                 urls: fileUrl != null ? [fileUrl!] : [],
               ).show(context);
