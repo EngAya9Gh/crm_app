@@ -1254,7 +1254,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                                       size: 35),
                                                   SizedBox(height: 0),
                                                   Text(
-                                                    'Attach image',
+                                                    'Attach image/file',
                                                     style: context
                                                         .textTheme.titleMedium
                                                         ?.copyWith(
