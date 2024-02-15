@@ -67,6 +67,8 @@ List<String> sourceClientsList = [
   'غوغل ماب',
   'تيك توك',
   'عميل موصى به'
+  'نسخة تجريبية'
+  'ماسنجر دايركت'
 ];
 final List<dynamic> listHome = [
   [

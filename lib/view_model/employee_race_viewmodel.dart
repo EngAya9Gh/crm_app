@@ -18,6 +18,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
   int? selectedDaily;
   int? selectedMonthYear;
   int? selectedMonth;
+  int? target;
   late String fkCountry;
 
   DateTime? selectedDailyFrom;
@@ -37,6 +38,15 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
 
   String get getToQuarter {
     return DateTime(selectedQuarterYear!, (selectedQuarter! - 1) * 3 + 3).toIso8601String();
+  }
+  int  get gettarget_lastYear {
+    //2022-2023
+    int salary=5000; //gettarget_CurrentYear
+    return salary * 6;
+  }
+  int  get gettarget_CurrentYear {
+    //2024
+    return 40000;
   }
 
   setFkCountry(String fkCountry) {
@@ -120,7 +130,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : ((num.parse(e.sales!) * 100) / ((num.parse(e.salary!) * 6 * 12))).toStringAsFixed(2)))
+                  : ((num.parse(e.sales!) * 100) / ((gettarget_CurrentYear * 12))).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
@@ -151,7 +161,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : ((num.parse(e.sales!) * 100) / (((num.parse(e.salary!) * 6 * 3)))).toStringAsFixed(2)))
+                  : ((num.parse(e.sales!) * 100) / (((gettarget_CurrentYear * 3)))).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
@@ -182,7 +192,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : (((num.parse(e.sales!)) * 100) / (num.parse(e.salary!) * 6)).toStringAsFixed(2)))
+                  : (((num.parse(e.sales!)) * 100) / (gettarget_CurrentYear)).toStringAsFixed(2)))
           .toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0.0").compareTo(num.parse(a.percentage ?? "0.0")));
 
