@@ -39,6 +39,7 @@ import '../../../labeltext.dart';
 import '../../../view_model/comment.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
+import '../../widgets/invoice_widget/file_viewer_widget.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 import 'add_invoice_product.dart';
 import 'invoice_images_file.dart';
@@ -108,6 +109,7 @@ class _addinvoiceState extends State<addinvoice> {
   ValueNotifier<bool> isNumberOfBranchesBiggerThanOne = ValueNotifier(false);
   List<String> deletedFiles = [];
   String? selectedInvoiceSource;
+
   @override
   void dispose() async {
     renewController.dispose();
@@ -1064,9 +1066,9 @@ class _addinvoiceState extends State<addinvoice> {
                                                 child: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(15),
-                                                  child: Image.file(
-                                                      recordCommercialImage,
-                                                      fit: BoxFit.cover),
+                                                  child: FileViewerWidget(
+                                                    file: recordCommercialImage,
+                                                  ),
                                                 ),
                                               ),
                                               Positioned.fill(
@@ -1160,11 +1162,9 @@ class _addinvoiceState extends State<addinvoice> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(15),
-                                                        child:
-                                                            FancyImageShimmerViewer(
-                                                          imageUrl: _invoice!
+                                                        child: FileViewerWidget(
+                                                          fileUrl: _invoice!
                                                               .imageRecord!,
-                                                          fit: BoxFit.cover,
                                                         ),
                                                       ),
                                                     ),
@@ -1897,8 +1897,8 @@ class _addinvoiceState extends State<addinvoice> {
                                               .selectedSellerType?.index
                                               .toString()
                                         else
-                                          'type_seller':
-                                              '3', // type seller is employee,
+                                          'type_seller': '3',
+                                        // type seller is employee,
 
                                         if (sellerCommissionRate
                                                 .text.isNotEmpty &&

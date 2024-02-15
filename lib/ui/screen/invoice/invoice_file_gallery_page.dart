@@ -12,7 +12,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
@@ -23,6 +22,7 @@ import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
+import '../../widgets/invoice_widget/file_viewer_widget.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 
 class InvoiceFileGalleryPage extends StatefulWidget {
@@ -190,15 +190,9 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                             Positioned.fill(
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
-                                child:
-                                    recordCommercialImage!.path.endsWith('.pdf')
-                                        ? SfPdfViewer.file(
-                                            recordCommercialImage!,
-                                          )
-                                        : Image.file(
-                                            recordCommercialImage!,
-                                            fit: BoxFit.cover,
-                                          ),
+                                child: FileViewerWidget(
+                                  file: recordCommercialImage,
+                                ),
                               ),
                             ),
                             Positioned.fill(
@@ -264,15 +258,9 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                                   Positioned.fill(
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(15),
-                                      // todo: handle pdf
-                                      child: imageRecord!.endsWith('.pdf')
-                                          ? SfPdfViewer.network(
-                                              imageRecord!,
-                                            )
-                                          : FancyImageShimmerViewer(
-                                              imageUrl: imageRecord!,
-                                              fit: BoxFit.cover,
-                                            ),
+                                      child: FileViewerWidget(
+                                        fileUrl: imageRecord,
+                                      ),
                                     ),
                                   ),
                                   if (context
