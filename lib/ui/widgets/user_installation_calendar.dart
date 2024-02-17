@@ -118,7 +118,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     case "2":
       return Colors.red.withOpacity(0.50);
     case "3":
-      return Colors.blueAccent.withOpacity(0.50);  
+      return Colors.amber.withOpacity(0.50);
     default:
       return Colors.grey; // Default for unknown status
   }
@@ -244,7 +244,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                             color: (value[index].isDone =="1")? Colors.green.withOpacity(0.15) :
                                    (value[index].isDone =="0")? Colors.indigo.withOpacity(0.15):
                                    (value[index].isDone =="2")?Colors.red.withOpacity(0.15):
-                                   (value[index].isDone =="3")?Colors.blueAccent.withOpacity(0.15):
+                                   (value[index].isDone =="3")?Colors.amber.withOpacity(0.15):
                                    Colors.grey.withOpacity(0.15),
                           ),
                           child: Padding(
@@ -272,13 +272,16 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                               style: Theme.of(context).textTheme.titleMedium?.copyWith(fontFamily: kfontfamily2)),
                               Text('${intl.DateFormat("hh:mm a").format(value[index].from)}'
                                               ' - '
-                                              '${intl.DateFormat("hh:mm a").format(value[index].to)}',
+                                              '${intl.DateFormat("hh:mm a").format(value[index].to)}' ,
                                               textDirection: TextDirection.ltr,
                                               textAlign: TextAlign.end,
                                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: kfontfamily2)),
                   
-                                          ],
-                          ),
+
+                            // Text(
+                            //     value[index].isDone.toString() =="2"?' reschedule':'',
+                            //     style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: kfontfamily2)),
+                            ], ),
                         ),       
                           const SizedBox(width: 16), 
                           (value[index].isDone =="1" ||value[index].isDone =="2")?SizedBox():

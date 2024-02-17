@@ -40,9 +40,9 @@ class AppointmentModel {
     DateTime last = first.add(Duration(hours: 2));
 
     return Event(
-      fkIdClient: fkClient,
-      idinvoice: fkInvoice,
-      title: nameEnterprise!,
+      fkIdClient: fkClient==null?'':fkClient.toString(),
+      idinvoice: fkInvoice==null?'':fkInvoice.toString(),
+      title: nameEnterprise==null?'':nameEnterprise.toString(),
       description: 'description',
       from: first,
       to: last,
