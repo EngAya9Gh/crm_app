@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_strings.dart';
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../function_global.dart';
 import 'is_marketing_chekbox.dart';
 

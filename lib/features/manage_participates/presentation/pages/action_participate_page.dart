@@ -1,4 +1,4 @@
-import 'package:crm_smart/app_strings.dart';
+import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
 import 'package:flutter/material.dart';

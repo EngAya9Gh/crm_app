@@ -7,9 +7,9 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_strings.dart';
 import '../../../common/enums/comment_type.dart';
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../model/calendar/event.dart';

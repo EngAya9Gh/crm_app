@@ -21,7 +21,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../app_strings.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../model/maincitymodel.dart';
 import '../../../../view_model/maincity_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';

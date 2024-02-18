@@ -30,10 +30,10 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_strings.dart';
 import '../../../common/helpers/helper_functions.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/comment.dart';

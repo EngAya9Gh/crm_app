@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
+import '../../../../core/utils/app_navigator.dart';
 import '../../../../ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
 
 class AddAgentButton extends StatelessWidget {
@@ -14,9 +14,7 @@ class AddAgentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.add, color: AppColors.white),
-      onPressed: () => Navigator.of(context).push(CupertinoPageRoute(
-        builder: (context) => AgentAndDistributorsAction(),
-      )),
+      onPressed: () => AppNavigator.push(AgentAndDistributorsAction()),
       backgroundColor: kMainColor,
     );
   }

@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/utils/app_navigator.dart';
 import '../../../../model/agent_distributor_model.dart';
 import '../../../../ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
 
@@ -19,11 +19,9 @@ class AgentCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: InkWell(
-          onTap: () => Navigator.of(context).push(CupertinoPageRoute(
-            builder: (context) => AgentAndDistributorsAction(
-              agentDistributorModel: agentModel,
-            ),
-          )),
+          onTap: () => AppNavigator.push(
+            AgentAndDistributorsAction(agentDistributorModel: agentModel),
+          ),
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(

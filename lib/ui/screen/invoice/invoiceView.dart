@@ -29,8 +29,8 @@ import 'package:path/path.dart' as pp;
 import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
-import '../../../app_strings.dart';
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';

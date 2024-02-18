@@ -12,8 +12,8 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../app_strings.dart';
 import '../../constants.dart';
+import '../../core/utils/app_strings.dart';
 import '../../function_global.dart';
 import 'home/home.dart';
 

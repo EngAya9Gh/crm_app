@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_strings.dart';
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 
 class wrong_number extends StatefulWidget {
   const wrong_number({Key? key}) : super(key: key);

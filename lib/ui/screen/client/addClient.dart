@@ -23,10 +23,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_strings.dart';
 import '../../../common/enums/activity_type_size.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../model/ActivityModel.dart';
 
 class addClient extends StatefulWidget {

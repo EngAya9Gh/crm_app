@@ -27,10 +27,10 @@ import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_strings.dart';
 import '../../../common/enums/activity_type_size.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';

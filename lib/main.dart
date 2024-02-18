@@ -47,6 +47,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
 import 'core/config/theme/theme.dart';
+import 'core/utils/app_navigator.dart';
 import 'features/app/presentation/pages/splash_screen.dart';
 import 'features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 
@@ -213,49 +214,48 @@ class _MyAppState extends State<MyApp> {
     return ScreenUtilInit(
       useInheritedMediaQuery: true,
       child: FutureBuilder<SharedPreferences>(
-          future: currentUser,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              //Center(child: CircularProgressIndicator(),)
-              return MaterialApp(
-                home: Scaffold(
-                  body: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset('assest/images/logo_crm_long.png'),
-                        20.verticalSpace,
-                        AppLoader(),
-                      ],
-                    ),
-                  ),
+        future: currentUser,
+        builder: (context, snapshot) {
+          Widget homeWidget;
+          if (!snapshot.hasData) {
+            homeWidget = Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('assest/images/logo_crm_long.png'),
+                    SizedBox(height: 20),
+                    AppLoader(),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            isUserLoggedIn = snapshot.data!.getBool(kKeepMeLoggedIn) ?? false;
+            if (snapshot.data!.getString('id_user1') == '0') {
+              homeWidget = Scaffold(
+                body: Center(
+                  child: Text('غير مصرح لك الدخول'),
                 ),
               );
             } else {
-              isUserLoggedIn = snapshot.data!.getBool(kKeepMeLoggedIn) ?? false;
-              if (snapshot.data!.getString('id_user1') == '0')
-                return MaterialApp(
-                  home: Scaffold(
-                    body: Center(
-                      child: Text('غير مصرح لك الدخول'),
-                    ),
-                  ),
-                );
-              // String idcurrentuser= snapshot.data!.getString("id_user").toString();
-              else {
-                return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  title: 'Smart CRM',
-                  theme: AppTheme.light(context),
-                  home: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: SplashScreen(),
-                  ),
-                );
-              }
+              homeWidget = Directionality(
+                textDirection: TextDirection.rtl,
+                child: SplashScreen(),
+              );
             }
-          }),
+          }
+
+          return MaterialApp(
+            navigatorKey: AppNavigator.navigatorKey,
+            debugShowCheckedModeBanner: false,
+            title: 'Smart CRM',
+            theme: AppTheme.light(context),
+            home: homeWidget,
+          );
+        },
+      ),
     );
   }
 }

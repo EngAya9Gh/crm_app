@@ -14,8 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_strings.dart';
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../view_model/client_vm.dart';
 import 'card_comment.dart';
 

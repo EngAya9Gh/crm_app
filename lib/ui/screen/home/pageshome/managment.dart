@@ -315,7 +315,7 @@ class _ManagementPageState extends State<ManagementPage> {
                         context,
                         CupertinoPageRoute<void>(
                           builder: (BuildContext context) =>
-                              AgentsAndDistributorsView(),
+                              AgentsAndDistributorsPage(),
                         ),
                       );
                     },

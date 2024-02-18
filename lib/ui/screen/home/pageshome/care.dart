@@ -15,8 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../app_strings.dart';
 import '../../../../constants.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../widgethomeitem.dart';
 

@@ -15,8 +15,8 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
-import '../../../app_strings.dart';
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/row_edit.dart';
