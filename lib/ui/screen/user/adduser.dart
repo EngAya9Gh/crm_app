@@ -164,7 +164,7 @@ class _addUserState extends State<addUser> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: labelManage, des: '*'),
+                    RowEdit(name: AppStrings.labelManage, des: '*'),
                     Consumer<manage_provider>(
                         builder: (context, mangelist, child) {
                       return DropdownButtonFormField(

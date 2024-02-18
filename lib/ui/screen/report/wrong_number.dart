@@ -28,7 +28,7 @@ class _wrong_numberState extends State<wrong_number> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(labelWrongNumber),
+        title: Text(AppStrings.labelWrongNumber),
         centerTitle: true,
       ),
       body: Center(

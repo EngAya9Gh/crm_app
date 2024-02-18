@@ -5,11 +5,8 @@ import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -143,7 +140,7 @@ class _repeat_reportState extends State<repeat_report> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(labelRepeatComm),
+          title: Text(AppStrings.labelRepeatComm),
         ),
         body: SafeArea(
           child: Directionality(

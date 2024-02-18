@@ -151,7 +151,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   controller: emailController,
                 ),
                 15.verticalSpace,
-                RowEdit(name: labelManage, des: '*'),
+                RowEdit(name: AppStrings.labelManage, des: '*'),
                 Consumer<manage_provider>(builder: (context, mangelist, child) {
                   return DropdownButtonFormField(
                     isExpanded: true,

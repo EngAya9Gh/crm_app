@@ -332,7 +332,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                           color: Colors.black,
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
-                          textstring: labelTotal,
+                          textstring: AppStrings.labelTotal,
                           underline: TextDecoration.none,
                         ),
                         SizedBox(
@@ -361,7 +361,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                         return null;
                       },
@@ -371,13 +371,13 @@ class _AddInvoiceState extends State<AddInvoice> {
                       obscureText: false,
                       controller: addressController,
                     ),
-                    RowEdit(name: labelAmountPaid, des: '*'),
+                    RowEdit(name: AppStrings.labelAmountPaid, des: '*'),
                     EditTextFormField(
                       obscureText: false,
-                      hintText: labelAmountPaid,
+                      hintText: AppStrings.labelAmountPaid,
                       vaild: (value) {
                         if (value?.trim().isEmpty ?? true) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                         if (num.tryParse(value.toString()) == null)
                           return 'من فضلك ادخل عدد';
@@ -416,7 +416,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 element.type ==
                                 ProductType.program.index.toString());
                         return RowEdit(
-                            name: labelRenew,
+                            name: AppStrings.labelRenew,
                             des: invoiceHaveProductsOfTypePrograms ? "*" : ' ');
                       },
                     ),
@@ -428,7 +428,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 ProductType.program.index.toString());
 
                         return EditTextFormField(
-                          hintText: labelRenew,
+                          hintText: AppStrings.labelRenew,
                           obscureText: false,
                           vaild: (value) {
                             if ((value?.trim() == '0' ||
@@ -450,7 +450,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                           // ],
                           controller: renewController,
                           //اسم المؤسسة
-                          label: labelRenew,
+                          label: AppStrings.labelRenew,
                           onChanged: (val) {
                             // nameprod = val;
                           },
@@ -466,7 +466,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                             data.listproductinvoic.any((element) =>
                                 element.typeProdRenew == "resources");
                         return RowEdit(
-                            name: labelRenew2Year,
+                            name: AppStrings.labelRenew2Year,
                             des:
                                 invoiceHaveProductsOfTypeResources ? "*" : ' ');
                       },
@@ -477,7 +477,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                               element.typeProdRenew == "resources");
 
                       return EditTextFormField(
-                        hintText: labelRenew2Year,
+                        hintText: AppStrings.labelRenew2Year,
                         obscureText: false,
                         vaild: (value) {
                           if ((value?.trim() == '0' ||
@@ -497,7 +497,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         // ],
                         controller: renew2Controller,
                         //اسم المؤسسة
-                        label: labelRenew2Year,
+                        label: AppStrings.labelRenew2Year,
                         inputformate: [FilteringTextInputFormatter.digitsOnly],
                         onChanged: (val) {
                           // nameprod = val;
@@ -505,7 +505,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       );
                     }),
                     SizedBox(height: 5),
-                    RowEdit(name: labelInvoiceSource, des: '*'),
+                    RowEdit(name: AppStrings.labelInvoiceSource, des: '*'),
 
                     AppDropdownButtonFormField<String, String>(
                       items: sourceClientsList,
@@ -558,7 +558,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       10.verticalSpace,
                     },
                     //admin
-                    RowEdit(name: labelTypePay, des: '*'),
+                    RowEdit(name: AppStrings.labelTypePay, des: '*'),
                     Container(
                       padding: EdgeInsets.only(left: 2, right: 2),
                       decoration: BoxDecoration(
@@ -603,7 +603,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     SizedBox(
                       height: 5,
                     ),
-                    RowEdit(name: labelTypeInstall, des: '*'),
+                    RowEdit(name: AppStrings.labelTypeInstall, des: '*'),
                     Container(
                       padding: EdgeInsets.only(left: 2, right: 2),
                       decoration: BoxDecoration(
@@ -732,11 +732,11 @@ class _AddInvoiceState extends State<AddInvoice> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: labelNote, des: ''),
+                    RowEdit(name: AppStrings.labelNote, des: ''),
                     EditTextFormField(
                       paddcustom: EdgeInsets.all(16),
                       maxline: 3,
-                      hintText: labelNote,
+                      hintText: AppStrings.labelNote,
                       obscureText: false,
                       controller: noteController,
                     ),
@@ -1029,7 +1029,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                               });
                         }),
                     SizedBox(height: 20),
-                    RowEdit(name: labelImage, des: ''),
+                    RowEdit(name: AppStrings.labelImage, des: ''),
                     SizedBox(width: 20),
                     ValueListenableBuilder<File?>(
                         valueListenable: recordCommercialImageNotifier,

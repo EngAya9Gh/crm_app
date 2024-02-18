@@ -1,16 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/ui/screen/care/card_comment.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
-import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/page_state.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/enums/comment_type.dart';
@@ -91,7 +85,7 @@ class _commentViewState extends State<commentView> {
                             EditTextFormField(
                               vaild: (value) {
                                 if (value!.toString().trim().isEmpty) {
-                                  return labelEmpty;
+                                  return AppStrings.labelEmpty;
                                 }
                               },
                               maxline: 3,

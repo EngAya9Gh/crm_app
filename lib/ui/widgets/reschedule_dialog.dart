@@ -267,7 +267,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       EditTextFormField(
                         vaild: (value) {
                           if (value!.isEmpty) {
-                            return labelEmpty;
+                            return AppStrings.labelEmpty;
                           }
                         },
                         hintText: "تحديد الأسباب",

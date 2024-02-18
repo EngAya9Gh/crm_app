@@ -1,18 +1,13 @@
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/productmodel.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/regoincombox.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/separatorLine.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/CardProduct_Invoice.dart';
-import 'package:crm_smart/ui/widgets/product_widget/cardProduct.dart';
-import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
@@ -365,7 +360,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                   EditTextFormField(
                                     vaild: (value) {
                                       if (value.toString().trim().isEmpty) {
-                                        return labelEmpty;
+                                        return AppStrings.labelEmpty;
                                       }
                                       if (double.tryParse(value.toString()) ==
                                           null) return 'من فضلك ادخل عدد';

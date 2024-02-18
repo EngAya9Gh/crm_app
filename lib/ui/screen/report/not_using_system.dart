@@ -49,7 +49,7 @@ class _not_using_systemState extends State<not_using_system> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(labelNotUse),
+        title: Text(AppStrings.labelNotUse),
       ),
       body: Center(
         child: Provider.of<communication_vm>(context, listen: true).isloading

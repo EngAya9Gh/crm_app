@@ -296,7 +296,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: labelManage, des: '*'),
+                    RowEdit(name: AppStrings.labelManage, des: '*'),
 
                     Consumer<manage_provider>(
                         builder: (context, mangelist, child) {

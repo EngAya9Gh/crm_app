@@ -15,7 +15,6 @@ import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/company_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -36,7 +35,6 @@ import '../../../features/clients_list/presentation/manager/clients_list_bloc.da
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../labeltext.dart';
 import '../../../view_model/datetime_vm.dart';
-import 'addClient.dart';
 
 class editclient extends StatefulWidget {
   editclient(
@@ -357,7 +355,7 @@ class _editclientState extends State<editclient> {
                       hintText: AppStrings.labelClientEnterprise,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       controller: nameEnterpriseController,
@@ -375,7 +373,7 @@ class _editclientState extends State<editclient> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: AppStrings.labelClientName,
@@ -387,7 +385,7 @@ class _editclientState extends State<editclient> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: '+966000000000',
@@ -431,7 +429,7 @@ class _editclientState extends State<editclient> {
                             obscureText: false,
                             vaild: (value) {
                               if (value!.isEmpty) {
-                                return labelEmpty;
+                                return AppStrings.labelEmpty;
                               }
                             },
                             controller: desctypejobController,
@@ -536,7 +534,7 @@ class _editclientState extends State<editclient> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: AppStrings.labelDescActivity,
@@ -583,7 +581,7 @@ class _editclientState extends State<editclient> {
                       maxline: 3,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: AppStrings.labelUsernameClient,

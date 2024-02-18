@@ -171,7 +171,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                 padding: REdgeInsetsDirectional.only(start: 10.0),
                 child: Directionality(
                     textDirection: TextDirection.rtl,
-                    child: RowEdit(name: labelImage, des: '')),
+                    child: RowEdit(name: AppStrings.labelImage, des: '')),
               ),
               SizedBox(height: 10),
               Directionality(

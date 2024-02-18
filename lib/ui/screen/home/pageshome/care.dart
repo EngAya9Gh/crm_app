@@ -219,7 +219,7 @@ class _carepageState extends State<carepage> {
                           CupertinoPageRoute(
                               builder: (context) => repeat_report()));
                     },
-                    title: labelRepeatComm)
+                    title: AppStrings.labelRepeatComm)
                 : Container(), //'تقرير الاتصال الدوري '
             context.read<PrivilegeCubit>().checkPrivilege('105') == true
                 ? buildSelectCategory(
@@ -232,7 +232,7 @@ class _carepageState extends State<carepage> {
                           CupertinoPageRoute(
                               builder: (context) => not_using_system()));
                     },
-                    title: labelNotUse)
+                    title: AppStrings.labelNotUse)
                 : Container(), //' عملاء لا يستخدمون النظام '
             context.read<PrivilegeCubit>().checkPrivilege('106') == true
                 ? buildSelectCategory(
@@ -245,7 +245,7 @@ class _carepageState extends State<carepage> {
                           CupertinoPageRoute(
                               builder: (context) => wrong_number()));
                     },
-                    title: labelWrongNumber)
+                    title: AppStrings.labelWrongNumber)
                 : Container(), //' عملاء أرقامهم خاطئة '
           ],
         ),

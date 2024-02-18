@@ -134,7 +134,7 @@ class _addClientState extends State<addClient> {
                       hintText: AppStrings.labelClientEnterprise,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       controller: nameEnterpriseController,
@@ -145,7 +145,7 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: AppStrings.labelClientName,
@@ -158,7 +158,7 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: '00966000000000',
@@ -263,7 +263,7 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: AppStrings.labelDescActivity,
@@ -305,7 +305,7 @@ class _addClientState extends State<addClient> {
                       obscureText: false,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return labelEmpty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       controller: address_client,

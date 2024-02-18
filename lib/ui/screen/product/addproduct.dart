@@ -4,16 +4,11 @@ import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/provider/switch_provider.dart';
-import 'package:crm_smart/services/ProductService.dart';
-import 'package:crm_smart/ui/screen/product/productView.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/group_button.dart';
-import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -315,7 +310,7 @@ class _addProductState extends State<addProduct> {
     _textprice.text = "";
     Provider.of<switch_provider>(context, listen: false).changeboolValue(false);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(labelDoneAddProduct)));
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelDoneAddProduct)));
 
     Navigator.pop(context);
     // Fluttertoast.showToast(

@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +18,6 @@ import '../../../constants.dart';
 import '../../../labeltext.dart';
 import '../../../view_model/client_vm.dart';
 import 'card_comment.dart';
-import 'comment_view.dart';
 
 class installAdd extends StatefulWidget {
   installAdd({required this.com, Key? key}) : super(key: key);
@@ -330,7 +328,7 @@ class _installAddState extends State<installAdd> {
                         child: EditTextFormField(
                           vaild: (value) {
                             if (value!.toString().trim().isEmpty) {
-                              return labelEmpty;
+                              return AppStrings.labelEmpty;
                             }
                           },
                           maxline: 3,
