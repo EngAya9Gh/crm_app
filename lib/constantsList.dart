@@ -129,6 +129,10 @@ List<String> imageList = [
 List<String> clientsClassificationList = [
   'لايخدمه النظام',
   'اهتمام مختلف',
+  'الرقم غير صحيح',
+  'مع موظف آخر',
+  'لا يرد',
+  'مكرر',
   'أخرى',
 
 ];

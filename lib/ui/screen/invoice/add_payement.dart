@@ -30,7 +30,7 @@ class add_payement extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'اضافة دفع',
+                  'اضافة دفعة',
                   style: TextStyle(fontFamily: kfontfamily2),
                 ),
                 cardRow(
@@ -81,17 +81,19 @@ class add_payement extends StatelessWidget {
                         "fk_client":invoiceModel.fkIdClient.toString(),
                         "name_enterprise": invoiceModel.name_enterprise,
                         "name_client": invoiceModel.nameClient.toString(),
+                         "total_paid":(double.parse(
+                             amount_paidController.text.toString()) +
+                             double.parse(
+                                 invoiceModel.amountPaid.toString()))
+                             .toStringAsFixed(2)
+                             .toString(),
+                        "amount_paid":  amount_paidController.text
 
-                        "amount_paid": (double.parse(
-                                    amount_paidController.text.toString()) +
-                                double.parse(
-                                    invoiceModel.amountPaid.toString()))
-                            .toStringAsFixed(2)
                             .toString(),
                         'fk_regoin': invoiceModel.fk_regoin.toString(),
                         'fkcountry': invoiceModel.fk_country.toString(),
 
-                        "lastuserupdate": Provider.of<UserProvider>(context,
+                        "lastuser_addPayment": Provider.of<UserProvider>(context,
                                 listen: false)
                             .currentUser
                             .idUser

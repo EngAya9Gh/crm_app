@@ -10,6 +10,7 @@ class AppointmentModel {
   final String? fkClient;
   final String? fkInvoice;
   final String? nameEnterprise;
+  final String? name_agent;
 
   const AppointmentModel({
     this.idClientsDate,
@@ -19,6 +20,7 @@ class AppointmentModel {
     this.fkClient,
     this.fkInvoice,
     this.nameEnterprise,
+    this.name_agent,
     this.to,
     this.from,
   });
@@ -32,6 +34,7 @@ class AppointmentModel {
       fkClient: map['fk_client'],
       fkInvoice: map['fk_invoice'],
       nameEnterprise: map['name_enterprise'],
+      name_agent: map['name_agent'],
     );
   }
 
@@ -42,7 +45,7 @@ class AppointmentModel {
     return Event(
       fkIdClient: fkClient==null?'':fkClient.toString(),
       idinvoice: fkInvoice==null?'':fkInvoice.toString(),
-      title: nameEnterprise==null?'':nameEnterprise.toString(),
+      title: nameEnterprise==null?name_agent.toString()+' وكيل/موزع ':nameEnterprise.toString(),
       description: 'description',
       from: first,
       to: last,

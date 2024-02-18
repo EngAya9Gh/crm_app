@@ -227,7 +227,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         return e.copyWith(
             percentage: e.salary == null || e.sales == null
                 ? null
-                : ((num.parse(e.sales!) * 100) / ((target / numOfDayInMonth) * numOfFilterDay)).toStringAsFixed(2));
+                : ((num.parse(e.sales!) * 100) / ((gettarget_CurrentYear / numOfDayInMonth) * numOfFilterDay)).toStringAsFixed(2));
       }).toList()
         ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
 
