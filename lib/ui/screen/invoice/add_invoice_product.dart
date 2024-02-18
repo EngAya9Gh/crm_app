@@ -13,8 +13,8 @@ import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app_strings.dart';
 import '../../../constants.dart';
-import '../../../labeltext.dart';
 
 enum ProductType { device, program }
 

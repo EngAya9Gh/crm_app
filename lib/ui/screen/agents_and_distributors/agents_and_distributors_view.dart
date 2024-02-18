@@ -1,9 +1,11 @@
 import 'dart:async';
+
 import 'package:crm_smart/model/agent_distributor_model.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
+import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../view_model/agent_dsitributor_vm.dart';
@@ -45,7 +47,7 @@ class _AgentsAndDistributorsViewState extends State<AgentsAndDistributorsView>
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add,color: AppColors.white),
+        child: Icon(Icons.add, color: AppColors.white),
         onPressed: goToAgentsActionPage,
         backgroundColor: kMainColor,
       ),
@@ -132,5 +134,3 @@ class _AgentsAndDistributorsViewState extends State<AgentsAndDistributorsView>
     ));
   }
 }
-
-

@@ -6,7 +6,7 @@ class ManageAgentsAndDistributorsState extends Equatable {
   final String? error;
 
   ManageAgentsAndDistributorsState({
-    this.status = StateStatus.loading,
+    this.status = StateStatus.initial,
     this.agentsAndDistributorsList = const [],
     this.error,
   });
@@ -18,7 +18,8 @@ class ManageAgentsAndDistributorsState extends Equatable {
   }) {
     return ManageAgentsAndDistributorsState(
       status: status ?? this.status,
-      agentsAndDistributorsList: agentsAndDistributorsList ?? this.agentsAndDistributorsList,
+      agentsAndDistributorsList:
+          agentsAndDistributorsList ?? this.agentsAndDistributorsList,
       error: error ?? this.error,
     );
   }

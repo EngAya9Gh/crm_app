@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
+import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -16,8 +16,8 @@ import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app_strings.dart';
 import '../../../constants.dart';
-import '../../../labeltext.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../provider/manage_provider.dart';
 import '../../../view_model/maincity_vm.dart';

@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../app_strings.dart';
 import '../../constants.dart';
-import '../../labeltext.dart';
 import '../../model/calendar/event.dart';
 import '../../model/invoiceModel.dart';
 import 'custom_widget/custombutton.dart';

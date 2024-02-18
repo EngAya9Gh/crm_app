@@ -61,4 +61,7 @@ abstract class AppStrings {
   static const String labelNotUse = ' عملاء لا يستخدمون النظام ';
   static const String labelRepeatComm = 'تقرير الاتصال الدوري ';
   static const String labelWrongNumber = ' عملاء أرقامهم خاطئة ';
+
+  // agents and distributors
+  static const String labelAgentsAndDistributors = 'الوكلاء والموزعين';
 }

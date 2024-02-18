@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crm_smart/common/manager/custom_bloc_observer.dart';
 import 'package:crm_smart/core/di/di_container.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
@@ -38,6 +39,7 @@ import 'package:crm_smart/view_model/usertest_vm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +96,7 @@ void main() async {
   //   runApp(MyApp());
   // }
   //await Firebase.initializeApp();
+  Bloc.observer = CustomBlocObserver();
   await initializeDateFormatting();
   setupDependencies();
 

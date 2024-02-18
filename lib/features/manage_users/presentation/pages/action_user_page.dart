@@ -8,7 +8,7 @@ import 'package:crm_smart/features/manage_users/domain/use_cases/action_user_use
 import 'package:crm_smart/features/manage_users/presentation/manager/users_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/manage_provider.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
+import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custom_button_new.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -21,7 +21,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../labeltext.dart';
+import '../../../../app_strings.dart';
 import '../../../../model/maincitymodel.dart';
 import '../../../../view_model/maincity_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';

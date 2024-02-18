@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+
+import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../../api/api.dart';
 import '../../../../../common/enums/enums.dart';
@@ -49,9 +48,12 @@ class ManageAgentsAndDistributorsCubit
       emit(state.copyWith(
         status: StateStatus.loading,
       ));
+      print("loading agents and distributors...");
 
       final List<AgentDistributorModel> agents =
           await Invoice_Service.getAgentsAndDistributors();
+
+      print("agetns => $agents");
       emit(state.copyWith(
         status: StateStatus.success,
         agentsAndDistributorsList: agents,

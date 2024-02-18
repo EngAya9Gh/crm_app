@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
-import '../../../../ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
+import '../../../../ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
 
 class AddAgentButton extends StatelessWidget {
   const AddAgentButton({

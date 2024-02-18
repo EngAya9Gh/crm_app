@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
 import '../../../../model/agent_distributor_model.dart';
-import '../../../../ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
+import '../../../../ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
 
 class AgentCard extends StatelessWidget {
-  const AgentCard({Key? key, required this.agentModel}) : super(key: key);
+  const AgentCard({
+    Key? key,
+    required this.agentModel,
+  }) : super(key: key);
 
   final AgentDistributorModel agentModel;
 

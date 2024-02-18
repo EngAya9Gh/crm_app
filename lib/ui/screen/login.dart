@@ -12,9 +12,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app_strings.dart';
 import '../../constants.dart';
 import '../../function_global.dart';
-import '../../labeltext.dart';
 import 'home/home.dart';
 
 class login extends StatefulWidget {

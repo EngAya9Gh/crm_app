@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app_strings.dart';
 import '../../../constants.dart';
-import '../../../labeltext.dart';
 
 class not_using_system extends StatefulWidget {
   const not_using_system({Key? key}) : super(key: key);

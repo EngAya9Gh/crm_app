@@ -11,9 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../app_strings.dart';
 import '../../../constants.dart';
 import '../../../function_global.dart';
-import '../../../labeltext.dart';
 import 'is_marketing_chekbox.dart';
 
 class repeat_report extends StatefulWidget {
