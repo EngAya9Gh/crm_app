@@ -1130,18 +1130,45 @@ class invoice_vm extends ChangeNotifier {
     required ValueChanged<InvoiceModel> onAddInvoiceSuccess,
   }) async {
     String res = 'done';
+    // upload logo
     InvoiceModel data =
-        await Invoice_Service().addInvoice(body, file, myfilelogo, files);
-    //  if(data !=null){
+        await Invoice_Service().addInvoice(body, file, myfilelogo, []);
 
-    listinvoices.insert(0, data);
-    listinvoiceClient.insert(0, data);
-    listInvoicesAccept.insert(0, data);
-    res = data.idInvoice.toString();
-    onAddInvoiceSuccess(data);
+    // upload files and record image
+    final res1 = await _uploadFiles(
+      invoiceId: data.idInvoice!,
+      body: body,
+      file: file,
+      files: files,
+    );
+
+    // fetch updated invoice
+    final InvoiceModel newInvoice = await Invoice_Service()
+        .getinvoicebyidInvoice(data.idInvoice.toString());
+
+    listinvoices.insert(0, newInvoice);
+    listinvoiceClient.insert(0, newInvoice);
+    listInvoicesAccept.insert(0, newInvoice);
+    res = newInvoice.idInvoice.toString();
+    onAddInvoiceSuccess(newInvoice);
     // } else res='false';
     notifyListeners();
     return res;
+  }
+
+  Future<dynamic> _uploadFiles({
+    required String invoiceId,
+    required Map<String, dynamic> body,
+    required File? file,
+    required List<File> files,
+  }) async {
+    return await Api().postCrudInvoiceFile(
+      'array',
+      url + "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
+      body,
+      file,
+      files: files,
+    );
   }
 
   openFile(FileAttach attachFile) async {
@@ -1232,13 +1259,13 @@ class invoice_vm extends ChangeNotifier {
     isloadingdone = true;
     notifyListeners();
     // upload files first
-    final res1 = await Api().postCrudInvoiceFile(
-      'array',
-      url + "FilesInvoice/crud_files_invoice.php?fk_invoice=$idInvoice",
-      body,
-      file,
+    final res1 = await _uploadFiles(
+      invoiceId: idInvoice!,
+      body: body,
+      file: file,
       files: files,
     );
+
     InvoiceModel data = await Invoice_Service().updateInvoice(
       body,
       idInvoice!,
