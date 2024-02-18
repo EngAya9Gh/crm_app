@@ -164,7 +164,7 @@ class _addUserState extends State<addUser> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: label_manage, des: '*'),
+                    RowEdit(name: labelManage, des: '*'),
                     Consumer<manage_provider>(
                         builder: (context, mangelist, child) {
                       return DropdownButtonFormField(
@@ -216,7 +216,7 @@ class _addUserState extends State<addUser> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: label_level, des: '*'),
+                    RowEdit(name: AppStrings.labelLevel, des: '*'),
 
                     BlocBuilder<PrivilegeCubit, PrivilegeState>(
                       builder: (context, state) {
@@ -321,7 +321,7 @@ class _addUserState extends State<addUser> {
                       },
                     ),
                     SizedBox(height: 20),
-                    RowEdit(name: label_mobile, des: '*'),
+                    RowEdit(name: AppStrings.labelMobile, des: '*'),
                     EditTextFormField(
                       hintText: '+966000000000',
                       obscureText: false,
@@ -506,7 +506,7 @@ class _addUserState extends State<addUser> {
     mobileController.text = "";
     emailController.text = "";
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(label_Addeduser)));
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelAddedUser)));
     Navigator.pop(context);
   }
 }

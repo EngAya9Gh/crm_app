@@ -998,7 +998,7 @@ class _RejectDialogState extends State<RejectDialog> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.isEmpty) {
-                          return label_empty;
+                          return labelEmpty;
                         }
                       },
                       hintText: "وصف سبب الإنسحاب",
@@ -1010,7 +1010,7 @@ class _RejectDialogState extends State<RejectDialog> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.isEmpty) {
-                          return label_empty;
+                          return labelEmpty;
                         }
                       },
                       hintText: 'المبلغ المسترجع',

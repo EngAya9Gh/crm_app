@@ -1,62 +1,64 @@
-/////label login page
-const String message_empty = 'الحقل فارغ';
-const String hintEmailText = "Enter your Email";
-const String hintCodeText = "Enter your code";
-const String codeverifyError =
-    "The Pin Code is incorrect or your account is unActive";
-const String emailError = "This Email is not exist";
-const String textbutton_code = "Send Code";
-const String textbutton_code2 = "Verfiy Code";
+abstract class AppStrings {
+  /////label login page
+  static const String messageEmpty = 'الحقل فارغ';
+  static const String hintEmailText = "Enter your Email";
+  static const String hintCodeText = "Enter your code";
+  static const String codeVerifyError =
+      "The Pin Code is incorrect or your account is unActive";
+  static const String emailError = "This Email is not exist";
+  static const String textButtonCode = "Send Code";
+  static const String textButtonCode2 = "Verfiy Code";
 //////label main main_page
-const String label_name_product = "اسم المنتج";
-const String label_name_price = "سعر المنتج";
-const String label_name_package = "اسم الباقة ";
-const String label_turnVat = "تفعيل الضريبة";
-const String marketlabel = 'عميل عن طريق التسويق الالكتروني';
-const String label_button_addProduct = "إضافة منتج";
+  static const String labelNameProduct = "اسم المنتج";
+  static const String labelNamePrice = "سعر المنتج";
+  static const String labelNamePackage = "اسم الباقة ";
+  static const String labelTurnVat = "تفعيل الضريبة";
+  static const String marketLabel = 'عميل عن طريق التسويق الالكتروني';
+  static const String labelButtonAddProduct = "إضافة منتج";
 ///////////label text product///////////
-const String label_errorAddProd = "لقد حصل خطأ ما ";
-const String label_doneAddProduct = "تمت إضافة المنتج بنجاح";
+  static const String labelErrorAddProd = "لقد حصل خطأ ما ";
+  static const String labelDoneAddProduct = "تمت إضافة المنتج بنجاح";
 //////////////////label text user/////////
-const String label_manage = 'الإدارات';
-const String label_level = 'المستوى';
-const String label_regoin = 'المنطقة';
-const String label_mobile = 'رقم الجوال';
-const String label_Addeduser = " تمت إضافة البيانات بنجاح";
-const String label_Edituser = " تم تعديل البيانات بنجاح";
+  static const String labelManage = 'الإدارات';
+  static const String labelLevel = 'المستوى';
+  static const String labelRegion = 'المنطقة';
+  static const String labelMobile = 'رقم الجوال';
+  static const String labelAddedUser = " تمت إضافة البيانات بنجاح";
+  static const String labelEditUser = " تم تعديل البيانات بنجاح";
 /////////////////////////label client////////////////////
-const String label_clientname = 'اسم العميل';
-const String label_desc_activ = 'وصف النشاط';
-const String label_cliententerprise = 'اسم المؤسسة';
-const String label_clientmobile = 'رقم الجوال';
-const String label_client_typejob = 'نوع النشاط';
-const String label_clientcity = 'المدينة';
-const String label_usernameclient = 'عنوان العميل';
-const String label_clientlocation = 'الموقع';
+  static const String labelClientName = 'اسم العميل';
+  static const String labelDescActivity = 'وصف النشاط';
+  static const String labelClientEnterprise = 'اسم المؤسسة';
+  static const String labelClientMobile = 'رقم الجوال';
+  static const String labelClientTypeJob = 'نوع النشاط';
+  static const String labelClientCity = 'المدينة';
+  static const String labelUsernameClient = 'عنوان العميل';
+  static const String labelClientLocation = 'الموقع';
 
-const String label_clientregoin = 'المنطقة';
-const String label_clientdate = 'تاريخ الرفع';
-const String label_clienttype = 'حالة العميل';
-const String label_clientnameuser = 'اسم الموظف';
-const String label_clientadd = 'إضافة العميل';
+  static const String labelClientRegion = 'المنطقة';
+  static const String labelClientDate = 'تاريخ الرفع';
+  static const String labelClientType = 'حالة العميل';
+  static const String labelClientNameUser = 'اسم الموظف';
+  static const String labelClientAdd = 'إضافة العميل';
 
-const String label_empty = 'هذا الحقل مطلوب';
+  static const String labelEmpty = 'هذا الحقل مطلوب';
 /////////////////////////////////////////
 
-const String label_amount_paid = 'المبلغ المدفوع';
-const String label_renew = 'التجديد السنوي';
-const String label_invoice_source = 'مصدر الفاتورة';
-const String label_renew2year = ' تجديد الموارد البشرية ';
+  static const String labelAmountPaid = 'المبلغ المدفوع';
+  static const String labelRenew = 'التجديد السنوي';
+  static const String labelInvoiceSource = 'مصدر الفاتورة';
+  static const String labelRenew2Year = ' تجديد الموارد البشرية ';
 
-const String label_typepay = 'طريقة الدفع';
-const String label_typeinstall = 'طريقة التركيب للعميل';
-const String label_readyinstall = 'حالة العميل';
+  static const String labelTypePay = 'طريقة الدفع';
+  static const String labelTypeInstall = 'طريقة التركيب للعميل';
+  static const String labelReadyInstall = 'حالة العميل';
 
-const String label_note = 'ملاحظات المبيعات';
-const String label_image = '  مرفق السجل التجاري';
-const String label_total = 'إجمالي الفاتورة';
-const String label_addinvoice = 'حفظ';
+  static const String labelNote = 'ملاحظات المبيعات';
+  static const String labelImage = '  مرفق السجل التجاري';
+  static const String labelTotal = 'إجمالي الفاتورة';
+  static const String labelAddInvoice = 'حفظ';
 
-const String label_not_use = ' عملاء لا يستخدمون النظام ';
-const String label_repeat_comm = 'تقرير الاتصال الدوري ';
-const String label_wrong_number = ' عملاء أرقامهم خاطئة ';
+  static const String labelNotUse = ' عملاء لا يستخدمون النظام ';
+  static const String labelRepeatComm = 'تقرير الاتصال الدوري ';
+  static const String labelWrongNumber = ' عملاء أرقامهم خاطئة ';
+}

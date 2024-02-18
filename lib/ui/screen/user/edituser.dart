@@ -296,7 +296,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: label_manage, des: '*'),
+                    RowEdit(name: labelManage, des: '*'),
 
                     Consumer<manage_provider>(
                         builder: (context, mangelist, child) {
@@ -326,7 +326,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: label_level, des: '*'),
+                    RowEdit(name: AppStrings.labelLevel, des: '*'),
                     //mangwidget(),
                     BlocBuilder<PrivilegeCubit, PrivilegeState>(
                       builder: (context, state) {
@@ -435,7 +435,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: label_mobile, des: '*'),
+                    RowEdit(name: AppStrings.labelMobile, des: '*'),
                     EditTextFormField(
                       hintText: '00966000000000',
                       obscureText: false,
@@ -502,7 +502,7 @@ class _EditUserState extends State<EditUser> {
   }
 
   clear(body) {
-    //label_Edituser
+    //AppStrings.label_Edituser
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changeboolUpdateUser(false);
 //     final index = Provider.of<user_vm_provider>(context, listen: false)
@@ -515,7 +515,7 @@ class _EditUserState extends State<EditUser> {
     // mobileController.text = "";
     // emailController.text = "";
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(label_Edituser)));
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelEditUser)));
     Navigator.pop(context);
   }
 
@@ -531,7 +531,7 @@ class _EditUserState extends State<EditUser> {
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changeboolUpdateUser(false);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(label_errorAddProd)));
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelErrorAddProd)));
     Navigator.pop(context);
   }
 

@@ -13,10 +13,8 @@ import 'package:crm_smart/ui/widgets/custom_widget/group_button.dart';
 import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -57,11 +55,9 @@ class _addProductState extends State<addProduct> {
   void settaxrate(context) {
     List<ConfigModel> _listconfg =
         Provider.of<config_vm>(context, listen: false).listofconfig;
-    
+
     taxrate =
         _listconfg.firstWhere((element) => element.name_config == 'taxrate');
-
-    
   }
 
   // String? idCountry;
@@ -69,13 +65,11 @@ class _addProductState extends State<addProduct> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // idCountry = Provider.of<user_vm_provider>(context, listen: false).currentUser!.fkCountry;
-      
+
       Provider.of<config_vm>(context, listen: false).getAllConfig();
-      
-      Provider.of<switch_provider>(
-          context,
-          listen: false).changeboolValue(false);
-      
+
+      Provider.of<switch_provider>(context, listen: false)
+          .changeboolValue(false);
     });
     super.initState();
   }
@@ -109,44 +103,42 @@ class _addProductState extends State<addProduct> {
                     SizedBox(
                       height: sizeMedia * 0.10,
                     ),
-
                     Consumer<selected_button_provider>(
                         builder: (context, selectedProvider, child) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
                                 offset: Offset(1.0, 1.0),
                                 blurRadius: 8.0,
-                                    color: Colors.grey.withOpacity(0.2)),
-                              ],
-                              color: Colors.white,
-                            ),
-                            child: Center(
-                              child: GroupButton(
-                                options: GroupButtonOptions(
-                                  borderRadius: BorderRadius.circular(20),
-                                  buttonWidth:
+                                color: Colors.grey.withOpacity(0.2)),
+                          ],
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: GroupButton(
+                            options: GroupButtonOptions(
+                              borderRadius: BorderRadius.circular(20),
+                              buttonWidth:
                                   MediaQuery.of(context).size.width * 0.3,
-                                  //elevation: 0,
-                                  selectedColor: kMainColor,
-                                ),
-                                controller: GroupButtonController(
-                                  selectedIndex: selectedProvider.isSelected,
-                                ),
-                                buttons: ['أجهزة', 'برامج'],
-                                onSelected: (_,int index, bool isSelected) {
-                                  valtype_product = index;
-                                  // valtype_product == 0 ? 1 : 0;
-                                  selectedProvider.selectValue(index);
-
-                                },
-                              ),
+                              //elevation: 0,
+                              selectedColor: kMainColor,
                             ),
-                          );
-                        }),
+                            controller: GroupButtonController(
+                              selectedIndex: selectedProvider.isSelected,
+                            ),
+                            buttons: ['أجهزة', 'برامج'],
+                            onSelected: (_, int index, bool isSelected) {
+                              valtype_product = index;
+                              // valtype_product == 0 ? 1 : 0;
+                              selectedProvider.selectValue(index);
+                            },
+                          ),
+                        ),
+                      );
+                    }),
                     SizedBox(
                       height: 6,
                     ),
@@ -173,7 +165,7 @@ class _addProductState extends State<addProduct> {
                                 }
                               },
                               con: _textName,
-                              label: label_name_product,
+                              label: AppStrings.labelNameProduct,
                               onChanged: (val) {
                                 nameprod = val;
                               },
@@ -197,10 +189,9 @@ class _addProductState extends State<addProduct> {
                               },
                               con: _textprice,
                               inputType: TextInputType.number,
-                              label: label_name_price,
+                              label: AppStrings.labelNamePrice,
                               onChanged: (val) {
                                 price = double.parse(val.toString());
-                                
                               },
                             ),
                             SizedBox(
@@ -212,7 +203,7 @@ class _addProductState extends State<addProduct> {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(label_turnVat),
+                                      Text(AppStrings.labelTurnVat),
                                       Switch(
                                           activeTrackColor:
                                               kMainColor.withAlpha(90),
@@ -235,7 +226,7 @@ class _addProductState extends State<addProduct> {
                                 : CustomButton(
                                     width:
                                         MediaQuery.of(context).size.width * 0.2,
-                                    text: label_button_addProduct,
+                                    text: AppStrings.labelButtonAddProduct,
                                     onTap: () async {
                                       if (_globalKey.currentState!.validate()) {
                                         _globalKey.currentState!.save();
@@ -260,17 +251,26 @@ class _addProductState extends State<addProduct> {
                                           'nameProduct': nameprod,
                                           'priceProduct': price.toString(),
                                           'type': valtype_product.toString(),
-                                          'fk_country': Provider.of<UserProvider>(context,listen: false)
-                                          .currentUser.fkCountry.toString(),
+                                          'fk_country':
+                                              Provider.of<UserProvider>(context,
+                                                      listen: false)
+                                                  .currentUser
+                                                  .fkCountry
+                                                  .toString(),
                                           'fk_config': valtaxrate
                                               ? taxrate.id_config
                                               : "null",
                                           "value_config": valtaxrate
                                               ? taxrate.value_config
                                               : "null",
-                                          "created_at":DateTime.now().toString(),
-                                          "fkusercreate":Provider.of<UserProvider>
-                                            (context,listen: false).currentUser.idUser.toString(),
+                                          "created_at":
+                                              DateTime.now().toString(),
+                                          "fkusercreate":
+                                              Provider.of<UserProvider>(context,
+                                                      listen: false)
+                                                  .currentUser
+                                                  .idUser
+                                                  .toString(),
                                           //
                                         }).then((value) => value != "false"
                                                     ? clear(context)
@@ -278,7 +278,7 @@ class _addProductState extends State<addProduct> {
                                                 // Fluttertoast.showToast(
                                                 //  backgroundColor:
                                                 //      Colors.lightBlueAccent,
-                                                //  msg: label_errorAddProd, // message
+                                                //  msg: AppStrings.label_errorAddProd, // message
                                                 //  toastLength:
                                                 //      Toast.LENGTH_SHORT, // length
                                                 //  gravity: ToastGravity.CENTER, //
@@ -304,7 +304,7 @@ class _addProductState extends State<addProduct> {
     Provider.of<LoadProvider>(context, listen: false)
         .changeboolValueisLoading(false);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(label_errorAddProd)));
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelErrorAddProd)));
   }
 
   void clear(context) {
@@ -315,7 +315,7 @@ class _addProductState extends State<addProduct> {
     _textprice.text = "";
     Provider.of<switch_provider>(context, listen: false).changeboolValue(false);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(label_doneAddProduct)));
+        .showSnackBar(SnackBar(content: Text(labelDoneAddProduct)));
 
     Navigator.pop(context);
     // Fluttertoast.showToast(

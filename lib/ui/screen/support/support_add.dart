@@ -1606,7 +1606,7 @@ class _dialog_readyState extends State<dialog_ready> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.isEmpty) {
-                          return label_empty;
+                          return labelEmpty;
                         }
                       },
                       hintText: "الملاحظات",

@@ -13,18 +13,17 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
-import '../../../constants.dart';
 import 'package:provider/provider.dart';
 
+import '../../../constants.dart';
 import '../../../labeltext.dart';
 import '../../../view_model/client_vm.dart';
 import 'card_comment.dart';
 import 'comment_view.dart';
 
 class installAdd extends StatefulWidget {
-   installAdd({required this.com, Key? key}) : super(key: key);
-   CommunicationModel com;
+  installAdd({required this.com, Key? key}) : super(key: key);
+  CommunicationModel com;
 
   @override
   _installAddState createState() => _installAddState();
@@ -34,48 +33,57 @@ class _installAddState extends State<installAdd> {
   final _globalKey = GlobalKey<FormState>();
   TextEditingController _comment = TextEditingController();
 
-  String? typepayController='0';
+  String? typepayController = '0';
 
-  String?  titleWelcom='هذا عميل مشترك جديد , قم بالتواصل مع العميل والترحيب به ثم اكتب تعليق وانقر على زر تم الترحيب بالعميل';
+  String? titleWelcom =
+      'هذا عميل مشترك جديد , قم بالتواصل مع العميل والترحيب به ثم اكتب تعليق وانقر على زر تم الترحيب بالعميل';
 
-  String?  titleInstall='هذا العميل مشترك جديد , قم بالتواصل مع العميل والتأكد من جودة التركيب والتدريب له , ثم اكتب تعليق وانقر على زر تم التواصل';
+  String? titleInstall =
+      'هذا العميل مشترك جديد , قم بالتواصل مع العميل والتأكد من جودة التركيب والتدريب له , ثم اكتب تعليق وانقر على زر تم التواصل';
 
-  double rate=0.0;
-  @override void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_)async {
+  double rate = 0.0;
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.com.fkClient);
-      await Provider.of<ClientProvider>(context,listen: false)
+      await Provider.of<ClientProvider>(context, listen: false)
           .get_byIdClient(widget.com.fkClient.toString());
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
-
         centerTitle: true,
         title: Text(widget.com.nameEnterprise.toString()),
       ),
-      body:  ModalProgressHUD(
-        inAsyncCall: Provider.of<communication_vm>(context,listen: true).isload,
+      body: ModalProgressHUD(
+        inAsyncCall:
+            Provider.of<communication_vm>(context, listen: true).isload,
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListView(
               children: [
-                widget.com.dateCommunication==null?
-                Text(widget.com.typeCommuncation=='تركيب'&&widget.com.type_install=='1'?
-                titleInstall.toString():
-                widget.com.type_install=='2'?
-                     ''
-                    :titleWelcom.toString()
-                ):Container(),
-                Divider(thickness: 1,color: Colors.grey,),
-                SizedBox(height: 10,),
+                widget.com.dateCommunication == null
+                    ? Text(widget.com.typeCommuncation == 'تركيب' &&
+                            widget.com.type_install == '1'
+                        ? titleInstall.toString()
+                        : widget.com.type_install == '2'
+                            ? ''
+                            : titleWelcom.toString())
+                    : Container(),
+                Divider(
+                  thickness: 1,
+                  color: Colors.grey,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -85,28 +93,27 @@ class _installAddState extends State<installAdd> {
                       //color: kMainColor,
                       decoration: BoxDecoration(
                           color: kMainColor,
-                          borderRadius: BorderRadius.all(Radius.circular(10))
-                      ),
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
                       child: IconButton(
-                        onPressed: ()async{
-                          await FlutterPhoneDirectCaller.callNumber(widget.com.mobile.toString());
+                        onPressed: () async {
+                          await FlutterPhoneDirectCaller.callNumber(
+                              widget.com.mobile.toString());
                         },
-                        icon: Icon(Icons.call),iconSize: 15,color: kWhiteColor,
+                        icon: Icon(Icons.call),
+                        iconSize: 15,
+                        color: kWhiteColor,
                       ),
                     ),
                     TextButton(
-                      onPressed: ()async{
+                      onPressed: () async {
                         await FlutterPhoneDirectCaller.callNumber(
                             widget.com.mobile.toString());
                       },
-                      child:
-                      Text(widget.com.mobile.toString(),
+                      child: Text(
+                        widget.com.mobile.toString(),
                         style: TextStyle(
-                            fontFamily: kfontfamily2,
-                            color: kMainColor
-                        ),
+                            fontFamily: kfontfamily2, color: kMainColor),
                       ),
-
                     ),
                     // Text(widget.com.mobile.toString(),
                     //   style: TextStyle(
@@ -116,34 +123,41 @@ class _installAddState extends State<installAdd> {
                     // ),
                   ],
                 ),
-                SizedBox(height: 10,),
-                widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
-                RowEdit(name: 'هل العميل راضي عن خدمة التركيب والتدريب', des: '*'):Container(),
+                SizedBox(
+                  height: 10,
+                ),
+                widget.com.typeCommuncation == 'تركيب' &&
+                        widget.com.dateCommunication == null
+                    ? RowEdit(
+                        name: 'هل العميل راضي عن خدمة التركيب والتدريب',
+                        des: '*')
+                    : Container(),
 
-                widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
-                Row(
-                  children: [
-                    Text('التقييم 1/5'),
-                    RatingBar.builder(
-                      initialRating: 1,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: false,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (rating) {
-
-                        setState(() {
-                          rate=rating;
-
-                        });
-                      },
-                    ),
-                  ],):Container(),
+                widget.com.typeCommuncation == 'تركيب' &&
+                        widget.com.dateCommunication == null
+                    ? Row(
+                        children: [
+                          Text('التقييم 1/5'),
+                          RatingBar.builder(
+                            initialRating: 1,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: false,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (rating) {
+                              setState(() {
+                                rate = rating;
+                              });
+                            },
+                          ),
+                        ],
+                      )
+                    : Container(),
                 //widget.com.typeCommuncation=='تركيب'&& widget.com.dateCommunication==null?
                 // Container(
                 //   padding: EdgeInsets.only(left: 2,right: 2),
@@ -182,9 +196,11 @@ class _installAddState extends State<installAdd> {
                 //       }
                 //
                 //   )
-               // )
-               //     :Container(),
-                SizedBox(height: 20,),
+                // )
+                //     :Container(),
+                SizedBox(
+                  height: 20,
+                ),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -192,86 +208,118 @@ class _installAddState extends State<installAdd> {
                     Expanded(
                       child: ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  kMainColor)),
-                          onPressed: () async{
-                            Navigator.push(context,
-                                CupertinoPageRoute(builder: (context)=>
-                                    ProfileClient(
-                                      idClient: widget.com.fkClient ,
-                                    )));
+                              backgroundColor:
+                                  MaterialStateProperty.all(kMainColor)),
+                          onPressed: () async {
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => ProfileClient(
+                                          idClient: widget.com.fkClient,
+                                        )));
                           },
                           child: Text(' ملف العميل')),
-                    ) ,
-                        20.horizontalSpace,
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-
-                                backgroundColor: MaterialStateProperty.all(
-                                 widget.com.dateCommunication==null?
-                                 kMainColor:kWhiteColor
-                                )),
-                            onPressed: () async {
-                              if(widget.com.dateCommunication==null) {
-                                Provider.of<communication_vm>
-                              (context,listen: false).addcommmuncation({
-                               //'fk_client':widget.com.fkClient.toString(),
-                              'fk_user':Provider.of<UserProvider>
-                                 (context,listen: false).currentUser.idUser.toString(),
-                              'date_communication':DateTime.now().toString(),
-                              'result':typepayController,//
-                              'nameUser':Provider.of<UserProvider>
-                                    (context,listen: false).currentUser.nameUser.toString(),
-                               'type_install':widget.com.type_install.toString(),
-                               'id_invoice':widget.com.id_invoice.toString(),
-                                  'rate':rate.toString(),
-
-                            },widget.com.idCommunication,
-                           widget.com.type_install==null?
-                           1:
-                           int.parse(widget.com.type_install.toString())).then((value) =>
-
-                             clear(value)
-                            );
-                            }},
-                            child: Text(' تم التواصل ',
-
-                              style: TextStyle(color:widget.com.dateCommunication==null?kWhiteColor: kMainColor),)),
-                        ) ,
+                    ),
+                    20.horizontalSpace,
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  widget.com.dateCommunication == null
+                                      ? kMainColor
+                                      : kWhiteColor)),
+                          onPressed: () async {
+                            if (widget.com.dateCommunication == null) {
+                              Provider.of<communication_vm>(context,
+                                      listen: false)
+                                  .addcommmuncation(
+                                      {
+                                    //'fk_client':widget.com.fkClient.toString(),
+                                    'fk_user': Provider.of<UserProvider>(
+                                            context,
+                                            listen: false)
+                                        .currentUser
+                                        .idUser
+                                        .toString(),
+                                    'date_communication':
+                                        DateTime.now().toString(),
+                                    'result': typepayController, //
+                                    'nameUser': Provider.of<UserProvider>(
+                                            context,
+                                            listen: false)
+                                        .currentUser
+                                        .nameUser
+                                        .toString(),
+                                    'type_install':
+                                        widget.com.type_install.toString(),
+                                    'id_invoice':
+                                        widget.com.id_invoice.toString(),
+                                    'rate': rate.toString(),
+                                  },
+                                      widget.com.idCommunication,
+                                      widget.com.type_install == null
+                                          ? 1
+                                          : int.parse(widget.com.type_install
+                                              .toString())).then(
+                                      (value) => clear(value));
+                            }
+                          },
+                          child: Text(
+                            ' تم التواصل ',
+                            style: TextStyle(
+                                color: widget.com.dateCommunication == null
+                                    ? kWhiteColor
+                                    : kMainColor),
+                          )),
+                    ),
                   ],
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 RowEdit(name: 'البيانات', des: ''),
                 cardRow(
                     title: 'تاريخ عقد الإشتراك',
                     value: widget.com.date_approve.toString()),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
 
-                widget.com.typeCommuncation=='تركيب'&&widget.com.dateCommunication==null?
-                cardRow(
-                    title: 'تاريخ التركيب',
-                    value:widget.com.dateinstall_done.toString()):Container(),
-                  SizedBox(height: 10,),
+                widget.com.typeCommuncation == 'تركيب' &&
+                        widget.com.dateCommunication == null
+                    ? cardRow(
+                        title: 'تاريخ التركيب',
+                        value: widget.com.dateinstall_done.toString())
+                    : Container(),
+                SizedBox(
+                  height: 10,
+                ),
 
-                widget.com.typeCommuncation=='تركيب'&&widget.com.dateCommunication!=null?
-                cardRow(
-                    title: 'تاريخ التركيب',
-                    value:widget.com.dateCommunication.toString()):Container(),
+                widget.com.typeCommuncation == 'تركيب' &&
+                        widget.com.dateCommunication != null
+                    ? cardRow(
+                        title: 'تاريخ التركيب',
+                        value: widget.com.dateCommunication.toString())
+                    : Container(),
 
-                widget.com.typeCommuncation=='ترحيب'&&widget.com.dateCommunication!=null?
-                cardRow(
-                    title: 'تاريخ الترحيب',
-                    value:widget.com.dateCommunication.toString()):
-                // cardRow(
-                //     title: 'تاريخ التدريب',
-                //     value:widget.com.dateCommunication.toString()),
-                SizedBox(height: 10,),
+                widget.com.typeCommuncation == 'ترحيب' &&
+                        widget.com.dateCommunication != null
+                    ? cardRow(
+                        title: 'تاريخ الترحيب',
+                        value: widget.com.dateCommunication.toString())
+                    :
+                    // cardRow(
+                    //     title: 'تاريخ التدريب',
+                    //     value:widget.com.dateCommunication.toString()),
+                    SizedBox(
+                        height: 10,
+                      ),
 
-                widget.com.nameUser!=null?
-                cardRow(
-                    title: 'تم التواصل من قبل  ',
-                    value:widget.com.nameUser.toString()):Container(),
+                widget.com.nameUser != null
+                    ? cardRow(
+                        title: 'تم التواصل من قبل  ',
+                        value: widget.com.nameUser.toString())
+                    : Container(),
 
                 Row(
                   //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -280,13 +328,14 @@ class _installAddState extends State<installAdd> {
                       child: Form(
                         key: _globalKey,
                         child: EditTextFormField(
-                          vaild:  (value) {
+                          vaild: (value) {
                             if (value!.toString().trim().isEmpty) {
-                              return label_empty;
+                              return labelEmpty;
                             }
                           },
                           maxline: 3,
-                          paddcustom: EdgeInsets.only(top: 20,left: 3,right: 3,bottom: 3),
+                          paddcustom: EdgeInsets.only(
+                              top: 20, left: 3, right: 3, bottom: 3),
                           controller: _comment, hintText: 'إضافة تعليق',
                           // keyboardType: TextInputType.multiline,
                         ),
@@ -294,71 +343,74 @@ class _installAddState extends State<installAdd> {
                     ),
                     IconButton(
                         onPressed: () async {
-                          if(_globalKey.currentState!.validate()) {
+                          if (_globalKey.currentState!.validate()) {
                             _globalKey.currentState!.save();
 
                             Provider.of<comment_vm>(context, listen: false)
-                                .addComment_vm({
-                              'content': _comment.text,
-                              'fk_user': await Provider
-                                  .of<UserProvider>(context,
-                                  listen: false)
+                                .addComment_vm(
+                              {
+                                'content': _comment.text,
+                                'fk_user': await Provider.of<UserProvider>(
+                                        context,
+                                        listen: false)
+                                    .currentUser
+                                    .idUser
+                                    .toString(),
+                                'fk_client': widget.com.fkClient,
+                                'fkuser_client':
+                                    widget.com.fkUser.toString(), //صتحب العميل
+                                'nameUser': widget.com.nameUser.toString(),
+                                'date_comment':
+                                    //Utils.toDateTime(
+                                    DateTime.now().toString(),
+                                //),
+                                'nameUser': Provider.of<UserProvider>(context,
+                                        listen: false)
+                                    .currentUser
+                                    .nameUser,
+                                'img_image': '',
+                                'name_enterprise': widget.com.nameEnterprise
+                              },
+                              Provider.of<UserProvider>(context, listen: false)
                                   .currentUser
-                                  .idUser
-                                  .toString(),
-                              'fk_client': widget.com.fkClient,
-                              'fkuser_client': widget.com.fkUser.toString(), //صتحب العميل
-                              'nameUser': widget.com.nameUser.toString(),
-                              'date_comment':
-                              //Utils.toDateTime(
-                              DateTime.now().toString(),
-                              //),
-                              'nameUser': Provider
-                                  .of<UserProvider>(context,
-                                  listen: false)
-                                  .currentUser
-                                  .nameUser,
-                              'img_image': '',
-                              'name_enterprise': widget.com.nameEnterprise
-                            }, Provider
-                                .of<UserProvider>(context,
-                                listen: false)
-                                .currentUser
-                                .img_image,);
+                                  .img_image,
+                            );
                             _comment.text = '';
-                          }},
+                          }
+                        },
                         icon: Icon(Icons.send, color: kMainColor)),
-
                   ],
                 ),
                 Container(
-                  height: MediaQuery.of(context).size.height* 0.45,
+                  height: MediaQuery.of(context).size.height * 0.45,
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: 8, right: 8, top: 10.0, bottom: 5),
-                    child: Consumer<comment_vm>(builder: (context, value, child) {
+                    child:
+                        Consumer<comment_vm>(builder: (context, value, child) {
                       return value.listComments.length == 0
                           ? Text('')
                           : Column(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: value.listComments.length,
-                                itemBuilder: (context, index) {
-                                  return SingleChildScrollView(
-                                      child: Padding(
-                                          padding: const EdgeInsets.all(2),
-                                          child:
-                                          //Text(''),
-                                          cardcomment(
-                                            commentmodel:
-                                            value.listComments[index],
-                                          )));
-                                }),
-                          ),
-                        ],
-                      );
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.vertical,
+                                      itemCount: value.listComments.length,
+                                      itemBuilder: (context, index) {
+                                        return SingleChildScrollView(
+                                            child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                child:
+                                                    //Text(''),
+                                                    cardcomment(
+                                                  commentmodel:
+                                                      value.listComments[index],
+                                                )));
+                                      }),
+                                ),
+                              ],
+                            );
                     }),
                   ),
                 ),
@@ -372,11 +424,9 @@ class _installAddState extends State<installAdd> {
   }
 
   clear(value) {
-
-   // Navigator.pop(context);
+    // Navigator.pop(context);
     setState(() {
-      widget.com=value;
+      widget.com = value;
     });
   }
-
 }

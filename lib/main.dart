@@ -25,11 +25,9 @@ import 'package:crm_smart/view_model/employee_race_viewmodel.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/lastcommentclient_vm.dart';
-import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:crm_smart/view_model/participate_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/reason_suspend.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
@@ -97,14 +95,17 @@ void main() async {
   // }
   //await Firebase.initializeApp();
   await initializeDateFormatting();
+  setupDependencies();
 
   runApp(ServiceProvider(
     child: MultiProvider(providers: [
       ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-      ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
+      ChangeNotifierProvider<navigatorProvider>(
+          create: (_) => navigatorProvider()),
       ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
       ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
-      ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
+      ChangeNotifierProvider<selected_button_provider>(
+          create: (_) => selected_button_provider()),
       ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
       ChangeNotifierProxyProvider<UserProvider, config_vm>(
         create: (_) => config_vm(),
@@ -145,7 +146,8 @@ void main() async {
         create: (_) => MainCityProvider(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-      ChangeNotifierProvider<ClientTypeProvider>(create: (_) => ClientTypeProvider()),
+      ChangeNotifierProvider<ClientTypeProvider>(
+          create: (_) => ClientTypeProvider()),
       ChangeNotifierProvider<EventProvider>(
         create: (_) => EventProvider(),
       ),
@@ -159,12 +161,15 @@ void main() async {
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
       ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
-      ChangeNotifierProvider<ActivityProvider>(create: (_) => ActivityProvider()),
+      ChangeNotifierProvider<ActivityProvider>(
+          create: (_) => ActivityProvider()),
       ChangeNotifierProvider<CompanyProvider>(create: (_) => CompanyProvider()),
       ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
       ChangeNotifierProvider<reason_suspend>(create: (_) => reason_suspend()),
-      ChangeNotifierProvider<AgentDistributorViewModel>(create: (_) => AgentDistributorViewModel()),
-      ChangeNotifierProxyProvider<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
+      ChangeNotifierProvider<AgentDistributorViewModel>(
+          create: (_) => AgentDistributorViewModel()),
+      ChangeNotifierProxyProvider<invoice_vm,
+          AgentsCollaboratorsInvoicesViewmodel>(
         update: (context, invoiceVm, agentCollaborateVm) {
           if (agentCollaborateVm?.invoicesList.isEmpty ?? true)
             agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
@@ -176,8 +181,10 @@ void main() async {
         create: (_) => lastcommentclient_vm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-      ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
-      ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
+      ChangeNotifierProvider<BranchRaceViewmodel>(
+          create: (_) => BranchRaceViewmodel()),
+      ChangeNotifierProvider<EmployeeRaceViewmodel>(
+          create: (_) => EmployeeRaceViewmodel()),
     ], child: MyApp()),
   ));
 }
@@ -193,7 +200,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    currentUser = Provider.of<UserProvider>(context, listen: false).getcurrentuser();
+    currentUser =
+        Provider.of<UserProvider>(context, listen: false).getcurrentuser();
     super.initState();
   }
 
@@ -233,7 +241,6 @@ class _MyAppState extends State<MyApp> {
                 );
               // String idcurrentuser= snapshot.data!.getString("id_user").toString();
               else {
-
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
                   title: 'Smart CRM',

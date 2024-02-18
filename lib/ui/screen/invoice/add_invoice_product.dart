@@ -1,12 +1,12 @@
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/productmodel.dart';
+import 'package:crm_smart/ui/widgets/combox_widget/regoincombox.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/separatorLine.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/invoice_widget/CardProduct_Invoice.dart';
 import 'package:crm_smart/ui/widgets/product_widget/cardProduct.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/customformtext.dart';
-import 'package:crm_smart/ui/widgets/combox_widget/regoincombox.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/country_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
@@ -21,10 +21,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../labeltext.dart';
 
-enum ProductType {
-  device,
-  program
-}
+enum ProductType { device, program }
 
 class add_invoiceProduct extends StatefulWidget {
   add_invoiceProduct(
@@ -73,7 +70,8 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
 
         if (userTax + adminTax > 100) {
           _taxuser.text = (100 - adminTax).toString();
-          _taxuser.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
+          _taxuser.selection = TextSelection.fromPosition(
+              TextPosition(offset: _taxuser.text.length));
         }
       }
 
@@ -82,7 +80,8 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
 
         if (userTax > 100) {
           _taxuser.text = 100.toString();
-          _taxuser.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
+          _taxuser.selection = TextSelection.fromPosition(
+              TextPosition(offset: _taxuser.text.length));
         }
       }
     });
@@ -93,7 +92,8 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
 
         if (userTax + adminTax > 100) {
           _taxadmin.text = (100 - userTax).toString();
-          _taxadmin.selection = TextSelection.fromPosition(TextPosition(offset: _taxuser.text.length));
+          _taxadmin.selection = TextSelection.fromPosition(
+              TextPosition(offset: _taxuser.text.length));
         }
       }
 
@@ -102,7 +102,8 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
 
         if (adminTax > 100) {
           _taxadmin.text = 100.toString();
-          _taxadmin.selection = TextSelection.fromPosition(TextPosition(offset: _taxadmin.text.length));
+          _taxadmin.selection = TextSelection.fromPosition(
+              TextPosition(offset: _taxadmin.text.length));
         }
       }
     });
@@ -121,50 +122,54 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
     setState(() {
       double totaltax = 0;
       if (listProduct.isNotEmpty) {
-        _textprice.text = double.parse(selectedProduct?.priceProduct ?? "0.0").toStringAsFixed(2);
+        _textprice.text = double.parse(selectedProduct?.priceProduct ?? "0.0")
+            .toStringAsFixed(2);
         String? taxCountry = selectedProduct?.value_config;
-        
-        
-        
-        
+
         if (taxCountry != null) {
-          double pricewithtax = double.parse(_textprice.text) * double.parse(taxCountry) / 100;
-          
-          _textprice.text = (double.parse(_textprice.text) + pricewithtax).toString();
+          double pricewithtax =
+              double.parse(_textprice.text) * double.parse(taxCountry) / 100;
+
+          _textprice.text =
+              (double.parse(_textprice.text) + pricewithtax).toString();
         }
         if (_taxadmin.text != '' && _taxuser.text != '') {
           totaltax = double.parse(_taxadmin.text) + double.parse(_taxuser.text);
           //_textprice.text=totaltax.toString();
         } else {
-          
-          
           if (_taxadmin.text != '') totaltax = double.parse(_taxadmin.text);
           if (_taxuser.text != '') totaltax = double.parse(_taxuser.text);
         }
-        double pricewithouttax = double.parse(_textprice.text) * totaltax / 100; //حسم
-        _textprice.text = (double.parse(_textprice.text) - pricewithouttax).toString();
-        
-        double totalprice = double.parse(_textprice.text) * double.parse(_amount.text.isEmpty ? '1' : _amount.text);
+        double pricewithouttax =
+            double.parse(_textprice.text) * totaltax / 100; //حسم
+        _textprice.text =
+            (double.parse(_textprice.text) - pricewithouttax).toString();
+
+        double totalprice = double.parse(_textprice.text) *
+            double.parse(_amount.text.isEmpty ? '1' : _amount.text);
         // totalprice.floorToDouble();
         _textprice.text = totalprice.toStringAsFixed(2).toString();
-        
       }
     });
   }
 
   ProductType? selectedProductType;
 
-  onChangeProductType(ProductType productType , bool isSelected) {
-    if(!isSelected){
+  onChangeProductType(ProductType productType, bool isSelected) {
+    if (!isSelected) {
       selectedProductType = null;
-      listProduct = List.of(Provider.of<product_vm>(context, listen: false).listProduct).toList();
+      listProduct =
+          List.of(Provider.of<product_vm>(context, listen: false).listProduct)
+              .toList();
       setState(() {});
       return;
     }
     selectedProductType = productType;
-    listProduct = List.of(Provider.of<product_vm>(context, listen: false).listProduct)
-        .where((element) => element.type == selectedProductType!.index.toString())
-        .toList();
+    listProduct =
+        List.of(Provider.of<product_vm>(context, listen: false).listProduct)
+            .where((element) =>
+                element.type == selectedProductType!.index.toString())
+            .toList();
     selectedProduct = null;
     selectedvalue = null;
     setState(() {});
@@ -186,15 +191,17 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
           IconButton(
               onPressed: () {
                 double _total = 0;
-                List<ProductsInvoice>? pinv = Provider.of<invoice_vm>(context, listen: false).listproductinvoic;
+                List<ProductsInvoice>? pinv =
+                    Provider.of<invoice_vm>(context, listen: false)
+                        .listproductinvoic;
                 for (int i = 0; i < pinv.length; i++) {
                   _total = _total + double.parse(pinv[i].price.toString());
                 }
                 widget.invoice!.total = _total.toStringAsFixed(2).toString();
-                
-                
-                Provider.of<invoice_vm>(context, listen: false).set_total(_total.toString());
-                
+
+                Provider.of<invoice_vm>(context, listen: false)
+                    .set_total(_total.toString());
+
                 widget.invoice!.products = pinv;
 
                 // Provider.of<invoice_vm>(context,listen: false)
@@ -244,7 +251,8 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                           Container(
                             padding: EdgeInsets.only(left: 2, right: 2),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(12)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12)),
                               boxShadow: <BoxShadow>[
                                 BoxShadow(
                                   offset: Offset(1.0, 1.0),
@@ -255,21 +263,27 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                               color: Colors.white,
                             ),
                             child: GroupButton(
-                              controller: GroupButtonController(selectedIndex: selectedProductType?.index),
+                              controller: GroupButtonController(
+                                  selectedIndex: selectedProductType?.index),
                               options: GroupButtonOptions(
-                                  buttonWidth: (MediaQuery.of (context).size.width / 2) - 50,
+                                  buttonWidth:
+                                      (MediaQuery.of(context).size.width / 2) -
+                                          50,
                                   borderRadius: BorderRadius.circular(10)),
-                              buttons: ['أجهزة','برامج'],
+                              buttons: ['أجهزة', 'برامج'],
                               enableDeselect: true,
                               onSelected: (_, index, isselected) =>
-                                  onChangeProductType(ProductType.values[index] , isselected),
+                                  onChangeProductType(
+                                      ProductType.values[index], isselected),
                             ),
                           ),
                           SizedBox(height: 10),
                           DropdownSearch<ProductModel>(
                             items: listProduct,
-                            dropdownSearchDecoration:
-                                InputDecoration(hintText: "اختر منتج", isCollapsed: true, isDense: true),
+                            dropdownSearchDecoration: InputDecoration(
+                                hintText: "اختر منتج",
+                                isCollapsed: true,
+                                isDense: true),
                             itemAsString: (item) => item?.nameProduct ?? '',
                             searchFieldProps: TextFieldProps(
                                 textDirection: TextDirection.rtl,
@@ -280,12 +294,14 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                 )),
                             dropDownButton: Icon(Icons.arrow_drop_down_rounded),
                             showSearchBox: true,
-                            popupShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                            popupShape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
                             selectedItem: selectedProduct,
                             onChanged: (value) {
                               setState(() {
                                 selectedProduct = value;
-                                selectedvalue = selectedProduct?.idProduct.toString();
+                                selectedvalue =
+                                    selectedProduct?.idProduct.toString();
                                 // index = listProduct.indexWhere((element) => element.idProduct == selectedvalue);
                                 calculate();
                               });
@@ -323,7 +339,6 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                   EditTextFormField(
                                     //read: false,
                                     onChanged: (val) {
-                                      
                                       if (val == null) _amount_value = '';
                                       _amount_value = val;
                                       calculate();
@@ -334,7 +349,9 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
 
                                     controller: _amount,
                                     hintText: 'الكمية',
-                                    inputformate: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                                    inputformate: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                   ),
                                 ],
                               )),
@@ -348,9 +365,10 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                   EditTextFormField(
                                     vaild: (value) {
                                       if (value.toString().trim().isEmpty) {
-                                        return label_empty;
+                                        return labelEmpty;
                                       }
-                                      if (double.tryParse(value.toString()) == null) return 'من فضلك ادخل عدد';
+                                      if (double.tryParse(value.toString()) ==
+                                          null) return 'من فضلك ادخل عدد';
                                       // else if(value.characters){
                                       //   return ;
                                       // }
@@ -359,7 +377,8 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                     //read: false,
                                     controller: _textprice,
                                     label: 'السعر',
-                                    hintText: Provider.of<UserProvider>(context, listen: true)
+                                    hintText: Provider.of<UserProvider>(context,
+                                            listen: true)
                                         .currentUser
                                         .currency
                                         .toString(),
@@ -391,7 +410,9 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                       controller: _taxuser,
                                       hintText: '%',
                                       maxLength: 3,
-                                      inputformate: [FilteringTextInputFormatter.digitsOnly],
+                                      inputformate: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -412,7 +433,9 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                       controller: _taxadmin,
                                       hintText: '%',
                                       maxLength: 3,
-                                      inputformate: [FilteringTextInputFormatter.digitsOnly],
+                                      inputformate: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -433,25 +456,37 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                 // Text(' إضافة منتج للفاتورة ' ,style: TextStyle(fontFamily: kfontfamily2),),
                                 Expanded(
                                   child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  kMainColor)),
                                       onPressed: () {
                                         //iduser
-                                        if (_textprice.text.isNotEmpty && selectedvalue != null) {
+                                        if (_textprice.text.isNotEmpty &&
+                                            selectedvalue != null) {
                                           // final index =
                                           //     listProduct.indexWhere((element) => element.idProduct == selectedvalue);
                                           ProductModel pm = selectedProduct!;
                                           ProductsInvoice pp = ProductsInvoice(
                                               idInvoiceProduct: "null",
-                                              fkIdInvoice: widget.invoice!.idInvoice == null
+                                              fkIdInvoice: widget
+                                                          .invoice!.idInvoice ==
+                                                      null
                                                   ? '0'
-                                                  : widget.invoice!.idInvoice.toString(),
-                                              fkclient: widget.invoice!.fkIdClient,
+                                                  : widget.invoice!.idInvoice
+                                                      .toString(),
+                                              fkclient:
+                                                  widget.invoice!.fkIdClient,
                                               fkuser: widget.invoice!.fkIdUser,
                                               fkProduct: pm.idProduct,
-                                              fkConfig: pm.fkConfig == null ? "null" : pm.fkConfig,
+                                              fkConfig: pm.fkConfig == null
+                                                  ? "null"
+                                                  : pm.fkConfig,
                                               fkCountry: pm.fkCountry,
                                               price: _textprice.text,
-                                              amount: _amount.text.isEmpty ? '1' : _amount.text,
+                                              amount: _amount.text.isEmpty
+                                                  ? '1'
+                                                  : _amount.text,
                                               rateAdmin: _taxadmin.text,
                                               rateUser: _taxuser.text,
                                               nameProduct: pm.nameProduct,
@@ -463,14 +498,17 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                               taxtotal: pm.value_config == null
                                                   ? "null"
                                                   : pm.value_config,
-                                            typeProdRenew: pm.typeProdRenew
-                                          );
+                                              typeProdRenew: pm.typeProdRenew);
                                           listAdded.add(pp);
 
-                                          Provider.of<invoice_vm>(context, listen: false).addlistproductinvoic(pp);
+                                          Provider.of<invoice_vm>(context,
+                                                  listen: false)
+                                              .addlistproductinvoic(pp);
                                         } else {
                                           ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(content: Text('من فضلك تأكد من عملية الإدخال')));
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      'من فضلك تأكد من عملية الإدخال')));
                                         }
                                         setState(() {
                                           _taxuser.text = '';
@@ -490,9 +528,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: 5
-                          ),
+                          SizedBox(height: 5),
                           Container(
                             height: MediaQuery.of(context).size.height * 0.75,
                             child: Consumer<invoice_vm>(
@@ -506,7 +542,8 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                       itemBuilder: (context, index) {
                                         return CardProduct_invoice(
                                           invoice: widget.invoice,
-                                          itemProd: data.listproductinvoic[index],
+                                          itemProd:
+                                              data.listproductinvoic[index],
                                           index: index,
                                           //value_config:  listProduct[index].value_config,
                                           iduser: widget.invoice!.fkIdUser,

@@ -151,7 +151,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   controller: emailController,
                 ),
                 15.verticalSpace,
-                RowEdit(name: label_manage, des: '*'),
+                RowEdit(name: labelManage, des: '*'),
                 Consumer<manage_provider>(builder: (context, mangelist, child) {
                   return DropdownButtonFormField(
                     isExpanded: true,
@@ -177,7 +177,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   );
                 }),
                 15.verticalSpace,
-                RowEdit(name: label_level, des: '*'),
+                RowEdit(name: AppStrings.labelLevel, des: '*'),
                 BlocBuilder<PrivilegeCubit, PrivilegeState>(
                   builder: (context, state) {
                     return DropdownButtonFormField(
@@ -278,7 +278,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   },
                 ),
                 20.verticalSpace,
-                RowEdit(name: label_mobile, des: '*'),
+                RowEdit(name: AppStrings.labelMobile, des: '*'),
                 EditTextFormField(
                   hintText: '+966000000000',
                   obscureText: false,
@@ -403,8 +403,10 @@ class _ActionUserPageState extends State<ActionUserPage> {
           return;
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(isEdit ? label_Edituser : label_Addeduser)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(isEdit
+                ? AppStrings.labelEditUser
+                : AppStrings.labelAddedUser)));
         Navigator.pop(context);
       },
     );
