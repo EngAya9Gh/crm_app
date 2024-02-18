@@ -5,7 +5,7 @@ import '../../../../common/enums/enums.dart';
 import '../../../../common/widgets/custom_error_widget.dart';
 import '../../../../common/widgets/custom_loading_indicator.dart';
 import '../../../../core/di/di_container.dart';
-import '../manager/manage_agents_and_distributors_cubit/manage_agents_and_distributors_cubit.dart';
+import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'agent_card.dart';
 
 class AgentsAndDistributorsPageBody extends StatelessWidget {
@@ -13,11 +13,10 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = sl<ManageAgentsAndDistributorsCubit>();
+    final cubit = sl<AgentsDistributorsCubit>();
     return RefreshIndicator(
       onRefresh: () async => cubit.getAgentsAndDistributors(),
-      child: BlocBuilder<ManageAgentsAndDistributorsCubit,
-          ManageAgentsAndDistributorsState>(
+      child: BlocBuilder<AgentsDistributorsCubit, AgentsDistributorsState>(
         builder: (context, state) {
           if (state.status == StateStatus.loading) {
             return CustomLoadingIndicator();

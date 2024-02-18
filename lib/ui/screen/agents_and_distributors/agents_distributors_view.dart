@@ -1,29 +1,27 @@
 import 'dart:async';
 
 import 'package:crm_smart/model/agent_distributor_model.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
-import '../../../view_model/agent_dsitributor_vm.dart';
+import '../../../features/manage_agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
+import '../../../features/manage_agents_and_distributors/presentation/pages/agents_distributors_actions_page.dart';
 import '../../../view_model/page_state.dart';
 import '../../../view_model/vm.dart';
 
-class AgentsAndDistributorsView extends StatefulWidget {
-  const AgentsAndDistributorsView({Key? key}) : super(key: key);
+class AgentsDistributorsView extends StatefulWidget {
+  const AgentsDistributorsView({Key? key}) : super(key: key);
 
   @override
-  State<AgentsAndDistributorsView> createState() =>
-      _AgentsAndDistributorsViewState();
+  State<AgentsDistributorsView> createState() => _AgentsDistributorsViewState();
 }
 
-class _AgentsAndDistributorsViewState extends State<AgentsAndDistributorsView>
+class _AgentsDistributorsViewState extends State<AgentsDistributorsView>
     with
-        StateViewModelMixin<AgentsAndDistributorsView,
-            AgentDistributorViewModel> {
+        StateViewModelMixin<AgentsDistributorsView, AgentDistributorViewModel> {
   @override
   void initState() {
     super.initState();
@@ -129,7 +127,7 @@ class _AgentsAndDistributorsViewState extends State<AgentsAndDistributorsView>
   Future<T?> goToAgentsActionPage<T>(
       {AgentDistributorModel? agentDistributorModel}) {
     return Navigator.of(context).push<T>(CupertinoPageRoute(
-      builder: (context) => AgentAndDistributorsAction(
+      builder: (context) => AgentDistributorsActionsPage(
           agentDistributorModel: agentDistributorModel),
     ));
   }

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/manage_agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
-import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,7 +14,6 @@ import 'package:tuple/tuple.dart';
 import '../../../common/constants/constants.dart';
 import '../../../constants.dart';
 import '../../../features/app/presentation/widgets/app_text.dart';
-import '../../../model/countrymodel.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
@@ -24,17 +23,21 @@ import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
 
-class AgentAndDistributorsAction extends StatefulWidget {
-  const AgentAndDistributorsAction({Key? key, this.agentDistributorModel}) : super(key: key);
+class AgentDistributorsAction extends StatefulWidget {
+  const AgentDistributorsAction({Key? key, this.agentDistributorModel})
+      : super(key: key);
 
   final AgentDistributorModel? agentDistributorModel;
 
   @override
-  State<AgentAndDistributorsAction> createState() => _AgentAndDistributorsActionState();
+  State<AgentDistributorsAction> createState() =>
+      _AgentDistributorsActionState();
 }
 
-class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
-    with StateViewModelMixin<AgentAndDistributorsAction, AgentDistributorViewModel> {
+class _AgentDistributorsActionState extends State<AgentDistributorsAction>
+    with
+        StateViewModelMixin<AgentDistributorsAction,
+            AgentDistributorViewModel> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -43,7 +46,8 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
   final TextEditingController logoController = TextEditingController();
   late File? _myfilelogo = null;
 
-  AgentDistributorModel? get agentDistributorModel => widget.agentDistributorModel;
+  AgentDistributorModel? get agentDistributorModel =>
+      widget.agentDistributorModel;
   late final String fkCountry;
   late final MainCityProvider _mainCityProvider;
   @override
@@ -68,12 +72,12 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
       );
 
       if (agentDistributorModel != null) {
-        viewmodel.onSelectADType(
-            ADType.values.firstWhere((element) => element.index == int.parse(agentDistributorModel!.typeAgent)));
+        viewmodel.onSelectADType(ADType.values.firstWhere((element) =>
+            element.index == int.parse(agentDistributorModel!.typeAgent)));
       }
     });
-
   }
+
   bool get isEdit => widget.agentDistributorModel != null;
   @override
   Widget build(BuildContext context) {
@@ -88,18 +92,20 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                   child: Form(
                     key: _formKey,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 75, right: 15, left: 15, bottom: 25),
+                      padding: EdgeInsets.only(
+                          top: 75, right: 15, left: 15, bottom: 25),
                       child: ContainerShadows(
                         width: double.infinity,
                         margin: EdgeInsets.only(),
                         child: ScrollbarTheme(
-                          data: Theme.of(context)
-                              .scrollbarTheme
-                              .copyWith(trackColor: MaterialStateProperty.all(Colors.grey.shade200)),
+                          data: Theme.of(context).scrollbarTheme.copyWith(
+                              trackColor: MaterialStateProperty.all(
+                                  Colors.grey.shade200)),
                           child: Scrollbar(
                             interactive: true,
                             child: SingleChildScrollView(
-                              padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 20),
+                              padding: EdgeInsets.only(
+                                  top: 20, left: 15, right: 15, bottom: 20),
                               child: Column(
                                 children: [
                                   SizedBox(height: 15),
@@ -125,23 +131,35 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                   agentTypeSelector(),
                                   SizedBox(height: 15),
                                   RowEdit(name: 'المدينة', des: '*'),
-                                  Selector<AgentDistributorViewModel,
-                                      Tuple2<PageState<List<CityModel>>, CityModel?>>(
-                                    selector: (_, vm) => Tuple2(vm.citiesState, vm.selectedCountryFromCity),
+                                  Selector<
+                                      AgentDistributorViewModel,
+                                      Tuple2<PageState<List<CityModel>>,
+                                          CityModel?>>(
+                                    selector: (_, vm) => Tuple2(vm.citiesState,
+                                        vm.selectedCountryFromCity),
                                     builder: (_, values, child) {
                                       final countries = values.item1;
                                       final selectedCountry = values.item2;
 
                                       if (countries.isLoading) {
                                         return Center(
-                                          child: SizedBox(height: 25, width: 25, child: CircularProgressIndicator()),
+                                          child: SizedBox(
+                                              height: 25,
+                                              width: 25,
+                                              child:
+                                                  CircularProgressIndicator()),
                                         );
                                       }
                                       if (countries.isLoading) {
                                         return Center(
                                           child: IconButton(
-                                            onPressed: () => viewmodel.getAllCity(fkCountry: fkCountry),
-                                            icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                                            onPressed: () =>
+                                                viewmodel.getAllCity(
+                                                    fkCountry: fkCountry),
+                                            icon: Icon(
+                                                Icons
+                                                    .keyboard_arrow_down_rounded,
+                                                color: Colors.grey),
                                           ),
                                         );
                                       }
@@ -149,56 +167,82 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                         child: Directionality(
                                           textDirection: TextDirection.rtl,
                                           child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10),
-                                            child: DropdownButtonFormField<CityModel?>(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: DropdownButtonFormField<
+                                                CityModel?>(
                                               isExpanded: true,
                                               validator: (value) {
                                                 if (value == null) {
                                                   return "هذا الحقل مطلوب";
                                                 }
                                               },
-                                              icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                                              icon: Icon(
+                                                  Icons
+                                                      .keyboard_arrow_down_rounded,
+                                                  color: Colors.grey),
                                               decoration: InputDecoration(
                                                 filled: true,
                                                 fillColor: Colors.grey.shade300,
                                                 border: InputBorder.none,
                                                 enabledBorder: InputBorder.none,
-                                                disabledBorder: InputBorder.none,
+                                                disabledBorder:
+                                                    InputBorder.none,
                                                 errorBorder: InputBorder.none,
                                                 focusedBorder: InputBorder.none,
-                                                focusedErrorBorder: InputBorder.none,
+                                                focusedErrorBorder:
+                                                    InputBorder.none,
                                               ),
                                               hint: Text("حدد المدينة"),
-                                              items: (countries.data ?? []).map((CityModel? country) {
-                                                return DropdownMenuItem<CityModel?>(
-                                                  alignment: Alignment.centerRight,
-                                                  child:Container(
-                                                      margin: const EdgeInsetsDirectional.only(start: 2, end: 2, top: 2,bottom: 2),
-                                                      decoration:decoration,
+                                              items: (countries.data ?? [])
+                                                  .map((CityModel? country) {
+                                                return DropdownMenuItem<
+                                                    CityModel?>(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Container(
+                                                      margin:
+                                                          const EdgeInsetsDirectional
+                                                                  .only(
+                                                              start: 2,
+                                                              end: 2,
+                                                              top: 2,
+                                                              bottom: 2),
+                                                      decoration: decoration,
                                                       child: ListTile(
-                                                        trailing: Text(country?.name_city ?? '', textDirection: TextDirection.rtl)
-                                                      )
-                                                  ) ,
+                                                          trailing: Text(
+                                                              country?.name_city ??
+                                                                  '',
+                                                              textDirection:
+                                                                  TextDirection
+                                                                      .rtl))),
                                                   value: country,
                                                 );
                                               }).toList(),
                                               value: selectedCountry,
-                                              selectedItemBuilder: (context){
-                                                return  (countries.data ?? []).map(
-                                                      (item) => DropdownMenuItem<CityModel>(
-                                                    value: item,
-                                                    alignment: Alignment.centerRight,
-                                                    child:   AppText(item?.name_city ?? '', style: context.textTheme.titleSmall,
+                                              selectedItemBuilder: (context) {
+                                                return (countries.data ?? [])
+                                                    .map(
+                                                      (item) => DropdownMenuItem<
+                                                              CityModel>(
+                                                          value: item,
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          child: AppText(
+                                                            item?.name_city ??
+                                                                '',
+                                                            style: context
+                                                                .textTheme
+                                                                .titleSmall,
+                                                          )),
                                                     )
-                                                  ),
-                                                ).toList();
+                                                    .toList();
                                               },
                                               onChanged: (city) {
                                                 if (city == null) {
                                                   return;
                                                 }
                                                 viewmodel.onSelectCity(city!);
-
                                               },
                                               onSaved: (city) {
                                                 if (city == null) {
@@ -233,7 +277,8 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                   SizedBox(height: 15),
                                   EditTextFormField(
                                     vaild: (value) {
-                                      if (value?.trim() == null || value?.trim() == '') {
+                                      if (value?.trim() == null ||
+                                          value?.trim() == '') {
                                         return null;
                                       } else {
                                         if (!value!.validateEmail) {
@@ -269,7 +314,10 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                   ),
                                   RowEdit(name: 'صورة ', des: ''),
                                   agentDistributorModel?.imageAgent != null &&
-                                          (agentDistributorModel?.imageAgent.toString().isNotEmpty ?? false)
+                                          (agentDistributorModel?.imageAgent
+                                                  .toString()
+                                                  .isNotEmpty ??
+                                              false)
                                       ? Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: Container(
@@ -278,7 +326,10 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                             child: Stack(
                                               alignment: Alignment.center,
                                               children: [
-                                                Image.network(agentDistributorModel!.imageAgent.toString()),
+                                                Image.network(
+                                                    agentDistributorModel!
+                                                        .imageAgent
+                                                        .toString()),
                                               ],
                                             ),
                                           ),
@@ -290,13 +341,14 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                     cursorColor: Colors.black,
                                     onTap: () async {
                                       ImagePicker imagePicker = ImagePicker();
-                                      final pickedImage = await imagePicker.pickImage(
+                                      final pickedImage =
+                                          await imagePicker.pickImage(
                                         source: ImageSource.gallery,
                                         imageQuality: 100,
                                       );
-                                      File? pickedFile = File(pickedImage!.path);
+                                      File? pickedFile =
+                                          File(pickedImage!.path);
                                       setState(() {
-                                        
                                         _myfilelogo = pickedFile;
                                         logoController.text = pickedFile.path;
                                         viewmodel.onSaveimagefile(_myfilelogo);
@@ -312,22 +364,32 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                         color: kMainColor,
                                       ),
                                       hintStyle: const TextStyle(
-                                          color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                          color: Colors.black45,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                       hintText: '',
                                       filled: true,
                                       fillColor: Colors.grey.shade200,
                                       enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: const BorderSide(color: Colors.white)),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white)),
                                       focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: const BorderSide(color: Colors.white)),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white)),
                                       errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: const BorderSide(color: Colors.white)),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white)),
                                       focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: const BorderSide(color: Colors.white)),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: const BorderSide(
+                                              color: Colors.white)),
                                     ),
                                   ),
                                   SizedBox(height: 15),
@@ -338,15 +400,25 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                                       _formKey.currentState!.save();
                                       if (_formKey.currentState!.validate()) {
                                         viewmodel.actionAgentDistributor(
-                                          agentId: agentDistributorModel?.idAgent,
-                                          onSuccess: () => Navigator.pop(context),
+                                          agentId:
+                                              agentDistributorModel?.idAgent,
+                                          onSuccess: () =>
+                                              Navigator.pop(context),
                                         );
                                       } else {
-                                        if (viewmodel.agentDistributorActionParams.type == null &&
-                                            viewmodel.agentDistributorActionParams.name != null) {
-                                          showSnakeBar(context, "من فضلك اختر النوع");
+                                        if (viewmodel
+                                                    .agentDistributorActionParams
+                                                    .type ==
+                                                null &&
+                                            viewmodel
+                                                    .agentDistributorActionParams
+                                                    .name !=
+                                                null) {
+                                          showSnakeBar(
+                                              context, "من فضلك اختر النوع");
                                         } else {
-                                          showSnakeBar(context, "من فضلك املئ جميع الحقول المطلوبة");
+                                          showSnakeBar(context,
+                                              "من فضلك املئ جميع الحقول المطلوبة");
                                         }
                                       }
                                     },
@@ -371,18 +443,22 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
   }
 
   Widget agentTypeSelector() {
-    return Selector<AgentDistributorViewModel, AgentDistributorActionParams>(
+    return Selector<AgentDistributorViewModel, AgentDistributorActionEntity>(
       selector: (_, vm) => vm.agentDistributorActionParams,
       builder: (_, agentDistributorActionParams, child) {
         return Container(
           height: 50,
-          decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(10)),
           padding: EdgeInsets.zero,
           child: Row(
             children: [
               Expanded(
                 child: InkWell(
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(10), bottomRight: Radius.circular(10)),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(10),
+                      bottomRight: Radius.circular(10)),
                   onTap: () {
                     viewmodel.onSelectADType(ADType.distributor);
                   },
@@ -390,13 +466,15 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                     duration: kTabScrollDuration,
                     height: 50,
                     alignment: Alignment.center,
-                    decoration: agentDistributorActionParams.type == ADType.distributor
-                        ? BoxDecoration(
-                            color: Colors.lightGreen,
-                            borderRadius: BorderRadiusDirectional.only(
-                                topStart: Radius.circular(10), bottomStart: Radius.circular(10)),
-                          )
-                        : null,
+                    decoration:
+                        agentDistributorActionParams.type == ADType.distributor
+                            ? BoxDecoration(
+                                color: Colors.lightGreen,
+                                borderRadius: BorderRadiusDirectional.only(
+                                    topStart: Radius.circular(10),
+                                    bottomStart: Radius.circular(10)),
+                              )
+                            : null,
                     child: Text(
                       "موزع",
                       textAlign: TextAlign.center,
@@ -412,7 +490,9 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
               ),
               Expanded(
                   child: InkWell(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10)),
                 onTap: () {
                   viewmodel.onSelectADType(ADType.agent);
                 },
@@ -423,8 +503,9 @@ class _AgentAndDistributorsActionState extends State<AgentAndDistributorsAction>
                   decoration: agentDistributorActionParams.type == ADType.agent
                       ? BoxDecoration(
                           color: Colors.lightGreen,
-                          borderRadius:
-                              BorderRadiusDirectional.only(topEnd: Radius.circular(10), bottomEnd: Radius.circular(10)),
+                          borderRadius: BorderRadiusDirectional.only(
+                              topEnd: Radius.circular(10),
+                              bottomEnd: Radius.circular(10)),
                         )
                       : null,
                   child: Text(

@@ -13,21 +13,19 @@ import '../../../../../constants.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../../services/Invoice_Service.dart';
-import '../../../../../view_model/agent_dsitributor_vm.dart';
 import '../../../../../view_model/page_state.dart';
+import '../../../domain/entities/agent_distributor_action_entity.dart';
 
-part 'manage_agents_and_distributors_state.dart';
+part 'agents_distributors_state.dart';
 
-class ManageAgentsAndDistributorsCubit
-    extends Cubit<ManageAgentsAndDistributorsState> {
-  ManageAgentsAndDistributorsCubit()
-      : super(ManageAgentsAndDistributorsState());
+class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
+  AgentsDistributorsCubit() : super(AgentsDistributorsState());
 
   PageState<List<MainCityModel>> citiesState0 = PageState();
   PageState<List<CityModel>> citiesState = PageState();
 
-  AgentDistributorActionParams agentDistributorActionParams =
-      AgentDistributorActionParams.init();
+  AgentDistributorActionEntity agentDistributorActionParams =
+      AgentDistributorActionEntity();
 
   MainCityModel? selectedCountry;
   CityModel? selectedCountryFromCity;
@@ -35,7 +33,7 @@ class ManageAgentsAndDistributorsCubit
   List<CityModel> listcity = [];
 
   void resetAgentDistributorActionParams() {
-    agentDistributorActionParams = AgentDistributorActionParams.reset();
+    agentDistributorActionParams = AgentDistributorActionEntity();
     selectedCountry = null;
     selectedCountryFromCity = null;
     isLoadingAction = false;
@@ -66,7 +64,7 @@ class ManageAgentsAndDistributorsCubit
     }
   }
 
-  Future<void> getAllCity({String? fkCountry, String? id_maincity}) async {
+  Future<void> getAllCity({String? fkCountry, String? regionId}) async {
     try {
       if (citiesState.isLoading) return;
       // todo : emit new actions state
@@ -78,15 +76,13 @@ class ManageAgentsAndDistributorsCubit
       data = await Api()
           .get(url: url + 'config/getcity.php?fk_country=${fkCountry!}');
 
-      if (data != null) {
-        for (int i = 0; i < data.length; i++) {
-          listcity.add(CityModel.fromJson(data[i]));
-          print(listcity[i].name_city);
-        }
+      for (int i = 0; i < data.length; i++) {
+        listcity.add(CityModel.fromJson(data[i]));
+        print(listcity[i].name_city);
       }
-      if (id_maincity != null) {
-        final country = listcity
-            .firstWhereOrNull((element) => element.id_city == id_maincity);
+      if (regionId != null) {
+        final country =
+            listcity.firstWhereOrNull((element) => element.id_city == regionId);
         if (country != null) {
           selectedCountryFromCity = country;
         }
@@ -133,7 +129,7 @@ class ManageAgentsAndDistributorsCubit
       onSuccess();
       resetAgentDistributorActionParams();
       getAgentsAndDistributors();
-    } catch (e, stackTrace) {
+    } catch (e) {
       // todo : emit new actions state
       emit(state.copyWith(
         status: StateStatus.failure,
@@ -143,7 +139,10 @@ class ManageAgentsAndDistributorsCubit
 
   onSelectADType(ADType type) {
     if (type == agentDistributorActionParams.type) {
-      agentDistributorActionParams = agentDistributorActionParams.resetType();
+      agentDistributorActionParams = agentDistributorActionParams.copyWith(
+        type: null,
+        filelogo: null,
+      );
       // todo : emit new actions state
       return;
     }

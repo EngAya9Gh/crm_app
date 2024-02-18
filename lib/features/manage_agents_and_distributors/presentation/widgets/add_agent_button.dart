@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/utils/app_navigator.dart';
-import '../../../../ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
+import '../pages/agents_distributors_actions_page.dart';
 
 class AddAgentButton extends StatelessWidget {
   const AddAgentButton({
@@ -14,7 +14,7 @@ class AddAgentButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.add, color: AppColors.white),
-      onPressed: () => AppNavigator.push(AgentAndDistributorsAction()),
+      onPressed: () => AppNavigator.push(AgentDistributorsActionsPage()),
       backgroundColor: kMainColor,
     );
   }

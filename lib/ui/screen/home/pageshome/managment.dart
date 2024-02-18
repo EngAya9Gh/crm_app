@@ -16,7 +16,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../features/manage_agents_and_distributors/presentation/pages/agents_and_distributors_page.dart';
+import '../../../../features/manage_agents_and_distributors/presentation/pages/agents_distributors_page.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/manage_users/presentation/pages/manage_users_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';

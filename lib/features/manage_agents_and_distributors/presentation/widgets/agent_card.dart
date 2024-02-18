@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../model/agent_distributor_model.dart';
-import '../../../../ui/screen/agents_and_distributors/agents_and_distributors_action.dart';
+import '../pages/agents_distributors_actions_page.dart';
 
 class AgentCard extends StatelessWidget {
   const AgentCard({
@@ -20,7 +20,7 @@ class AgentCard extends StatelessWidget {
       child: Center(
         child: InkWell(
           onTap: () => AppNavigator.push(
-            AgentAndDistributorsAction(agentDistributorModel: agentModel),
+            AgentDistributorsActionsPage(agentDistributorModel: agentModel),
           ),
           child: Container(
             width: double.infinity,
