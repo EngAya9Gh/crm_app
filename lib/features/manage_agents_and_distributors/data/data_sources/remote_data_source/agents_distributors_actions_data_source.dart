@@ -1,0 +1,39 @@
+import 'package:dartz/dartz.dart';
+
+import '../../../../../api/api.dart';
+import '../../../../../constants.dart';
+import '../../../../../model/maincitymodel.dart';
+
+abstract class AgentsDistributorsActionsDataSource {
+  Future<Either<String, List<CityModel>>> getAllCities({
+    required String fkCountry,
+  });
+}
+
+class AgentsDistributorsActionsDataSourceImpl
+    extends AgentsDistributorsActionsDataSource {
+  final Api api;
+
+  AgentsDistributorsActionsDataSourceImpl(this.api);
+
+  @override
+  Future<Either<String, List<CityModel>>> getAllCities({
+    required String fkCountry,
+  }) async {
+    try {
+      final data =
+          await api.get(url: url + 'config/getcity.php?fk_country=$fkCountry');
+      //     //   for (int i = 0; i < data.length; i++) {
+      //     //     citiesList.add(CityModel.fromJson(data[i]));
+      //     //     print(citiesList[i].name_city);
+      //     //   }
+      final List<CityModel> citiesList = [];
+      for (int i = 0; i < data.length; i++) {
+        citiesList.add(CityModel.fromJson(data[i]));
+      }
+      return Right(citiesList);
+    } catch (e) {
+      return Left(e.toString());
+    }
+  }
+}

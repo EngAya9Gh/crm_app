@@ -4,11 +4,11 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/features/manage_users/domain/use_cases/action_user_usecase.dart';
 import 'package:crm_smart/features/manage_users/presentation/manager/users_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/manage_provider.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custom_button_new.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -21,7 +21,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../labeltext.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../model/maincitymodel.dart';
 import '../../../../view_model/maincity_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
@@ -151,7 +151,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   controller: emailController,
                 ),
                 15.verticalSpace,
-                RowEdit(name: label_manage, des: '*'),
+                RowEdit(name: AppStrings.labelManage, des: '*'),
                 Consumer<manage_provider>(builder: (context, mangelist, child) {
                   return DropdownButtonFormField(
                     isExpanded: true,
@@ -177,7 +177,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   );
                 }),
                 15.verticalSpace,
-                RowEdit(name: label_level, des: '*'),
+                RowEdit(name: AppStrings.labelLevel, des: '*'),
                 BlocBuilder<PrivilegeCubit, PrivilegeState>(
                   builder: (context, state) {
                     return DropdownButtonFormField(
@@ -278,7 +278,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   },
                 ),
                 20.verticalSpace,
-                RowEdit(name: label_mobile, des: '*'),
+                RowEdit(name: AppStrings.labelMobile, des: '*'),
                 EditTextFormField(
                   hintText: '+966000000000',
                   obscureText: false,
@@ -403,8 +403,10 @@ class _ActionUserPageState extends State<ActionUserPage> {
           return;
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(isEdit ? label_Edituser : label_Addeduser)));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(isEdit
+                ? AppStrings.labelEditUser
+                : AppStrings.labelAddedUser)));
         Navigator.pop(context);
       },
     );

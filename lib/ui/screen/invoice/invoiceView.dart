@@ -30,11 +30,11 @@ import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../../../function_global.dart';
-import '../../../labeltext.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
@@ -998,7 +998,7 @@ class _RejectDialogState extends State<RejectDialog> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: "وصف سبب الإنسحاب",
@@ -1010,7 +1010,7 @@ class _RejectDialogState extends State<RejectDialog> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: 'المبلغ المسترجع',

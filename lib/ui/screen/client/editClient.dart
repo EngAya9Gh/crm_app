@@ -2,20 +2,19 @@ import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/model/ActivityModel.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/switch_provider.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/company_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -31,15 +30,19 @@ import 'package:provider/provider.dart';
 import '../../../common/enums/activity_type_size.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../labeltext.dart';
 import '../../../view_model/datetime_vm.dart';
-import 'addClient.dart';
 
 class editclient extends StatefulWidget {
-  editclient({required this.client, required this.fkclient, required this.fkuser, Key? key}) : super(key: key);
+  editclient(
+      {required this.client,
+      required this.fkclient,
+      required this.fkuser,
+      Key? key})
+      : super(key: key);
   String fkclient, fkuser;
   ClientModel1 client;
 
@@ -53,7 +56,8 @@ class _editclientState extends State<editclient> {
 
   final TextEditingController nameclientController = TextEditingController();
 
-  final TextEditingController nameEnterpriseController = TextEditingController();
+  final TextEditingController nameEnterpriseController =
+      TextEditingController();
 
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -64,7 +68,8 @@ class _editclientState extends State<editclient> {
       id_city: widget.client.city.toString(),
       name_city: widget.client.name_city.toString(),
       fk_maincity: widget.client.id_maincity.toString());
-  final TextEditingController usernameclientController = TextEditingController();
+  final TextEditingController usernameclientController =
+      TextEditingController();
   final TextEditingController locationController = TextEditingController();
   final TextEditingController regoinController = TextEditingController();
   final TextEditingController offerpriceController = TextEditingController();
@@ -122,7 +127,8 @@ class _editclientState extends State<editclient> {
       setState(() {
         dateprice = pickedDate;
       });
-      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(dateprice!);
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue1(dateprice!);
     }
   }
 
@@ -135,32 +141,44 @@ class _editclientState extends State<editclient> {
     nameclientController.text = widget.client.nameClient!.toString();
     nameEnterpriseController.text = widget.client.nameEnterprise!.toString();
     mobileController.text = widget.client.mobile!.toString();
-    phoneController.text = widget.client.phone == null ? '' : widget.client.phone!.toString();
+    phoneController.text =
+        widget.client.phone == null ? '' : widget.client.phone!.toString();
     descActivController.text = widget.client.descActivController!.toString();
     locationController.text = widget.client.location!.toString();
     regoinController.text = widget.client.name_regoin!.toString();
-    usernameclientController.text = widget.client.address_client == null ? '' : widget.client.address_client.toString();
+    usernameclientController.text = widget.client.address_client == null
+        ? ''
+        : widget.client.address_client.toString();
     emailController.text = widget.client.email ?? '';
-    _selectedActivitySizeType =
-        ActivitySizeType.values.firstWhereOrNull((element) => element.value == widget.client.size_activity);
-    resaonController.text = widget.client.reason_change == null ? '' : widget.client.reason_change.toString();
+    _selectedActivitySizeType = ActivitySizeType.values.firstWhereOrNull(
+        (element) => element.value == widget.client.size_activity);
+    resaonController.text = widget.client.reason_change == null
+        ? ''
+        : widget.client.reason_change.toString();
 
     offerpriceController.text =
-        widget.client.offer_price == null || widget.client.offer_price == "" ? "" : widget.client.offer_price!;
+        widget.client.offer_price == null || widget.client.offer_price == ""
+            ? ""
+            : widget.client.offer_price!;
 
-    presystemcomb = sourclient = widget.client.sourcclient == null ? 'ميداني' : widget.client.sourcclient;
+    presystemcomb = sourclient = widget.client.sourcclient == null
+        ? 'ميداني'
+        : widget.client.sourcclient;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<MainCityProvider>(context, listen: false).getcityAll();
 
-      Provider.of<MainCityProvider>(context, listen: false).changevalue(widget.client.city.toString());
+      Provider.of<MainCityProvider>(context, listen: false)
+          .changevalue(widget.client.city.toString());
 
-      await Provider.of<ActivityProvider>(context, listen: false).getActivities();
+      await Provider.of<ActivityProvider>(context, listen: false)
+          .getActivities();
       Provider.of<ActivityProvider>(context, listen: false)
           .onChangeSelectedActivityTypeId(widget.client.activity_type_fk);
 
       await Provider.of<CompanyProvider>(context, listen: false).getcompany();
 
-      Provider.of<CompanyProvider>(context, listen: false).changevalueOut(widget.client.presystem);
+      Provider.of<CompanyProvider>(context, listen: false)
+          .changevalueOut(widget.client.presystem);
 
       cityController = widget.client.city!.toString();
 
@@ -171,7 +189,8 @@ class _editclientState extends State<editclient> {
           fk_maincity: widget.client.id_maincity.toString());
       bool ism = widget.client.ismarketing == '1' ? true : false;
       Provider.of<switch_provider>(context, listen: false).changeboolValue(ism);
-      typeclient_provider = Provider.of<ClientTypeProvider>(context, listen: false);
+      typeclient_provider =
+          Provider.of<ClientTypeProvider>(context, listen: false);
       typeclient_provider.type_of_client =
           // widget.itemClient.typeClient!="مشترك"&&widget.itemClient.typeClient!="منسحب"?
           widget.client.typeClient == "تفاوض" ||
@@ -183,8 +202,10 @@ class _editclientState extends State<editclient> {
       if (widget.client.typeClient == "تفاوض" ||
           widget.client.typeClient == "عرض سعر" ||
           widget.client.typeClient == "مستبعد")
-        typeclient_provider.selectedValuemanag = widget.client.typeClient.toString();
-      if (widget.client.typeClient == "مشترك") typeclient_provider.selectedValuemanag = null;
+        typeclient_provider.selectedValuemanag =
+            widget.client.typeClient.toString();
+      if (widget.client.typeClient == "مشترك")
+        typeclient_provider.selectedValuemanag = null;
       typeclient_provider.changevalue(typeclient_provider.selectedValuemanag);
     });
 
@@ -201,7 +222,8 @@ class _editclientState extends State<editclient> {
 
   @override
   Widget build(BuildContext context) {
-    typeclient_provider = Provider.of<ClientTypeProvider>(context, listen: true);
+    typeclient_provider =
+        Provider.of<ClientTypeProvider>(context, listen: true);
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -214,10 +236,17 @@ class _editclientState extends State<editclient> {
               onPressed: () {
                 if (_globalKey.currentState!.validate()) {
                   _globalKey.currentState!.save();
-                  if (Provider.of<MainCityProvider>(context, listen: false).selectedValuemanag != null) {
-                    Provider.of<LoadProvider>(context, listen: false).changebooladdclient(true);
+                  if (Provider.of<MainCityProvider>(context, listen: false)
+                          .selectedValuemanag !=
+                      null) {
+                    Provider.of<LoadProvider>(context, listen: false)
+                        .changebooladdclient(true);
                     String ismarket =
-                        Provider.of<switch_provider>(context, listen: false).isSwitched == true ? '1' : '0';
+                        Provider.of<switch_provider>(context, listen: false)
+                                    .isSwitched ==
+                                true
+                            ? '1'
+                            : '0';
 
                     Map<String, dynamic> body = {};
                     if (typeclient_provider.selectedValuemanag == "عرض سعر")
@@ -234,8 +263,10 @@ class _editclientState extends State<editclient> {
                       );
                     body.addAll({
                       'email': emailController.text,
-                      if (_selectedActivitySizeType != null) 'size_activity': _selectedActivitySizeType?.value,
-                      if (_selectedARecommendedClient != null) 'fk_client_source': _selectedARecommendedClient,
+                      if (_selectedActivitySizeType != null)
+                        'size_activity': _selectedActivitySizeType?.value,
+                      if (_selectedARecommendedClient != null)
+                        'fk_client_source': _selectedARecommendedClient,
                       'name_client': nameclientController.text,
                       'name_enterprise': nameEnterpriseController.text,
                       // 'type_job': typejobController ,
@@ -244,7 +275,8 @@ class _editclientState extends State<editclient> {
                       'location': locationController.text.toString(),
                       //"fk_regoin":currentUser.fkRegoin==null?"null" :currentUser.fkRegoin,
                       //"date_create": ,
-                      "type_client": widget.client.typeClient != "مشترك" && widget.client.typeClient != "منسحب"
+                      "type_client": widget.client.typeClient != "مشترك" &&
+                              widget.client.typeClient != "منسحب"
                           ? typeclient_provider.selectedValuemanag
                           : widget.client.typeClient!,
                       //"fk_user":widget.fkuser,
@@ -257,14 +289,22 @@ class _editclientState extends State<editclient> {
                       // typeclient_provider.selectedValuemanag == "منسحب"
                       //     ? typeclient_provider.selectedValueOut
                       //     :
-                      'activity_type_fk': Provider.of<ActivityProvider>(context, listen: false)
-                          .selectedActivity
-                          ?.id_activity_type
-                          .toString(),
+                      'activity_type_fk':
+                          Provider.of<ActivityProvider>(context, listen: false)
+                              .selectedActivity
+                              ?.id_activity_type
+                              .toString(),
                       // "mobile": mobileController.text,
                       "ismarketing": sourclient == 'ميداني' ? '0' : '1',
-                      "user_do": Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
-                      'presystem': Provider.of<CompanyProvider>(context, listen: false).selectedValueOut.toString(),
+                      "user_do":
+                          Provider.of<UserProvider>(context, listen: false)
+                              .currentUser
+                              .idUser
+                              .toString(),
+                      'presystem':
+                          Provider.of<CompanyProvider>(context, listen: false)
+                              .selectedValueOut
+                              .toString(),
                       'sourcclient': sourclient,
                       'descActivController': desctypejobController.text,
                       // "desc_reason":  typeclient_provider.selectedValuemanag == "منسحب"
@@ -276,7 +316,8 @@ class _editclientState extends State<editclient> {
 
                     Provider.of<ClientProvider>(context, listen: false)
                         .updateclient_vm(body, widget.client.idClients)
-                        .then((value) => value != "false" ? clear(context) : error(context));
+                        .then((value) =>
+                            value != "false" ? clear(context) : error(context));
                   }
                 }
                 // else {
@@ -294,7 +335,11 @@ class _editclientState extends State<editclient> {
             key: _globalKey,
             child: Padding(
               padding: EdgeInsets.only(
-                  top: 20, right: 20, left: 20, bottom: 10), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+                  top: 20,
+                  right: 20,
+                  left: 20,
+                  bottom:
+                      10), // EdgeInsets.symmetric(horizontal: 50, vertical: 50),
               child: Directionality(
                 //container shadow
                 textDirection: myui.TextDirection.rtl,
@@ -303,14 +348,14 @@ class _editclientState extends State<editclient> {
 
                   //crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RowEdit(name: label_cliententerprise, des: '*'),
+                    RowEdit(name: AppStrings.labelClientEnterprise, des: '*'),
 
                     EditTextFormField(
                       obscureText: false,
-                      hintText: label_cliententerprise,
+                      hintText: AppStrings.labelClientEnterprise,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       controller: nameEnterpriseController,
@@ -324,23 +369,23 @@ class _editclientState extends State<editclient> {
                       height: 5,
                     ),
 
-                    RowEdit(name: label_clientname, des: '*'),
+                    RowEdit(name: AppStrings.labelClientName, des: '*'),
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
-                      hintText: label_clientname,
+                      hintText: AppStrings.labelClientName,
                       obscureText: false,
                       controller: nameclientController,
                     ),
                     SizedBox(height: 5),
-                    RowEdit(name: label_clientmobile, des: '*'),
+                    RowEdit(name: AppStrings.labelClientMobile, des: '*'),
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: '+966000000000',
@@ -375,33 +420,37 @@ class _editclientState extends State<editclient> {
                     SizedBox(height: 15),
                     _privilegeCubit.checkPrivilege('27')
                         ? Container()
-                        : RowEdit(name: label_client_typejob, des: '*'),
+                        : RowEdit(
+                            name: AppStrings.labelClientTypeJob, des: '*'),
                     _privilegeCubit.checkPrivilege('27')
                         ? Container()
                         : EditTextFormField(
-                            hintText: label_client_typejob,
+                            hintText: AppStrings.labelClientTypeJob,
                             obscureText: false,
                             vaild: (value) {
                               if (value!.isEmpty) {
-                                return label_empty;
+                                return AppStrings.labelEmpty;
                               }
                             },
                             controller: desctypejobController,
                             //اسم المؤسسة
-                            label: label_client_typejob,
+                            label: AppStrings.labelClientTypeJob,
                             onChanged: (val) {
                               // nameprod = val;
                             },
                           ),
                     SizedBox(height: 15),
-                    RowEdit(name: label_client_typejob, des: '*'),
+                    RowEdit(name: AppStrings.labelClientTypeJob, des: '*'),
                     Consumer<ActivityProvider>(
                       builder: (context, cart, child) {
                         return SizedBox(
                           child: DropdownSearch<ActivityModel>(
                             mode: Mode.DIALOG,
-                            filterFn: (user, filter) => user!.getFilterActivityType(filter!),
-                            compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
+                            filterFn: (user, filter) =>
+                                user!.getFilterActivityType(filter!),
+                            compareFn: (item, selectedItem) =>
+                                item?.id_activity_type ==
+                                selectedItem?.id_activity_type,
                             items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
@@ -417,7 +466,9 @@ class _editclientState extends State<editclient> {
                               alignLabelWithHint: true,
                               fillColor: Colors.grey.withOpacity(0.2),
                               contentPadding: EdgeInsets.all(0),
-                              border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                              border: UnderlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey)),
                             ),
                             // InputDecoration(border: InputBorder.none),
                           ),
@@ -453,7 +504,8 @@ class _editclientState extends State<editclient> {
                       decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(width: 2, color: Colors.grey))),
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.grey))),
                       isExpanded: true,
                       items: ActivitySizeType.values.map((activitySize) {
                         return DropdownMenuItem(
@@ -470,7 +522,8 @@ class _editclientState extends State<editclient> {
                         setState(() {});
                       },
                       validator: (selectedActivitySizeType) {
-                        if (selectedActivitySizeType?.value.trim().isEmpty ?? true) {
+                        if (selectedActivitySizeType?.value.trim().isEmpty ??
+                            true) {
                           return "هذا الحقل مطلوب";
                         }
                         return null;
@@ -481,10 +534,10 @@ class _editclientState extends State<editclient> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
-                      hintText: label_desc_activ,
+                      hintText: AppStrings.labelDescActivity,
                       obscureText: false,
                       controller: descActivController,
                     ),
@@ -493,7 +546,7 @@ class _editclientState extends State<editclient> {
                     ),
                     //admin
 
-                    RowEdit(name: label_clientcity, des: '*'),
+                    RowEdit(name: AppStrings.labelClientCity, des: '*'),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Consumer<MainCityProvider>(
@@ -505,7 +558,8 @@ class _editclientState extends State<editclient> {
                               if (val == null) return 'من فضلك حدد اسم مدينة';
                             },
                             selectedItem: citymodel,
-                            filterFn: (user, filter) => user!.getfilteruser(filter!),
+                            filterFn: (user, filter) =>
+                                user!.getfilteruser(filter!),
                             items: cart.listcity,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) => cityController = data!.id_city,
@@ -522,15 +576,15 @@ class _editclientState extends State<editclient> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: label_usernameclient, des: '*'),
+                    RowEdit(name: AppStrings.labelUsernameClient, des: '*'),
                     EditTextFormField(
                       maxline: 3,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
-                      hintText: label_usernameclient,
+                      hintText: AppStrings.labelUsernameClient,
                       obscureText: false,
                       controller: usernameclientController,
                     ),
@@ -563,7 +617,8 @@ class _editclientState extends State<editclient> {
 
                     _privilegeCubit.checkPrivilege('27')
                         ? Container()
-                        : RowEdit(name: label_clientlocation, des: ''),
+                        : RowEdit(
+                            name: AppStrings.labelClientLocation, des: ''),
                     _privilegeCubit.checkPrivilege('27')
                         ? Container()
                         : EditTextFormField(
@@ -582,7 +637,8 @@ class _editclientState extends State<editclient> {
                       decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(width: 2, color: Colors.grey))),
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.grey))),
 
                       isExpanded: true,
                       //hint: Text("حدد حالة العميل"),
@@ -608,13 +664,16 @@ class _editclientState extends State<editclient> {
                       RowEdit(name: 'العملاء', des: '*'),
                       BlocBuilder<ClientsListBloc, ClientsListState>(
                         builder: (context, state) {
-                          final recommendedList = state.recommendedClientsState.getDataWhenSuccess ?? [];
+                          final recommendedList = state
+                                  .recommendedClientsState.getDataWhenSuccess ??
+                              [];
 
                           return DropdownButtonFormField<String?>(
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.grey))),
                             isExpanded: true,
                             icon: state.recommendedClientsState.isLoading
                                 ? AppLoader(size: 20.r)
@@ -655,15 +714,18 @@ class _editclientState extends State<editclient> {
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.grey))),
 
                             isExpanded: true,
                             //hint: Text("حدد حالة العميل"),
                             items: cart.list_company.map((level_one) {
                               return DropdownMenuItem(
-                                child: Text(level_one.name_company.toString()), //label of item
+                                child: Text(level_one.name_company
+                                    .toString()), //label of item
 
-                                value: level_one.id_Company.toString(), //value of item
+                                value: level_one.id_Company
+                                    .toString(), //value of item
                               );
                             }).toList(),
                             value: cart.selectedValueOut,
@@ -700,7 +762,7 @@ class _editclientState extends State<editclient> {
                     //                       //valtaxrate = value;
                     //                       isSwitched.changeboolValue(value);
                     //                     }),
-                    //                 Text(marketlabel),
+                    //                 Text(AppStrings.marketlabel),
                     //               ],
                     //             );
                     //           },
@@ -711,16 +773,19 @@ class _editclientState extends State<editclient> {
                     //   height: 15,
                     // ),
                     _privilegeCubit.checkPrivilege('27')
-                        ? widget.client.typeClient != "مشترك" && widget.client.typeClient != "منسحب"
-                            ? RowEdit(name: label_clienttype, des: "")
+                        ? widget.client.typeClient != "مشترك" &&
+                                widget.client.typeClient != "منسحب"
+                            ? RowEdit(name: AppStrings.labelClientType, des: "")
                             : Container()
                         : Container(),
                     _privilegeCubit.checkPrivilege('27')
-                        ? widget.client.typeClient != "مشترك" && widget.client.typeClient != "منسحب"
+                        ? widget.client.typeClient != "مشترك" &&
+                                widget.client.typeClient != "منسحب"
                             ? DropdownButton(
                                 isExpanded: true,
                                 //hint: Text("حدد حالة العميل"),
-                                items: typeclient_provider.type_of_client.map((level_one) {
+                                items: typeclient_provider.type_of_client
+                                    .map((level_one) {
                                   return DropdownMenuItem(
                                     child: Text(level_one), //label of item
                                     value: level_one, //value of item
@@ -729,7 +794,8 @@ class _editclientState extends State<editclient> {
                                 value: typeclient_provider.selectedValuemanag,
                                 onChanged: (value) {
                                   namemanage = value.toString();
-                                  typeclient_provider.changevalue(value.toString());
+                                  typeclient_provider
+                                      .changevalue(value.toString());
                                   // if(value=="منسحب") {
                                   //   showDialog<void>(
                                   //       context: context,
@@ -770,7 +836,9 @@ class _editclientState extends State<editclient> {
                                       hintText: 'عرض سعر',
                                       obscureText: false,
                                       controller: offerpriceController,
-                                      inputformate: [FilteringTextInputFormatter.digitsOnly],
+                                      inputformate: [
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
                                       inputType: TextInputType.number,
                                     ),
                                   ),
@@ -789,9 +857,14 @@ class _editclientState extends State<editclient> {
                                           color: kMainColor,
                                         ),
                                         hintStyle: const TextStyle(
-                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                        hintText:
-                                            Provider.of<datetime_vm>(context, listen: true).valuedateTime.toString(),
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText: Provider.of<datetime_vm>(
+                                                context,
+                                                listen: true)
+                                            .valuedateTime
+                                            .toString(),
                                         filled: true,
                                         fillColor: Colors.grey.shade200,
                                       ),
@@ -805,7 +878,8 @@ class _editclientState extends State<editclient> {
                               )
                             : _privilegeCubit.checkPrivilege('27')
                                 ? Container()
-                                : typeclient_provider.selectedValuemanag == "مستبعد"
+                                : typeclient_provider.selectedValuemanag ==
+                                        "مستبعد"
                                     ? EditTextFormField(
                                         hintText: 'سبب الاستبعاد',
                                         obscureText: false,
@@ -850,7 +924,8 @@ class _editclientState extends State<editclient> {
   }
 
   clear(BuildContext context) {
-    Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
+    Provider.of<LoadProvider>(context, listen: false)
+        .changebooladdclient(false);
     Navigator.pop(context);
     // _scaffoldKey.currentState!.showSnackBar(
     //     SnackBar(content: Text("تم الحفظ"))
@@ -858,8 +933,10 @@ class _editclientState extends State<editclient> {
   }
 
   error(BuildContext context) {
-    Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("حدث خطأ ما")));
+    Provider.of<LoadProvider>(context, listen: false)
+        .changebooladdclient(false);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("حدث خطأ ما")));
   }
 
   DateTime _currentDate = DateTime.now();

@@ -1,12 +1,12 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import 'package:crm_smart/features/clients_list/presentation/manager/clients_list_bloc.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custom_button_new.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -26,10 +26,8 @@ import 'package:provider/provider.dart';
 import '../../../common/enums/activity_type_size.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
-import '../../../labeltext.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../model/ActivityModel.dart';
-
-
 
 class addClient extends StatefulWidget {
   addClient({Key? key}) : super(key: key);
@@ -46,7 +44,8 @@ class _addClientState extends State<addClient> {
   final TextEditingController nameclientController = TextEditingController();
   final TextEditingController descActivController = TextEditingController();
 
-  final TextEditingController nameEnterpriseController = TextEditingController();
+  final TextEditingController nameEnterpriseController =
+      TextEditingController();
 
   final TextEditingController mobileController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -124,41 +123,42 @@ class _addClientState extends State<addClient> {
             child: Directionality(
               textDirection: myui.TextDirection.rtl,
               child: Padding(
-                padding: EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 10),
+                padding:
+                    EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 10),
                 child: Column(
                   children: [
-                    RowEdit(name: label_cliententerprise, des: '*'),
+                    RowEdit(name: AppStrings.labelClientEnterprise, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
                       obscureText: false,
-                      hintText: label_cliententerprise,
+                      hintText: AppStrings.labelClientEnterprise,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       controller: nameEnterpriseController,
                     ),
                     SizedBox(height: 15),
-                    RowEdit(name: label_clientname, des: '*'),
+                    RowEdit(name: AppStrings.labelClientName, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
-                      hintText: label_clientname,
+                      hintText: AppStrings.labelClientName,
                       obscureText: false,
                       controller: nameclientController,
                     ),
                     SizedBox(height: 15),
-                    RowEdit(name: label_clientmobile, des: '*'),
+                    RowEdit(name: AppStrings.labelClientMobile, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       hintText: '00966000000000',
@@ -192,7 +192,7 @@ class _addClientState extends State<addClient> {
                       controller: emailController,
                     ),
                     SizedBox(height: 15),
-                    RowEdit(name: label_client_typejob, des: '*'),
+                    RowEdit(name: AppStrings.labelClientTypeJob, des: '*'),
                     SizedBox(height: 5),
                     Consumer<ActivityProvider>(
                       builder: (context, cart, child) {
@@ -200,8 +200,11 @@ class _addClientState extends State<addClient> {
                           //width: 240,
                           child: DropdownSearch<ActivityModel>(
                             mode: Mode.DIALOG,
-                            filterFn: (user, filter) => user!.getFilterActivityType(filter!),
-                            compareFn: (item, selectedItem) => item?.id_activity_type == selectedItem?.id_activity_type,
+                            filterFn: (user, filter) =>
+                                user!.getFilterActivityType(filter!),
+                            compareFn: (item, selectedItem) =>
+                                item?.id_activity_type ==
+                                selectedItem?.id_activity_type,
                             items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
@@ -215,7 +218,9 @@ class _addClientState extends State<addClient> {
                               alignLabelWithHint: true,
                               fillColor: Colors.grey.withOpacity(0.2),
                               contentPadding: EdgeInsets.all(0),
-                              border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                              border: UnderlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey)),
                             ),
                             // InputDecoration(border: InputBorder.none),
                           ),
@@ -228,7 +233,8 @@ class _addClientState extends State<addClient> {
                       decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(width: 2, color: Colors.grey))),
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.grey))),
                       isExpanded: true,
                       items: ActivitySizeType.values.map((activitySize) {
                         return DropdownMenuItem(
@@ -245,7 +251,8 @@ class _addClientState extends State<addClient> {
                         setState(() {});
                       },
                       validator: (selectedActivitySizeType) {
-                        if (selectedActivitySizeType?.value.trim().isEmpty ?? true) {
+                        if (selectedActivitySizeType?.value.trim().isEmpty ??
+                            true) {
                           return "هذا الحقل مطلوب";
                         }
                         return null;
@@ -256,15 +263,15 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
-                      hintText: label_desc_activ,
+                      hintText: AppStrings.labelDescActivity,
                       obscureText: false,
                       controller: descActivController,
                     ),
                     SizedBox(height: 15),
-                    RowEdit(name: label_clientcity, des: '*'),
+                    RowEdit(name: AppStrings.labelClientCity, des: '*'),
                     SizedBox(height: 5),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -276,7 +283,8 @@ class _addClientState extends State<addClient> {
                             validator: (val) {
                               if (val == null) return 'من فضلك حدد اسم مدينة';
                             },
-                            filterFn: (user, filter) => user!.getfilteruser(filter!),
+                            filterFn: (user, filter) =>
+                                user!.getfilteruser(filter!),
                             items: cart.listcity,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) => cityController = data!.id_city,
@@ -291,21 +299,21 @@ class _addClientState extends State<addClient> {
                       ),
                     ),
                     SizedBox(height: 15),
-                    RowEdit(name: label_usernameclient, des: '*'),
+                    RowEdit(name: AppStrings.labelUsernameClient, des: '*'),
                     EditTextFormField(
-                      hintText: label_usernameclient,
+                      hintText: AppStrings.labelUsernameClient,
                       obscureText: false,
                       vaild: (value) {
                         if (value!.toString().trim().isEmpty) {
-                          return label_empty;
+                          return AppStrings.labelEmpty;
                         }
                       },
                       controller: address_client,
                       //اسم المؤسسة
-                      label: label_usernameclient,
+                      label: AppStrings.labelUsernameClient,
                     ),
                     SizedBox(height: 15),
-                    RowEdit(name: label_clientlocation, des: ''),
+                    RowEdit(name: AppStrings.labelClientLocation, des: ''),
                     EditTextFormField(
                       hintText: 'location',
                       obscureText: false,
@@ -328,7 +336,8 @@ class _addClientState extends State<addClient> {
                       decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(width: 2, color: Colors.grey))),
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.grey))),
                       isExpanded: true,
                       items: sourceClientsList.map((level_one) {
                         return DropdownMenuItem(
@@ -345,7 +354,8 @@ class _addClientState extends State<addClient> {
 
                         setState(() {
                           sourclient = value.toString();
-                          if (sourclient != 'عميل موصى به' && _selectedARecommendedClient != null) {
+                          if (sourclient != 'عميل موصى به' &&
+                              _selectedARecommendedClient != null) {
                             _selectedARecommendedClient = null;
                           }
                         });
@@ -362,13 +372,16 @@ class _addClientState extends State<addClient> {
                       RowEdit(name: 'العملاء', des: '*'),
                       BlocBuilder<ClientsListBloc, ClientsListState>(
                         builder: (context, state) {
-                          final recommendedList = state.recommendedClientsState.getDataWhenSuccess ?? [];
+                          final recommendedList = state
+                                  .recommendedClientsState.getDataWhenSuccess ??
+                              [];
 
                           return DropdownButtonFormField<String?>(
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.grey))),
                             isExpanded: true,
                             icon: state.recommendedClientsState.isLoading
                                 ? AppLoader(size: 20.r)
@@ -407,11 +420,13 @@ class _addClientState extends State<addClient> {
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
-                                    borderSide: BorderSide(width: 2, color: Colors.grey))),
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.grey))),
                             isExpanded: true,
                             items: cart.list_company.map((level_one) {
                               return DropdownMenuItem(
-                                  child: Text(level_one.name_company.toString()), //label of item
+                                child: Text(level_one.name_company
+                                    .toString()), //label of item
 
                                 value: level_one.id_Company, //value of item
                               );
@@ -429,44 +444,73 @@ class _addClientState extends State<addClient> {
                     SizedBox(height: 15),
                     Center(
                       child: custom_button_new(
-                        text: label_clientadd,
+                        text: AppStrings.labelClientAdd,
                         onpress: () async {
                           if (_globalKey.currentState!.validate() &&
-                              Provider.of<ActivityProvider>(context, listen: false).selectedActivity != null &&
+                              Provider.of<ActivityProvider>(context,
+                                          listen: false)
+                                      .selectedActivity !=
+                                  null &&
                               sourclient != '') {
                             _globalKey.currentState!.save();
-                            Provider.of<LoadProvider>(context, listen: false).changebooladdclient(true);
-                            UserModel _user = Provider.of<UserProvider>(context, listen: false).currentUser;
-                            Provider.of<ClientProvider>(context, listen: false).addclient_vm({
-                              'email': emailController.text,
-                              if (_selectedActivitySizeType != null) 'size_activity': _selectedActivitySizeType?.value,
-                              if (_selectedARecommendedClient != null) 'fk_client_source': _selectedARecommendedClient,
-                              'descActivController': descActivController.text,
-                              'name_client': nameclientController.text,
-                              'address_client': address_client.text,
-                              'name_enterprise': nameEnterpriseController.text,
-                              'type_job': 'type',
-                              'city': cityController.toString(),
-                              'location': locationController.text.toString(),
-                              "fk_regoin": _user.fkRegoin == null ? "null" : _user.fkRegoin,
-                              "date_create": DateTime.now().toString(),
+                            Provider.of<LoadProvider>(context, listen: false)
+                                .changebooladdclient(true);
+                            UserModel _user = Provider.of<UserProvider>(context,
+                                    listen: false)
+                                .currentUser;
+                            Provider.of<ClientProvider>(context, listen: false)
+                                .addclient_vm(
+                                    {
+                                  'email': emailController.text,
+                                  if (_selectedActivitySizeType != null)
+                                    'size_activity':
+                                        _selectedActivitySizeType?.value,
+                                  if (_selectedARecommendedClient != null)
+                                    'fk_client_source':
+                                        _selectedARecommendedClient,
+                                  'descActivController':
+                                      descActivController.text,
+                                  'name_client': nameclientController.text,
+                                  'address_client': address_client.text,
+                                  'name_enterprise':
+                                      nameEnterpriseController.text,
+                                  'type_job': 'type',
+                                  'city': cityController.toString(),
+                                  'location':
+                                      locationController.text.toString(),
+                                  "fk_regoin": _user.fkRegoin == null
+                                      ? "null"
+                                      : _user.fkRegoin,
+                                  "date_create": DateTime.now().toString(),
 
-                              "type_client": "تفاوض",
-                              "fk_user": _user.idUser,
-                              "user_add": _user.idUser,
-                              // "date_transfer":,
-                              'presystem': Provider.of<CompanyProvider>(context, listen: false).selectedValueOut.toString(),
-                              'sourcclient': sourclient,
-                              'activity_type_fk': Provider.of<ActivityProvider>(context, listen: false)
-                                  .selectedActivity!
-                                  .id_activity_type
-                                  .toString(),
-                              "mobile": mobileController.text,
-                              "phone": phoneController.text,
-                              "ismarketing": sourclient == 'ميداني' ? '0' : '1',
-                              //"date_changetype":,
-                            }, _user.nameUser.toString(), _user.nameRegoin.toString()).then(
-                                (value) => value != "false" ? clear(context) : error(context));
+                                  "type_client": "تفاوض",
+                                  "fk_user": _user.idUser,
+                                  "user_add": _user.idUser,
+                                  // "date_transfer":,
+                                  'presystem': Provider.of<CompanyProvider>(
+                                          context,
+                                          listen: false)
+                                      .selectedValueOut
+                                      .toString(),
+                                  'sourcclient': sourclient,
+                                  'activity_type_fk':
+                                      Provider.of<ActivityProvider>(context,
+                                              listen: false)
+                                          .selectedActivity!
+                                          .id_activity_type
+                                          .toString(),
+                                  "mobile": mobileController.text,
+                                  "phone": phoneController.text,
+                                  "ismarketing":
+                                      sourclient == 'ميداني' ? '0' : '1',
+                                  //"date_changetype":,
+                                },
+                                    _user.nameUser.toString(),
+                                    _user.nameRegoin
+                                        .toString()).then((value) =>
+                                    value != "false"
+                                        ? clear(context)
+                                        : error(context));
                           }
                         },
                       ),
@@ -484,12 +528,15 @@ class _addClientState extends State<addClient> {
   }
 
   clear(BuildContext context) {
-    Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
+    Provider.of<LoadProvider>(context, listen: false)
+        .changebooladdclient(false);
     Navigator.pop(context);
   }
 
   error(context) {
-    Provider.of<LoadProvider>(context, listen: false).changebooladdclient(false);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_errorAddProd)));
+    Provider.of<LoadProvider>(context, listen: false)
+        .changebooladdclient(false);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelErrorAddProd)));
   }
 }

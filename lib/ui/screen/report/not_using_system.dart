@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../labeltext.dart';
+import '../../../core/utils/app_strings.dart';
 
 class not_using_system extends StatefulWidget {
   const not_using_system({Key? key}) : super(key: key);
@@ -21,7 +21,8 @@ class _not_using_systemState extends State<not_using_system> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<communication_vm>(context, listen: false).get_wrong_using('use');
+      Provider.of<communication_vm>(context, listen: false)
+          .get_wrong_using('use');
     });
 
     _searchTextField = TextEditingController();
@@ -38,7 +39,9 @@ class _not_using_systemState extends State<not_using_system> {
   }
 
   void onSearch() {
-    context.read<communication_vm>().onSearchClientsNotUsingSys(_searchTextField.text);
+    context
+        .read<communication_vm>()
+        .onSearchClientsNotUsingSys(_searchTextField.text);
   }
 
   @override
@@ -46,7 +49,7 @@ class _not_using_systemState extends State<not_using_system> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(label_not_use),
+        title: Text(AppStrings.labelNotUse),
       ),
       body: Center(
         child: Provider.of<communication_vm>(context, listen: true).isloading
@@ -67,7 +70,8 @@ class _not_using_systemState extends State<not_using_system> {
                                 )),
                             height: 50,
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                              padding: const EdgeInsets.only(
+                                  top: 2, left: 8, right: 8, bottom: 2),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.grey.withOpacity(0.2),
@@ -90,21 +94,27 @@ class _not_using_systemState extends State<not_using_system> {
                           ),
                           15.verticalSpace,
                           Padding(
-                            padding: const EdgeInsets.only(left: 30.0, right: 30, top: 10),
+                            padding: const EdgeInsets.only(
+                                left: 30.0, right: 30, top: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
                                   'عدد العملاء',
-                                  style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontFamily: kfontfamily2,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                Consumer<communication_vm>(builder: (context, value, _) {
+                                Consumer<communication_vm>(
+                                    builder: (context, value, _) {
                                   final list = _searchTextField.text.isEmpty
                                       ? value.list_not_use
                                       : value.listCommunicationFilterSearch;
                                   return Text(
                                     list.length.toString(),
-                                    style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontFamily: kfontfamily2,
+                                        fontWeight: FontWeight.bold),
                                   );
                                 }),
                               ],
@@ -112,7 +122,8 @@ class _not_using_systemState extends State<not_using_system> {
                           ),
                           Container(
                             height: MediaQuery.of(context).size.height * 0.8,
-                            child: Consumer<communication_vm>(builder: (context, value, child) {
+                            child: Consumer<communication_vm>(
+                                builder: (context, value, child) {
                               final list = _searchTextField.text.isEmpty
                                   ? value.list_not_use
                                   : value.listCommunicationFilterSearch;
@@ -128,12 +139,15 @@ class _not_using_systemState extends State<not_using_system> {
                                           padding: const EdgeInsets.all(5.0),
                                           child: Container(
                                             decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(30)),
+                                              borderRadius: BorderRadius.only(
+                                                  bottomRight:
+                                                      Radius.circular(30)),
                                               boxShadow: <BoxShadow>[
                                                 BoxShadow(
                                                   offset: Offset(1.0, 1.0),
                                                   blurRadius: 8.0,
-                                                  color: Colors.black87.withOpacity(0.2),
+                                                  color: Colors.black87
+                                                      .withOpacity(0.2),
                                                 ),
                                               ],
                                               color: Colors.white30,
@@ -146,13 +160,18 @@ class _not_using_systemState extends State<not_using_system> {
                                                     context,
                                                     CupertinoPageRoute(
                                                         builder: (context) =>
-                                                            ProfileClient(idClient: list[index].fkClient)),
+                                                            ProfileClient(
+                                                                idClient: list[
+                                                                        index]
+                                                                    .fkClient)),
                                                   );
                                                 },
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     color: Colors.white,
-                                                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(5)),
                                                   ),
                                                   //height: 70,//MediaQuery.of(context).size.height*0.15,
                                                   child: Padding(
@@ -161,13 +180,19 @@ class _not_using_systemState extends State<not_using_system> {
                                                       direction: Axis.vertical,
                                                       children: [
                                                         Column(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
                                                           children: [
                                                             Row(
-                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
                                                               children: [
                                                                 Text(
-                                                                  list[index].name_regoin.toString(),
+                                                                  list[index]
+                                                                      .name_regoin
+                                                                      .toString(),
                                                                   style: TextStyle(
                                                                       //fontWeight: FontWeight.bold,
                                                                       fontSize: 12,
@@ -175,7 +200,8 @@ class _not_using_systemState extends State<not_using_system> {
                                                                       color: kMainColor),
                                                                 ),
                                                                 Text(
-                                                                  list[index].dateCommunication
+                                                                  list[index]
+                                                                      .dateCommunication
                                                                       .toString(),
                                                                   style: TextStyle(
                                                                       fontSize: 12,
@@ -189,11 +215,18 @@ class _not_using_systemState extends State<not_using_system> {
                                                               //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                               children: [
                                                                 Text(
-                                                                  list[index].nameEnterprise.toString(),
-                                                                  style: TextStyle(
-                                                                    fontWeight: FontWeight.bold,
-                                                                    fontSize: 12,
-                                                                    fontFamily: kfontfamily2,
+                                                                  list[index]
+                                                                      .nameEnterprise
+                                                                      .toString(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontFamily:
+                                                                        kfontfamily2,
                                                                   ),
                                                                 ),
                                                               ],

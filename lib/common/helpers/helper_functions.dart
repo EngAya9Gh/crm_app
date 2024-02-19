@@ -1,4 +1,4 @@
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
+import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 
 import '../constants/constants.dart';
 
@@ -11,12 +11,12 @@ class HelperFunctions {
     return instance;
   }
 
-  static HelperFunctions get instance => _instance ??= HelperFunctions._singleton();
+  static HelperFunctions get instance =>
+      _instance ??= HelperFunctions._singleton();
 
   bool hasReachedMax<T>(List<T>? list) => (list ?? []).length < kPerPage;
 
   String? requiredFiled(String? value) {
-
     if (value?.trim().isEmpty ?? true) {
       return "هذا الحقل مطلوب.";
     }
@@ -38,6 +38,9 @@ class HelperFunctions {
   }
 
   List<T> intersection<T>(Iterable<Iterable<T>> iterables) {
-    return iterables.map((e) => e.toSet()).reduce((a, b) => a.intersection(b)).toList();
-      }
+    return iterables
+        .map((e) => e.toSet())
+        .reduce((a, b) => a.intersection(b))
+        .toList();
+  }
 }

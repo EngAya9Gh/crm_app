@@ -16,8 +16,8 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../labeltext.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
@@ -171,7 +171,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                 padding: REdgeInsetsDirectional.only(start: 10.0),
                 child: Directionality(
                     textDirection: TextDirection.rtl,
-                    child: RowEdit(name: label_image, des: '')),
+                    child: RowEdit(name: AppStrings.labelImage, des: '')),
               ),
               SizedBox(height: 10),
               Directionality(

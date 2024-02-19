@@ -3,7 +3,6 @@ import 'package:crm_smart/features/manage_privilege/presentation/pages/level_pag
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/config/activity_view.dart';
 import 'package:crm_smart/ui/screen/config/chang_country.dart';
-import 'package:crm_smart/ui/screen/config/company_view.dart';
 import 'package:crm_smart/ui/screen/config/config_view.dart';
 import 'package:crm_smart/ui/screen/config/maincityview.dart';
 import 'package:crm_smart/ui/screen/config/manageview.dart';
@@ -17,24 +16,23 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../features/links/presentation/pages/manage_links_page.dart';
+import '../../../../features/manage_agents_and_distributors/presentation/pages/agents_distributors_page.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/manage_users/presentation/pages/manage_users_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
-import '../../agents_and_distributors/agents_and_distributors_view.dart';
 import '../../barnch_race/pages/branch_race_mangement_view.dart';
 import '../../partic_agent/participateView.dart';
 import '../widgethomeitem.dart';
 
-class managmentpage extends StatefulWidget {
-  const managmentpage({Key? key}) : super(key: key);
+class ManagementPage extends StatefulWidget {
+  const ManagementPage({Key? key}) : super(key: key);
 
   @override
-  _managmentpageState createState() => _managmentpageState();
+  _ManagementPageState createState() => _ManagementPageState();
 }
 
-class _managmentpageState extends State<managmentpage> {
+class _ManagementPageState extends State<ManagementPage> {
   late PrivilegeCubit _privilegeCubit;
 
   @override
@@ -78,7 +76,10 @@ class _managmentpageState extends State<managmentpage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageUserPage()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ManageUserPage()));
                     },
                     title: 'إدارة المستخدمين')
                 : Container(),
@@ -88,7 +89,10 @@ class _managmentpageState extends State<managmentpage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => LevelPage()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => LevelPage()));
                     },
                     title: 'إدارة الصلاحيات')
                 : Container(),
@@ -98,7 +102,10 @@ class _managmentpageState extends State<managmentpage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageWithdrawalsPage()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ManageWithdrawalsPage()));
                     },
                     title: 'إدارة الإنسحابات')
                 : SizedBox.shrink(),
@@ -107,7 +114,10 @@ class _managmentpageState extends State<managmentpage> {
               colortitle: Colors.black,
               colorarrow: Colors.black,
               onTap: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (context) => ManageRejectReasonsPage()));
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => ManageRejectReasonsPage()));
               },
               title: 'إدارة أسباب الاستبعاد',
             ),
@@ -155,7 +165,9 @@ class _managmentpageState extends State<managmentpage> {
                 : Container(),
             _privilegeCubit.checkPrivilege('52') == true
                 ? buildSelectCategory(
-                    subtitle: Provider.of<UserProvider>(context, listen: false).currentUser.nameCountry,
+                    subtitle: Provider.of<UserProvider>(context, listen: false)
+                        .currentUser
+                        .nameCountry,
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -208,7 +220,8 @@ class _managmentpageState extends State<managmentpage> {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => resoan_view(type: 'client'),
+                          builder: (BuildContext context) =>
+                              resoan_view(type: 'client'),
                         ),
                       );
                     },
@@ -238,7 +251,8 @@ class _managmentpageState extends State<managmentpage> {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => resoan_view(type: 'ticket'),
+                          builder: (BuildContext context) =>
+                              resoan_view(type: 'ticket'),
                         ),
                       );
                     },
@@ -252,7 +266,8 @@ class _managmentpageState extends State<managmentpage> {
                   Navigator.push(
                     context,
                     CupertinoPageRoute<void>(
-                      builder: (BuildContext context) => activity_view(type: 'ticket'),
+                      builder: (BuildContext context) =>
+                          activity_view(type: 'ticket'),
                     ),
                   );
                 },
@@ -282,7 +297,8 @@ class _managmentpageState extends State<managmentpage> {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => ParticipateListPage(),
+                          builder: (BuildContext context) =>
+                              ParticipateListPage(),
                         ),
                       );
                     },
@@ -298,7 +314,8 @@ class _managmentpageState extends State<managmentpage> {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => AgentsAndDistributorsView(),
+                          builder: (BuildContext context) =>
+                              AgentsAndDistributorsPage(),
                         ),
                       );
                     },
@@ -314,7 +331,8 @@ class _managmentpageState extends State<managmentpage> {
                       Navigator.push(
                         context,
                         CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => BranchRaceManagementView(),
+                          builder: (BuildContext context) =>
+                              BranchRaceManagementView(),
                         ),
                       );
                     },

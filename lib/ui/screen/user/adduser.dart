@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/manage_provider.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custom_button_new.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
@@ -17,8 +17,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../labeltext.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
 
@@ -164,7 +164,7 @@ class _addUserState extends State<addUser> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: label_manage, des: '*'),
+                    RowEdit(name: AppStrings.labelManage, des: '*'),
                     Consumer<manage_provider>(
                         builder: (context, mangelist, child) {
                       return DropdownButtonFormField(
@@ -216,7 +216,7 @@ class _addUserState extends State<addUser> {
                     SizedBox(
                       height: 15,
                     ),
-                    RowEdit(name: label_level, des: '*'),
+                    RowEdit(name: AppStrings.labelLevel, des: '*'),
 
                     BlocBuilder<PrivilegeCubit, PrivilegeState>(
                       builder: (context, state) {
@@ -321,7 +321,7 @@ class _addUserState extends State<addUser> {
                       },
                     ),
                     SizedBox(height: 20),
-                    RowEdit(name: label_mobile, des: '*'),
+                    RowEdit(name: AppStrings.labelMobile, des: '*'),
                     EditTextFormField(
                       hintText: '+966000000000',
                       obscureText: false,
@@ -506,7 +506,7 @@ class _addUserState extends State<addUser> {
     mobileController.text = "";
     emailController.text = "";
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(label_Addeduser)));
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelAddedUser)));
     Navigator.pop(context);
   }
 }

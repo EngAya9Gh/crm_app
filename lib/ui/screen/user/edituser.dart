@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/agents_and_distributors/agents_and_ditributors_action.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -17,7 +17,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../labeltext.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../provider/manage_provider.dart';
 import '../../../view_model/maincity_vm.dart';
@@ -296,7 +296,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: label_manage, des: '*'),
+                    RowEdit(name: AppStrings.labelManage, des: '*'),
 
                     Consumer<manage_provider>(
                         builder: (context, mangelist, child) {
@@ -326,7 +326,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: label_level, des: '*'),
+                    RowEdit(name: AppStrings.labelLevel, des: '*'),
                     //mangwidget(),
                     BlocBuilder<PrivilegeCubit, PrivilegeState>(
                       builder: (context, state) {
@@ -435,7 +435,7 @@ class _EditUserState extends State<EditUser> {
                     SizedBox(
                       height: 20,
                     ),
-                    RowEdit(name: label_mobile, des: '*'),
+                    RowEdit(name: AppStrings.labelMobile, des: '*'),
                     EditTextFormField(
                       hintText: '00966000000000',
                       obscureText: false,
@@ -502,7 +502,7 @@ class _EditUserState extends State<EditUser> {
   }
 
   clear(body) {
-    //label_Edituser
+    //AppStrings.label_Edituser
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changeboolUpdateUser(false);
 //     final index = Provider.of<user_vm_provider>(context, listen: false)
@@ -515,7 +515,7 @@ class _EditUserState extends State<EditUser> {
     // mobileController.text = "";
     // emailController.text = "";
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(label_Edituser)));
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelEditUser)));
     Navigator.pop(context);
   }
 
@@ -531,7 +531,7 @@ class _EditUserState extends State<EditUser> {
     // Provider.of<LoadProvider>(context, listen: false)
     //     .changeboolUpdateUser(false);
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(label_errorAddProd)));
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelErrorAddProd)));
     Navigator.pop(context);
   }
 

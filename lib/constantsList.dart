@@ -8,7 +8,6 @@ import 'package:crm_smart/ui/screen/home/pageshome/support.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'features/task_management/presentation/pages/task_management_list_page.dart';
-import 'features/task_management/presentation/pages/task_management_page.dart';
 
 List<String> listtext = [
   'مشرف مبيعات',
@@ -49,7 +48,7 @@ final List<Widget> listwidget = [
   supportpage(),
   carepage(),
   marketingpage(),
-  managmentpage(),
+  ManagementPage(),
   financepage(),
   race_page(),
   TaskManagementListPage(),
@@ -67,8 +66,8 @@ List<String> sourceClientsList = [
   'غوغل ماب',
   'تيك توك',
   'عميل موصى به'
-  'نسخة تجريبية'
-  'ماسنجر دايركت'
+      'نسخة تجريبية'
+      'ماسنجر دايركت'
 ];
 final List<dynamic> listHome = [
   [
@@ -134,7 +133,6 @@ List<String> clientsClassificationList = [
   'لا يرد',
   'مكرر',
   'أخرى',
-
 ];
 List<String> clientsRegistrationTyeList = [
   'صحيح',

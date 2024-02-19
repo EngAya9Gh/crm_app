@@ -1,22 +1,19 @@
+import 'dart:ui' as myui;
+
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../function_global.dart';
-import '../../../labeltext.dart';
-import 'dart:ui' as myui;
-
 import 'is_marketing_chekbox.dart';
 
 class repeat_report extends StatefulWidget {
@@ -51,7 +48,8 @@ class _repeat_reportState extends State<repeat_report> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
+    UserModel usermodel =
+        Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     var data;
     String isMarketingParams = '';
@@ -75,7 +73,7 @@ class _repeat_reportState extends State<repeat_report> {
     totalval = 0;
     for (int i = 0; i < data.length; i++) {
       tempdata.add(BarModel.fromJson(data[i]));
-      
+
       totalval += tempdata[i].y;
       rowsdata.add(DataRow(
         cells: <DataCell>[
@@ -125,7 +123,8 @@ class _repeat_reportState extends State<repeat_report> {
       charts.Series<BarModel, String>(
         data: salesresult,
         id: 'المبيعات',
-        colorFn: (BarModel bar, _) => charts.ColorUtil.fromDartColor(bar.colorval),
+        colorFn: (BarModel bar, _) =>
+            charts.ColorUtil.fromDartColor(bar.colorval),
         // charts.MaterialPalette.indigo.shadeDefault,
         domainFn: (BarModel genderModel, _) => genderModel.x,
         measureFn: (BarModel genderModel, __) => genderModel.y.floor(),
@@ -141,7 +140,7 @@ class _repeat_reportState extends State<repeat_report> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text(label_repeat_comm),
+          title: Text(AppStrings.labelRepeatComm),
         ),
         body: SafeArea(
           child: Directionality(
@@ -168,11 +167,14 @@ class _repeat_reportState extends State<repeat_report> {
                                   Icons.date_range,
                                   color: kMainColor,
                                 ),
-                                hintStyle:
-                                    const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                hintStyle: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
                                 hintText: _selectedDatefrom == DateTime(1, 1, 1)
                                     ? 'from' //_currentDate.toString()
-                                    : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                                    : DateFormat('yyyy-MM-dd')
+                                        .format(_selectedDatefrom),
                                 //_invoice!.dateinstall_task.toString(),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
@@ -204,11 +206,14 @@ class _repeat_reportState extends State<repeat_report> {
                                   Icons.date_range,
                                   color: kMainColor,
                                 ),
-                                hintStyle:
-                                    const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                                hintStyle: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
                                 hintText: _selectedDateto == DateTime(1, 1, 1)
                                     ? 'to' //_currentDate.toString()
-                                    : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                                    : DateFormat('yyyy-MM-dd')
+                                        .format(_selectedDateto),
                                 //_invoice!.dateinstall_task.toString(),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
@@ -242,14 +247,17 @@ class _repeat_reportState extends State<repeat_report> {
                                     // scrollDirection: Axis.horizontal,
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           Text('الإجمالي '),
                                           Text(formatNumber(totalval)),
                                         ],
                                       ),
                                       Container(
-                                        height: MediaQuery.of(context).size.height * 0.8, //BarChart
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.8, //BarChart
                                         child: charts.PieChart(
                                           _createSampleData(),
                                           // barRendererDecorator: new charts.BarLabelDecorator<String>(),
@@ -265,25 +273,33 @@ class _repeat_reportState extends State<repeat_report> {
                                             DataColumn(
                                               label: Text(
                                                 '',
-                                                style: TextStyle(fontStyle: FontStyle.normal),
+                                                style: TextStyle(
+                                                    fontStyle:
+                                                        FontStyle.normal),
                                               ),
                                             ),
                                             DataColumn(
                                               label: Text(
                                                 'الموظف',
-                                                style: TextStyle(fontStyle: FontStyle.normal),
+                                                style: TextStyle(
+                                                    fontStyle:
+                                                        FontStyle.normal),
                                               ),
                                             ),
                                             DataColumn(
                                               label: Text(
                                                 'التواصلات',
-                                                style: TextStyle(fontStyle: FontStyle.normal),
+                                                style: TextStyle(
+                                                    fontStyle:
+                                                        FontStyle.normal),
                                               ),
                                             ),
                                             DataColumn(
                                               label: Text(
                                                 'عدد العملاء',
-                                                style: TextStyle(fontStyle: FontStyle.normal),
+                                                style: TextStyle(
+                                                    fontStyle:
+                                                        FontStyle.normal),
                                               ),
                                             ),
                                           ],
@@ -305,7 +321,8 @@ class _repeat_reportState extends State<repeat_report> {
         ));
   }
 
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDatefrom(
+      BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
@@ -316,7 +333,7 @@ class _repeat_reportState extends State<repeat_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        
+
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
         getData();
       });
@@ -335,7 +352,7 @@ class _repeat_reportState extends State<repeat_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        
+
         getData();
       });
   }

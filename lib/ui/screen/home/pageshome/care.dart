@@ -16,8 +16,8 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../labeltext.dart';
 import '../widgethomeitem.dart';
 
 class carepage extends StatefulWidget {
@@ -40,7 +40,8 @@ class _carepageState extends State<carepage> {
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
       //
-      Provider.of<communication_vm>(context, listen: false).setvaluepriv(GetIt.I<PrivilegeCubit>());
+      Provider.of<communication_vm>(context, listen: false)
+          .setvaluepriv(GetIt.I<PrivilegeCubit>());
       //  Provider.of<ticket_vm>(context,listen: false)
       //      .getclientticket_filter('جديدة');
       // await Provider.of<communication_vm>(context, listen: false)
@@ -94,7 +95,10 @@ class _carepageState extends State<carepage> {
                     colorarrow: Colors.black,
                     onTap: () {
                       //
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => Care_ClientAccept()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => Care_ClientAccept()));
                     },
                     title: 'العملاء المشتركين')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
@@ -105,8 +109,10 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context,
-                          CupertinoPageRoute(builder: (context) => care_page_view()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => care_page_view()));
                     },
                     title: 'التواصل الدوري')
                 : Container(),
@@ -117,7 +123,10 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => CommunicationListPage()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => CommunicationListPage()));
                     },
                     title: 'قائمة العملاء المميزين',
                   )
@@ -130,7 +139,10 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => View_welcomeClient()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => View_welcomeClient()));
                     },
                     title: 'الترحيب بالعملاء')
                 : Container(),
@@ -144,7 +156,10 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => View_installedClient()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => View_installedClient()));
 
                       //الاتصال الثاني للجودة جديد
 //View_installedClient
@@ -160,7 +175,10 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ticketclientview()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ticketclientview()));
                     },
                     title: 'تذاكر العملاء  ')
                 : Container(),
@@ -170,7 +188,10 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => care_report()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => care_report()));
                     },
                     title: 'تقرير العناية بالعملاء')
                 : Container(),
@@ -180,7 +201,10 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => report_rate()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => report_rate()));
                     },
                     title: 'تقرير مستوى التقييم')
                 : Container(),
@@ -190,9 +214,12 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => repeat_report()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => repeat_report()));
                     },
-                    title: label_repeat_comm)
+                    title: AppStrings.labelRepeatComm)
                 : Container(), //'تقرير الاتصال الدوري '
             context.read<PrivilegeCubit>().checkPrivilege('105') == true
                 ? buildSelectCategory(
@@ -200,9 +227,12 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => not_using_system()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => not_using_system()));
                     },
-                    title: label_not_use)
+                    title: AppStrings.labelNotUse)
                 : Container(), //' عملاء لا يستخدمون النظام '
             context.read<PrivilegeCubit>().checkPrivilege('106') == true
                 ? buildSelectCategory(
@@ -210,9 +240,12 @@ class _carepageState extends State<carepage> {
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => wrong_number()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => wrong_number()));
                     },
-                    title: label_wrong_number)
+                    title: AppStrings.labelWrongNumber)
                 : Container(), //' عملاء أرقامهم خاطئة '
           ],
         ),

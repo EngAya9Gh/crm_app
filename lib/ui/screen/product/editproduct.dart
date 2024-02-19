@@ -16,9 +16,9 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
-import '../../../labeltext.dart';
 
 class EditProduct extends StatefulWidget {
   EditProduct({Key? key, required this.productModel}) : super(key: key);
@@ -52,21 +52,29 @@ class _EditProductState extends State<EditProduct> {
 
   @override
   void initState() {
-    valtaxrate = widget.productModel.fkConfig == null || widget.productModel.fkConfig == "null" ? false : true;
+    valtaxrate = widget.productModel.fkConfig == null ||
+            widget.productModel.fkConfig == "null"
+        ? false
+        : true;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<config_vm>(context, listen: false).getAllConfig();
 
       ////////////////////////////////
-      Provider.of<selected_button_provider>(context, listen: false).selectValue(valtype_product);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValue(valtype_product);
 
-      Provider.of<switch_provider>(context, listen: false).changeboolValue(valtaxrate);
+      Provider.of<switch_provider>(context, listen: false)
+          .changeboolValue(valtaxrate);
     });
     nameprod = _textName.text = widget.productModel.nameProduct;
     _textprice.text = widget.productModel.priceProduct;
     price = double.parse(_textprice.text.toString());
     valtype_product = int.parse(widget.productModel.type);
-    idCountry = Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry.toString();
+    idCountry = Provider.of<UserProvider>(context, listen: false)
+        .currentUser
+        .fkCountry
+        .toString();
 
     //valtype_product == 0 ? 1 : 0;
 
@@ -74,9 +82,11 @@ class _EditProductState extends State<EditProduct> {
   }
 
   void settaxrate(context) {
-    List<ConfigModel> _listconfg = Provider.of<config_vm>(context, listen: false).listofconfig;
+    List<ConfigModel> _listconfg =
+        Provider.of<config_vm>(context, listen: false).listofconfig;
 
-    taxrate = _listconfg.firstWhere((element) => element.name_config == 'taxrate');
+    taxrate =
+        _listconfg.firstWhere((element) => element.name_config == 'taxrate');
   }
 
   @override
@@ -117,7 +127,8 @@ class _EditProductState extends State<EditProduct> {
                     // SizedBox(
                     //   height: sizeMedia * 0.10,
                     // ),
-                    Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                    Consumer<selected_button_provider>(
+                        builder: (context, selectedProvider, child) {
                       return Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -134,7 +145,8 @@ class _EditProductState extends State<EditProduct> {
                           child: GroupButton(
                               options: GroupButtonOptions(
                                 borderRadius: BorderRadius.circular(20),
-                                buttonWidth: MediaQuery.of(context).size.width * 0.3,
+                                buttonWidth:
+                                    MediaQuery.of(context).size.width * 0.3,
                                 //elevation: 0,
                                 selectedColor: kMainColor,
                               ),
@@ -178,7 +190,7 @@ class _EditProductState extends State<EditProduct> {
                                 }
                               },
                               con: _textName,
-                              label: label_name_product,
+                              label: AppStrings.labelNameProduct,
                               onChanged: (val) {
                                 nameprod = val;
                               },
@@ -202,7 +214,7 @@ class _EditProductState extends State<EditProduct> {
                               },
                               con: _textprice,
                               inputType: TextInputType.number,
-                              label: label_name_price,
+                              label: AppStrings.labelNamePrice,
                               onChanged: (val) {
                                 price = double.parse(val.toString());
                               },
@@ -217,9 +229,10 @@ class _EditProductState extends State<EditProduct> {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(label_turnVat),
+                                      Text(AppStrings.labelTurnVat),
                                       Switch(
-                                          activeTrackColor: kMainColor.withAlpha(90),
+                                          activeTrackColor:
+                                              kMainColor.withAlpha(90),
                                           activeColor: kMainColor,
                                           value: isSwitched.isSwitched,
                                           onChanged: (value) {
@@ -239,104 +252,201 @@ class _EditProductState extends State<EditProduct> {
                               children: [
                                 _isLoading
                                     ? CircularProgressIndicator()
-                                    : context.read<PrivilegeCubit>().checkPrivilege('46')
+                                    : context
+                                            .read<PrivilegeCubit>()
+                                            .checkPrivilege('46')
                                         ? CustomButton(
-                                            width: MediaQuery.of(context).size.width * 0.2,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.2,
                                             text: "تعديل",
                                             onTap: () async {
-                                              if (_globalKey.currentState!.validate()) {
+                                              if (_globalKey.currentState!
+                                                  .validate()) {
                                                 _globalKey.currentState!.save();
-                                                Provider.of<LoadProvider>(context, listen: false)
-                                                    .changeLoadingupdateprod(true);
+                                                Provider.of<LoadProvider>(
+                                                        context,
+                                                        listen: false)
+                                                    .changeLoadingupdateprod(
+                                                        true);
 
                                                 settaxrate(context);
 
-                                                valtype_product =
-                                                    Provider.of<selected_button_provider>(context, listen: false)
-                                                        .isSelected;
-                                                valtaxrate =
-                                                    Provider.of<switch_provider>(context, listen: false).isSwitched;
-                                                Provider.of<product_vm>(context, listen: false).updateproduct_vm({
-                                                  'nameProduct': nameprod,
-                                                  'priceProduct': price.toString(),
-                                                  'type': valtype_product.toString(),
-                                                  'fk_country': idCountry,
-                                                  'fk_config': valtaxrate ? taxrate.id_config : "null",
-                                                  "value_config": valtaxrate ? taxrate.value_config : "null",
-                                                  "id_product": widget.productModel.idProduct.toString(),
-                                                  "updated_at": DateTime.now().toString(),
-                                                  "fkuserupdate": Provider.of<UserProvider>(context, listen: false)
-                                                      .currentUser
-                                                      .idUser
-                                                      .toString(),
-                                                }, widget.productModel.idProduct.toString()).then(
-                                                    (value) => value ? clear(context) : error()
-                                                    // Fluttertoast.showToast(
-                                                    //  backgroundColor:
-                                                    //      Colors.lightBlueAccent,
-                                                    //  msg: label_errorAddProd, // message
-                                                    //  toastLength:
-                                                    //      Toast.LENGTH_SHORT, // length
-                                                    //  gravity: ToastGravity.CENTER, //
-                                                    );
+                                                valtype_product = Provider.of<
+                                                            selected_button_provider>(
+                                                        context,
+                                                        listen: false)
+                                                    .isSelected;
+                                                valtaxrate = Provider.of<
+                                                            switch_provider>(
+                                                        context,
+                                                        listen: false)
+                                                    .isSwitched;
+                                                Provider.of<product_vm>(context,
+                                                        listen: false)
+                                                    .updateproduct_vm(
+                                                        {
+                                                      'nameProduct': nameprod,
+                                                      'priceProduct':
+                                                          price.toString(),
+                                                      'type': valtype_product
+                                                          .toString(),
+                                                      'fk_country': idCountry,
+                                                      'fk_config': valtaxrate
+                                                          ? taxrate.id_config
+                                                          : "null",
+                                                      "value_config": valtaxrate
+                                                          ? taxrate.value_config
+                                                          : "null",
+                                                      "id_product": widget
+                                                          .productModel
+                                                          .idProduct
+                                                          .toString(),
+                                                      "updated_at":
+                                                          DateTime.now()
+                                                              .toString(),
+                                                      "fkuserupdate": Provider
+                                                              .of<UserProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                          .currentUser
+                                                          .idUser
+                                                          .toString(),
+                                                    },
+                                                        widget.productModel
+                                                            .idProduct
+                                                            .toString()).then(
+                                                        (value) => value
+                                                            ? clear(context)
+                                                            : error()
+                                                        // Fluttertoast.showToast(
+                                                        //  backgroundColor:
+                                                        //      Colors.lightBlueAccent,
+                                                        //  msg: AppStrings.label_errorAddProd, // message
+                                                        //  toastLength:
+                                                        //      Toast.LENGTH_SHORT, // length
+                                                        //  gravity: ToastGravity.CENTER, //
+                                                        );
                                               }
                                             },
                                           )
                                         : Container(),
-                                context.read<PrivilegeCubit>().checkPrivilege('48')
+                                context
+                                        .read<PrivilegeCubit>()
+                                        .checkPrivilege('48')
                                     ? CustomButton(
-                                        width: MediaQuery.of(context).size.width * 0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.2,
                                         onTap: () async {
                                           bool result = await showDialog(
                                             context: context,
                                             builder: (context) {
                                               return ModalProgressHUD(
-                                                inAsyncCall: Provider.of<LoadProvider>(context).isLoadingdelete,
+                                                inAsyncCall:
+                                                    Provider.of<LoadProvider>(
+                                                            context)
+                                                        .isLoadingdelete,
                                                 child: AlertDialog(
-                                                  titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
-                                                  insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                                                  contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-                                                  title: Center(child: Text('تأكيد')),
-                                                  content: Text('هل تريد الحذف'),
+                                                  titlePadding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          24.0,
+                                                          1.0,
+                                                          24.0,
+                                                          10.0),
+                                                  insetPadding: EdgeInsets.only(
+                                                      left: 10,
+                                                      right: 10,
+                                                      bottom: 10),
+                                                  contentPadding:
+                                                      EdgeInsets.only(
+                                                          left: 10,
+                                                          right: 10,
+                                                          bottom: 10),
+                                                  title: Center(
+                                                      child: Text('تأكيد')),
+                                                  content:
+                                                      Text('هل تريد الحذف'),
                                                   actions: <Widget>[
                                                     new TextButton(
                                                       onPressed: () {
-                                                        Navigator.of(context, rootNavigator: true)
-                                                            .pop(false); // dismisses only the dialog and returns false
+                                                        Navigator.of(context,
+                                                                rootNavigator:
+                                                                    true)
+                                                            .pop(
+                                                                false); // dismisses only the dialog and returns false
                                                       },
                                                       child: Text('لا'),
                                                     ),
                                                     TextButton(
                                                       onPressed: () async {
-                                                        Provider.of<LoadProvider>(context, listen: false)
-                                                            .changebooldelete(true);
-                                                        String res =
-                                                            await Provider.of<product_vm>(context, listen: false)
-                                                                .deleteProduct(widget.productModel.idProduct);
-                                                        Provider.of<LoadProvider>(context, listen: false)
-                                                            .changebooldelete(false);
+                                                        Provider.of<LoadProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .changebooldelete(
+                                                                true);
+                                                        String res = await Provider
+                                                                .of<product_vm>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                            .deleteProduct(widget
+                                                                .productModel
+                                                                .idProduct);
+                                                        Provider.of<LoadProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .changebooldelete(
+                                                                false);
 
-                                                        if (res == "remove error")
-                                                          ScaffoldMessenger.of(context).showSnackBar(
-                                                              SnackBar(content: Text("لا يمكن حذف هذا المنتج")));
+                                                        if (res ==
+                                                            "remove error")
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(SnackBar(
+                                                                  content: Text(
+                                                                      "لا يمكن حذف هذا المنتج")));
                                                         else {
                                                           if (res == "done") {
-                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                                SnackBar(content: Text("تم الحذف بنجاح")));
-                                                            Navigator.pop(context);
-                                                          } else if (res == 'bad requst')
-                                                            ScaffoldMessenger.of(context)
-                                                                .showSnackBar(SnackBar(content: Text("ارسال خاطئ")));
-                                                          else if (res == 'error')
-                                                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                                                content: Text(" هناك مشكلة ما أثناء حذف المنتج")));
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    SnackBar(
+                                                                        content:
+                                                                            Text("تم الحذف بنجاح")));
+                                                            Navigator.pop(
+                                                                context);
+                                                          } else if (res ==
+                                                              'bad requst')
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    SnackBar(
+                                                                        content:
+                                                                            Text("ارسال خاطئ")));
+                                                          else if (res ==
+                                                              'error')
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    SnackBar(
+                                                                        content:
+                                                                            Text(" هناك مشكلة ما أثناء حذف المنتج")));
                                                           else
-                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                                SnackBar(content: Text("يوجد مشكلة ما ")));
+                                                            ScaffoldMessenger
+                                                                    .of(context)
+                                                                .showSnackBar(
+                                                                    SnackBar(
+                                                                        content:
+                                                                            Text("يوجد مشكلة ما ")));
                                                         }
 
-                                                        Navigator.of(context, rootNavigator: true)
-                                                            .pop(true); // dismisses only the dialog and returns true
+                                                        Navigator.of(context,
+                                                                rootNavigator:
+                                                                    true)
+                                                            .pop(
+                                                                true); // dismisses only the dialog and returns true
                                                       },
                                                       child: Text('نعم'),
                                                     ),
@@ -373,7 +483,9 @@ class _EditProductState extends State<EditProduct> {
                                     : RowEdit(
                                         des:
                                             //controllerUser.userall![widget.index]
-                                            getnameshort(widget.productModel.nameusercreate.toString()),
+                                            getnameshort(widget
+                                                .productModel.nameusercreate
+                                                .toString()),
                                         name: 'تمت الإضافة من قبل ',
                                       ),
                                 RowEdit(
@@ -387,7 +499,9 @@ class _EditProductState extends State<EditProduct> {
                                     : RowEdit(
                                         des:
                                             //controllerUser.userall![widget.index]
-                                            widget.productModel.nameuserupdated_at.toString(),
+                                            widget
+                                                .productModel.nameuserupdated_at
+                                                .toString(),
                                         name: 'تم التعديل من قبل ',
                                       ),
                                 widget.productModel.updated_at == null
@@ -395,7 +509,8 @@ class _EditProductState extends State<EditProduct> {
                                     : RowEdit(
                                         des:
                                             //controllerUser.userall![widget.index]
-                                            widget.productModel.updated_at.toString(),
+                                            widget.productModel.updated_at
+                                                .toString(),
                                         name: 'تاريخ التعديل',
                                       ),
                               ],
@@ -411,8 +526,9 @@ class _EditProductState extends State<EditProduct> {
   }
 
   clear(body) {
-    //label_Edituser
-    Provider.of<LoadProvider>(context, listen: false).changeLoadingupdateprod(false);
+    //AppStrings.label_Edituser
+    Provider.of<LoadProvider>(context, listen: false)
+        .changeLoadingupdateprod(false);
     // final index=
     //Provider.of<switch_provider>(context, listen: false).changeboolValue(false);
 
@@ -423,13 +539,16 @@ class _EditProductState extends State<EditProduct> {
     // _textName.text = "";
     // _textprice.text = "";
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_Edituser)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelEditUser)));
 
     Navigator.pop(context);
   }
 
   error() {
-    Provider.of<LoadProvider>(context, listen: false).changeLoadingupdateprod(false);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(label_errorAddProd)));
+    Provider.of<LoadProvider>(context, listen: false)
+        .changeLoadingupdateprod(false);
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(AppStrings.labelErrorAddProd)));
   }
 }

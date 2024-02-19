@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crm_smart/common/manager/custom_bloc_observer.dart';
 import 'package:crm_smart/core/di/di_container.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
@@ -12,7 +13,6 @@ import 'package:crm_smart/services/service_provider.dart';
 import 'package:crm_smart/ui/screen/login.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/agent_collaborators_invoices_vm.dart';
-import 'package:crm_smart/view_model/agent_dsitributor_vm.dart';
 import 'package:crm_smart/view_model/approve_vm.dart';
 import 'package:crm_smart/view_model/branch_race_viewmodel.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
@@ -25,11 +25,9 @@ import 'package:crm_smart/view_model/employee_race_viewmodel.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/lastcommentclient_vm.dart';
-import 'package:crm_smart/view_model/level_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:crm_smart/view_model/participate_vm.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/reason_suspend.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
@@ -40,6 +38,7 @@ import 'package:crm_smart/view_model/usertest_vm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
@@ -47,6 +46,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
 import 'core/config/theme/theme.dart';
+import 'core/utils/app_navigator.dart';
 import 'features/app/presentation/pages/splash_screen.dart';
 import 'features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 
@@ -96,15 +96,19 @@ void main() async {
   //   runApp(MyApp());
   // }
   //await Firebase.initializeApp();
+  Bloc.observer = CustomBlocObserver();
   await initializeDateFormatting();
+  setupDependencies();
 
   runApp(ServiceProvider(
     child: MultiProvider(providers: [
       ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-      ChangeNotifierProvider<navigatorProvider>(create: (_) => navigatorProvider()),
+      ChangeNotifierProvider<navigatorProvider>(
+          create: (_) => navigatorProvider()),
       ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
       ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
-      ChangeNotifierProvider<selected_button_provider>(create: (_) => selected_button_provider()),
+      ChangeNotifierProvider<selected_button_provider>(
+          create: (_) => selected_button_provider()),
       ChangeNotifierProvider<country_vm>(create: (_) => country_vm()),
       ChangeNotifierProxyProvider<UserProvider, config_vm>(
         create: (_) => config_vm(),
@@ -145,7 +149,8 @@ void main() async {
         create: (_) => MainCityProvider(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-      ChangeNotifierProvider<ClientTypeProvider>(create: (_) => ClientTypeProvider()),
+      ChangeNotifierProvider<ClientTypeProvider>(
+          create: (_) => ClientTypeProvider()),
       ChangeNotifierProvider<EventProvider>(
         create: (_) => EventProvider(),
       ),
@@ -159,12 +164,15 @@ void main() async {
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
       ChangeNotifierProvider<datetime_vm>(create: (_) => datetime_vm()),
-      ChangeNotifierProvider<ActivityProvider>(create: (_) => ActivityProvider()),
+      ChangeNotifierProvider<ActivityProvider>(
+          create: (_) => ActivityProvider()),
       ChangeNotifierProvider<CompanyProvider>(create: (_) => CompanyProvider()),
       ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
       ChangeNotifierProvider<reason_suspend>(create: (_) => reason_suspend()),
-      ChangeNotifierProvider<AgentDistributorViewModel>(create: (_) => AgentDistributorViewModel()),
-      ChangeNotifierProxyProvider<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
+      // ChangeNotifierProvider<AgentDistributorViewModel>(
+      //     create: (_) => AgentDistributorViewModel()),
+      ChangeNotifierProxyProvider<invoice_vm,
+          AgentsCollaboratorsInvoicesViewmodel>(
         update: (context, invoiceVm, agentCollaborateVm) {
           if (agentCollaborateVm?.invoicesList.isEmpty ?? true)
             agentCollaborateVm?.setInvoicesList(invoiceVm.listInvoicesAccept);
@@ -176,8 +184,10 @@ void main() async {
         create: (_) => lastcommentclient_vm(),
         update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
       ),
-      ChangeNotifierProvider<BranchRaceViewmodel>(create: (_) => BranchRaceViewmodel()),
-      ChangeNotifierProvider<EmployeeRaceViewmodel>(create: (_) => EmployeeRaceViewmodel()),
+      ChangeNotifierProvider<BranchRaceViewmodel>(
+          create: (_) => BranchRaceViewmodel()),
+      ChangeNotifierProvider<EmployeeRaceViewmodel>(
+          create: (_) => EmployeeRaceViewmodel()),
     ], child: MyApp()),
   ));
 }
@@ -193,7 +203,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    currentUser = Provider.of<UserProvider>(context, listen: false).getcurrentuser();
+    currentUser =
+        Provider.of<UserProvider>(context, listen: false).getcurrentuser();
     super.initState();
   }
 
@@ -202,50 +213,48 @@ class _MyAppState extends State<MyApp> {
     return ScreenUtilInit(
       useInheritedMediaQuery: true,
       child: FutureBuilder<SharedPreferences>(
-          future: currentUser,
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              //Center(child: CircularProgressIndicator(),)
-              return MaterialApp(
-                home: Scaffold(
-                  body: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset('assest/images/logo_crm_long.png'),
-                        20.verticalSpace,
-                        AppLoader(),
-                      ],
-                    ),
-                  ),
+        future: currentUser,
+        builder: (context, snapshot) {
+          Widget homeWidget;
+          if (!snapshot.hasData) {
+            homeWidget = Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('assest/images/logo_crm_long.png'),
+                    SizedBox(height: 20),
+                    AppLoader(),
+                  ],
+                ),
+              ),
+            );
+          } else {
+            isUserLoggedIn = snapshot.data!.getBool(kKeepMeLoggedIn) ?? false;
+            if (snapshot.data!.getString('id_user1') == '0') {
+              homeWidget = Scaffold(
+                body: Center(
+                  child: Text('غير مصرح لك الدخول'),
                 ),
               );
             } else {
-              isUserLoggedIn = snapshot.data!.getBool(kKeepMeLoggedIn) ?? false;
-              if (snapshot.data!.getString('id_user1') == '0')
-                return MaterialApp(
-                  home: Scaffold(
-                    body: Center(
-                      child: Text('غير مصرح لك الدخول'),
-                    ),
-                  ),
-                );
-              // String idcurrentuser= snapshot.data!.getString("id_user").toString();
-              else {
-
-                return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  title: 'Smart CRM',
-                  theme: AppTheme.light(context),
-                  home: Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: SplashScreen(),
-                  ),
-                );
-              }
+              homeWidget = Directionality(
+                textDirection: TextDirection.rtl,
+                child: SplashScreen(),
+              );
             }
-          }),
+          }
+
+          return MaterialApp(
+            navigatorKey: AppNavigator.navigatorKey,
+            debugShowCheckedModeBanner: false,
+            title: 'Smart CRM',
+            theme: AppTheme.light(context),
+            home: homeWidget,
+          );
+        },
+      ),
     );
   }
 }
