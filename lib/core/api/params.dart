@@ -1,4 +1,4 @@
- abstract class IMap {
+abstract class IMap {
   const IMap();
 
   Map<String, dynamic> toMap();
@@ -13,11 +13,6 @@ class ParamsWrapper extends Params {
 
   @override
   Map<String, dynamic> toMap() => params;
-}
-
-class NoParams extends Params {
-  @override
-  Map<String, dynamic> toMap() => {};
 }
 
 class PagingParams extends Params {

@@ -18,11 +18,8 @@ class AgentTypesWidget extends StatelessWidget {
             Text('*', style: TextStyle(color: Colors.red)),
           ],
         ),
-        BlocConsumer<AgentsDistributorsActionsCubit,
+        BlocBuilder<AgentsDistributorsActionsCubit,
             AgentsDistributorsActionsState>(
-          listener: (context, state) {
-            print("type changed => $state");
-          },
           buildWhen: (previous, current) =>
               previous is AgentsDistributorsActionsTypeChanged ||
               current is AgentsDistributorsActionsTypeChanged,
@@ -34,6 +31,7 @@ class AgentTypesWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)),
               padding: EdgeInsets.zero,
               // row of choices
+              // todo : make a reusable widget for this
               child: Row(
                 children: [
                   Expanded(

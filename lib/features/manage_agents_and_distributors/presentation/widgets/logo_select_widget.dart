@@ -27,7 +27,7 @@ class LogoSelectWidget extends StatelessWidget {
         File? pickedFile = File(pickedImage!.path);
         cubit.logoFile = pickedFile;
         cubit.logoController.text = pickedFile.path;
-        cubit.onSaveimagefile();
+        cubit.onSaveImageFile();
       },
       readOnly: true,
       decoration: InputDecoration(

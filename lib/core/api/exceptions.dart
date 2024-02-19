@@ -17,7 +17,13 @@ class AppException<OriginalException> implements Exception {
   }
 }
 
-enum AppNetworkExceptionReason { canceled, timedOut, responseError, noInternet, serverError }
+enum AppNetworkExceptionReason {
+  canceled,
+  timedOut,
+  responseError,
+  noInternet,
+  serverError
+}
 
 extension AppNetworkExceptionReasonExt on AppNetworkExceptionReason {
   String get message {
@@ -36,7 +42,8 @@ extension AppNetworkExceptionReasonExt on AppNetworkExceptionReason {
   }
 }
 
-class AppNetworkException<OriginalException extends Exception> extends AppException<OriginalException> {
+class AppNetworkException<OriginalException extends Exception>
+    extends AppException<OriginalException> {
   /// Create a network exception.
   AppNetworkException({
     required this.reason,
@@ -54,16 +61,26 @@ class AppNetworkException<OriginalException extends Exception> extends AppExcept
   final AppNetworkExceptionReason reason;
 
   @override
-  AppNetworkException copyWith({OriginalException? exception, String? message}) {
+  AppNetworkException copyWith(
+      {OriginalException? exception, String? message}) {
     return AppNetworkException._(
-        reason: reason, exception: exception ?? this.exception, message: message ?? this.message);
+        reason: reason,
+        exception: exception ?? this.exception,
+        message: message ?? this.message);
   }
 }
 
 class AppNetworkResponseException<OriginalException extends Exception, DataType>
     extends AppNetworkException<OriginalException> {
-  AppNetworkResponseException({required OriginalException exception, this.statusCode, this.data, String? message})
-      : super(reason: AppNetworkExceptionReason.responseError, exception: exception, message: message);
+  AppNetworkResponseException(
+      {required OriginalException exception,
+      this.statusCode,
+      this.data,
+      String? message})
+      : super(
+            reason: AppNetworkExceptionReason.responseError,
+            exception: exception,
+            message: message);
 
   final DataType? data;
   final int? statusCode;

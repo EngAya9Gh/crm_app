@@ -31,7 +31,6 @@ class _AgentDistributorsActionsPageBodyState
   @override
   void initState() {
     super.initState();
-    final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     _loadCurrentAgentData();
     _loadLocation();
   }

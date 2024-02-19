@@ -10,7 +10,6 @@ import '../../../../../constants.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../../../services/Invoice_Service.dart';
-import '../../../../../view_model/page_state.dart';
 import '../../../domain/entities/agent_distributor_action_entity.dart';
 
 part 'agents_distributors_actions_state.dart';
@@ -27,10 +26,7 @@ class AgentsDistributorsActionsCubit
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController logoController = TextEditingController();
   File? logoFile;
-
-  PageState<List<AgentDistributorModel>> agentDistributorsState = PageState();
-  PageState<List<MainCityModel>> citiesState0 = PageState();
-  PageState<List<CityModel>> citiesState = PageState();
+  List<CityModel> citiesList = [];
 
   AgentDistributorActionEntity agentDistributorActionEntity =
       AgentDistributorActionEntity();
@@ -60,8 +56,6 @@ class AgentsDistributorsActionsCubit
     }
   }
 
-  List<CityModel> listcity = [];
-
   Future<void> getAllCity({
     required String fkCountry,
     String? regionId,
@@ -73,20 +67,18 @@ class AgentsDistributorsActionsCubit
           .get(url: url + 'config/getcity.php?fk_country=${fkCountry!}');
 
       for (int i = 0; i < data.length; i++) {
-        listcity.add(CityModel.fromJson(data[i]));
-        print(listcity[i].name_city);
+        citiesList.add(CityModel.fromJson(data[i]));
+        print(citiesList[i].name_city);
       }
       if (regionId != null) {
-        final country =
-            listcity.firstWhereOrNull((element) => element.id_city == regionId);
+        final country = citiesList
+            .firstWhereOrNull((element) => element.id_city == regionId);
         if (country != null) {
           selectedCountryFromCity = country;
         }
       }
-      citiesState = citiesState.changeToLoaded(listcity);
       emit(AgentsDistributorsActionsSuccess());
     } catch (e) {
-      citiesState = citiesState.changeToFailed;
       emit(AgentsDistributorsActionsFailure(e.toString()));
     }
   }
@@ -142,9 +134,9 @@ class AgentsDistributorsActionsCubit
         agentDistributorActionEntity.copyWith(countryId: countryId);
   }
 
-  onSelectCity(CityModel cityModel) {
+  onSelectCity(String cityId) {
     agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(cityId: cityModel.id_city);
+        agentDistributorActionEntity.copyWith(cityId: cityId);
   }
 
   onSaveName(String? name) {
@@ -162,7 +154,7 @@ class AgentsDistributorsActionsCubit
         agentDistributorActionEntity.copyWith(description: description);
   }
 
-  onSaveimagefile() {
+  onSaveImageFile() {
     agentDistributorActionEntity =
         agentDistributorActionEntity.copyWith(filelogo: logoFile);
   }
@@ -171,18 +163,6 @@ class AgentsDistributorsActionsCubit
     agentDistributorActionEntity =
         agentDistributorActionEntity.copyWith(phoneNumber: phoneNumber);
   }
-
-// AgentDistributorActionEntity resetType() {
-//   return AgentDistributorActionEntity(
-//     name: name,
-//     type: null,
-//     countryId: countryId,
-//     cityId: cityId,
-//     phoneNumber: phoneNumber,
-//     description: description,
-//     email: email, filelogo: null,
-//   );
-// }
 
   @override
   Future<void> close() {
