@@ -12,8 +12,6 @@ class GetAgentsAndDistributorsUseCase
 
   @override
   Future<Either<String, List<AgentDistributorModel>>> call(NoParams params) {
-    print("GetAgentsAndDistributorsUseCase call");
-    final x = repository.getAgentsAndDistributors();
     return repository.getAgentsAndDistributors();
   }
 }

@@ -7,16 +7,18 @@ import 'package:flutter/material.dart';
 import '../../../../../api/api.dart';
 import '../../../../../common/enums/enums.dart';
 import '../../../../../constants.dart';
-import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
-import '../../../../../services/Invoice_Service.dart';
 import '../../../domain/entities/agent_distributor_action_entity.dart';
+import '../../../domain/use_cases/get_all_cities_usecase.dart';
 
 part 'agents_distributors_actions_state.dart';
 
 class AgentsDistributorsActionsCubit
     extends Cubit<AgentsDistributorsActionsState> {
-  AgentsDistributorsActionsCubit() : super(AgentsDistributorsActionsInitial());
+  AgentsDistributorsActionsCubit(this.getAllCitiesUseCase)
+      : super(AgentsDistributorsActionsInitial());
+
+  final GetAllCitiesUseCase getAllCitiesUseCase;
 
   // keys and controllers
   final formKey = GlobalKey<FormState>();
@@ -43,44 +45,32 @@ class AgentsDistributorsActionsCubit
     emit(AgentsDistributorsActionsInitial());
   }
 
-  loadUserData(AgentDistributorModel agentDistributorModel) {}
-
-  Future<void> getAgentsAndDistributors() async {
-    try {
-      emit(AgentsDistributorsActionsLoading());
-      final list = await Invoice_Service.getAgentsAndDistributors();
-      emit(AgentsDistributorsActionsSuccess());
-    } catch (e) {
-      print(e.toString());
-      emit(AgentsDistributorsActionsFailure(e.toString()));
-    }
-  }
-
   Future<void> getAllCity({
     required String fkCountry,
     String? regionId,
   }) async {
-    try {
-      emit(AgentsDistributorsActionsLoading());
-      List<dynamic> data = [];
-      data = await Api()
-          .get(url: url + 'config/getcity.php?fk_country=${fkCountry!}');
+    emit(AgentsDistributorsActionsLoading());
 
-      for (int i = 0; i < data.length; i++) {
-        citiesList.add(CityModel.fromJson(data[i]));
-        print(citiesList[i].name_city);
-      }
-      if (regionId != null) {
-        final country = citiesList
-            .firstWhereOrNull((element) => element.id_city == regionId);
-        if (country != null) {
-          selectedCountryFromCity = country;
+    final response = await getAllCitiesUseCase(
+      GetAllCitiesUseCaseParams(
+        fkCountry: fkCountry,
+        regionId: regionId,
+      ),
+    );
+    response.fold(
+      (l) => emit(AgentsDistributorsActionsFailure(l)),
+      (r) {
+        citiesList = r;
+        if (regionId != null) {
+          final country = citiesList
+              .firstWhereOrNull((element) => element.id_city == regionId);
+          if (country != null) {
+            selectedCountryFromCity = country;
+          }
         }
-      }
-      emit(AgentsDistributorsActionsSuccess());
-    } catch (e) {
-      emit(AgentsDistributorsActionsFailure(e.toString()));
-    }
+        emit(AgentsDistributorsActionsSuccess());
+      },
+    );
   }
 
   Future<void> actionAgentDistributor({
@@ -110,7 +100,6 @@ class AgentsDistributorsActionsCubit
       }
 
       resetAgentDistributorActionEntity();
-      getAgentsAndDistributors();
     } catch (e) {
       isLoadingAction = false;
       emit(AgentsDistributorsActionsFailure(e.toString()));

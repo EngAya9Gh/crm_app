@@ -21,8 +21,6 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
 
     final response = await getAgentsAndDistributorsUseCase(NoParams());
 
-    print("response: $response  ");
-
     response.fold(
       (exception) =>
           emit(state.copyWith(status: StateStatus.failure, error: exception)),
