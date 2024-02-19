@@ -1,6 +1,6 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../core/utils/app_constants.dart';
 import '../../../../model/agent_distributor_model.dart';
@@ -17,17 +17,17 @@ class SaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AgentsDistributorsActionsCubit>();
+    final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return CustomButton(
       width: double.infinity,
       text: 'حفظ',
       onTap: () async {
         cubit.formKey.currentState!.save();
         if (cubit.formKey.currentState!.validate()) {
-          cubit.actionAgentDistributor(
+          await cubit.actionAgentDistributor(
             agentId: agentDistributorModel?.idAgent,
-            onSuccess: () => Navigator.pop(context),
           );
+          AppNavigator.pop();
         } else {
           if (cubit.agentDistributorActionEntity.type == null &&
               cubit.agentDistributorActionEntity.name != null) {

@@ -25,10 +25,8 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
           return ListView.builder(
             padding: const EdgeInsets.all(10.0),
             itemCount: state.agentsAndDistributorsList.length,
-            itemBuilder: (BuildContext context, int index) => Builder(
-              builder: (context) => AgentCard(
-                agentModel: state.agentsAndDistributorsList[index],
-              ),
+            itemBuilder: (BuildContext context, int index) => AgentCard(
+              agentModel: state.agentsAndDistributorsList[index],
             ),
           );
         },

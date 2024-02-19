@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../model/agent_distributor_model.dart';
+import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../pages/agents_distributors_actions_page.dart';
 
 class AgentCard extends StatelessWidget {
@@ -15,13 +17,17 @@ class AgentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<AgentsDistributorsCubit>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: InkWell(
-          onTap: () => AppNavigator.push(
-            AgentDistributorsActionsPage(agentDistributorModel: agentModel),
-          ),
+          onTap: () async {
+            await AppNavigator.push(
+              AgentDistributorsActionsPage(agentDistributorModel: agentModel),
+            );
+            cubit.getAgentsAndDistributors();
+          },
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(

@@ -51,17 +51,11 @@ class AgentsDistributorsActionsCubit
 
   Future<void> getAgentsAndDistributors() async {
     try {
-      if (!agentDistributorsState.isLoading) {
-        agentDistributorsState = agentDistributorsState.changeToLoading;
-        emit(AgentsDistributorsActionsLoading());
-      }
+      emit(AgentsDistributorsActionsLoading());
       final list = await Invoice_Service.getAgentsAndDistributors();
-
-      agentDistributorsState = agentDistributorsState.changeToLoaded(list!);
       emit(AgentsDistributorsActionsSuccess());
     } catch (e) {
       print(e.toString());
-      agentDistributorsState = agentDistributorsState.changeToFailed;
       emit(AgentsDistributorsActionsFailure(e.toString()));
     }
   }
@@ -98,7 +92,7 @@ class AgentsDistributorsActionsCubit
   }
 
   Future<void> actionAgentDistributor({
-    required VoidCallback onSuccess,
+    // required VoidCallback onSuccess,
     String? agentId,
   }) async {
     try {
@@ -107,24 +101,25 @@ class AgentsDistributorsActionsCubit
       dynamic response;
       if (agentId == null) {
         response = await Api().postRequestWithFile(
-            "array",
-            url + 'agent/add_agent.php',
-            agentDistributorActionEntity.toMap(),
-            agentDistributorActionEntity.filelogo,
-            null);
+          "array",
+          url + 'agent/add_agent.php',
+          agentDistributorActionEntity.toMap(),
+          agentDistributorActionEntity.filelogo,
+          null,
+        );
       } else {
         response = await Api().postRequestWithFile(
-            "array",
-            url + 'agent/update_agent.php?id_agent=$agentId',
-            agentDistributorActionEntity.toMap(),
-            agentDistributorActionEntity.filelogo,
-            null);
+          "array",
+          url + 'agent/update_agent.php?id_agent=$agentId',
+          agentDistributorActionEntity.toMap(),
+          agentDistributorActionEntity.filelogo,
+          null,
+        );
       }
 
-      onSuccess();
       resetAgentDistributorActionEntity();
       getAgentsAndDistributors();
-    } catch (e, stackTrace) {
+    } catch (e) {
       isLoadingAction = false;
       emit(AgentsDistributorsActionsFailure(e.toString()));
     }
