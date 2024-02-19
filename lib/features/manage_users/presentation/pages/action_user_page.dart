@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/presentation/pages/agents_distributors_actions_page.dart';
+import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/features/manage_users/domain/use_cases/action_user_usecase.dart';
 import 'package:crm_smart/features/manage_users/presentation/manager/users_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';

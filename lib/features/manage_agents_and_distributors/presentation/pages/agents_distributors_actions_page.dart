@@ -1,31 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/app_constants.dart';
 import '../../../../model/agent_distributor_model.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../widgets/agents_distributors_actions_page_body.dart';
 
 class AgentDistributorsActionsPage extends StatelessWidget {
-  const AgentDistributorsActionsPage({
-    Key? key,
-    this.agentDistributorModel,
-  }) : super(key: key);
+  const AgentDistributorsActionsPage({Key? key, this.agentDistributorModel})
+      : super(key: key);
 
   final AgentDistributorModel? agentDistributorModel;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AgentsDistributorsActionsCubit(),
-      child: Scaffold(
-        body: AgentDistributorsActionsPageBody(),
+      create: (context) => AgentsDistributorsActionsCubit()
+        ..getAllCity(fkCountry: AppConstants.currentCountry(context)),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+          body: AgentDistributorsActionsPageBody(
+            agentDistributorModel: agentDistributorModel,
+          ),
+        ),
       ),
     );
   }
-}
-
-extension EmailValidation on String {
-  bool get validateEmail => RegExp(
-          r'''(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])''')
-      .hasMatch(this);
 }

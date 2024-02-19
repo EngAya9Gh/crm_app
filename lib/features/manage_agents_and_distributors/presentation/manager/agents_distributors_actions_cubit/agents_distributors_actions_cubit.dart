@@ -19,7 +19,14 @@ class AgentsDistributorsActionsCubit
     extends Cubit<AgentsDistributorsActionsState> {
   AgentsDistributorsActionsCubit() : super(AgentsDistributorsActionsInitial());
 
+  // keys and controllers
   final formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneNumberController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController logoController = TextEditingController();
+  File? logoFile;
 
   PageState<List<AgentDistributorModel>> agentDistributorsState = PageState();
   PageState<List<MainCityModel>> citiesState0 = PageState();
@@ -32,13 +39,15 @@ class AgentsDistributorsActionsCubit
   CityModel? selectedCountryFromCity;
   bool isLoadingAction = false;
 
-  void resetAgentDistributorActionParams() {
+  void resetAgentDistributorActionEntity() {
     agentDistributorActionParams = AgentDistributorActionEntity();
     selectedCountry = null;
     selectedCountryFromCity = null;
     isLoadingAction = false;
     emit(AgentsDistributorsActionsInitial());
   }
+
+  loadUserData(AgentDistributorModel agentDistributorModel) {}
 
   Future<void> getAgentsAndDistributors() async {
     try {
@@ -61,10 +70,7 @@ class AgentsDistributorsActionsCubit
 
   Future<void> getAllCity({String? fkCountry, String? id_maincity}) async {
     try {
-      if (!citiesState.isLoading) {
-        citiesState = citiesState.changeToLoading;
-        emit(AgentsDistributorsActionsLoading());
-      }
+      emit(AgentsDistributorsActionsLoading());
       List<dynamic> data = [];
       data = await Api()
           .get(url: url + 'config/getcity.php?fk_country=${fkCountry!}');
@@ -81,9 +87,6 @@ class AgentsDistributorsActionsCubit
         }
       }
       citiesState = citiesState.changeToLoaded(listcity);
-      print("#######################################");
-      print(listcity);
-      print(listcity.length);
       emit(AgentsDistributorsActionsSuccess());
     } catch (e) {
       citiesState = citiesState.changeToFailed;
@@ -116,7 +119,7 @@ class AgentsDistributorsActionsCubit
       }
 
       onSuccess();
-      resetAgentDistributorActionParams();
+      resetAgentDistributorActionEntity();
       getAgentsAndDistributors();
     } catch (e, stackTrace) {
       isLoadingAction = false;
@@ -146,7 +149,7 @@ class AgentsDistributorsActionsCubit
         agentDistributorActionParams.copyWith(cityId: cityModel.id_city);
   }
 
-  onSaveName(String name) {
+  onSaveName(String? name) {
     agentDistributorActionParams =
         agentDistributorActionParams.copyWith(name: name);
   }
@@ -161,9 +164,9 @@ class AgentsDistributorsActionsCubit
         agentDistributorActionParams.copyWith(description: description);
   }
 
-  onSaveimagefile(File? filelogo) {
+  onSaveimagefile() {
     agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(filelogo: filelogo);
+        agentDistributorActionParams.copyWith(filelogo: logoFile);
   }
 
   onSavePhoneNumber(String phoneNumber) {
