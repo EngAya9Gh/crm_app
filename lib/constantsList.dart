@@ -48,7 +48,7 @@ final List<Widget> listwidget = [
   supportpage(),
   carepage(),
   marketingpage(),
-  ManagementPage(),
+  managmentpage(),
   financepage(),
   race_page(),
   TaskManagementListPage(),
@@ -65,9 +65,9 @@ List<String> sourceClientsList = [
   'سناب',
   'غوغل ماب',
   'تيك توك',
-  'عميل موصى به'
-      'نسخة تجريبية'
-      'ماسنجر دايركت'
+  'عميل موصى به',
+  'نسخة تجريبية',
+  'ماسنجر دايركت',
 ];
 final List<dynamic> listHome = [
   [
@@ -130,6 +130,7 @@ List<String> clientsClassificationList = [
   'اهتمام مختلف',
   'الرقم غير صحيح',
   'مع موظف آخر',
+  'غير معروف',
   'لا يرد',
   'مكرر',
   'أخرى',
