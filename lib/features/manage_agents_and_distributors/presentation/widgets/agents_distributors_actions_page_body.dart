@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../../common/enums/enums.dart';
-import '../../../../core/di/di_container.dart';
 import '../../../../model/agent_distributor_model.dart';
 import '../../../../view_model/maincity_vm.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
@@ -32,18 +31,13 @@ class _AgentDistributorsActionsPageBodyState
   @override
   void initState() {
     super.initState();
-    final cubit = sl<AgentsDistributorsActionsCubit>();
+    final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     _loadCurrentAgentData();
     _loadLocation();
-
-    if (agentDistributorModel != null) {
-      cubit.onSelectADType(ADType.values.firstWhere((element) =>
-          element.index == int.parse(agentDistributorModel!.typeAgent)));
-    }
   }
 
   void _loadCurrentAgentData() {
-    final cubit = sl<AgentsDistributorsActionsCubit>();
+    final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     if (agentDistributorModel == null) {
       cubit.resetAgentDistributorActionEntity();
     } else {
@@ -52,6 +46,8 @@ class _AgentDistributorsActionsPageBodyState
       cubit.phoneNumberController.text = agentDistributorModel!.mobileAgent;
       cubit.descriptionController.text = agentDistributorModel!.description;
       cubit.descriptionController.text = agentDistributorModel!.description;
+      cubit.onSelectADType(ADType.values.firstWhere((element) =>
+          element.index == int.parse(agentDistributorModel!.typeAgent)));
     }
   }
 
@@ -61,7 +57,7 @@ class _AgentDistributorsActionsPageBodyState
 
   @override
   Widget build(BuildContext context) {
-    final cubit = sl<AgentsDistributorsActionsCubit>();
+    final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
 
     return BlocBuilder<AgentsDistributorsActionsCubit,
         AgentsDistributorsActionsState>(

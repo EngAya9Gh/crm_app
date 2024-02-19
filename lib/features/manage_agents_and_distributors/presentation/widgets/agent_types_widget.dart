@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/enums/enums.dart';
-import '../../../../core/di/di_container.dart';
 
 class AgentTypesWidget extends StatelessWidget {
   const AgentTypesWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final cubit = sl<AgentsDistributorsActionsCubit>();
+    final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return Column(
       children: [
         Row(
@@ -19,8 +18,14 @@ class AgentTypesWidget extends StatelessWidget {
             Text('*', style: TextStyle(color: Colors.red)),
           ],
         ),
-        BlocBuilder<AgentsDistributorsActionsCubit,
+        BlocConsumer<AgentsDistributorsActionsCubit,
             AgentsDistributorsActionsState>(
+          listener: (context, state) {
+            print("type changed => $state");
+          },
+          buildWhen: (previous, current) =>
+              previous is AgentsDistributorsActionsTypeChanged ||
+              current is AgentsDistributorsActionsTypeChanged,
           builder: (context, state) {
             return Container(
               height: 50,
@@ -28,6 +33,7 @@ class AgentTypesWidget extends StatelessWidget {
                   color: Colors.grey.shade200,
                   borderRadius: BorderRadius.circular(10)),
               padding: EdgeInsets.zero,
+              // row of choices
               child: Row(
                 children: [
                   Expanded(
@@ -42,7 +48,7 @@ class AgentTypesWidget extends StatelessWidget {
                         duration: kTabScrollDuration,
                         height: 50,
                         alignment: Alignment.center,
-                        decoration: cubit.agentDistributorActionParams.type ==
+                        decoration: cubit.agentDistributorActionEntity.type ==
                                 ADType.distributor
                             ? BoxDecoration(
                                 color: Colors.lightGreen,
@@ -76,7 +82,7 @@ class AgentTypesWidget extends StatelessWidget {
                       duration: kTabScrollDuration,
                       height: 50,
                       alignment: Alignment.center,
-                      decoration: cubit.agentDistributorActionParams.type ==
+                      decoration: cubit.agentDistributorActionEntity.type ==
                               ADType.agent
                           ? BoxDecoration(
                               color: Colors.lightGreen,

@@ -14,13 +14,12 @@ import 'di_container.config.dart';
 
 final GetIt sl = GetIt.instance;
 
-// normal init of getIt
-
 void setupDependencies() {
   sl.registerLazySingleton<AgentsDistributorsCubit>(
     () => AgentsDistributorsCubit(),
   );
-  sl.registerLazySingleton<AgentsDistributorsActionsCubit>(
+
+  sl.registerFactory<AgentsDistributorsActionsCubit>(
     () => AgentsDistributorsActionsCubit(),
   );
 }

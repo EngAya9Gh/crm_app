@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/di/di_container.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class AgentDescriptionWidget extends StatelessWidget {
@@ -8,7 +8,7 @@ class AgentDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = sl<AgentsDistributorsActionsCubit>();
+    final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return Column(
       children: [
         Row(

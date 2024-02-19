@@ -29,8 +29,8 @@ class SaveButton extends StatelessWidget {
             onSuccess: () => Navigator.pop(context),
           );
         } else {
-          if (cubit.agentDistributorActionParams.type == null &&
-              cubit.agentDistributorActionParams.name != null) {
+          if (cubit.agentDistributorActionEntity.type == null &&
+              cubit.agentDistributorActionEntity.name != null) {
             AppConstants.showSnakeBar(context, "من فضلك اختر النوع");
           } else {
             AppConstants.showSnakeBar(

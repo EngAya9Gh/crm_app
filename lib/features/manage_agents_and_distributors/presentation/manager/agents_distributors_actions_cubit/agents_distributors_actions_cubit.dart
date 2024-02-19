@@ -32,7 +32,7 @@ class AgentsDistributorsActionsCubit
   PageState<List<MainCityModel>> citiesState0 = PageState();
   PageState<List<CityModel>> citiesState = PageState();
 
-  AgentDistributorActionEntity agentDistributorActionParams =
+  AgentDistributorActionEntity agentDistributorActionEntity =
       AgentDistributorActionEntity();
 
   MainCityModel? selectedCountry;
@@ -40,7 +40,7 @@ class AgentsDistributorsActionsCubit
   bool isLoadingAction = false;
 
   void resetAgentDistributorActionEntity() {
-    agentDistributorActionParams = AgentDistributorActionEntity();
+    agentDistributorActionEntity = AgentDistributorActionEntity();
     selectedCountry = null;
     selectedCountryFromCity = null;
     isLoadingAction = false;
@@ -68,7 +68,10 @@ class AgentsDistributorsActionsCubit
 
   List<CityModel> listcity = [];
 
-  Future<void> getAllCity({String? fkCountry, String? id_maincity}) async {
+  Future<void> getAllCity({
+    required String fkCountry,
+    String? regionId,
+  }) async {
     try {
       emit(AgentsDistributorsActionsLoading());
       List<dynamic> data = [];
@@ -79,9 +82,9 @@ class AgentsDistributorsActionsCubit
         listcity.add(CityModel.fromJson(data[i]));
         print(listcity[i].name_city);
       }
-      if (id_maincity != null) {
-        final country = listcity
-            .firstWhereOrNull((element) => element.id_city == id_maincity);
+      if (regionId != null) {
+        final country =
+            listcity.firstWhereOrNull((element) => element.id_city == regionId);
         if (country != null) {
           selectedCountryFromCity = country;
         }
@@ -106,15 +109,15 @@ class AgentsDistributorsActionsCubit
         response = await Api().postRequestWithFile(
             "array",
             url + 'agent/add_agent.php',
-            agentDistributorActionParams.toMap(),
-            agentDistributorActionParams.filelogo,
+            agentDistributorActionEntity.toMap(),
+            agentDistributorActionEntity.filelogo,
             null);
       } else {
         response = await Api().postRequestWithFile(
             "array",
             url + 'agent/update_agent.php?id_agent=$agentId',
-            agentDistributorActionParams.toMap(),
-            agentDistributorActionParams.filelogo,
+            agentDistributorActionEntity.toMap(),
+            agentDistributorActionEntity.filelogo,
             null);
       }
 
@@ -128,50 +131,50 @@ class AgentsDistributorsActionsCubit
   }
 
   onSelectADType(ADType type) {
-    if (type == agentDistributorActionParams.type) {
-      agentDistributorActionParams = agentDistributorActionParams.resetType();
-      emit(AgentsDistributorsActionsSuccess());
+    if (type == agentDistributorActionEntity.type) {
+      agentDistributorActionEntity = agentDistributorActionEntity.resetType();
+      emit(AgentsDistributorsActionsTypeChanged());
       return;
     }
 
-    agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(type: type);
-    emit(AgentsDistributorsActionsSuccess());
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(type: type);
+    emit(AgentsDistributorsActionsTypeChanged());
   }
 
   onSelectCountry(String? countryId) {
-    agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(countryId: countryId);
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(countryId: countryId);
   }
 
   onSelectCity(CityModel cityModel) {
-    agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(cityId: cityModel.id_city);
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(cityId: cityModel.id_city);
   }
 
   onSaveName(String? name) {
-    agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(name: name);
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(name: name);
   }
 
   onSaveEmail(String email) {
-    agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(email: email);
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(email: email);
   }
 
   onSaveDescription(String description) {
-    agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(description: description);
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(description: description);
   }
 
   onSaveimagefile() {
-    agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(filelogo: logoFile);
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(filelogo: logoFile);
   }
 
   onSavePhoneNumber(String phoneNumber) {
-    agentDistributorActionParams =
-        agentDistributorActionParams.copyWith(phoneNumber: phoneNumber);
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(phoneNumber: phoneNumber);
   }
 
 // AgentDistributorActionEntity resetType() {
@@ -185,4 +188,14 @@ class AgentsDistributorsActionsCubit
 //     email: email, filelogo: null,
 //   );
 // }
+
+  @override
+  Future<void> close() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneNumberController.dispose();
+    descriptionController.dispose();
+    logoController.dispose();
+    return super.close();
+  }
 }

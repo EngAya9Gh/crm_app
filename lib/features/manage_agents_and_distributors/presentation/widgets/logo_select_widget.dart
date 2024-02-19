@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../core/di/di_container.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class LogoSelectWidget extends StatelessWidget {
@@ -13,7 +13,7 @@ class LogoSelectWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = sl<AgentsDistributorsActionsCubit>();
+    final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return TextFormField(
       controller: cubit.logoController,
       obscureText: false,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../model/agent_distributor_model.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
@@ -15,16 +16,18 @@ class AgentDistributorsActionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AgentsDistributorsActionsCubit()
-        ..getAllCity(fkCountry: AppConstants.currentCountry(context)),
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Scaffold(
-          body: AgentDistributorsActionsPageBody(
-            agentDistributorModel: agentDistributorModel,
+      create: (context) => sl<AgentsDistributorsActionsCubit>()
+        ..getAllCity(fkCountry: AppConstants.currentCountry(context) ?? ""),
+      child: Builder(builder: (context) {
+        return Directionality(
+          textDirection: TextDirection.rtl,
+          child: Scaffold(
+            body: AgentDistributorsActionsPageBody(
+              agentDistributorModel: agentDistributorModel,
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

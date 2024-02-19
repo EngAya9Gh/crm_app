@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/di/di_container.dart';
 import '../../../../model/agent_distributor_model.dart';
-import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import 'agent_Image_widget.dart';
 import 'agent_description_widget.dart';
 import 'agent_email_widget.dart';
@@ -23,7 +21,6 @@ class AgentsDistributorsFormBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = sl<AgentsDistributorsActionsCubit>();
     return Column(
       children: [
         SizedBox(height: 15),

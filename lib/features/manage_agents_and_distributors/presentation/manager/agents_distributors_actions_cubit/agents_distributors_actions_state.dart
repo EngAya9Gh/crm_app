@@ -14,3 +14,6 @@ class AgentsDistributorsActionsFailure extends AgentsDistributorsActionsState {
 
   AgentsDistributorsActionsFailure(this.error);
 }
+
+class AgentsDistributorsActionsTypeChanged
+    extends AgentsDistributorsActionsState {}
