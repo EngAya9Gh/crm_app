@@ -15,7 +15,7 @@ import 'di_container.config.dart';
 final GetIt sl = GetIt.instance;
 
 void setupDependencies() {
-  sl.registerLazySingleton<AgentsDistributorsCubit>(
+  sl.registerFactory<AgentsDistributorsCubit>(
     () => AgentsDistributorsCubit(),
   );
 

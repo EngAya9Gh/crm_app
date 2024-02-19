@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../common/enums/enums.dart';
 import '../../../../common/widgets/custom_error_widget.dart';
 import '../../../../common/widgets/custom_loading_indicator.dart';
-import '../../../../core/di/di_container.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'agent_card.dart';
 
@@ -13,7 +12,7 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = sl<AgentsDistributorsCubit>();
+    final cubit = BlocProvider.of<AgentsDistributorsCubit>(context);
     return RefreshIndicator(
       onRefresh: () async => cubit.getAgentsAndDistributors(),
       child: BlocBuilder<AgentsDistributorsCubit, AgentsDistributorsState>(
