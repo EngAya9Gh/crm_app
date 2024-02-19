@@ -1,11 +1,15 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
+import '../../../../../api/api.dart';
+import '../../../../../common/enums/enums.dart';
+import '../../../../../constants.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
+import '../../../../../services/Invoice_Service.dart';
 import '../../../../../view_model/page_state.dart';
 import '../../../domain/entities/agent_distributor_action_entity.dart';
 
@@ -14,6 +18,8 @@ part 'agents_distributors_actions_state.dart';
 class AgentsDistributorsActionsCubit
     extends Cubit<AgentsDistributorsActionsState> {
   AgentsDistributorsActionsCubit() : super(AgentsDistributorsActionsInitial());
+
+  final formKey = GlobalKey<FormState>();
 
   PageState<List<AgentDistributorModel>> agentDistributorsState = PageState();
   PageState<List<MainCityModel>> citiesState0 = PageState();
@@ -31,42 +37,41 @@ class AgentsDistributorsActionsCubit
     selectedCountry = null;
     selectedCountryFromCity = null;
     isLoadingAction = false;
-    notifyListeners();
+    emit(AgentsDistributorsActionsInitial());
   }
 
   Future<void> getAgentsAndDistributors() async {
     try {
       if (!agentDistributorsState.isLoading) {
         agentDistributorsState = agentDistributorsState.changeToLoading;
-        notifyListeners();
+        emit(AgentsDistributorsActionsLoading());
       }
       final list = await Invoice_Service.getAgentsAndDistributors();
 
       agentDistributorsState = agentDistributorsState.changeToLoaded(list!);
-      notifyListeners();
+      emit(AgentsDistributorsActionsSuccess());
     } catch (e) {
       print(e.toString());
       agentDistributorsState = agentDistributorsState.changeToFailed;
-      notifyListeners();
+      emit(AgentsDistributorsActionsFailure(e.toString()));
     }
   }
 
   List<CityModel> listcity = [];
+
   Future<void> getAllCity({String? fkCountry, String? id_maincity}) async {
     try {
       if (!citiesState.isLoading) {
         citiesState = citiesState.changeToLoading;
-        notifyListeners();
+        emit(AgentsDistributorsActionsLoading());
       }
       List<dynamic> data = [];
       data = await Api()
           .get(url: url + 'config/getcity.php?fk_country=${fkCountry!}');
 
-      if (data != null) {
-        for (int i = 0; i < data.length; i++) {
-          listcity.add(CityModel.fromJson(data[i]));
-          print(listcity[i].name_city);
-        }
+      for (int i = 0; i < data.length; i++) {
+        listcity.add(CityModel.fromJson(data[i]));
+        print(listcity[i].name_city);
       }
       if (id_maincity != null) {
         final country = listcity
@@ -79,10 +84,10 @@ class AgentsDistributorsActionsCubit
       print("#######################################");
       print(listcity);
       print(listcity.length);
-      notifyListeners();
+      emit(AgentsDistributorsActionsSuccess());
     } catch (e) {
       citiesState = citiesState.changeToFailed;
-      notifyListeners();
+      emit(AgentsDistributorsActionsFailure(e.toString()));
     }
   }
 
@@ -92,7 +97,7 @@ class AgentsDistributorsActionsCubit
   }) async {
     try {
       isLoadingAction = true;
-      notifyListeners();
+      emit(AgentsDistributorsActionsLoading());
       dynamic response;
       if (agentId == null) {
         response = await Api().postRequestWithFile(
@@ -115,20 +120,20 @@ class AgentsDistributorsActionsCubit
       getAgentsAndDistributors();
     } catch (e, stackTrace) {
       isLoadingAction = false;
-      notifyListeners();
+      emit(AgentsDistributorsActionsFailure(e.toString()));
     }
   }
 
   onSelectADType(ADType type) {
     if (type == agentDistributorActionParams.type) {
       agentDistributorActionParams = agentDistributorActionParams.resetType();
-      notifyListeners();
+      emit(AgentsDistributorsActionsSuccess());
       return;
     }
 
     agentDistributorActionParams =
         agentDistributorActionParams.copyWith(type: type);
-    notifyListeners();
+    emit(AgentsDistributorsActionsSuccess());
   }
 
   onSelectCountry(String? countryId) {
@@ -178,108 +183,3 @@ class AgentsDistributorsActionsCubit
 //   );
 // }
 }
-
-//
-// class AgentDistributorActionEntity {
-//   String? name;
-//   ADType? type;
-//   String? countryId;
-//   String? cityId;
-//   String? email;
-//   String? phoneNumber;
-//   String? description;
-//   File? filelogo;
-//
-//   AgentDistributorActionEntity.reset()
-//       : name = null,
-//         type = null,
-//         email = null,
-//         phoneNumber = null,
-//         description = null,
-//         countryId = null;
-//   // filelogo = null;
-//
-//   AgentDistributorActionEntity({
-//     required this.name,
-//     required this.type,
-//     this.countryId,
-//     this.email,
-//     this.phoneNumber,
-//     this.description,
-//     required filelogo,
-//     this.cityId,
-//   });
-//
-//   AgentDistributorActionEntity copyWith({
-//     String? name,
-//     ADType? type,
-//     String? countryId,
-//     String? cityId,
-//     String? email,
-//     String? phoneNumber,
-//     String? description,
-//     File? filelogo,
-//   }) {
-//     return AgentDistributorActionEntity(
-//       name: name ?? this.name,
-//       type: type ?? this.type,
-//       countryId: countryId ?? this.countryId,
-//       cityId: cityId ?? this.cityId,
-//       email: email ?? this.email,
-//       phoneNumber: phoneNumber ?? this.phoneNumber,
-//       description: description ?? this.description,
-//       filelogo: filelogo ?? this.filelogo,
-//     );
-//   }
-//
-//   AgentDistributorActionEntity resetType() {
-//     return AgentDistributorActionEntity(
-//       name: name,
-//       type: null,
-//       countryId: countryId,
-//       cityId: cityId,
-//       phoneNumber: phoneNumber,
-//       description: description,
-//       email: email,
-//       filelogo: null,
-//     );
-//   }
-//
-//   Map<String, dynamic> toMap() => {
-//         'name_agent': name,
-//         'type_agent': type?.index.toString(),
-//         'fk_country': countryId,
-//         'cityId': cityId,
-//         'email_egent': email,
-//         'mobile_agent': phoneNumber,
-//         'description': description,
-//       }..removeWhere((key, value) => value == null);
-//
-//   @override
-//   bool operator ==(Object other) =>
-//       identical(this, other) ||
-//       other is AgentDistributorActionEntity &&
-//           runtimeType == other.runtimeType &&
-//           name == other.name &&
-//           type == other.type &&
-//           countryId == other.countryId &&
-//           cityId == other.cityId &&
-//           email == other.email &&
-//           phoneNumber == other.phoneNumber &&
-//           description == other.description;
-//
-//   @override
-//   int get hashCode =>
-//       name.hashCode ^
-//       type.hashCode ^
-//       countryId.hashCode ^
-//       email.hashCode ^
-//       phoneNumber.hashCode ^
-//       cityId.hashCode ^
-//       description.hashCode;
-//
-//   @override
-//   String toString() {
-//     return 'AgentDistributorActionParams{name: $name, type: ${type?.index}, countryId: $countryId, email: $email, phoneNumber: $phoneNumber, description: $description}';
-//   }
-// }

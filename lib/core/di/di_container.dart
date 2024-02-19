@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/constants/route.dart';
+import '../../features/manage_agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../../features/manage_agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../api/log_interceptor.dart';
 import 'di_container.config.dart';
@@ -18,6 +19,9 @@ final GetIt sl = GetIt.instance;
 void setupDependencies() {
   sl.registerLazySingleton<AgentsDistributorsCubit>(
     () => AgentsDistributorsCubit(),
+  );
+  sl.registerLazySingleton<AgentsDistributorsActionsCubit>(
+    () => AgentsDistributorsActionsCubit(),
   );
 }
 

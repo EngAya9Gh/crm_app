@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:crm_smart/common/manager/custom_bloc_observer.dart';
 import 'package:crm_smart/core/di/di_container.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
 import 'package:crm_smart/provider/config_vm.dart';
@@ -170,8 +169,8 @@ void main() async {
       ChangeNotifierProvider<CompanyProvider>(create: (_) => CompanyProvider()),
       ChangeNotifierProvider<participate_vm>(create: (_) => participate_vm()),
       ChangeNotifierProvider<reason_suspend>(create: (_) => reason_suspend()),
-      ChangeNotifierProvider<AgentDistributorViewModel>(
-          create: (_) => AgentDistributorViewModel()),
+      // ChangeNotifierProvider<AgentDistributorViewModel>(
+      //     create: (_) => AgentDistributorViewModel()),
       ChangeNotifierProxyProvider<invoice_vm,
           AgentsCollaboratorsInvoicesViewmodel>(
         update: (context, invoiceVm, agentCollaborateVm) {

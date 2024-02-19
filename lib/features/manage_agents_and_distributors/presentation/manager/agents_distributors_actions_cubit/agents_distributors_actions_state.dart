@@ -9,4 +9,8 @@ class AgentsDistributorsActionsLoading extends AgentsDistributorsActionsState {}
 
 class AgentsDistributorsActionsSuccess extends AgentsDistributorsActionsState {}
 
-class AgentsDistributorsActionsFailure extends AgentsDistributorsActionsState {}
+class AgentsDistributorsActionsFailure extends AgentsDistributorsActionsState {
+  final String error;
+
+  AgentsDistributorsActionsFailure(this.error);
+}
