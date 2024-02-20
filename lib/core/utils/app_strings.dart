@@ -1,4 +1,7 @@
 abstract class AppStrings {
+  static const String apiBaseUrl1 = 'http://smartcrm.ws/test/api/';
+  static const String apiBaseUrl2 = 'http://test.smartcrm.ws/api/';
+
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
   static const String hintEmailText = "Enter your Email";
@@ -8,6 +11,7 @@ abstract class AppStrings {
   static const String emailError = "This Email is not exist";
   static const String textButtonCode = "Send Code";
   static const String textButtonCode2 = "Verfiy Code";
+
 //////label main main_page
   static const String labelNameProduct = "اسم المنتج";
   static const String labelNamePrice = "سعر المنتج";
@@ -15,9 +19,11 @@ abstract class AppStrings {
   static const String labelTurnVat = "تفعيل الضريبة";
   static const String marketLabel = 'عميل عن طريق التسويق الالكتروني';
   static const String labelButtonAddProduct = "إضافة منتج";
+
 ///////////label text product///////////
   static const String labelErrorAddProd = "لقد حصل خطأ ما ";
   static const String labelDoneAddProduct = "تمت إضافة المنتج بنجاح";
+
 //////////////////label text user/////////
   static const String labelManage = 'الإدارات';
   static const String labelLevel = 'المستوى';
@@ -25,6 +31,7 @@ abstract class AppStrings {
   static const String labelMobile = 'رقم الجوال';
   static const String labelAddedUser = " تمت إضافة البيانات بنجاح";
   static const String labelEditUser = " تم تعديل البيانات بنجاح";
+
 /////////////////////////label client////////////////////
   static const String labelClientName = 'اسم العميل';
   static const String labelDescActivity = 'وصف النشاط';
@@ -42,6 +49,7 @@ abstract class AppStrings {
   static const String labelClientAdd = 'إضافة العميل';
 
   static const String labelEmpty = 'هذا الحقل مطلوب';
+
 /////////////////////////////////////////
 
   static const String labelAmountPaid = 'المبلغ المدفوع';

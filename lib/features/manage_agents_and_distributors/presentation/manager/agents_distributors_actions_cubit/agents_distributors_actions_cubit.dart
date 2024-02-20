@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../../../../../api/api.dart';
 import '../../../../../common/enums/enums.dart';
 import '../../../../../constants.dart';
+import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../domain/entities/agent_distributor_action_entity.dart';
 import '../../../domain/use_cases/get_all_cities_usecase.dart';
@@ -36,6 +37,40 @@ class AgentsDistributorsActionsCubit
   MainCityModel? selectedCountry;
   CityModel? selectedCountryFromCity;
   bool isLoadingAction = false;
+
+  void loadCurrentAgentData(AgentDistributorModel? agentDistributorModel) {
+    if (agentDistributorModel == null) {
+      resetAgentDistributorActionEntity();
+    } else {
+      nameController.text = agentDistributorModel.nameAgent;
+      emailController.text = agentDistributorModel.emailAgent;
+      phoneNumberController.text = agentDistributorModel.mobileAgent;
+      descriptionController.text = agentDistributorModel.description;
+      descriptionController.text = agentDistributorModel.description;
+      onSelectADType(ADType.values.firstWhere((element) =>
+          element.index == int.parse(agentDistributorModel.typeAgent)));
+      agentDistributorActionEntity = agentDistributorActionEntity.copyWith(
+        name: agentDistributorModel.nameAgent,
+        email: agentDistributorModel.emailAgent,
+        phoneNumber: agentDistributorModel.mobileAgent,
+        description: agentDistributorModel.description,
+        type: ADType.values.firstWhere((element) =>
+            element.index == int.parse(agentDistributorModel.typeAgent)),
+        countryId: agentDistributorModel.fkCountry,
+        cityId: agentDistributorModel.cityId,
+      );
+    }
+  }
+
+  void _loadCurrentCity(String? cityId) {
+    print("cityId: $cityId");
+    print("length: ${citiesList.length}");
+    selectedCountryFromCity = citiesList.firstWhereOrNull(
+      (element) => element.id_city == cityId,
+    );
+    print("selectedCountryFromCity: ${selectedCountryFromCity?.name_city}");
+    emit(AgentsDistributorsActionsCityChanged());
+  }
 
   void resetAgentDistributorActionEntity() {
     agentDistributorActionEntity = AgentDistributorActionEntity();
@@ -69,12 +104,12 @@ class AgentsDistributorsActionsCubit
           }
         }
         emit(AgentsDistributorsActionsSuccess());
+        _loadCurrentCity(agentDistributorActionEntity.cityId);
       },
     );
   }
 
   Future<void> actionAgentDistributor({
-    // required VoidCallback onSuccess,
     String? agentId,
   }) async {
     try {

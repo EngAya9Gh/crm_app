@@ -23,10 +23,6 @@ class AgentsDistributorsActionsDataSourceImpl
     try {
       final data =
           await api.get(url: url + 'config/getcity.php?fk_country=$fkCountry');
-      //     //   for (int i = 0; i < data.length; i++) {
-      //     //     citiesList.add(CityModel.fromJson(data[i]));
-      //     //     print(citiesList[i].name_city);
-      //     //   }
       final List<CityModel> citiesList = [];
       for (int i = 0; i < data.length; i++) {
         citiesList.add(CityModel.fromJson(data[i]));
