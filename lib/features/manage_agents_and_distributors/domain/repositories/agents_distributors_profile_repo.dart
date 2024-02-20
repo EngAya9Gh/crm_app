@@ -16,6 +16,9 @@ abstract class AgentsDistributorsProfileRepo {
   Future<Either<String, List<ProfileCommentModel>>> getParticipateCommentsList({
     required String agentId,
   });
-// Future<Result<ResponseWrapper<ParticipateCommentModel>>> addCompanyComment(
-//     Map<String, dynamic> body);
+
+  Future<Either<String, ProfileCommentModel>> addAgentComment({
+    required String agentId,
+    required String content,
+  });
 }

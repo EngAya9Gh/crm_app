@@ -18,6 +18,11 @@ abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, List<ProfileCommentModel>>> getAgentCommentsList({
     required String agentId,
   });
+
+  Future<Either<String, ProfileCommentModel>> addAgentComment({
+    required String agentId,
+    required String content,
+  });
 }
 
 class AgentsDistributorsProfileDataSourceImpl
@@ -81,6 +86,27 @@ class AgentsDistributorsProfileDataSourceImpl
       }
 
       return Right(commentsList);
+    } catch (e) {
+      print("Error in getAgentCommentsList: $e");
+      return Left("Error in getAgentCommentsList: $e");
+    }
+  }
+
+  @override
+  Future<Either<String, ProfileCommentModel>> addAgentComment({
+    required String agentId,
+    required String content,
+  }) async {
+    try {
+      dio.changeBaseUrl(AppStrings.apiBaseUrl2);
+      final response = await dio.post(endPoint: "addCommentAgent", data: {
+        "agent_id": agentId,
+        "content": content,
+      });
+
+      final data = response['data'];
+      final ProfileCommentModel comment = ProfileCommentModel.fromJson(data);
+      return Right(comment);
     } catch (e) {
       print("Error in getAgentCommentsList: $e");
       return Left("Error in getAgentCommentsList: $e");

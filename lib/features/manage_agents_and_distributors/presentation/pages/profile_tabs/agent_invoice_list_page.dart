@@ -45,6 +45,11 @@ class _AgentInvoiceListPageState extends State<AgentInvoiceListPage> {
     final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
     return BlocBuilder<AgentsDistributorsProfileBloc,
         AgentsDistributorsProfileState>(
+      buildWhen: (previous, current) =>
+          previous.invoicesStatus != current.invoicesStatus ||
+          previous.invoicesList != current.invoicesList ||
+          previous.dialogProgressState != current.dialogProgressState ||
+          previous.invoicesError != current.invoicesError,
       builder: (context, state) {
         return ModalProgressHUD(
           inAsyncCall: state.dialogProgressState == StateStatus.loading,

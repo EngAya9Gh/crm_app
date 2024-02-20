@@ -32,4 +32,12 @@ class AgentsDistributorsProfileRepoImpl
   }) {
     return datasource.getAgentCommentsList(agentId: agentId);
   }
+
+  @override
+  Future<Either<String, ProfileCommentModel>> addAgentComment({
+    required String agentId,
+    required String content,
+  }) {
+    return datasource.addAgentComment(agentId: agentId, content: content);
+  }
 }

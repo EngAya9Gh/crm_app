@@ -10,6 +10,8 @@ import '../../../../../constants.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../manage_participates/presentation/widgets/participate_comment_card.dart';
+import '../../../domain/use_cases/add_agent_comments_usecase.dart';
+import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
 
 class AgentCommentListPage extends StatefulWidget {
   final String agentId;
@@ -53,31 +55,27 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                     ),
                   ),
                   20.horizontalSpace,
-                  IconButton(
-                    onPressed: () {
-                      final isValid = _formKey.currentState!.validate();
-                      if (!isValid) return;
-                      // bloc.add(
-                      //
-                      // );
-                      // context.read<ParticipateListBloc>().add(
-                      //         AddParticipateCommentEvent(
-                      //             AddParticipateCommentParams(
-                      //                 content: _commentController.text,
-                      //                 fkParticipate: widget.participateId),
-                      //             onSuccess: (value) {
-                      //       if (value != null) {
-                      //         ScaffoldMessenger.of(context).showSnackBar(
-                      //             SnackBar(content: Text('errorً')));
-                      //         return;
-                      //       }
-                      //       ScaffoldMessenger.of(context).showSnackBar(
-                      //           SnackBar(content: Text('تم')));
-                      //       // Navigator.pop(context,value);
-                      //       _commentController.text = '';
-                      //     }));
+                  BlocListener<AgentsDistributorsProfileBloc,
+                      AgentsDistributorsProfileState>(
+                    listener: (context, state) {
+                      _handleAddCommentsStatus(state, context);
                     },
-                    icon: Icon(Icons.send, color: kMainColor),
+                    child: IconButton(
+                      onPressed: () {
+                        final isValid = _formKey.currentState!.validate();
+                        if (!isValid) return;
+                        bloc.add(
+                          AddAgentCommentEvent(
+                            AddAgentCommentParams(
+                              agentId: widget.agentId,
+                              content: _commentController.text,
+                            ),
+                            onSuccess: () => _handleOnSuccess(bloc),
+                          ),
+                        );
+                      },
+                      icon: Icon(Icons.send, color: kMainColor),
+                    ),
                   ),
                 ],
               ),
@@ -90,6 +88,10 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
           textDirection: TextDirection.rtl,
           child: BlocBuilder<AgentsDistributorsProfileBloc,
               AgentsDistributorsProfileState>(
+            buildWhen: (previous, current) =>
+                previous.commentsStatus != current.commentsStatus ||
+                previous.commentsList != current.commentsList ||
+                previous.addedCommentStatus != current.addedCommentStatus,
             builder: (context, state) {
               if (state.commentsStatus == StateStatus.loading ||
                   state.commentsStatus == StateStatus.initial)
@@ -118,5 +120,39 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
         ),
       ],
     );
+  }
+
+  void _handleOnSuccess(AgentsDistributorsProfileBloc bloc) {
+    _commentController.text = '';
+    bloc.add(
+      GetAgentCommentListEvent(
+        getAgentCommentListParams: GetAgentCommentListParams(
+          agentId: widget.agentId,
+        ),
+      ),
+    );
+  }
+
+  void _handleAddCommentsStatus(
+      AgentsDistributorsProfileState state, BuildContext context) {
+    if (state.addedCommentStatus == StateStatus.loading) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('جاري اضافة التعليق'),
+        ),
+      );
+    } else if (state.addedCommentStatus == StateStatus.failure) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('حدث خطأ اثناء اضافة التعليق'),
+        ),
+      );
+    } else if (state.addedCommentStatus == StateStatus.success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('تم اضافة التعليق'),
+        ),
+      );
+    }
   }
 }

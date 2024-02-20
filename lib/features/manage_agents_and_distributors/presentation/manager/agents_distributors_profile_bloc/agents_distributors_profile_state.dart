@@ -16,6 +16,10 @@ class AgentsDistributorsProfileState extends Equatable {
   final StateStatus commentsStatus;
   final String? commentsError;
 
+  final ProfileCommentModel? addedComment;
+  final StateStatus addedCommentStatus;
+  final String? addedCommentError;
+
   AgentsDistributorsProfileState({
     this.clientsList = const [],
     this.clientsStatus = StateStatus.initial,
@@ -28,6 +32,9 @@ class AgentsDistributorsProfileState extends Equatable {
     this.commentsList = const [],
     this.commentsStatus = StateStatus.initial,
     this.commentsError,
+    this.addedComment,
+    this.addedCommentStatus = StateStatus.initial,
+    this.addedCommentError,
   });
 
   AgentsDistributorsProfileState copyWith({
@@ -42,6 +49,9 @@ class AgentsDistributorsProfileState extends Equatable {
     List<ProfileCommentModel>? commentsList,
     StateStatus? commentsStatus,
     String? commentsError,
+    ProfileCommentModel? addedComment,
+    StateStatus? addedCommentStatus,
+    String? addedCommentError,
   }) {
     return AgentsDistributorsProfileState(
       clientsList: clientsList ?? this.clientsList,
@@ -55,6 +65,9 @@ class AgentsDistributorsProfileState extends Equatable {
       commentsList: commentsList ?? this.commentsList,
       commentsStatus: commentsStatus ?? this.commentsStatus,
       commentsError: commentsError,
+      addedComment: addedComment,
+      addedCommentStatus: addedCommentStatus ?? this.addedCommentStatus,
+      addedCommentError: addedCommentError,
     );
   }
 
@@ -71,5 +84,8 @@ class AgentsDistributorsProfileState extends Equatable {
         commentsList,
         commentsStatus,
         commentsError,
+        addedComment,
+        addedCommentStatus,
+        addedCommentError,
       ];
 }

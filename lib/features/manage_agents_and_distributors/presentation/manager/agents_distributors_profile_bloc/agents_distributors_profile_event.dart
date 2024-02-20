@@ -74,12 +74,12 @@ class GetAgentCommentListEvent extends AgentsDistributorsProfileEvent
   List<Object?> get props => [];
 }
 
-// class AddAgentCommentEvent extends AgentsDistributorsProfileEvent {
-//   final AddAgentCommentParams addAgentCommentParams;
-//   final ValueChanged<String?>? onSuccess;
-//
-//   AddAgentCommentEvent(this.addAgentCommentParams, {this.onSuccess});
-//
-//   @override
-//   List<Object?> get props => throw UnimplementedError();
-// }
+class AddAgentCommentEvent extends AgentsDistributorsProfileEvent {
+  final AddAgentCommentParams addAgentCommentParams;
+  final VoidCallback? onSuccess;
+
+  AddAgentCommentEvent(this.addAgentCommentParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => throw UnimplementedError();
+}
