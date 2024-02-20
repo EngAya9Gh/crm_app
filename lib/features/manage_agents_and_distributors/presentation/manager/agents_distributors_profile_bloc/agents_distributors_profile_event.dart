@@ -62,38 +62,22 @@ class GetInvoiceByIdEvent extends AgentsDistributorsProfileEvent
   List<Object?> get props => [getInvoiceByIdParams];
 }
 
-// class SearchInvoiceEvent extends AgentsDistributorsProfileEvent {
-//   final String query;
-//
-//   SearchInvoiceEvent(this.query);
-//
-//   @override
-//   List<Object?> get props => [query];
-// }
-// class GetInvoiceByIdEvent extends AgentsDistributorsProfileEvent{
-//   late final GetInvoiceByIdParams getInvoiceByIdParams;
-//   final ValueChanged<InvoiceModel>? onSuccess;
-//
-//   GetInvoiceByIdEvent(this.getInvoiceByIdParams, {this.onSuccess});
-//   @override
-//   List<Object?> get props => [getInvoiceByIdParams];
-// }
-// class GetAgentCommentListEvent extends AgentsDistributorsProfileEvent {
-//   final GetAgentCommentListParams getAgentCommentListParams;
-//
-//
-//   GetAgentCommentListEvent(
-//       {required this.getAgentCommentListParams});
-//
-//   @override
-//   List<Object?> get props => [
-//     // query,
-//     getAgentCommentListParams];
-// }
-//
+class GetAgentCommentListEvent extends AgentsDistributorsProfileEvent
+    with EquatableMixin {
+  final GetAgentCommentListParams getAgentCommentListParams;
+
+  GetAgentCommentListEvent({
+    required this.getAgentCommentListParams,
+  });
+
+  @override
+  List<Object?> get props => [];
+}
+
 // class AddAgentCommentEvent extends AgentsDistributorsProfileEvent {
 //   final AddAgentCommentParams addAgentCommentParams;
 //   final ValueChanged<String?>? onSuccess;
+//
 //   AddAgentCommentEvent(this.addAgentCommentParams, {this.onSuccess});
 //
 //   @override

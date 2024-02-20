@@ -19,6 +19,7 @@ import '../../features/manage_agents_and_distributors/data/repositories/agents_d
 import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_actions_repo.dart';
 import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_profile_repo.dart';
 import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_repo.dart';
+import '../../features/manage_agents_and_distributors/domain/use_cases/get_agent_comments_list_usecase.dart';
 import '../../features/manage_agents_and_distributors/domain/use_cases/get_agent_invoice_list_usecase.dart';
 import '../../features/manage_agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../features/manage_agents_and_distributors/domain/use_cases/get_all_cities_usecase.dart';
@@ -70,6 +71,9 @@ void setupDependencies() {
   sl.registerLazySingleton<GetAgentInvoiceListUsecase>(
     () => GetAgentInvoiceListUsecase(sl()),
   );
+  sl.registerLazySingleton<GetAgentCommentsListUsecase>(
+    () => GetAgentCommentsListUsecase(sl()),
+  );
 
   // cubits and blocs
   sl.registerFactory<AgentsDistributorsCubit>(
@@ -81,7 +85,12 @@ void setupDependencies() {
   );
 
   sl.registerFactory<AgentsDistributorsProfileBloc>(
-    () => AgentsDistributorsProfileBloc(sl(), sl(), sl()),
+    () => AgentsDistributorsProfileBloc(
+      sl(),
+      sl(),
+      sl(),
+      sl(),
+    ),
   );
 }
 

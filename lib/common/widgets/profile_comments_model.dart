@@ -1,8 +1,6 @@
-
 import 'package:equatable/equatable.dart';
 
-class ParticipateCommentModel extends Equatable
-{
+class ProfileCommentModel extends Equatable {
   int? participateId;
   String? content;
   String? dateComment;
@@ -13,8 +11,8 @@ class ParticipateCommentModel extends Equatable
   String? addDate;
   String? updateDate;
 
-  ParticipateCommentModel(
-     {this.participateId,
+  ProfileCommentModel(
+      {this.participateId,
       this.content,
       this.dateComment,
       this.userId,
@@ -24,7 +22,7 @@ class ParticipateCommentModel extends Equatable
       this.addDate,
       this.updateDate});
 
-  ParticipateCommentModel.fromJson(Map<String, dynamic> json) {
+  ProfileCommentModel.fromJson(Map<String, dynamic> json) {
     participateId = json['participate_id'];
     content = json['content'];
     dateComment = json['date_comment'];
@@ -50,9 +48,16 @@ class ParticipateCommentModel extends Equatable
     return data;
   }
 
-
-
   @override
-  List<Object?> get props => [participateId,content,dateComment,userId,id,nameUser,imgImage,addDate,updateDate ];
-  
+  List<Object?> get props => [
+        participateId,
+        content,
+        dateComment,
+        userId,
+        id,
+        nameUser,
+        imgImage,
+        addDate,
+        updateDate
+      ];
 }

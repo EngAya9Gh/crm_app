@@ -7,8 +7,8 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../common/models/page_state/bloc_status.dart';
+import '../../../../common/widgets/profile_comments_model.dart';
 import '../../data/models/participate_client_model.dart';
-import '../../data/models/participate_comments_model.dart';
 
 class ParticipateListState extends Equatable {
   ParticipateListState({
@@ -24,7 +24,7 @@ class ParticipateListState extends Equatable {
     this.currentInvoice,
     this.dialogProgressState = const BlocStatus.initial(),
     this.particiPateCommentsListState = const PageState.init(),
-    this.allParticipateCommentsState = const <ParticipateCommentModel>[],
+    this.allParticipateCommentsState = const <ProfileCommentModel>[],
     this.actionCommentState = const BlocStatus.initial(),
   });
 
@@ -41,8 +41,8 @@ class ParticipateListState extends Equatable {
   final InvoiceModel? currentInvoice;
   final BlocStatus dialogProgressState;
 
-  final PageState<List<ParticipateCommentModel>> particiPateCommentsListState;
-  final List<ParticipateCommentModel> allParticipateCommentsState;
+  final PageState<List<ProfileCommentModel>> particiPateCommentsListState;
+  final List<ProfileCommentModel> allParticipateCommentsState;
   final BlocStatus actionCommentState;
   @override
   List<Object?> get props => [
@@ -74,8 +74,8 @@ class ParticipateListState extends Equatable {
     List<ProfileInvoiceModel>? allParticipateInvoicesState,
     InvoiceModel? currentInvoice,
     BlocStatus? dialogProgressState,
-    PageState<List<ParticipateCommentModel>>? particiPateCommentsListState,
-    List<ParticipateCommentModel>? allParticipateCommentsState,
+    PageState<List<ProfileCommentModel>>? particiPateCommentsListState,
+    List<ProfileCommentModel>? allParticipateCommentsState,
     BlocStatus? actionCommentState,
   }) {
     return ParticipateListState(

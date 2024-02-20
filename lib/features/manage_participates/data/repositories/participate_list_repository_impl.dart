@@ -9,7 +9,7 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../common/models/profile_invoice_model.dart';
-import '../models/participate_comments_model.dart';
+import '../../../../common/widgets/profile_comments_model.dart';
 
 @Injectable(as: ParticipateListRepository)
 class ParticipateListRepositoryImpl implements ParticipateListRepository {
@@ -56,14 +56,14 @@ class ParticipateListRepositoryImpl implements ParticipateListRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<List<ParticipateCommentModel>>>>
+  Future<Result<ResponseWrapper<List<ProfileCommentModel>>>>
       getParticipateCommentsList(String participateId) {
     return toApiResult(
         () => datasource.getParticipateCommentsList(participateId));
   }
 
   @override
-  Future<Result<ResponseWrapper<ParticipateCommentModel>>> addCompanyComment(
+  Future<Result<ResponseWrapper<ProfileCommentModel>>> addCompanyComment(
       Map<String, dynamic> body) {
     return toApiResult(() => datasource.addComment(body: body));
   }

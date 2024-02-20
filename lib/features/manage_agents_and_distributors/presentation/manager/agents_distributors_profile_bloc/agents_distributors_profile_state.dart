@@ -12,6 +12,10 @@ class AgentsDistributorsProfileState extends Equatable {
 
   final InvoiceModel? currentInvoice;
 
+  final List<ProfileCommentModel> commentsList;
+  final StateStatus commentsStatus;
+  final String? commentsError;
+
   AgentsDistributorsProfileState({
     this.clientsList = const [],
     this.clientsStatus = StateStatus.initial,
@@ -21,6 +25,9 @@ class AgentsDistributorsProfileState extends Equatable {
     this.invoicesError,
     this.currentInvoice,
     this.dialogProgressState = StateStatus.initial,
+    this.commentsList = const [],
+    this.commentsStatus = StateStatus.initial,
+    this.commentsError,
   });
 
   AgentsDistributorsProfileState copyWith({
@@ -32,6 +39,9 @@ class AgentsDistributorsProfileState extends Equatable {
     String? invoicesError,
     InvoiceModel? currentInvoice,
     StateStatus? dialogProgressState,
+    List<ProfileCommentModel>? commentsList,
+    StateStatus? commentsStatus,
+    String? commentsError,
   }) {
     return AgentsDistributorsProfileState(
       clientsList: clientsList ?? this.clientsList,
@@ -42,6 +52,9 @@ class AgentsDistributorsProfileState extends Equatable {
       invoicesError: invoicesError,
       currentInvoice: currentInvoice ?? this.currentInvoice,
       dialogProgressState: dialogProgressState ?? this.dialogProgressState,
+      commentsList: commentsList ?? this.commentsList,
+      commentsStatus: commentsStatus ?? this.commentsStatus,
+      commentsError: commentsError,
     );
   }
 
@@ -55,5 +68,8 @@ class AgentsDistributorsProfileState extends Equatable {
         invoicesError,
         currentInvoice,
         dialogProgressState,
+        commentsList,
+        commentsStatus,
+        commentsError,
       ];
 }

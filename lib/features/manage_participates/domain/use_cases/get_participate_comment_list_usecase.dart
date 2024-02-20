@@ -4,35 +4,34 @@ import 'package:crm_smart/features/manage_participates/domain/repositories/parti
 import 'package:injectable/injectable.dart';
 
 import '../../../../common/models/response_wrapper/response_wrapper.dart';
-import '../../data/models/participate_comments_model.dart';
-
+import '../../../../common/widgets/profile_comments_model.dart';
 
 @injectable
-class ParticipateCommentListUsecase
-    extends UseCase<Result<ResponseWrapper<List<ParticipateCommentModel>>>, GetParticipateCommentListParams> {
+class ParticipateCommentListUsecase extends UseCase<
+    Result<ResponseWrapper<List<ProfileCommentModel>>>,
+    GetParticipateCommentListParams> {
   ParticipateCommentListUsecase(this.repository);
 
   final ParticipateListRepository repository;
-  
 
   @override
-  Future<Result<ResponseWrapper<List<ParticipateCommentModel>>>> call(GetParticipateCommentListParams params) {
-    
-    return repository.getParticipateCommentsList(params.idParticipate.toString());
+  Future<Result<ResponseWrapper<List<ProfileCommentModel>>>> call(
+      GetParticipateCommentListParams params) {
+    return repository.getParticipateCommentsList(params.agentId.toString());
   }
 }
 
 class GetParticipateCommentListParams {
- final String? idParticipate;
+  final String? agentId;
 
-  GetParticipateCommentListParams(
-    {this.idParticipate}
-  );
+  GetParticipateCommentListParams({this.agentId});
 
- Map<String, dynamic> toMap() {
-    Map<String, dynamic> params = { }..removeWhere((key, value) => value == null);
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> params = {}
+      ..removeWhere((key, value) => value == null);
     params = params.map((key, value) => MapEntry(key, value.toString()));
     return params;
   }
-   Map<String, dynamic> get toParams  => {'id_participate': idParticipate};
+
+  Map<String, dynamic> get toParams => {'id_participate': agentId};
 }

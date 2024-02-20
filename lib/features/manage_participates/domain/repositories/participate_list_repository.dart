@@ -1,7 +1,7 @@
+import 'package:crm_smart/common/widgets/profile_comments_model.dart';
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participate_client_model.dart';
-import 'package:crm_smart/features/manage_participates/data/models/participate_comments_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 
 import '../../../../common/models/profile_invoice_model.dart';
@@ -20,8 +20,8 @@ abstract class ParticipateListRepository {
       getParticipateInvoicesList(String participateId);
   Future<Result<ResponseWrapper<InvoiceModel>>> getInvoiceDataById(
       Map<String, dynamic> params);
-  Future<Result<ResponseWrapper<List<ParticipateCommentModel>>>>
+  Future<Result<ResponseWrapper<List<ProfileCommentModel>>>>
       getParticipateCommentsList(String participateId);
-  Future<Result<ResponseWrapper<ParticipateCommentModel>>> addCompanyComment(
+  Future<Result<ResponseWrapper<ProfileCommentModel>>> addCompanyComment(
       Map<String, dynamic> body);
 }

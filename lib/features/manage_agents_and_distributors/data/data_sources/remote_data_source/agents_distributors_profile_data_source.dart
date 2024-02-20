@@ -1,3 +1,4 @@
+import 'package:crm_smart/common/widgets/profile_comments_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../api/dio_services.dart';
@@ -11,6 +12,10 @@ abstract class AgentsDistributorsProfileDataSource {
   });
 
   Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoiceList({
+    required String agentId,
+  });
+
+  Future<Either<String, List<ProfileCommentModel>>> getAgentCommentsList({
     required String agentId,
   });
 }
@@ -59,6 +64,26 @@ class AgentsDistributorsProfileDataSourceImpl
     } catch (e) {
       print("Error in getAgentInvoiceList: $e");
       return Left("Error in getAgentInvoiceList: $e");
+    }
+  }
+
+  @override
+  Future<Either<String, List<ProfileCommentModel>>> getAgentCommentsList(
+      {required String agentId}) async {
+    try {
+      dio.changeBaseUrl(AppStrings.apiBaseUrl2);
+      final response = await dio.get(endPoint: "getAgentComments/$agentId");
+      final data = response['data'];
+
+      final List<ProfileCommentModel> commentsList = [];
+      for (int i = 0; i < data.length; i++) {
+        commentsList.add(ProfileCommentModel.fromJson(data[i]));
+      }
+
+      return Right(commentsList);
+    } catch (e) {
+      print("Error in getAgentCommentsList: $e");
+      return Left("Error in getAgentCommentsList: $e");
     }
   }
 }
