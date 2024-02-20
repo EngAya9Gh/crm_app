@@ -17,3 +17,7 @@ class AgentsDistributorsActionsFailure extends AgentsDistributorsActionsState {
 
 class AgentsDistributorsActionsTypeChanged
     extends AgentsDistributorsActionsState {}
+
+// city
+class AgentsDistributorsActionsCityChanged
+    extends AgentsDistributorsActionsState {}

@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:crm_smart/api/dio_services.dart';
+import 'package:crm_smart/features/manage_agents_and_distributors/data/repositories/agents_distributors_profile_repo_impl.dart';
+import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/get_agent_client_list_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -10,13 +13,17 @@ import '../../api/api.dart';
 import '../../common/constants/route.dart';
 import '../../features/manage_agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart';
 import '../../features/manage_agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_data_source.dart';
+import '../../features/manage_agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_profile_data_source.dart';
 import '../../features/manage_agents_and_distributors/data/repositories/agents_distributors_actions_repo_impl.dart';
 import '../../features/manage_agents_and_distributors/data/repositories/agents_distributors_repo_impl.dart';
 import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_actions_repo.dart';
+import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_profile_repo.dart';
 import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_repo.dart';
+import '../../features/manage_agents_and_distributors/domain/use_cases/get_agent_invoice_list_usecase.dart';
 import '../../features/manage_agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../features/manage_agents_and_distributors/domain/use_cases/get_all_cities_usecase.dart';
 import '../../features/manage_agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
+import '../../features/manage_agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import '../../features/manage_agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../api/log_interceptor.dart';
 import 'di_container.config.dart';
@@ -26,6 +33,7 @@ final GetIt sl = GetIt.instance;
 void setupDependencies() {
   // services
   sl.registerLazySingleton<Api>(() => Api());
+  sl.registerLazySingleton<DioServices>(() => DioServices());
 
   // data sources
   sl.registerLazySingleton<AgentsDistributorsDataSource>(
@@ -33,6 +41,9 @@ void setupDependencies() {
   );
   sl.registerLazySingleton<AgentsDistributorsActionsDataSource>(
     () => AgentsDistributorsActionsDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<AgentsDistributorsProfileDataSource>(
+    () => AgentsDistributorsProfileDataSourceImpl(sl()),
   );
 
   // repositories
@@ -42,14 +53,22 @@ void setupDependencies() {
   sl.registerLazySingleton<AgentsDistributorsActionsRepo>(
     () => AgentsDistributorsActionsRepoImpl(sl()),
   );
+  sl.registerLazySingleton<AgentsDistributorsProfileRepo>(
+    () => AgentsDistributorsProfileRepoImpl(sl()),
+  );
 
   // use cases
   sl.registerLazySingleton<GetAgentsAndDistributorsUseCase>(
     () => GetAgentsAndDistributorsUseCase(sl()),
   );
-
   sl.registerLazySingleton<GetAllCitiesUseCase>(
     () => GetAllCitiesUseCase(sl()),
+  );
+  sl.registerLazySingleton<GetAgentClientListUsecase>(
+    () => GetAgentClientListUsecase(sl()),
+  );
+  sl.registerLazySingleton<GetAgentInvoiceListUsecase>(
+    () => GetAgentInvoiceListUsecase(sl()),
   );
 
   // cubits and blocs
@@ -59,6 +78,10 @@ void setupDependencies() {
 
   sl.registerFactory<AgentsDistributorsActionsCubit>(
     () => AgentsDistributorsActionsCubit(sl()),
+  );
+
+  sl.registerFactory<AgentsDistributorsProfileBloc>(
+    () => AgentsDistributorsProfileBloc(sl(), sl(), sl()),
   );
 }
 

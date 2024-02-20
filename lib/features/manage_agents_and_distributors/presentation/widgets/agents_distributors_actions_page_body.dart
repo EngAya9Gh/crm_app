@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../../../../common/enums/enums.dart';
 import '../../../../model/agent_distributor_model.dart';
 import '../../../../view_model/maincity_vm.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
@@ -31,23 +30,9 @@ class _AgentDistributorsActionsPageBodyState
   @override
   void initState() {
     super.initState();
-    _loadCurrentAgentData();
-    _loadLocation();
-  }
-
-  void _loadCurrentAgentData() {
     final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
-    if (agentDistributorModel == null) {
-      cubit.resetAgentDistributorActionEntity();
-    } else {
-      cubit.nameController.text = agentDistributorModel!.nameAgent;
-      cubit.emailController.text = agentDistributorModel!.emailAgent;
-      cubit.phoneNumberController.text = agentDistributorModel!.mobileAgent;
-      cubit.descriptionController.text = agentDistributorModel!.description;
-      cubit.descriptionController.text = agentDistributorModel!.description;
-      cubit.onSelectADType(ADType.values.firstWhere((element) =>
-          element.index == int.parse(agentDistributorModel!.typeAgent)));
-    }
+    cubit.loadCurrentAgentData(agentDistributorModel);
+    _loadLocation();
   }
 
   void _loadLocation() {

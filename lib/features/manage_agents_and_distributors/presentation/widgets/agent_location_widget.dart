@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../common/constants/constants.dart';
 import '../../../../common/widgets/custom_error_widget.dart';
-import '../../../../common/widgets/custom_loading_indicator.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../model/maincitymodel.dart';
 import '../../../app/presentation/widgets/app_text.dart';
@@ -26,10 +25,10 @@ class AgentLocationWidget extends StatelessWidget {
         ),
         BlocBuilder<AgentsDistributorsActionsCubit,
             AgentsDistributorsActionsState>(
+          buildWhen: (previous, current) =>
+              current is AgentsDistributorsActionsCityChanged,
           builder: (context, state) {
-            if (state is AgentsDistributorsActionsLoading) {
-              return CustomLoadingIndicator();
-            } else if (state is AgentsDistributorsActionsFailure) {
+            if (state is AgentsDistributorsActionsFailure) {
               return CustomErrorWidget(
                 onPressed: () {
                   cubit.getAllCity(
