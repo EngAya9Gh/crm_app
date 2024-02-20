@@ -6,8 +6,10 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../core/di/di_container.dart';
 import '../../domain/use_cases/get_agent_client_list_usecase.dart';
+import '../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 import 'profile_tabs/agent_client_list_page.dart';
 import 'profile_tabs/agent_info.dart';
+import 'profile_tabs/agent_invoice_list_page.dart';
 
 class AgentProfilePage extends StatelessWidget {
   const AgentProfilePage({
@@ -59,11 +61,12 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
           query: '',
           getAgentClientListParams:
               GetAgentClientListParams(agentId: widget.agent.idAgent),
+        ))
+        ..add(GetAgentInvoiceListEvent(
+          query: '',
+          getAgentInvoiceListParams:
+              GetAgentInvoiceListParams(agentId: widget.agent.idAgent),
         ));
-      //     _agentListBloc.add(GetAgentInvoiceListEvent(
-      //         query: '',
-      //         getAgentInvoiceListParams:
-      //             GetAgentInvoiceListParams(idAgent: widget.agentId)));
       //     _agentListBloc.add(GetAgentCommentListEvent(
       //         getAgentCommentListParams:
       //             GetAgentCommentListParams(idAgent: widget.agentId)));
@@ -123,12 +126,8 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
             children: [
               AgentInfo(agent: widget.agent),
               AgentClientListPage(agentId: widget.agent.idAgent),
+              AgentInvoiceListPage(participateId: widget.agent.idAgent),
               AgentInfo(agent: widget.agent),
-              AgentInfo(agent: widget.agent),
-              // AgentInvoiceListPage(
-              //     agentId: state.currentPaticipate != null
-              //         ? state.currentPaticipate!.id_agent!
-              //         : ''),
               // AgentCommentListPage(
               //     agentId: state.currentPaticipate != null
               //         ? state.currentPaticipate!.id_agent!

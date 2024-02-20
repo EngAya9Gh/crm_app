@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 
+import '../../../../common/models/profile_invoice_model.dart';
 import '../../../clients_list/data/models/clients_list_response.dart';
 
 abstract class AgentsDistributorsProfileRepo {
@@ -7,9 +8,10 @@ abstract class AgentsDistributorsProfileRepo {
     required String agentId,
   });
 
-// Future<Result<ResponseWrapper<List<ParticipateInvoiceModel>>>>
-//     getParticipateInvoicesList(String participateId);
-//
+  Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoicesList({
+    required String agentId,
+  });
+
 // Future<Result<ResponseWrapper<InvoiceModel>>> getInvoiceDataById(
 //     Map<String, dynamic> params);
 //

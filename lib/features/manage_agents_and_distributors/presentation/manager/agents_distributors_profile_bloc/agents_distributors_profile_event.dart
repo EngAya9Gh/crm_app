@@ -26,22 +26,42 @@ class SearchClientEvent extends AgentsDistributorsProfileEvent
   @override
   List<Object?> get props => [query];
 }
-//
-// class GetAgentInvoiceListEvent extends AgentsDistributorsProfileEvent {
-//   final GetAgentInvoiceListParams getAgentInvoiceListParams;
-//   final String query;
-//
-//   GetAgentInvoiceListEvent(
-//
-//       {
-//         required this.query,
-//         required this.getAgentInvoiceListParams,
-//       });
-//
-//   @override
-//   List<Object?> get props => [query,getAgentInvoiceListParams];
-// }
-//
+
+class GetAgentInvoiceListEvent extends AgentsDistributorsProfileEvent
+    with EquatableMixin {
+  final GetAgentInvoiceListParams getAgentInvoiceListParams;
+  final String query;
+
+  GetAgentInvoiceListEvent({
+    required this.query,
+    required this.getAgentInvoiceListParams,
+  });
+
+  @override
+  List<Object?> get props => [query, getAgentInvoiceListParams];
+}
+
+class SearchInvoiceEvent extends AgentsDistributorsProfileEvent
+    with EquatableMixin {
+  final String query;
+
+  SearchInvoiceEvent(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}
+
+class GetInvoiceByIdEvent extends AgentsDistributorsProfileEvent
+    with EquatableMixin {
+  final GetInvoiceByIdParams getInvoiceByIdParams;
+  final ValueChanged<InvoiceModel>? onSuccess;
+
+  GetInvoiceByIdEvent(this.getInvoiceByIdParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => [getInvoiceByIdParams];
+}
+
 // class SearchInvoiceEvent extends AgentsDistributorsProfileEvent {
 //   final String query;
 //

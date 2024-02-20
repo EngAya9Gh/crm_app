@@ -19,6 +19,7 @@ import '../../features/manage_agents_and_distributors/data/repositories/agents_d
 import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_actions_repo.dart';
 import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_profile_repo.dart';
 import '../../features/manage_agents_and_distributors/domain/repositories/agents_distributors_repo.dart';
+import '../../features/manage_agents_and_distributors/domain/use_cases/get_agent_invoice_list_usecase.dart';
 import '../../features/manage_agents_and_distributors/domain/use_cases/get_agents_and_distributors_usecase.dart';
 import '../../features/manage_agents_and_distributors/domain/use_cases/get_all_cities_usecase.dart';
 import '../../features/manage_agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
@@ -60,12 +61,14 @@ void setupDependencies() {
   sl.registerLazySingleton<GetAgentsAndDistributorsUseCase>(
     () => GetAgentsAndDistributorsUseCase(sl()),
   );
-
   sl.registerLazySingleton<GetAllCitiesUseCase>(
     () => GetAllCitiesUseCase(sl()),
   );
   sl.registerLazySingleton<GetAgentClientListUsecase>(
     () => GetAgentClientListUsecase(sl()),
+  );
+  sl.registerLazySingleton<GetAgentInvoiceListUsecase>(
+    () => GetAgentInvoiceListUsecase(sl()),
   );
 
   // cubits and blocs
@@ -78,7 +81,7 @@ void setupDependencies() {
   );
 
   sl.registerFactory<AgentsDistributorsProfileBloc>(
-    () => AgentsDistributorsProfileBloc(sl()),
+    () => AgentsDistributorsProfileBloc(sl(), sl(), sl()),
   );
 }
 

@@ -1,14 +1,14 @@
-import 'package:crm_smart/common/widgets/custom_loading_indicator.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../common/enums/enums.dart';
+import '../../../../../common/widgets/custom_loading_indicator.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../clients_list/presentation/widgets/client_card.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
+import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 
 class AgentClientListPage extends StatefulWidget {
   final String agentId;
@@ -30,7 +30,6 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
   }
 
   void onSearch() {
-    print("search");
     final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
     bloc.add(SearchClientEvent(_searchTextField.text));
   }
@@ -42,14 +41,16 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
       textDirection: TextDirection.rtl,
       child: BlocBuilder<AgentsDistributorsProfileBloc,
           AgentsDistributorsProfileState>(
+        buildWhen: (previous, current) =>
+            previous.clientsStatus != current.clientsStatus ||
+            previous.clientsList != current.clientsList,
         builder: (context, state) {
-          print("state: ${state.status}");
-          if (state.status == StateStatus.loading ||
-              state.status == StateStatus.initial) {
+          if (state.clientsStatus == StateStatus.loading ||
+              state.clientsStatus == StateStatus.initial) {
             return CustomLoadingIndicator();
-          } else if (state.status == StateStatus.failure) {
+          } else if (state.clientsStatus == StateStatus.failure) {
             return Text("Error");
-          } else if (state.status == StateStatus.success) {
+          } else if (state.clientsStatus == StateStatus.success) {
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
@@ -97,7 +98,7 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AppText("عدد العملاء"),
-                        AppText(state.agentClientsList.length.toString()),
+                        AppText(state.clientsList.length.toString()),
                       ],
                     ),
                   ),
@@ -114,14 +115,14 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         itemBuilder: (BuildContext context, int index) =>
                             CardClient(
-                          clientModel: state.agentClientsList[index],
+                          clientModel: state.clientsList[index],
                           //   AgentClientCard(
                           // client: state.particiPateClientsListState.data[index],
                         ),
                         // ClientCard(client:state.particiPateClientsListState.data[index]),
                         separatorBuilder: (BuildContext context, int index) =>
                             SizedBox(height: 10),
-                        itemCount: state.agentClientsList.length,
+                        itemCount: state.clientsList.length,
                       ),
                     ),
                   ),

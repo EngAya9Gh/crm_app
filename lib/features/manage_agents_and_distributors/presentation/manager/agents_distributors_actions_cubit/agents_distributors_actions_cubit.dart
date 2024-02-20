@@ -63,12 +63,9 @@ class AgentsDistributorsActionsCubit
   }
 
   void _loadCurrentCity(String? cityId) {
-    print("cityId: $cityId");
-    print("length: ${citiesList.length}");
     selectedCountryFromCity = citiesList.firstWhereOrNull(
       (element) => element.id_city == cityId,
     );
-    print("selectedCountryFromCity: ${selectedCountryFromCity?.name_city}");
     emit(AgentsDistributorsActionsCityChanged());
   }
 

@@ -1,32 +1,59 @@
 part of 'agents_distributors_profile_bloc.dart';
 
 class AgentsDistributorsProfileState extends Equatable {
-  final List<ClientModel> agentClientsList;
-  final StateStatus status;
-  final String? error;
+  final StateStatus dialogProgressState;
+  final List<ClientModel> clientsList;
+  final StateStatus clientsStatus;
+  final String? clientsError;
+
+  final List<ProfileInvoiceModel> invoicesList;
+  final StateStatus invoicesStatus;
+  final String? invoicesError;
+
+  final InvoiceModel? currentInvoice;
 
   AgentsDistributorsProfileState({
-    this.agentClientsList = const [],
-    this.status = StateStatus.initial,
-    this.error,
+    this.clientsList = const [],
+    this.clientsStatus = StateStatus.initial,
+    this.clientsError,
+    this.invoicesList = const [],
+    this.invoicesStatus = StateStatus.initial,
+    this.invoicesError,
+    this.currentInvoice,
+    this.dialogProgressState = StateStatus.initial,
   });
 
   AgentsDistributorsProfileState copyWith({
-    List<ClientModel>? agentClientsList,
-    StateStatus? status,
-    String? error,
+    List<ClientModel>? clientsList,
+    StateStatus? clientsStatus,
+    String? clientsError,
+    List<ProfileInvoiceModel>? invoicesList,
+    StateStatus? invoicesStatus,
+    String? invoicesError,
+    InvoiceModel? currentInvoice,
+    StateStatus? dialogProgressState,
   }) {
     return AgentsDistributorsProfileState(
-      agentClientsList: agentClientsList ?? this.agentClientsList,
-      status: status ?? this.status,
-      error: error,
+      clientsList: clientsList ?? this.clientsList,
+      clientsStatus: clientsStatus ?? this.clientsStatus,
+      clientsError: clientsError,
+      invoicesList: invoicesList ?? this.invoicesList,
+      invoicesStatus: invoicesStatus ?? this.invoicesStatus,
+      invoicesError: invoicesError,
+      currentInvoice: currentInvoice ?? this.currentInvoice,
+      dialogProgressState: dialogProgressState ?? this.dialogProgressState,
     );
   }
 
   @override
   List<Object?> get props => [
-        agentClientsList,
-        status,
-        error,
+        clientsList,
+        clientsStatus,
+        clientsError,
+        invoicesList,
+        invoicesStatus,
+        invoicesError,
+        currentInvoice,
+        dialogProgressState,
       ];
 }
