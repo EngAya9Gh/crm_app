@@ -9,11 +9,11 @@ import 'package:injectable/injectable.dart';
 import '../../../../common/constants/route.dart';
 import '../../../../common/models/profile_invoice_model.dart';
 import '../../../../common/models/response_wrapper/response_wrapper.dart';
+import '../../../../common/widgets/profile_comments_model.dart';
 import '../../../../core/api/api_utils.dart';
 import '../../../../core/api/client.dart';
 import '../../../../core/api/client_config.dart';
 import '../models/participate_client_model.dart';
-import '../models/participate_comments_model.dart';
 
 @injectable
 class ParticipatesListDatasource {
@@ -168,8 +168,8 @@ class ParticipatesListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<ParticipateCommentModel>>>
-      getParticipateCommentsList(String participateId) async {
+  Future<ResponseWrapper<List<ProfileCommentModel>>> getParticipateCommentsList(
+      String participateId) async {
     fun() async {
       final dio = GetIt.I<Dio>();
       dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
@@ -183,9 +183,9 @@ class ParticipatesListDatasource {
         ),
       );
       dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
-      return ResponseWrapper<List<ParticipateCommentModel>>(
-        data: List.from((response.data['data'] as List<dynamic>).map((e) =>
-            ParticipateCommentModel.fromJson(e as Map<String, dynamic>))),
+      return ResponseWrapper<List<ProfileCommentModel>>(
+        data: List.from((response.data['data'] as List<dynamic>).map(
+            (e) => ProfileCommentModel.fromJson(e as Map<String, dynamic>))),
         message: [],
       );
     }
@@ -193,7 +193,7 @@ class ParticipatesListDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<ParticipateCommentModel>> addComment(
+  Future<ResponseWrapper<ProfileCommentModel>> addComment(
       {required Map<String, dynamic> body}) async {
     final dio = GetIt.I<Dio>();
     dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
@@ -209,9 +209,9 @@ class ParticipatesListDatasource {
       );
       dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
 
-      return ResponseWrapper<ParticipateCommentModel>.fromJson(
+      return ResponseWrapper<ProfileCommentModel>.fromJson(
         response.data,
-        (json) => ParticipateCommentModel.fromJson(response.data['data']),
+        (json) => ProfileCommentModel.fromJson(response.data['data']),
       );
     }
 

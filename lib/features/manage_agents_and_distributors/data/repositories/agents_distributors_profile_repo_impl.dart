@@ -1,3 +1,4 @@
+import 'package:crm_smart/common/widgets/profile_comments_model.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:dartz/dartz.dart';
 
@@ -19,19 +20,24 @@ class AgentsDistributorsProfileRepoImpl
   }
 
   @override
-  Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoicesList(
-      {required String agentId}) {
+  Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoicesList({
+    required String agentId,
+  }) {
     return datasource.getAgentInvoiceList(agentId: agentId);
   }
-// Future<Result<ResponseWrapper<List<ParticipateInvoiceModel>>>>
-//     getParticipateInvoicesList(String participateId);
-//
-// Future<Result<ResponseWrapper<InvoiceModel>>> getInvoiceDataById(
-//     Map<String, dynamic> params);
-//
-// Future<Result<ResponseWrapper<List<ParticipateCommentModel>>>>
-//     getParticipateCommentsList(String participateId);
-//
-// Future<Result<ResponseWrapper<ParticipateCommentModel>>> addCompanyComment(
-//     Map<String, dynamic> body);
+
+  @override
+  Future<Either<String, List<ProfileCommentModel>>> getParticipateCommentsList({
+    required String agentId,
+  }) {
+    return datasource.getAgentCommentsList(agentId: agentId);
+  }
+
+  @override
+  Future<Either<String, ProfileCommentModel>> addAgentComment({
+    required String agentId,
+    required String content,
+  }) {
+    return datasource.addAgentComment(agentId: agentId, content: content);
+  }
 }

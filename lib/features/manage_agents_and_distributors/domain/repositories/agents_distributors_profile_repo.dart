@@ -1,3 +1,4 @@
+import 'package:crm_smart/common/widgets/profile_comments_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../common/models/profile_invoice_model.dart';
@@ -12,12 +13,12 @@ abstract class AgentsDistributorsProfileRepo {
     required String agentId,
   });
 
-// Future<Result<ResponseWrapper<InvoiceModel>>> getInvoiceDataById(
-//     Map<String, dynamic> params);
-//
-// Future<Result<ResponseWrapper<List<ParticipateCommentModel>>>>
-//     getParticipateCommentsList(String participateId);
-//
-// Future<Result<ResponseWrapper<ParticipateCommentModel>>> addCompanyComment(
-//     Map<String, dynamic> body);
+  Future<Either<String, List<ProfileCommentModel>>> getParticipateCommentsList({
+    required String agentId,
+  });
+
+  Future<Either<String, ProfileCommentModel>> addAgentComment({
+    required String agentId,
+    required String content,
+  });
 }

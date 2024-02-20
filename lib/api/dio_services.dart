@@ -41,6 +41,9 @@ class DioServices {
     try {
       final response = await _dio.post(
         endPoint,
+        options: Options(
+          headers: {'AuthToken': 'Bearer $token'},
+        ),
         data: data,
       );
       return response.data;

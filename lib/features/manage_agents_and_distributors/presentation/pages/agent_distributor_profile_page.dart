@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/get_agent_comments_list_usecase.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import '../../../../core/di/di_container.dart';
 import '../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 import 'profile_tabs/agent_client_list_page.dart';
+import 'profile_tabs/agent_comment_list_page.dart';
 import 'profile_tabs/agent_info.dart';
 import 'profile_tabs/agent_invoice_list_page.dart';
 
@@ -66,10 +68,12 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
           query: '',
           getAgentInvoiceListParams:
               GetAgentInvoiceListParams(agentId: widget.agent.idAgent),
+        ))
+        ..add(GetAgentCommentListEvent(
+          getAgentCommentListParams: GetAgentCommentListParams(
+            agentId: widget.agent.idAgent,
+          ),
         ));
-      //     _agentListBloc.add(GetAgentCommentListEvent(
-      //         getAgentCommentListParams:
-      //             GetAgentCommentListParams(idAgent: widget.agentId)));
     });
     //   _tabController = TabController(
     //       length: TabEvent.values.length, vsync: this, initialIndex: 0);
@@ -127,11 +131,7 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
               AgentInfo(agent: widget.agent),
               AgentClientListPage(agentId: widget.agent.idAgent),
               AgentInvoiceListPage(participateId: widget.agent.idAgent),
-              AgentInfo(agent: widget.agent),
-              // AgentCommentListPage(
-              //     agentId: state.currentPaticipate != null
-              //         ? state.currentPaticipate!.id_agent!
-              //         : ''),
+              AgentCommentListPage(agentId: widget.agent.idAgent),
             ],
           );
         },

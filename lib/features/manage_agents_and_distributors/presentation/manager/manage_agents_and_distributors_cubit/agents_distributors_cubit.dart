@@ -16,6 +16,8 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
 
   final GetAgentsAndDistributorsUseCase getAgentsAndDistributorsUseCase;
 
+  List<AgentDistributorModel> _agentsAndDistributorsList = [];
+
   Future<void> getAgentsAndDistributors() async {
     emit(state.copyWith(status: StateStatus.loading));
 
@@ -24,10 +26,30 @@ class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
     response.fold(
       (exception) =>
           emit(state.copyWith(status: StateStatus.failure, error: exception)),
-      (value) => emit(state.copyWith(
-        status: StateStatus.success,
-        agentsAndDistributorsList: value,
-      )),
+      (value) {
+        _agentsAndDistributorsList = value;
+        emit(state.copyWith(
+          status: StateStatus.success,
+          agentsAndDistributorsList: _filterAgentsAndDistributors(''),
+        ));
+      },
     );
+  }
+
+  // search
+  void searchAgentsAndDistributors(String query) {
+    emit(state.copyWith(
+      agentsAndDistributorsList: _filterAgentsAndDistributors(query),
+    ));
+  }
+
+  List<AgentDistributorModel> _filterAgentsAndDistributors(String query) {
+    if (query.isEmpty) {
+      return _agentsAndDistributorsList;
+    }
+    return _agentsAndDistributorsList
+        .where((element) =>
+            element.nameAgent.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 }

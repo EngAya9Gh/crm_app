@@ -12,7 +12,7 @@ import 'package:crm_smart/features/manage_participates/presentation/manager/part
 import 'package:injectable/injectable.dart';
 
 import '../../../../common/models/page_state/bloc_status.dart';
-import '../../data/models/participate_comments_model.dart';
+import '../../../../common/widgets/profile_comments_model.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
@@ -337,8 +337,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
           event.onSuccess?.call("repeat");
           return;
         }
-        List<ParticipateCommentModel> comment =
-            state.allParticipateCommentsState;
+        List<ProfileCommentModel> comment = state.allParticipateCommentsState;
 
         comment.insert(0, commentData);
         final usersState = PageState.loaded(data: comment);

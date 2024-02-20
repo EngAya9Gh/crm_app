@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 
 import '../../../../../common/enums/enums.dart';
 import '../../../../../common/models/profile_invoice_model.dart';
+import '../../../../../common/widgets/profile_comments_model.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
 import '../../../../manage_participates/domain/use_cases/get_invoice_by_id_usecase.dart';
+import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
+import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 
 part 'agents_distributors_profile_event.dart';
@@ -18,17 +21,23 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   final GetAgentClientListUsecase _getAgentClientListUsecase;
   final GetAgentInvoiceListUsecase _getAgentInvoiceListUsecase;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
+  final GetAgentCommentsListUsecase _getParticipateCommentListUsecase;
+  final AddAgentCommentUsecase _addAgentCommentUsecase;
 
   AgentsDistributorsProfileBloc(
     this._getAgentClientListUsecase,
     this._getAgentInvoiceListUsecase,
     this._getInvoiceByIdUsecase,
+    this._getParticipateCommentListUsecase,
+    this._addAgentCommentUsecase,
   ) : super(AgentsDistributorsProfileState()) {
     on<GetAgentClientListEvent>(_onGetAgentClientListEvent);
     on<SearchClientEvent>(_onSearchClientEvent);
     on<GetAgentInvoiceListEvent>(_onGetAgentInvoiceListEvent);
     on<GetInvoiceByIdEvent>(_onGetInvoiceByIdEvent);
     on<SearchInvoiceEvent>(_onSearchInvoiceEvent);
+    on<GetAgentCommentListEvent>(_onGetAgentCommentListEvent);
+    on<AddAgentCommentEvent>(_onAddAgentCommentEvent);
   }
 
   List<ClientModel> _agentClientsList = [];
@@ -129,6 +138,56 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
           dialogProgressState: StateStatus.success,
         ));
         event.onSuccess?.call(value.data!);
+      },
+    );
+  }
+
+  void _onGetAgentCommentListEvent(GetAgentCommentListEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    emit(state.copyWith(
+      commentsStatus: StateStatus.loading,
+    ));
+
+    final result = await _getParticipateCommentListUsecase
+        .call(event.getAgentCommentListParams);
+
+    result.fold(
+      (error) {
+        emit(state.copyWith(
+          commentsStatus: StateStatus.failure,
+          commentsError: error,
+        ));
+      },
+      (data) {
+        emit(state.copyWith(
+          commentsStatus: StateStatus.success,
+          commentsList: data,
+        ));
+      },
+    );
+  }
+
+  void _onAddAgentCommentEvent(AddAgentCommentEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    emit(state.copyWith(
+      addedCommentStatus: StateStatus.loading,
+    ));
+
+    final result =
+        await _addAgentCommentUsecase.call(event.addAgentCommentParams);
+
+    result.fold(
+      (error) {
+        emit(state.copyWith(
+          addedCommentStatus: StateStatus.failure,
+          addedCommentError: error,
+        ));
+      },
+      (data) {
+        emit(state.copyWith(
+          addedCommentStatus: StateStatus.success,
+        ));
+        event.onSuccess?.call();
       },
     );
   }
