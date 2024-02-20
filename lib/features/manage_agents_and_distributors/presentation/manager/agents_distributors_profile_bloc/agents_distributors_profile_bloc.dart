@@ -16,6 +16,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   AgentsDistributorsProfileBloc(this._getAgentClientListUsecase)
       : super(AgentsDistributorsProfileState()) {
     on<GetAgentClientListEvent>(_onGetAgentClientListEvent);
+    on<SearchClientEvent>(_onSearchClientEvent);
   }
 
   List<ClientModel> _agentClientsList = [];
@@ -42,6 +43,14 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         ));
       },
     );
+  }
+
+  void _onSearchClientEvent(
+      SearchClientEvent event, Emitter<AgentsDistributorsProfileState> emit) {
+    emit(state.copyWith(
+      status: StateStatus.success,
+      agentClientsList: _filterClientList(event.query),
+    ));
   }
 
   List<ClientModel> _filterClientList(String query) {

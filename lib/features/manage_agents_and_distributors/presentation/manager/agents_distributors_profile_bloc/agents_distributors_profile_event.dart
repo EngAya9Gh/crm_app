@@ -17,14 +17,15 @@ class GetAgentClientListEvent extends AgentsDistributorsProfileEvent
   List<Object?> get props => [query, getAgentClientListParams];
 }
 
-// class SearchClientEvent extends AgentsDistributorsProfileEvent {
-//   final String query;
-//
-//   SearchClientEvent(this.query);
-//
-//   @override
-//   List<Object?> get props => [query];
-// }
+class SearchClientEvent extends AgentsDistributorsProfileEvent
+    with EquatableMixin {
+  final String query;
+
+  SearchClientEvent(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}
 //
 // class GetAgentInvoiceListEvent extends AgentsDistributorsProfileEvent {
 //   final GetAgentInvoiceListParams getAgentInvoiceListParams;
