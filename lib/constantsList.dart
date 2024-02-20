@@ -48,7 +48,7 @@ final List<Widget> listwidget = [
   supportpage(),
   carepage(),
   marketingpage(),
-  managmentpage(),
+  ManagementPage(),
   financepage(),
   race_page(),
   TaskManagementListPage(),
