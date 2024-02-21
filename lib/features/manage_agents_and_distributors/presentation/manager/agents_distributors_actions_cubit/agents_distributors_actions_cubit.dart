@@ -21,6 +21,10 @@ class AgentsDistributorsActionsCubit
 
   final GetAllCitiesUseCase getAllCitiesUseCase;
 
+  // support tab Keys and controllers
+  final supportFormKey = GlobalKey<FormState>();
+  final TextEditingController supportSelectedDateController = TextEditingController();
+  final TextEditingController supportDateTypeController = TextEditingController();
   // keys and controllers
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();

@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../../view_model/user_vm_provider.dart';
 
 abstract class AppConstants {
+  static String? currentUserId(BuildContext context) =>
+      Provider.of<UserProvider>(context, listen: false).currentUser.idUser;
   static String? currentCountry(BuildContext context) =>
       Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;
 

@@ -1,4 +1,5 @@
 import 'package:crm_smart/common/widgets/profile_comments_model.dart';
+import 'package:crm_smart/features/manage_agents_and_distributors/data/models/agent_date_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../api/dio_services.dart';
@@ -22,6 +23,10 @@ abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, ProfileCommentModel>> addAgentComment({
     required String agentId,
     required String content,
+  });
+
+  Future<Either<String, void>> addAgentDate({
+    required AgentDateModel agentDateModel,
   });
 }
 
@@ -110,6 +115,24 @@ class AgentsDistributorsProfileDataSourceImpl
     } catch (e) {
       print("Error in getAgentCommentsList: $e");
       return Left("Error in getAgentCommentsList: $e");
+    }
+  }
+
+  @override
+  Future<Either<String, void>> addAgentDate({
+    required AgentDateModel agentDateModel,
+  }) async {
+    try {
+      dio.changeBaseUrl(AppStrings.apiBaseUrl1);
+      final response = await dio.post(
+        endPoint: "client/invoice/add_date_install.php",
+        data: agentDateModel.toMap(),
+      );
+      print("response => $response");
+      return Right(null);
+    } catch (e) {
+      print("Error in addAgentDate: $e");
+      return Left("Error in addAgentDate: $e");
     }
   }
 }

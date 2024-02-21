@@ -80,3 +80,13 @@ class AddAgentCommentEvent extends AgentsDistributorsProfileEvent {
 
   AddAgentCommentEvent(this.addAgentCommentParams, {this.onSuccess});
 }
+
+class AddAgentDateEvent extends AgentsDistributorsProfileEvent {
+  final AgentDateModel addAgentDateParams;
+  final VoidCallback? onSuccess;
+
+  AddAgentDateEvent({
+    required this.addAgentDateParams,
+    this.onSuccess,
+  });
+}

@@ -12,6 +12,7 @@ import 'profile_tabs/agent_client_list_page.dart';
 import 'profile_tabs/agent_comment_list_page.dart';
 import 'profile_tabs/agent_info.dart';
 import 'profile_tabs/agent_invoice_list_page.dart';
+import 'profile_tabs/agent_support_page.dart';
 
 class AgentProfilePage extends StatelessWidget {
   const AgentProfilePage({
@@ -51,6 +52,7 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
     Tab(text: 'العملاء'),
     Tab(text: 'الفواتير'),
     Tab(text: 'التعليقات'),
+    Tab(text: 'الدعم'),
   ];
 
   @override
@@ -132,6 +134,7 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
               AgentClientListPage(agentId: widget.agent.idAgent),
               AgentInvoiceListPage(participateId: widget.agent.idAgent),
               AgentCommentListPage(agentId: widget.agent.idAgent),
+              AgentSupportPage(agentId: widget.agent.idAgent),
             ],
           );
         },

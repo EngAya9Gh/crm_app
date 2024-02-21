@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/features/manage_agents_and_distributors/data/models/agent_date_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../common/enums/enums.dart';
 import '../../../../../common/models/profile_invoice_model.dart';
@@ -9,11 +11,13 @@ import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
 import '../../../../manage_participates/domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../../domain/use_cases/add_agent_comments_usecase.dart';
+import '../../../domain/use_cases/add_agent_date_usecase.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 
 part 'agents_distributors_profile_event.dart';
+
 part 'agents_distributors_profile_state.dart';
 
 class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
@@ -23,6 +27,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final GetAgentCommentsListUsecase _getParticipateCommentListUsecase;
   final AddAgentCommentUsecase _addAgentCommentUsecase;
+  final AddAgentDateUseCase _addAgentDateUseCase;
 
   AgentsDistributorsProfileBloc(
     this._getAgentClientListUsecase,
@@ -30,6 +35,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     this._getInvoiceByIdUsecase,
     this._getParticipateCommentListUsecase,
     this._addAgentCommentUsecase,
+    this._addAgentDateUseCase,
   ) : super(AgentsDistributorsProfileState()) {
     on<GetAgentClientListEvent>(_onGetAgentClientListEvent);
     on<SearchClientEvent>(_onSearchClientEvent);
@@ -38,7 +44,13 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     on<SearchInvoiceEvent>(_onSearchInvoiceEvent);
     on<GetAgentCommentListEvent>(_onGetAgentCommentListEvent);
     on<AddAgentCommentEvent>(_onAddAgentCommentEvent);
+    on<AddAgentDateEvent>(_onAddAgentDateEvent);
   }
+
+  // date keys and controllers
+  final supportFormKey = GlobalKey<FormState>();
+  final TextEditingController supportDateController = TextEditingController();
+  final TextEditingController supportTimeController = TextEditingController();
 
   List<ClientModel> _agentClientsList = [];
   List<ProfileInvoiceModel> _agentInvoicesList = [];
@@ -191,4 +203,34 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
       },
     );
   }
+
+  void _onAddAgentDateEvent(AddAgentDateEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    emit(state.copyWith(addDateVisitStatus: StateStatus.loading));
+
+    final result = await _addAgentDateUseCase.call(
+      AddAgentDateUseCaseParams(agentModel: event.addAgentDateParams),
+    );
+
+    result.fold(
+      (error) {
+        emit(state.copyWith(addDateVisitStatus: StateStatus.failure));
+      },
+      (data) {
+        emit(state.copyWith(addDateVisitStatus: StateStatus.success));
+        event.onSuccess?.call();
+      },
+    );
+  }
+
+  String handleVisitTime() {
+    final date = DateTime.parse(supportDateController.text);
+    final selectedTime = supportTimeController.text.split(':');
+    final time = TimeOfDay(
+        hour: int.parse(selectedTime[0]), minute: int.parse(selectedTime[1]));
+    final dateVisit =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateVisit);
+  }
+
 }
