@@ -149,7 +149,7 @@ class _AddDateFloatingButtonState extends State<AddDateFloatingButton> {
     final AgentDateModel dateModel = AgentDateModel(
       dateClientVisit: dateClientVisit,
       fkUser: currentUserId,
-      isDone: false,
+      isDone: '0',
       fkAgent: fkAgent,
       typeDate: typeDate,
     );

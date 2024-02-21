@@ -14,6 +14,7 @@ import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/add_agent_date_usecase.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
+import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 
 part 'agents_distributors_profile_event.dart';
@@ -22,12 +23,14 @@ part 'agents_distributors_profile_state.dart';
 
 class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     AgentsDistributorsProfileState> {
+  List<AgentDateModel> agentDatesList = [];
   final GetAgentClientListUsecase _getAgentClientListUsecase;
   final GetAgentInvoiceListUsecase _getAgentInvoiceListUsecase;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final GetAgentCommentsListUsecase _getParticipateCommentListUsecase;
   final AddAgentCommentUsecase _addAgentCommentUsecase;
   final AddAgentDateUseCase _addAgentDateUseCase;
+  final GetAgentDatesListUsecase _getAgentDatesListUsecase;
 
   AgentsDistributorsProfileBloc(
     this._getAgentClientListUsecase,
@@ -36,6 +39,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     this._getParticipateCommentListUsecase,
     this._addAgentCommentUsecase,
     this._addAgentDateUseCase,
+    this._getAgentDatesListUsecase,
   ) : super(AgentsDistributorsProfileState()) {
     on<GetAgentClientListEvent>(_onGetAgentClientListEvent);
     on<SearchClientEvent>(_onSearchClientEvent);
@@ -45,6 +49,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     on<GetAgentCommentListEvent>(_onGetAgentCommentListEvent);
     on<AddAgentCommentEvent>(_onAddAgentCommentEvent);
     on<AddAgentDateEvent>(_onAddAgentDateEvent);
+    on<GetAgentDatesListEvent>(_onGetAgentDatesListEvent);
   }
 
   // date keys and controllers
@@ -204,6 +209,47 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     );
   }
 
+  void _onGetAgentDatesListEvent(GetAgentDatesListEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    emit(state.copyWith(dateVisitStatus: StateStatus.loading));
+
+    final result = await _getAgentDatesListUsecase.call(
+      GetAgentDatesListParams(agentId: event.getAgentDatesListParams.agentId),
+    );
+
+    result.fold(
+      (error) {
+        emit(state.copyWith(dateVisitStatus: StateStatus.failure));
+      },
+      (data) {
+        agentDatesList = data;
+        emit(state.copyWith(
+            dateVisitStatus: StateStatus.success, dateVisitList: data));
+      },
+    );
+  }
+
+  List<AgentDateModel> get finishedVisits {
+    return agentDatesList
+        .where((element) =>
+            element.isDone == VisitsStatusEnum.finished.index.toString())
+        .toList();
+  }
+
+  List<AgentDateModel> get unfinishedVisits {
+    return agentDatesList
+        .where((element) =>
+            element.isDone == VisitsStatusEnum.unfinished.index.toString())
+        .toList();
+  }
+
+  List<AgentDateModel> get canceledVisits {
+    return agentDatesList
+        .where((element) =>
+            element.isDone == VisitsStatusEnum.canceled.index.toString())
+        .toList();
+  }
+
   void _onAddAgentDateEvent(AddAgentDateEvent event,
       Emitter<AgentsDistributorsProfileState> emit) async {
     emit(state.copyWith(addDateVisitStatus: StateStatus.loading));
@@ -232,5 +278,4 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         DateTime(date.year, date.month, date.day, time.hour, time.minute);
     return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateVisit);
   }
-
 }

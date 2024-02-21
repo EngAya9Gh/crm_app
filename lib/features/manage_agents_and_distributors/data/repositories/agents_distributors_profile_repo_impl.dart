@@ -43,6 +43,13 @@ class AgentsDistributorsProfileRepoImpl
   }
 
   @override
+  Future<Either<String, List<AgentDateModel>>> getDateVisitAgent({
+    required String agentId,
+  }) {
+    return datasource.getDateVisitAgent(agentId: agentId);
+  }
+
+  @override
   Future<Either<String, void>> addAgentDate({
     required AgentDateModel agentDateModel,
   }) {

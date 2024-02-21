@@ -3,13 +3,15 @@ import 'package:equatable/equatable.dart';
 import '../../../../common/enums/enums.dart';
 
 class AgentDateModel extends Equatable {
+  final String? id;
   final String dateClientVisit;
   final String fkUser;
-  final bool isDone;
+  final String isDone;
   final String fkAgent;
   final InstallationTypeEnum typeDate;
 
   AgentDateModel({
+    this.id,
     required this.dateClientVisit,
     required this.fkUser,
     required this.isDone,
@@ -19,9 +21,10 @@ class AgentDateModel extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
+      'idclients_date': id,
       'date_client_visit': dateClientVisit,
       'fk_user': fkUser,
-      'is_done': isDone ? "1" : "0",
+      'is_done': isDone,
       "fk_agent": fkAgent,
       "type_date": typeDate.name,
     };
@@ -29,10 +32,11 @@ class AgentDateModel extends Equatable {
 
   factory AgentDateModel.fromMap(Map<String, dynamic> map) {
     return AgentDateModel(
+      id: map['idclients_date'].toString(),
       dateClientVisit: map['date_client_visit'],
-      fkUser: map['fk_user'],
-      isDone: map['is_done'] == "1",
-      fkAgent: map['fk_agent'],
+      fkUser: map['fk_user'].toString(),
+      isDone: map['is_done'].toString(),
+      fkAgent: map['fk_agent'].toString(),
       typeDate: map['type_date'] == InstallationTypeEnum.field.name
           ? InstallationTypeEnum.field
           : InstallationTypeEnum.online,
@@ -40,13 +44,15 @@ class AgentDateModel extends Equatable {
   }
 
   AgentDateModel copyWith({
+    String? id,
     String? dateClientVisit,
     String? fkUser,
-    bool? isDone,
+    String? isDone,
     String? fkAgent,
     InstallationTypeEnum? typeDate,
   }) {
     return AgentDateModel(
+      id: id ?? this.id,
       dateClientVisit: dateClientVisit ?? this.dateClientVisit,
       fkUser: fkUser ?? this.fkUser,
       isDone: isDone ?? this.isDone,

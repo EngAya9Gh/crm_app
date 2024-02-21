@@ -81,6 +81,18 @@ class AddAgentCommentEvent extends AgentsDistributorsProfileEvent {
   AddAgentCommentEvent(this.addAgentCommentParams, {this.onSuccess});
 }
 
+class GetAgentDatesListEvent extends AgentsDistributorsProfileEvent
+    with EquatableMixin {
+  final GetAgentDatesListParams getAgentDatesListParams;
+
+  GetAgentDatesListEvent({
+    required this.getAgentDatesListParams,
+  });
+
+  @override
+  List<Object?> get props => [getAgentDatesListParams];
+}
+
 class AddAgentDateEvent extends AgentsDistributorsProfileEvent {
   final AgentDateModel addAgentDateParams;
   final VoidCallback? onSuccess;

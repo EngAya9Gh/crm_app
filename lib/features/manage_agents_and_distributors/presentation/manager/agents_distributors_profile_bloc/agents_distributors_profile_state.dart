@@ -20,6 +20,10 @@ class AgentsDistributorsProfileState extends Equatable {
   final StateStatus addedCommentStatus;
   final String? addedCommentError;
 
+  final List<AgentDateModel> dateVisitList;
+  final StateStatus dateVisitStatus;
+  final String? dateVisitError;
+
   final StateStatus addDateVisitStatus;
   final String? addDateVisitError;
 
@@ -38,6 +42,9 @@ class AgentsDistributorsProfileState extends Equatable {
     this.addedComment,
     this.addedCommentStatus = StateStatus.initial,
     this.addedCommentError,
+    this.dateVisitList = const [],
+    this.dateVisitStatus = StateStatus.initial,
+    this.dateVisitError,
     this.addDateVisitStatus = StateStatus.initial,
     this.addDateVisitError,
   });
@@ -57,6 +64,9 @@ class AgentsDistributorsProfileState extends Equatable {
     ProfileCommentModel? addedComment,
     StateStatus? addedCommentStatus,
     String? addedCommentError,
+    List<AgentDateModel>? dateVisitList,
+    StateStatus? dateVisitStatus,
+    String? dateVisitError,
     StateStatus? addDateVisitStatus,
     String? addDateVisitError,
   }) {
@@ -75,6 +85,9 @@ class AgentsDistributorsProfileState extends Equatable {
       addedComment: addedComment,
       addedCommentStatus: addedCommentStatus ?? this.addedCommentStatus,
       addedCommentError: addedCommentError,
+      dateVisitList: dateVisitList ?? this.dateVisitList,
+      dateVisitStatus: dateVisitStatus ?? this.dateVisitStatus,
+      dateVisitError: dateVisitError,
       addDateVisitStatus: addDateVisitStatus ?? this.addDateVisitStatus,
       addDateVisitError: addDateVisitError,
     );
@@ -96,6 +109,9 @@ class AgentsDistributorsProfileState extends Equatable {
         addedComment,
         addedCommentStatus,
         addedCommentError,
+        dateVisitList,
+        dateVisitStatus,
+        dateVisitError,
         addDateVisitStatus,
         addDateVisitError,
       ];

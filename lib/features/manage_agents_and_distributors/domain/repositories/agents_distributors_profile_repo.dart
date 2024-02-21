@@ -23,6 +23,10 @@ abstract class AgentsDistributorsProfileRepo {
     required String content,
   });
 
+  Future<Either<String, List<AgentDateModel>>> getDateVisitAgent({
+    required String agentId,
+  });
+
   Future<Either<String, void>> addAgentDate({
     required AgentDateModel agentDateModel,
   });

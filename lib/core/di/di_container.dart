@@ -4,6 +4,7 @@ import 'package:crm_smart/api/dio_services.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/data/repositories/agents_distributors_profile_repo_impl.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/add_agent_date_usecase.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/get_agent_client_list_usecase.dart';
+import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/get_agent_dates_list_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -82,6 +83,9 @@ void setupDependencies() {
   sl.registerLazySingleton<AddAgentDateUseCase>(
     () => AddAgentDateUseCase(sl()),
   );
+  sl.registerLazySingleton<GetAgentDatesListUsecase>(
+    () => GetAgentDatesListUsecase(sl()),
+  );
 
   // cubits and blocs
   sl.registerFactory<AgentsDistributorsCubit>(
@@ -94,6 +98,7 @@ void setupDependencies() {
 
   sl.registerFactory<AgentsDistributorsProfileBloc>(
     () => AgentsDistributorsProfileBloc(
+      sl(),
       sl(),
       sl(),
       sl(),

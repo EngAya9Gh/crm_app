@@ -25,6 +25,10 @@ abstract class AgentsDistributorsProfileDataSource {
     required String content,
   });
 
+  Future<Either<String, List<AgentDateModel>>> getDateVisitAgent({
+    required String agentId,
+  });
+
   Future<Either<String, void>> addAgentDate({
     required AgentDateModel agentDateModel,
   });
@@ -112,6 +116,27 @@ class AgentsDistributorsProfileDataSourceImpl
       final data = response['data'];
       final ProfileCommentModel comment = ProfileCommentModel.fromJson(data);
       return Right(comment);
+    } catch (e) {
+      print("Error in getAgentCommentsList: $e");
+      return Left("Error in getAgentCommentsList: $e");
+    }
+  }
+
+  @override
+  Future<Either<String, List<AgentDateModel>>> getDateVisitAgent({
+    required String agentId,
+  }) async {
+    try {
+      dio.changeBaseUrl(AppStrings.apiBaseUrl2);
+      final response = await dio.get(endPoint: "getDateVisitAgent/$agentId");
+      final data = response['data'];
+
+      final List<AgentDateModel> visitDates = [];
+      for (int i = 0; i < data.length; i++) {
+        visitDates.add(AgentDateModel.fromMap(data[i]));
+      }
+
+      return Right(visitDates);
     } catch (e) {
       print("Error in getAgentCommentsList: $e");
       return Left("Error in getAgentCommentsList: $e");
