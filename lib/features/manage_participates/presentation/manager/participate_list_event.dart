@@ -1,4 +1,3 @@
-
 // part of 'communication_list_bloc.dart';
 
 import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
@@ -21,14 +20,12 @@ abstract class ParticipateEvent extends Equatable {
 class GetParticipateListEvent extends ParticipateEvent {
   final String query;
 
-  GetParticipateListEvent(
-    {
+  GetParticipateListEvent({
     required this.query,
   });
 
   @override
-  List<Object?> get props => [
-  query];
+  List<Object?> get props => [query];
 }
 
 class SearchEvent extends ParticipateEvent {
@@ -48,7 +45,7 @@ class AddParticipateEvent extends ParticipateEvent {
   AddParticipateEvent(this.addParticipateParams, {this.onSuccess});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [addParticipateParams];
 }
 
 class EditParticipateEvent extends ParticipateEvent {
@@ -58,18 +55,20 @@ class EditParticipateEvent extends ParticipateEvent {
   EditParticipateEvent(this.editParticipateParams, {this.onSuccess});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [editParticipateParams];
 }
-class SwitchProfileTabs extends ParticipateEvent{
+
+class SwitchProfileTabs extends ParticipateEvent {
   final TabEvent indexTab;
-   SwitchProfileTabs(this.indexTab);
-    @override
+  SwitchProfileTabs(this.indexTab);
+  @override
   List<Object?> get props => [indexTab];
 }
-class ChanageCurrentParticipate extends ParticipateEvent{
+
+class ChanageCurrentParticipate extends ParticipateEvent {
   late final ParticipateModel participateModel;
-   ChanageCurrentParticipate(this.participateModel);
-    @override
+  ChanageCurrentParticipate(this.participateModel);
+  @override
   List<Object?> get props => [participateModel];
 }
 
@@ -78,7 +77,6 @@ enum TabEvent {
   ClientTabSelected,
   InvoiceTabSelected,
   CommentTabSelected,
-
 }
 
 // enum TabEvent {
@@ -95,14 +93,13 @@ class GetParticipateClientListEvent extends ParticipateEvent {
   final GetParticipateClientListParams getParticipateClientListParams;
   final String query;
 
-  GetParticipateClientListEvent(
-    {
+  GetParticipateClientListEvent({
     required this.query,
     required this.getParticipateClientListParams,
   });
 
   @override
-  List<Object?> get props => [query,getParticipateClientListParams];
+  List<Object?> get props => [query, getParticipateClientListParams];
 }
 
 class SearchClientEvent extends ParticipateEvent {
@@ -118,15 +115,13 @@ class GetParticipateInvoiceListEvent extends ParticipateEvent {
   final GetParticipateInvoiceListParams getParticipateInvoiceListParams;
   final String query;
 
-  GetParticipateInvoiceListEvent(
-   
-    {
+  GetParticipateInvoiceListEvent({
     required this.query,
-required this.getParticipateInvoiceListParams,
+    required this.getParticipateInvoiceListParams,
   });
 
   @override
-  List<Object?> get props => [query,getParticipateInvoiceListParams];
+  List<Object?> get props => [query, getParticipateInvoiceListParams];
 }
 
 class SearchInvoiceEvent extends ParticipateEvent {
@@ -137,32 +132,35 @@ class SearchInvoiceEvent extends ParticipateEvent {
   @override
   List<Object?> get props => [query];
 }
-class GetInvoiceByIdEvent extends ParticipateEvent{
+
+class GetInvoiceByIdEvent extends ParticipateEvent {
   late final GetInvoiceByIdParams getInvoiceByIdParams;
   final ValueChanged<InvoiceModel>? onSuccess;
 
   GetInvoiceByIdEvent(this.getInvoiceByIdParams, {this.onSuccess});
-    @override
+  @override
   List<Object?> get props => [getInvoiceByIdParams];
 }
+
 class GetParticipateCommentListEvent extends ParticipateEvent {
   final GetParticipateCommentListParams getParticipateCommentListParams;
 
-
   GetParticipateCommentListEvent(
-    {required this.getParticipateCommentListParams});
+      {required this.getParticipateCommentListParams});
 
   @override
   List<Object?> get props => [
-    // query,
-  getParticipateCommentListParams];
+        // query,
+        getParticipateCommentListParams
+      ];
 }
 
 class AddParticipateCommentEvent extends ParticipateEvent {
   final AddParticipateCommentParams addParticipateCommentParams;
   final ValueChanged<String?>? onSuccess;
-  AddParticipateCommentEvent(this.addParticipateCommentParams, {this.onSuccess});
-  
+  AddParticipateCommentEvent(this.addParticipateCommentParams,
+      {this.onSuccess});
+
   @override
   List<Object?> get props => throw UnimplementedError();
 }
