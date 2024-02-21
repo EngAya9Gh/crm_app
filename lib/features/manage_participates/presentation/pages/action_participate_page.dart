@@ -88,7 +88,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                       maxLines: 1,
                       validator: HelperFunctions.instance.requiredFiled,
                       textInputType: TextInputType.text,
-                      maxLength: 15,
+                      // maxLength: 15,
                       controller: nameParticipateController,
                     ),
                     15.verticalSpace,

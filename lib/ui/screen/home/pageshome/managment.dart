@@ -273,21 +273,21 @@ class _ManagementPageState extends State<ManagementPage> {
                 },
                 title: 'أنواع النشاط'),
 
-            _privilegeCubit.checkPrivilege('113') == true
-                ? buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<void>(
-                          builder: (BuildContext context) => participate_view(),
-                        ),
-                      );
-                    },
-                    title: 'المتعاونين')
-                : Container(),
+            // _privilegeCubit.checkPrivilege('113') == true
+            //     ? buildSelectCategory(
+            //         colorbag: Colors.white,
+            //         colortitle: Colors.black,
+            //         colorarrow: Colors.black,
+            //         onTap: () {
+            //           Navigator.push(
+            //             context,
+            //             CupertinoPageRoute<void>(
+            //               builder: (BuildContext context) => participate_view(),
+            //             ),
+            //           );
+            //         },
+            //         title: 'المتعاونين')
+            //     : Container(),
             _privilegeCubit.checkPrivilege('113') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,
@@ -302,7 +302,7 @@ class _ManagementPageState extends State<ManagementPage> {
                         ),
                       );
                     },
-                    title: ' بستخدام بلوك المتعاونين')
+                    title: 'المتعاونين')
                 : Container(),
 
             _privilegeCubit.checkPrivilege('114') == true
