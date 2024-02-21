@@ -118,7 +118,7 @@ class _AddDateFloatingButtonState extends State<AddDateFloatingButton> {
                                 AppConstants.showSnakeBar(
                                     context, 'تمت الاضافة بنجاح');
                                 //   todo : refresh dates
-                                _clearFields();
+                                _clearFields(bloc: bloc);
                               },
                             );
                           }
