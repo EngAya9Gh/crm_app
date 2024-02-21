@@ -21,7 +21,6 @@ class AgentDateModel extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'idclients_date': id,
       'date_client_visit': dateClientVisit,
       'fk_user': fkUser,
       'is_done': isDone,

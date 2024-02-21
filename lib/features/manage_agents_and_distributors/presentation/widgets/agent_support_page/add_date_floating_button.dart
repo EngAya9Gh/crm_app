@@ -9,6 +9,7 @@ import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../data/models/agent_date_model.dart';
+import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
@@ -117,7 +118,10 @@ class _AddDateFloatingButtonState extends State<AddDateFloatingButton> {
                                 Navigator.pop(context);
                                 AppConstants.showSnakeBar(
                                     context, 'تمت الاضافة بنجاح');
-                                //   todo : refresh dates
+                                bloc.add(GetAgentDatesListEvent(
+                                    getAgentDatesListParams:
+                                        GetAgentDatesListParams(
+                                            agentId: widget.agentId)));
                                 _clearFields(bloc: bloc);
                               },
                             );
@@ -149,7 +153,7 @@ class _AddDateFloatingButtonState extends State<AddDateFloatingButton> {
     final AgentDateModel dateModel = AgentDateModel(
       dateClientVisit: dateClientVisit,
       fkUser: currentUserId,
-      isDone: '0',
+      isDone: '1',
       fkAgent: fkAgent,
       typeDate: typeDate,
     );
