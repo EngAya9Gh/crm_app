@@ -79,7 +79,4 @@ class AddAgentCommentEvent extends AgentsDistributorsProfileEvent {
   final VoidCallback? onSuccess;
 
   AddAgentCommentEvent(this.addAgentCommentParams, {this.onSuccess});
-
-  @override
-  List<Object?> get props => throw UnimplementedError();
 }

@@ -20,6 +20,7 @@ class GetAllClientsListEvent extends ClientsListEvent {
   @override
   List<Object?> get props => [fkCountry, page];
 }
+
 class GetSimilarClientsListEvent extends ClientsListEvent {
   GetSimilarClientsListParams getClientsWithFilterParams;
   final ValueChanged<List<SimilarClient>>? onSuccess;
@@ -51,10 +52,11 @@ class SearchEvent extends ClientsListEvent {
   @override
   List<Object?> get props => [query];
 }
-class SwitchEvent extends ClientsListEvent {
- bool mycl;
 
-    SwitchEvent({required this.mycl});
+class SwitchEvent extends ClientsListEvent {
+  bool mycl;
+
+  SwitchEvent({required this.mycl});
 
   @override
   List<Object?> get props => [mycl];
@@ -82,7 +84,7 @@ class AddClientEvent extends ClientsListEvent {
   AddClientEvent(this.addClientParams, {this.onSuccess});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [addClientParams];
 }
 
 class EditClientEvent extends ClientsListEvent {
@@ -92,7 +94,7 @@ class EditClientEvent extends ClientsListEvent {
   EditClientEvent(this.editClientParams, {this.onSuccess});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [editClientParams];
 }
 
 class ChangeTypeClientEvent extends ClientsListEvent {
@@ -102,8 +104,9 @@ class ChangeTypeClientEvent extends ClientsListEvent {
   ChangeTypeClientEvent(this.changeTypeClientParams, {this.onSuccess});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [changeTypeClientParams];
 }
+
 class ApproveRejectClientEvent extends ClientsListEvent {
   final ApproveRejectClientPararm approveRejectClientParams;
   final ValueChanged<ClientModel>? onSuccess;
@@ -111,5 +114,5 @@ class ApproveRejectClientEvent extends ClientsListEvent {
   ApproveRejectClientEvent(this.approveRejectClientParams, {this.onSuccess});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [approveRejectClientParams];
 }

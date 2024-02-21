@@ -162,5 +162,5 @@ class AddParticipateCommentEvent extends ParticipateEvent {
       {this.onSuccess});
 
   @override
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [addParticipateCommentParams];
 }
