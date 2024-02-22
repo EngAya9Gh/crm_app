@@ -31,6 +31,7 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
             textDirection: TextDirection.rtl,
             child: Column(
               children: [
+                SizedBox(height: 10),
                 // search
                 Container(
                   decoration: BoxDecoration(
