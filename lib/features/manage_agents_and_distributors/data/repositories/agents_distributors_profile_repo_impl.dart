@@ -1,9 +1,9 @@
 import 'package:crm_smart/common/widgets/profile_comments_model.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/data/models/agent_date_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../common/models/profile_invoice_model.dart';
+import '../../../../model/invoiceModel.dart';
 import '../../domain/repositories/agents_distributors_profile_repo.dart';
 import '../data_sources/remote_data_source/agents_distributors_profile_data_source.dart';
 
@@ -43,7 +43,7 @@ class AgentsDistributorsProfileRepoImpl
   }
 
   @override
-  Future<Either<String, List<AgentDateModel>>> getDateVisitAgent({
+  Future<Either<String, List<DateInstallationClient>>> getDateVisitAgent({
     required String agentId,
   }) {
     return datasource.getDateVisitAgent(agentId: agentId);
@@ -51,7 +51,7 @@ class AgentsDistributorsProfileRepoImpl
 
   @override
   Future<Either<String, void>> addAgentDate({
-    required AgentDateModel agentDateModel,
+    required DateInstallationClient agentDateModel,
   }) {
     return datasource.addAgentDate(agentDateModel: agentDateModel);
   }

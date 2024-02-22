@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/data/models/agent_date_model.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../../../../common/enums/enums.dart';
 import '../../../../../common/models/profile_invoice_model.dart';
@@ -18,12 +16,11 @@ import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 
 part 'agents_distributors_profile_event.dart';
-
 part 'agents_distributors_profile_state.dart';
 
 class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     AgentsDistributorsProfileState> {
-  List<AgentDateModel> agentDatesList = [];
+  List<DateInstallationClient> agentDatesList = [];
   final GetAgentClientListUsecase _getAgentClientListUsecase;
   final GetAgentInvoiceListUsecase _getAgentInvoiceListUsecase;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
@@ -229,26 +226,25 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     );
   }
 
-  List<AgentDateModel> get finishedVisits {
+  List<DateInstallationClient> get finishedVisits {
     return agentDatesList
         .where((element) =>
-            element.isDone == VisitsStatusEnum.finished.index.toString())
+            element.is_done == VisitsStatusEnum.finished.index.toString())
         .toList();
   }
 
-  List<AgentDateModel> get unfinishedVisits {
+  List<DateInstallationClient> get unfinishedVisits {
     return agentDatesList
         .where((element) =>
-            element.isDone == VisitsStatusEnum.unfinished.index.toString()||
-                element.isDone == VisitsStatusEnum.scheduled.index.toString()
-    )
+            element.is_done == VisitsStatusEnum.unfinished.index.toString() ||
+            element.is_done == VisitsStatusEnum.scheduled.index.toString())
         .toList();
   }
 
-  List<AgentDateModel> get canceledVisits {
+  List<DateInstallationClient> get canceledVisits {
     return agentDatesList
         .where((element) =>
-            element.isDone == VisitsStatusEnum.canceled.index.toString())
+            element.is_done == VisitsStatusEnum.canceled.index.toString())
         .toList();
   }
 
@@ -271,13 +267,11 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     );
   }
 
-  String handleVisitTime() {
+  DateTime handleVisitTime() {
     final date = DateTime.parse(supportDateController.text);
     final selectedTime = supportTimeController.text.split(':');
     final time = TimeOfDay(
         hour: int.parse(selectedTime[0]), minute: int.parse(selectedTime[1]));
-    final dateVisit =
-        DateTime(date.year, date.month, date.day, time.hour, time.minute);
-    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateVisit);
+    return DateTime(date.year, date.month, date.day, time.hour, time.minute);
   }
 }

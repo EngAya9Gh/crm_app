@@ -2,6 +2,7 @@ import 'package:crm_smart/Repository/cache_repo.dart';
 import 'package:crm_smart/model/participatModel.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../common/enums/enums.dart';
 import '../constants.dart';
 import 'agent_distributor_model.dart';
 
@@ -115,116 +116,115 @@ class InvoiceModel extends CacheRepository {
   //endregion
 
   //region Constructor
-  InvoiceModel({
-    this.idInvoice,
-    this.dateCreate,
-    this.typePay,
-    this.renewYear,
-    this.typeInstallation,
-    this.imageRecord,
-    this.imagelogo,
-    this.fkIdClient,
-    this.fkIdUser,
-    this.amountPaid,
-    this.notes,
-    this.nameUser,
-    this.nameClient,
-    required this.products,
-    this.total,
-    this.name_enterprise,
-    this.fk_regoin,
-    this.name_regoin,
-    this.type_client,
-    this.lastuserupdate,
-    this.lastuserupdateName,
-    this.nameuserinstall,
-    this.dateinstall_done,
-    this.isdoneinstall,
-    this.userinstall,
-    this.dateinstall_task,
-    this.fkusertask,
-    this.nameuserApprove,
-    this.date_lastuserupdate,
-    this.path,
-    this.fk_country,
-    this.reason_date,
-    this.date_approve,
-    this.stateclient,
-    this.value_back,
-    this.desc_reason_back,
-    this.reason_back,
-    this.fkuser_back,
-    this.date_change_back,
-    this.nameuserback,
-    this.nameuserreplay,
-    this.nameusertask,
-    this.daterepaly,
-    this.fkuserdatareplay,
-    this.iduser_approve,
-    this.isApprove,
-    this.mobile,
-    this.ismarketing,
-    this.city,
-    this.name_city,
-    this.namemaincity,
-    this.id_maincity,
-    this.numbarnch,
-    this.renewPlus,
-    this.numusers,
-    this.nummostda,
-    this.numTax,
-    this.imagelogopath,
-    this.hoursdelaytabel,
-    this.hoursdelayinstall,
-    this.clientusername,
-    this.address_invoice,
-    this.ready_install,
-    this.date_readyinstall,
-    this.user_ready_install,
-    this.date_not_readyinstall,
-    this.user_not_ready_install,
-    this.nameuser_ready_install,
-    this.nameuser_notready_install,
-    this.count_delay_ready,
-    this.isApproveFinance,
-    this.iduser_FApprove,
-    this.Date_FApprove,
-    this.rate_participate,
-    this.participate_fk,
-    this.fk_agent,
-    this.type_seller,
-    this.currency_name,
-    this.fk_regoin_invoice,
-    this.name_regoin_invoice,
-    this.user_delete,
-    this.date_delete,
-    this.datesInstallationClient,
-    this.fileAttach,
-    this.attachFileStatus,
-    this.deleteAttachFileStatus,
-    this.agent_distibutor,
-    this.participal,
-    this.renew2year,
-    this.renew_agent,
-    this.file_reject,
-    this.filesAttach,
-    this.approveBackDone,
-    this.TypeReadyClient,
-    this.notes_ready,
-    this.reason_suspend,
-    this.reason_notReady,
-    this.invoice_source
-    //name_city,mcit.namemaincity,mcit.id_maincity
-    // this.nameuserApprove,
-    // this.date_approve,
-  });
+  InvoiceModel(
+      {this.idInvoice,
+      this.dateCreate,
+      this.typePay,
+      this.renewYear,
+      this.typeInstallation,
+      this.imageRecord,
+      this.imagelogo,
+      this.fkIdClient,
+      this.fkIdUser,
+      this.amountPaid,
+      this.notes,
+      this.nameUser,
+      this.nameClient,
+      required this.products,
+      this.total,
+      this.name_enterprise,
+      this.fk_regoin,
+      this.name_regoin,
+      this.type_client,
+      this.lastuserupdate,
+      this.lastuserupdateName,
+      this.nameuserinstall,
+      this.dateinstall_done,
+      this.isdoneinstall,
+      this.userinstall,
+      this.dateinstall_task,
+      this.fkusertask,
+      this.nameuserApprove,
+      this.date_lastuserupdate,
+      this.path,
+      this.fk_country,
+      this.reason_date,
+      this.date_approve,
+      this.stateclient,
+      this.value_back,
+      this.desc_reason_back,
+      this.reason_back,
+      this.fkuser_back,
+      this.date_change_back,
+      this.nameuserback,
+      this.nameuserreplay,
+      this.nameusertask,
+      this.daterepaly,
+      this.fkuserdatareplay,
+      this.iduser_approve,
+      this.isApprove,
+      this.mobile,
+      this.ismarketing,
+      this.city,
+      this.name_city,
+      this.namemaincity,
+      this.id_maincity,
+      this.numbarnch,
+      this.renewPlus,
+      this.numusers,
+      this.nummostda,
+      this.numTax,
+      this.imagelogopath,
+      this.hoursdelaytabel,
+      this.hoursdelayinstall,
+      this.clientusername,
+      this.address_invoice,
+      this.ready_install,
+      this.date_readyinstall,
+      this.user_ready_install,
+      this.date_not_readyinstall,
+      this.user_not_ready_install,
+      this.nameuser_ready_install,
+      this.nameuser_notready_install,
+      this.count_delay_ready,
+      this.isApproveFinance,
+      this.iduser_FApprove,
+      this.Date_FApprove,
+      this.rate_participate,
+      this.participate_fk,
+      this.fk_agent,
+      this.type_seller,
+      this.currency_name,
+      this.fk_regoin_invoice,
+      this.name_regoin_invoice,
+      this.user_delete,
+      this.date_delete,
+      this.datesInstallationClient,
+      this.fileAttach,
+      this.attachFileStatus,
+      this.deleteAttachFileStatus,
+      this.agent_distibutor,
+      this.participal,
+      this.renew2year,
+      this.renew_agent,
+      this.file_reject,
+      this.filesAttach,
+      this.approveBackDone,
+      this.TypeReadyClient,
+      this.notes_ready,
+      this.reason_suspend,
+      this.reason_notReady,
+      this.invoice_source
+      //name_city,mcit.namemaincity,mcit.id_maincity
+      // this.nameuserApprove,
+      // this.date_approve,
+      });
 
   //endregion
 
   //region Json converters
   // var products;
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
-    
     idInvoice = jsondata['id_invoice'];
     user_delete = jsondata['user_delete'];
     date_delete = jsondata['date_delete'];
@@ -234,11 +234,13 @@ class InvoiceModel extends CacheRepository {
     typeInstallation = jsondata['type_installation'];
     currency_name = jsondata['currency_name'];
 
-    imageRecord = jsondata['image_record'].toString().trim().isEmpty || jsondata['image_record'] == null
+    imageRecord = jsondata['image_record'].toString().trim().isEmpty ||
+            jsondata['image_record'] == null
         ? jsondata['image_record']
         : urlfile + jsondata['image_record'];
 
-    imagelogo = jsondata['imagelogo'].toString().trim().isEmpty || jsondata['imagelogo'] == null
+    imagelogo = jsondata['imagelogo'].toString().trim().isEmpty ||
+            jsondata['imagelogo'] == null
         ? jsondata['imagelogo']
         : urlfilelogo + jsondata['imagelogo'];
 
@@ -318,13 +320,19 @@ class InvoiceModel extends CacheRepository {
     name_regoin_invoice = jsondata['name_regoin_invoice'];
     renew_agent = jsondata['renew_agent'];
 
-    participal = jsondata['participal_info'] == null ? null : getParticipateModel(jsondata['participal_info']);
-    agent_distibutor =
-        jsondata['agent_distibutor_info'] == null ? null : getAgentDistributorModel(jsondata['agent_distibutor_info']);
+    participal = jsondata['participal_info'] == null
+        ? null
+        : getParticipateModel(jsondata['participal_info']);
+    agent_distibutor = jsondata['agent_distibutor_info'] == null
+        ? null
+        : getAgentDistributorModel(jsondata['agent_distibutor_info']);
     products = getproud(jsondata['products']);
-    datesInstallationClient =
-        List.from(jsondata['dates_install_client'] ?? []).map((e) => DateInstallationClient.fromJson(e)).toList();
-    filesAttach = List.from(jsondata['files_attach'] ?? []).map((e) => FileAttach.fromMap(e)).toList();
+    datesInstallationClient = List.from(jsondata['dates_install_client'] ?? [])
+        .map((e) => DateInstallationClient.fromJson(e))
+        .toList();
+    filesAttach = List.from(jsondata['files_attach'] ?? [])
+        .map((e) => FileAttach.fromMap(e))
+        .toList();
     fileAttach = jsondata['file_attach'];
     file_reject = jsondata['file_reject'];
     approveBackDone = jsondata['approve_back_done'];
@@ -333,8 +341,7 @@ class InvoiceModel extends CacheRepository {
     notes_ready = jsondata['notes_ready'];
     reason_suspend = jsondata['reason_suspend'];
     reason_notReady = jsondata['reason_notReady'];
-    tag = jsondata['tag']=="true"?true:false;
-
+    tag = jsondata['tag'] == "true" ? true : false;
 
     attachFileStatus = AttachFileStatus.init;
     deleteAttachFileStatus = AttachFileStatus.init;
@@ -344,9 +351,9 @@ class InvoiceModel extends CacheRepository {
     // )//  jsondata['products']
     // .map(
     //     (e) {
-    
+
     //      ProductsInvoice.fromJson(e);
-    
+
     // }).toList();
     //     .add(
     //     ProductsInvoice.fromJson(
@@ -464,9 +471,6 @@ class InvoiceModel extends CacheRepository {
     List<ProductsInvoice> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        
-
-        
         prodlist.add(ProductsInvoice.fromJson(data[i]));
       }
     }
@@ -474,12 +478,9 @@ class InvoiceModel extends CacheRepository {
   }
 
   ParticipateModel getParticipateModel(data) {
-    
-    
     List<ParticipateModel> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        
         prodlist.add(ParticipateModel.fromJson(data[i]));
       }
     }
@@ -487,12 +488,9 @@ class InvoiceModel extends CacheRepository {
   }
 
   AgentDistributorModel getAgentDistributorModel(data) {
-    
-    
     List<AgentDistributorModel> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-        
         prodlist.add(AgentDistributorModel.fromJson(data[i]));
       }
     }
@@ -657,10 +655,14 @@ class InvoiceModel extends CacheRepository {
       ready_install: ready_install ?? this.ready_install,
       date_readyinstall: date_readyinstall ?? this.date_readyinstall,
       user_ready_install: user_ready_install ?? this.user_ready_install,
-      date_not_readyinstall: date_not_readyinstall ?? this.date_not_readyinstall,
-      user_not_ready_install: user_not_ready_install ?? this.user_not_ready_install,
-      nameuser_ready_install: nameuser_ready_install ?? this.nameuser_ready_install,
-      nameuser_notready_install: nameuser_notready_install ?? this.nameuser_notready_install,
+      date_not_readyinstall:
+          date_not_readyinstall ?? this.date_not_readyinstall,
+      user_not_ready_install:
+          user_not_ready_install ?? this.user_not_ready_install,
+      nameuser_ready_install:
+          nameuser_ready_install ?? this.nameuser_ready_install,
+      nameuser_notready_install:
+          nameuser_notready_install ?? this.nameuser_notready_install,
       count_delay_ready: count_delay_ready ?? this.count_delay_ready,
       isApproveFinance: isApproveFinance ?? this.isApproveFinance,
       iduser_FApprove: iduser_FApprove ?? this.iduser_FApprove,
@@ -681,11 +683,13 @@ class InvoiceModel extends CacheRepository {
       products: products ?? this.products,
       participal: participal ?? this.participal,
       agent_distibutor: agent_distibutor ?? this.agent_distibutor,
-      datesInstallationClient: datesInstallationClient ?? this.datesInstallationClient,
+      datesInstallationClient:
+          datesInstallationClient ?? this.datesInstallationClient,
       fileAttach: deleteImage ? null : fileAttach ?? this.fileAttach,
       file_reject: deleteRejectImage ? null : file_reject ?? this.file_reject,
       attachFileStatus: attachFileStatus ?? this.attachFileStatus,
-      deleteAttachFileStatus: deleteAttachFileStatus ?? this.deleteAttachFileStatus,
+      deleteAttachFileStatus:
+          deleteAttachFileStatus ?? this.deleteAttachFileStatus,
       filesAttach: filesAttach ?? this.filesAttach,
       renew_agent: renew_agent ?? this.renew_agent,
       approveBackDone: approveBackDone ?? this.approveBackDone,
@@ -743,8 +747,6 @@ class ProductsInvoice extends CacheRepository {
 
   //region Json converters
   ProductsInvoice.fromJson(Map<String, dynamic> json) {
-    
-    
     idInvoiceProduct = json['id_invoice_product'];
     fkIdInvoice = json['fk_id_invoice'];
     fkProduct = json['fk_product'];
@@ -795,7 +797,11 @@ class FileAttach {
   final XFile? file;
   final DownloadFileStatus fileStatus;
 
-  FileAttach({this.fileAttach, this.id, this.file, this.fileStatus = DownloadFileStatus.unDownloaded});
+  FileAttach(
+      {this.fileAttach,
+      this.id,
+      this.file,
+      this.fileStatus = DownloadFileStatus.unDownloaded});
 
   Map<String, dynamic> toMap() {
     return {
@@ -838,6 +844,8 @@ class DateInstallationClient {
   final String? fk_client;
   final String? fk_invoice;
   final DateTime? date_client_visit;
+  final String? fkAgent;
+  final InstallationTypeEnum? typeDate;
 
   DateInstallationClient({
     this.idclients_date,
@@ -846,17 +854,33 @@ class DateInstallationClient {
     this.fk_client,
     this.fk_invoice,
     this.date_client_visit,
+    this.fkAgent,
+    this.typeDate,
   });
 
   factory DateInstallationClient.fromJson(Map<String, dynamic> map) {
     return DateInstallationClient(
-      idclients_date: map['idclients_date'] as String,
-      fk_user: map['fk_user'] as String,
-      is_done: map['is_done'] as String,
-      fk_client: map['fk_client'] as String,
-      fk_invoice: map['fk_invoice'] as String,
+      idclients_date: map['idclients_date'].toString(),
+      fk_user: map['fk_user'].toString(),
+      is_done: map['is_done'].toString(),
+      fk_client: map['fk_client'].toString(),
+      fk_invoice: map['fk_invoice'].toString(),
       date_client_visit: DateTime.tryParse(map['date_client_visit']),
+      fkAgent: map['fk_agent'].toString(),
+      typeDate: map['type_date'] == InstallationTypeEnum.field.name
+          ? InstallationTypeEnum.field
+          : InstallationTypeEnum.online,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'date_client_visit': date_client_visit,
+      'fk_user': fk_user,
+      'is_done': is_done,
+      "fk_agent": fkAgent,
+      "type_date": typeDate?.name,
+    };
   }
 
   DateInstallationClient copyWith({
@@ -866,6 +890,8 @@ class DateInstallationClient {
     String? fk_client,
     String? fk_invoice,
     DateTime? date_client_visit,
+    String? fkAgent,
+    InstallationTypeEnum? typeDate,
   }) {
     return DateInstallationClient(
       idclients_date: idclients_date ?? this.idclients_date,
@@ -874,6 +900,8 @@ class DateInstallationClient {
       fk_client: fk_client ?? this.fk_client,
       fk_invoice: fk_invoice ?? this.fk_invoice,
       date_client_visit: date_client_visit ?? this.date_client_visit,
+      fkAgent: fkAgent ?? this.fkAgent,
+      typeDate: typeDate ?? this.typeDate,
     );
   }
 }

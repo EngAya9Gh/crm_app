@@ -4,8 +4,8 @@ import '../../../../../api/dio_services.dart';
 import '../../../../../common/models/profile_invoice_model.dart';
 import '../../../../../common/widgets/profile_comments_model.dart';
 import '../../../../../core/utils/app_strings.dart';
+import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
-import '../../models/agent_date_model.dart';
 
 abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, List<ClientModel>>> getAgentClientsList({
@@ -25,12 +25,12 @@ abstract class AgentsDistributorsProfileDataSource {
     required String content,
   });
 
-  Future<Either<String, List<AgentDateModel>>> getDateVisitAgent({
+  Future<Either<String, List<DateInstallationClient>>> getDateVisitAgent({
     required String agentId,
   });
 
   Future<Either<String, void>> addAgentDate({
-    required AgentDateModel agentDateModel,
+    required DateInstallationClient agentDateModel,
   });
 }
 
@@ -123,7 +123,7 @@ class AgentsDistributorsProfileDataSourceImpl
   }
 
   @override
-  Future<Either<String, List<AgentDateModel>>> getDateVisitAgent({
+  Future<Either<String, List<DateInstallationClient>>> getDateVisitAgent({
     required String agentId,
   }) async {
     try {
@@ -131,9 +131,9 @@ class AgentsDistributorsProfileDataSourceImpl
       final response = await dio.get(endPoint: "getDateVisitAgent/$agentId");
       final data = response['data'];
 
-      final List<AgentDateModel> visitDates = [];
+      final List<DateInstallationClient> visitDates = [];
       for (int i = 0; i < data.length; i++) {
-        visitDates.add(AgentDateModel.fromMap(data[i]));
+        visitDates.add(DateInstallationClient.fromJson(data[i]));
       }
 
       return Right(visitDates);
@@ -145,7 +145,7 @@ class AgentsDistributorsProfileDataSourceImpl
 
   @override
   Future<Either<String, void>> addAgentDate({
-    required AgentDateModel agentDateModel,
+    required DateInstallationClient agentDateModel,
   }) async {
     try {
       dio.changeBaseUrl(AppStrings.apiBaseUrl1);

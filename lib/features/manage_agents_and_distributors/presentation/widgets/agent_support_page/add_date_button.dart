@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../common/enums/enums.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/utils/app_constants.dart';
+import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
-import '../../../data/models/agent_date_model.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'custom_date_time_picker.dart';
@@ -159,16 +159,16 @@ class _AddDateButtonState extends State<AddDateButton> {
   _onTap({
     required BuildContext context,
     required AgentsDistributorsProfileBloc bloc,
-    required String dateClientVisit,
+    required DateTime dateClientVisit,
     required String fkAgent,
     required InstallationTypeEnum typeDate,
     VoidCallback? onSuccess,
   }) {
     final String currentUserId = AppConstants.currentUserId(context)!;
-    final AgentDateModel dateModel = AgentDateModel(
-      dateClientVisit: dateClientVisit,
-      fkUser: currentUserId,
-      isDone: '0',
+    final DateInstallationClient dateModel = DateInstallationClient(
+      date_client_visit: dateClientVisit,
+      fk_user: currentUserId,
+      is_done: '0',
       fkAgent: fkAgent,
       typeDate: typeDate,
     );

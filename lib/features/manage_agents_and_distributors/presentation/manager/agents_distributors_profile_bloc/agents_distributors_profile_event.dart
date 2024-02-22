@@ -94,7 +94,7 @@ class GetAgentDatesListEvent extends AgentsDistributorsProfileEvent
 }
 
 class AddAgentDateEvent extends AgentsDistributorsProfileEvent {
-  final AgentDateModel addAgentDateParams;
+  final DateInstallationClient addAgentDateParams;
   final VoidCallback? onSuccess;
 
   AddAgentDateEvent({

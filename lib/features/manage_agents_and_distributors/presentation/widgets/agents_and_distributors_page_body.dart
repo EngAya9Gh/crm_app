@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../common/enums/enums.dart';
 import '../../../../common/widgets/custom_error_widget.dart';
 import '../../../../common/widgets/custom_loading_indicator.dart';
+import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
@@ -56,7 +57,7 @@ class AgentsAndDistributorsPageBody extends StatelessWidget {
                               cubit.searchAgentsAndDistributors(value),
                           textInputAction: TextInputAction.search,
                           decoration: InputDecoration(
-                            hintText: "الاسم, رقم الموبايل .....",
+                            hintText: AppStrings.agentSearchHint,
                             border: InputBorder.none,
                             prefixIcon: Icon(
                               Icons.search,

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../common/enums/enums.dart';
 import '../../../../../common/widgets/custom_loading_indicator.dart';
+import '../../../../../core/utils/app_strings.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_text.dart';
 import '../../../../clients_list/presentation/widgets/client_card.dart';
@@ -77,8 +78,7 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
                             controller: _searchTextField,
                             textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
-                              hintText:
-                                  "اسم الوكيل/موزع, رقم الموبايل .....",
+                              hintText: AppStrings.agentSearchHint,
                               border: InputBorder.none,
                               prefixIcon: Icon(
                                 Icons.search,

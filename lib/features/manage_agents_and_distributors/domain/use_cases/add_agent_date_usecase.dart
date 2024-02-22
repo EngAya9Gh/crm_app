@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/use_case/use_case.dart';
-import '../../data/models/agent_date_model.dart';
+import '../../../../model/invoiceModel.dart';
 import '../repositories/agents_distributors_profile_repo.dart';
 
 class AddAgentDateUseCase
@@ -19,7 +19,7 @@ class AddAgentDateUseCase
 }
 
 class AddAgentDateUseCaseParams {
-  final AgentDateModel agentModel;
+  final DateInstallationClient agentModel;
 
   AddAgentDateUseCaseParams({
     required this.agentModel,

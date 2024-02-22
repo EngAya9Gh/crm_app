@@ -20,7 +20,7 @@ class AgentsDistributorsProfileState extends Equatable {
   final StateStatus addedCommentStatus;
   final String? addedCommentError;
 
-  final List<AgentDateModel> dateVisitList;
+  final List<DateInstallationClient> dateVisitList;
   final StateStatus dateVisitStatus;
   final String? dateVisitError;
 
@@ -64,7 +64,7 @@ class AgentsDistributorsProfileState extends Equatable {
     ProfileCommentModel? addedComment,
     StateStatus? addedCommentStatus,
     String? addedCommentError,
-    List<AgentDateModel>? dateVisitList,
+    List<DateInstallationClient>? dateVisitList,
     StateStatus? dateVisitStatus,
     String? dateVisitError,
     StateStatus? addDateVisitStatus,
