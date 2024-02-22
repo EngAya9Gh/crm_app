@@ -61,7 +61,7 @@ class _support_addState extends State<support_add> {
 
   List<String> list_installation_type = [
     'ميداني',
-    'اون لاين',
+    'اونلاين',
   ];
   late String? selectInstallationType;
   String? Value_installation_type = null;

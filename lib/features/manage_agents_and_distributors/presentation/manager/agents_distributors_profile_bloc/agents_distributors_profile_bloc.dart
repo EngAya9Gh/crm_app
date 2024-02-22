@@ -239,7 +239,9 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   List<AgentDateModel> get unfinishedVisits {
     return agentDatesList
         .where((element) =>
-            element.isDone == VisitsStatusEnum.unfinished.index.toString())
+            element.isDone == VisitsStatusEnum.unfinished.index.toString()||
+                element.isDone == VisitsStatusEnum.scheduled.index.toString()
+    )
         .toList();
   }
 

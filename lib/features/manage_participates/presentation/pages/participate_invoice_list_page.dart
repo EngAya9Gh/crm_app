@@ -82,7 +82,7 @@ class _ParticipateInvoiceListPageState extends State<ParticipateInvoiceListPage>
                               controller: _searchTextField,
                               textInputAction: TextInputAction.search,
                               decoration: InputDecoration(
-                                hintText: "اسم االؤسسة, رقم الفاتورة .....",
+                                hintText: "اسم المؤسسة, رقم الفاتورة .....",
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
                                   Icons.search,

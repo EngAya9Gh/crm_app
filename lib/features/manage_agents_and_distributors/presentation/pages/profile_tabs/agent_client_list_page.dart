@@ -78,7 +78,7 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
                             textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
                               hintText:
-                                  "اسم المتعاون, رقم الموبايل للمتعاون.....",
+                                  "اسم الوكيل/موزع, رقم الموبايل .....",
                               border: InputBorder.none,
                               prefixIcon: Icon(
                                 Icons.search,

@@ -47,7 +47,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   List<DateInstallationClient> datesInstallation = [];
   List<String> listInstallationType = [
     'ميداني',
-    'اون لاين',
+    'اونلاين',
   ];
   late String? selectInstallationType;
   String? valueInstallationType = null;

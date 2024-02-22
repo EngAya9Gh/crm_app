@@ -146,7 +146,7 @@ class _AddDateButtonState extends State<AddDateButton> {
     final AgentDateModel dateModel = AgentDateModel(
       dateClientVisit: dateClientVisit,
       fkUser: currentUserId,
-      isDone: '1',
+      isDone: '0',
       fkAgent: fkAgent,
       typeDate: typeDate,
     );

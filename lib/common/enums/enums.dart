@@ -17,4 +17,4 @@ extension InstallationTypeExtension on InstallationTypeEnum {
   }
 }
 
-enum VisitsStatusEnum { finished, unfinished, canceled, scheduled }
+enum VisitsStatusEnum { unfinished,finished, canceled, scheduled }

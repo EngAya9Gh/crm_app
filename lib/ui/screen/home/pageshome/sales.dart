@@ -18,6 +18,8 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../features/clients_list/presentation/pages/clients_list_page.dart';
+import '../../../../features/manage_agents_and_distributors/presentation/pages/agents_distributors_page.dart';
+import '../../../../features/manage_participates/presentation/pages/participate_list_page.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../client/agents_distributors_invoices_view.dart';
@@ -106,6 +108,40 @@ class _salesState extends State<sales> {
                     },
                     title: 'ديون العملاء')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
+            context.read<PrivilegeCubit>().checkPrivilege('113') == true
+                ? buildSelectCategory(
+                colorbag: Colors.white,
+                colortitle: Colors.black,
+                colorarrow: Colors.black,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    CupertinoPageRoute<void>(
+                      builder: (BuildContext context) =>
+                          ParticipateListPage(),
+                    ),
+                  );
+                },
+                title: 'المتعاونين')
+                : Container(),
+
+            context.read<PrivilegeCubit>().checkPrivilege('114') == true
+                ? buildSelectCategory(
+              colorbag: Colors.white,
+              colortitle: Colors.black,
+              colorarrow: Colors.black,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  CupertinoPageRoute<void>(
+                    builder: (BuildContext context) =>
+                        AgentsAndDistributorsPage(),
+                  ),
+                );
+              },
+              title: "الوكلاء والموزعين",
+            )
+                : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('120') == true
                 ? buildSelectCategory(
                     onTap: () {

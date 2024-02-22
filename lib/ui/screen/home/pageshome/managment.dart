@@ -288,40 +288,7 @@ class _ManagementPageState extends State<ManagementPage> {
             //         },
             //         title: 'المتعاونين')
             //     : Container(),
-            _privilegeCubit.checkPrivilege('113') == true
-                ? buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              ParticipateListPage(),
-                        ),
-                      );
-                    },
-                    title: 'المتعاونين')
-                : Container(),
 
-            _privilegeCubit.checkPrivilege('114') == true
-                ? buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              AgentsAndDistributorsPage(),
-                        ),
-                      );
-                    },
-                    title: "الوكلاء والموزعين",
-                  )
-                : Container(),
             _privilegeCubit.checkPrivilege('149') == true
                 ? buildSelectCategory(
                     colorbag: Colors.white,

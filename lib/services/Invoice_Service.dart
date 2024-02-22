@@ -163,8 +163,9 @@ class Invoice_Service {
    required String processReason,
     required String typeSchedule,
   }) async {
-    print("URL::$url_laravel + rescheduleOrCancelVisitClient/+$scheduleId");
-    var result = await Api().post(url: url_laravel + "rescheduleOrCancelVisitClient/"+scheduleId, body: {
+    print("URL::$url_laravel + rescheduleOrCancelVisitClient/$scheduleId");
+    print( url_laravel+"rescheduleOrCancelVisitClient/"+scheduleId);
+    var result = await Api().post(url:  url_laravel+"rescheduleOrCancelVisitClient/"+scheduleId, body: {
       'typeProcess': 'reschedule',
       'date_client_visit': dateClientVisit,
       'processReason':processReason,
@@ -177,7 +178,7 @@ class Invoice_Service {
    Future<dynamic> cancelScheduleInstallation({
     required String scheduleId,
   }) async {
-    var result = await Api().post(url: url_laravel + "rescheduleOrCancelVisitClient/"+scheduleId, body: {
+    var result = await Api().post(url: url_laravel+"rescheduleOrCancelVisitClient/"+scheduleId, body: {
       'typeProcess': 'cancel'
     });
     return result;
