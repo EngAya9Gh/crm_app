@@ -16,7 +16,9 @@ part 'app_manager_state.dart';
 @singleton
 class AppManagerCubit extends Cubit<AppManagerState> {
   AppManagerCubit(this._getVersionUseCase)
-      : super(AppManagerState(lightThemeData: ThemeData.light(), darkThemeData: ThemeData.dark()));
+      : super(AppManagerState(
+            lightThemeData: ThemeData.light(),
+            darkThemeData: ThemeData.dark()));
 
   final GetVersionUseCase _getVersionUseCase;
 
@@ -28,7 +30,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
     response.fold(
       (exception, message) {
         emit(state.copyWith(updateState: PageState.error()));
-      } ,
+      },
       (value) async {
         final check = await checkUpdate(value.message ?? []);
 
@@ -43,9 +45,11 @@ class AppManagerCubit extends Cubit<AppManagerState> {
     );
   }
 
-  static Future<Tuple2<bool, bool>?> checkUpdate(List<UpdateConfig> versions) async {
+  static Future<Tuple2<bool, bool>?> checkUpdate(
+      List<UpdateConfig> versions) async {
     try {
-      final result = versions.firstWhereOrNull((element) => element.typeVersion?.name == Platform.operatingSystem);
+      final result = versions.firstWhereOrNull(
+          (element) => element.typeVersion?.name == Platform.operatingSystem);
 
       if (result == null) {
         return null;
@@ -57,22 +61,25 @@ class AppManagerCubit extends Cubit<AppManagerState> {
 
       final remoteAppVersion = result.nameVersion!.replaceAll('V', '').trim();
 
-      final remoteAppBuildNumber =
-          remoteAppVersion.split('+').length > 1 ? int.parse(remoteAppVersion.split('+').last) : 1;
+      final remoteAppBuildNumber = remoteAppVersion.split('+').length > 1
+          ? int.parse(remoteAppVersion.split('+').last)
+          : 1;
 
       final updateMandatory = result.isRequired ?? false;
 
-      final Tuple3<int, int, int> remoteAppVersionRecord = convertVersionToNum(remoteAppVersion);
+      final Tuple3<int, int, int> remoteAppVersionRecord =
+          convertVersionToNum(remoteAppVersion);
 
       final appVersion = packageInfo.version;
       final appBuildNumber = int.parse(packageInfo.buildNumber);
-print('remoteAppVersion');
-print(remoteAppVersion);
-print('appVersion');
-print(appVersion);
-print('appBuildNumber');
-print(appBuildNumber);
-      final Tuple3<int, int, int> appVersionRecord = convertVersionToNum(appVersion);
+      print('remoteAppVersion');
+      print(remoteAppVersion);
+      print('appVersion');
+      print(appVersion);
+      print('appBuildNumber');
+      print(appBuildNumber);
+      final Tuple3<int, int, int> appVersionRecord =
+          convertVersionToNum(appVersion);
 
       if (appVersionRecord.item1 < remoteAppVersionRecord.item1) {
         hasUpdate = true;
@@ -90,7 +97,7 @@ print(appBuildNumber);
         hasUpdate = true;
       }
 
-      return Tuple2(hasUpdate, false);
+      return Tuple2(hasUpdate, updateMandatory);
     } catch (e) {
       return null;
     }
