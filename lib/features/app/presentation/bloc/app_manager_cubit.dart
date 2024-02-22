@@ -96,7 +96,8 @@ class AppManagerCubit extends Cubit<AppManagerState> {
       if (appBuildNumber < remoteAppBuildNumber && !hasUpdate) {
         hasUpdate = true;
       }
-      hasUpdate = false;
+
+      hasUpdate = updateMandatory ? true : hasUpdate;
 
       return Tuple2(hasUpdate, updateMandatory);
     } catch (e) {
