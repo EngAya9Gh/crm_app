@@ -22,22 +22,25 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
   Widget build(BuildContext context) {
     return BlocBuilder<ParticipateListBloc, ParticipateListState>(
         builder: (context, state) {
-      return state.currentPaticipate != null
-          ? Column(children: [
-              TextRow(
-                  title: "الاسم",
-                  data: state.currentPaticipate!.name_participate),
-              TextRow(
-                  title: "رقم الهاتف",
-                  data: state.currentPaticipate!.mobile_participate),
-              TextRow(
-                  title: "اسم البنك",
-                  data: state.currentPaticipate!.namebank_participate),
-              TextRow(
-                  title: "رقم البنك",
-                  data: state.currentPaticipate!.numberbank_participate)
-            ])
-          : Center(child: Text('حدث خطاء'));
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: state.currentPaticipate != null
+            ? Column(children: [
+                TextRow(
+                    title: "الاسم",
+                    data: state.currentPaticipate!.name_participate),
+                TextRow(
+                    title: "رقم الهاتف",
+                    data: state.currentPaticipate!.mobile_participate),
+                TextRow(
+                    title: "اسم البنك",
+                    data: state.currentPaticipate!.namebank_participate),
+                TextRow(
+                    title: "رقم البنك",
+                    data: state.currentPaticipate!.numberbank_participate)
+              ])
+            : Center(child: Text('حدث خطاء')),
+      );
     });
   }
 }
