@@ -16,12 +16,13 @@ class DioServices {
   Future<dynamic> get({
     required String endPoint,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await _dio.get(
         endPoint,
         options: Options(
-          headers: {'AuthToken': 'Bearer $token'},
+          headers: _handleHeaders(headers),
         ),
         queryParameters: queryParameters,
       );
@@ -37,12 +38,13 @@ class DioServices {
   Future<dynamic> post({
     required String endPoint,
     required dynamic data,
+    Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await _dio.post(
         endPoint,
         options: Options(
-          headers: {'AuthToken': 'Bearer $token'},
+          headers: _handleHeaders(headers),
         ),
         data: data,
       );
@@ -50,6 +52,13 @@ class DioServices {
     } catch (e) {
       throw e;
     }
+  }
+
+  Map<String, dynamic> _handleHeaders(Map<String, dynamic>? headers) {
+    final newHeaders = _dio.options.headers;
+    newHeaders.addAll(headers ?? {});
+    newHeaders['AuthToken'] = 'Bearer $token';
+    return newHeaders;
   }
 
 // setup Dio : use in service locator
@@ -85,6 +94,8 @@ class DioServices {
     final prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token_user');
   }
+
+  Dio get dio => _dio;
 
   void changeBaseUrl(String url) {
     _dio.options.baseUrl = url;

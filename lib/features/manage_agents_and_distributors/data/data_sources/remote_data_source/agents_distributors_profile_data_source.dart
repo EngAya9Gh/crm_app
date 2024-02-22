@@ -1,11 +1,11 @@
-import 'package:crm_smart/common/widgets/profile_comments_model.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/data/models/agent_date_model.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../../api/dio_services.dart';
 import '../../../../../common/models/profile_invoice_model.dart';
+import '../../../../../common/widgets/profile_comments_model.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
+import '../../models/agent_date_model.dart';
 
 abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, List<ClientModel>>> getAgentClientsList({
@@ -152,6 +152,9 @@ class AgentsDistributorsProfileDataSourceImpl
       final response = await dio.post(
         endPoint: "client/invoice/add_date_install.php",
         data: agentDateModel.toMap(),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
       );
       print("response => $response");
       return Right(null);

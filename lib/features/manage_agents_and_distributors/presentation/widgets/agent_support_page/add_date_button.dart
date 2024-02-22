@@ -3,29 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../common/enums/enums.dart';
 import '../../../../../constants.dart';
-import '../../../../../core/config/theme/theme.dart';
-import '../../../../../core/di/di_container.dart';
 import '../../../../../core/utils/app_constants.dart';
-import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';
 import '../../../data/models/agent_date_model.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
-import '../../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
-import '../../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import 'custom_date_time_picker.dart';
 
-class AddDateFloatingButton extends StatefulWidget {
-  const AddDateFloatingButton({Key? key, required this.agentId})
-      : super(key: key);
+class AddDateButton extends StatefulWidget {
+  const AddDateButton({Key? key, required this.agentId}) : super(key: key);
 
   final String agentId;
 
   @override
-  State<AddDateFloatingButton> createState() => _AddDateFloatingButtonState();
+  State<AddDateButton> createState() => _AddDateButtonState();
 }
 
-class _AddDateFloatingButtonState extends State<AddDateFloatingButton> {
+class _AddDateButtonState extends State<AddDateButton> {
   String? selectedInstallationType;
 
   List<String> _items = InstallationTypeEnum.values.map((e) => e.name).toList();
@@ -33,8 +27,8 @@ class _AddDateFloatingButtonState extends State<AddDateFloatingButton> {
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
-    return FloatingActionButton(
-      child: Icon(Icons.add, color: AppColors.white),
+    return ElevatedButton(
+      child: Text('إضافة موعد جديد'),
       onPressed: () async {
         await showDialog<void>(
           context: context,
@@ -137,7 +131,6 @@ class _AddDateFloatingButtonState extends State<AddDateFloatingButton> {
           },
         );
       },
-      backgroundColor: kMainColor,
     );
   }
 

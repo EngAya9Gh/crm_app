@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../ui/widgets/custom_widget/RowWidget.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
-import '../../widgets/agent_support_page/add_date_floating_button.dart';
+import '../../widgets/agent_support_page/add_date_button.dart';
 
 class AgentSupportPage extends StatefulWidget {
   const AgentSupportPage({Key? key, required this.agentId}) : super(key: key);
@@ -29,7 +29,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
     return Scaffold(
-      floatingActionButton: AddDateFloatingButton(agentId: widget.agentId),
+      // floatingActionButton: AddDateButton(agentId: widget.agentId),
       body: BlocBuilder<AgentsDistributorsProfileBloc,
           AgentsDistributorsProfileState>(
         buildWhen: (previous, current) {
@@ -40,6 +40,9 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
             padding: const EdgeInsets.all(10),
             child: Column(
               children: [
+                SizedBox(height: 10),
+                AddDateButton(agentId: widget.agentId),
+                SizedBox(height: 20),
                 cardRow(
                   title: 'عدد الزيارات التي تمت',
                   value: bloc.finishedVisits.length.toString(),

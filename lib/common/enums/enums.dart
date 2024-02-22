@@ -12,7 +12,7 @@ extension InstallationTypeExtension on InstallationTypeEnum {
       case InstallationTypeEnum.field:
         return 'ميداني';
       case InstallationTypeEnum.online:
-        return 'اون لاين';
+        return 'اونلاين';
     }
   }
 }
