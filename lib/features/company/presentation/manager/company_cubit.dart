@@ -1,15 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../model/usermodel.dart';
-import '../../../task_management/data/models/user_region_department.dart';
-import '../../../task_management/domain/use_cases/get_users_by_department_and_region_usecase.dart';
 import '../../data/models/company_com_model.dart';
 import '../../domain/use_cases/addcomment_usecase.dart';
 import '../../domain/use_cases/getcomment_usecase.dart';
@@ -19,9 +14,9 @@ part 'company_state.dart';
 @injectable
 class CompanyCubit extends Cubit<CompanyState> {
   CompanyCubit(
-      this._getCommentUsecase,
-      this._addCommentUsecase,
-      ) : super(CompanyState());
+    this._getCommentUsecase,
+    this._addCommentUsecase,
+  ) : super(CompanyState());
 
   final GetCommentUsecase _getCommentUsecase;
   final AddCommentUsecase _addCommentUsecase;
@@ -33,17 +28,16 @@ class CompanyCubit extends Cubit<CompanyState> {
     final allLinks = await _getCommentUsecase(getcommentParams);
 
     allLinks.fold(
-          (exception, message) => emit(state.copyWith(
-          allLinkList: const PageState.error())),
-          (value) => emit(
+      (exception, message) =>
+          emit(state.copyWith(allLinkList: const PageState.error())),
+      (value) => emit(
         state.copyWith(
-          allLinkList: PageState.loaded(data: value.data!  ),
+          allLinkList: PageState.loaded(data: value.data!),
           allLinks: value.data,
         ),
       ),
     );
   }
-
 
   actionComment({
     // CompanyCommentModel? updateLink,
@@ -55,10 +49,9 @@ class CompanyCubit extends Cubit<CompanyState> {
     final response = await _addCommentUsecase(addcommentParams);
 
     response.fold(
-          (exception, message) => emit(
-          state.copyWith(
-              actionLinkState: BlocStatus.fail(error: message))),
-          (value) {
+      (exception, message) => emit(
+          state.copyWith(actionLinkState: BlocStatus.fail(error: message))),
+      (value) {
         final comment_data = value.data!;
 
         if (comment_data.id == '0') {
@@ -82,7 +75,4 @@ class CompanyCubit extends Cubit<CompanyState> {
       },
     );
   }
-
-
-
 }

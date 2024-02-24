@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:crm_smart/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'task_model.freezed.dart';
-
 part 'task_model.g.dart';
 
 TaskModel taskModelFromJson(String str) => TaskModel.fromJson(json.decode(str));
@@ -38,8 +37,10 @@ class TaskModel with _$TaskModel {
     @JsonKey(name: "priority") dynamic priority,
     @JsonKey(name: "name") String? name,
     @JsonKey(name: "assigned_by_name") String? assignedByName,
-    @JsonKey(name: "assigend_department_from_name") String? assigendDepartmentFromName,
-    @JsonKey(name: "assigend_department_to_name") String? assigendDepartmentToName,
+    @JsonKey(name: "assigend_department_from_name")
+    String? assigendDepartmentFromName,
+    @JsonKey(name: "assigend_department_to_name")
+    String? assigendDepartmentToName,
     @JsonKey(name: "assigend_region_from") String? assigendRegionFrom,
     @JsonKey(name: "assigend_region_to") String? assigendRegionTo,
     @JsonKey(name: "created_by") String? createdBy,
@@ -59,7 +60,8 @@ class TaskModel with _$TaskModel {
     BlocStatus taskBlocStatus,
   }) = _TaskModel;
 
-  factory TaskModel.fromJson(Map<String, dynamic> json) => _$TaskModelFromJson(json);
+  factory TaskModel.fromJson(Map<String, dynamic> json) =>
+      _$TaskModelFromJson(json);
 }
 
 @freezed
@@ -74,7 +76,8 @@ class AssignedUser with _$AssignedUser {
     @JsonKey(name: "name_mange") String? nameMange,
   }) = _AssignedUser;
 
-  factory AssignedUser.fromJson(Map<String, dynamic> json) => _$AssignedUserFromJson(json);
+  factory AssignedUser.fromJson(Map<String, dynamic> json) =>
+      _$AssignedUserFromJson(json);
 }
 
 @freezed
@@ -85,7 +88,8 @@ class Clients with _$Clients {
     @JsonKey(name: "ismarketing") String? ismarketing,
   }) = _Clients;
 
-  factory Clients.fromJson(Map<String, dynamic> json) => _$ClientsFromJson(json);
+  factory Clients.fromJson(Map<String, dynamic> json) =>
+      _$ClientsFromJson(json);
 }
 
 @freezed
@@ -95,7 +99,8 @@ class Invoices with _$Invoices {
     @JsonKey(name: "stateclient") String? stateclient,
   }) = _Invoices;
 
-  factory Invoices.fromJson(Map<String, dynamic> json) => _$InvoicesFromJson(json);
+  factory Invoices.fromJson(Map<String, dynamic> json) =>
+      _$InvoicesFromJson(json);
 }
 
 @freezed
@@ -105,7 +110,8 @@ class TaskGroup with _$TaskGroup {
     @JsonKey(name: "groupName") String? groupName,
   }) = _TaskGroup;
 
-  factory TaskGroup.fromJson(Map<String, dynamic> json) => _$TaskGroupFromJson(json);
+  factory TaskGroup.fromJson(Map<String, dynamic> json) =>
+      _$TaskGroupFromJson(json);
 }
 
 @freezed
@@ -119,7 +125,8 @@ class TaskStatus with _$TaskStatus {
     @JsonKey(name: "pivot") Pivot? pivot,
   }) = _TaskStatus;
 
-  factory TaskStatus.fromJson(Map<String, dynamic> json) => _$TaskStatusFromJson(json);
+  factory TaskStatus.fromJson(Map<String, dynamic> json) =>
+      _$TaskStatusFromJson(json);
 }
 
 @freezed

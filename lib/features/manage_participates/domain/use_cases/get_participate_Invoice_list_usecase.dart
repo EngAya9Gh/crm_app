@@ -3,8 +3,8 @@ import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/manage_participates/domain/repositories/participate_list_repository.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/models/profile_invoice_model.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 
 @injectable
 class ParticipateInvoiceListUsecase extends UseCase<

@@ -1,6 +1,6 @@
-import 'package:crm_smart/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/api/api_utils.dart';
 import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/features/manage_participates/data/data_sources/participates_list_datasource.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participate_client_model.dart';
@@ -8,8 +8,8 @@ import 'package:crm_smart/features/manage_participates/domain/repositories/parti
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/models/profile_invoice_model.dart';
-import '../../../../common/widgets/profile_comments_model.dart';
+import '../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../core/common/widgets/profile_comments_model.dart';
 
 @Injectable(as: ParticipateListRepository)
 class ParticipateListRepositoryImpl implements ParticipateListRepository {

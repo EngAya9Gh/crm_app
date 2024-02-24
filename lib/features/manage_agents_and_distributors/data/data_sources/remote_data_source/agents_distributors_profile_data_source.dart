@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../../api/dio_services.dart';
-import '../../../../../common/models/profile_invoice_model.dart';
-import '../../../../../common/widgets/profile_comments_model.dart';
+import '../../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
@@ -34,6 +35,7 @@ abstract class AgentsDistributorsProfileDataSource {
   });
 }
 
+@LazySingleton(as: AgentsDistributorsProfileDataSource)
 class AgentsDistributorsProfileDataSourceImpl
     extends AgentsDistributorsProfileDataSource {
   final DioServices dio;
@@ -50,7 +52,10 @@ class AgentsDistributorsProfileDataSourceImpl
       final data = response['data'];
 
       final List<ClientModel> clientsList = [];
+      print("data.length is => ${data.length}");
       for (int i = 0; i < data.length; i++) {
+        print("index is => $i");
+        print("data[i] is => ${data[i]}");
         clientsList.add(ClientModel.fromJson(data[i]));
       }
 

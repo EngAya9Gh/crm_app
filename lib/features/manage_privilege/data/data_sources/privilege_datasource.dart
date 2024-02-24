@@ -5,10 +5,10 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/constants/route.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/api/api_utils.dart';
 import '../../../../core/api/client_config.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/utils/end_points.dart';
 
 @injectable
 class PrivilegeDatasource {
@@ -16,7 +16,8 @@ class PrivilegeDatasource {
 
   final ClientApi _clientApi;
 
-  Future<ResponseWrapper<List<PrivilegeModel>>> getPrivileges(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<PrivilegeModel>>> getPrivileges(
+      Map<String, dynamic> body) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -29,7 +30,8 @@ class PrivilegeDatasource {
 
       return ResponseWrapper<List<PrivilegeModel>>.fromJson(
         response.data,
-        (json) => List.from((json as List<dynamic>).map((e) => PrivilegeModel.fromJson(e as Map<String, dynamic>))),
+        (json) => List.from((json as List<dynamic>)
+            .map((e) => PrivilegeModel.fromJson(e as Map<String, dynamic>))),
       );
     }
 
@@ -48,7 +50,8 @@ class PrivilegeDatasource {
 
       return ResponseWrapper<List<LevelModel>>.fromJson(
         response.data,
-        (json) => List.from((json as List<dynamic>).map((e) => LevelModel.fromJson(e as Map<String, dynamic>))),
+        (json) => List.from((json as List<dynamic>)
+            .map((e) => LevelModel.fromJson(e as Map<String, dynamic>))),
       );
     }
 
@@ -72,7 +75,8 @@ class PrivilegeDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<void>> updatePrivileges(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<void>> updatePrivileges(
+      Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
       dio.options.baseUrl = 'http://test.smartcrm.ws/api/';

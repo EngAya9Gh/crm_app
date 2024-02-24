@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../common/enums/enums.dart';
-import '../../../../common/widgets/custom_error_widget.dart';
-import '../../../../common/widgets/custom_loading_indicator.dart';
+import '../../../../core/common/enums/enums.dart';
+import '../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_text.dart';

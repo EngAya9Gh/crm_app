@@ -12,7 +12,7 @@ part of 'update_config.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 UpdateConfig _$UpdateConfigFromJson(Map<String, dynamic> json) {
   return _UpdateConfig.fromJson(json);
@@ -24,7 +24,6 @@ mixin _$UpdateConfig {
   String? get idVersion => throw _privateConstructorUsedError;
   @JsonKey(name: "name_version")
   String? get nameVersion => throw _privateConstructorUsedError;
-
   @JsonKey(name: "link_version")
   String? get linkVersion => throw _privateConstructorUsedError;
   @JsonKey(name: "type_version", fromJson: UpdateConfig.typeVersionFromJson)
@@ -196,7 +195,7 @@ class _$UpdateConfigImpl extends _UpdateConfig {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UpdateConfigImpl &&

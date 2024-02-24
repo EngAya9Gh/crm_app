@@ -1,23 +1,17 @@
-
-
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../common/helpers/helper_functions.dart';
+import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/widgets/custom_widget/custom_button_new.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_drop_down.dart';
-import '../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../app/presentation/widgets/app_scaffold.dart';
-import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/link_model.dart';
@@ -25,14 +19,14 @@ import '../../domain/use_cases/action_link_usercase.dart';
 import '../manager/link_cubit.dart';
 
 class ActionLinkPage extends StatefulWidget {
-  const ActionLinkPage({Key? key,this.linkModel}) : super(key: key);
-  final LinkImportantModel?  linkModel;
+  const ActionLinkPage({Key? key, this.linkModel}) : super(key: key);
+  final LinkImportantModel? linkModel;
   @override
   State<ActionLinkPage> createState() => _ActionLinkPageState();
 }
 
 class _ActionLinkPageState extends State<ActionLinkPage> {
-  late ValueNotifier<String?>  _titleLinkController;
+  late ValueNotifier<String?> _titleLinkController;
   late TextEditingController _linkDescriptionController;
   late TextEditingController _linkController;
   late TextEditingController _notesController;
@@ -44,18 +38,21 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
 
   bool get isEdit => linkModel != null;
 
-  @override void initState() {
+  @override
+  void initState() {
     // TODO: implement initState
     currentUser = context.read<UserProvider>().currentUser;
-    _linkCubit=GetIt.I<LinkCubit>();
-    _titleLinkController =  ValueNotifier(linkModel?.title.toString())  ;
+    _linkCubit = GetIt.I<LinkCubit>();
+    _titleLinkController = ValueNotifier(linkModel?.title.toString());
     _linkController = TextEditingController(text: linkModel?.link.toString());
     _notesController = TextEditingController(text: linkModel?.notes.toString());
-    _linkDescriptionController = TextEditingController(text: linkModel?.address.toString());
+    _linkDescriptionController =
+        TextEditingController(text: linkModel?.address.toString());
     _formKey = GlobalKey<FormState>();
 
     super.initState();
   }
+
   @override
   void dispose() {
     _linkController.dispose();
@@ -64,16 +61,14 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
 
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
       appBar: SmartCrmAppBar(
-        appBarParams:
-        AppBarParams(
+        appBarParams: AppBarParams(
           title: isEdit ? 'تعديل' : 'إضافة ',
-          action: [
-
-          ],
+          action: [],
         ),
       ),
       body: Form(
@@ -97,7 +92,8 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                             child: ValueListenableBuilder<String?>(
                                 valueListenable: _titleLinkController,
                                 builder: (context, value, _) {
-                                  return AppDropdownButtonFormField<String, String>(
+                                  return AppDropdownButtonFormField<String,
+                                      String>(
                                     hint: 'تصنيفات الروابط',
                                     items: clientTypeVm.typeOfLinks,
                                     itemAsValue: (item) => item,
@@ -106,7 +102,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                                     onChange: (value) {
                                       if (value == null) return;
 
-                                      _titleLinkController.value= value;
+                                      _titleLinkController.value = value;
                                     },
                                   );
                                 }),
@@ -125,15 +121,15 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                   AppTextField(
                     labelText: "الرابط*",
                     validator: HelperFunctions.instance.requiredFiled,
-                    controller: _linkController ,
+                    controller: _linkController,
                     minLines: 5,
                     contentPadding: HWEdgeInsets.all(15),
                   ),
-               20.verticalSpace,
+                  20.verticalSpace,
                   AppTextField(
                     labelText: "ملاحظات*",
                     validator: HelperFunctions.instance.requiredFiled,
-                    controller: _notesController ,
+                    controller: _notesController,
                     minLines: 5,
                     contentPadding: HWEdgeInsets.all(15),
                   ),
@@ -146,32 +142,32 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                         if (state.actionLinkState.isLoading())
                           return Center(child: CircularProgressIndicator());
 
-                        return
-                          custom_button_new(
+                        return custom_button_new(
                           onpress: () {
                             final isValid = _formKey.currentState!.validate();
                             if (!isValid) return;
                             _linkCubit.actionLink(
-
                               updateLink: linkModel,
                               onSuccess: (String? value) {
                                 if (value != null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Text('errorً')));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text('errorً')));
                                   return;
                                 }
 
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text('تم')));
-                                Navigator.pop(context,value);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('تم')));
+                                Navigator.pop(context, value);
                               },
                               addLinkParams: ActionLinksParams(
-                                  user_id:  currentUser.idUser!.toString(),
-                                  id: linkModel==null?null:linkModel!.id.toString(),
-                                  address: '',
-                                  link: _linkController.text.toString(),
-                                  notes: _notesController.text.toString(),
-                                  title: _titleLinkController.value.toString(),
+                                user_id: currentUser.idUser!.toString(),
+                                id: linkModel == null
+                                    ? null
+                                    : linkModel!.id.toString(),
+                                address: '',
+                                link: _linkController.text.toString(),
+                                notes: _notesController.text.toString(),
+                                title: _titleLinkController.value.toString(),
                               ),
                             );
                           },
@@ -185,10 +181,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
             );
           },
         ),
-
-
       ),
-
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -44,7 +44,8 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _mainCityProvider.getcityAll();
       _communicationListBloc = context.read<CommunicationListBloc>()
-        ..add(GetCommunicationListEvent(fkCountry!, query: _searchTextField.text));
+        ..add(GetCommunicationListEvent(fkCountry!,
+            query: _searchTextField.text));
     });
 
     super.initState();
@@ -65,7 +66,8 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'قائمة عملاء التميز')),
+      appBar: SmartCrmAppBar(
+          appBarParams: AppBarParams(title: 'قائمة عملاء التميز')),
       body: Directionality(
         textDirection: TextDirection.rtl,
         child: BlocBuilder<CommunicationListBloc, CommunicationListState>(
@@ -93,14 +95,16 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       5.horizontalSpace,
                       Expanded(
                         flex: 3,
-                        child: BlocBuilder<CommunicationListBloc, CommunicationListState>(
+                        child: BlocBuilder<CommunicationListBloc,
+                            CommunicationListState>(
                           builder: (context, state) {
                             return Consumer<MainCityProvider>(
                               builder: (context, cities, child) {
                                 return Row(
                                   children: [
                                     Expanded(
-                                      child: AppDropdownButtonFormField<CityModel, String?>(
+                                      child: AppDropdownButtonFormField<
+                                          CityModel, String?>(
                                         items: cities.listcity,
                                         value: state.selectedCityId,
                                         itemAsString: (item) => item!.name_city,
@@ -109,16 +113,23 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                                           if (value == null) {
                                             return;
                                           }
-                                          _communicationListBloc
-                                              .add(OnChangeRegionEvent(value, fkCountry!, _searchTextField.text));
+                                          _communicationListBloc.add(
+                                              OnChangeRegionEvent(
+                                                  value,
+                                                  fkCountry!,
+                                                  _searchTextField.text));
                                         },
                                         hint: "المدينة",
                                       ),
                                     ),
                                     if (state.selectedCityId != null)
                                       IconButton(
-                                          onPressed: () => _communicationListBloc
-                                              .add(OnChangeRegionEvent(null, fkCountry!, _searchTextField.text)),
+                                          onPressed: () =>
+                                              _communicationListBloc.add(
+                                                  OnChangeRegionEvent(
+                                                      null,
+                                                      fkCountry!,
+                                                      _searchTextField.text)),
                                           icon: Icon(Icons.close))
                                   ],
                                 );
@@ -152,15 +163,18 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                   // ),
                   Expanded(
                     child: RefreshIndicator(
-                      onRefresh: () async => _communicationListBloc
-                          .add(GetCommunicationListEvent(fkCountry!, query: _searchTextField.text)),
+                      onRefresh: () async => _communicationListBloc.add(
+                          GetCommunicationListEvent(fkCountry!,
+                              query: _searchTextField.text)),
                       child: ListView.separated(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         itemBuilder: (BuildContext context, int index) =>
                             communicationWidget(
                           state.communicationListState.data[index],
                         ),
-                        separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
+                        separatorBuilder: (BuildContext context, int index) =>
+                            SizedBox(height: 10),
                         itemCount: state.communicationListState.data.length,
                       ),
                     ),
@@ -196,7 +210,6 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -206,7 +219,8 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                         Text(
                           " اسم الشركة: ",
                           // style: TextStyle(fontFamily: kfontfamily2),
-                          style: TextStyle(color: kMainColor, fontFamily: kfontfamily2),
+                          style: TextStyle(
+                              color: kMainColor, fontFamily: kfontfamily2),
                           textDirection: TextDirection.rtl,
                           textAlign: TextAlign.start,
                         ),
@@ -225,7 +239,6 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                       ],
                     ),
                   ),
-
                 ],
               ),
               SizedBox(height: 15),
@@ -234,14 +247,17 @@ class _CommunicationListPageState extends State<CommunicationListPage> {
                 children: [
                   Text(
                     communication.nameRegoin ?? '',
-                    style: TextStyle(color: Colors.black, fontFamily: kfontfamily2),
+                    style: TextStyle(
+                        color: Colors.black, fontFamily: kfontfamily2),
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(width: 15),
                   Text(
-                    intl.DateFormat("yyyy MMM dd hh:mm a", "ar").format(communication.dateCreate ?? DateTime.now()),
-                    style: TextStyle(color: kMainColor, fontFamily: kfontfamily2),
+                    intl.DateFormat("yyyy MMM dd hh:mm a", "ar")
+                        .format(communication.dateCreate ?? DateTime.now()),
+                    style:
+                        TextStyle(color: kMainColor, fontFamily: kfontfamily2),
                     textDirection: TextDirection.rtl,
                     textAlign: TextAlign.start,
                   ),

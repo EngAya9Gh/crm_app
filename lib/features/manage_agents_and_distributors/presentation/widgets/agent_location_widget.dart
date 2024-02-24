@@ -2,9 +2,9 @@ import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../common/constants/constants.dart';
-import '../../../../common/widgets/custom_error_widget.dart';
+import '../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../core/utils/app_constants.dart';
+import '../../../../core/utils/app_styles.dart';
 import '../../../../model/maincitymodel.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
@@ -69,7 +69,7 @@ class AgentLocationWidget extends StatelessWidget {
                       alignment: Alignment.centerRight,
                       child: Container(
                         margin: const EdgeInsetsDirectional.all(2),
-                        decoration: decoration,
+                        decoration: AppStyles.customBoxDecoration,
                         child: ListTile(
                           trailing: Text(
                             city?.name_city ?? '',

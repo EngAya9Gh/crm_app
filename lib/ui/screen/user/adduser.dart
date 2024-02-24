@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
 import 'package:crm_smart/provider/manage_provider.dart';

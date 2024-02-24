@@ -1,11 +1,11 @@
-import 'package:crm_smart/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../../../../../common/enums/enums.dart';
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../app/presentation/widgets/app_text.dart';

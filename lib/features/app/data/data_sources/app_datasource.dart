@@ -3,10 +3,10 @@ import 'package:crm_smart/features/app/data/models/update_config.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/constants/route.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/api/api_utils.dart';
 import '../../../../core/api/client_config.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/utils/end_points.dart';
 
 @injectable
 class AppDatasource {
@@ -24,8 +24,10 @@ class AppDatasource {
         ),
       );
 
-      return ResponseWrapper<List<UpdateConfig>>.fromJson(response.data,
-          (json) => List.from((json as List<dynamic>).map((e) => UpdateConfig.fromJson(e as Map<String, dynamic>))));
+      return ResponseWrapper<List<UpdateConfig>>.fromJson(
+          response.data,
+          (json) => List.from((json as List<dynamic>)
+              .map((e) => UpdateConfig.fromJson(e as Map<String, dynamic>))));
     }
 
     return throwAppException(fun);

@@ -1,9 +1,11 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/use_case/use_case.dart';
 import '../../../../model/invoiceModel.dart';
 import '../repositories/agents_distributors_profile_repo.dart';
 
+@lazySingleton
 class AddAgentDateUseCase
     extends UseCase<Either<String, void>, AddAgentDateUseCaseParams> {
   final AgentsDistributorsProfileRepo agentsDistributorsProfileRepo;

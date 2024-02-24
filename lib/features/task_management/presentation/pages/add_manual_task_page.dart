@@ -1,4 +1,4 @@
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -10,7 +10,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
-import '../../../../common/helpers/helper_functions.dart';
+
+import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
@@ -69,15 +70,18 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
         ? '2'
         : privilegeBloc.checkPrivilege('169')
             ? null
-            : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
+            : privilegeBloc.checkPrivilege('168') ||
+                    privilegeBloc.checkPrivilege('166')
                 ? currentUser.typeAdministration
                 : null;
-    regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
+    regionId =
+        privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
 
     _usersCubit = GetIt.I<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getAllUsers()
-      ..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
+      ..getUsersByDepartmentAndRegion(
+          regionId: regionId, departmentId: departmentId);
 
     _taskNameController = TextEditingController();
     _deadLineDateController = TextEditingController();
@@ -108,7 +112,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             child: Directionality(
               textDirection: TextDirection.rtl,
               child: Dialog(
-                insetPadding: HWEdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                insetPadding:
+                    HWEdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Padding(
                   padding: HWEdgeInsets.symmetric(horizontal: 12.0),
                   child: SingleChildScrollView(
@@ -119,9 +124,12 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                         Row(
                           children: [
                             SizedBox(width: 10),
-                            InkWell(onTap: Navigator.of(context).pop, child: Icon(Icons.close)),
+                            InkWell(
+                                onTap: Navigator.of(context).pop,
+                                child: Icon(Icons.close)),
                             Spacer(),
-                            Text('إضافة مهمة', style: context.textTheme.titleMedium),
+                            Text('إضافة مهمة',
+                                style: context.textTheme.titleMedium),
                             SizedBox(width: 30),
                             Spacer(),
                           ],
@@ -154,7 +162,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                             labelText: "عنوان المهمة*",
                             maxLines: 1,
                             validator: (value) {
-                              if (selectedPublicType != PublicType.other) return null;
+                              if (selectedPublicType != PublicType.other)
+                                return null;
 
                               if (value?.trim().isEmpty ?? true) {
                                 return "هذا الحقل مطلوب.";
@@ -176,13 +185,16 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                         if (privilegeBloc.checkPrivilege('171'))
                           InkWell(
                             onTap: () async {
-                              final selectedTime = TimeOfDay.fromDateTime(state.deadLineDate ?? DateTime.now());
+                              final selectedTime = TimeOfDay.fromDateTime(
+                                  state.deadLineDate ?? DateTime.now());
 
                               DateTime? date = await showDatePicker(
                                 context: context,
-                                initialDate: state.deadLineDate ?? DateTime.now(),
+                                initialDate:
+                                    state.deadLineDate ?? DateTime.now(),
                                 firstDate: DateTime.now(),
-                                lastDate: DateTime.now().add(Duration(days: 365)),
+                                lastDate:
+                                    DateTime.now().add(Duration(days: 365)),
                               );
 
                               if (date == null) return;
@@ -192,10 +204,13 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                 initialTime: selectedTime,
                               );
                               if (time != null) {
-                                date = date.copyWith(hour: time.hour, minute: time.minute);
+                                date = date.copyWith(
+                                    hour: time.hour, minute: time.minute);
                               }
 
-                              _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy, HH:mm').format(date);
+                              _deadLineDateController.text =
+                                  Intl.DateFormat('dd MMM yyyy, HH:mm')
+                                      .format(date);
                               _taskCubit.onChangeDeadLineDate(date);
                             },
                             child: IgnorePointer(
@@ -203,7 +218,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                               child: AppTextField(
                                 labelText: "تاريخ التسليم*",
                                 maxLines: 1,
-                                validator: HelperFunctions.instance.requiredFiled,
+                                validator:
+                                    HelperFunctions.instance.requiredFiled,
                                 readOnly: true,
                                 controller: _deadLineDateController,
                                 textDirection: TextDirection.ltr,
@@ -215,7 +231,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                         GroupedButtons<AssignedToType>(
                           title: 'اسناد إلى',
                           buttons: assignedToList,
-                          buttonTextBuilder: (selected, value, context) => value.text,
+                          buttonTextBuilder: (selected, value, context) =>
+                              value.text,
                           onSelected: (value, index, isSelected) {
                             _taskCubit.onChangeSelectedAssignedToType(value);
                           },
@@ -233,34 +250,48 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                                 width: double.infinity,
                                 child: AppTextButton(
                                   onPressed: () {
-                                    final isValid = _formKey.currentState!.validate();
+                                    final isValid =
+                                        _formKey.currentState!.validate();
                                     if (!isValid) return;
 
                                     if (state.selectedAssignedToType == null) {
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
                                         content: AppText(
                                           "من فضلك قم باختيار اسناد إلى",
-                                          style: context.textTheme.bodyMedium!.sb!
-                                              .copyWith(color: context.colorScheme.white),
+                                          style: context
+                                              .textTheme.bodyMedium!.sb!
+                                              .copyWith(
+                                                  color: context
+                                                      .colorScheme.white),
                                         ),
-                                        backgroundColor: context.colorScheme.error,
+                                        backgroundColor:
+                                            context.colorScheme.error,
                                       ));
                                       return;
                                     }
 
-                                    final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
-                                    final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
+                                    final selectedRegionId = context
+                                        .read<RegionProvider>()
+                                        .selectedRegionId;
+                                    final selectedValueManage = context
+                                        .read<manage_provider>()
+                                        .selectedValuemanag;
 
                                     _taskCubit.addTaskAction(
-                                      taskName: selectedPublicType == PublicType.other
-                                          ? _taskNameController.text
-                                          : selectedPublicType?.text,
-                                      onSuccess: () =>
-                                          Navigator.pop(context, selectedPublicType == PublicType.linkComment),
+                                      taskName:
+                                          selectedPublicType == PublicType.other
+                                              ? _taskNameController.text
+                                              : selectedPublicType?.text,
+                                      onSuccess: () => Navigator.pop(
+                                          context,
+                                          selectedPublicType ==
+                                              PublicType.linkComment),
                                       regionId: selectedRegionId,
                                       departmentId: selectedValueManage,
                                       userId: currentUser.idUser!,
-                                      description: _taskDescriptionController.text,
+                                      description:
+                                          _taskDescriptionController.text,
                                       mainTypeTask: 'ProcessManual',
                                       publicType: selectedPublicType,
                                       clientId: widget.clientId,
@@ -290,10 +321,12 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
 
   List<AssignedToType> get assignedToList {
     final list = List.of(AssignedToType.values);
-    if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
+    if (!privilegeBloc.checkPrivilege('167') &&
+        !privilegeBloc.checkPrivilege('174')) {
       list.remove(AssignedToType.region);
     }
-    if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
+    if (!privilegeBloc.checkPrivilege('168') &&
+        !privilegeBloc.checkPrivilege('169')) {
       list.remove(AssignedToType.department);
     }
     if (!privilegeBloc.checkPrivilege('166')) {
@@ -310,7 +343,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
           return DropdownSearch<UserRegionDepartment>(
             mode: Mode.DIALOG,
             filterFn: (user, filter) => user!.nameUser!.contains(filter!),
-            compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+            compareFn: (item, selectedItem) =>
+                item?.idUser == selectedItem?.idUser,
             items: state.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
             itemAsString: (u) => u!.nameUser!,
             onChanged: (data) {
@@ -330,7 +364,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             dropdownSearchDecoration: InputDecoration(
               isCollapsed: true,
               hintText: 'الموظف',
-              hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
+              hintStyle:
+                  context.textTheme.titleSmall?.copyWith(color: Colors.grey),
               contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.primary),
@@ -361,7 +396,9 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
                   : state.usersByDepartmentAndRegion.isError
                       ? IconButton(
                           onPressed: () =>
-                              _usersCubit.getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId),
+                              _usersCubit.getUsersByDepartmentAndRegion(
+                                  regionId: regionId,
+                                  departmentId: departmentId),
                           icon: Icon(Icons.refresh))
                       : null,
             ),
@@ -376,11 +413,15 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     if (taskState.selectedAssignedToType == AssignedToType.department)
       return Consumer<manage_provider>(
         builder: (context, manageList, child) {
-          final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
+          final userDepartment =
+              context.read<UserProvider>().currentUser.typeAdministration;
           final list = GetIt.I<PrivilegeCubit>().checkPrivilege('169')
               ? manageList.listtext
-              : GetIt.I<PrivilegeCubit>().checkPrivilege('168') || GetIt.I<PrivilegeCubit>().checkPrivilege('174')
-                  ? manageList.listtext.where((element) => element.idmange == userDepartment).toList()
+              : GetIt.I<PrivilegeCubit>().checkPrivilege('168') ||
+                      GetIt.I<PrivilegeCubit>().checkPrivilege('174')
+                  ? manageList.listtext
+                      .where((element) => element.idmange == userDepartment)
+                      .toList()
                   : manageList.listtext;
           return AppDropdownButtonFormField<ManageModel, String>(
             items: list,
@@ -390,7 +431,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
             itemAsString: (item) => item!.name_mange,
             value: manageList.selectedValuemanag,
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.department) {
+              if (taskState.selectedAssignedToType !=
+                  AssignedToType.department) {
                 return null;
               }
               if (value == null) {
@@ -412,7 +454,9 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
           final list = privilegeBloc.checkPrivilege('169')
               ? cart.listRegion
               : privilegeBloc.checkPrivilege('167')
-                  ? cart.listRegion.where((element) => element.regionId == user.fkRegoin).toList()
+                  ? cart.listRegion
+                      .where((element) => element.regionId == user.fkRegoin)
+                      .toList()
                   : cart.listRegion;
           return AppDropdownButtonFormField<RegionModel, String>(
             items: list,

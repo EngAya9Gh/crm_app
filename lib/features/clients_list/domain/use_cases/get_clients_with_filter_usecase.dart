@@ -1,22 +1,23 @@
-import 'package:crm_smart/common/constants/constants.dart';
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/clients_list/domain/repositories/clients_list_repository.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/models/nullable.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/common/models/nullable.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../data/models/clients_list_response.dart';
 
 @injectable
-class GetClientsWithFilterUserUsecase
-    extends UseCase<Result<ResponseWrapper<List<ClientModel>>>, GetClientsWithFilterParams> {
+class GetClientsWithFilterUserUsecase extends UseCase<
+    Result<ResponseWrapper<List<ClientModel>>>, GetClientsWithFilterParams> {
   GetClientsWithFilterUserUsecase(this.repository);
 
   final ClientsListRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<List<ClientModel>>>> call(GetClientsWithFilterParams params) {
+  Future<Result<ResponseWrapper<List<ClientModel>>>> call(
+      GetClientsWithFilterParams params) {
     return repository.getClientsWithFilter(params.toMap());
   }
 }
@@ -45,7 +46,7 @@ class GetClientsWithFilterParams {
     this.regionPrivilegeId,
     this.typeClient_record,
     this.query,
-    this.perPage = kPerPage,
+    this.perPage = AppConstants.kPerPage,
   });
 
   Map<String, dynamic> toMap() {
@@ -86,11 +87,18 @@ class GetClientsWithFilterParams {
       perPage: perPage != null ? perPage.value! : this.perPage,
       regionId: regionId != null ? regionId.value : this.regionId,
       typeClient: typeClient != null ? typeClient.value : this.typeClient,
-      typeClient_record: typeClient_record != null ? typeClient_record.value : this.typeClient_record,
+      typeClient_record: typeClient_record != null
+          ? typeClient_record.value
+          : this.typeClient_record,
       userId: userId != null ? userId.value : this.userId,
-      activityTypeId: activityTypeId != null ? activityTypeId.value : this.activityTypeId,
-      userPrivilegeId: userPrivilegeId != null ? userPrivilegeId.value : this.userPrivilegeId,
-      regionPrivilegeId: regionPrivilegeId != null ? regionPrivilegeId.value : this.regionPrivilegeId,
+      activityTypeId:
+          activityTypeId != null ? activityTypeId.value : this.activityTypeId,
+      userPrivilegeId: userPrivilegeId != null
+          ? userPrivilegeId.value
+          : this.userPrivilegeId,
+      regionPrivilegeId: regionPrivilegeId != null
+          ? regionPrivilegeId.value
+          : this.regionPrivilegeId,
       query: query != null ? query.value : this.query,
     );
   }

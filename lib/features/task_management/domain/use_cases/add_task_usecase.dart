@@ -1,15 +1,18 @@
 import 'dart:io';
+
 import 'package:collection/collection.dart';
-import 'package:crm_smart/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/task_management/domain/repositories/task_repository.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../../../model/usermodel.dart';
 import '../../data/models/user_region_department.dart';
 
 @injectable
-class AddTaskUsecase extends UseCase<Result<ResponseWrapper<bool>>, AddTaskParams> {
+class AddTaskUsecase
+    extends UseCase<Result<ResponseWrapper<bool>>, AddTaskParams> {
   AddTaskUsecase(this.repository);
 
   final TaskRepository repository;
@@ -94,5 +97,9 @@ class AddTaskParams {
   }
 
   String dateToString(DateTime dateTime) =>
-      dateTime.year.toString() + '-' + dateTime.month.toString() + '-' + dateTime.day.toString();
+      dateTime.year.toString() +
+      '-' +
+      dateTime.month.toString() +
+      '-' +
+      dateTime.day.toString();
 }

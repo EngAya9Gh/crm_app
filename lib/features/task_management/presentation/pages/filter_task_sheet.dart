@@ -1,4 +1,4 @@
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
@@ -12,7 +12,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
-import '../../../../common/helpers/helper_functions.dart';
+
+import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
@@ -44,19 +45,26 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
   void initState() {
     privilegeBloc = GetIt.I<PrivilegeCubit>();
     final currentUser = context.read<UserProvider>().currentUser;
-    departmentId = privilegeBloc.checkPrivilege('159') ? currentUser.typeAdministration : null;
-    regionId = privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
+    departmentId = privilegeBloc.checkPrivilege('159')
+        ? currentUser.typeAdministration
+        : null;
+    regionId =
+        privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
 
     _taskCubit = GetIt.I<TaskCubit>();
-    _usersCubit = GetIt.I<UsersCubit>()..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
+    _usersCubit = GetIt.I<UsersCubit>()
+      ..getUsersByDepartmentAndRegion(
+          regionId: regionId, departmentId: departmentId);
 
     _fromDateController = TextEditingController();
     _toDateController = TextEditingController();
     if (_taskCubit.state.filterFromDate != null) {
-      _fromDateController.text = Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterFromDate!);
+      _fromDateController.text = Intl.DateFormat('dd MMM yyyy')
+          .format(_taskCubit.state.filterFromDate!);
     }
     if (_taskCubit.state.filterToDate != null) {
-      _toDateController.text = Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterToDate!);
+      _toDateController.text =
+          Intl.DateFormat('dd MMM yyyy').format(_taskCubit.state.filterToDate!);
     }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
@@ -94,7 +102,8 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                               text: 'إعادة الافتراضي',
                               onPressed: state.tasksState.isLoading
                                   ? null
-                                  : () => _taskCubit.resetFilter(() => Navigator.pop(context)),
+                                  : () => _taskCubit.resetFilter(
+                                      () => Navigator.pop(context)),
                             ),
                           ],
                         ),
@@ -106,9 +115,11 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 child: Consumer<manage_provider>(
                                   builder: (context, manageList, child) {
                                     final list = manageList.listtext;
-                                    return AppDropdownButtonFormField<ManageModel, ManageModel>(
+                                    return AppDropdownButtonFormField<
+                                        ManageModel, ManageModel>(
                                       items: list,
-                                      onChange: (value) => _taskCubit.onChangeDepartmentFrom(value),
+                                      onChange: (value) => _taskCubit
+                                          .onChangeDepartmentFrom(value),
                                       hint: "من القسم",
                                       itemAsValue: (ManageModel? item) => item,
                                       itemAsString: (item) => item!.name_mange,
@@ -122,9 +133,11 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 child: Consumer<manage_provider>(
                                   builder: (context, manageList, child) {
                                     final list = manageList.listtext;
-                                    return AppDropdownButtonFormField<ManageModel, ManageModel>(
+                                    return AppDropdownButtonFormField<
+                                        ManageModel, ManageModel>(
                                       items: list,
-                                      onChange: (value) => _taskCubit.onChangeDepartmentTo(value),
+                                      onChange: (value) => _taskCubit
+                                          .onChangeDepartmentTo(value),
                                       hint: "إلى القسم",
                                       itemAsValue: (ManageModel? item) => item,
                                       itemAsString: (item) => item!.name_mange,
@@ -160,9 +173,11 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
                                     final list = cart.listRegion;
-                                    return AppDropdownButtonFormField<RegionModel, RegionModel>(
+                                    return AppDropdownButtonFormField<
+                                        RegionModel, RegionModel>(
                                       items: list,
-                                      onChange: (value) => _taskCubit.onChangeRegionFrom(value),
+                                      onChange: (value) =>
+                                          _taskCubit.onChangeRegionFrom(value),
                                       hint: "من الفرع",
                                       itemAsValue: (RegionModel? item) => item,
                                       itemAsString: (item) => item!.regionName,
@@ -177,9 +192,11 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                   builder: (context, cart, child) {
                                     final list = cart.listRegion;
 
-                                    return AppDropdownButtonFormField<RegionModel, RegionModel>(
+                                    return AppDropdownButtonFormField<
+                                        RegionModel, RegionModel>(
                                       items: list,
-                                      onChange: (value) => _taskCubit.onChangeRegionTo(value),
+                                      onChange: (value) =>
+                                          _taskCubit.onChangeRegionTo(value),
                                       hint: "إلى الفرع",
                                       itemAsValue: (RegionModel? item) => item,
                                       itemAsString: (item) => item!.regionName,
@@ -215,13 +232,18 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 onTap: () async {
                                   DateTime? date = await showDatePicker(
                                     context: context,
-                                    initialDate: state.filterFromDate ?? DateTime.now(),
-                                    firstDate: DateTime.now().subtract(Duration(days: 365 * 2)),
-                                    lastDate: DateTime.now().add(Duration(days: 365)),
+                                    initialDate:
+                                        state.filterFromDate ?? DateTime.now(),
+                                    firstDate: DateTime.now()
+                                        .subtract(Duration(days: 365 * 2)),
+                                    lastDate:
+                                        DateTime.now().add(Duration(days: 365)),
                                   );
                                   if (date == null) return;
 
-                                  _fromDateController.text = Intl.DateFormat('dd MMM yyyy').format(date);
+                                  _fromDateController.text =
+                                      Intl.DateFormat('dd MMM yyyy')
+                                          .format(date);
                                   _taskCubit.onChangeFilterFromDate(date);
                                 },
                                 child: IgnorePointer(
@@ -229,7 +251,8 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                   child: AppTextField(
                                     labelText: "من تاريخ",
                                     maxLines: 1,
-                                    validator: HelperFunctions.instance.requiredFiled,
+                                    validator:
+                                        HelperFunctions.instance.requiredFiled,
                                     readOnly: true,
                                     controller: _fromDateController,
                                     textDirection: TextDirection.ltr,
@@ -244,14 +267,19 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 onTap: () async {
                                   DateTime? date = await showDatePicker(
                                     context: context,
-                                    initialDate: state.filterToDate ?? DateTime.now(),
-                                    firstDate: DateTime.now().subtract(Duration(days: 365 * 2)),
-                                    lastDate: DateTime.now().add(Duration(days: 365)),
+                                    initialDate:
+                                        state.filterToDate ?? DateTime.now(),
+                                    firstDate: DateTime.now()
+                                        .subtract(Duration(days: 365 * 2)),
+                                    lastDate:
+                                        DateTime.now().add(Duration(days: 365)),
                                   );
 
                                   if (date == null) return;
 
-                                  _toDateController.text = Intl.DateFormat('dd MMM yyyy').format(date);
+                                  _toDateController.text =
+                                      Intl.DateFormat('dd MMM yyyy')
+                                          .format(date);
                                   _taskCubit.onChangeToDate(date);
                                 },
                                 child: IgnorePointer(
@@ -259,7 +287,8 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                   child: AppTextField(
                                     labelText: "إلى تاريخ",
                                     maxLines: 1,
-                                    validator: HelperFunctions.instance.requiredFiled,
+                                    validator:
+                                        HelperFunctions.instance.requiredFiled,
                                     readOnly: true,
                                     controller: _toDateController,
                                     textDirection: TextDirection.ltr,
@@ -278,9 +307,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 builder: (context, userState) {
                                   return DropdownSearch<UserRegionDepartment>(
                                     mode: Mode.DIALOG,
-                                    filterFn: (user, filter) => user!.nameUser!.contains(filter!),
-                                    compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
-                                    items: userState.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
+                                    filterFn: (user, filter) =>
+                                        user!.nameUser!.contains(filter!),
+                                    compareFn: (item, selectedItem) =>
+                                        item?.idUser == selectedItem?.idUser,
+                                    items: userState.usersByDepartmentAndRegion
+                                            .getDataWhenSuccess ??
+                                        [],
                                     itemAsString: (u) => u!.nameUser!,
                                     onChanged: (data) {
                                       _taskCubit.onChangeFilterAssignFrom(data);
@@ -290,38 +323,57 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                     dropdownSearchDecoration: InputDecoration(
                                       isCollapsed: true,
                                       hintText: 'اسناد من',
-                                      hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-                                      contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
+                                      hintStyle: context.textTheme.titleSmall
+                                          ?.copyWith(color: Colors.grey),
+                                      contentPadding:
+                                          HWEdgeInsetsDirectional.only(
+                                              start: 12, end: 12),
                                       border: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.error),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.error),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.error),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.error),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
-                                      suffixIcon: userState.allUsersList.isLoading
+                                      suffixIcon: userState
+                                              .allUsersList.isLoading
                                           ? CupertinoActivityIndicator()
                                           : userState.allUsersList.isError
                                               ? IconButton(
-                                                  onPressed: () => _usersCubit.getUsersByDepartmentAndRegion(
-                                                      regionId: regionId, departmentId: departmentId),
+                                                  onPressed: () => _usersCubit
+                                                      .getUsersByDepartmentAndRegion(
+                                                          regionId: regionId,
+                                                          departmentId:
+                                                              departmentId),
                                                   icon: Icon(Icons.refresh))
                                               : null,
                                     ),
@@ -336,9 +388,13 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                 builder: (context, userState) {
                                   return DropdownSearch<UserRegionDepartment>(
                                     mode: Mode.DIALOG,
-                                    filterFn: (user, filter) => user!.nameUser!.contains(filter!),
-                                    compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
-                                    items: userState.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
+                                    filterFn: (user, filter) =>
+                                        user!.nameUser!.contains(filter!),
+                                    compareFn: (item, selectedItem) =>
+                                        item?.idUser == selectedItem?.idUser,
+                                    items: userState.usersByDepartmentAndRegion
+                                            .getDataWhenSuccess ??
+                                        [],
                                     itemAsString: (u) => u!.nameUser!,
                                     onChanged: (data) {
                                       _taskCubit.onChangeFilterAssignTo(data);
@@ -348,38 +404,57 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                     dropdownSearchDecoration: InputDecoration(
                                       isCollapsed: true,
                                       hintText: 'اسناد إلى',
-                                      hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-                                      contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
+                                      hintStyle: context.textTheme.titleSmall
+                                          ?.copyWith(color: Colors.grey),
+                                      contentPadding:
+                                          HWEdgeInsetsDirectional.only(
+                                              start: 12, end: 12),
                                       border: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.primary),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.error),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.error),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
                                       focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: context.colorScheme.error),
-                                        borderRadius: BorderRadius.circular(10).r,
+                                        borderSide: BorderSide(
+                                            color: context.colorScheme.error),
+                                        borderRadius:
+                                            BorderRadius.circular(10).r,
                                       ),
-                                      suffixIcon: userState.allUsersList.isLoading
+                                      suffixIcon: userState
+                                              .allUsersList.isLoading
                                           ? CupertinoActivityIndicator()
                                           : userState.allUsersList.isError
                                               ? IconButton(
-                                                  onPressed: () => _usersCubit.getUsersByDepartmentAndRegion(
-                                                      regionId: regionId, departmentId: departmentId),
+                                                  onPressed: () => _usersCubit
+                                                      .getUsersByDepartmentAndRegion(
+                                                          regionId: regionId,
+                                                          departmentId:
+                                                              departmentId),
                                                   icon: Icon(Icons.refresh))
                                               : null,
                                     ),

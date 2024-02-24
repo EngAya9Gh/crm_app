@@ -6,13 +6,13 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/constants/route.dart';
-import '../../../../common/models/profile_invoice_model.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
-import '../../../../common/widgets/profile_comments_model.dart';
 import '../../../../core/api/api_utils.dart';
 import '../../../../core/api/client.dart';
 import '../../../../core/api/client_config.dart';
+import '../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../core/utils/end_points.dart';
 import '../models/participate_client_model.dart';
 
 @injectable

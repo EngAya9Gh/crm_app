@@ -1,4 +1,4 @@
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';

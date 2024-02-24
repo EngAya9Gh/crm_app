@@ -1,13 +1,12 @@
-import 'package:crm_smart/model/usermodel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/constants/route.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/api/api_utils.dart';
 import '../../../../core/api/client.dart';
 import '../../../../core/api/client_config.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/utils/end_points.dart';
 import '../models/link_model.dart';
 
 @injectable
@@ -40,9 +39,8 @@ class LinkDatasource {
       // );
 
       return ResponseWrapper<List<LinkImportantModel>>(
-        data: List.from(
-            (response.data['data'] as List<dynamic>)
-                .map((e) => LinkImportantModel.fromJson(e as Map<String, dynamic>))),
+        data: List.from((response.data['data'] as List<dynamic>).map(
+            (e) => LinkImportantModel.fromJson(e as Map<String, dynamic>))),
         message: [],
       );
     }
@@ -50,9 +48,8 @@ class LinkDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<LinkImportantModel>> addLink({
-    required Map<String, dynamic> body
-  }) async {
+  Future<ResponseWrapper<LinkImportantModel>> addLink(
+      {required Map<String, dynamic> body}) async {
     final dio = GetIt.I<Dio>();
     dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
 
@@ -61,7 +58,6 @@ class LinkDatasource {
         RequestConfig(
           endpoint: EndPoints.link.addLink,
           data: body,
-
           clientMethod: ClientMethod.post,
           responseType: ResponseType.json,
         ),
@@ -70,7 +66,7 @@ class LinkDatasource {
 
       return ResponseWrapper<LinkImportantModel>.fromJson(
         response.data,
-            (json) => LinkImportantModel.fromJson(response.data['data']),
+        (json) => LinkImportantModel.fromJson(response.data['data']),
       );
     }
 
@@ -87,7 +83,7 @@ class LinkDatasource {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
-          endpoint: EndPoints.link.updateLink+id.toString(),
+          endpoint: EndPoints.link.updateLink + id.toString(),
           data: body,
           clientMethod: ClientMethod.post,
           responseType: ResponseType.json,
@@ -97,7 +93,7 @@ class LinkDatasource {
 
       return ResponseWrapper<LinkImportantModel>.fromJson(
         response.data,
-            (json) => LinkImportantModel.fromJson(response.data['data']),
+        (json) => LinkImportantModel.fromJson(response.data['data']),
       );
     }
 

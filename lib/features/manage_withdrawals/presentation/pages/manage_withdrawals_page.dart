@@ -1,10 +1,11 @@
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
+
 import '../../../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../manager/manage_withdrawals_cubit.dart';
@@ -23,7 +24,8 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
   @override
   void initState() {
     currentUser = context.read<UserProvider>().currentUser;
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()..getUsersSeries(currentUser.fkCountry!);
+    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+      ..getUsersSeries(currentUser.fkCountry!);
     super.initState();
   }
 
@@ -34,7 +36,8 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
       child: Builder(
         builder: (context) {
           return BlocConsumer<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-            listener: (context, state) => ScaffoldMessenger.of(context).showSnackBar(
+            listener: (context, state) =>
+                ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Colors.lightGreen,
                 content: Text(
@@ -44,11 +47,13 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
               ),
             ),
             listenWhen: (previous, current) =>
-                !previous.updateUsersSeriesState.isSuccess() && current.updateUsersSeriesState.isSuccess(),
+                !previous.updateUsersSeriesState.isSuccess() &&
+                current.updateUsersSeriesState.isSuccess(),
             builder: (context, state) {
               return Scaffold(
                   appBar: AppBar(
-                    title: Text('إدارة الإنسحابات', style: TextStyle(color: kWhiteColor)),
+                    title: Text('إدارة الإنسحابات',
+                        style: TextStyle(color: kWhiteColor)),
                     centerTitle: true,
                     backgroundColor: kMainColor,
                     actions: state.allUsersSeries.isLoading
@@ -59,7 +64,8 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                 child: SizedBox(
                                   height: 25,
                                   width: 25,
-                                  child: CircularProgressIndicator(color: Colors.white),
+                                  child: CircularProgressIndicator(
+                                      color: Colors.white),
                                 ),
                               )
                             else
@@ -73,7 +79,9 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                       );
                                     },
                                     child: Text("حفظ",
-                                        style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.w600)),
+                                        style: TextStyle(
+                                            fontFamily: kfontfamily2,
+                                            fontWeight: FontWeight.w600)),
                                     style: TextButton.styleFrom(
                                       foregroundColor: Colors.white,
                                     ),
@@ -85,12 +93,14 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                   ),
                   floatingActionButton: Builder(
                     builder: (context) {
-                      if (state.allUsersSeries.isLoading || state.updateUsersSeriesState.isLoading()) {
+                      if (state.allUsersSeries.isLoading ||
+                          state.updateUsersSeriesState.isLoading()) {
                         return SizedBox.shrink();
                       }
 
                       return FloatingActionButton(
-                        onPressed: () => _manageWithdrawalsCubit.onAddWithdrawalsManager(
+                        onPressed: () =>
+                            _manageWithdrawalsCubit.onAddWithdrawalsManager(
                           () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -102,7 +112,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                             );
                           },
                         ),
-                        child: Icon(Icons.add,color: AppColors.white),
+                        child: Icon(Icons.add, color: AppColors.white),
                         backgroundColor: kMainColor,
                       );
                     },
@@ -111,7 +121,8 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                     init: () => Center(child: CircularProgressIndicator()),
                     loading: () => Center(child: CircularProgressIndicator()),
                     loaded: (data) => ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       itemBuilder: (context, index) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,28 +138,36 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyLarge!
-                                          .copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600),
                                     ),
                                   ),
                                 ),
                                 10.horizontalSpace,
                                 Expanded(
-                                  child: DropdownButtonFormField<UserWithdrawalsManager>(
+                                  child: DropdownButtonFormField<
+                                      UserWithdrawalsManager>(
                                     isExpanded: true,
-                                    items: state.handleUsersSeries.values.toList()[index].map((user) {
+                                    items: state.handleUsersSeries.values
+                                        .toList()[index]
+                                        .map((user) {
                                       return DropdownMenuItem(
                                         child: Text(user.name!),
                                         value: user,
                                       );
                                     }).toList(),
-                                    value: state.handleUsersSeries.keys.toList()[index],
+                                    value: state.handleUsersSeries.keys
+                                        .toList()[index],
                                     onChanged: (value) {
                                       if (value == null) {
                                         return;
                                       }
-                                      _manageWithdrawalsCubit.onChangeWithdrawalsManager(
+                                      _manageWithdrawalsCubit
+                                          .onChangeWithdrawalsManager(
                                         value,
-                                        state.handleUsersSeries.keys.toList()[index],
+                                        state.handleUsersSeries.keys
+                                            .toList()[index],
                                       );
                                     },
                                     decoration: InputDecoration(
@@ -163,19 +182,23 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                     ),
                                   ),
                                 ),
-                                if (!state.updateUsersSeriesState.isLoading()) ...{
+                                if (!state.updateUsersSeriesState
+                                    .isLoading()) ...{
                                   10.horizontalSpace,
                                   ClipOval(
                                     child: InkWell(
                                       onTap: () {
                                         _manageWithdrawalsCubit
-                                            .onRemoveWithdrawalsManager(state.handleUsersSeries.keys.toList()[index]);
+                                            .onRemoveWithdrawalsManager(state
+                                                .handleUsersSeries.keys
+                                                .toList()[index]);
                                       },
                                       child: CircleAvatar(
                                         radius: 14,
                                         backgroundColor: Colors.red,
                                         child: Center(
-                                          child: Icon(Icons.remove, color: kWhiteColor, size: 17),
+                                          child: Icon(Icons.remove,
+                                              color: kWhiteColor, size: 17),
                                         ),
                                       ),
                                     ),
@@ -188,7 +211,8 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                                 offset: Offset(10, 0),
                                 child: SizedBox(
                                   height: 50,
-                                  child: VerticalDivider(color: kMainColor, thickness: 1.5),
+                                  child: VerticalDivider(
+                                      color: kMainColor, thickness: 1.5),
                                 ),
                               ),
                           ],
@@ -199,7 +223,8 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
                     empty: () => Center(child: Text("No users series")),
                     error: (e) => Center(
                       child: IconButton(
-                        onPressed: () => _manageWithdrawalsCubit.getUsersSeries(currentUser.fkCountry!),
+                        onPressed: () => _manageWithdrawalsCubit
+                            .getUsersSeries(currentUser.fkCountry!),
                         icon: Icon(Icons.refresh_rounded),
                       ),
                     ),

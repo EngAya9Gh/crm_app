@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../common/enums/enums.dart';
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/enums.dart';
 
 class CustomDateTimePicker extends StatelessWidget {
   const CustomDateTimePicker({
@@ -60,25 +60,25 @@ class CustomDateTimePicker extends StatelessWidget {
   Future<void> _dateOrTimePicker(BuildContext context) async {
     dateTimeType == DateTimeEnum.date
         ? await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
-    ).then((value) {
-      if (value != null) {
-        dateTimeController.text = DateFormat('yyyy-MM-dd').format(value);
-      }
-    })
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime.now(),
+            lastDate: DateTime(2100),
+          ).then((value) {
+            if (value != null) {
+              dateTimeController.text = DateFormat('yyyy-MM-dd').format(value);
+            }
+          })
         : await showTimePicker(
-      // booth date and time
-      context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((value) {
-      if (value != null) {
-        dateTimeController.text = DateFormat('HH:mm:ss').format(
-          DateTime(2021, 1, 1, value.hour, value.minute),
-        );
-      }
-    });
+            // booth date and time
+            context: context,
+            initialTime: TimeOfDay.now(),
+          ).then((value) {
+            if (value != null) {
+              dateTimeController.text = DateFormat('HH:mm:ss').format(
+                DateTime(2021, 1, 1, value.hour, value.minute),
+              );
+            }
+          });
   }
 }

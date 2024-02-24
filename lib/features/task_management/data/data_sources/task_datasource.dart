@@ -2,15 +2,14 @@ import 'dart:convert';
 
 import 'package:crm_smart/core/api/client.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
-import 'package:crm_smart/model/usermodel.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/constants/route.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/api/api_utils.dart';
 import '../../../../core/api/client_config.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/utils/end_points.dart';
 import '../models/user_region_department.dart';
 
 @injectable
@@ -27,7 +26,8 @@ class TaskDatasource {
       FormData formData = FormData();
       if (body['file_path'] != null) {
         final file = body['file_path'];
-        formData.files.add(MapEntry('file_path', await MultipartFile.fromFile(file.path)));
+        formData.files.add(
+            MapEntry('file_path', await MultipartFile.fromFile(file.path)));
       }
       body.forEach((key, value) {
         if (key != 'file_path') formData.fields.add(MapEntry(key, value));
@@ -49,7 +49,8 @@ class TaskDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<TaskModel>>> filterTask(Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<TaskModel>>> filterTask(
+      Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
       dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
@@ -64,13 +65,12 @@ class TaskDatasource {
       );
 
       dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
-      if(response.data['data']!=false)
-      return ResponseWrapper<List<TaskModel>>(
-        data: List.from(
-            (response.data['data'] as List<dynamic>).map((e) =>
-                TaskModel.fromJson(e as Map<String, dynamic>))),
-        message: [],
-      );
+      if (response.data['data'] != false)
+        return ResponseWrapper<List<TaskModel>>(
+          data: List.from((response.data['data'] as List<dynamic>)
+              .map((e) => TaskModel.fromJson(e as Map<String, dynamic>))),
+          message: [],
+        );
       return ResponseWrapper<List<TaskModel>>(
         data: [],
         message: [],
@@ -80,7 +80,8 @@ class TaskDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<void>> changeStatusTask(String taskId, Map<String, dynamic> body) async {
+  Future<ResponseWrapper<void>> changeStatusTask(
+      String taskId, Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
       dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
@@ -102,8 +103,8 @@ class TaskDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<UserRegionDepartment>>> getUsersByTypeAdministrationAndRegion(
-      Map<String, dynamic> body) async {
+  Future<ResponseWrapper<List<UserRegionDepartment>>>
+      getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body) async {
     fun() async {
       final dio = GetIt.I<Dio>();
       dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
@@ -121,9 +122,10 @@ class TaskDatasource {
 
       final data = jsonDecode(jsonEncode(response.data));
       return ResponseWrapper<List<UserRegionDepartment>>(
-        data: List.from((data as List<dynamic>).map((e) => UserRegionDepartment.fromJson(e as Map<String, dynamic>))),
-
-        message: List.from((data).map((e) => UserRegionDepartment.fromJson(e as Map<String, dynamic>))),
+        data: List.from((data as List<dynamic>).map(
+            (e) => UserRegionDepartment.fromJson(e as Map<String, dynamic>))),
+        message: List.from((data).map(
+            (e) => UserRegionDepartment.fromJson(e as Map<String, dynamic>))),
       );
     }
 

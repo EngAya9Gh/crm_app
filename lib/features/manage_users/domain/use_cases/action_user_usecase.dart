@@ -4,10 +4,12 @@ import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/manage_users/domain/repositories/users_repository.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
+
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 
 @injectable
-class ActionUserUsecase extends UseCase<Result<ResponseWrapper<UserModel>>, ActionUserParams> {
+class ActionUserUsecase
+    extends UseCase<Result<ResponseWrapper<UserModel>>, ActionUserParams> {
   ActionUserUsecase(this.repository);
 
   final UsersRepository repository;
@@ -56,7 +58,8 @@ class ActionUserParams {
       ? {
           'email': email,
           'mobile': mobile,
-          'type_administration': typeAdministration, //!= null ? namemanage : "",
+          'type_administration':
+              typeAdministration, //!= null ? namemanage : "",
           'type_level': level,
           'fk_regoin': fkRegion,
           'name_regoin': regionName,

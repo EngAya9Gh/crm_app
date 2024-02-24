@@ -1,13 +1,13 @@
 // part of 'communication_list_bloce.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/common/models/profile_invoice_model.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/profile_invoice_model.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
 
-import '../../../../common/models/page_state/bloc_status.dart';
-import '../../../../common/widgets/profile_comments_model.dart';
+import '../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../core/common/widgets/profile_comments_model.dart';
 import '../../data/models/participate_client_model.dart';
 
 class ParticipateListState extends Equatable {

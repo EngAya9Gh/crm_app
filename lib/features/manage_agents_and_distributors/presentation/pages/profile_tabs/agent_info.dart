@@ -1,7 +1,7 @@
-import 'package:crm_smart/common/enums/enums.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../../../../../common/widgets/text_row.dart';
+import '../../../../../core/common/widgets/text_row.dart';
 import '../../../../../model/agent_distributor_model.dart';
 
 class AgentInfo extends StatelessWidget {

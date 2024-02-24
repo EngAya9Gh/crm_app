@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
+
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 
 abstract class UsersRepository {
   Future<Result<ResponseWrapper<List<UserModel>>>> getUsers();

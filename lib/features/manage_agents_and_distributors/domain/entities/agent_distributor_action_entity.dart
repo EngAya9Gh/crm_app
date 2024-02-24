@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
-import '../../../../common/enums/enums.dart';
+import '../../../../core/common/enums/enums.dart';
 
 class AgentDistributorActionEntity extends Equatable {
   final String? name;

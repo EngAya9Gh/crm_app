@@ -8,7 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
-import '../../../../common/helpers/helper_functions.dart';
+
+import '../../../../core/common/helpers/helper_functions.dart';
 
 class AddLevelSheet extends StatefulWidget {
   const AddLevelSheet({Key? key}) : super(key: key);
@@ -59,7 +60,8 @@ class _AddLevelSheetState extends State<AddLevelSheet> {
                       if (!isValid) {
                         return;
                       }
-                      GetIt.I<PrivilegeCubit>().addLevel(_levelController.text, Navigator.of(context).pop);
+                      GetIt.I<PrivilegeCubit>().addLevel(
+                          _levelController.text, Navigator.of(context).pop);
                     },
                   );
                 },

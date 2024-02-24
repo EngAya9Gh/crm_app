@@ -2,7 +2,7 @@ import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../common/models/profile_invoice_model.dart';
+import '../../../../core/common/models/profile_invoice_model.dart';
 
 enum StatusClient { subscriber, withdrawn, unsupported }
 

@@ -1,4 +1,4 @@
-import 'package:crm_smart/common/models/page_state/result_builder.dart';
+import 'package:crm_smart/core/common/models/page_state/result_builder.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
@@ -31,7 +31,8 @@ class _LevelPageState extends State<LevelPage> {
 
   @override
   void initState() {
-    _privilegeCubit = GetIt.I<PrivilegeCubit>()..getLevels(context.read<UserProvider>().currentUser);
+    _privilegeCubit = GetIt.I<PrivilegeCubit>()
+      ..getLevels(context.read<UserProvider>().currentUser);
     super.initState();
   }
 
@@ -40,8 +41,11 @@ class _LevelPageState extends State<LevelPage> {
     return BlocProvider.value(
       value: _privilegeCubit,
       child: AppScaffold(
-        appBar: SmartCrmAppBar(appBarParams: AppBarParams(title: 'إدارة الصلاحيات')),
-        floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('51')
+        appBar: SmartCrmAppBar(
+            appBarParams: AppBarParams(title: 'إدارة الصلاحيات')),
+        floatingActionButton: context
+                .read<PrivilegeCubit>()
+                .checkPrivilege('51')
             ? FloatingActionButton(
                 child: Icon(Icons.add, color: AppColors.white),
                 onPressed: () {
@@ -55,12 +59,16 @@ class _LevelPageState extends State<LevelPage> {
             return PageStateBuilder<List<LevelModel>>(
               init: Center(child: AppLoader()),
               success: (data) => RefreshIndicator(
-                onRefresh: () => _privilegeCubit.getLevels(context.read<UserProvider>().currentUser, isRefresh: true),
+                onRefresh: () => _privilegeCubit.getLevels(
+                    context.read<UserProvider>().currentUser,
+                    isRefresh: true),
                 child: ListView.separated(
                   itemCount: data.length,
                   padding: HWEdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  itemBuilder: (BuildContext context, int index) => levelCard(data[index]),
-                  separatorBuilder: (BuildContext context, int index) => 15.verticalSpace,
+                  itemBuilder: (BuildContext context, int index) =>
+                      levelCard(data[index]),
+                  separatorBuilder: (BuildContext context, int index) =>
+                      15.verticalSpace,
                 ),
               ),
               loading: Center(child: AppLoader()),

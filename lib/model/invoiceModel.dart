@@ -2,8 +2,8 @@ import 'package:crm_smart/Repository/cache_repo.dart';
 import 'package:crm_smart/model/participatModel.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../common/enums/enums.dart';
 import '../constants.dart';
+import '../core/common/enums/enums.dart';
 import 'agent_distributor_model.dart';
 
 // enum AttachFileStatus { empty, network, picked, uploading, deleting, failedUpload, failedDelete, success }

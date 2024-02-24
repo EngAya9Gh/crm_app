@@ -1,4 +1,6 @@
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'dart:ui' as myui;
+
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
@@ -17,14 +19,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
-
+import 'package:intl/intl.dart' as intl;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import 'package:intl/intl.dart' as intl;
-
-import '../../../../common/helpers/helper_functions.dart';
 import '../../../../constants.dart';
+import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../function_global.dart';
 import '../../../../model/clientmodel.dart';
 import '../../../../view_model/datetime_vm.dart';
 import '../../../../view_model/typeclient.dart';
@@ -36,15 +37,9 @@ import '../../../manage_withdrawals/data/models/reject_reason.dart';
 import '../../../manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 import '../../../task_management/presentation/manager/task_cubit.dart';
 import '../../../task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../domain/use_cases/change_type_client_usecase.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
-import '../../domain/use_cases/edit_client_usecase.dart';
 import '../manager/clients_list_bloc.dart';
 import '../pages/action_client_page.dart';
-import '../../../../function_global.dart';
-import 'dart:ui' as myui;
-
-import 'dailog_change.dart';
 
 class ClientSection extends StatefulWidget {
   ClientSection(
@@ -113,13 +108,13 @@ class _ClientSectionState extends State<ClientSection> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _clientTypeProvider.type_of_client =
-      widget.client?.typeClient == "تفاوض" ||
-          widget.client?.typeClient == "عرض سعر"
-          ? ['تفاوض', 'عرض سعر', 'مستبعد']
-          : _clientTypeProvider.type_of_client =
-      widget.client?.typeClient == "معلق استبعاد"
-          ? ['معلق استبعاد']
-          : [];
+          widget.client?.typeClient == "تفاوض" ||
+                  widget.client?.typeClient == "عرض سعر"
+              ? ['تفاوض', 'عرض سعر', 'مستبعد']
+              : _clientTypeProvider.type_of_client =
+                  widget.client?.typeClient == "معلق استبعاد"
+                      ? ['معلق استبعاد']
+                      : [];
       if (widget.client?.typeClient == "تفاوض" ||
           widget.client?.typeClient == "عرض سعر" ||
           widget.client?.typeClient == "معلق استبعاد" ||
@@ -147,7 +142,6 @@ class _ClientSectionState extends State<ClientSection> {
   }
 
   showAlertDialog(BuildContext context) {
-
     Widget dialog = SimpleDialog(
         titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
         insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
@@ -195,7 +189,7 @@ class _ClientSectionState extends State<ClientSection> {
                                   flex: 3,
                                   child: AppTextField(
                                     validator: (value) {
-                                      if (offerPriceController.text.isEmpty ) {
+                                      if (offerPriceController.text.isEmpty) {
                                         return 'حقل مطلوب';
                                       }
                                       return null;
@@ -380,7 +374,8 @@ class _ClientSectionState extends State<ClientSection> {
                                       ClientsListState>(
                                       builder: (context, state) {
                                         return Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             AppElevatedButton(
                                               isLoading: state
@@ -410,7 +405,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                         ), onSuccess: (client) {
                                                   Navigator.pop(
                                                       context, client);
-                                                   Navigator.pop(context, client);
+                                                  Navigator.pop(
+                                                      context, client);
                                                 }));
                                               },
                                             ),
@@ -420,10 +416,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                   .isLoading(),
                                               text: "رفض",
                                               style: ElevatedButton.styleFrom(
-
-                                                backgroundColor:Colors.red,
+                                                backgroundColor: Colors.red,
                                                 shape: RoundedRectangleBorder(
-
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             0)),
@@ -442,11 +436,11 @@ class _ClientSectionState extends State<ClientSection> {
                                                                   listen: false)
                                                               .currentUser
                                                               .idUser!,
-                                                        ),
-                                                        onSuccess: (client) {
+                                                        ), onSuccess: (client) {
                                                   Navigator.pop(
                                                       context, client);
-                                                   Navigator.pop(context, client);
+                                                  Navigator.pop(
+                                                      context, client);
                                                 }));
                                               },
                                             ),
@@ -472,7 +466,6 @@ class _ClientSectionState extends State<ClientSection> {
 
   @override
   Widget build(BuildContext context) {
-
     return Consumer<ClientProvider>(builder: (context, state, _) {
       if (state.currentClientModel.isLoading ||
           state.currentClientModel.isInit) {
@@ -827,50 +820,49 @@ class _ClientSectionState extends State<ClientSection> {
                 widget.clienttransfer == 'transfer'
                     ? IgnorePointer()
                     : Center(
-                        child:
-                        Column(
+                        child: Column(
                           children: [
                             Row(
                               children: [
                                 clientModel1.typeClient == "عرض سعر" ||
-                                    clientModel1.typeClient == "تفاوض" ||
-                                    // clientModel1.typeClient == "مستبعد" ||
-                                    clientModel1.typeClient == 'معلق استبعاد'
-                                    ?
-                                Expanded(
-                                  child: ElevatedButton(
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                        MaterialStateProperty.all(
-                                            kMainColor)),
-                                    onPressed: () async {
-                                      ClientModel? result =
-                                      // await Navigator.push(
-                                      //   context,
-                                      //   CupertinoPageRoute(
-                                      //     builder: (context) =>
-                                      //         dailog_change_type(
-                                      //             client: clientModel1.mapToClientModel()),
-                                      //   ),
-                                      // );
-                                      await showAlertDialog(context);
-                                      print('result.nameEnterprise');
-                                      print(result?.nameEnterprise);
-                                      if(result !=null)
-                                        setState(() {
-                                          print('result.nameEnterprise');
-                                          print(result?.nameEnterprise);
-                                          clientModel1 =
-                                              result.mapToClientModel1();
-                                        });
-                                    },
-                                    // showDialog<void>
-                                    // (context: context,
-                                    // builder: (context) =>  dialog),
+                                        clientModel1.typeClient == "تفاوض" ||
+                                        // clientModel1.typeClient == "مستبعد" ||
+                                        clientModel1.typeClient ==
+                                            'معلق استبعاد'
+                                    ? Expanded(
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      kMainColor)),
+                                          onPressed: () async {
+                                            ClientModel? result =
+                                                // await Navigator.push(
+                                                //   context,
+                                                //   CupertinoPageRoute(
+                                                //     builder: (context) =>
+                                                //         dailog_change_type(
+                                                //             client: clientModel1.mapToClientModel()),
+                                                //   ),
+                                                // );
+                                                await showAlertDialog(context);
+                                            print('result.nameEnterprise');
+                                            print(result?.nameEnterprise);
+                                            if (result != null)
+                                              setState(() {
+                                                print('result.nameEnterprise');
+                                                print(result?.nameEnterprise);
+                                                clientModel1 =
+                                                    result.mapToClientModel1();
+                                              });
+                                          },
+                                          // showDialog<void>
+                                          // (context: context,
+                                          // builder: (context) =>  dialog),
 
-                                    child: Text('اجراءات'),
-                                  ),
-                                )
+                                          child: Text('اجراءات'),
+                                        ),
+                                      )
                                     : Container(),
                               ],
                             ),
@@ -878,18 +870,17 @@ class _ClientSectionState extends State<ClientSection> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               //crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ButtonStyle(
                                         backgroundColor:
-                                            MaterialStateProperty.all(kMainColor)),
+                                            MaterialStateProperty.all(
+                                                kMainColor)),
                                     onPressed: () async =>
                                         _onPressedUpdate(context),
                                     child: Text('تعديل بيانات العميل'),
                                   ),
                                 ),
-
                                 const SizedBox(width: 8),
                                 clientModel1.typeClient == "عرض سعر" ||
                                         clientModel1.typeClient == "تفاوض"
@@ -1646,10 +1637,6 @@ class _ClientSectionState extends State<ClientSection> {
     Navigator.pop(context);
   }
 }
-
-
-
-
 
 //region Extension
 

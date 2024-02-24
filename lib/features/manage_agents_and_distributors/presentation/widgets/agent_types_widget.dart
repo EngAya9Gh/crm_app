@@ -2,7 +2,7 @@ import 'package:crm_smart/features/manage_agents_and_distributors/presentation/m
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../common/enums/enums.dart';
+import '../../../../core/common/enums/enums.dart';
 
 class AgentTypesWidget extends StatelessWidget {
   const AgentTypesWidget({Key? key}) : super(key: key);

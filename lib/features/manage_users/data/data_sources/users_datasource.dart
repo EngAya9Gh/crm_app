@@ -2,11 +2,11 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/constants/route.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/api/api_utils.dart';
 import '../../../../core/api/client.dart';
 import '../../../../core/api/client_config.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/utils/end_points.dart';
 
 @injectable
 class UsersDatasource {

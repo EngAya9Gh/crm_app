@@ -1,26 +1,25 @@
-import 'package:collection/collection.dart';
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/manage_users/domain/repositories/users_repository.dart';
-import 'package:crm_smart/model/usermodel.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
+
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../data/models/link_model.dart';
 import '../repositories/links_repo.dart';
 
 @injectable
-class ActionLinkUsecase extends UseCase<Result<ResponseWrapper<LinkImportantModel>>,
-    ActionLinksParams> {
+class ActionLinkUsecase extends UseCase<
+    Result<ResponseWrapper<LinkImportantModel>>, ActionLinksParams> {
   ActionLinkUsecase(this.repository);
 
   final LinksImportantRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<LinkImportantModel>>> call(ActionLinksParams params) {
+  Future<Result<ResponseWrapper<LinkImportantModel>>> call(
+      ActionLinksParams params) {
     if (params.id != null) {
-      return repository.editLink( params.body,  params.id.toString());
+      return repository.editLink(params.body, params.id.toString());
     }
-    return repository.addLink(  params.body );
+    return repository.addLink(params.body);
   }
 }
 
@@ -33,35 +32,30 @@ class ActionLinksParams {
 
   final String? id;
 
-
   ActionLinksParams({
     required this.title,
     required this.link,
     required this.notes,
     required this.address,
     required this.user_id,
-
     this.id,
-
   });
 
-  Map<String, dynamic> get body =>
-      id != null
+  Map<String, dynamic> get body => id != null
       ? {
-        "title": title,
-        'link': link,
-        'notes': notes,
-        'address': address,
-        'user_id': user_id,
-  }
+          "title": title,
+          'link': link,
+          'notes': notes,
+          'address': address,
+          'user_id': user_id,
+        }
       : {
-    "title": title,
-    'link': link,
-    'notes': notes,
-    'address': address,
-    'user_id': user_id,
-
-      };
+          "title": title,
+          'link': link,
+          'notes': notes,
+          'address': address,
+          'user_id': user_id,
+        };
 
   Map<String, dynamic> get params {
     final map = <String, dynamic>{};

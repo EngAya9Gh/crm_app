@@ -4,8 +4,8 @@ import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../common/widgets/profile_comments_model.dart';
 import '../../../../constants.dart';
+import '../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../function_global.dart';
 
 //uplode 2023

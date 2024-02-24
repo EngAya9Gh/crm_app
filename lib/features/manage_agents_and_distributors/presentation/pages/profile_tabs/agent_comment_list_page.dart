@@ -1,12 +1,12 @@
-import 'package:crm_smart/common/enums/enums.dart';
-import 'package:crm_smart/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../common/helpers/helper_functions.dart';
 import '../../../../../constants.dart';
+import '../../../../../core/common/helpers/helper_functions.dart';
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../../manage_participates/presentation/widgets/participate_comment_card.dart';

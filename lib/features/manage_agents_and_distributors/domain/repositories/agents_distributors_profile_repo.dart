@@ -1,7 +1,7 @@
-import 'package:crm_smart/common/widgets/profile_comments_model.dart';
+import 'package:crm_smart/core/common/widgets/profile_comments_model.dart';
 import 'package:dartz/dartz.dart';
 
-import '../../../../common/models/profile_invoice_model.dart';
+import '../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../model/invoiceModel.dart';
 import '../../../clients_list/data/models/clients_list_response.dart';
 

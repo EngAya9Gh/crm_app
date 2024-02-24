@@ -1,11 +1,13 @@
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../../../common/models/response_wrapper/response_wrapper.dart';
+
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../repositories/manage_withdrawals_repository.dart';
 
 @injectable
-class AddRejectReasonsUsecase extends UseCase<Result<ResponseWrapper<String>>, ActionReasonParams> {
+class AddRejectReasonsUsecase
+    extends UseCase<Result<ResponseWrapper<String>>, ActionReasonParams> {
   AddRejectReasonsUsecase(this.repository);
 
   final ManageWithdrawalsRepository repository;

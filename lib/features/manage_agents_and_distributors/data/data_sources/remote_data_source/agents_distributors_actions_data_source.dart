@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../../api/api.dart';
 import '../../../../../constants.dart';
@@ -10,6 +11,7 @@ abstract class AgentsDistributorsActionsDataSource {
   });
 }
 
+@LazySingleton(as: AgentsDistributorsActionsDataSource)
 class AgentsDistributorsActionsDataSourceImpl
     extends AgentsDistributorsActionsDataSource {
   final Api api;

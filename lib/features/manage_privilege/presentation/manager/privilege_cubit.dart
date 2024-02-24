@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:crm_smart/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/manage_privilege/domain/use_cases/add_level_usecase.dart';
 import 'package:crm_smart/features/manage_privilege/domain/use_cases/get_levels_usecase.dart';
 import 'package:crm_smart/features/manage_privilege/domain/use_cases/get_privilege_usecase.dart';
@@ -12,7 +12,7 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../common/models/nullable.dart';
+import '../../../../core/common/models/nullable.dart';
 import '../../data/models/level_model.dart';
 import '../../data/models/privilege_model.dart';
 
@@ -32,16 +32,18 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   final UpdatePrivilegeUsecase _updatePrivilegeUsecase;
   final AddLevelUsecase _addLevelUsecase;
 
-  getLevels(UserModel user ,{bool isRefresh = false} ) async {
+  getLevels(UserModel user, {bool isRefresh = false}) async {
     if (state.levelsState.getDataWhenSuccess != null && !isRefresh) {
       final list =
-          _filterPriorityLevels(state.levelsState.data, user.periorty! );
+          _filterPriorityLevels(state.levelsState.data, user.periorty!);
       print(list);
-     if(  list.indexWhere((element) => element.idLevel==user.typeLevel)==-1)
-      list.add(LevelModel(idLevel: user.typeLevel,nameLevel: user.name_level,
-          periorty: user.periorty));
+      if (list.indexWhere((element) => element.idLevel == user.typeLevel) == -1)
+        list.add(LevelModel(
+            idLevel: user.typeLevel,
+            nameLevel: user.name_level,
+            periorty: user.periorty));
 
-     emit(state.copyWith(
+      emit(state.copyWith(
           levelsState: PageState.loaded(data: state.levelsState.data),
           priorityState: list));
       return;
@@ -56,9 +58,13 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
       (exception, message) =>
           emit(state.copyWith(levelsState: const PageState.error())),
       (value) {
-        final list = _filterPriorityLevels(value.message ??  [], user.periorty! );
-        if(  list.indexWhere((element) => element.idLevel==user.typeLevel)==-1)
-          list.add(LevelModel(idLevel: user.typeLevel,nameLevel: user.name_level,periorty: user.periorty));
+        final list = _filterPriorityLevels(value.message ?? [], user.periorty!);
+        if (list.indexWhere((element) => element.idLevel == user.typeLevel) ==
+            -1)
+          list.add(LevelModel(
+              idLevel: user.typeLevel,
+              nameLevel: user.name_level,
+              periorty: user.periorty));
 
         emit(state.copyWith(
           levelsState:
@@ -189,28 +195,26 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     // return true;
   }
 
-  List<LevelModel> _filterPriorityLevels (
-      List<LevelModel> levels, final String priority ) {
+  List<LevelModel> _filterPriorityLevels(
+      List<LevelModel> levels, final String priority) {
     if (priority == '0') {
       return levels;
     }
-    final isPrev=checkPrivilege("180");
+    final isPrev = checkPrivilege("180");
 
-    if(isPrev)
-    return levels
-        .where((element) =>
-            int.parse(element.periorty ?? '1') >= int.parse(priority))
-        .toList();
-else
+    if (isPrev)
       return levels
           .where((element) =>
-      int.parse(element.periorty ?? '1') > int.parse(priority))
+              int.parse(element.periorty ?? '1') >= int.parse(priority))
+          .toList();
+    else
+      return levels
+          .where((element) =>
+              int.parse(element.periorty ?? '1') > int.parse(priority))
           .toList();
   }
 
   onChangeLevelId(String? levelModel) {
-    emit(state.copyWith(
-        selectedLevelId: Nullable<String?>.value(levelModel))
-    );
+    emit(state.copyWith(selectedLevelId: Nullable<String?>.value(levelModel)));
   }
 }

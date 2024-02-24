@@ -15,7 +15,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as pp;
 
 import '../../../../api/api.dart';
-import '../../../../common/models/page_state/result_builder.dart';
+import '../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../constants.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/screen/client/profileclient.dart';

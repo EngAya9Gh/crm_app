@@ -5,10 +5,10 @@ import 'package:crm_smart/features/manage_withdrawals/data/models/reject_reason.
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../common/constants/route.dart';
-import '../../../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/api/api_utils.dart';
 import '../../../../../../core/api/client_config.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/utils/end_points.dart';
 import '../../../../model/invoiceModel.dart';
 import '../models/invoice_withdrawal_series_model.dart';
 import '../models/user_series.dart';
@@ -20,7 +20,8 @@ class ManageWithdrawalsDatasource {
 
   final ClientApi _clientApi;
 
-  Future<ResponseWrapper<List<UserSeries>>> getAllUsersSeries(Map<String, dynamic> params) async {
+  Future<ResponseWrapper<List<UserSeries>>> getAllUsersSeries(
+      Map<String, dynamic> params) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -44,7 +45,8 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<UserSeries>>> updateAllUsersSeries(Map<String, dynamic> data) async {
+  Future<ResponseWrapper<List<UserSeries>>> updateAllUsersSeries(
+      Map<String, dynamic> data) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -91,8 +93,8 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<InvoiceWithdrawalSeries>>> getWithdrawalInvoiceDetails(
-      Map<String, dynamic> params) async {
+  Future<ResponseWrapper<List<InvoiceWithdrawalSeries>>>
+      getWithdrawalInvoiceDetails(Map<String, dynamic> params) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -116,7 +118,8 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<WithdrawnDetailsModel>> getWithdrawnDetails(Map<String, dynamic> params) async {
+  Future<ResponseWrapper<WithdrawnDetailsModel>> getWithdrawnDetails(
+      Map<String, dynamic> params) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -137,7 +140,8 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<bool>> setApproveSeries(Map<String, dynamic> params, Map<String, dynamic> data) async {
+  Future<ResponseWrapper<bool>> setApproveSeries(
+      Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -149,7 +153,8 @@ class ManageWithdrawalsDatasource {
         ),
       );
 
-      return ResponseWrapper<bool>.fromJson(jsonDecode(response.data), (json) => true);
+      return ResponseWrapper<bool>.fromJson(
+          jsonDecode(response.data), (json) => true);
     }
 
     return throwAppException(fun);
@@ -167,14 +172,16 @@ class ManageWithdrawalsDatasource {
 
       return ResponseWrapper<List<RejectReason>>.fromJson(
         response.data,
-        (json) => List.from((json as List<dynamic>).map((e) => RejectReason.fromJson(e as Map<String, dynamic>))),
+        (json) => List.from((json as List<dynamic>)
+            .map((e) => RejectReason.fromJson(e as Map<String, dynamic>))),
       );
     }
 
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<String>> addRejectReasons(Map<String, dynamic> params) async {
+  Future<ResponseWrapper<String>> addRejectReasons(
+      Map<String, dynamic> params) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
@@ -191,7 +198,8 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<String>> editRejectReasons(Map<String, dynamic> params, Map<String, dynamic> data) async {
+  Future<ResponseWrapper<String>> editRejectReasons(
+      Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
       final response = await _clientApi.request(
         RequestConfig(
