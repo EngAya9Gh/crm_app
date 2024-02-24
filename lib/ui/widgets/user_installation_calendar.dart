@@ -294,6 +294,9 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                           fontFamily: kfontfamily2,
                                           fontWeight: FontWeight.w600)),
                                   onTap: () {
+                                   //if agent not null
+                                   //execute methode changeEventToDone
+                                   //else  execute in below ()
                                     Navigator.push(
                                       context,
                                       CupertinoPageRoute(
