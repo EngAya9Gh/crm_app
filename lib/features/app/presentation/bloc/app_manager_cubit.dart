@@ -65,7 +65,7 @@ class AppManagerCubit extends Cubit<AppManagerState> {
           ? int.parse(remoteAppVersion.split('+').last)
           : 1;
 
-      final updateMandatory = result.isRequired ?? false;
+      bool updateMandatory = result.isRequired ?? false;
 
       final Tuple3<int, int, int> remoteAppVersionRecord =
           convertVersionToNum(remoteAppVersion);
@@ -97,8 +97,9 @@ class AppManagerCubit extends Cubit<AppManagerState> {
         hasUpdate = true;
       }
 
+      updateMandatory = hasUpdate ? updateMandatory : false;
       hasUpdate = updateMandatory ? true : hasUpdate;
-      // uncomment this line to go directly to the home page
+      // uncomment this line to go directly to the home page while developing
       // hasUpdate = false;
 
       return Tuple2(hasUpdate, updateMandatory);
