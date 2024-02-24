@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../api/dio_services.dart';
+import '../../../../../core/api/base_api_services.dart';
 import '../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../core/utils/app_strings.dart';
@@ -38,7 +38,7 @@ abstract class AgentsDistributorsProfileDataSource {
 @LazySingleton(as: AgentsDistributorsProfileDataSource)
 class AgentsDistributorsProfileDataSourceImpl
     extends AgentsDistributorsProfileDataSource {
-  final DioServices dio;
+  final ApiServices dio;
 
   AgentsDistributorsProfileDataSourceImpl(this.dio);
 

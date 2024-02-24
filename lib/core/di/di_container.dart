@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:crm_smart/core/api/dio/dio_init.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../api/log_interceptor.dart';
 import '../utils/end_points.dart';
 import 'di_container.config.dart';
 
@@ -34,16 +34,10 @@ abstract class AppModule {
       );
 
   @singleton
-  Logger get logger => Logger();
+  Logger get logger => Logger(printer: PrettyPrinter(methodCount: 0));
 
   @lazySingleton
-  Dio dio(BaseOptions option, Logger logger) {
-    final dio = Dio(option);
-    dio.interceptors.addAll([
-      LoggerInterceptor(),
-    ]);
-    return dio;
-  }
+  Dio dio() => dioInit();
 
   @preResolve
   @singleton

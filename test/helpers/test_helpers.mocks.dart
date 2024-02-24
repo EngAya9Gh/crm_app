@@ -142,25 +142,26 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
       ) as _i4.Future<_i2.Either<String, _i7.ProfileCommentModel>>);
 
   @override
-  _i4.Future<_i2.Either<String, List<_i8.DateInstallationClient>>>
-      getDateVisitAgent({required String? agentId}) => (super.noSuchMethod(
-            Invocation.method(
-              #getDateVisitAgent,
-              [],
-              {#agentId: agentId},
-            ),
-            returnValue: _i4.Future<
-                    _i2.Either<String, List<_i8.DateInstallationClient>>>.value(
-                _FakeEither_0<String, List<_i8.DateInstallationClient>>(
-              this,
-              Invocation.method(
-                #getDateVisitAgent,
-                [],
-                {#agentId: agentId},
-              ),
-            )),
-          ) as _i4
-              .Future<_i2.Either<String, List<_i8.DateInstallationClient>>>);
+  _i4.Future<
+      _i2.Either<String, List<_i8.DateInstallationClient>>> getDateVisitAgent(
+          {required String? agentId}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getDateVisitAgent,
+          [],
+          {#agentId: agentId},
+        ),
+        returnValue: _i4
+            .Future<_i2.Either<String, List<_i8.DateInstallationClient>>>.value(
+            _FakeEither_0<String, List<_i8.DateInstallationClient>>(
+          this,
+          Invocation.method(
+            #getDateVisitAgent,
+            [],
+            {#agentId: agentId},
+          ),
+        )),
+      ) as _i4.Future<_i2.Either<String, List<_i8.DateInstallationClient>>>);
 
   @override
   _i4.Future<_i2.Either<String, void>> addAgentDate(

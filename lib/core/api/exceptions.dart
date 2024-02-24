@@ -1,3 +1,64 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+
+AppException handleException(dynamic e) {
+  if (e is DioException) {
+    return _handleDioException(e);
+  } else {
+    print(e.toString());
+    return AppException.unknown(
+      exception: e is Exception ? e : Exception('Unknown exception occurred'),
+      message: "UnKnow Error!",
+    );
+  }
+}
+
+AppException _handleDioException(DioException exception) {
+  if (exception.response?.statusCode.toString().matchAsPrefix('5') != null) {
+    return AppNetworkException(
+        reason: AppNetworkExceptionReason.serverError, exception: exception);
+  }
+  switch (exception.type) {
+    case DioExceptionType.cancel:
+      return AppNetworkException(
+        reason: AppNetworkExceptionReason.canceled,
+        exception: exception,
+      );
+    case DioExceptionType.connectionTimeout:
+    case DioExceptionType.receiveTimeout:
+    case DioExceptionType.sendTimeout:
+      return AppNetworkException(
+          reason: AppNetworkExceptionReason.timedOut, exception: exception);
+    case DioExceptionType.badResponse:
+      // For DioErrorType.response, we are guaranteed to have a
+      // response object present on the exception.
+      final response = exception.response;
+      if (response == null) {
+        // This should never happen, judging by the current source code
+        // for Dio.
+        return AppNetworkResponseException(exception: exception);
+      }
+
+      return AppNetworkResponseException(
+        exception: exception,
+        statusCode: response.statusCode,
+        data: response.data,
+      );
+    case DioExceptionType.unknown:
+    default:
+      if (exception.error is SocketException) {
+        return AppNetworkException(
+            reason: AppNetworkExceptionReason.noInternet, exception: exception);
+      }
+      return AppException.unknown(
+          exception: exception,
+          message: exception.response == null
+              ? ((exception.error ?? "").toString())
+              : exception.response?.data['message']);
+  }
+}
+
 class AppException<OriginalException> implements Exception {
   const AppException({required this.message, required this.exception});
 
