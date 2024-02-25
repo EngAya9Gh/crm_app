@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../../../../../core/common/widgets/text_row.dart';
 import '../../../../../model/agent_distributor_model.dart';
+import '../../../../../ui/widgets/custom_widget/RowWidget.dart';
 
 class AgentInfo extends StatelessWidget {
   const AgentInfo({
@@ -23,16 +24,16 @@ class AgentInfo extends StatelessWidget {
         top: 15,
       ),
       child: Column(children: [
-        TextRow(title: "الاسم", data: agent.nameAgent),
-        TextRow(title: "البريد الالكتروني", data: agent.emailAgent),
-        TextRow(title: "الهاتف", data: agent.mobileAgent),
-        TextRow(title: "الوصف", data: agent.description),
-        TextRow(title: "النوع", data: type),
-        TextRow(title: "المدينة", data: agent.nameCity),
-        TextRow(title: "الموظف الذي أضاف", data: agent.nameUserAdd),
-        TextRow(title: "تاريخ الاضافة", data: agent.updateDate),
-        TextRow(title: "آخر من عدل", data: agent.nameUserUpdate),
-        TextRow(title: "تاريخ التعديل", data: agent.updateDate),
+        cardRow(title: "الاسم", value: agent.nameAgent),
+        cardRow(title: "البريد الالكتروني", value: agent.emailAgent),
+        cardRow(title: "الهاتف", value: agent.mobileAgent),
+        cardRow(title: "الوصف", value: agent.description),
+        cardRow(title: "النوع", value: type),
+        agent.nameCity!=null?cardRow(title: "المدينة", value: agent.nameCity.toString()):Container(),
+        agent.nameUserAdd!=null? cardRow(title: "الموظف الذي أضاف", value: agent.nameUserAdd.toString()):Container(),
+        agent.updateDate!=null?cardRow(title: "تاريخ الاضافة", value: agent.updateDate.toString()):Container(),
+        agent.nameUserUpdate!=null?cardRow(title: "آخر من عدل", value: agent.nameUserUpdate.toString()):Container(),
+        agent.updateDate!=null?cardRow(title: "تاريخ التعديل", value: agent.updateDate.toString()):Container(),
       ]),
     );
   }

@@ -75,7 +75,7 @@ class _ParticipateClientListPageState extends State<ParticipateClientListPage> {
                             textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
                               hintText:
-                                  "اسم المتعاون, رقم الموبايل للمتعاون.....",
+                                  "اسم المؤسسة.....",
                               border: InputBorder.none,
                               prefixIcon: Icon(
                                 Icons.search,

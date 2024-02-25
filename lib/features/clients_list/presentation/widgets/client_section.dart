@@ -662,22 +662,21 @@ class _ClientSectionState extends State<ClientSection> {
                         value: clientModel1.NameReason_reject.toString(),
                         title: 'سبب الاستبعاد')
                     : IgnorePointer(),
-                clientModel1.offer_price != null &&
-                        clientModel1.offer_price.toString().trim().isNotEmpty
+
+                clientModel1.typeClient=='عرض سعر'
                     ? cardRow(
                         title: 'مبلغ عرض السعر',
                         value: clientModel1.offer_price.toString())
                     : IgnorePointer(),
 
-                clientModel1.offer_price != null &&
-                        clientModel1.offer_price.toString().trim().isNotEmpty
+                clientModel1.typeClient=='عرض سعر'
                     ? cardRow(
                         title: 'تاريخ عرض السعر',
                         value: clientModel1.date_price.toString())
                     : IgnorePointer(),
 
-                clientModel1.offer_price != null &&
-                        clientModel1.offer_price.toString().trim().isNotEmpty
+
+                        clientModel1.user_do !=null
                     ? cardRow(
                         title: 'الموظف الذي قام بتغيير حالة العميل',
                         value: clientModel1.nameuserdoning.toString())
