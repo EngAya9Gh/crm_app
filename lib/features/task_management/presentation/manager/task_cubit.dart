@@ -7,9 +7,9 @@ import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/di/di_container.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
 import '../../data/models/task_model.dart';
@@ -271,7 +271,7 @@ class TaskCubit extends Cubit<TaskState> {
 
   @override
   Future<void> close() {
-    GetIt.I.resetLazySingleton<TaskCubit>();
+    getIt.resetLazySingleton<TaskCubit>();
     return super.close();
   }
 }

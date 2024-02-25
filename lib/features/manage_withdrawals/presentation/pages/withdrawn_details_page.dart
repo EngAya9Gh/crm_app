@@ -9,14 +9,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as pp;
 
 import '../../../../api/api.dart';
-import '../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../constants.dart';
+import '../../../../core/common/models/page_state/result_builder.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/screen/client/profileclient.dart';
 import '../../../../ui/screen/invoice/invoiceView.dart';
@@ -43,7 +43,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..setCurrentInvoice(widget.invoice)
       ..getWithdrawnDetails(widget.invoice.idInvoice!);
     currentUser = context.read<UserProvider>().currentUser;

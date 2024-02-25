@@ -7,9 +7,9 @@ import 'package:crm_smart/features/manage_privilege/presentation/manager/privile
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/di/di_container.dart';
 
 class AddLevelSheet extends StatefulWidget {
   const AddLevelSheet({Key? key}) : super(key: key);
@@ -60,7 +60,7 @@ class _AddLevelSheetState extends State<AddLevelSheet> {
                       if (!isValid) {
                         return;
                       }
-                      GetIt.I<PrivilegeCubit>().addLevel(
+                      getIt<PrivilegeCubit>().addLevel(
                           _levelController.text, Navigator.of(context).pop);
                     },
                   );

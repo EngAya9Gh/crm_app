@@ -16,13 +16,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../constantsList.dart';
 import '../../../../core/common/enums/activity_type_size.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/ActivityModel.dart';
@@ -91,9 +91,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
   void initState() {
     _clientsListBloc = context.read<ClientsListBloc>()
       ..add(GetRecommendedClientsEvent());
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..getReasonReject();
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
     _mainCityProvider = context.read<MainCityProvider>();
     _clientTypeProvider = context.read<ClientTypeProvider>();
     _userProvider = context.read<UserProvider>();

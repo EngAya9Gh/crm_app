@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:get_it/get_it.dart';
 
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
@@ -31,7 +31,7 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..getReasonReject();
     super.initState();
   }

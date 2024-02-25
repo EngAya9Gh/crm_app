@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:crm_smart/core/api/result.dart';
-import 'package:flutter/material.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
+
 import 'exceptions.dart';
 
 Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
@@ -19,7 +19,10 @@ Future<T> throwAppException<T>(FutureOr<T> Function() call) async {
   // }
   on SocketException catch (e) {
     showMessage(e.message);
-    throw AppNetworkException(message: e.message, reason: AppNetworkExceptionReason.noInternet, exception: e);
+    throw AppNetworkException(
+        message: e.message,
+        reason: AppNetworkExceptionReason.noInternet,
+        exception: e);
   } on Exception catch (e) {
     showMessage(e.toString());
 

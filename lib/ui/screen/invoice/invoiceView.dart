@@ -20,7 +20,6 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/intl.dart' as rt;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -30,6 +29,7 @@ import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../core/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
@@ -99,7 +99,7 @@ class _InvoiceViewState extends State<InvoiceView> {
   @override
   void initState() {
     context.read<invoice_vm>().setCurrentInvoice(widget.invoice);
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<ClientProvider>(context, listen: false).get_byIdClient(
           widget.invoice.fkIdClient.toString(), (value) => clientmodel = value);

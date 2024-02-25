@@ -23,6 +23,10 @@ Future<GetIt> configureDependencies() async => $initGetIt(getIt);
 
 @module
 abstract class AppModule {
+  @preResolve
+  @singleton
+  Future<SharedPreferences> get sharedPreferences =>
+      SharedPreferences.getInstance();
   BaseOptions get dioOption => BaseOptions(
         baseUrl: EndPoints.baseUrl,
         connectTimeout: const Duration(seconds: 20),
@@ -38,9 +42,4 @@ abstract class AppModule {
 
   @lazySingleton
   Dio dio() => dioInit();
-
-  @preResolve
-  @singleton
-  Future<SharedPreferences> get sharedPreferences =>
-      SharedPreferences.getInstance();
 }

@@ -7,8 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
+
 import '../../../../constants.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'action_user_page.dart';
 
@@ -26,7 +27,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
   @override
   void initState() {
     _searchTextField = TextEditingController()..addListener(onSearch);
-    _usersCubit = GetIt.I<UsersCubit>()..getAllUsers();
+    _usersCubit = getIt<UsersCubit>()..getAllUsers();
     super.initState();
   }
 
@@ -50,22 +51,24 @@ class _ManageUserPageState extends State<ManageUserPage> {
         builder: (context) {
           return Scaffold(
             floatingActionButton:
-            context.read<PrivilegeCubit>().checkPrivilege('49')?
-            FloatingActionButton(
-              onPressed: () => Navigator.push(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) => BlocProvider.value(
-                          value: _usersCubit,
-                          child: ActionUserPage(),
-                        )),
-              ),
-              child: Icon(CupertinoIcons.add,color: AppColors.white),
-              heroTag: "add user",
-              backgroundColor: kMainColor,
-            ):Container(),
+                context.read<PrivilegeCubit>().checkPrivilege('49')
+                    ? FloatingActionButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                    value: _usersCubit,
+                                    child: ActionUserPage(),
+                                  )),
+                        ),
+                        child: Icon(CupertinoIcons.add, color: AppColors.white),
+                        heroTag: "add user",
+                        backgroundColor: kMainColor,
+                      )
+                    : Container(),
             appBar: AppBar(
-              title: Text('إدارة المستخدمين', style: TextStyle(color: kWhiteColor)),
+              title: Text('إدارة المستخدمين',
+                  style: TextStyle(color: kWhiteColor)),
               centerTitle: true,
               backgroundColor: kMainColor,
             ),
@@ -87,23 +90,31 @@ class _ManageUserPageState extends State<ManageUserPage> {
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10).r,
-                                      borderSide: BorderSide(color: Colors.grey.shade200, width: 0)),
+                                      borderSide: BorderSide(
+                                          color: Colors.grey.shade200,
+                                          width: 0)),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10).r,
-                                      borderSide: BorderSide(color: Colors.grey.shade200, width: 0)),
+                                      borderSide: BorderSide(
+                                          color: Colors.grey.shade200,
+                                          width: 0)),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10).r,
-                                      borderSide: BorderSide(color: Colors.grey.shade200, width: 0)),
+                                      borderSide: BorderSide(
+                                          color: Colors.grey.shade200,
+                                          width: 0)),
                                   filled: true,
                                   fillColor: Colors.grey.shade200,
                                   hintText: "اسم الموظف...",
                                   isDense: true,
-                                  prefixIcon: Icon(CupertinoIcons.search, size: 25.r)),
+                                  prefixIcon:
+                                      Icon(CupertinoIcons.search, size: 25.r)),
                             ),
                           ),
                           Expanded(
                             child: ListView.separated(
-                              padding: REdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                              padding: REdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 20),
                               itemBuilder: (context, index) {
                                 final user = data[index];
                                 return InkWell(
@@ -112,7 +123,7 @@ class _ManageUserPageState extends State<ManageUserPage> {
                                       context,
                                       CupertinoPageRoute(
                                         builder: (context) =>
-                                          BlocProvider.value(
+                                            BlocProvider.value(
                                           value: _usersCubit,
                                           child: UserProfile(userModel: user),
                                         ),
@@ -120,40 +131,62 @@ class _ManageUserPageState extends State<ManageUserPage> {
                                     );
                                   },
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
                                           CircleAvatar(
                                             radius: 30,
-                                            child: user.img_image.toString().trim().length == 0
-                                                ? user.nameUser.toString().isEmpty || user.nameUser == null
+                                            child: user.img_image
+                                                        .toString()
+                                                        .trim()
+                                                        .length ==
+                                                    0
+                                                ? user.nameUser
+                                                            .toString()
+                                                            .isEmpty ||
+                                                        user.nameUser == null
                                                     ? Icon(
                                                         Icons.person,
                                                         size: 50,
-                                                        color: Colors.lightBlueAccent,
+                                                        color: Colors
+                                                            .lightBlueAccent,
                                                       )
-                                                    : Text(user.nameUser.toString().substring(0, 1))
+                                                    : Text(user.nameUser
+                                                        .toString()
+                                                        .substring(0, 1))
                                                 : ClipRRect(
-                                                    borderRadius: BorderRadius.circular(45),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            45),
                                                     child: CachedNetworkImage(
                                                       width: 500,
                                                       height: 500,
                                                       fit: BoxFit.fill,
-                                                      placeholder: (context, url) => const CircularProgressIndicator(),
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          const CircularProgressIndicator(),
                                                       imageUrl: user.img_image!,
                                                     ),
                                                   ),
                                           ),
                                           25.horizontalSpace,
                                           Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: [
-                                              Text(user.nameUser ?? '', style: context.textTheme.labelLarge),
+                                              Text(user.nameUser ?? '',
+                                                  style: context
+                                                      .textTheme.labelLarge),
                                               8.verticalSpace,
                                               Text(user.name_mange ?? '',
-                                                  style: context.textTheme.bodyLarge
-                                                      ?.copyWith(color: Colors.grey, fontWeight: FontWeight.w600)),
+                                                  style: context
+                                                      .textTheme.bodyLarge
+                                                      ?.copyWith(
+                                                          color: Colors.grey,
+                                                          fontWeight:
+                                                              FontWeight.w600)),
                                             ],
                                           ),
                                         ],
@@ -161,18 +194,30 @@ class _ManageUserPageState extends State<ManageUserPage> {
                                       Column(
                                         children: [
                                           Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
                                             children: [
-                                              CircleAvatar(radius: 6.r, backgroundColor: user.isActive == '1' ? Colors.green : Colors.red),
+                                              CircleAvatar(
+                                                  radius: 6.r,
+                                                  backgroundColor:
+                                                      user.isActive == '1'
+                                                          ? Colors.green
+                                                          : Colors.red),
                                               5.horizontalSpace,
-                                              Text(user.isActive == '1' ? 'Active' : 'UnActive',
-                                                  style: context.textTheme.labelLarge),
+                                              Text(
+                                                  user.isActive == '1'
+                                                      ? 'Active'
+                                                      : 'UnActive',
+                                                  style: context
+                                                      .textTheme.labelLarge),
                                             ],
                                           ),
                                           if (user.fkRegoin != null) ...{
                                             8.verticalSpace,
                                             Text(user.nameRegoin.toString(),
-                                                style: context.textTheme.bodyLarge?.copyWith(
+                                                style: context
+                                                    .textTheme.bodyLarge
+                                                    ?.copyWith(
                                                   color: Colors.grey,
                                                   fontWeight: FontWeight.w600,
                                                 )),
@@ -195,7 +240,8 @@ class _ManageUserPageState extends State<ManageUserPage> {
                       );
                     },
                     empty: () => Center(child: Text("No Users")),
-                    error: (exception) => Center(child: Text("Something wrong!!")),
+                    error: (exception) =>
+                        Center(child: Text("Something wrong!!")),
                   );
                 },
               ),

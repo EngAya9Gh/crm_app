@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/widgets/custom_widget/custom_button_new.dart';
@@ -42,7 +42,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
   void initState() {
     // TODO: implement initState
     currentUser = context.read<UserProvider>().currentUser;
-    _linkCubit = GetIt.I<LinkCubit>();
+    _linkCubit = getIt<LinkCubit>();
     _titleLinkController = ValueNotifier(linkModel?.title.toString());
     _linkController = TextEditingController(text: linkModel?.link.toString());
     _notesController = TextEditingController(text: linkModel?.notes.toString());

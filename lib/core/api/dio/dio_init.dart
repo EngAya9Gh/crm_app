@@ -29,6 +29,14 @@ class _ApiInterceptors extends Interceptor {
     getIt<Logger>().i("Request headers: ${options.headers}");
     getIt<Logger>().i("Request data: ${options.data}");
     getIt<Logger>().i("Request queryParameters: ${options.queryParameters}");
+    // if auth token is null then get it from shared preferences
+    print("options.headers['AuthToken'] ${options.headers['AuthToken']}");
+    if (options.headers['AuthToken'] == null ||
+        options.headers['AuthToken'] == '') {
+      options.headers['AuthToken'] =
+          'Bearer ${getIt<SharedPreferences>().getString('token_user')}';
+    }
+    print("options.headers['AuthToken'] ${options.headers['AuthToken']}");
 
     super.onRequest(options, handler);
   }

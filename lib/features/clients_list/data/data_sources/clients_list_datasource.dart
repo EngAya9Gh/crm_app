@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:crm_smart/core/api/api_services.dart';
 import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
 import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/end_points.dart';
 import '../../../../model/similar_client.dart';
 import '../models/clients_list_response.dart';
@@ -41,7 +41,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<List<SimilarClient>>> getSimilarClientsList(
       Map<String, dynamic> body) async {
     fun() async {
-      final dio = GetIt.I<Dio>();
+      final dio = getIt<Dio>();
       api.changeBaseUrl(EndPoints.apiBaseUrl2);
       final response = await api.post(
           endPoint: EndPoints.client.similarClientsList, data: body);
@@ -174,7 +174,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> changeTypeClient(
       Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
     fun() async {
-      final dio = GetIt.I<Dio>();
+      final dio = getIt<Dio>();
       api.changeBaseUrl(EndPoints.apiBaseUrl2);
       final response = await api.post(
         endPoint: EndPoints.client.changeTypeClient + id,

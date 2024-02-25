@@ -8,6 +8,8 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../core/di/di_container.dart';
+
 @lazySingleton
 class Api {
   static final http.Client _client = http.Client();
@@ -21,8 +23,8 @@ class Api {
     if (token == null) get_token();
   }
 
-  Future<void> get_token() async {
-    final prefs = await SharedPreferences.getInstance();
+  void get_token() {
+    final prefs = getIt<SharedPreferences>();
     token = prefs.getString('token_user');
     print('inside get_token () .... ');
   }

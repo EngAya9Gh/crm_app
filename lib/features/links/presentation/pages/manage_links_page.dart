@@ -7,9 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../../core/config/theme/theme.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/link_cubit.dart';
@@ -27,7 +27,7 @@ class _ManageLinkPageState extends State<ManageLinkPage> {
 
   @override
   void initState() {
-    _linkCubit = GetIt.I<LinkCubit>()..getLinks();
+    _linkCubit = getIt<LinkCubit>()..getLinks();
     super.initState();
   }
 

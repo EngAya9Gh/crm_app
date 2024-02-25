@@ -9,11 +9,11 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
+import '../../../core/di/di_container.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'addClient.dart';
 
@@ -43,9 +43,11 @@ class _tabclientsState extends State<tabclients> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
-      Provider.of<ClientTypeProvider>(context, listen: false).changevaluefilter(null);
+      Provider.of<ClientTypeProvider>(context, listen: false)
+          .changevaluefilter(null);
       Provider.of<ClientProvider>(context, listen: false).clear();
-      Provider.of<ClientProvider>(context, listen: false).getclient_vm(GetIt.I<PrivilegeCubit>());
+      Provider.of<ClientProvider>(context, listen: false)
+          .getclient_vm(getIt<PrivilegeCubit>());
       context.read<ActivityProvider>()
         ..initValueOut()
         ..getActivities();
@@ -67,7 +69,9 @@ class _tabclientsState extends State<tabclients> {
   }
 
   void onSearch() {
-    context.read<ClientProvider>().onSearchListClientFilter(_searchTextField.text);
+    context
+        .read<ClientProvider>()
+        .onSearchListClientFilter(_searchTextField.text);
   }
 
   @override
@@ -81,23 +85,27 @@ class _tabclientsState extends State<tabclients> {
           style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
         ),
       ),
-      floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('47') == true
-          ? FloatingActionButton(
-              backgroundColor: kMainColor,
-              onPressed: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (context) => addClient()));
-              },
-              tooltip: 'إضافة عميل',
-              child: Icon(Icons.add, color: AppColors.white),
-            )
-          : Container(),
+      floatingActionButton:
+          context.read<PrivilegeCubit>().checkPrivilege('47') == true
+              ? FloatingActionButton(
+                  backgroundColor: kMainColor,
+                  onPressed: () {
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) => addClient()));
+                  },
+                  tooltip: 'إضافة عميل',
+                  child: Icon(Icons.add, color: AppColors.white),
+                )
+              : Container(),
       body: Consumer<ClientProvider>(
         builder: (context, clientVm, child) {
           if (clientVm.isloading == true) {
             return Center(child: CircularProgressIndicator.adaptive());
           }
 
-          final clients = _searchTextField.text.isEmpty ? clientVm.listClientfilter : clientVm.listClientFilterSearch;
+          final clients = _searchTextField.text.isEmpty
+              ? clientVm.listClientfilter
+              : clientVm.listClientFilterSearch;
 
           return SafeArea(
             child: Directionality(
@@ -106,7 +114,8 @@ class _tabclientsState extends State<tabclients> {
                 children: [
                   15.verticalSpace,
                   Padding(
-                    padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                    padding: const EdgeInsets.only(
+                        top: 2, left: 8, right: 8, bottom: 2),
                     child: Row(
                       children: [
                         Expanded(
@@ -118,7 +127,8 @@ class _tabclientsState extends State<tabclients> {
                                 )),
                             height: 50,
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                              padding: const EdgeInsets.only(
+                                  top: 2, left: 8, right: 8, bottom: 2),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade200,
@@ -200,15 +210,21 @@ class _tabclientsState extends State<tabclients> {
                       children: [
                         Text(
                           'عدد العملاء',
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
                         ),
-                        Consumer<ClientProvider>(builder: (context, value, child) {
-                          final list =
-                              _searchTextField.text.isEmpty ? value.listClientfilter : value.listClientFilterSearch;
+                        Consumer<ClientProvider>(
+                            builder: (context, value, child) {
+                          final list = _searchTextField.text.isEmpty
+                              ? value.listClientfilter
+                              : value.listClientFilterSearch;
 
                           return Text(
                             list.length.toString(),
-                            style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontFamily: kfontfamily2,
+                                fontWeight: FontWeight.bold),
                           );
                         })
                       ],
@@ -221,11 +237,14 @@ class _tabclientsState extends State<tabclients> {
                             child: ListView.separated(
                               scrollDirection: Axis.vertical,
                               itemCount: clients.length,
-                              padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                              padding:
+                                  EdgeInsets.only(left: 10, right: 10, top: 10),
                               itemBuilder: (context, index) {
-                                return CardAllClient(clientModel: clients[index]);
+                                return CardAllClient(
+                                    clientModel: clients[index]);
                               },
-                              separatorBuilder: (context, index) => 10.verticalSpace,
+                              separatorBuilder: (context, index) =>
+                                  10.verticalSpace,
                             ),
                           ),
                   ),

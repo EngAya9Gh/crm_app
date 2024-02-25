@@ -12,12 +12,12 @@ import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/di/di_container.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
@@ -50,11 +50,13 @@ class _sales_reportstateState extends State<sales_reportstate> {
 
   @override
   void initState() {
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
     haveMarketingPrivilege = _privilegeCubit.checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(0);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
     super.initState();
@@ -78,17 +80,21 @@ class _sales_reportstateState extends State<sales_reportstate> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
+    UserModel usermodel =
+        Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     if (iduser == '0') iduser = usermodel.idUser.toString();
 
     if (idregoin == '0') idregoin = usermodel.fkRegoin.toString();
 
     String paramprivilge = '';
-    if (_privilegeCubit.checkPrivilege('96')) paramprivilge = '&id_user=${iduser}';
-    if (_privilegeCubit.checkPrivilege('97')) paramprivilge = '&id_regoin=${idregoin}';
+    if (_privilegeCubit.checkPrivilege('96'))
+      paramprivilge = '&id_user=${iduser}';
+    if (_privilegeCubit.checkPrivilege('97'))
+      paramprivilge = '&id_regoin=${idregoin}';
     if (_privilegeCubit.checkPrivilege('98')) {
-      if (iduser == '' && idregoin != '') paramprivilge = '&id_regoin=${idregoin}';
+      if (iduser == '' && idregoin != '')
+        paramprivilge = '&id_regoin=${idregoin}';
 
       if (iduser != '' && idregoin == '') paramprivilge = '&id_user=${iduser}';
     }
@@ -109,7 +115,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
       switch (type) {
         case "userSum":
           data = await Api().post(
-              url: url + "reports/sales_statereport.php?fk_country=$fkcountry$paramprivilge$isMarketingParams",
+              url: url +
+                  "reports/sales_statereport.php?fk_country=$fkcountry$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;
         case "dateyear":
@@ -190,7 +197,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
         //     //     Colors.primaries[Random().nextInt(Colors.primaries.length)]
         //     // ),
         //     charts.MaterialPalette.teal.shadeDefault,
-        colorFn: (BarModel bar, _) => charts.ColorUtil.fromDartColor(bar.colorval),
+        colorFn: (BarModel bar, _) =>
+            charts.ColorUtil.fromDartColor(bar.colorval),
         // charts.MaterialPalette.indigo.shadeDefault,
         domainFn: (BarModel genderModel, _) => getnameshort(genderModel.x),
         measureFn: (BarModel genderModel, __) => genderModel.y,
@@ -217,12 +225,15 @@ class _sales_reportstateState extends State<sales_reportstate> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                  Consumer<selected_button_provider>(
+                      builder: (context, selectedProvider, child) {
                     return GroupButton(
                         controller: GroupButtonController(
                           selectedIndex: selectedProvider.isbarsales,
                         ),
-                        options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
+                        options: GroupButtonOptions(
+                            buttonWidth: 75,
+                            borderRadius: BorderRadius.circular(10)),
                         buttons: ['سنوي', 'شهري', 'يومي'],
                         onSelected: (_, index, isselected) {
                           switch (index) {
@@ -232,11 +243,13 @@ class _sales_reportstateState extends State<sales_reportstate> {
                               break;
                             case 1:
                               type = 'datemonth';
-                              if (_selectedDatemonth != DateTime(1, 1, 1)) getData();
+                              if (_selectedDatemonth != DateTime(1, 1, 1))
+                                getData();
                               break;
                             case 2:
                               type = 'datedays';
-                              if (_selectedDatefrom != DateTime(1, 1, 1) && _selectedDateto != DateTime(1, 1, 1))
+                              if (_selectedDatefrom != DateTime(1, 1, 1) &&
+                                  _selectedDateto != DateTime(1, 1, 1))
                                 getData();
                               break;
                           }
@@ -265,7 +278,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                 hint: Text("الفرع"),
                                 items: cart.listRegionFilter.map((level_one) {
                                   return DropdownMenuItem(
-                                    child: Text(level_one.regionName), //label of item
+                                    child: Text(
+                                        level_one.regionName), //label of item
                                     value: level_one.regionId, //value of item
                                   );
                                 }).toList(),
@@ -284,7 +298,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                       )
                     : Container(),
                 Expanded(
-                  child: _privilegeCubit.checkPrivilege('98') || _privilegeCubit.checkPrivilege('97')
+                  child: _privilegeCubit.checkPrivilege('98') ||
+                          _privilegeCubit.checkPrivilege('97')
                       ? //user
                       Padding(
                           padding: const EdgeInsets.only(
@@ -309,8 +324,10 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                   Expanded(
                                     child: DropdownSearch<UserModel>(
                                       mode: Mode.DIALOG,
-                                      filterFn: (user, filter) => user!.getfilteruser(filter!),
-                                      compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                                      filterFn: (user, filter) =>
+                                          user!.getfilteruser(filter!),
+                                      compareFn: (item, selectedItem) =>
+                                          item?.idUser == selectedItem?.idUser,
                                       items: cart.usersSalesManagement,
                                       itemAsString: (u) => u!.userAsString(),
                                       onChanged: (data) {
@@ -328,7 +345,9 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                         alignLabelWithHint: true,
                                         fillColor: Colors.grey.withOpacity(0.2),
                                         contentPadding: EdgeInsets.all(0),
-                                        border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                        border: UnderlineInputBorder(
+                                            borderSide: const BorderSide(
+                                                color: Colors.grey)),
                                       ),
                                     ),
                                   ),
@@ -347,7 +366,9 @@ class _sales_reportstateState extends State<sales_reportstate> {
                 getData();
               },
             ),
-            Provider.of<selected_button_provider>(context, listen: true).isbarsales == 0
+            Provider.of<selected_button_provider>(context, listen: true)
+                        .isbarsales ==
+                    0
                 ? TextFormField(
                     validator: (value) {
                       if (_selectedDate == DateTime(1, 1, 1)) {
@@ -359,7 +380,10 @@ class _sales_reportstateState extends State<sales_reportstate> {
                         Icons.date_range,
                         color: kMainColor,
                       ),
-                      hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                      hintStyle: const TextStyle(
+                          color: Colors.black45,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
                       hintText: _selectedDate == DateTime(1, 1, 1)
                           ? 'السنة' //_currentDate.toString()
                           : DateFormat('yyyy').format(_selectedDate),
@@ -380,7 +404,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                               height: 300,
                               child: YearPicker(
                                 firstDate: DateTime(DateTime.now().year - 3, 1),
-                                lastDate: DateTime(DateTime.now().year + 100, 1),
+                                lastDate:
+                                    DateTime(DateTime.now().year + 100, 1),
                                 initialDate: DateTime.now(),
                                 // save the selected date to _selectedDate DateTime variable.
                                 // It's used to set the previous selected date when
@@ -407,7 +432,9 @@ class _sales_reportstateState extends State<sales_reportstate> {
                       // _selectDate(context, DateTime.now());
                     },
                   )
-                : Provider.of<selected_button_provider>(context, listen: true).isbarsales == 1
+                : Provider.of<selected_button_provider>(context, listen: true)
+                            .isbarsales ==
+                        1
                     ? Row(
                         children: [
                           Flexible(
@@ -422,11 +449,15 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                   Icons.date_range,
                                   color: kMainColor,
                                 ),
-                                hintStyle:
-                                    const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                hintText: _selectedDatemonth == DateTime(1, 1, 1)
-                                    ? 'الشهر' //_currentDate.toString()
-                                    : DateFormat('yyyy-MM').format(_selectedDatemonth),
+                                hintStyle: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                hintText:
+                                    _selectedDatemonth == DateTime(1, 1, 1)
+                                        ? 'الشهر' //_currentDate.toString()
+                                        : DateFormat('yyyy-MM')
+                                            .format(_selectedDatemonth),
                                 //_invoice!.dateinstall_task.toString(),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
@@ -443,9 +474,13 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                         width: 300,
                                         height: 300,
                                         child: CalendarDatePicker(
-                                          initialDate: DateTime(DateTime.now().year, DateTime.now().month),
-                                          firstDate: DateTime(DateTime.now().year - 100, 1),
-                                          lastDate: DateTime(DateTime.now().year + 100, 1),
+                                          initialDate: DateTime(
+                                              DateTime.now().year,
+                                              DateTime.now().month),
+                                          firstDate: DateTime(
+                                              DateTime.now().year - 100, 1),
+                                          lastDate: DateTime(
+                                              DateTime.now().year + 100, 1),
                                           // : DateTime.now(),
                                           // save the selected date to _selectedDate DateTime variable.
                                           // It's used to set the previous selected date when
@@ -476,7 +511,10 @@ class _sales_reportstateState extends State<sales_reportstate> {
                           ),
                         ],
                       )
-                    : Provider.of<selected_button_provider>(context, listen: true).isbarsales == 2
+                    : Provider.of<selected_button_provider>(context,
+                                    listen: true)
+                                .isbarsales ==
+                            2
                         ? Row(
                             children: [
                               Flexible(
@@ -486,7 +524,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                     Text('from'),
                                     TextFormField(
                                       validator: (value) {
-                                        if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                        if (_selectedDatefrom ==
+                                            DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
                                       },
@@ -496,17 +535,22 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                           color: kMainColor,
                                         ),
                                         hintStyle: const TextStyle(
-                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                        hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText: _selectedDatefrom ==
+                                                DateTime(1, 1, 1)
                                             ? 'from' //_currentDate.toString()
-                                            : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                                            : DateFormat('yyyy-MM-dd')
+                                                .format(_selectedDatefrom),
                                         //_invoice!.dateinstall_task.toString(),
                                         filled: true,
                                         fillColor: Colors.grey.shade200,
                                       ),
                                       readOnly: true,
                                       onTap: () {
-                                        _selectDatefrom(context, DateTime.now());
+                                        _selectDatefrom(
+                                            context, DateTime.now());
 
                                         // _selectDate(context, DateTime.now());
                                       },
@@ -520,7 +564,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                     Text('to'),
                                     TextFormField(
                                       validator: (value) {
-                                        if (_selectedDateto == DateTime(1, 1, 1)) {
+                                        if (_selectedDateto ==
+                                            DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
                                       },
@@ -530,10 +575,14 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                           color: kMainColor,
                                         ),
                                         hintStyle: const TextStyle(
-                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                        hintText: _selectedDateto == DateTime(1, 1, 1)
-                                            ? 'to' //_currentDate.toString()
-                                            : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText:
+                                            _selectedDateto == DateTime(1, 1, 1)
+                                                ? 'to' //_currentDate.toString()
+                                                : DateFormat('yyyy-MM-dd')
+                                                    .format(_selectedDateto),
                                         //_invoice!.dateinstall_task.toString(),
                                         filled: true,
                                         fillColor: Colors.grey.shade200,
@@ -567,7 +616,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                   child: charts.BarChart(
                                     _createSampleData(),
                                     // barRendererDecorator: new charts.BarLabelDecorator<String>(),
-                                    barGroupingType: charts.BarGroupingType.grouped,
+                                    barGroupingType:
+                                        charts.BarGroupingType.grouped,
                                     animate: true,
 
                                     domainAxis: charts.OrdinalAxisSpec(
@@ -618,19 +668,22 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                     DataColumn(
                                       label: Text(
                                         '',
-                                        style: TextStyle(fontStyle: FontStyle.normal),
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.normal),
                                       ),
                                     ),
                                     DataColumn(
                                       label: Text(
                                         'الحالة',
-                                        style: TextStyle(fontStyle: FontStyle.normal),
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.normal),
                                       ),
                                     ),
                                     DataColumn(
                                       label: Text(
                                         'العدد',
-                                        style: TextStyle(fontStyle: FontStyle.normal),
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.normal),
                                       ),
                                     ),
                                     // DataColumn(
@@ -643,7 +696,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                   rows: rowsdata,
                                   dividerThickness: 3,
                                   horizontalMargin: 2,
-                                  columnSpacing: MediaQuery.of(context).size.width * 0.3,
+                                  columnSpacing:
+                                      MediaQuery.of(context).size.width * 0.3,
                                   //       RowEditTitle(color: salesresult[i].colorval,name: salesresult[i].x,
                                   //         des2: salesresult[i].y.toString(), des: salesresult[i].countclient.toString()),
                                   //     <DataRow>[
@@ -677,7 +731,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
     );
   }
 
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDatefrom(
+      BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
@@ -689,7 +744,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
 
-        if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
+        if (_selectedDateto != DateTime(1, 1, 1) &&
+            _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
 
@@ -707,7 +763,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
 
-        if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
+        if (_selectedDateto != DateTime(1, 1, 1) &&
+            _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
 }

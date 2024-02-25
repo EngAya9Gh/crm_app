@@ -10,12 +10,12 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/models/page_state/result_builder.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../data/models/invoice_withdrawal_series_model.dart';
@@ -39,7 +39,7 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..getWithdrawalInvoiceDetails(widget.invoice.idInvoice!);
     currentUser = context.read<UserProvider>().currentUser;
     _noteController = TextEditingController();

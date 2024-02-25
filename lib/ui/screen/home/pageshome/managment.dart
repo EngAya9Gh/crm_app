@@ -1,4 +1,3 @@
-import 'package:crm_smart/features/manage_participates/presentation/pages/participate_list_page.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/pages/level_page.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/config/activity_view.dart';
@@ -12,17 +11,15 @@ import 'package:crm_smart/ui/screen/product/productView.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../features/manage_agents_and_distributors/presentation/pages/agents_distributors_page.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/manage_users/presentation/pages/manage_users_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/manage_withdrawals_page.dart';
 import '../../barnch_race/pages/branch_race_mangement_view.dart';
-import '../../partic_agent/participateView.dart';
 import '../widgethomeitem.dart';
 
 class ManagementPage extends StatefulWidget {
@@ -44,7 +41,7 @@ class _ManagementPageState extends State<ManagementPage> {
 
   @override
   void initState() {
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
 
     super.initState();
   }

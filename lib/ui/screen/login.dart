@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants.dart';
+import '../../core/di/di_container.dart';
 import '../../core/utils/app_strings.dart';
 import '../../function_global.dart';
 import 'home/home.dart';
@@ -123,7 +124,7 @@ class _loginState extends State<login> {
 
                           if (res != "false") {
                             SharedPreferences preferences =
-                                await SharedPreferences.getInstance();
+                                getIt<SharedPreferences>();
                             preferences.setBool(kKeepMeLoggedIn, true);
                             String id = jsonDecode(res!)["message"].toString();
                             String tk = jsonDecode(res!)["data"]!;

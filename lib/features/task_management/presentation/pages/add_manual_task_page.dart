@@ -7,11 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
@@ -62,8 +62,8 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
 
   @override
   void initState() {
-    privilegeBloc = GetIt.I<PrivilegeCubit>();
-    _taskCubit = GetIt.I<TaskCubit>();
+    privilegeBloc = getIt<PrivilegeCubit>();
+    _taskCubit = getIt<TaskCubit>();
 
     currentUser = context.read<UserProvider>().currentUser;
     departmentId = privilegeBloc.checkPrivilege('174')
@@ -77,7 +77,7 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
     regionId =
         privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
 
-    _usersCubit = GetIt.I<UsersCubit>()
+    _usersCubit = getIt<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getAllUsers()
       ..getUsersByDepartmentAndRegion(
@@ -415,10 +415,10 @@ class _AddManualTaskPageState extends State<AddManualTaskPage> {
         builder: (context, manageList, child) {
           final userDepartment =
               context.read<UserProvider>().currentUser.typeAdministration;
-          final list = GetIt.I<PrivilegeCubit>().checkPrivilege('169')
+          final list = getIt<PrivilegeCubit>().checkPrivilege('169')
               ? manageList.listtext
-              : GetIt.I<PrivilegeCubit>().checkPrivilege('168') ||
-                      GetIt.I<PrivilegeCubit>().checkPrivilege('174')
+              : getIt<PrivilegeCubit>().checkPrivilege('168') ||
+                      getIt<PrivilegeCubit>().checkPrivilege('174')
                   ? manageList.listtext
                       .where((element) => element.idmange == userDepartment)
                       .toList()

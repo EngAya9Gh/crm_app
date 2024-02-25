@@ -9,10 +9,10 @@ import 'package:crm_smart/model/regoin_model.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/responsive_padding.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../model/ActivityModel.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/activity_vm.dart';
@@ -48,7 +48,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   @override
   void initState() {
     _clientsListBloc = context.read<ClientsListBloc>();
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
     userModel = context.read<UserProvider>().currentUser;
     _regionNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.regionId);

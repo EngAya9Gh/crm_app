@@ -18,13 +18,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../function_global.dart';
 import '../../../../model/clientmodel.dart';
 import '../../../../view_model/datetime_vm.dart';
@@ -98,7 +98,7 @@ class _ClientSectionState extends State<ClientSection> {
   @override
   void initState() {
     // TODO: implement initState
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..getReasonReject();
 
     reasonReject = ValueNotifier(widget.client?.fk_rejectClient);

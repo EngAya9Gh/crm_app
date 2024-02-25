@@ -22,7 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +29,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../core/common/enums/activity_type_size.dart';
+import '../../../core/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';
@@ -135,7 +135,7 @@ class _editclientState extends State<editclient> {
   @override
   void initState() {
     context.read<CompanyProvider>().initValueOut();
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
     _clientsListBloc = context.read<ClientsListBloc>();
     currentUser = Provider.of<UserProvider>(context, listen: false).currentUser;
     nameclientController.text = widget.client.nameClient!.toString();
