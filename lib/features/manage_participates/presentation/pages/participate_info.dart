@@ -37,7 +37,19 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                     data: state.currentPaticipate!.namebank_participate),
                 TextRow(
                     title: "رقم البنك",
-                    data: state.currentPaticipate!.numberbank_participate)
+                    data: state.currentPaticipate!.numberbank_participate),
+                TextRow(
+                    title: "الموظف الذي أضاف",
+                    data: state.currentPaticipate!.nameUserAdd),
+                TextRow(
+                    title: "تاريخ الاضافة",
+                    data: state.currentPaticipate!.updateDate),
+                TextRow(
+                    title: "آخر من عدل",
+                    data: state.currentPaticipate!.nameUserUpdate),
+                TextRow(
+                    title: "تاريخ التعديل",
+                    data: state.currentPaticipate!.updateDate),
               ])
             : Center(child: Text('حدث خطاء')),
       );

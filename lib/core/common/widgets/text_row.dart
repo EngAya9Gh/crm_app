@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 
 class TextRow extends StatelessWidget {
   final String title;
-  final String data;
+  final String? data;
 
   const TextRow({Key? key, required this.title, required this.data})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (data == null) {
+      return const SizedBox.shrink();
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Column(
@@ -23,7 +26,7 @@ class TextRow extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    data,
+                    data!,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
