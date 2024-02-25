@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../base_api_services.dart';
+import '../api_services.dart';
 import '../exceptions.dart';
 
 @LazySingleton(as: ApiServices)

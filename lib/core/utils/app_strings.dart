@@ -1,7 +1,4 @@
 abstract class AppStrings {
-  static const String apiBaseUrl1 = 'http://smartcrm.ws/test/api/';
-  static const String apiBaseUrl2 = 'http://test.smartcrm.ws/api/';
-
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
   static const String hintEmailText = "Enter your Email";

@@ -1,10 +1,10 @@
+import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/api/base_api_services.dart';
+import '../../../../../core/api/api_services.dart';
 import '../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../core/common/widgets/profile_comments_model.dart';
-import '../../../../../core/utils/app_strings.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
 
@@ -46,7 +46,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(AppStrings.apiBaseUrl2);
+      dio.changeBaseUrl(EndPoints.apiBaseUrl2);
       final response = await dio.get(endPoint: "getAgentClints/$agentId");
 
       final data = response['data'];
@@ -70,7 +70,7 @@ class AgentsDistributorsProfileDataSourceImpl
   Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoiceList(
       {required String agentId}) async {
     try {
-      dio.changeBaseUrl(AppStrings.apiBaseUrl2);
+      dio.changeBaseUrl(EndPoints.apiBaseUrl2);
       final response = await dio.get(endPoint: "getAgentInvoices/$agentId");
       final data = response['data'];
 
@@ -90,7 +90,7 @@ class AgentsDistributorsProfileDataSourceImpl
   Future<Either<String, List<ProfileCommentModel>>> getAgentCommentsList(
       {required String agentId}) async {
     try {
-      dio.changeBaseUrl(AppStrings.apiBaseUrl2);
+      dio.changeBaseUrl(EndPoints.apiBaseUrl2);
       final response = await dio.get(endPoint: "getAgentComments/$agentId");
       final data = response['data'];
 
@@ -112,7 +112,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String content,
   }) async {
     try {
-      dio.changeBaseUrl(AppStrings.apiBaseUrl2);
+      dio.changeBaseUrl(EndPoints.apiBaseUrl2);
       final response = await dio.post(endPoint: "addCommentAgent", data: {
         "agent_id": agentId,
         "content": content,
@@ -132,7 +132,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(AppStrings.apiBaseUrl2);
+      dio.changeBaseUrl(EndPoints.apiBaseUrl2);
       final response = await dio.get(endPoint: "getDateVisitAgent/$agentId");
       final data = response['data'];
 
@@ -153,7 +153,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required DateInstallationClient agentDateModel,
   }) async {
     try {
-      dio.changeBaseUrl(AppStrings.apiBaseUrl1);
+      dio.changeBaseUrl(EndPoints.baseUrl);
       final response = await dio.post(
         endPoint: "client/invoice/add_date_install.php",
         data: agentDateModel.toMap(),

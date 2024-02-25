@@ -1,35 +1,26 @@
-import 'package:crm_smart/core/api/client.dart';
+import 'package:crm_smart/core/api/api_services.dart';
 import 'package:crm_smart/features/manage_privilege/data/models/level_model.dart';
 import 'package:crm_smart/features/manage_privilege/data/models/privilege_model.dart';
-import 'package:dio/dio.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/api/api_utils.dart';
-import '../../../../core/api/client_config.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/utils/end_points.dart';
 
 @injectable
 class PrivilegeDatasource {
-  PrivilegeDatasource(this._clientApi);
+  PrivilegeDatasource(this.api);
 
-  final ClientApi _clientApi;
+  final ApiServices api;
 
   Future<ResponseWrapper<List<PrivilegeModel>>> getPrivileges(
       Map<String, dynamic> body) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.privilege.getPrivileges,
-          queryParameters: body,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-        ),
-      );
-
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.get(
+          endPoint: EndPoints.privilege.getPrivileges, queryParameters: body);
       return ResponseWrapper<List<PrivilegeModel>>.fromJson(
-        response.data,
+        response,
         (json) => List.from((json as List<dynamic>)
             .map((e) => PrivilegeModel.fromJson(e as Map<String, dynamic>))),
       );
@@ -40,16 +31,11 @@ class PrivilegeDatasource {
 
   Future<ResponseWrapper<List<LevelModel>>> getLevels() async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.privilege.getLevels,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-        ),
-      );
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.get(endPoint: EndPoints.privilege.getLevels);
 
       return ResponseWrapper<List<LevelModel>>.fromJson(
-        response.data,
+        response,
         (json) => List.from((json as List<dynamic>)
             .map((e) => LevelModel.fromJson(e as Map<String, dynamic>))),
       );
@@ -60,16 +46,11 @@ class PrivilegeDatasource {
 
   Future<ResponseWrapper<String>> addLevel(Map<String, dynamic> body) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.privilege.addLevel,
-          data: body,
-          clientMethod: ClientMethod.post,
-          responseType: ResponseType.json,
-        ),
-      );
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response =
+          await api.post(endPoint: EndPoints.privilege.addLevel, data: body);
 
-      return ResponseWrapper<String>.fromJson(response.data, (json) => json);
+      return ResponseWrapper<String>.fromJson(response, (json) => json);
     }
 
     return throwAppException(fun);
@@ -78,19 +59,10 @@ class PrivilegeDatasource {
   Future<ResponseWrapper<void>> updatePrivileges(
       Map<String, dynamic> body) async {
     fun() async {
-      final dio = GetIt.I<Dio>();
-      dio.options.baseUrl = 'http://test.smartcrm.ws/api/';
-
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.privilege.updatePrivileges,
-          data: body,
-          clientMethod: ClientMethod.post,
-          responseType: ResponseType.json,
-        ),
-      );
-
-      dio.options.baseUrl = 'http://smartcrm.ws/test/api/';
+      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      final response = await api.post(
+          endPoint: EndPoints.privilege.updatePrivileges, data: body);
+      api.changeBaseUrl(EndPoints.baseUrl);
       return ResponseWrapper(message: null, data: null);
     }
 

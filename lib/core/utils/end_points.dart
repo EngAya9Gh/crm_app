@@ -2,6 +2,7 @@ abstract class EndPoints {
   EndPoints._();
 
   static const baseUrl = "http://smartcrm.ws/test/api/";
+  static const String apiBaseUrl2 = 'http://test.smartcrm.ws/api/';
   static const care = _Care();
   static const client = _Client();
   static const users = _Users();
@@ -12,6 +13,7 @@ abstract class EndPoints {
   static const privilege = _Privilege();
   static const task = _Task();
   static const participate = _Participate();
+  static const city = _City();
 }
 
 class _App {
@@ -27,6 +29,7 @@ class _Users {
   final addUser = 'users/addUser.php';
   final updateUser = 'users/updateuser_patch.php';
 }
+
 class _Links {
   const _Links();
 
@@ -34,12 +37,12 @@ class _Links {
   final addLink = 'addLink';
   final updateLink = 'editLink/';
 }
+
 class _Company {
   const _Company();
 
   final getComment = 'getCommentsViaCompanyId/';
   final addComment = 'addCommentToCompany/';
-
 }
 
 class _Series {
@@ -62,6 +65,7 @@ class _Care {
 
 class _Privilege {
   const _Privilege();
+
   final getPrivileges = "privilge/privGet.php";
   final updatePrivileges = "updatePermissions";
   final getLevels = "config/getLevel.php";
@@ -80,9 +84,12 @@ class _Client {
   final editClient = "client/clientUpdate.php";
   final changeTypeClient = "editClientByTypeClient/";
   final approveClient_reject_admin = "clientAppproveAdmin/";
-  final getRejectReasons = "client/reason_client_reject/Get_reasonRejectClient.php";
-  final addRejectReasons = "client/reason_client_reject/Add_reasonRejectClient.php";
-  final editRejectReasons = "client/reason_client_reject/Edit_reasonRejectClient.php";
+  final getRejectReasons =
+      "client/reason_client_reject/Get_reasonRejectClient.php";
+  final addRejectReasons =
+      "client/reason_client_reject/Add_reasonRejectClient.php";
+  final editRejectReasons =
+      "client/reason_client_reject/Edit_reasonRejectClient.php";
   final distinctiveClient = "star_client/get_client_star.php";
 }
 
@@ -92,7 +99,8 @@ class _Task {
   final addTask = 'addTask';
   final filterTasksByAll = 'filterTaskesByAll';
   final changeStatusTask = 'changeStatuseTask/';
-  final getUsersByTypeAdministrationAndRegion = 'getUsersByTypeAdministrationAndRegion';
+  final getUsersByTypeAdministrationAndRegion =
+      'getUsersByTypeAdministrationAndRegion';
 }
 
 class _Participate {
@@ -106,5 +114,11 @@ class _Participate {
   final allParticipateInvoices = 'getParticipateInvoices';
   final IvoiceByID = 'client/invoice/getInvoiceID.php';
   final allParticipateComments = 'getParticipateComments';
-    final addParticipateComment = 'addCommentParticipate';
+  final addParticipateComment = 'addCommentParticipate';
+}
+
+class _City {
+  const _City();
+
+  final String getCitiesFromMainCitiesIds = 'getCitiesFromMainCitiesIds';
 }

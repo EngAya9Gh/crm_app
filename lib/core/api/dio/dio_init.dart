@@ -3,12 +3,12 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../di/di_container.dart';
-import '../../utils/app_strings.dart';
+import '../../utils/end_points.dart';
 
 Dio dioInit() {
   final dio = Dio(
     BaseOptions(
-      baseUrl: AppStrings.apiBaseUrl1,
+      baseUrl: EndPoints.baseUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {

@@ -1,31 +1,23 @@
-import 'package:crm_smart/core/api/client.dart';
-import 'package:crm_smart/features/app/data/models/update_config.dart';
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/api/api_services.dart';
 import '../../../../core/api/api_utils.dart';
-import '../../../../core/api/client_config.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/utils/end_points.dart';
+import '../models/update_config.dart';
 
 @injectable
 class AppDatasource {
-  AppDatasource(this._clientApi);
+  AppDatasource(this.api);
 
-  final ClientApi _clientApi;
+  final ApiServices api;
 
   Future<ResponseWrapper<List<UpdateConfig>>> getVersion() async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.app.getVersion,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-        ),
-      );
+      final response = await api.get(endPoint: EndPoints.app.getVersion);
 
       return ResponseWrapper<List<UpdateConfig>>.fromJson(
-          response.data,
+          response,
           (json) => List.from((json as List<dynamic>)
               .map((e) => UpdateConfig.fromJson(e as Map<String, dynamic>))));
     }

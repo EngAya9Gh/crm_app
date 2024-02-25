@@ -1,31 +1,24 @@
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/api/api_services.dart';
 import '../../../../core/api/api_utils.dart';
-import '../../../../core/api/client.dart';
-import '../../../../core/api/client_config.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/utils/end_points.dart';
 
 @injectable
 class UsersDatasource {
-  final ClientApi _clientApi;
+  final ApiServices api;
 
-  UsersDatasource(this._clientApi);
+  UsersDatasource(this.api);
 
   Future<ResponseWrapper<List<UserModel>>> getAllUsers() async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.users.allUsers,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-        ),
-      );
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.get(endPoint: EndPoints.users.allUsers);
 
       return ResponseWrapper<List<UserModel>>.fromJson(
-        response.data,
+        response,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return UserModel.fromJson(e as Map<String, dynamic>);
@@ -42,18 +35,12 @@ class UsersDatasource {
     required Map<String, dynamic> param,
   }) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.users.addUser,
-          data: body,
-          queryParameters: param,
-          clientMethod: ClientMethod.post,
-          responseType: ResponseType.json,
-        ),
-      );
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response =
+          await api.post(endPoint: EndPoints.users.addUser, data: body);
 
       return ResponseWrapper<UserModel>.fromJson(
-        response.data,
+        response,
         (json) => UserModel.fromJson(json[0]),
       );
     }
@@ -66,18 +53,11 @@ class UsersDatasource {
     required Map<String, dynamic> param,
   }) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.users.updateUser,
-          data: body,
-          queryParameters: param,
-          clientMethod: ClientMethod.post,
-          responseType: ResponseType.json,
-        ),
-      );
-
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response =
+          await api.post(endPoint: EndPoints.users.updateUser, data: body);
       return ResponseWrapper<UserModel>.fromJson(
-        response.data,
+        response,
         (json) => UserModel.fromJson(json[0]),
       );
     }
