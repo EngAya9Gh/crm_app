@@ -23,7 +23,12 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
     return BlocBuilder<ParticipateListBloc, ParticipateListState>(
         builder: (context, state) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(
+          right: 10,
+          left: 10,
+          bottom: 10,
+          top: 15,
+        ),
         child: state.currentPaticipate != null
             ? Column(children: [
                 TextRow(
