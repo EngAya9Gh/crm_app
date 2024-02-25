@@ -3,12 +3,13 @@ import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/clients_list/domain/repositories/clients_list_repository.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../model/usermodel.dart';
 import '../../data/models/clients_list_response.dart';
 
 @injectable
-class AddClientUserUsecase extends UseCase<Result<ResponseWrapper<ClientModel>>, AddClientParams> {
+class AddClientUserUsecase
+    extends UseCase<Result<ResponseWrapper<ClientModel>>, AddClientParams> {
   AddClientUserUsecase(this.repository);
 
   final ClientsListRepository repository;
@@ -36,9 +37,9 @@ class AddClientParams {
   final String sourceClient;
   final String descriptionActivity;
   final UserModel user;
-  final String ?type_record;
-  final String ?type_classification;
-  final String ?reason_class;
+  final String? type_record;
+  final String? type_classification;
+  final String? reason_class;
   AddClientParams({
     this.email,
     this.selectedActivitySizeType,

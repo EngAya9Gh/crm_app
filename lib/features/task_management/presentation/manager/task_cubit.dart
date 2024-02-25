@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/common/models/nullable.dart';
-import 'package:crm_smart/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/nullable.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/task_management/presentation/pages/add_task_page.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/material.dart';
@@ -84,27 +84,32 @@ class TaskCubit extends Cubit<TaskState> {
       mainTypeTask: mainTypeTask,
       publicType: publicType?.value,
       file: state.attachmentFile,
-      assignTo: state.selectedAssignedToType == AssignedToType.employee ? state.selectedAssignTo : null,
+      assignTo: state.selectedAssignedToType == AssignedToType.employee
+          ? state.selectedAssignTo
+          : null,
       deadLineDate: state.deadLineDate,
       participants: state.selectedParticipant ?? [],
       startDate: state.startDate,
       numberOfRecurring: numberOfRecurring,
       isRecurring: state.isRecurring,
       recurringType: state.selectedRecurringType?.name,
-      regionId: state.selectedAssignedToType == AssignedToType.region ? regionId : null,
-      departmentId: state.selectedAssignedToType == AssignedToType.department ? departmentId : null,
+      regionId: state.selectedAssignedToType == AssignedToType.region
+          ? regionId
+          : null,
+      departmentId: state.selectedAssignedToType == AssignedToType.department
+          ? departmentId
+          : null,
       description: description,
       userId: userId,
     ));
 
     result.fold(
-      (exception, message) => emit(state.copyWith(
-          addTaskStatus: BlocStatus.fail(error: message))),
+      (exception, message) =>
+          emit(state.copyWith(addTaskStatus: BlocStatus.fail(error: message))),
       (value) {
         onSuccess();
         emit(state.copyWith(
-            addTaskStatus: const BlocStatus.success(),
-            isResetAddTask: true));
+            addTaskStatus: const BlocStatus.success(), isResetAddTask: true));
       },
     );
   }
@@ -112,8 +117,7 @@ class TaskCubit extends Cubit<TaskState> {
   getTasks({VoidCallback? onSuccess}) async {
     emit(state.copyWith(tasksState: const PageState.loading()));
 
-    final result = await _filterTaskUsecase(
-      FilterTaskParams(
+    final result = await _filterTaskUsecase(FilterTaskParams(
       assignedTo: state.filterAssignTo?.idUser?.toString(),
       assignedBy: state.filterAssignFrom?.idUser?.toString(),
       startDateFrom: state.filterFromDate,
@@ -129,13 +133,13 @@ class TaskCubit extends Cubit<TaskState> {
 
     result.fold(
       (exception, message) =>
-          emit(state.copyWith(
-          tasksState: const PageState.error())),
+          emit(state.copyWith(tasksState: const PageState.error())),
       (value) {
         List<TaskModel> list = value.data ?? [];
         if (state.selectedStatus != null) {
-          list = list.where((element) =>
-          element.name == state.selectedStatus?.name).toList();
+          list = list
+              .where((element) => element.name == state.selectedStatus?.name)
+              .toList();
         }
         onSuccess?.call();
 
@@ -209,24 +213,23 @@ class TaskCubit extends Cubit<TaskState> {
     emit(state.copyWith(isResetTasksState: true));
     getTasks(onSuccess: onSuccess);
   }
-  resetAll( ) {
-    emit(state.copyWith(isResetTasksState: true)); }
 
+  resetAll() {
+    emit(state.copyWith(isResetTasksState: true));
+  }
 
-  onChangeTaskStatusStage(
-      TaskModel taskModel, TaskStatusType taskStatusType,
+  onChangeTaskStatusStage(TaskModel taskModel, TaskStatusType taskStatusType,
       VoidCallback onSuccess, String userId) async {
     emit(state.copyWith(changeTaskStatus: const BlocStatus.loading()));
-    final response = await _changeStatusTaskUsecase(
-        ChangeStatusTaskParams(
+    final response = await _changeStatusTaskUsecase(ChangeStatusTaskParams(
       taskStatusType.next.id.toString(),
       taskModel.id.toString(),
       userId,
     ));
 
     response.fold(
-      (exception, message) => emit(state.copyWith(
-          changeTaskStatus: BlocStatus.fail(error: message))),
+      (exception, message) => emit(
+          state.copyWith(changeTaskStatus: BlocStatus.fail(error: message))),
       (value) {
         List<TaskModel> taskList = state.tasksList;
         if (state.selectedStatus != null) {
@@ -234,8 +237,9 @@ class TaskCubit extends Cubit<TaskState> {
         } else {
           taskList = taskList
               .map((e) => e.id == taskModel.id
-                  ? e.copyWith(name: taskStatusType.next.name,
-                    taskStatuseId: taskStatusType.next.id)
+                  ? e.copyWith(
+                      name: taskStatusType.next.name,
+                      taskStatuseId: taskStatusType.next.id)
                   : e)
               .toList();
         }
@@ -243,8 +247,9 @@ class TaskCubit extends Cubit<TaskState> {
 
         allTasks = allTasks
             .map((e) => e.id == taskModel.id
-                ? e.copyWith(name: taskStatusType.next.name,
-            taskStatuseId: taskStatusType.next.id)
+                ? e.copyWith(
+                    name: taskStatusType.next.name,
+                    taskStatuseId: taskStatusType.next.id)
                 : e)
             .toList();
 
@@ -260,7 +265,8 @@ class TaskCubit extends Cubit<TaskState> {
   }
 
   onChangeSelectedAssignedToType(AssignedToType? assignedToType) {
-    emit(state.copyWith(selectedAssignedToType: Nullable.value(assignedToType)));
+    emit(
+        state.copyWith(selectedAssignedToType: Nullable.value(assignedToType)));
   }
 
   @override

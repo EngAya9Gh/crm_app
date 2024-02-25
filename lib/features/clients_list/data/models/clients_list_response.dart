@@ -1,83 +1,197 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+class ClientModel {
+  final String? idClients;
+  final String? nameClient;
+  final String? nameEnterprise;
+  final String? typeJob;
+  final String? city;
+  final String? location;
+  final String? fkRegion;
+  final String? fkCountry;
+  final String? dateCreate;
+  final String? typeClient;
+  final String? fkUser;
+  final String? dateTransfer;
+  final String? mobile;
+  final String? dateChangeType;
+  final String? reasonChange;
+  final String? reasonTransfer;
+  final String? nameCountry;
+  final String? nameUser;
+  final String? nameRegion;
+  final String? total;
+  final String? amountPaid;
+  final String? offerPrice;
+  final String? datePrice;
+  final String? userDo;
+  final String? isApprove;
+  final String? nameUserDoing;
+  final String? nameUserTransfer;
+  final String? fkUserTrasfer;
+  final String? mobileUser;
+  final String? totalPaid;
+  final String? isMarketing;
+  final String? addressClient;
+  final String? descriptionActiveController;
+  final String? preSystem;
+  final String? preSystemTitle;
+  final String? sourceClient;
+  final String? activityTypeFk;
+  final String? activityTypeTitle;
+  final String? phone;
+  final String? userAdd;
+  final String? nameAdduser;
+  final String? dateVisitClient;
+  final bool? tag;
+  final String? doneVisit;
+  final String? doneTransfer;
+  final String? nameCity;
+  final String? nameMainCity;
+  final String? idMainCity;
+  final String? customerId;
+  final String? userAddEmail;
+  final String? dateReceive;
+  final String? email;
+  final String? sizeActivity;
+  final String? fkClientSource;
+  final String? nameReasonReject;
+  final String? nameClientRecommend;
+  final String? rejectId;
+  final String? type_record;
+  final String? type_classification;
+  final String? reason_class;
+  final String? serialNumber;
 
-part 'clients_list_response.freezed.dart';
+  ClientModel({
+    this.idClients,
+    this.nameClient,
+    this.nameEnterprise,
+    this.typeJob,
+    this.city,
+    this.location,
+    this.fkRegion,
+    this.fkCountry,
+    this.dateCreate,
+    this.typeClient,
+    this.fkUser,
+    this.dateTransfer,
+    this.mobile,
+    this.dateChangeType,
+    this.reasonChange,
+    this.reasonTransfer,
+    this.nameCountry,
+    this.nameUser,
+    this.nameRegion,
+    this.total,
+    this.amountPaid,
+    this.offerPrice,
+    this.datePrice,
+    this.userDo,
+    this.isApprove,
+    this.nameUserDoing,
+    this.nameUserTransfer,
+    this.fkUserTrasfer,
+    this.mobileUser,
+    this.totalPaid,
+    this.isMarketing,
+    this.addressClient,
+    this.descriptionActiveController,
+    this.preSystem,
+    this.preSystemTitle,
+    this.sourceClient,
+    this.activityTypeFk,
+    this.activityTypeTitle,
+    this.phone,
+    this.userAdd,
+    this.nameAdduser,
+    this.dateVisitClient,
+    this.tag,
+    this.doneVisit,
+    this.doneTransfer,
+    this.nameCity,
+    this.nameMainCity,
+    this.idMainCity,
+    this.customerId,
+    this.userAddEmail,
+    this.dateReceive,
+    this.email,
+    this.sizeActivity,
+    this.fkClientSource,
+    this.nameReasonReject,
+    this.nameClientRecommend,
+    this.rejectId,
+    this.type_record,
+    this.type_classification,
+    this.reason_class,
+    this.serialNumber,
+  });
 
-part 'clients_list_response.g.dart';
-
-@freezed
-class ClientModel with _$ClientModel {
-  const factory ClientModel({
-    @JsonKey(name: "id_clients") String? idClients,
-    @JsonKey(name: "name_client") String? nameClient,
-    @JsonKey(name: "name_enterprise") String? nameEnterprise,
-    @JsonKey(name: "type_job") String? typeJob,
-    @JsonKey(name: "city") String? city,
-    @JsonKey(name: "location") String? location,
-    @JsonKey(name: "fk_regoin") String? fkRegion,
-    @JsonKey(name: "fkcountry") String? fkCountry,
-    @JsonKey(name: "date_create") String? dateCreate,
-    @JsonKey(name: "type_client") String? typeClient,
-    @JsonKey(name: "fk_user") String? fkUser,
-    @JsonKey(name: "date_transfer") String? dateTransfer,
-    @JsonKey(name: "mobile") String? mobile,
-    @JsonKey(name: "date_changetype") String? dateChangeType,
-    @JsonKey(name: "reason_change") String? reasonChange,
-    @JsonKey(name: "reason_transfer") String? reasonTransfer,
-    @JsonKey(name: "nameCountry") String? nameCountry,
-    @JsonKey(name: "nameUser") String? nameUser,
-    @JsonKey(name: "name_regoin") String? nameRegion,
-    @JsonKey(name: "total") String? total,
-    @JsonKey(name: "amount_paid") String? amountPaid,
-    @JsonKey(name: "offer_price") String? offerPrice,
-    @JsonKey(name: "date_price") String? datePrice,
-    @JsonKey(name: "user_do") String? userDo,
-    @JsonKey(name: "isApprove") String? isApprove,
-    @JsonKey(name: "nameuserdoning") String? nameUserDoing,
-    @JsonKey(name: "nameusertransfer") String? nameUserTransfer,
-    @JsonKey(name: "fkusertrasfer") String? fkUserTrasfer,
-    @JsonKey(name: "mobileuser") String? mobileUser,
-    @JsonKey(name: "total_paid") String? totalPaid,
-    @JsonKey(name: "ismarketing") String? isMarketing,
-    @JsonKey(name: "address_client") String? addressClient,
-    @JsonKey(name: "descActivController") String? descriptionActiveController,
-    @JsonKey(name: "presystem") String? preSystem,
-    @JsonKey(name: "presystemtitle") String? preSystemTitle,
-    @JsonKey(name: "sourcclient") String? sourceClient,
-    @JsonKey(name: "activity_type_fk") String? activityTypeFk,
-    @JsonKey(name: "activity_type_title") String? activityTypeTitle,
-    @JsonKey(name: "phone") String? phone,
-    @JsonKey(name: "user_add") String? userAdd,
-    @JsonKey(name: "nameAdduser") String? nameAdduser,
-    @JsonKey(name: "date_visit_Client") String? dateVisitClient,
-    @JsonKey(name: "tag", fromJson: ClientModel.tagFromJson) bool? tag,
-    @JsonKey(name: "done_visit") String? doneVisit,
-    @JsonKey(name: "done_transfer") String? doneTransfer,
-    @JsonKey(name: "name_city") String? nameCity,
-    @JsonKey(name: "namemaincity") String? nameMainCity,
-    @JsonKey(name: "id_maincity") String? idMainCity,
-    @JsonKey(name: "IDcustomer") String? customerId,
-    @JsonKey(name: "userAdd_email") String? userAddEmail,
-    @JsonKey(name: "date_recive") String? dateReceive,
-    @JsonKey(name: "email") String? email,
-    @JsonKey(name: "size_activity") String? sizeActivity,
-    @JsonKey(name: "fk_client_source") String? fkClientSource,
-    @JsonKey(name: "NameReason_reject") String? nameReasonReject,
-    @JsonKey(name: "NameClient_recomand") String? nameClientRecommend,
-    @JsonKey(name: "fk_rejectClient") String? rejectId,
-    @JsonKey(name: "type_record") String? type_record ,
-    @JsonKey(name: "type_classification") String? type_classification ,
-    @JsonKey(name: "reason_class") String? reason_class,
-    @JsonKey(name: "SerialNumber") String? serialNumber,
-
-
-
-  }) = _ClientModel;
-
-  const ClientModel._();
+  factory ClientModel.fromJson(Map<String, dynamic> json) {
+    return ClientModel(
+      idClients: json['id_clients'].toString(),
+      nameClient: json['name_client'].toString(),
+      nameEnterprise: json['name_enterprise'].toString(),
+      typeJob: json['type_job'].toString(),
+      city: json['city'].toString(),
+      location: json['location'].toString(),
+      fkRegion: json['fk_regoin'].toString(),
+      fkCountry: json['fkcountry'].toString(),
+      dateCreate: json['date_create'].toString(),
+      typeClient: json['type_client'].toString(),
+      fkUser: json['fk_user'].toString(),
+      dateTransfer: json['date_transfer'].toString(),
+      mobile: json['mobile'].toString(),
+      dateChangeType: json['date_changetype'].toString(),
+      reasonChange: json['reason_change'].toString(),
+      reasonTransfer: json['reason_transfer'].toString(),
+      nameCountry: json['nameCountry'].toString(),
+      nameUser: json['nameUser'].toString(),
+      nameRegion: json['name_regoin'].toString(),
+      total: json['total'].toString(),
+      amountPaid: json['amount_paid'].toString(),
+      offerPrice: json['offer_price'].toString(),
+      datePrice: json['date_price'].toString(),
+      userDo: json['user_do'].toString(),
+      isApprove: json['isApprove'].toString(),
+      nameUserDoing: json['nameuserdoning'].toString(),
+      nameUserTransfer: json['nameusertransfer'].toString(),
+      fkUserTrasfer: json['fkusertrasfer'].toString(),
+      mobileUser: json['mobileuser'].toString(),
+      totalPaid: json['total_paid'].toString(),
+      isMarketing: json['ismarketing'].toString(),
+      addressClient: json['address_client'].toString(),
+      descriptionActiveController: json['descActivController'].toString(),
+      preSystem: json['presystem'].toString(),
+      preSystemTitle: json['presystemtitle'].toString(),
+      sourceClient: json['sourcclient'].toString(),
+      activityTypeFk: json['activity_type_fk'].toString(),
+      activityTypeTitle: json['activity_type_title'].toString(),
+      phone: json['phone'].toString(),
+      userAdd: json['user_add'].toString(),
+      nameAdduser: json['nameAdduser'].toString(),
+      dateVisitClient: json['date_visit_Client'].toString(),
+      tag: tagFromJson(json['tag']),
+      doneVisit: json['done_visit'].toString(),
+      doneTransfer: json['done_transfer'].toString(),
+      nameCity: json['name_city'].toString(),
+      nameMainCity: json['namemaincity'].toString(),
+      idMainCity: json['id_maincity'].toString(),
+      customerId: json['IDcustomer'].toString(),
+      userAddEmail: json['userAdd_email'].toString(),
+      dateReceive: json['date_recive'].toString(),
+      email: json['email'].toString(),
+      sizeActivity: json['size_activity'].toString(),
+      fkClientSource: json['fk_client_source'].toString(),
+      nameReasonReject: json['NameReason_reject'].toString(),
+      nameClientRecommend: json['NameClient_recomand'].toString(),
+      rejectId: json['fk_rejectClient'].toString(),
+      type_record: json['type_record'].toString(),
+      type_classification: json['type_classification'].toString(),
+      reason_class: json['reason_class'].toString(),
+      serialNumber: json['SerialNumber'].toString(),
+    );
+  }
 
   static tagFromJson(String? tag) {
     return tag == "true";
   }
-
-  factory ClientModel.fromJson(Map<String, dynamic> json) => _$ClientModelFromJson(json);
 }

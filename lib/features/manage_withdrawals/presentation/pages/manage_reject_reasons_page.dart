@@ -1,4 +1,4 @@
-import 'package:crm_smart/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';
@@ -22,7 +22,8 @@ class ManageRejectReasonsPage extends StatefulWidget {
   const ManageRejectReasonsPage({Key? key}) : super(key: key);
 
   @override
-  State<ManageRejectReasonsPage> createState() => _ManageRejectReasonsPageState();
+  State<ManageRejectReasonsPage> createState() =>
+      _ManageRejectReasonsPageState();
 }
 
 class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
@@ -30,7 +31,8 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
 
   @override
   void initState() {
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()..getReasonReject();
+    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+      ..getReasonReject();
     super.initState();
   }
 
@@ -62,7 +64,8 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
                       extentRatio: 0.35,
                       children: [
                         SlidableAction(
-                          onPressed: (actionContext) async => showBottomSheet(rejectReason: data[index]),
+                          onPressed: (actionContext) async =>
+                              showBottomSheet(rejectReason: data[index]),
                           backgroundColor: context.colorScheme.primaryContainer,
                           foregroundColor: Colors.white,
                           icon: Icons.edit_rounded,
@@ -96,7 +99,8 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
 
   showBottomSheet({RejectReason? rejectReason}) {
     bool isEdit() => rejectReason != null;
-    final controller = TextEditingController(text: rejectReason?.nameReasonReject);
+    final controller =
+        TextEditingController(text: rejectReason?.nameReasonReject);
     final _fromKey = GlobalKey<FormState>();
     AppBottomSheet.show(
       context: context,
@@ -120,7 +124,8 @@ class _ManageRejectReasonsPageState extends State<ManageRejectReasonsPage> {
                       else
                         return "إضافة";
                     }()),
-                    style: context.textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w500),
+                    style: context.textTheme.titleMedium!
+                        .copyWith(fontWeight: FontWeight.w500),
                   ),
                   20.verticalSpace,
                   AppTextField(

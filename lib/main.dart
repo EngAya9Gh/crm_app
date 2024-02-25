@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:crm_smart/common/manager/custom_bloc_observer.dart';
 import 'package:crm_smart/core/di/di_container.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
@@ -45,6 +44,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants.dart';
+import 'core/common/manager/custom_bloc_observer.dart';
 import 'core/config/theme/theme.dart';
 import 'core/utils/app_navigator.dart';
 import 'features/app/presentation/pages/splash_screen.dart';
@@ -98,7 +98,6 @@ void main() async {
   //await Firebase.initializeApp();
   Bloc.observer = CustomBlocObserver();
   await initializeDateFormatting();
-  setupDependencies();
 
   runApp(ServiceProvider(
     child: MultiProvider(providers: [

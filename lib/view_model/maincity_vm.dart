@@ -1,11 +1,12 @@
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/api/api_services.dart';
+import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
 
 import '../constants.dart';
+import '../core/di/di_container.dart';
 
 class MainCityProvider extends ChangeNotifier {
   List<MainCityModel> listmaincity = [];
@@ -111,8 +112,8 @@ class MainCityProvider extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url +
-            'config/update_maincity.php?id_maincity=${id_maincity}', //users/addmangemt.php
+        url: url + 'config/update_maincity.php?id_maincity=${id_maincity}',
+        //users/addmangemt.php
         body: body);
     body.addAll({
       'id_maincity': id_maincity,
@@ -204,10 +205,9 @@ class MainCityProvider extends ChangeNotifier {
 
   Future<void> getCitiesFromRegions() async {
     final List<String> regionsIds = _getAllRegionsIds();
-    final Response response = await _fetchCitiesFromApi(regionsIds);
-    filteredCitiesList = _filterCities(response.data["data"]);
+    final response = await _fetchCitiesFromApi(regionsIds);
+    filteredCitiesList = _filterCities(response["data"]);
     selectedCities = filteredCitiesList;
-    print("length => ${filteredCitiesList.length}");
     notifyListeners();
   }
 
@@ -215,13 +215,14 @@ class MainCityProvider extends ChangeNotifier {
     return selectedRegions.map((e) => e.id_maincity).toList();
   }
 
-  Future<Response<dynamic>> _fetchCitiesFromApi(
-      List<String> mainCitiesIds) async {
-    return await GetIt.I<Dio>().post(
-      'http://test.smartcrm.ws/api/getCitiesFromMainCitiesIds',
-      // todo: cooperate with backend to remove cities magic numbers
-      data: {'mainCitiesIds': mainCitiesIds.toString()}, // 1 is the "All" city
-    );
+  Future _fetchCitiesFromApi(List<String> mainCitiesIds) async {
+    getIt<ApiServices>().changeBaseUrl(EndPoints.apiBaseUrl2);
+    final response = await getIt<ApiServices>().post(
+        endPoint: EndPoints.city.getCitiesFromMainCitiesIds,
+        data: {'mainCitiesIds': mainCitiesIds.toString()});
+    getIt<ApiServices>().changeBaseUrl(EndPoints.baseUrl);
+
+    return response;
   }
 
   List<CityModel> _filterCities(List<dynamic> citiesData) {

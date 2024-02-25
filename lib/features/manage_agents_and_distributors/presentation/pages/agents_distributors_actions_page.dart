@@ -16,7 +16,7 @@ class AgentDistributorsActionsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<AgentsDistributorsActionsCubit>()
+      create: (context) => getIt<AgentsDistributorsActionsCubit>()
         ..getAllCity(fkCountry: AppConstants.currentCountry(context) ?? ""),
       child: Builder(builder: (context) {
         return Directionality(

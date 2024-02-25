@@ -1,4 +1,4 @@
-import 'package:crm_smart/common/widgets/text_row.dart';
+import 'package:crm_smart/core/common/widgets/text_row.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

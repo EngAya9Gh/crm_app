@@ -2,14 +2,16 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
-import '../../../../../common/enums/enums.dart';
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/use_case/use_case.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../domain/use_cases/get_agents_and_distributors_usecase.dart';
 
 part 'agents_distributors_state.dart';
 
+@injectable
 class AgentsDistributorsCubit extends Cubit<AgentsDistributorsState> {
   AgentsDistributorsCubit(this.getAgentsAndDistributorsUseCase)
       : super(AgentsDistributorsState());

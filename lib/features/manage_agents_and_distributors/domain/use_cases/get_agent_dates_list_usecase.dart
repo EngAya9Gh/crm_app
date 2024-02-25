@@ -1,11 +1,11 @@
-import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/use_case/use_case.dart';
 import '../../../../model/invoiceModel.dart';
 import '../repositories/agents_distributors_profile_repo.dart';
 
-@injectable
+@lazySingleton
 class GetAgentDatesListUsecase extends UseCase<
     Either<String, List<DateInstallationClient>>, GetAgentDatesListParams> {
   GetAgentDatesListUsecase(this.repository);

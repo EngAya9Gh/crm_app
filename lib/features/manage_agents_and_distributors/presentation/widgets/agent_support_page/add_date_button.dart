@@ -1,9 +1,9 @@
-import 'package:crm_smart/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../common/enums/enums.dart';
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../../ui/widgets/custom_widget/row_edit.dart';

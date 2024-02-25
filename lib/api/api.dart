@@ -1,35 +1,36 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-  class Api {
+@lazySingleton
+class Api {
   static final http.Client _client = http.Client();
 
   // final client = RetryClient(http.Client());
   // headers: {
   // "Accept": "application/json",
   // "Access-Control-Allow-Origin": "*"}
- static String? token=null  ;
+  static String? token = null;
   Api() {
-    if(token==null)
-    get_token();
+    if (token == null) get_token();
   }
 
   Future<void> get_token() async {
-
-    final prefs = await  SharedPreferences.getInstance();
-    token= prefs.getString('token_user');
+    final prefs = await SharedPreferences.getInstance();
+    token = prefs.getString('token_user');
     print('inside get_token () .... ');
   }
 
   Future<dynamic> get({required String url}) async {
     // final client = RetryClient(http.Client());
     // try {
-    //   
+    //
     // } finally {
     //   client.close();
     // }
@@ -40,20 +41,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 //private, max-age=3600
     // "Cache-Control": "no-cache"
     //   http.Response response = await _client.get(
-    http.Response response = await _client.get(
-        Uri.parse(url),
-      headers:  {'Authorization': 'Bearer $token'}
-   );
+    http.Response response = await _client
+        .get(Uri.parse(url), headers: {'Authorization': 'Bearer $token'});
     print('token in get');
     print(token);
 
     if (json.decode(response.body)["code"] == "200") {
-       // print(jsonDecode(response.body)["message"]);
+      // print(jsonDecode(response.body)["message"]);
       return jsonDecode(response.body)["message"];
-
     } else {
-
-
       throw Exception('${json.decode(response.body)["code"] == "200"}');
     }
   }
@@ -61,16 +57,14 @@ import 'package:shared_preferences/shared_preferences.dart';
   Future<dynamic> post({
     required String url,
     @required dynamic body,
-
   }) async {
-
     Map<String, String> headers = {};
 
     if (token != null) {
       headers.addAll({'AuthToken': 'Bearer $token'});
     }
-      print('headers');
-      print(headers);
+    print('headers');
+    print(headers);
     http.Response response = await _client.post(
       Uri.parse(url),
       body: body,
@@ -79,7 +73,8 @@ import 'package:shared_preferences/shared_preferences.dart';
     String result = response.body;
     int idx = result.indexOf("{");
     int length = result.length;
-    result = result.substring(idx, length); //run for login and update client and set date task
+    result = result.substring(
+        idx, length); //run for login and update client and set date task
     // // String result= response.body;
     // int idx = result.indexOf("{");
     // int idxEnd = result.indexOf("}");
@@ -96,7 +91,6 @@ import 'package:shared_preferences/shared_preferences.dart';
   Future<dynamic> postNew({
     required String url,
     @required dynamic body,
-
   }) async {
     Map<String, String> headers = {};
 
@@ -110,8 +104,8 @@ import 'package:shared_preferences/shared_preferences.dart';
     );
     String result = response.body;
     // print(result);
-     if (json.decode(result)["success"]) {
-      return result ;
+    if (json.decode(result)["success"]) {
+      return result;
     } else {
       throw Exception('${json.decode(result)["message"]}');
     }
@@ -136,13 +130,15 @@ import 'package:shared_preferences/shared_preferences.dart';
     return file;
   }
 
-  Future<dynamic> postCrudInvoiceFile(String type, String url, Map<String, dynamic> data, File? file,
+  Future<dynamic> postCrudInvoiceFile(
+      String type, String url, Map<String, dynamic> data, File? file,
       {List<File>? files}) async {
     var request = http.MultipartRequest("POST", Uri.parse(url));
     if (file != null) {
       var length = await file.length();
       var stream = http.ByteStream(file.openRead());
-      var multipartFile = http.MultipartFile("file", stream, length, filename: basename(file.path));
+      var multipartFile = http.MultipartFile("file", stream, length,
+          filename: basename(file.path));
       request.files.add(multipartFile);
     }
 
@@ -151,7 +147,9 @@ import 'package:shared_preferences/shared_preferences.dart';
         final element = files[i];
         var length = await element.length();
         var stream = http.ByteStream(element.openRead());
-        var multipartFile = http.MultipartFile("uploadfiles[$i]", stream, length, filename: basename(element.path));
+        var multipartFile = http.MultipartFile(
+            "uploadfiles[$i]", stream, length,
+            filename: basename(element.path));
         request.files.add(multipartFile);
       }
     }
@@ -172,7 +170,8 @@ import 'package:shared_preferences/shared_preferences.dart';
       result = response.body;
       int idx = result.indexOf("{");
       int idxEnd = result.indexOf("}");
-      result = result.substring(idx, idxEnd + 1); //user update not run but run invoice
+      result = result.substring(
+          idx, idxEnd + 1); //user update not run but run invoice
     }
     if (json.decode(result)["code"] == "200") {
       return jsonDecode(result)["message"];
@@ -181,19 +180,22 @@ import 'package:shared_preferences/shared_preferences.dart';
     }
   }
 
-  Future<dynamic> postRequestWithFile(String type, String url, Map<String, dynamic> data, File? file, File? filelogo,
+  Future<dynamic> postRequestWithFile(String type, String url,
+      Map<String, dynamic> data, File? file, File? filelogo,
       {List<File>? files}) async {
-    var request = http.MultipartRequest("POST", Uri.parse(url) );
+    var request = http.MultipartRequest("POST", Uri.parse(url));
     if (file != null) {
       var length = await file.length();
       var stream = http.ByteStream(file.openRead());
-      var multipartFile = http.MultipartFile("file", stream, length, filename: basename(file.path));
+      var multipartFile = http.MultipartFile("file", stream, length,
+          filename: basename(file.path));
       request.files.add(multipartFile);
     }
     if (filelogo != null) {
       var length = await filelogo.length();
       var stream = http.ByteStream(filelogo.openRead());
-      var multipartFile = http.MultipartFile("filelogo", stream, length, filename: basename(filelogo.path));
+      var multipartFile = http.MultipartFile("filelogo", stream, length,
+          filename: basename(filelogo.path));
       request.files.add(multipartFile);
     }
 
@@ -202,7 +204,9 @@ import 'package:shared_preferences/shared_preferences.dart';
         final element = files[i];
         var length = await element.length();
         var stream = http.ByteStream(element.openRead());
-        var multipartFile = http.MultipartFile("uploadfiles[$i]", stream, length, filename: basename(element.path));
+        var multipartFile = http.MultipartFile(
+            "uploadfiles[$i]", stream, length,
+            filename: basename(element.path));
         request.files.add(multipartFile);
       }
     }
@@ -212,25 +216,23 @@ import 'package:shared_preferences/shared_preferences.dart';
     });
     var myrequest = await request.send();
     var response = await http.Response.fromStream(myrequest);
-    
 
     String result = '';
     if (type == 'array') {
       result = response.body;
-      
-      
+
       int idx = result.indexOf("{");
       int length = result.length;
       result = result.substring(idx, length);
     } else {
       result = response.body;
-      
+
       int idx = result.indexOf("{");
       int idxEnd = result.indexOf("}");
-      result = result.substring(idx, idxEnd + 1); //user update not run but run invoice
+      result = result.substring(
+          idx, idxEnd + 1); //user update not run but run invoice
     } //
 
-    
     if (json.decode(result)["code"] == "200") {
       return jsonDecode(result)["message"];
     } else {
@@ -273,7 +275,7 @@ import 'package:shared_preferences/shared_preferences.dart';
         data =jsonDecode(result)["message"] ;
       else
         Map<String, dynamic>  jsonDecode(result)["message"];*/
-    
+
     //   return jsonDecode(result)["message"];
     // } else {
     //

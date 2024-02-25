@@ -15,7 +15,7 @@ class AgentsAndDistributorsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          sl<AgentsDistributorsCubit>()..getAgentsAndDistributors(),
+          getIt<AgentsDistributorsCubit>()..getAgentsAndDistributors(),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

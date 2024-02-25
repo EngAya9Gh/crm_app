@@ -1,11 +1,11 @@
-import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/use_case/use_case.dart';
+import '../../../clients_list/data/models/clients_list_response.dart';
 import '../repositories/agents_distributors_profile_repo.dart';
 
-@injectable
+@lazySingleton
 class GetAgentClientListUsecase extends UseCase<
     Either<String, List<ClientModel>>, GetAgentClientListParams> {
   GetAgentClientListUsecase(this.repository);
@@ -24,13 +24,4 @@ class GetAgentClientListParams {
   final String? agentId;
 
   GetAgentClientListParams({this.agentId});
-
-  Map<String, dynamic> toMap() {
-    Map<String, dynamic> params = {}
-      ..removeWhere((key, value) => value == null);
-    params = params.map((key, value) => MapEntry(key, value.toString()));
-    return params;
-  }
-
-  Map<String, dynamic> get toParams => {'id_agent': agentId};
 }

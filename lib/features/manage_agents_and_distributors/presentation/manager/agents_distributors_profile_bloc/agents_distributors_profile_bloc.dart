@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
-import '../../../../../common/enums/enums.dart';
-import '../../../../../common/models/profile_invoice_model.dart';
-import '../../../../../common/widgets/profile_comments_model.dart';
+import '../../../../../core/common/enums/enums.dart';
+import '../../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
 import '../../../../manage_participates/domain/use_cases/get_invoice_by_id_usecase.dart';
@@ -18,6 +19,7 @@ import '../../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 part 'agents_distributors_profile_event.dart';
 part 'agents_distributors_profile_state.dart';
 
+@injectable
 class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     AgentsDistributorsProfileState> {
   List<DateInstallationClient> agentDatesList = [];

@@ -1,6 +1,6 @@
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 
-import '../constants/constants.dart';
+import '../../utils/app_constants.dart';
 
 class HelperFunctions {
   HelperFunctions._singleton();
@@ -14,7 +14,8 @@ class HelperFunctions {
   static HelperFunctions get instance =>
       _instance ??= HelperFunctions._singleton();
 
-  bool hasReachedMax<T>(List<T>? list) => (list ?? []).length < kPerPage;
+  bool hasReachedMax<T>(List<T>? list) =>
+      (list ?? []).length < AppConstants.kPerPage;
 
   String? requiredFiled(String? value) {
     if (value?.trim().isEmpty ?? true) {

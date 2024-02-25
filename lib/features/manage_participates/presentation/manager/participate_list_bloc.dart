@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/common/helpers/helper_functions.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/common/models/profile_invoice_model.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/profile_invoice_model.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participate_client_model.dart';
 import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
@@ -11,8 +11,8 @@ import 'package:crm_smart/features/manage_participates/presentation/manager/part
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/models/page_state/bloc_status.dart';
-import '../../../../common/widgets/profile_comments_model.dart';
+import '../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../core/common/widgets/profile_comments_model.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';

@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/common/models/page_state/bloc_status.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../model/usermodel.dart';
@@ -25,14 +23,16 @@ class UsersCubit extends Cubit<UsersState> {
 
   final GetAllUsersUsecase _getAllUsersUsecase;
   final ActionUserUsecase _actionUserUsecase;
-  final GetUsersByDepartmentAndRegionUsecase _getUsersByDepartmentAndRegionUsecase;
+  final GetUsersByDepartmentAndRegionUsecase
+      _getUsersByDepartmentAndRegionUsecase;
 
   void getAllUsers() async {
     emit(state.copyWith(allUsersList: const PageState.loading()));
     final allUsers = await _getAllUsersUsecase();
 
     allUsers.fold(
-      (exception, message) => emit(state.copyWith(allUsersList: const PageState.error())),
+      (exception, message) =>
+          emit(state.copyWith(allUsersList: const PageState.error())),
       (value) => emit(
         state.copyWith(
           allUsersList: PageState.loaded(data: value.message ?? []),
@@ -47,12 +47,16 @@ class UsersCubit extends Cubit<UsersState> {
   }
 
   onSearch(String query) {
-    emit(state.copyWith(allUsersList: PageState.loaded(data: filterList(query))));
+    emit(state.copyWith(
+        allUsersList: PageState.loaded(data: filterList(query))));
   }
 
   List<UserModel> filterList(String query) {
     List<UserModel> list = List<UserModel>.from(state.allUsers);
-    list = list.where((element) => (element.nameUser?.toLowerCase().contains(query) ?? false)).toList();
+    list = list
+        .where((element) =>
+            (element.nameUser?.toLowerCase().contains(query) ?? false))
+        .toList();
     return list;
   }
 
@@ -68,8 +72,7 @@ class UsersCubit extends Cubit<UsersState> {
 
     response.fold(
       (exception, message) => emit(
-          state.copyWith(
-          actionUserState: BlocStatus.fail(error: message))),
+          state.copyWith(actionUserState: BlocStatus.fail(error: message))),
       (value) {
         final user = value.message!;
 
@@ -102,17 +105,22 @@ class UsersCubit extends Cubit<UsersState> {
     );
   }
 
-  getUsersByDepartmentAndRegion({required String? regionId, required String? departmentId}) async {
+  getUsersByDepartmentAndRegion(
+      {required String? regionId, required String? departmentId}) async {
     emit(state.copyWith(usersByDepartmentAndRegion: const PageState.loading()));
 
-    final result = await _getUsersByDepartmentAndRegionUsecase(GetUsersByDepartmentAndRegionParams(
+    final result = await _getUsersByDepartmentAndRegionUsecase(
+        GetUsersByDepartmentAndRegionParams(
       departmentId: departmentId,
       regionId: regionId,
     ));
 
     result.fold(
-      (exception, message) => emit(state.copyWith(usersByDepartmentAndRegion: const PageState.error())),
-      (value) => emit(state.copyWith(usersByDepartmentAndRegion: PageState.loaded(data: value.data ?? []))),
+      (exception, message) => emit(
+          state.copyWith(usersByDepartmentAndRegion: const PageState.error())),
+      (value) => emit(state.copyWith(
+          usersByDepartmentAndRegion:
+              PageState.loaded(data: value.data ?? []))),
     );
   }
 }

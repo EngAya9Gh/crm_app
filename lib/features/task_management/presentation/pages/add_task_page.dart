@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
@@ -22,7 +22,7 @@ import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
-import '../../../../common/helpers/helper_functions.dart';
+import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';
@@ -110,15 +110,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
         ? '2'
         : privilegeBloc.checkPrivilege('169')
             ? null
-            : privilegeBloc.checkPrivilege('168') || privilegeBloc.checkPrivilege('166')
+            : privilegeBloc.checkPrivilege('168') ||
+                    privilegeBloc.checkPrivilege('166')
                 ? currentUser.typeAdministration
                 : null;
-    regionId = privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
+    regionId =
+        privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
 
     _usersCubit = GetIt.I<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getAllUsers()
-      ..getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId);
+      ..getUsersByDepartmentAndRegion(
+          regionId: regionId, departmentId: departmentId);
 
     _taskNameController = TextEditingController();
     _startDateController = TextEditingController();
@@ -141,10 +144,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   List<AssignedToType> get assignedToList {
     final list = List.of(AssignedToType.values);
-    if (!privilegeBloc.checkPrivilege('167') && !privilegeBloc.checkPrivilege('174')) {
+    if (!privilegeBloc.checkPrivilege('167') &&
+        !privilegeBloc.checkPrivilege('174')) {
       list.remove(AssignedToType.region);
     }
-    if (!privilegeBloc.checkPrivilege('168') && !privilegeBloc.checkPrivilege('169')) {
+    if (!privilegeBloc.checkPrivilege('168') &&
+        !privilegeBloc.checkPrivilege('169')) {
       list.remove(AssignedToType.department);
     }
     if (!privilegeBloc.checkPrivilege('166')) {
@@ -185,15 +190,18 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: AppText(
                               "من فضلك قم باختيار اسناد إلى",
-                              style: context.textTheme.bodyMedium!.sb!.copyWith(color: context.colorScheme.white),
+                              style: context.textTheme.bodyMedium!.sb!
+                                  .copyWith(color: context.colorScheme.white),
                             ),
                             backgroundColor: context.colorScheme.error,
                           ));
                           return;
                         }
 
-                        final selectedRegionId = context.read<RegionProvider>().selectedRegionId;
-                        final selectedValueManage = context.read<manage_provider>().selectedValuemanag;
+                        final selectedRegionId =
+                            context.read<RegionProvider>().selectedRegionId;
+                        final selectedValueManage =
+                            context.read<manage_provider>().selectedValuemanag;
                         _taskCubit.addTaskAction(
                           taskName: _taskNameController.text,
                           numberOfRecurring: _numberOfRecurringController.text,
@@ -243,8 +251,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       builder: (context, state) {
                         return DropdownSearch<UserModel>.multiSelection(
                           mode: Mode.DIALOG,
-                          filterFn: (user, filter) => user!.nameUser!.contains(filter!),
-                          compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                          filterFn: (user, filter) =>
+                              user!.nameUser!.contains(filter!),
+                          compareFn: (item, selectedItem) =>
+                              item?.idUser == selectedItem?.idUser,
                           items: state.allUsersList.getDataWhenSuccess ?? [],
                           itemAsString: (u) => u!.userAsString(),
                           onChanged: _taskCubit.onChangeParticipants,
@@ -259,36 +269,47 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           dropdownSearchDecoration: InputDecoration(
                             isCollapsed: true,
                             hintText: 'المشاركين*',
-                            hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-                            contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12, top: 10, bottom: 15),
+                            hintStyle: context.textTheme.titleSmall
+                                ?.copyWith(color: Colors.grey),
+                            contentPadding: HWEdgeInsetsDirectional.only(
+                                start: 12, end: 12, top: 10, bottom: 15),
                             border: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.primary),
+                              borderSide: BorderSide(
+                                  color: context.colorScheme.primary),
                               borderRadius: BorderRadius.circular(10).r,
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.primary),
+                              borderSide: BorderSide(
+                                  color: context.colorScheme.primary),
                               borderRadius: BorderRadius.circular(10).r,
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.primary),
+                              borderSide: BorderSide(
+                                  color: context.colorScheme.primary),
                               borderRadius: BorderRadius.circular(10).r,
                             ),
                             disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.primary),
+                              borderSide: BorderSide(
+                                  color: context.colorScheme.primary),
                               borderRadius: BorderRadius.circular(10).r,
                             ),
                             errorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.error),
+                              borderSide:
+                                  BorderSide(color: context.colorScheme.error),
                               borderRadius: BorderRadius.circular(10).r,
                             ),
                             focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: context.colorScheme.error),
+                              borderSide:
+                                  BorderSide(color: context.colorScheme.error),
                               borderRadius: BorderRadius.circular(10).r,
                             ),
                             suffixIcon: state.allUsersList.isLoading
                                 ? CupertinoActivityIndicator()
                                 : state.allUsersList.isError
-                                    ? IconButton(onPressed: () => _usersCubit.getAllUsers(), icon: Icon(Icons.refresh))
+                                    ? IconButton(
+                                        onPressed: () =>
+                                            _usersCubit.getAllUsers(),
+                                        icon: Icon(Icons.refresh))
                                     : null,
                           ),
                           // InputDecoration(border: InputBorder.none),
@@ -301,13 +322,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         Expanded(
                           child: InkWell(
                             onTap: () async {
-                              final selectedTime = TimeOfDay.fromDateTime(taskState.startDate ?? DateTime.now());
+                              final selectedTime = TimeOfDay.fromDateTime(
+                                  taskState.startDate ?? DateTime.now());
 
                               DateTime? date = await showDatePicker(
                                 context: context,
-                                initialDate: taskState.startDate ?? DateTime.now(),
+                                initialDate:
+                                    taskState.startDate ?? DateTime.now(),
                                 firstDate: DateTime.now(),
-                                lastDate: DateTime.now().add(Duration(days: 365)),
+                                lastDate:
+                                    DateTime.now().add(Duration(days: 365)),
                               );
                               if (date == null) return;
 
@@ -322,7 +346,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 );
                               }
 
-                              _startDateController.text = Intl.DateFormat('dd MMM yyyy, HH:mm').format(date);
+                              _startDateController.text =
+                                  Intl.DateFormat('dd MMM yyyy, HH:mm')
+                                      .format(date);
                               _taskCubit.onChangeStartDate(date);
                             },
                             child: IgnorePointer(
@@ -330,7 +356,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               child: AppTextField(
                                 labelText: "تاريخ البدء*",
                                 maxLines: 1,
-                                validator: HelperFunctions.instance.requiredFiled,
+                                validator:
+                                    HelperFunctions.instance.requiredFiled,
                                 readOnly: true,
                                 controller: _startDateController,
                                 textDirection: TextDirection.ltr,
@@ -344,13 +371,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           Expanded(
                             child: InkWell(
                               onTap: () async {
-                                final selectedTime = TimeOfDay.fromDateTime(taskState.deadLineDate ?? DateTime.now());
+                                final selectedTime = TimeOfDay.fromDateTime(
+                                    taskState.deadLineDate ?? DateTime.now());
 
                                 DateTime? date = await showDatePicker(
                                   context: context,
-                                  initialDate: taskState.deadLineDate ?? DateTime.now(),
+                                  initialDate:
+                                      taskState.deadLineDate ?? DateTime.now(),
                                   firstDate: DateTime.now(),
-                                  lastDate: DateTime.now().add(Duration(days: 365)),
+                                  lastDate:
+                                      DateTime.now().add(Duration(days: 365)),
                                 );
 
                                 if (date == null) return;
@@ -366,7 +396,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   );
                                 }
 
-                                _deadLineDateController.text = Intl.DateFormat('dd MMM yyyy, HH:mm').format(date);
+                                _deadLineDateController.text =
+                                    Intl.DateFormat('dd MMM yyyy, HH:mm')
+                                        .format(date);
                                 _taskCubit.onChangeDeadLineDate(date);
                               },
                               child: IgnorePointer(
@@ -374,7 +406,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 child: AppTextField(
                                   labelText: "تاريخ التسليم*",
                                   maxLines: 1,
-                                  validator: HelperFunctions.instance.requiredFiled,
+                                  validator:
+                                      HelperFunctions.instance.requiredFiled,
                                   readOnly: true,
                                   controller: _deadLineDateController,
                                   textDirection: TextDirection.ltr,
@@ -400,7 +433,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           Row(
                             children: [
                               Expanded(
-                                child: AppDropdownButtonFormField<RecurringType, RecurringType>(
+                                child: AppDropdownButtonFormField<RecurringType,
+                                    RecurringType>(
                                   items: RecurringType.values,
                                   onChange: _taskCubit.onChangeRecurringType,
                                   hint: "نوع التكرار",
@@ -414,7 +448,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 child: AppTextField(
                                   labelText: "عدد التكرارات",
                                   maxLines: 1,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   textInputType: TextInputType.number,
                                   controller: _numberOfRecurringController,
                                 ),
@@ -427,8 +463,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               Expanded(
                                 child: DropdownSearch<String>(
                                   mode: Mode.DIALOG,
-                                  filterFn: (user, filter) => user!.contains(filter!),
-                                  compareFn: (item, selectedItem) => item == selectedItem,
+                                  filterFn: (user, filter) =>
+                                      user!.contains(filter!),
+                                  compareFn: (item, selectedItem) =>
+                                      item == selectedItem,
                                   items: [],
                                   itemAsString: (u) => u!,
                                   onChanged: (data) {},
@@ -437,30 +475,39 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   dropdownSearchDecoration: InputDecoration(
                                     isCollapsed: true,
                                     hintText: 'الفاتورة',
-                                    hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-                                    contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
+                                    hintStyle: context.textTheme.titleSmall
+                                        ?.copyWith(color: Colors.grey),
+                                    contentPadding:
+                                        HWEdgeInsetsDirectional.only(
+                                            start: 12, end: 12),
                                     border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.primary),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.primary),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.primary),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.primary),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.primary),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.primary),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.primary),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.primary),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.error),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.error),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.error),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.error),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                   ),
@@ -470,8 +517,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               Expanded(
                                 child: DropdownSearch<String>(
                                   mode: Mode.DIALOG,
-                                  filterFn: (user, filter) => user!.contains(filter!),
-                                  compareFn: (item, selectedItem) => item == selectedItem,
+                                  filterFn: (user, filter) =>
+                                      user!.contains(filter!),
+                                  compareFn: (item, selectedItem) =>
+                                      item == selectedItem,
                                   items: [],
                                   itemAsString: (u) => u!,
                                   onChanged: (data) {},
@@ -480,30 +529,39 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   dropdownSearchDecoration: InputDecoration(
                                     isCollapsed: true,
                                     hintText: 'المجموعة',
-                                    hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-                                    contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
+                                    hintStyle: context.textTheme.titleSmall
+                                        ?.copyWith(color: Colors.grey),
+                                    contentPadding:
+                                        HWEdgeInsetsDirectional.only(
+                                            start: 12, end: 12),
                                     border: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.primary),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.primary),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.primary),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.primary),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.primary),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.primary),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     disabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.primary),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.primary),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.error),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.error),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: context.colorScheme.error),
+                                      borderSide: BorderSide(
+                                          color: context.colorScheme.error),
                                       borderRadius: BorderRadius.circular(10).r,
                                     ),
                                   ),
@@ -524,11 +582,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       ),
                       child: InkWell(
                         onTap: () async {
-                          final file = await FilePicker.platform.pickFiles(allowMultiple: false);
+                          final file = await FilePicker.platform
+                              .pickFiles(allowMultiple: false);
 
                           if (file == null) return;
 
-                          _taskCubit.onChangeAttachmentFile(File(file.files.first.path!));
+                          _taskCubit.onChangeAttachmentFile(
+                              File(file.files.first.path!));
                         },
                         child: fileWidget(taskState.attachmentFile),
                       ),
@@ -537,7 +597,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     GroupedButtons<AssignedToType>(
                       title: 'اسناد إلى',
                       buttons: assignedToList,
-                      buttonTextBuilder: (selected, value, context) => value.text,
+                      buttonTextBuilder: (selected, value, context) =>
+                          value.text,
                       onSelected: (value, index, isSelected) {
                         _taskCubit.onChangeSelectedAssignedToType(value);
                       },
@@ -564,7 +625,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
           return DropdownSearch<UserRegionDepartment>(
             mode: Mode.DIALOG,
             filterFn: (user, filter) => user!.nameUser!.contains(filter!),
-            compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+            compareFn: (item, selectedItem) =>
+                item?.idUser == selectedItem?.idUser,
             items: state.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
             itemAsString: (u) => u!.nameUser!,
             onChanged: (data) {
@@ -584,7 +646,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
             dropdownSearchDecoration: InputDecoration(
               isCollapsed: true,
               hintText: 'الموظف',
-              hintStyle: context.textTheme.titleSmall?.copyWith(color: Colors.grey),
+              hintStyle:
+                  context.textTheme.titleSmall?.copyWith(color: Colors.grey),
               contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
               border: OutlineInputBorder(
                 borderSide: BorderSide(color: context.colorScheme.primary),
@@ -615,7 +678,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   : state.usersByDepartmentAndRegion.isError
                       ? IconButton(
                           onPressed: () =>
-                              _usersCubit.getUsersByDepartmentAndRegion(regionId: regionId, departmentId: departmentId),
+                              _usersCubit.getUsersByDepartmentAndRegion(
+                                  regionId: regionId,
+                                  departmentId: departmentId),
                           icon: Icon(Icons.refresh))
                       : null,
             ),
@@ -630,11 +695,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (taskState.selectedAssignedToType == AssignedToType.department)
       return Consumer<manage_provider>(
         builder: (context, manageList, child) {
-          final userDepartment = context.read<UserProvider>().currentUser.typeAdministration;
+          final userDepartment =
+              context.read<UserProvider>().currentUser.typeAdministration;
           final list = GetIt.I<PrivilegeCubit>().checkPrivilege('169')
               ? manageList.listtext
-              : GetIt.I<PrivilegeCubit>().checkPrivilege('168') || GetIt.I<PrivilegeCubit>().checkPrivilege('174')
-                  ? manageList.listtext.where((element) => element.idmange == userDepartment).toList()
+              : GetIt.I<PrivilegeCubit>().checkPrivilege('168') ||
+                      GetIt.I<PrivilegeCubit>().checkPrivilege('174')
+                  ? manageList.listtext
+                      .where((element) => element.idmange == userDepartment)
+                      .toList()
                   : manageList.listtext;
           return AppDropdownButtonFormField<ManageModel, String>(
             items: list,
@@ -644,7 +713,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
             itemAsString: (item) => item!.name_mange,
             value: manageList.selectedValuemanag,
             validator: (value) {
-              if (taskState.selectedAssignedToType != AssignedToType.department) {
+              if (taskState.selectedAssignedToType !=
+                  AssignedToType.department) {
                 return null;
               }
               if (value == null) {
@@ -666,7 +736,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
           final list = privilegeBloc.checkPrivilege('169')
               ? cart.listRegion
               : privilegeBloc.checkPrivilege('167')
-                  ? cart.listRegion.where((element) => element.regionId == user.fkRegoin).toList()
+                  ? cart.listRegion
+                      .where((element) => element.regionId == user.fkRegoin)
+                      .toList()
                   : cart.listRegion;
           return AppDropdownButtonFormField<RegionModel, String>(
             items: list,

@@ -3,7 +3,8 @@ import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/manage_users/domain/repositories/users_repository.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
+
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 
 @injectable
 class GetAllUsersUsecase

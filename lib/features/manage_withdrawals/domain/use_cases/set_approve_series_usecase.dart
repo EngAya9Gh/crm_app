@@ -1,18 +1,21 @@
 import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:injectable/injectable.dart';
-import '../../../../../../common/models/response_wrapper/response_wrapper.dart';
+
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../presentation/utils/withdrawal_status.dart';
 import '../repositories/manage_withdrawals_repository.dart';
 
 @injectable
-class SetApproveSeriesUsecase extends UseCase<Result<ResponseWrapper<bool>>, SetApproveSeriesParams> {
+class SetApproveSeriesUsecase
+    extends UseCase<Result<ResponseWrapper<bool>>, SetApproveSeriesParams> {
   SetApproveSeriesUsecase(this.repository);
 
   final ManageWithdrawalsRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<bool>>> call(SetApproveSeriesParams seriesParams) {
+  Future<Result<ResponseWrapper<bool>>> call(
+      SetApproveSeriesParams seriesParams) {
     return repository.setApproveSeries(seriesParams.param, seriesParams.data);
   }
 }
@@ -43,7 +46,8 @@ class SetApproveSeriesParams {
   final String fkcountry;
   final String notesApprove;
 
-  Map<String, dynamic> get param => {"idApprove_series": idApproveSeries, "fk_invoice": invoiceId};
+  Map<String, dynamic> get param =>
+      {"idApprove_series": idApproveSeries, "fk_invoice": invoiceId};
 
   Map<String, dynamic> get data => {
         "is_approve": withdrawalStatus.status.toString(),
@@ -53,7 +57,5 @@ class SetApproveSeriesParams {
         "fkcountry": fkcountry,
         "fk_regoin": fk_regoin,
         "notes_approve": notesApprove,
-
-
       };
 }

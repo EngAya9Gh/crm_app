@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../../api/api.dart';
-import '../../../../../common/enums/enums.dart';
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/enums.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../domain/entities/agent_distributor_action_entity.dart';
@@ -14,6 +15,7 @@ import '../../../domain/use_cases/get_all_cities_usecase.dart';
 
 part 'agents_distributors_actions_state.dart';
 
+@injectable
 class AgentsDistributorsActionsCubit
     extends Cubit<AgentsDistributorsActionsState> {
   AgentsDistributorsActionsCubit(this.getAllCitiesUseCase)
@@ -23,8 +25,10 @@ class AgentsDistributorsActionsCubit
 
   // support tab Keys and controllers
   final supportFormKey = GlobalKey<FormState>();
-  final TextEditingController supportSelectedDateController = TextEditingController();
-  final TextEditingController supportDateTypeController = TextEditingController();
+  final TextEditingController supportSelectedDateController =
+      TextEditingController();
+  final TextEditingController supportDateTypeController =
+      TextEditingController();
   // keys and controllers
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();

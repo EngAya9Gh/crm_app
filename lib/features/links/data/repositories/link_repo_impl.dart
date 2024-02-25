@@ -1,10 +1,7 @@
-import 'package:crm_smart/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/api/api_utils.dart';
 import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/features/links/data/models/link_model.dart';
-import 'package:crm_smart/features/manage_users/data/data_sources/users_datasource.dart';
-import 'package:crm_smart/features/manage_users/domain/repositories/users_repository.dart';
-import 'package:crm_smart/model/usermodel.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/links_repo.dart';
@@ -16,26 +13,23 @@ class LinkRepositoryImpl extends LinksImportantRepository {
 
   final LinkDatasource datasource;
 
-
   @override
-  Future<Result<ResponseWrapper<LinkImportantModel>>> addLink(Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<LinkImportantModel>>> addLink(
+      Map<String, dynamic> body) {
     // TODO: implement addLink
     return toApiResult(() => datasource.addLink(body: body));
-
   }
 
   @override
-  Future<Result<ResponseWrapper<LinkImportantModel>>> editLink(Map<String, dynamic> body,
-    String id) {
+  Future<Result<ResponseWrapper<LinkImportantModel>>> editLink(
+      Map<String, dynamic> body, String id) {
     // TODO: implement editLink
-    return toApiResult(() => datasource.updateLink(body: body,id: id ));
-
+    return toApiResult(() => datasource.updateLink(body: body, id: id));
   }
 
   @override
-  Future<Result<ResponseWrapper<List<LinkImportantModel>>>> getLinkImportant(
-    ) {
+  Future<Result<ResponseWrapper<List<LinkImportantModel>>>> getLinkImportant() {
     // TODO: implement getLinkImportant
-    return toApiResult(() => datasource.getLink( ));
+    return toApiResult(() => datasource.getLink());
   }
 }

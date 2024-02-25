@@ -1,7 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/model/ActivityModel.dart';
 import 'package:crm_smart/model/clientmodel.dart';
@@ -27,9 +27,9 @@ import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../common/enums/activity_type_size.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
+import '../../../core/common/enums/activity_type_size.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';

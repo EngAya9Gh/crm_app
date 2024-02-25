@@ -1,14 +1,12 @@
 import 'dart:convert';
 
-import 'package:crm_smart/core/api/client.dart';
+import 'package:crm_smart/core/api/api_services.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/reject_reason.dart';
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../common/constants/route.dart';
-import '../../../../../../common/models/response_wrapper/response_wrapper.dart';
 import '../../../../../../core/api/api_utils.dart';
-import '../../../../../../core/api/client_config.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/utils/end_points.dart';
 import '../../../../model/invoiceModel.dart';
 import '../models/invoice_withdrawal_series_model.dart';
 import '../models/user_series.dart';
@@ -16,23 +14,19 @@ import '../models/withdrawn_details_model.dart';
 
 @injectable
 class ManageWithdrawalsDatasource {
-  ManageWithdrawalsDatasource(this._clientApi);
+  ManageWithdrawalsDatasource(this.api);
 
-  final ClientApi _clientApi;
+  final ApiServices api;
 
-  Future<ResponseWrapper<List<UserSeries>>> getAllUsersSeries(Map<String, dynamic> params) async {
+  Future<ResponseWrapper<List<UserSeries>>> getAllUsersSeries(
+      Map<String, dynamic> params) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.series.getUsersSeries,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-          queryParameters: params,
-        ),
-      );
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.get(
+          endPoint: EndPoints.series.getUsersSeries, queryParameters: params);
 
       return ResponseWrapper<List<UserSeries>>.fromJson(
-        jsonDecode(response.data),
+        jsonDecode(response),
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return UserSeries.fromJson(e as Map<String, dynamic>);
@@ -44,19 +38,15 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<UserSeries>>> updateAllUsersSeries(Map<String, dynamic> data) async {
+  Future<ResponseWrapper<List<UserSeries>>> updateAllUsersSeries(
+      Map<String, dynamic> data) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.series.updateUsersSeries,
-          clientMethod: ClientMethod.post,
-          responseType: ResponseType.json,
-          data: data,
-        ),
-      );
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.post(
+          endPoint: EndPoints.series.updateUsersSeries, data: data);
 
       return ResponseWrapper<List<UserSeries>>.fromJson(
-        response.data,
+        response,
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return UserSeries.fromJson(e as Map<String, dynamic>);
@@ -70,16 +60,12 @@ class ManageWithdrawalsDatasource {
 
   Future<ResponseWrapper<List<InvoiceModel>>> getWithdrawalsInvoice() async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.series.getWithdrawalsInvoices,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-        ),
-      );
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response =
+          await api.get(endPoint: EndPoints.series.getWithdrawalsInvoices);
 
       return ResponseWrapper<List<InvoiceModel>>.fromJson(
-        jsonDecode(response.data),
+        jsonDecode(response),
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return InvoiceModel.fromJson(e as Map<String, dynamic>);
@@ -91,20 +77,16 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<List<InvoiceWithdrawalSeries>>> getWithdrawalInvoiceDetails(
-      Map<String, dynamic> params) async {
+  Future<ResponseWrapper<List<InvoiceWithdrawalSeries>>>
+      getWithdrawalInvoiceDetails(Map<String, dynamic> params) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.series.getWithdrawalInvoiceDetails,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-          queryParameters: params,
-        ),
-      );
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.get(
+          endPoint: EndPoints.series.getWithdrawalInvoiceDetails,
+          queryParameters: params);
 
       return ResponseWrapper<List<InvoiceWithdrawalSeries>>.fromJson(
-        jsonDecode(response.data),
+        jsonDecode(response),
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return InvoiceWithdrawalSeries.fromJson(e as Map<String, dynamic>);
@@ -116,19 +98,15 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<WithdrawnDetailsModel>> getWithdrawnDetails(Map<String, dynamic> params) async {
+  Future<ResponseWrapper<WithdrawnDetailsModel>> getWithdrawnDetails(
+      Map<String, dynamic> params) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.series.getWithdrawnDetails,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-          queryParameters: params,
-        ),
-      );
-
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.get(
+          endPoint: EndPoints.series.getWithdrawnDetails,
+          queryParameters: params);
       return ResponseWrapper<WithdrawnDetailsModel>.fromJson(
-        jsonDecode(response.data),
+        jsonDecode(response),
         (json) =>
             WithdrawnDetailsModel.fromJson(json[0] as Map<String, dynamic>),
       );
@@ -137,19 +115,16 @@ class ManageWithdrawalsDatasource {
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<bool>> setApproveSeries(Map<String, dynamic> params, Map<String, dynamic> data) async {
+  Future<ResponseWrapper<bool>> setApproveSeries(
+      Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.series.setApproveSeries,
-          clientMethod: ClientMethod.post,
-          responseType: ResponseType.json,
-          queryParameters: params,
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.post(
+          endPoint: EndPoints.series.setApproveSeries,
           data: data,
-        ),
-      );
-
-      return ResponseWrapper<bool>.fromJson(jsonDecode(response.data), (json) => true);
+          queryParameters: params);
+      return ResponseWrapper<bool>.fromJson(
+          jsonDecode(response), (json) => true);
     }
 
     return throwAppException(fun);
@@ -157,53 +132,44 @@ class ManageWithdrawalsDatasource {
 
   Future<ResponseWrapper<List<RejectReason>>> getRejectReasons() async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.client.getRejectReasons,
-          clientMethod: ClientMethod.get,
-          responseType: ResponseType.json,
-        ),
-      );
-
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response =
+          await api.get(endPoint: EndPoints.client.getRejectReasons);
       return ResponseWrapper<List<RejectReason>>.fromJson(
-        response.data,
-        (json) => List.from((json as List<dynamic>).map((e) => RejectReason.fromJson(e as Map<String, dynamic>))),
+        response,
+        (json) => List.from((json as List<dynamic>)
+            .map((e) => RejectReason.fromJson(e as Map<String, dynamic>))),
       );
     }
 
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<String>> addRejectReasons(Map<String, dynamic> params) async {
+  Future<ResponseWrapper<String>> addRejectReasons(
+      Map<String, dynamic> params) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.client.addRejectReasons,
-          clientMethod: ClientMethod.post,
-          responseType: ResponseType.json,
-          data: params,
-        ),
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.post(
+        endPoint: EndPoints.client.addRejectReasons,
+        data: params,
       );
-
-      return ResponseWrapper<String>.fromJson(response.data, (json) => json);
+      return ResponseWrapper<String>.fromJson(response, (json) => json);
     }
 
     return throwAppException(fun);
   }
 
-  Future<ResponseWrapper<String>> editRejectReasons(Map<String, dynamic> params, Map<String, dynamic> data) async {
+  Future<ResponseWrapper<String>> editRejectReasons(
+      Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      final response = await _clientApi.request(
-        RequestConfig(
-          endpoint: EndPoints.client.editRejectReasons,
-          clientMethod: ClientMethod.post,
-          responseType: ResponseType.json,
-          data: data,
-          queryParameters: params,
-        ),
+      api.changeBaseUrl(EndPoints.baseUrl);
+      final response = await api.post(
+        endPoint: EndPoints.client.editRejectReasons,
+        data: data,
+        queryParameters: params,
       );
 
-      return ResponseWrapper<String>.fromJson(response.data, (json) => json);
+      return ResponseWrapper<String>.fromJson(response, (json) => json);
     }
 
     return throwAppException(fun);

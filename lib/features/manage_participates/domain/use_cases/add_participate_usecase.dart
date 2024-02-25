@@ -3,17 +3,19 @@ import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/manage_participates/domain/repositories/participate_list_repository.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../data/models/participatModel.dart';
 
 @injectable
-class AddParticipateUserUsecase extends UseCase<Result<ResponseWrapper<ParticipateModel>>, AddParaticipateParams> {
+class AddParticipateUserUsecase extends UseCase<
+    Result<ResponseWrapper<ParticipateModel>>, AddParaticipateParams> {
   AddParticipateUserUsecase(this.repository);
 
   final ParticipateListRepository repository;
 
   @override
-  Future<Result<ResponseWrapper<ParticipateModel>>> call(AddParaticipateParams params) {
+  Future<Result<ResponseWrapper<ParticipateModel>>> call(
+      AddParaticipateParams params) {
     return repository.addParticipate(params.toMap());
   }
 }
@@ -29,7 +31,6 @@ class AddParaticipateParams {
     this.mobileParticipate,
     this.namebankParticipate,
     this.numberbankParticipate,
- 
   });
 
   Map<String, dynamic> toMap() {
@@ -38,7 +39,6 @@ class AddParaticipateParams {
       'mobile_participate': mobileParticipate,
       'namebank_participate': namebankParticipate,
       'numberbank_participate': numberbankParticipate,
-    
     }..removeWhere((key, value) => value == null);
 
     params = params.map((key, value) => MapEntry(key, value.toString()));

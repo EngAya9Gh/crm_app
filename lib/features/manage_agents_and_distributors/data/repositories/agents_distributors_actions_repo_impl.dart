@@ -1,9 +1,11 @@
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/agents_distributors_actions_repo.dart';
 import '../data_sources/remote_data_source/agents_distributors_actions_data_source.dart';
 
+@LazySingleton(as: AgentsDistributorsActionsRepo)
 class AgentsDistributorsActionsRepoImpl extends AgentsDistributorsActionsRepo {
   final AgentsDistributorsActionsDataSource agentsDistributorsActionsDataSource;
 

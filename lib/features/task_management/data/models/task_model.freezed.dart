@@ -12,7 +12,7 @@ part of 'task_model.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 TaskModel _$TaskModelFromJson(Map<String, dynamic> json) {
   return _TaskModel.fromJson(json);
@@ -858,7 +858,7 @@ class _$TaskModelImpl implements _TaskModel {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TaskModelImpl &&
@@ -1360,7 +1360,7 @@ class _$AssignedUserImpl implements _AssignedUser {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AssignedUserImpl &&
@@ -1580,7 +1580,7 @@ class _$ClientsImpl implements _Clients {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ClientsImpl &&
@@ -1755,7 +1755,7 @@ class _$InvoicesImpl implements _Invoices {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$InvoicesImpl &&
@@ -1923,7 +1923,7 @@ class _$TaskGroupImpl implements _TaskGroup {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TaskGroupImpl &&
@@ -2180,7 +2180,7 @@ class _$TaskStatusImpl implements _TaskStatus {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TaskStatusImpl &&
@@ -2389,7 +2389,7 @@ class _$PivotImpl implements _Pivot {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$PivotImpl &&

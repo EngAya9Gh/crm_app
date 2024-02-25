@@ -1,6 +1,6 @@
-import 'package:crm_smart/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/core/api/api_utils.dart';
 import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/features/manage_users/data/data_sources/users_datasource.dart';
 import 'package:crm_smart/features/manage_users/domain/repositories/users_repository.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -26,8 +26,9 @@ class UsersRepositoryImpl extends UsersRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<UserModel>>> updateUser({required Map<String, dynamic> body, required Map<String, dynamic> param}) {
+  Future<Result<ResponseWrapper<UserModel>>> updateUser(
+      {required Map<String, dynamic> body,
+      required Map<String, dynamic> param}) {
     return toApiResult(() => datasource.editUser(body: body, param: param));
-
   }
 }

@@ -24,7 +24,7 @@ class AgentProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<AgentsDistributorsProfileBloc>(),
+      create: (context) => getIt<AgentsDistributorsProfileBloc>(),
       child: AgentProfilePageBody(agent: agent),
     );
   }

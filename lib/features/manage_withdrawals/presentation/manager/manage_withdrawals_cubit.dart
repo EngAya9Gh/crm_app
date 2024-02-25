@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:crm_smart/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/reject_reason.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/withdrawn_details_model.dart';
 import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/get_withdrawals_invoices_usecase.dart';
@@ -12,9 +12,9 @@ import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../common/models/page_state/bloc_status.dart';
 import '../../../../../../features/manage_users/domain/use_cases/get_allusers_usecase.dart';
 import '../../../../../../model/usermodel.dart';
+import '../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../model/reasonmodel.dart';
 import '../../../../services/Invoice_Service.dart';
 import '../../../../services/configService.dart';
@@ -68,7 +68,8 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response = await _getAllUsersUsecase();
 
     await response.fold(
-      (exception, message) async => emit(state.copyWith(allUsersSeries: PageState.error())),
+      (exception, message) async =>
+          emit(state.copyWith(allUsersSeries: PageState.error())),
       (users) async {
         emit(state.copyWith(allUsers: users.message));
         await _getUsers(fkCountry);
@@ -77,19 +78,24 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   }
 
   _getUsers(fkCountry) async {
-    final responseManage = await _getUserSeriesUsecase(GetUserSeriesParams(fkCountry));
+    final responseManage =
+        await _getUserSeriesUsecase(GetUserSeriesParams(fkCountry));
 
     responseManage.fold(
-      (exception, message) => emit(state.copyWith(allUsersSeries: PageState.error())),
+      (exception, message) =>
+          emit(state.copyWith(allUsersSeries: PageState.error())),
       (usersSeries) {
         final maps = <UserWithdrawalsManager?, List<UserWithdrawalsManager>>{};
         usersSeries.message!.forEachIndexed((index, userSeries) {
-          final user = state.allUsers.firstWhere((element) => element.idUser == userSeries.fkUser);
-          final userWithdrawalsManager = UserWithdrawalsManager(user.idUser, user.nameUser);
+          final user = state.allUsers
+              .firstWhere((element) => element.idUser == userSeries.fkUser);
+          final userWithdrawalsManager =
+              UserWithdrawalsManager(user.idUser, user.nameUser);
           final list = usersSeries.message?.getRange(0, index).toList() ?? [];
 
           maps[userWithdrawalsManager] = List.of(state.allUsers)
-              .where((elementUser) => !list.any((elementFilterList) => elementFilterList.fkUser == elementUser.idUser))
+              .where((elementUser) => !list.any((elementFilterList) =>
+                  elementFilterList.fkUser == elementUser.idUser))
               .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser))
               .toList();
         });
@@ -108,12 +114,17 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   updateUsersSeries(final String fkCountry, VoidCallback onSuccess) async {
     emit(state.copyWith(updateUsersSeriesState: BlocStatus.loading()));
 
-    final ids = state.handleUsersSeries.keys.where((element) => element != null).map((e) => e!.idUser!).toList();
+    final ids = state.handleUsersSeries.keys
+        .where((element) => element != null)
+        .map((e) => e!.idUser!)
+        .toList();
 
-    final response = await _updateSeriesUsecase(UpdateSeriesParams(fkCountry, ids));
+    final response =
+        await _updateSeriesUsecase(UpdateSeriesParams(fkCountry, ids));
 
     response.fold(
-      (exception, message) => emit(state.copyWith(updateUsersSeriesState: BlocStatus.fail(error: message))),
+      (exception, message) => emit(state.copyWith(
+          updateUsersSeriesState: BlocStatus.fail(error: message))),
       (users) {
         emit(state.copyWith(updateUsersSeriesState: BlocStatus.success()));
       },
@@ -129,7 +140,8 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     }
     final list = maps.keys.toList();
     maps[null] = List.of(state.allUsers)
-        .where((elementUser) => !list.any((elementFilterList) => elementFilterList?.idUser == elementUser.idUser))
+        .where((elementUser) => !list.any((elementFilterList) =>
+            elementFilterList?.idUser == elementUser.idUser))
         .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser))
         .toList();
 
@@ -137,8 +149,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   }
 
   onChangeWithdrawalsManager(
-      UserWithdrawalsManager selectedUserWithdrawalsManager, UserWithdrawalsManager? oldSelectedUserKey) {
-    Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>> maps = Map.of(state.handleUsersSeries);
+      UserWithdrawalsManager selectedUserWithdrawalsManager,
+      UserWithdrawalsManager? oldSelectedUserKey) {
+    Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>> maps =
+        Map.of(state.handleUsersSeries);
 
     maps = maps.map(
       (key, value) {
@@ -148,18 +162,20 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
           final list = maps.keys.toList().where((element) => element != key);
 
           final newValue = List.of(state.allUsers)
-              .where((elementUser) => !list.any((elementFilterList) => elementFilterList?.idUser == elementUser.idUser))
+              .where((elementUser) => !list.any((elementFilterList) =>
+                  elementFilterList?.idUser == elementUser.idUser))
               .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser))
               .toList();
 
           return MapEntry(selectedUserWithdrawalsManager, newValue);
         } else {
-          final list = maps.keys.toList().where((element) => element != key && element != oldSelectedUserKey);
+          final list = maps.keys.toList().where(
+              (element) => element != key && element != oldSelectedUserKey);
 
           final newValue = List.of(state.allUsers)
-              .where((elementUser) =>
-                  !(list.any((elementFilterList) => elementFilterList?.idUser == elementUser.idUser) ||
-                      elementUser.idUser == selectedUserWithdrawalsManager.idUser))
+              .where((elementUser) => !(list.any((elementFilterList) =>
+                      elementFilterList?.idUser == elementUser.idUser) ||
+                  elementUser.idUser == selectedUserWithdrawalsManager.idUser))
               .map((e) => UserWithdrawalsManager(e.idUser, e.nameUser))
               .toList();
 
@@ -172,7 +188,8 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   }
 
   onRemoveWithdrawalsManager(UserWithdrawalsManager? removedKey) {
-    Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>> maps = Map.of(state.handleUsersSeries);
+    Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>> maps =
+        Map.of(state.handleUsersSeries);
     maps.remove(removedKey);
     maps = maps.map((key, value) {
       if (removedKey == null) {
@@ -198,9 +215,12 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response = await _getWithdrawalsInvoicesUsecase();
 
     response.fold(
-      (exception, message) => emit(state.copyWith(withdrawalsInvoices: PageState.error())),
+      (exception, message) =>
+          emit(state.copyWith(withdrawalsInvoices: PageState.error())),
       (withdrawalsInvoice) {
-        emit(state.copyWith(withdrawalsInvoices: PageState.loaded(data: withdrawalsInvoice.data ?? [])));
+        emit(state.copyWith(
+            withdrawalsInvoices:
+                PageState.loaded(data: withdrawalsInvoice.data ?? [])));
       },
     );
   }
@@ -208,43 +228,55 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   getWithdrawalInvoiceDetails(String fkInvoice) async {
     emit(state.copyWith(withdrawalInvoiceDetails: PageState.loading()));
 
-    final response = await _getWithdrawalInvoiceDetailsUsecase(GetWithdrawalInvoiceDetailsParams(fkInvoice));
+    final response = await _getWithdrawalInvoiceDetailsUsecase(
+        GetWithdrawalInvoiceDetailsParams(fkInvoice));
 
     response.fold(
-      (exception, message) => emit(state.copyWith(withdrawalInvoiceDetails: PageState.error())),
+      (exception, message) =>
+          emit(state.copyWith(withdrawalInvoiceDetails: PageState.error())),
       (withdrawalInvoiceDetails) {
-        emit(state.copyWith(withdrawalInvoiceDetails: PageState.loaded(data: withdrawalInvoiceDetails.message ?? [])));
+        emit(state.copyWith(
+            withdrawalInvoiceDetails: PageState.loaded(
+                data: withdrawalInvoiceDetails.message ?? [])));
       },
     );
   }
 
-  setApproveSeries(SetApproveSeriesParams seriesParams, VoidCallback onSuccess) async {
+  setApproveSeries(
+      SetApproveSeriesParams seriesParams, VoidCallback onSuccess) async {
     emit(state.copyWith(setApproveSeriesState: BlocStatus.loading()));
 
     final response = await _setApproveSeriesUsecase(seriesParams);
 
     response.fold(
-      (exception, message) => emit(state.copyWith(setApproveSeriesState: BlocStatus.fail(error: message))),
+      (exception, message) => emit(state.copyWith(
+          setApproveSeriesState: BlocStatus.fail(error: message))),
       (users) {
-        List<InvoiceWithdrawalSeries> list = state.withdrawalInvoiceDetails.getDataWhenSuccess ?? [];
+        List<InvoiceWithdrawalSeries> list =
+            state.withdrawalInvoiceDetails.getDataWhenSuccess ?? [];
         list = list
-            .map((e) =>
-                e.fkUser == seriesParams.id_user ?
-                e.copyWith(withdrawalStatus: seriesParams.withdrawalStatus) : e)
+            .map((e) => e.fkUser == seriesParams.id_user
+                ? e.copyWith(withdrawalStatus: seriesParams.withdrawalStatus)
+                : e)
             .toList();
 
-        List<InvoiceModel> listInvoice = state.withdrawalsInvoices.getDataWhenSuccess ?? [];
+        List<InvoiceModel> listInvoice =
+            state.withdrawalsInvoices.getDataWhenSuccess ?? [];
         listInvoice = listInvoice.map((e) {
-          final isDeclined = list.any((element) => element.withdrawalStatus.isDeclined);
-          final isApproveWithdrawn = list.every((element) => element.withdrawalStatus.isApproved);
+          final isDeclined =
+              list.any((element) => element.withdrawalStatus.isDeclined);
+          final isApproveWithdrawn =
+              list.every((element) => element.withdrawalStatus.isApproved);
           return e.idInvoice == seriesParams.invoiceId
               ? e.copyWith(
-                  approveBackDone: isDeclined ? "2" : (isApproveWithdrawn ? "1" : "0"),
+                  approveBackDone:
+                      isDeclined ? "2" : (isApproveWithdrawn ? "1" : "0"),
                   stateclient: isApproveWithdrawn ? "منسحب" : null,
                 )
               : e;
         }).toList();
-        final currentInvoice = listInvoice.firstWhereOrNull((element) => element.idInvoice == seriesParams.invoiceId);
+        final currentInvoice = listInvoice.firstWhereOrNull(
+            (element) => element.idInvoice == seriesParams.invoiceId);
         emit(state.copyWith(
           setApproveSeriesState: BlocStatus.success(),
           withdrawalInvoiceDetails: PageState.loaded(data: list),
@@ -262,8 +294,8 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
   getWithdrawnDetails(final String fkInvoice) async {
     emit(state.copyWith(withdrawnDetailsState: PageState.loading()));
-    final response = await _getWithdrawnDetailsUsecase(
-        GetWithdrawnDetailsParams(fkInvoice));
+    final response =
+        await _getWithdrawnDetailsUsecase(GetWithdrawnDetailsParams(fkInvoice));
 
     await response.fold(
       (exception, message) async =>
@@ -271,12 +303,15 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
       (result) async {
         try {
           final data = result.message!;
-          if (reasons.isEmpty) reasons = await config_service().getreason('client');
+          if (reasons.isEmpty)
+            reasons = await config_service().getreason('client');
 
-          final reason = reasons.firstWhereOrNull((element) => element.idReason == data.reasonBack);
+          final reason = reasons.firstWhereOrNull(
+              (element) => element.idReason == data.reasonBack);
 
           emit(state.copyWith(
-              withdrawnDetailsState: PageState.loaded(data: data.copyWith(reasonBack: reason?.nameReason))));
+              withdrawnDetailsState: PageState.loaded(
+                  data: data.copyWith(reasonBack: reason?.nameReason))));
         } catch (e) {
           emit(state.copyWith(withdrawnDetailsState: PageState.error()));
         }
@@ -284,13 +319,16 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     );
   }
 
-  void deleteWithdrawalRequest(final String invoiceId, final String filePath, {VoidCallback? onSuccess}) async {
+  void deleteWithdrawalRequest(final String invoiceId, final String filePath,
+      {VoidCallback? onSuccess}) async {
     try {
       emit(state.copyWith(deleteWithdrawnRequestStatus: BlocStatus.loading()));
 
-      InvoiceModel data = await Invoice_Service().deleteBack(invoiceId, filePath);
+      InvoiceModel data =
+          await Invoice_Service().deleteBack(invoiceId, filePath);
 
-      List<InvoiceModel> listInvoice = state.withdrawalsInvoices.getDataWhenSuccess ?? [];
+      List<InvoiceModel> listInvoice =
+          state.withdrawalsInvoices.getDataWhenSuccess ?? [];
       listInvoice.removeWhere((element) => element.idInvoice == invoiceId);
       emit(state.copyWith(
         deleteWithdrawnRequestStatus: BlocStatus.success(),
@@ -299,7 +337,8 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
       onSuccess?.call();
     } catch (e) {
-      emit(state.copyWith(deleteWithdrawnRequestStatus: BlocStatus.fail(error: e.toString())));
+      emit(state.copyWith(
+          deleteWithdrawnRequestStatus: BlocStatus.fail(error: e.toString())));
     }
   }
 
@@ -314,29 +353,40 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     final response = await _getRejectReasonsUsecase();
 
     response.fold(
-      (exception, message) => emit(state.copyWith(rejectReasonsStat: PageState.error())),
-      (value) => emit(state.copyWith(rejectReasonsStat: PageState.loaded(data: value.message ?? []))),
+      (exception, message) =>
+          emit(state.copyWith(rejectReasonsStat: PageState.error())),
+      (value) => emit(state.copyWith(
+          rejectReasonsStat: PageState.loaded(data: value.message ?? []))),
     );
   }
 
-  actionReasonReject(String reasonName, {String? rejectReasonId, required VoidCallback onSuccess}) async {
+  actionReasonReject(String reasonName,
+      {String? rejectReasonId, required VoidCallback onSuccess}) async {
     emit(state.copyWith(actionRejectReason: BlocStatus.loading()));
 
     bool isEdit() => rejectReasonId != null;
-    final params = ActionReasonParams(name: reasonName, reasonRejectId: rejectReasonId);
+    final params =
+        ActionReasonParams(name: reasonName, reasonRejectId: rejectReasonId);
 
-    final response = isEdit() ? await _editRejectReasonsUsecase(params) : await _addRejectReasonsUsecase(params);
+    final response = isEdit()
+        ? await _editRejectReasonsUsecase(params)
+        : await _addRejectReasonsUsecase(params);
 
     response.fold(
-      (exception, message) => emit(state.copyWith(actionRejectReason: BlocStatus.fail(error: message))),
+      (exception, message) => emit(
+          state.copyWith(actionRejectReason: BlocStatus.fail(error: message))),
       (value) {
-        List<RejectReason> list = state.rejectReasonsStat.getDataWhenSuccess ?? [];
+        List<RejectReason> list =
+            state.rejectReasonsStat.getDataWhenSuccess ?? [];
         if (isEdit()) {
           list = list
-              .map((e) => e.idRejectClient == rejectReasonId ? e.copyWith(nameReasonReject: reasonName) : e)
+              .map((e) => e.idRejectClient == rejectReasonId
+                  ? e.copyWith(nameReasonReject: reasonName)
+                  : e)
               .toList();
         } else {
-          list.add(RejectReason(nameReasonReject: reasonName, idRejectClient: value.message));
+          list.add(RejectReason(
+              nameReasonReject: reasonName, idRejectClient: value.message));
         }
 
         emit(state.copyWith(
