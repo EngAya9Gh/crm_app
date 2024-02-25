@@ -6,7 +6,7 @@ import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/function_global.dart';
-import 'package:crm_smart/model/calendar/event.dart';
+import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/configmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/provider/config_vm.dart';
@@ -313,7 +313,7 @@ class _support_addState extends State<support_add> {
                                     ? datetask.subtract(Duration(hours: 3))
                                     : datetask;
 
-                                final event = Event(
+                                final event = EventModel(
                                   fkIdClient: widget.idClient!,
                                   idinvoice: _invoice!.idInvoice!,
                                   title: _invoice!.name_enterprise!,

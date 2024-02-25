@@ -54,10 +54,16 @@ class AgentDistributorModel {
   String emailAgent;
   String mobileAgent;
   String? fkCountry;
-  String? cityId;
   String description;
   String imageAgent;
-  String? cityName;
+  String? cityId;
+  String? addDate;
+  String? updateDate;
+  String? fkUserAdd;
+  String? fkUserUpdate;
+  String? nameCity;
+  String? nameUserAdd;
+  String? nameUserUpdate;
 
   //endregion
 
@@ -72,25 +78,39 @@ class AgentDistributorModel {
     this.cityId,
     required this.description,
     required this.imageAgent,
-    required this.cityName,
+    this.nameCity,
+    this.addDate,
+    this.updateDate,
+    this.fkUserAdd,
+    this.fkUserUpdate,
+    this.nameUserAdd,
+    this.nameUserUpdate,
   });
 
-  factory AgentDistributorModel.fromJson(Map<String, dynamic> json) =>
-      AgentDistributorModel(
-        idAgent: json["id_agent"],
-        nameAgent: json["name_agent"],
-        typeAgent: json["type_agent"],
-        emailAgent: json["email_egent"],
-        mobileAgent: json["mobile_agent"],
-        fkCountry: json["fk_country"],
-        cityId: json["cityId"],
-        description: json["description"],
-        imageAgent: json["image_agent"].toString().trim().isEmpty ||
-                json["image_agent"] == null
-            ? json["image_agent"]
-            : urlfileAgent + json['image_agent'],
-        cityName: json['name_city'],
-      );
+  factory AgentDistributorModel.fromJson(Map<String, dynamic> json) {
+    print("json is => $json");
+    return AgentDistributorModel(
+      idAgent: json["id_agent"],
+      nameAgent: json["name_agent"],
+      typeAgent: json["type_agent"],
+      emailAgent: json["email_egent"],
+      mobileAgent: json["mobile_agent"],
+      fkCountry: json["fk_country"],
+      description: json["description"],
+      imageAgent: json["image_agent"].toString().trim().isEmpty ||
+              json["image_agent"] == null
+          ? json["image_agent"]
+          : urlfileAgent + json['image_agent'],
+      cityId: json["cityId"],
+      addDate: json['add_date'],
+      updateDate: json['update_date'],
+      fkUserAdd: json['fk_user_add'],
+      fkUserUpdate: json['fk_user_update'],
+      nameUserAdd: json['nameUserAdd'],
+      nameUserUpdate: json['nameUserUpdate'],
+      nameCity: json['name_city'],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id_agent": idAgent,
@@ -99,14 +119,20 @@ class AgentDistributorModel {
         "email_egent": emailAgent,
         "mobile_agent": mobileAgent,
         "fk_country": fkCountry,
-        "cityId": cityId,
         "description": description,
         "image_agent": imageAgent,
-        "name_city": cityName,
+        "cityId": cityId,
+        "add_date": addDate,
+        "update_date": updateDate,
+        "fk_user_add": fkUserAdd,
+        "fk_user_update": fkUserUpdate,
+        "nameUserAdd": nameUserAdd,
+        "nameUserUpdate": nameUserUpdate,
+        "name_city": nameCity,
       };
 
   @override
   String toString() {
-    return 'AgentDistributorModel{idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailEgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry,cityId: $cityId, description: $description, imageAgent: $imageAgent, cityName: $cityName}';
+    return 'AgentDistributorModel{idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailEgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry,cityId: $cityId, description: $description, imageAgent: $imageAgent, cityName: $nameCity, addDate: $addDate, updateDate: $updateDate, fkUserAdd: $fkUserAdd, fkUserUpdate: $fkUserUpdate, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate}';
   }
 }

@@ -1,14 +1,11 @@
-import 'dart:ui';
-
-import 'package:crm_smart/model/calendar/event.dart';
-
+import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EventEditingPage extends StatefulWidget {
-  final Event? event;
+  final EventModel? event;
   const EventEditingPage({this.event, Key? key}) : super(key: key);
 
   @override
@@ -160,8 +157,6 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
     }
     setState(() {
       fromDate = date;
-      
-      
     });
   }
 
@@ -246,12 +241,14 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
   Future saveForm() async {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
-      final event = Event(
+      final event = EventModel(
           title: titleController.text,
           from: fromDate,
           to: toDate,
           description: 'description',
-          isAllDay: false, fkIdClient: '', idinvoice: '');
+          isAllDay: false,
+          fkIdClient: '',
+          idinvoice: '');
       //for edit
       final isEditing = widget.event != null;
 

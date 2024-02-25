@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Event {
+import '../agent_distributor_model.dart';
+
+class EventModel {
   final String title;
   final String description;
   final DateTime from;
@@ -12,8 +13,10 @@ class Event {
   final String? idinvoice;
   final String? isDone;
   final String? idClientsDate;
+  final String? agentName;
+  final AgentDistributorModel? agent;
 
-  const Event({
+  const EventModel({
     required this.fkIdClient,
     required this.idinvoice,
     required this.title,
@@ -24,14 +27,16 @@ class Event {
     this.isAllDay = false,
     this.idClientsDate,
     this.isDone,
+    this.agentName,
+    this.agent,
   });
 
   @override
   String toString() {
-    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone}';
+    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}}';
   }
 
-  Event copyWith({
+  EventModel copyWith({
     String? title,
     String? description,
     DateTime? from,
@@ -42,8 +47,10 @@ class Event {
     String? idinvoice,
     String? isDone,
     String? idClientsDate,
+    String? agentName,
+    AgentDistributorModel? agent,
   }) {
-    return Event(
+    return EventModel(
       title: title ?? this.title,
       description: description ?? this.description,
       from: from ?? this.from,
@@ -54,13 +61,15 @@ class Event {
       idinvoice: idinvoice ?? this.idinvoice,
       isDone: isDone ?? this.isDone,
       idClientsDate: idClientsDate ?? this.idClientsDate,
+      agentName: agentName ?? this.agentName,
+      agent: agent ?? this.agent,
     );
   }
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Event &&
+      other is EventModel &&
           runtimeType == other.runtimeType &&
           title == other.title &&
           description == other.description &&
@@ -71,7 +80,9 @@ class Event {
           fkIdClient == other.fkIdClient &&
           idinvoice == other.idinvoice &&
           isDone == other.isDone &&
-          idClientsDate == other.idClientsDate;
+          idClientsDate == other.idClientsDate &&
+          agentName == other.agentName &&
+          agent == other.agent;
 
   @override
   int get hashCode =>
@@ -84,5 +95,7 @@ class Event {
       fkIdClient.hashCode ^
       idinvoice.hashCode ^
       isDone.hashCode ^
-      idClientsDate.hashCode;
+      idClientsDate.hashCode ^
+      agentName.hashCode ^
+      agent.hashCode;
 }

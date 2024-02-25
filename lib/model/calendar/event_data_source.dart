@@ -1,16 +1,16 @@
 // import 'dart:ui';
 //
-// import 'package:crm_smart/model/calendar/event.dart';
+// import 'package:crm_smart/model/calendar/event_model.dart';
 //
 // import 'package:syncfusion_flutter_calendar/calendar.dart';
 //
 // class EventDataSource extends CalendarDataSource {
 //   EventDataSource(List<Event> appointments) {
-//     
+//
 //     // 2022-05-06 02:24:00.000
 //     //2022-05-13 23:44:00.000
-//     // 
-//     // 
+//     //
+//     //
 //     this.appointments = appointments;
 //   }
 //   //التخزين بداخلها دياناميك لذلك حولناها الى ايفينت

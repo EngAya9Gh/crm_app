@@ -20,7 +20,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/agent_distributor_model.dart';
-import '../model/calendar/event.dart';
+import '../model/calendar/event_model.dart';
 import '../model/participatModel.dart';
 
 const CACHE_InvoiceClient_KEY = "CACHE_InvoiceClient_KEY";
@@ -918,7 +918,7 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateListInvoiceAfterMarkEventIsDone(Event event) {
+  updateListInvoiceAfterMarkEventIsDone(EventModel event) {
     final invoice = listinvoiceClientSupport
         .firstWhereOrNull((element) => element.idInvoice == event.idinvoice);
     if (invoice == null) {

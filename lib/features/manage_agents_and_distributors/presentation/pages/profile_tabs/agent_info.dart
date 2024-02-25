@@ -22,7 +22,7 @@ class AgentInfo extends StatelessWidget {
       TextRow(title: "الهاتف", data: agent.mobileAgent),
       TextRow(title: "الوصف", data: agent.description),
       TextRow(title: "النوع", data: type),
-      TextRow(title: "المدينة", data: agent.cityName ?? ""),
+      TextRow(title: "المدينة", data: agent.nameCity ?? ""),
     ]);
   }
 }

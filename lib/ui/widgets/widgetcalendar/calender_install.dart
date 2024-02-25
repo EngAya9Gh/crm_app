@@ -9,7 +9,7 @@
 // import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 // import 'package:provider/provider.dart';
 // import 'package:syncfusion_flutter_calendar/calendar.dart';
-// import 'package:crm_smart/model/calendar/event.dart';
+// import 'package:crm_smart/model/calendar/event_model.dart';
 // import 'dart:ui' as myui;
 //
 // import '../../../constants.dart';
@@ -77,9 +77,9 @@
 //           onTap: (details) {
 //
 //             final provider = Provider.of<EventProvider>(context, listen: false);
-//             
+//
 //             provider.setDate(details.date!);
-//             
+//
 //             showModalBottomSheet(
 //                 context: context, builder: (context) => TaskWidget());
 //           },

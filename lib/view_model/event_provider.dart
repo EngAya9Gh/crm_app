@@ -2,11 +2,8 @@ import 'dart:collection';
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/appointment_model.dart';
-import 'package:crm_smart/model/calendar/event.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
+import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/services/date_installation_service.dart';
-
 // import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -17,10 +14,10 @@ import 'page_state.dart';
 
 class EventProvider extends ChangeNotifier {
   bool is_save = false;
-  List<Event> _events = [];
+  List<EventModel> _events = [];
 
-  List<Event> get events => _events;
-  LinkedHashMap<DateTime, List<Event>> eventDataSource = LinkedHashMap();
+  List<EventModel> get events => _events;
+  LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
   DateTime _selectDate = DateTime.now();
 
   DateTime get selectDate => _selectDate;
@@ -32,7 +29,7 @@ class EventProvider extends ChangeNotifier {
   late String fkCountry;
 
 //when click this date show events المرتبيط for this date just
-  List<Event> get eventsOfSelectedDate => _events;
+  List<EventModel> get eventsOfSelectedDate => _events;
   PageState<List<AppointmentModel>> appointmentsState = PageState();
 
   // List<InvoiceModel> listinvoices = [];
@@ -58,7 +55,7 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addEvents(Event event) {
+  void addEvents(EventModel event) {
     _events.add(event);
     notifyListeners();
   }
@@ -93,20 +90,24 @@ class EventProvider extends ChangeNotifier {
         );
       } else {
         /// all
-        list = await DateInstallationService.getDateInstallationAll(fkCountry: fkCountry);
+        list = await DateInstallationService.getDateInstallationAll(
+            fkCountry: fkCountry);
       }
 
       appointmentsState = appointmentsState.changeToLoaded(list);
 
       _events = list.map((e) => e.asEvent()).toList();
 
-      final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+      final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
         _events,
-        key: (item) => (item as Event).from,
-        value: (item) => _events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+        key: (item) => (item as EventModel).from,
+        value: (item) => _events
+            .where(
+                (element) => isSameDay((item as EventModel).from, element.from))
+            .toList(),
       );
 
-      eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+      eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
         equals: isSameDay,
         hashCode: getHashCode,
       )..addAll(mapEvents);
@@ -160,7 +161,7 @@ class EventProvider extends ChangeNotifier {
   //       DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
   //           ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
   //           : DateTime.parse(element.dateinstall_task.toString());
-  //       
+  //
   //       event = Event(
   //           fkIdClient: element.fkIdClient,
   //           title: element.name_enterprise.toString(),
@@ -174,7 +175,7 @@ class EventProvider extends ChangeNotifier {
   //         DateTime temp = DateTime.parse(element.daterepaly.toString()).hour >= 21
   //             ? DateTime.parse(element.daterepaly.toString()).subtract(Duration(hours: 3))
   //             : DateTime.parse(element.daterepaly.toString());
-  //         
+  //
   //         event = Event(
   //             fkIdClient: element.fkIdClient,
   //             title: element.name_enterprise.toString(),
@@ -244,7 +245,7 @@ class EventProvider extends ChangeNotifier {
   //             DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
   //                 ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
   //                 : DateTime.parse(element.dateinstall_task.toString());
-  //             
+  //
   //             event = Event(
   //                 fkIdClient: element.fkIdClient,
   //                 title: element.name_enterprise.toString(),
@@ -265,7 +266,7 @@ class EventProvider extends ChangeNotifier {
   //           DateTime temp = DateTime.parse(element.dateinstall_task.toString()).hour >= 21
   //               ? DateTime.parse(element.dateinstall_task.toString()).subtract(Duration(hours: 3))
   //               : DateTime.parse(element.dateinstall_task.toString());
-  //           
+  //
   //           event = Event(
   //               fkIdClient: element.fkIdClient,
   //               title: element.name_enterprise.toString(),
@@ -287,17 +288,19 @@ class EventProvider extends ChangeNotifier {
   }
 
   Future<void> getevent_Client(String? searchfilter) async {
-    late Event event; //
+    late EventModel event; //
     _events.clear();
 
     listclient.forEach((element) {
       if (element.idClients == searchfilter) {
         if (element.date_visit_Client != null) {
-          DateTime temp = DateTime.parse(element.date_visit_Client.toString()).hour >= 21
-              ? DateTime.parse(element.date_visit_Client.toString()).subtract(Duration(hours: 3))
-              : DateTime.parse(element.date_visit_Client.toString());
-          
-          event = Event(
+          DateTime temp =
+              DateTime.parse(element.date_visit_Client.toString()).hour >= 21
+                  ? DateTime.parse(element.date_visit_Client.toString())
+                      .subtract(Duration(hours: 3))
+                  : DateTime.parse(element.date_visit_Client.toString());
+
+          event = EventModel(
               fkIdClient: element.idClients,
               title: element.nameEnterprise.toString(),
               description: 'description',
@@ -309,13 +312,16 @@ class EventProvider extends ChangeNotifier {
       }
     });
 
-    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
       _events,
-      key: (item) => (item as Event).from,
-      value: (item) => _events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+      key: (item) => (item as EventModel).from,
+      value: (item) => _events
+          .where(
+              (element) => isSameDay((item as EventModel).from, element.from))
+          .toList(),
     );
 
-    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll(mapEvents);
@@ -324,16 +330,18 @@ class EventProvider extends ChangeNotifier {
   }
 
   Future<void> getevent_AllClient() async {
-    late Event event; //
+    late EventModel event; //
     _events.clear();
 
     listclient.forEach((element) {
       if (element.date_visit_Client != null) {
-        DateTime temp = DateTime.parse(element.date_visit_Client.toString()).hour >= 21
-            ? DateTime.parse(element.date_visit_Client.toString()).subtract(Duration(hours: 3))
-            : DateTime.parse(element.date_visit_Client.toString());
-        
-        event = Event(
+        DateTime temp =
+            DateTime.parse(element.date_visit_Client.toString()).hour >= 21
+                ? DateTime.parse(element.date_visit_Client.toString())
+                    .subtract(Duration(hours: 3))
+                : DateTime.parse(element.date_visit_Client.toString());
+
+        event = EventModel(
             fkIdClient: element.idClients,
             title: element.nameEnterprise.toString(),
             description: 'description',
@@ -344,13 +352,16 @@ class EventProvider extends ChangeNotifier {
       }
     });
 
-    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
       _events,
-      key: (item) => (item as Event).from,
-      value: (item) => _events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+      key: (item) => (item as EventModel).from,
+      value: (item) => _events
+          .where(
+              (element) => isSameDay((item as EventModel).from, element.from))
+          .toList(),
     );
 
-    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll(mapEvents);
@@ -358,22 +369,25 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteEvent(Event event) {
+  void deleteEvent(EventModel event) {
     _events.remove(event);
     notifyListeners();
   }
 
-  void editEvent(Event newEvent, Event oldEvent) {
+  void editEvent(EventModel newEvent, EventModel oldEvent) {
     final index = _events.indexOf(oldEvent);
     _events[index] = newEvent;
 
-     final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
       events,
-      key: (item) => (item as Event).from,
-      value: (item) => events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+      key: (item) => (item as EventModel).from,
+      value: (item) => events
+          .where(
+              (element) => isSameDay((item as EventModel).from, element.from))
+          .toList(),
     );
 
-    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll(mapEvents);
@@ -381,7 +395,7 @@ class EventProvider extends ChangeNotifier {
   }
 
   changeEventToDone({
-    required Event event,
+    required EventModel event,
     required VoidCallback onLoading,
     required VoidCallback onSuccess,
     required VoidCallback onFailure,
@@ -390,7 +404,8 @@ class EventProvider extends ChangeNotifier {
       onLoading();
       const isDone = 1;
       var data = await Api().post(
-        url: url + "client/invoice/update_date_install.php?idclients_date=${event.idClientsDate}",
+        url: url +
+            "client/invoice/update_date_install.php?idclients_date=${event.idClientsDate}",
         body: {"is_done": isDone.toString()},
       );
       final list = eventDataSource[event.from] ?? [];
@@ -408,37 +423,45 @@ class EventProvider extends ChangeNotifier {
     }
   }
 
-  addEvent(Event event) {
+  addEvent(EventModel event) {
     _events.add(event);
 
-    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
       events,
-      key: (item) => (item as Event).from,
-      value: (item) => events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+      key: (item) => (item as EventModel).from,
+      value: (item) => events
+          .where(
+              (element) => isSameDay((item as EventModel).from, element.from))
+          .toList(),
     );
 
-    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll(mapEvents);
 
     notifyListeners();
   }
-  
-  checkAndActionEvent(Event event) {
+
+  checkAndActionEvent(EventModel event) {
     if (events.any((element) => element.fkIdClient == event.fkIdClient)) {
-      _events = _events.map((e) => e.fkIdClient == event.fkIdClient ? event : e).toList();
+      _events = _events
+          .map((e) => e.fkIdClient == event.fkIdClient ? event : e)
+          .toList();
     } else {
       _events.add(event);
     }
 
-    final mapEvents = Map<DateTime, List<Event>>.fromIterable(
+    final mapEvents = Map<DateTime, List<EventModel>>.fromIterable(
       events,
-      key: (item) => (item as Event).from,
-      value: (item) => events.where((element) => isSameDay((item as Event).from, element.from)).toList(),
+      key: (item) => (item as EventModel).from,
+      value: (item) => events
+          .where(
+              (element) => isSameDay((item as EventModel).from, element.from))
+          .toList(),
     );
 
-    eventDataSource = LinkedHashMap<DateTime, List<Event>>(
+    eventDataSource = LinkedHashMap<DateTime, List<EventModel>>(
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll(mapEvents);

@@ -1,56 +1,91 @@
-import 'package:crm_smart/model/calendar/event.dart';
+import 'agent_distributor_model.dart';
+import 'calendar/event_model.dart';
 
 class AppointmentModel {
   final String? idClientsDate;
-  final String? fkUser;
   final DateTime? dateClientVisit;
-  final DateTime? from;
-  final DateTime? to;
+  final String? fkUser;
   final String? isDone;
   final String? fkClient;
   final String? fkInvoice;
+  final String? typeDate;
+  final String? processReason;
+  final String? userIdProcess;
+  final String? fkAgent;
   final String? nameEnterprise;
-  final String? name_agent;
+  final String? nameAgent;
+  final String? nameCity;
+  final String? nameUserAdd;
+  final String? nameUserUpdate;
+  final AgentDistributorModel? agent;
+
+  final DateTime? from;
+  final DateTime? to;
 
   const AppointmentModel({
     this.idClientsDate,
-    this.fkUser,
     this.dateClientVisit,
+    this.fkUser,
     this.isDone,
     this.fkClient,
     this.fkInvoice,
+    this.typeDate,
+    this.processReason,
+    this.userIdProcess,
+    this.fkAgent,
     this.nameEnterprise,
-    this.name_agent,
+    this.nameAgent,
+    this.nameCity,
+    this.nameUserAdd,
+    this.nameUserUpdate,
+    this.agent,
     this.to,
     this.from,
   });
 
   factory AppointmentModel.fromJson(Map<String, dynamic> map) {
+    final AgentDistributorModel? agent = map['agent'] == null
+        ? null
+        : AgentDistributorModel.fromJson(map['agent']);
     return AppointmentModel(
       idClientsDate: map['idclients_date'],
-      fkUser: map['fk_user'],
       dateClientVisit: DateTime.tryParse(map['date_client_visit']),
-      isDone: map['is_done'] ,
+      fkUser: map['fk_user'].toString(),
+      isDone: map['is_done'].toString(),
       fkClient: map['fk_client'],
       fkInvoice: map['fk_invoice'],
+      typeDate: map['type_date'].toString(),
+      processReason: map['processReason'],
+      userIdProcess: map['user_id_process'].toString(),
+      fkAgent: map['fk_agent'].toString(),
       nameEnterprise: map['name_enterprise'],
-      name_agent: map['name_agent'],
+      nameAgent: map['name_agent'],
+      nameCity: map['name_city'],
+      nameUserAdd: map['nameUserAdd'],
+      nameUserUpdate: map['nameUserUpdate'],
+      agent: agent,
     );
   }
 
-  Event asEvent() {
-    DateTime first = dateClientVisit!.hour >= 21 ? dateClientVisit!.subtract(Duration(hours: 3)) : dateClientVisit!;
+  EventModel asEvent() {
+    DateTime first = dateClientVisit!.hour >= 21
+        ? dateClientVisit!.subtract(Duration(hours: 3))
+        : dateClientVisit!;
     DateTime last = first.add(Duration(hours: 2));
 
-    return Event(
-      fkIdClient: fkClient==null?'':fkClient.toString(),
-      idinvoice: fkInvoice==null?'':fkInvoice.toString(),
-      title: nameEnterprise==null?name_agent.toString()+' وكيل/موزع ':nameEnterprise.toString(),
+    return EventModel(
+      fkIdClient: fkClient == null ? '' : fkClient.toString(),
+      idinvoice: fkInvoice == null ? '' : fkInvoice.toString(),
+      title: nameEnterprise == null
+          ? nameAgent.toString() + ' وكيل/موزع '
+          : nameEnterprise.toString(),
       description: 'description',
-      from: first,
-      to: last,
       isDone: isDone,
       idClientsDate: idClientsDate,
+      agentName: nameAgent,
+      agent: agent,
+      from: first,
+      to: last,
     );
   }
 }

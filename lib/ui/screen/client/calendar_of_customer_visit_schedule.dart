@@ -1,25 +1,30 @@
 import 'dart:collection';
+
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:intl/intl.dart' as intl;
+
 import '../../../constants.dart';
-import '../../../model/calendar/event.dart';
+import '../../../model/calendar/event_model.dart';
 
 class CalendarOfCustomerVisitSchedule extends StatefulWidget {
   const CalendarOfCustomerVisitSchedule({Key? key}) : super(key: key);
 
   @override
-  State<CalendarOfCustomerVisitSchedule> createState() => _CalendarOfCustomerVisitScheduleState();
+  State<CalendarOfCustomerVisitSchedule> createState() =>
+      _CalendarOfCustomerVisitScheduleState();
 }
 
-class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisitSchedule> {
-  late final ValueNotifier<List<Event>> _selectedEvents;
+class _CalendarOfCustomerVisitScheduleState
+    extends State<CalendarOfCustomerVisitSchedule> {
+  late final ValueNotifier<List<EventModel>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn; // Can be toggled on/off by longpressing a date
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode
+      .toggledOn; // Can be toggled on/off by longpressing a date
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   DateTime? _rangeStart;
@@ -42,14 +47,16 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
     super.dispose();
   }
 
-  List<Event> _getEventsForDay(DateTime day, LinkedHashMap<DateTime, List<Event>>? events) {
+  List<EventModel> _getEventsForDay(
+      DateTime day, LinkedHashMap<DateTime, List<EventModel>>? events) {
     if (events == null) {
       return [];
     }
     return events[day] ?? [];
   }
 
-  List<Event> _getEventsForRange(DateTime start, DateTime end, LinkedHashMap<DateTime, List<Event>> events) {
+  List<EventModel> _getEventsForRange(DateTime start, DateTime end,
+      LinkedHashMap<DateTime, List<EventModel>> events) {
     final days = daysInRange(start, end);
 
     return [
@@ -57,7 +64,8 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
     ];
   }
 
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay, LinkedHashMap<DateTime, List<Event>> events) {
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay,
+      LinkedHashMap<DateTime, List<EventModel>> events) {
     if (!isSameDay(_selectedDay, selectedDay)) {
       setState(() {
         _selectedDay = selectedDay;
@@ -71,8 +79,8 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
     }
   }
 
-  void _onRangeSelected(
-      DateTime? start, DateTime? end, DateTime focusedDay, LinkedHashMap<DateTime, List<Event>> events) {
+  void _onRangeSelected(DateTime? start, DateTime? end, DateTime focusedDay,
+      LinkedHashMap<DateTime, List<EventModel>> events) {
     setState(() {
       _selectedDay = null;
       _focusedDay = focusedDay;
@@ -93,7 +101,7 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
 
   bool init = true;
 
-  initFocusDay(LinkedHashMap<DateTime, List<Event>> events) {
+  initFocusDay(LinkedHashMap<DateTime, List<EventModel>> events) {
     if (!init) {
       return;
     }
@@ -122,7 +130,7 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
 
         return Column(
           children: [
-            TableCalendar<Event>(
+            TableCalendar<EventModel>(
               firstDay: _firstDay,
               lastDay: _lastDay,
               focusedDay: _focusedDay,
@@ -140,13 +148,17 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
               availableGestures: AvailableGestures.all,
               calendarStyle: CalendarStyle(
                 outsideDaysVisible: false,
-                selectedDecoration: BoxDecoration(color: Colors.indigo.shade200, shape: BoxShape.circle),
-                markerDecoration: BoxDecoration(color: Colors.indigo, shape: BoxShape.circle),
+                selectedDecoration: BoxDecoration(
+                    color: Colors.indigo.shade200, shape: BoxShape.circle),
+                markerDecoration:
+                    BoxDecoration(color: Colors.indigo, shape: BoxShape.circle),
                 markersMaxCount: 10,
               ),
               headerVisible: true,
-              onDaySelected: (selectedDay, focusedDay) => _onDaySelected(selectedDay, focusedDay, events),
-              onRangeSelected: (start, end, focusedDay) => _onRangeSelected(start, end, focusedDay, events),
+              onDaySelected: (selectedDay, focusedDay) =>
+                  _onDaySelected(selectedDay, focusedDay, events),
+              onRangeSelected: (start, end, focusedDay) =>
+                  _onRangeSelected(start, end, focusedDay, events),
               onFormatChanged: (format) {
                 if (_calendarFormat != format) {
                   setState(() {
@@ -160,7 +172,7 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
             ),
             const SizedBox(height: 8.0),
             Expanded(
-              child: ValueListenableBuilder<List<Event>>(
+              child: ValueListenableBuilder<List<EventModel>>(
                 valueListenable: _selectedEvents,
                 builder: (context, value, _) {
                   return ListView.builder(
@@ -179,28 +191,39 @@ class _CalendarOfCustomerVisitScheduleState extends State<CalendarOfCustomerVisi
                             // color: (value[index].isDone ?? false)
                             //     ? Colors.green.withOpacity(0.15)
                             //     : Colors.indigo.withOpacity(0.15),
-                            color: (value[index].isDone =="1")? Colors.green.withOpacity(0.15) :
-                                   (value[index].isDone =="0")? Colors.indigo.withOpacity(0.15):
-                                   (value[index].isDone =="2")?Colors.red.withOpacity(0.15):
-                                   (value[index].isDone =="3")?Colors.blue.withOpacity(0.15):
-                                   Colors.grey.withOpacity(0.15),
+                            color: (value[index].isDone == "1")
+                                ? Colors.green.withOpacity(0.15)
+                                : (value[index].isDone == "0")
+                                    ? Colors.indigo.withOpacity(0.15)
+                                    : (value[index].isDone == "2")
+                                        ? Colors.red.withOpacity(0.15)
+                                        : (value[index].isDone == "3")
+                                            ? Colors.blue.withOpacity(0.15)
+                                            : Colors.grey.withOpacity(0.15),
                           ),
                           child: ListTile(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (context) => ProfileClient(idClient: value[index].fkIdClient)));
+                                      builder: (context) => ProfileClient(
+                                          idClient: value[index].fkIdClient)));
                             },
                             title: Text('${value[index].title}',
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontFamily: kfontfamily2)),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(fontFamily: kfontfamily2)),
                             subtitle: Text(
                                 '${intl.DateFormat("hh:mm a").format(value[index].from)}'
                                 ' - '
                                 '${intl.DateFormat("hh:mm a").format(value[index].to)}',
                                 textDirection: TextDirection.ltr,
                                 textAlign: TextAlign.end,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontFamily: kfontfamily2)),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(fontFamily: kfontfamily2)),
                           ),
                         ),
                       );

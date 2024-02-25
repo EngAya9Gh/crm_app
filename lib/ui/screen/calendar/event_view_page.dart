@@ -1,4 +1,4 @@
-import 'package:crm_smart/model/calendar/event.dart';
+import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/screen/calendar/Event_editing_page.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class EventViewingPage extends StatelessWidget {
-  final Event event;
+  final EventModel event;
   const EventViewingPage({required this.event, Key? key}) : super(key: key);
 
   @override
@@ -18,28 +18,28 @@ class EventViewingPage extends StatelessWidget {
           IconButton(
               onPressed: () {
                 //navigator push
-                Navigator.push(context, CupertinoPageRoute(
-                    builder: (context)=>
-                        EventEditingPage(
-                          event: event,
-                        )));
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => EventEditingPage(
+                              event: event,
+                            )));
                 // Get.to(EventEditingPage(
                 //   event: event,
                 // ));
               },
               icon: Icon(Icons.edit)),
-
-              IconButton(
+          IconButton(
               onPressed: () {
                 final provider =
-                    Provider.of<EventProvider>(
-                        context, listen: false);
+                    Provider.of<EventProvider>(context, listen: false);
                 provider.deleteEvent(event);
-                Navigator.push(context, CupertinoPageRoute(
-                    builder: (context)=>
-                        EventEditingPage(
-                          event: event,
-                        )));
+                Navigator.push(
+                    context,
+                    CupertinoPageRoute(
+                        builder: (context) => EventEditingPage(
+                              event: event,
+                            )));
                 // Get.to(EventEditingPage(
                 //   event: event,
                 // ));

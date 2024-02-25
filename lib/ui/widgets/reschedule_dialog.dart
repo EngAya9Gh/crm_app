@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../core/utils/app_strings.dart';
-import '../../model/calendar/event.dart';
+import '../../model/calendar/event_model.dart';
 import '../../model/invoiceModel.dart';
 import 'custom_widget/custombutton.dart';
 import 'custom_widget/row_edit.dart';
@@ -21,7 +21,7 @@ class ReScheduleDialog extends StatefulWidget {
   final String idinvoice;
   final String idClient;
 
-  final Event event;
+  final EventModel event;
   ReScheduleDialog(
       {Key? key,
       required this.event,

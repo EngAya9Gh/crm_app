@@ -12,7 +12,7 @@ import '../../../core/common/enums/comment_type.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../../model/calendar/event.dart';
+import '../../../model/calendar/event_model.dart';
 import '../../../view_model/event_provider.dart';
 
 class commentView extends StatefulWidget {
@@ -23,7 +23,7 @@ class commentView extends StatefulWidget {
   }) : super(key: key);
 
   ClientModel1? client;
-  final Event? event;
+  final EventModel? event;
 
   @override
   _commentViewState createState() => _commentViewState();

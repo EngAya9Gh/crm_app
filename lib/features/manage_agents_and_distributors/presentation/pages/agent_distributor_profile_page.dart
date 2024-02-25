@@ -18,24 +18,28 @@ class AgentProfilePage extends StatelessWidget {
   const AgentProfilePage({
     Key? key,
     required this.agent,
+    this.tabIndex,
   }) : super(key: key);
   final AgentDistributorModel agent;
+  final int? tabIndex;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<AgentsDistributorsProfileBloc>(),
-      child: AgentProfilePageBody(agent: agent),
+      child: AgentProfilePageBody(agent: agent, index: tabIndex),
     );
   }
 }
 
 class AgentProfilePageBody extends StatefulWidget {
   final AgentDistributorModel agent;
+  final int? index;
 
   const AgentProfilePageBody({
     Key? key,
     required this.agent,
+    this.index,
   }) : super(key: key);
 
   @override
@@ -77,9 +81,13 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
           ),
         ));
     });
-    //   _tabController = TabController(
-    //       length: TabEvent.values.length, vsync: this, initialIndex: 0);
-    //   // _tabController.addListener(onChangeTab);
+    _navigateToIndexIfExists();
+  }
+
+  void _navigateToIndexIfExists() {
+    if (widget.index != null) {
+      _tabController.animateTo(widget.index!);
+    }
   }
 
   @override

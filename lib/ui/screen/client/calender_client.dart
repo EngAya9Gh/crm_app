@@ -10,9 +10,10 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
+
 import '../../../core/config/theme/theme.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../model/calendar/event.dart';
+import '../../../model/calendar/event_model.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import 'calendar_of_customer_visit_schedule.dart';
@@ -38,13 +39,15 @@ class _calender_clientState extends State<calender_client> {
   Future<void> didChangeDependencies() async {
     Future.delayed(Duration(milliseconds: 30)).then((_) async {
       context.read<ClientProvider>().changevalueclient(null);
-      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(DateTime(1,1,1));
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue1(DateTime(1, 1, 1));
       await Provider.of<UserProvider>(context, listen: false).getUsersVm();
 
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      await Provider.of<ClientProvider>(context, listen: false).getClientDateTable_vm(GetIt.I<PrivilegeCubit>());
-      Provider.of<EventProvider>(context, listen: false)
-          .setvalueClient(Provider.of<ClientProvider>(context, listen: false).listClientAccept);
+      await Provider.of<ClientProvider>(context, listen: false)
+          .getClientDateTable_vm(GetIt.I<PrivilegeCubit>());
+      Provider.of<EventProvider>(context, listen: false).setvalueClient(
+          Provider.of<ClientProvider>(context, listen: false).listClientAccept);
       Provider.of<EventProvider>(context, listen: false).getevent_AllClient();
     });
 
@@ -100,10 +103,15 @@ class _calender_clientState extends State<calender_client> {
                               if (cart.selectedclient != null) ...{
                                 IconButton(
                                   onPressed: () {
-                                    context.read<ClientProvider>().changevalueclient(null);
-                                    Provider.of<EventProvider>(context, listen: false).getevent_AllClient();
+                                    context
+                                        .read<ClientProvider>()
+                                        .changevalueclient(null);
+                                    Provider.of<EventProvider>(context,
+                                            listen: false)
+                                        .getevent_AllClient();
                                   },
-                                  icon: Icon(Icons.highlight_off, color: Colors.grey.shade600),
+                                  icon: Icon(Icons.highlight_off,
+                                      color: Colors.grey.shade600),
                                 ),
                                 SizedBox(width: 10),
                               },
@@ -113,23 +121,28 @@ class _calender_clientState extends State<calender_client> {
                                   // label: " الموظف ",
                                   //hint: 'الموظف',
                                   //onFind: (String filter) => cart.getfilteruser(filter),
-                                  filterFn: (user, filter) => user!.getfilteruser(filter!),
+                                  filterFn: (user, filter) =>
+                                      user!.getfilteruser(filter!),
                                   //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
                                   // itemAsString: (UserModel u) => u.userAsStringByName(),
                                   items: cart.listClientAccept,
                                   // items: cart.listClient,
-                                  compareFn: (item, selectedItem) => item?.idClients == selectedItem?.idClients,
+                                  compareFn: (item, selectedItem) =>
+                                      item?.idClients ==
+                                      selectedItem?.idClients,
                                   showSelectedItems: true,
                                   itemAsString: (u) => u!.userAsString(),
                                   onChanged: (data) {
                                     setState(() {
                                       clientModel = data!;
                                       idclient = data!.idClients!;
-
-
                                     });
-                                    context.read<ClientProvider>().changevalueclient(data);
-                                    Provider.of<EventProvider>(context, listen: false).getevent_Client(idclient);
+                                    context
+                                        .read<ClientProvider>()
+                                        .changevalueclient(data);
+                                    Provider.of<EventProvider>(context,
+                                            listen: false)
+                                        .getevent_Client(idclient);
                                     // Provider.of<client_vm>(context, listen: false)
                                     //     .getclientfilter_Local(iduser!,"user");
                                   },
@@ -147,7 +160,9 @@ class _calender_clientState extends State<calender_client> {
                                     // focusedBorder: OutlineInputBorder(
                                     //     borderRadius: BorderRadius.circular(10),
                                     //     borderSide: const BorderSide(color: Colors.white)),
-                                    border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                    border: UnderlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Colors.grey)),
                                     // OutlineInputBorder(
                                     //     borderRadius: BorderRadius.circular(10),
                                     //     borderSide: const BorderSide( color: Colors.white)),
@@ -238,9 +253,10 @@ class _calender_clientState extends State<calender_client> {
             return const SizedBox.shrink();
           }
           return FloatingActionButton(
-            onPressed: () =>
-                AnimatedDialog.show(context, child: SizedBox(height: 250, child: dialog(clientVm.selectedclient!))),
-            child: Icon(Icons.schedule_send_rounded,color: AppColors.white),
+            onPressed: () => AnimatedDialog.show(context,
+                child: SizedBox(
+                    height: 250, child: dialog(clientVm.selectedclient!))),
+            child: Icon(Icons.schedule_send_rounded, color: AppColors.white),
           );
         },
       ),
@@ -255,12 +271,15 @@ class _calender_clientState extends State<calender_client> {
       titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
       insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
       contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      title: Center(child: Text('جدولة زيارات العميل', style: TextStyle(fontFamily: kfontfamily2))),
+      title: Center(
+          child: Text('جدولة زيارات العميل',
+              style: TextStyle(fontFamily: kfontfamily2))),
       children: [
         Directionality(
           textDirection: TextDirection.rtl,
           child: StatefulBuilder(
-            builder: (BuildContext context, void Function(void Function()) setState) {
+            builder: (BuildContext context,
+                void Function(void Function()) setState) {
               return Form(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -273,8 +292,14 @@ class _calender_clientState extends State<calender_client> {
                           Icons.date_range,
                           color: kMainColor,
                         ),
-                        hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                        hintText: Provider.of<datetime_vm>(context, listen: true).valuedateTime.toString(),
+                        hintStyle: const TextStyle(
+                            color: Colors.black45,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
+                        hintText:
+                            Provider.of<datetime_vm>(context, listen: true)
+                                .valuedateTime
+                                .toString(),
                         filled: true,
                         fillColor: Colors.grey.shade200,
                       ),
@@ -288,25 +313,38 @@ class _calender_clientState extends State<calender_client> {
                     SizedBox(height: 30),
                     SizedBox(
                       child: Center(
-                        child: Consumer<ClientProvider>(builder: (context, clientVm, _) {
+                        child: Consumer<ClientProvider>(
+                            builder: (context, clientVm, _) {
                           if (clientVm.isloading) {
                             return CircularProgressIndicator();
                           }
 
                           return ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(kMainColor)),
                             onPressed: () async {
-                              Provider.of<ClientProvider>(context, listen: false).updateclient_vm(
+                              Provider.of<ClientProvider>(context,
+                                      listen: false)
+                                  .updateclient_vm(
                                 {
-                                  "date_visit_Client": _currentDate.toString(), //DateTime.now().toString(),
+                                  "date_visit_Client": _currentDate
+                                      .toString(), //DateTime.now().toString(),
                                 },
                                 client.idClients.toString(),
                                 onSuccess: (value) {
-                                  DateTime temp = DateTime.parse(value.date_visit_Client.toString()).hour >= 21
-                                      ? DateTime.parse(value.date_visit_Client.toString()).subtract(Duration(hours: 3))
-                                      : DateTime.parse(value.date_visit_Client.toString());
+                                  DateTime temp = DateTime.parse(value
+                                                  .date_visit_Client
+                                                  .toString())
+                                              .hour >=
+                                          21
+                                      ? DateTime.parse(value.date_visit_Client
+                                              .toString())
+                                          .subtract(Duration(hours: 3))
+                                      : DateTime.parse(
+                                          value.date_visit_Client.toString());
 
-                                  final event = Event(
+                                  final event = EventModel(
                                       fkIdClient: value.idClients,
                                       title: value.nameEnterprise.toString(),
                                       description: 'description',
@@ -314,10 +352,12 @@ class _calender_clientState extends State<calender_client> {
                                       to: temp.add(Duration(hours: 2)),
                                       idinvoice: null);
 
-                                  Provider.of<EventProvider>(context, listen: false)
+                                  Provider.of<EventProvider>(context,
+                                      listen: false)
                                     ..setvalue_save()
                                     ..checkAndActionEvent(event);
-                                  Navigator.of(context, rootNavigator: true).pop(false);
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop(false);
                                 },
                               );
                             },
@@ -348,7 +388,8 @@ class _calender_clientState extends State<calender_client> {
       setState(() {
         _currentDate = pickedDate;
       });
-      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDate);
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue1(_currentDate);
     }
   }
 }
