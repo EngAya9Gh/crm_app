@@ -73,7 +73,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
         context
             .read<MainCityProvider>()
             .getmaincity(regions: user!.maincitylist_user);
-        emailController.text = user!.email.toString();
+        emailController.text = user!.email.toString().trim();
         mobileController.text = user!.mobile.toString();
 
         regionName = user!.nameRegoin;
