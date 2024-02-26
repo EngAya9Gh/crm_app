@@ -12,10 +12,10 @@ import 'package:crm_smart/ui/screen/report/wrong_number.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../widgethomeitem.dart';
@@ -34,14 +34,14 @@ class _carepageState extends State<carepage> {
 
   @override
   void initState() {
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       // await    Provider.of<communication_vm>(context, listen: false)
       //      .getCommunicationall('');
       //
       Provider.of<communication_vm>(context, listen: false)
-          .setvaluepriv(GetIt.I<PrivilegeCubit>());
+          .setvaluepriv(getIt<PrivilegeCubit>());
       //  Provider.of<ticket_vm>(context,listen: false)
       //      .getclientticket_filter('جديدة');
       // await Provider.of<communication_vm>(context, listen: false)

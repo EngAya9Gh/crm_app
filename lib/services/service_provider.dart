@@ -3,8 +3,8 @@ import 'package:crm_smart/features/manage_participates/presentation/manager/part
 import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
+import '../core/di/di_container.dart';
 import '../features/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/communication_list/presentation/manager/communication_list_bloc.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -19,12 +19,12 @@ class ServiceProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => GetIt.I<CommunicationListBloc>()),
-        BlocProvider(create: (context) => GetIt.I<ClientsListBloc>()),
-        BlocProvider(create: (context) => GetIt.I<AppManagerCubit>()),
-        BlocProvider(create: (context) => GetIt.I<PrivilegeCubit>()),
-        BlocProvider(create: (context) => GetIt.I<TaskCubit>()),
-         BlocProvider(create: (context) => GetIt.I<ParticipateListBloc>())
+        BlocProvider(create: (context) => getIt<CommunicationListBloc>()),
+        BlocProvider(create: (context) => getIt<ClientsListBloc>()),
+        BlocProvider(create: (context) => getIt<AppManagerCubit>()),
+        BlocProvider(create: (context) => getIt<PrivilegeCubit>()),
+        BlocProvider(create: (context) => getIt<TaskCubit>()),
+        BlocProvider(create: (context) => getIt<ParticipateListBloc>())
       ],
       child: child,
     );

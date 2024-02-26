@@ -62,7 +62,7 @@ class _AgentInvoiceListPageState extends State<AgentInvoiceListPage> {
                   state.invoicesStatus == StateStatus.initial) {
                 return CustomLoadingIndicator();
               } else if (state.invoicesStatus == StateStatus.failure) {
-                return Center(child: Text(state.invoicesError!));
+                return Center(child: Text(state.invoicesError ?? ''));
               } else if (state.invoicesStatus == StateStatus.success) {
                 return Padding(
                   padding: const EdgeInsets.all(10.0),

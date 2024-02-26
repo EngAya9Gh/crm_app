@@ -11,16 +11,13 @@ import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import 'package:crm_smart/features/task_management/data/models/user_region_department.dart';
 import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
-import 'package:crm_smart/model/managmodel.dart';
-import 'package:crm_smart/model/regoin_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as Intl;
 
+import '../../../../core/di/di_container.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import 'add_task_page.dart';
@@ -34,7 +31,8 @@ class TaskManagementListPage extends StatefulWidget {
   State<TaskManagementListPage> createState() => _TaskManagementListPageState();
 }
 
-class _TaskManagementListPageState extends State<TaskManagementListPage> with SearchMixin {
+class _TaskManagementListPageState extends State<TaskManagementListPage>
+    with SearchMixin {
   late TaskCubit _taskCubit;
   late PrivilegeCubit privilegeBloc;
   String? regionId;
@@ -44,7 +42,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
   @override
   void initState() {
     super.initState();
-    privilegeBloc = GetIt.I<PrivilegeCubit>();
+    privilegeBloc = getIt<PrivilegeCubit>();
     final currentUser = context.read<UserProvider>().currentUser;
     departmentId = privilegeBloc.checkPrivilege('161')
         ? '2'
@@ -61,7 +59,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
 
     userId = privilegeBloc.checkPrivilege('163') ? currentUser.idUser : null;
 
-    _taskCubit = GetIt.I<TaskCubit>();
+    _taskCubit = getIt<TaskCubit>();
     scheduleMicrotask(() {
       _taskCubit
         ..onChangeMyDepartment(departmentId)
@@ -72,11 +70,14 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
     });
     initSearch();
   }
-@override void deactivate() {
+
+  @override
+  void deactivate() {
     // TODO: implement deactivate
-  _taskCubit.resetAll( );
+    _taskCubit.resetAll();
     super.deactivate();
   }
+
   @override
   void dispose() {
     disposeSearch();
@@ -95,7 +96,7 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
           action: [
             BlocBuilder<PrivilegeCubit, PrivilegeState>(
               builder: (context, state) {
-                if (GetIt.I<PrivilegeCubit>().checkPrivilege('158'))
+                if (getIt<PrivilegeCubit>().checkPrivilege('158'))
                   return AppTextButton(
                     onPressed: () async {
                       final result = await Navigator.of(context).push(
@@ -129,15 +130,19 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                   children: [
                     15.verticalSpace,
                     Padding(
-                      padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                      padding: const EdgeInsets.only(
+                          top: 2, left: 8, right: 8, bottom: 2),
                       child: Row(
                         children: [
                           Expanded(
                             child: Container(
-                              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5))),
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5))),
                               height: 50,
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                                padding: const EdgeInsets.only(
+                                    top: 2, left: 8, right: 8, bottom: 2),
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.grey.shade200,
@@ -176,7 +181,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                   color: Colors.grey.shade200,
                                   borderRadius: BorderRadius.circular(10).r,
                                 ),
-                                child: Icon(Icons.filter_alt_rounded, color: Colors.grey.shade600, size: 30.r),
+                                child: Icon(Icons.filter_alt_rounded,
+                                    color: Colors.grey.shade600, size: 30.r),
                               ),
                             ),
                           ),
@@ -199,47 +205,58 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                         height: 35.h,
                         child: ListView.separated(
                           padding: HWEdgeInsets.symmetric(horizontal: 20),
-                          separatorBuilder: (context, index) => 10.horizontalSpace,
+                          separatorBuilder: (context, index) =>
+                              10.horizontalSpace,
                           itemCount: TaskStatusType.values.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) => stageChip(
                             TaskStatusType.values[index],
-                            state.selectedStatus == TaskStatusType.values[index],
+                            state.selectedStatus ==
+                                TaskStatusType.values[index],
                           ),
                         ),
                       ),
                     ),
                     10.verticalSpace,
                     Padding(
-                      padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
+                      padding:
+                          HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AppText(
                             'عدد المهام: ',
-                            style: context.textTheme.bodySmall!.copyWith(color: context.colorScheme.grey500),
+                            style: context.textTheme.bodySmall!
+                                .copyWith(color: context.colorScheme.grey500),
                           ),
                           AppText(
                             '${tasksList.length}',
-                            style: context.textTheme.bodySmall!.copyWith(color: context.colorScheme.grey800),
+                            style: context.textTheme.bodySmall!
+                                .copyWith(color: context.colorScheme.grey800),
                           ),
                         ],
                       ),
                     ),
                     Expanded(
                       child: ListView.separated(
-
                         itemCount: state.tasksList.length,
                         shrinkWrap: true,
                         padding: HWEdgeInsets.only(bottom: 20),
                         separatorBuilder: (context, index) => 15.verticalSpace,
                         itemBuilder: (context, index) {
                           final task = tasksList[index];
-                          final assignToUserName = task.assignedToUser!.nameUser;
-                          final firstList = assignToUserName?.split(' ').firstOrNull;
-                          final secondList = assignToUserName?.split(' ').lastOrNull;
-                          String? firstChar = (firstList?.isNotEmpty ?? false) ? firstList?.substring(0, 1) : '';
-                          String? secondChar = (secondList?.isNotEmpty ?? false) ? secondList?.substring(0, 1) : '';
+                          final assignToUserName =
+                              task.assignedToUser!.nameUser;
+                          final firstList =
+                              assignToUserName?.split(' ').firstOrNull;
+                          final secondList =
+                              assignToUserName?.split(' ').lastOrNull;
+                          String? firstChar = (firstList?.isNotEmpty ?? false)
+                              ? firstList?.substring(0, 1)
+                              : '';
+                          String? secondChar = (secondList?.isNotEmpty ?? false)
+                              ? secondList?.substring(0, 1)
+                              : '';
                           StringBuffer buffer = StringBuffer();
 
                           if (firstChar == null) {
@@ -251,7 +268,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
 
                           buffer.writeAll([firstChar, secondChar], '.');
 
-                          final status = TaskStatusType.values.firstWhereOrNull((element) => element.name == task.name);
+                          final status = TaskStatusType.values.firstWhereOrNull(
+                              (element) => element.name == task.name);
                           return InkWell(
                             onTap: status != null &&
                                     status != TaskStatusType.Evaluated &&
@@ -284,7 +302,8 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                   ),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         10.verticalSpace,
                                         Row(
@@ -295,36 +314,63 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                               child: Center(
                                                 child: AppText(
                                                   buffer.toString(),
-                                                  style: context.textTheme.titleMedium!
-                                                      .copyWith(color: context.colorScheme.white),
+                                                  style: context
+                                                      .textTheme.titleMedium!
+                                                      .copyWith(
+                                                          color: context
+                                                              .colorScheme
+                                                              .white),
                                                 ),
                                               ),
                                               radius: 22,
                                             ),
                                             10.horizontalSpace,
                                             Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   task.title ?? '',
-                                                  style: context.textTheme.titleMedium,
-                                                  overflow: TextOverflow.ellipsis,
+                                                  style: context
+                                                      .textTheme.titleMedium,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 1,
                                                 ),
                                                 Row(
                                                   children: [
                                                     Text(
-                                                      task.assignedByUser!.nameUser.toString(),
-                                                      style: context.textTheme.bodySmall!
-                                                          .copyWith(color: context.colorScheme.grey500),
+                                                      task.assignedByUser!
+                                                          .nameUser
+                                                          .toString(),
+                                                      style: context
+                                                          .textTheme.bodySmall!
+                                                          .copyWith(
+                                                              color: context
+                                                                  .colorScheme
+                                                                  .grey500),
                                                     ),
-                                                    if ((task.assignedByUser?.nameUser?.isNotEmpty ?? false) &&
-                                                        (task.assignedToUser?.nameUser?.isNotEmpty ?? false))
+                                                    if ((task
+                                                                .assignedByUser
+                                                                ?.nameUser
+                                                                ?.isNotEmpty ??
+                                                            false) &&
+                                                        (task
+                                                                .assignedToUser
+                                                                ?.nameUser
+                                                                ?.isNotEmpty ??
+                                                            false))
                                                       Text(' --> '),
                                                     Text(
-                                                      task.assignedToUser!.nameUser.toString(),
-                                                      style: context.textTheme.bodySmall!
-                                                          .copyWith(color: context.colorScheme.primary),
+                                                      task.assignedToUser!
+                                                          .nameUser
+                                                          .toString(),
+                                                      style: context
+                                                          .textTheme.bodySmall!
+                                                          .copyWith(
+                                                              color: context
+                                                                  .colorScheme
+                                                                  .primary),
                                                     ),
                                                   ],
                                                 ),
@@ -332,38 +378,53 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                             ),
                                           ],
                                         ),
-                                        if (task.description?.isNotEmpty ?? false) ...{
+                                        if (task.description?.isNotEmpty ??
+                                            false) ...{
                                           10.verticalSpace,
                                           Expanded(
                                             child: Padding(
-                                              padding: EdgeInsetsDirectional.only(end: 50, start: 20),
+                                              padding:
+                                                  EdgeInsetsDirectional.only(
+                                                      end: 50, start: 20),
                                               child: AppText(
                                                 task.description ?? '',
-                                                style: context.textTheme.labelSmall!
-                                                    .copyWith(color: context.colorScheme.grey600),
+                                                style: context
+                                                    .textTheme.labelSmall!
+                                                    .copyWith(
+                                                        color: context
+                                                            .colorScheme
+                                                            .grey600),
                                               ),
                                             ),
                                           ),
                                         },
                                         10.verticalSpace,
                                         Padding(
-                                          padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
+                                          padding: HWEdgeInsetsDirectional.only(
+                                              start: 20.0, end: 20),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
                                                   AppText(
                                                     'من فرع: ',
-                                                    style: context.textTheme.bodySmall!
-                                                        .copyWith(color: context.colorScheme.grey500),
+                                                    style: context
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .grey500),
                                                   ),
                                                   AppText(
-                                                    '${task.assignedByUser?.nameRegoin==''?
-                                                    task.assigendRegionFrom.toString():
-                                                    task.assignedByUser?.nameRegoin}',
-                                                    style: context.textTheme.bodySmall!
-                                                        .copyWith(color: context.colorScheme.grey800),
+                                                    '${task.assignedByUser?.nameRegoin == '' ? task.assigendRegionFrom.toString() : task.assignedByUser?.nameRegoin}',
+                                                    style: context
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .grey800),
                                                   ),
                                                 ],
                                               ),
@@ -371,15 +432,21 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                                 children: [
                                                   AppText(
                                                     'إلى فرع: ',
-                                                    style: context.textTheme.bodySmall!
-                                                        .copyWith(color: context.colorScheme.grey500),
+                                                    style: context
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .grey500),
                                                   ),
                                                   AppText(
-                                                    '${task.assignedToUser?.nameRegoin==''?
-                                                    task.assigendRegionTo.toString()
-                                                    :task.assignedToUser?.nameRegoin}',
-                                                    style: context.textTheme.bodySmall!
-                                                        .copyWith(color: context.colorScheme.grey800),
+                                                    '${task.assignedToUser?.nameRegoin == '' ? task.assigendRegionTo.toString() : task.assignedToUser?.nameRegoin}',
+                                                    style: context
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .grey800),
                                                   ),
                                                 ],
                                               ),
@@ -388,22 +455,31 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                         ),
                                         5.verticalSpace,
                                         Padding(
-                                          padding: HWEdgeInsetsDirectional.only(start: 20.0, end: 20),
+                                          padding: HWEdgeInsetsDirectional.only(
+                                              start: 20.0, end: 20),
                                           child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
                                                   AppText(
                                                     'من قسم: ',
-                                                    style: context.textTheme.bodySmall!
-                                                        .copyWith(color: context.colorScheme.grey500),
+                                                    style: context
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .grey500),
                                                   ),
                                                   AppText(
-                                                    '${task.assignedByUser?.nameMange==''?
-                                                    task.assigendDepartmentFromName:task.assignedByUser?.nameMange }',
-                                                    style: context.textTheme.bodySmall!
-                                                        .copyWith(color: context.colorScheme.grey800),
+                                                    '${task.assignedByUser?.nameMange == '' ? task.assigendDepartmentFromName : task.assignedByUser?.nameMange}',
+                                                    style: context
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .grey800),
                                                   ),
                                                 ],
                                               ),
@@ -411,14 +487,21 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                                 children: [
                                                   AppText(
                                                     'إلى قسم: ',
-                                                    style: context.textTheme.bodySmall!
-                                                        .copyWith(color: context.colorScheme.grey500),
+                                                    style: context
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .grey500),
                                                   ),
                                                   AppText(
-                                                    '${task.assignedToUser?.nameMange==''?
-                                                    task.assigendDepartmentToName:task.assignedToUser?.nameMange}',
-                                                    style: context.textTheme.bodySmall!
-                                                        .copyWith(color: context.colorScheme.grey800),
+                                                    '${task.assignedToUser?.nameMange == '' ? task.assigendDepartmentToName : task.assignedToUser?.nameMange}',
+                                                    style: context
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: context
+                                                                .colorScheme
+                                                                .grey800),
                                                   ),
                                                 ],
                                               ),
@@ -427,19 +510,28 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
                                         ),
                                         10.verticalSpace,
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
                                             20.horizontalSpace,
                                             Icon(Icons.date_range_rounded,
-                                                size: 15, color: context.colorScheme.grey600),
+                                                size: 15,
+                                                color: context
+                                                    .colorScheme.grey600),
                                             5.horizontalSpace,
                                             Directionality(
                                               textDirection: TextDirection.ltr,
                                               child: AppText(
-                                                Intl.DateFormat('dd MMM hh:mm a')
-                                                    .format(task.startDate ?? DateTime.now()),
-                                                style: context.textTheme.labelSmall!
-                                                    .copyWith(color: context.colorScheme.grey600),
+                                                Intl.DateFormat(
+                                                        'dd MMM hh:mm a')
+                                                    .format(task.startDate ??
+                                                        DateTime.now()),
+                                                style: context
+                                                    .textTheme.labelSmall!
+                                                    .copyWith(
+                                                        color: context
+                                                            .colorScheme
+                                                            .grey600),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                               ),
@@ -488,7 +580,9 @@ class _TaskManagementListPageState extends State<TaskManagementListPage> with Se
         duration: const Duration(milliseconds: 300),
         child: AppText(status.text,
             style: context.textTheme.bodyMedium!.m!.copyWith(
-              color: isActive ? context.colorScheme.white : context.colorScheme.black,
+              color: isActive
+                  ? context.colorScheme.white
+                  : context.colorScheme.black,
             )),
       ),
     );

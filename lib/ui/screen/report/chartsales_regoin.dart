@@ -6,17 +6,15 @@ import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/rowtitle.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/di/di_container.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../helper/number_formatter.dart';
 import 'is_marketing_chekbox.dart';
@@ -49,11 +47,13 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
 
   @override
   void initState() {
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
     haveMarketingPrivilege = _privilegeCubit.checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(2);
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(1);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsalestype(2);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(1);
     });
     super.initState();
     if (!haveMarketingPrivilege) getData();
@@ -68,15 +68,18 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     setState(() {
       loading = true;
     });
-    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
+    UserModel usermodel =
+        Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     String iduser = usermodel.idUser.toString();
     String idregoin = usermodel.fkRegoin.toString();
     List<BarModel> tempdata = [];
     String paramprivilge = '';
-    if (_privilegeCubit.checkPrivilege('83') == true) paramprivilge = '&id_regoin=${idregoin}';
+    if (_privilegeCubit.checkPrivilege('83') == true)
+      paramprivilge = '&id_regoin=${idregoin}';
 
-    if (_privilegeCubit.checkPrivilege('83') == true || _privilegeCubit.checkPrivilege('84') == true) {
+    if (_privilegeCubit.checkPrivilege('83') == true ||
+        _privilegeCubit.checkPrivilege('84') == true) {
       var data;
       var endPoint;
       String params = '';
@@ -95,7 +98,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
       }
       switch (type) {
         case "userSum":
-          endPoint = "reports/reportsalesRegoin.php?fk_country=$fkcountry$params$paramprivilge$isMarketingParams";
+          endPoint =
+              "reports/reportsalesRegoin.php?fk_country=$fkcountry$params$paramprivilge$isMarketingParams";
           break;
         case "dateyear":
           endPoint =
@@ -115,7 +119,6 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
         data = await Api().post(
           url: url + endPoint,
           body: {'type': type},
-
         );
       } catch (e, st) {
         setState(() {
@@ -183,7 +186,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
         //     //     Colors.primaries[Random().nextInt(Colors.primaries.length)]
         //     // ),
         //     charts.MaterialPalette.teal.shadeDefault,
-        colorFn: (BarModel bar, _) => charts.ColorUtil.fromDartColor(bar.colorval),
+        colorFn: (BarModel bar, _) =>
+            charts.ColorUtil.fromDartColor(bar.colorval),
         // charts.MaterialPalette.indigo.shadeDefault,
         domainFn: (BarModel genderModel, _) => genderModel.x,
         measureFn: (BarModel genderModel, __) => genderModel.y,
@@ -224,12 +228,15 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                  Consumer<selected_button_provider>(
+                      builder: (context, selectedProvider, child) {
                     return GroupButton(
                         controller: GroupButtonController(
                           selectedIndex: selectedProvider.isbarsales,
                         ),
-                        options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
+                        options: GroupButtonOptions(
+                            buttonWidth: 75,
+                            borderRadius: BorderRadius.circular(10)),
                         buttons: ['سنوي', 'شهري', 'يومي'],
                         onSelected: (_, index, isselected) {
                           switch (index) {
@@ -239,11 +246,13 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                               break;
                             case 1:
                               type = 'datemonth';
-                              if (_selectedDatemonth != DateTime(1, 1, 1)) getData();
+                              if (_selectedDatemonth != DateTime(1, 1, 1))
+                                getData();
                               break;
                             case 2:
                               type = 'datedays';
-                              if (_selectedDatefrom != DateTime(1, 1, 1) && _selectedDateto != DateTime(1, 1, 1))
+                              if (_selectedDatefrom != DateTime(1, 1, 1) &&
+                                  _selectedDateto != DateTime(1, 1, 1))
                                 getData();
                               break;
                           }
@@ -263,13 +272,15 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                  Consumer<selected_button_provider>(
+                      builder: (context, selectedProvider, child) {
                     return GroupButton(
                         controller: GroupButtonController(
                           selectedIndex: selectedProvider.isbarsalestype,
                         ),
                         options: GroupButtonOptions(
-                            buttonWidth: (MediaQuery.of(context).size.width / 3) - 16,
+                            buttonWidth:
+                                (MediaQuery.of(context).size.width / 3) - 16,
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['الكل', 'أجهزة', 'برامج'],
                         onSelected: (_, index, isselected) {
@@ -284,9 +295,11 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                               typeproduct = 'برامج';
                               break;
                           }
-                          if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1) ||
+                          if (_selectedDateto != DateTime(1, 1, 1) &&
+                                  _selectedDatefrom != DateTime(1, 1, 1) ||
                               _selectedDate != DateTime(1, 1, 1) ||
-                              _selectedDatemonth != DateTime(1, 1, 1)) getData();
+                              _selectedDatemonth != DateTime(1, 1, 1))
+                            getData();
                           //setState(() {
                           //typeinstallController=index.toString();
                           selectedProvider.selectValuebarsalestype(index);
@@ -302,7 +315,9 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                 getData();
               },
             ),
-            Provider.of<selected_button_provider>(context, listen: true).isbarsales == 0
+            Provider.of<selected_button_provider>(context, listen: true)
+                        .isbarsales ==
+                    0
                 ? TextFormField(
                     validator: (value) {
                       if (_selectedDate == DateTime(1, 1, 1)) {
@@ -314,7 +329,10 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                         Icons.date_range,
                         color: kMainColor,
                       ),
-                      hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                      hintStyle: const TextStyle(
+                          color: Colors.black45,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
                       hintText: _selectedDate == DateTime(1, 1, 1)
                           ? 'السنة' //_currentDate.toString()
                           : DateFormat('yyyy').format(_selectedDate),
@@ -335,7 +353,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                               height: 300,
                               child: YearPicker(
                                 firstDate: DateTime(DateTime.now().year - 3, 1),
-                                lastDate: DateTime(DateTime.now().year + 100, 1),
+                                lastDate:
+                                    DateTime(DateTime.now().year + 100, 1),
                                 initialDate: DateTime.now(),
                                 // save the selected date to _selectedDate DateTime variable.
                                 // It's used to set the previous selected date when
@@ -362,7 +381,9 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                       // _selectDate(context, DateTime.now());
                     },
                   )
-                : Provider.of<selected_button_provider>(context, listen: true).isbarsales == 1
+                : Provider.of<selected_button_provider>(context, listen: true)
+                            .isbarsales ==
+                        1
                     ? Row(
                         children: [
                           Flexible(
@@ -377,11 +398,15 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                   Icons.date_range,
                                   color: kMainColor,
                                 ),
-                                hintStyle:
-                                    const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                hintText: _selectedDatemonth == DateTime(1, 1, 1)
-                                    ? 'الشهر' //_currentDate.toString()
-                                    : DateFormat('yyyy-MM').format(_selectedDatemonth),
+                                hintStyle: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                hintText:
+                                    _selectedDatemonth == DateTime(1, 1, 1)
+                                        ? 'الشهر' //_currentDate.toString()
+                                        : DateFormat('yyyy-MM')
+                                            .format(_selectedDatemonth),
                                 //_invoice!.dateinstall_task.toString(),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
@@ -398,9 +423,13 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                         width: 300,
                                         height: 300,
                                         child: CalendarDatePicker(
-                                          initialDate: DateTime(DateTime.now().year, DateTime.now().month),
-                                          firstDate: DateTime(DateTime.now().year - 100, 1),
-                                          lastDate: DateTime(DateTime.now().year + 100, 1),
+                                          initialDate: DateTime(
+                                              DateTime.now().year,
+                                              DateTime.now().month),
+                                          firstDate: DateTime(
+                                              DateTime.now().year - 100, 1),
+                                          lastDate: DateTime(
+                                              DateTime.now().year + 100, 1),
                                           // : DateTime.now(),
                                           // save the selected date to _selectedDate DateTime variable.
                                           // It's used to set the previous selected date when
@@ -431,7 +460,10 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                           ),
                         ],
                       )
-                    : Provider.of<selected_button_provider>(context, listen: true).isbarsales == 2
+                    : Provider.of<selected_button_provider>(context,
+                                    listen: true)
+                                .isbarsales ==
+                            2
                         ? Row(
                             children: [
                               Flexible(
@@ -441,7 +473,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                     Text('from'),
                                     TextFormField(
                                       validator: (value) {
-                                        if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                        if (_selectedDatefrom ==
+                                            DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
                                       },
@@ -451,17 +484,22 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                           color: kMainColor,
                                         ),
                                         hintStyle: const TextStyle(
-                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                        hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText: _selectedDatefrom ==
+                                                DateTime(1, 1, 1)
                                             ? 'from' //_currentDate.toString()
-                                            : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                                            : DateFormat('yyyy-MM-dd')
+                                                .format(_selectedDatefrom),
                                         //_invoice!.dateinstall_task.toString(),
                                         filled: true,
                                         fillColor: Colors.grey.shade200,
                                       ),
                                       readOnly: true,
                                       onTap: () {
-                                        _selectDatefrom(context, DateTime.now());
+                                        _selectDatefrom(
+                                            context, DateTime.now());
 
                                         // _selectDate(context, DateTime.now());
                                       },
@@ -475,7 +513,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                     Text('to'),
                                     TextFormField(
                                       validator: (value) {
-                                        if (_selectedDateto == DateTime(1, 1, 1)) {
+                                        if (_selectedDateto ==
+                                            DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
                                       },
@@ -485,10 +524,14 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                           color: kMainColor,
                                         ),
                                         hintStyle: const TextStyle(
-                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                        hintText: _selectedDateto == DateTime(1, 1, 1)
-                                            ? 'to' //_currentDate.toString()
-                                            : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText:
+                                            _selectedDateto == DateTime(1, 1, 1)
+                                                ? 'to' //_currentDate.toString()
+                                                : DateFormat('yyyy-MM-dd')
+                                                    .format(_selectedDateto),
                                         //_invoice!.dateinstall_task.toString(),
                                         filled: true,
                                         fillColor: Colors.grey.shade200,
@@ -518,7 +561,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                               // scrollDirection: Axis.horizontal,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text('إجمالي المبيعات'),
                                     Text(formatNumber(totalval)),
@@ -594,25 +638,29 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
                                       DataColumn(
                                         label: Text(
                                           '',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           'الفرع',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           'المبيعات',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           'عدد الفواتير',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ),
                                     ],
@@ -654,7 +702,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
     );
   }
 
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDatefrom(
+      BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
@@ -666,7 +715,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
 
-        if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
+        if (_selectedDateto != DateTime(1, 1, 1) &&
+            _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
 
@@ -684,7 +734,8 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
 
-        if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
+        if (_selectedDateto != DateTime(1, 1, 1) &&
+            _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
 }

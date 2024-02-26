@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/models/nullable.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/activity_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';
@@ -40,7 +40,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
   @override
   void initState() {
     userModel = context.read<UserProvider>().currentUser;
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
 
     fkCountry = userModel.fkCountry.toString();
     _clientsListBloc = context.read<ClientsListBloc>();

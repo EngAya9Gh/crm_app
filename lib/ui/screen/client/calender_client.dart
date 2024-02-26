@@ -8,10 +8,10 @@ import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/config/theme/theme.dart';
+import '../../../core/di/di_container.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event_model.dart';
 import '../../../view_model/datetime_vm.dart';
@@ -45,7 +45,7 @@ class _calender_clientState extends State<calender_client> {
 
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       await Provider.of<ClientProvider>(context, listen: false)
-          .getClientDateTable_vm(GetIt.I<PrivilegeCubit>());
+          .getClientDateTable_vm(getIt<PrivilegeCubit>());
       Provider.of<EventProvider>(context, listen: false).setvalueClient(
           Provider.of<ClientProvider>(context, listen: false).listClientAccept);
       Provider.of<EventProvider>(context, listen: false).getevent_AllClient();

@@ -4,10 +4,10 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
+import '../../../../core/di/di_container.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class ManageWithdrawalsPage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _ManageWithdrawalsPageState extends State<ManageWithdrawalsPage> {
   @override
   void initState() {
     currentUser = context.read<UserProvider>().currentUser;
-    _manageWithdrawalsCubit = GetIt.I<ManageWithdrawalsCubit>()
+    _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
       ..getUsersSeries(currentUser.fkCountry!);
     super.initState();
   }

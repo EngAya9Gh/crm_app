@@ -30,6 +30,8 @@ class _ApiInterceptors extends Interceptor {
     getIt<Logger>().i("Request data: ${options.data}");
     getIt<Logger>().i("Request queryParameters: ${options.queryParameters}");
 
+    options.headers['AuthToken'] =
+        'Bearer ${getIt<SharedPreferences>().getString('token_user')}';
     super.onRequest(options, handler);
   }
 

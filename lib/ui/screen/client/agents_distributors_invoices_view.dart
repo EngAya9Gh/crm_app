@@ -2,13 +2,12 @@ import 'dart:async';
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/di/di_container.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/agent_distributor_model.dart';
 import '../../../model/participatModel.dart';
@@ -45,11 +44,15 @@ class AgentsDistributorsInvoicesView extends StatefulWidget {
   const AgentsDistributorsInvoicesView({Key? key}) : super(key: key);
 
   @override
-  State<AgentsDistributorsInvoicesView> createState() => _AgentsDistributorsInvoicesViewState();
+  State<AgentsDistributorsInvoicesView> createState() =>
+      _AgentsDistributorsInvoicesViewState();
 }
 
-class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoicesView>
-    with StateViewModelMixin<AgentsDistributorsInvoicesView, AgentsCollaboratorsInvoicesViewmodel> {
+class _AgentsDistributorsInvoicesViewState
+    extends State<AgentsDistributorsInvoicesView>
+    with
+        StateViewModelMixin<AgentsDistributorsInvoicesView,
+            AgentsCollaboratorsInvoicesViewmodel> {
   late PrivilegeCubit _privilegeCubit;
 
   late TextEditingController _searchTextField;
@@ -59,7 +62,7 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
   @override
   void initState() {
     super.initState();
-    _privilegeCubit = GetIt.I<PrivilegeCubit>();
+    _privilegeCubit = getIt<PrivilegeCubit>();
 
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
@@ -69,7 +72,9 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       context.read<ClientTypeProvider>()
         ..changelisttype_install(null)
         ..changevalueNotReady(null);
-      context.read<invoice_vm>().getinvoice_Localwithprev(GetIt.I<PrivilegeCubit>());
+      context
+          .read<invoice_vm>()
+          .getinvoice_Localwithprev(getIt<PrivilegeCubit>());
     });
   }
 
@@ -85,7 +90,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     viewmodel.onSearch(_searchTextField.text);
   }
 
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDatefrom(
+      BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
@@ -98,7 +104,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
         _selectedDatefrom = pickedDate;
 
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-        Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
+        Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,
+                listen: false)
             .onChange_date(_selectedDatefrom, _selectedDateto);
       });
   }
@@ -118,7 +125,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
         _selectedDateto = pickedDate;
 
         // if(_selectedDateto!=DateTime(1, 1, 1)&&_selectedDatefrom!=DateTime(1, 1, 1))
-        Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context, listen: false)
+        Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,
+                listen: false)
             .onChange_date(_selectedDatefrom, _selectedDateto);
       });
   }
@@ -141,7 +149,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             Row(
               children: [
                 SizedBox(width: 15),
-                Selector<AgentsCollaboratorsInvoicesViewmodel, SellerTypeFilter>(
+                Selector<AgentsCollaboratorsInvoicesViewmodel,
+                        SellerTypeFilter>(
                     selector: (_, vm) => vm.selectedSellerTypeFilter,
                     builder: (context, selectedSellerTypeFilter, _) {
                       return Expanded(
@@ -151,7 +160,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                           hint: Text("النوع"),
                           items: (SellerTypeFilter.values).map((type) {
                             return DropdownMenuItem<SellerTypeFilter>(
-                              child: Text(type.text, textDirection: myui.TextDirection.rtl),
+                              child: Text(type.text,
+                                  textDirection: myui.TextDirection.rtl),
                               value: type,
                             );
                           }).toList(),
@@ -218,10 +228,14 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                             Icons.date_range,
                             color: kMainColor,
                           ),
-                          hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
                           hintText: _selectedDatefrom == DateTime(1, 1, 1)
                               ? 'from' //_currentDate.toString()
-                              : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                              : DateFormat('yyyy-MM-dd')
+                                  .format(_selectedDatefrom),
                           //_invoice!.dateinstall_task.toString(),
                           filled: true,
                           fillColor: Colors.grey.shade200,
@@ -255,10 +269,14 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                             Icons.date_range,
                             color: kMainColor,
                           ),
-                          hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
                           hintText: _selectedDateto == DateTime(1, 1, 1)
                               ? 'to' //_currentDate.toString()
-                              : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                              : DateFormat('yyyy-MM-dd')
+                                  .format(_selectedDateto),
                           //_invoice!.dateinstall_task.toString(),
                           filled: true,
                           fillColor: Colors.grey.shade200,
@@ -282,7 +300,8 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             _privilegeCubit.checkPrivilege('156') == true
                 ? Padding(
                     padding: const EdgeInsets.only(left: 20.0, right: 8),
-                    child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
+                    child: Consumer<ClientTypeProvider>(
+                        builder: (context, cart, child) {
                       return DropdownButton(
                         isExpanded: true,
                         hint: Text('حالة الفاتورة'),
@@ -319,13 +338,16 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
                 children: [
                   Text(
                     'عدد الفواتير',
-                    style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                   ),
                   Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
                       builder: (context, value, agentCollaboratorsVm, child) {
-                    final list = (agentCollaboratorsVm.from == DateTime(1, 1, 1) ||
+                    final list = (agentCollaboratorsVm.from ==
+                                    DateTime(1, 1, 1) ||
                                 agentCollaboratorsVm.to == DateTime(1, 1, 1)) &&
-                            (agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                            (agentCollaboratorsVm.selectedSellerTypeFilter ==
+                                    SellerTypeFilter.all &&
                                 _searchTextField.text.trim().isEmpty &&
                                 (agentCollaboratorsVm.selectedRegion == null ||
                                     agentCollaboratorsVm.selectedRegion == '0'))
@@ -334,7 +356,9 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
 
                     return Text(
                       list.length.toString(),
-                      style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontFamily: kfontfamily2,
+                          fontWeight: FontWeight.bold),
                     );
                   }),
                 ],
@@ -345,9 +369,11 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
               builder: (context, value, agentCollaboratorsVm, child) {
                 final list = (agentCollaboratorsVm.from == DateTime(1, 1, 1) ||
                             agentCollaboratorsVm.to == DateTime(1, 1, 1)) &&
-                        (agentCollaboratorsVm.selectedSellerTypeFilter == SellerTypeFilter.all &&
+                        (agentCollaboratorsVm.selectedSellerTypeFilter ==
+                                SellerTypeFilter.all &&
                             _searchTextField.text.trim().isEmpty &&
-                            (agentCollaboratorsVm.selectedRegion == null || agentCollaboratorsVm.selectedRegion == '0'))
+                            (agentCollaboratorsVm.selectedRegion == null ||
+                                agentCollaboratorsVm.selectedRegion == '0'))
                     ? value.listInvoicesAccept //
                     : agentCollaboratorsVm.invoicesFiltered;
 
@@ -408,17 +434,20 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
             items: sellerNames.map((item) {
               if (T == ParticipateModel) {
                 return DropdownMenuItem(
-                  child: Text((item as ParticipateModel).name_participate, textDirection: myui.TextDirection.rtl),
+                  child: Text((item as ParticipateModel).name_participate,
+                      textDirection: myui.TextDirection.rtl),
                   value: item,
                 );
               } else if (T == AgentDistributorModel) {
                 return DropdownMenuItem(
-                  child: Text((item as AgentDistributorModel).nameAgent, textDirection: myui.TextDirection.rtl),
+                  child: Text((item as AgentDistributorModel).nameAgent,
+                      textDirection: myui.TextDirection.rtl),
                   value: item,
                 );
               } else {
                 return DropdownMenuItem(
-                  child: Text((item as UserModel).nameUser!, textDirection: myui.TextDirection.rtl),
+                  child: Text((item as UserModel).nameUser!,
+                      textDirection: myui.TextDirection.rtl),
                   value: item,
                 );
               }
@@ -430,9 +459,11 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
               }
 
               if (T == ParticipateModel) {
-                viewmodel.onChangeSelectedCollaborator(seller as ParticipateModel);
+                viewmodel
+                    .onChangeSelectedCollaborator(seller as ParticipateModel);
               } else if (T == AgentDistributorModel) {
-                viewmodel.onChangeSelectedAgentDistributor(seller as AgentDistributorModel);
+                viewmodel.onChangeSelectedAgentDistributor(
+                    seller as AgentDistributorModel);
               } else {
                 viewmodel.onChangeEmployee(seller as UserModel);
               }
@@ -450,11 +481,13 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
     final selectedCollaborator = vm.selectedCollaborator;
     final selectedEmployee = vm.selectedEmployee;
     final sellerStatus = vm.sellerStatus;
-    final isCollaborate = selectedSellerTypeFilter == SellerTypeFilter.collaborator;
+    final isCollaborate =
+        selectedSellerTypeFilter == SellerTypeFilter.collaborator;
     final isEmp = selectedSellerTypeFilter == SellerTypeFilter.employee;
 
     var agentsDistributorsList = vm.agentDistributorsState.data ?? [];
-    final collaboratorsEmployeeStateList = vm.collaboratorsEmployeeState.data ?? [];
+    final collaboratorsEmployeeStateList =
+        vm.collaboratorsEmployeeState.data ?? [];
     //endregion
 
     if (sellerStatus == SellerStatus.loading)
@@ -483,7 +516,9 @@ class _AgentsDistributorsInvoicesViewState extends State<AgentsDistributorsInvoi
       List<AgentDistributorModel> agentsListtemp = [];
 
       agentsDistributorsList.forEach((element) {
-        if (element.typeAgent == viewmodel.selectedSellerTypeFilter!.index.toString()) agentsListtemp.add(element);
+        if (element.typeAgent ==
+            viewmodel.selectedSellerTypeFilter!.index.toString())
+          agentsListtemp.add(element);
       });
       agentsDistributorsList = List.from(agentsListtemp);
       // return Container(color: Colors.blue);

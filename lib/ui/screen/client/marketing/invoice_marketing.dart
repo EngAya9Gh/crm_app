@@ -6,12 +6,10 @@ import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/di/di_container.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class invoice_marketing extends StatefulWidget {
@@ -29,10 +27,13 @@ class _invoice_marketingState extends State<invoice_marketing> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_install(null);
+      Provider.of<ClientTypeProvider>(context, listen: false)
+          .changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      Provider.of<invoice_vm>(context, listen: false).getinvoice_marketing(GetIt.I<PrivilegeCubit>());
-      await Provider.of<ClientProvider>(context, listen: false).getclientMarketing(GetIt.I<PrivilegeCubit>());
+      Provider.of<invoice_vm>(context, listen: false)
+          .getinvoice_marketing(getIt<PrivilegeCubit>());
+      await Provider.of<ClientProvider>(context, listen: false)
+          .getclientMarketing(getIt<PrivilegeCubit>());
     });
     super.initState();
   }
@@ -61,17 +62,20 @@ class _invoice_marketingState extends State<invoice_marketing> {
                           ? //regoin
                           Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, right: 8),
                                 child: Consumer<RegionProvider>(
                                   builder: (context, cart, child) {
                                     return DropdownButton(
                                       isExpanded: true,
                                       hint: Text("الفرع"),
-                                      items: cart.listRegionFilter.map((level_one) {
+                                      items: cart.listRegionFilter
+                                          .map((level_one) {
                                         return DropdownMenuItem(
                                           child: Text(level_one.regionName),
                                           //label of item
-                                          value: level_one.regionId, //value of item
+                                          value: level_one
+                                              .regionId, //value of item
                                         );
                                       }).toList(),
                                       value: cart.selectedRegionId,
@@ -91,7 +95,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(left: 20.0, right: 8),
-                          child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
+                          child: Consumer<ClientTypeProvider>(
+                              builder: (context, cart, child) {
                             return DropdownButton(
                               isExpanded: true,
                               hint: Text('الحالة'),
@@ -129,11 +134,18 @@ class _invoice_marketingState extends State<invoice_marketing> {
                       children: [
                         Text(
                           'عدد الفواتير',
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          Provider.of<invoice_vm>(context, listen: true).listinvoicesMarketing.length.toString(),
-                          style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                          Provider.of<invoice_vm>(context, listen: true)
+                              .listinvoicesMarketing
+                              .length
+                              .toString(),
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -142,7 +154,8 @@ class _invoice_marketingState extends State<invoice_marketing> {
                     height: MediaQuery.of(context).size.height * 0.73,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Consumer<invoice_vm>(builder: (context, value, child) {
+                      child: Consumer<invoice_vm>(
+                          builder: (context, value, child) {
                         return value.isloading_marketing == true
                             ? Center(child: CircularProgressIndicator())
                             : value.listinvoicesMarketing.length == 0
@@ -152,14 +165,18 @@ class _invoice_marketingState extends State<invoice_marketing> {
                                       Expanded(
                                         child: ListView.builder(
                                             scrollDirection: Axis.vertical,
-                                            itemCount: value.listinvoicesMarketing.length,
+                                            itemCount: value
+                                                .listinvoicesMarketing.length,
                                             itemBuilder: (context, index) {
                                               return SingleChildScrollView(
                                                 child: Padding(
-                                                    padding: const EdgeInsets.all(2),
+                                                    padding:
+                                                        const EdgeInsets.all(2),
                                                     child: CardInvoiceClient(
                                                       type: 'profile',
-                                                      invoice: value.listinvoicesMarketing[index],
+                                                      invoice: value
+                                                              .listinvoicesMarketing[
+                                                          index],
                                                       //itemClient :  itemClient,
                                                     )),
                                               );

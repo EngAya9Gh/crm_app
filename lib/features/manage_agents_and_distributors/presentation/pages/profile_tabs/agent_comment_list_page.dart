@@ -1,5 +1,6 @@
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,6 +58,9 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
                   20.horizontalSpace,
                   BlocListener<AgentsDistributorsProfileBloc,
                       AgentsDistributorsProfileState>(
+                    listenWhen: (previous, current) =>
+                        previous.addedCommentStatus !=
+                        current.addedCommentStatus,
                     listener: (context, state) {
                       _handleAddCommentsStatus(state, context);
                     },
@@ -136,23 +140,11 @@ class _AgentCommentListPageState extends State<AgentCommentListPage> {
   void _handleAddCommentsStatus(
       AgentsDistributorsProfileState state, BuildContext context) {
     if (state.addedCommentStatus == StateStatus.loading) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('جاري اضافة التعليق'),
-        ),
-      );
+      AppConstants.showSnakeBar(context, 'جاري اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.failure) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('حدث خطأ اثناء اضافة التعليق'),
-        ),
-      );
+      AppConstants.showSnakeBar(context, 'حدث خطأ اثناء اضافة التعليق');
     } else if (state.addedCommentStatus == StateStatus.success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('تم اضافة التعليق'),
-        ),
-      );
+      AppConstants.showSnakeBar(context, 'تم اضافة التعليق');
     }
   }
 }

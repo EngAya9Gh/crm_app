@@ -10,9 +10,9 @@ import 'package:crm_smart/features/manage_privilege/presentation/manager/privile
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:grouped_list/grouped_list.dart';
 
+import '../../../../core/di/di_container.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../data/models/privilege_model.dart';
 
@@ -30,7 +30,7 @@ class _PrivilegePageState extends State<PrivilegePage> {
 
   @override
   void initState() {
-    _privilegeCubit = GetIt.I<PrivilegeCubit>()
+    _privilegeCubit = getIt<PrivilegeCubit>()
       ..getPrivilegesLevel(widget.levelModel.idLevel!);
     super.initState();
   }

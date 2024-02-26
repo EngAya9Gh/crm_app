@@ -4,14 +4,16 @@ import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.d
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
+import '../../../../core/di/di_container.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/task_cubit.dart';
 
 class ChangeStatusTaskDialog extends StatefulWidget {
-  const ChangeStatusTaskDialog({Key? key, required this.status, required this.taskModel}) : super(key: key);
+  const ChangeStatusTaskDialog(
+      {Key? key, required this.status, required this.taskModel})
+      : super(key: key);
   final TaskStatusType status;
   final TaskModel taskModel;
 
@@ -29,15 +31,20 @@ class _ChangeStatusTaskDialogState extends State<ChangeStatusTaskDialog> {
               textDirection: TextDirection.rtl,
               textAlign: TextAlign.center,
               text: TextSpan(children: [
-                TextSpan(text: 'هل تود الموافقة على تحويل المهمة ', style: context.textTheme.bodySmall),
+                TextSpan(
+                    text: 'هل تود الموافقة على تحويل المهمة ',
+                    style: context.textTheme.bodySmall),
                 TextSpan(
                   text: widget.taskModel.title,
-                  style: context.textTheme.bodySmall?.copyWith(color: context.colorScheme.primary),
+                  style: context.textTheme.bodySmall
+                      ?.copyWith(color: context.colorScheme.primary),
                 ),
-                TextSpan(text: 'إلى الحالة ', style: context.textTheme.bodySmall),
+                TextSpan(
+                    text: 'إلى الحالة ', style: context.textTheme.bodySmall),
                 TextSpan(
                   text: widget.status.next.text,
-                  style: context.textTheme.bodySmall.withColor(widget.status.next.color),
+                  style: context.textTheme.bodySmall
+                      .withColor(widget.status.next.color),
                 ),
               ])),
           actions: [
@@ -50,7 +57,7 @@ class _ChangeStatusTaskDialogState extends State<ChangeStatusTaskDialog> {
               ),
             AppTextButton(
               onPressed: () {
-                GetIt.I<TaskCubit>().onChangeTaskStatusStage(
+                getIt<TaskCubit>().onChangeTaskStatusStage(
                   widget.taskModel,
                   widget.status,
                   Navigator.of(context).pop,

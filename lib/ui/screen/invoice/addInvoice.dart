@@ -1346,6 +1346,10 @@ class _AddInvoiceState extends State<AddInvoice> {
                           selectedSellerType == SellerType.distributor
                               ? invoice.selectedDistributor
                               : invoice.selectedAgent;
+                      if (selectedAgent != null) {
+                        agentsListtemp.add(selectedAgent);
+                      }
+                      agentsListtemp.toSet().toList();
 
                       final selectedCollaborate = invoice.selectedCollaborator;
                       if (selectedSellerType != null &&

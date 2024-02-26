@@ -17,12 +17,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';
@@ -104,7 +104,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   void initState() {
-    privilegeBloc = GetIt.I<PrivilegeCubit>();
+    privilegeBloc = getIt<PrivilegeCubit>();
     currentUser = context.read<UserProvider>().currentUser;
     departmentId = privilegeBloc.checkPrivilege('174')
         ? '2'
@@ -117,7 +117,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     regionId =
         privilegeBloc.checkPrivilege('167') ? currentUser.fkRegoin : null;
 
-    _usersCubit = GetIt.I<UsersCubit>()
+    _usersCubit = getIt<UsersCubit>()
       ..storeCurrentUser(currentUser)
       ..getAllUsers()
       ..getUsersByDepartmentAndRegion(
@@ -129,7 +129,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _numberOfRecurringController = TextEditingController();
     _taskDescriptionController = TextEditingController();
     _formKey = GlobalKey<FormState>();
-    _taskCubit = GetIt.I<TaskCubit>();
+    _taskCubit = getIt<TaskCubit>();
     _groupButtonController = GroupButtonController();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
@@ -697,10 +697,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
         builder: (context, manageList, child) {
           final userDepartment =
               context.read<UserProvider>().currentUser.typeAdministration;
-          final list = GetIt.I<PrivilegeCubit>().checkPrivilege('169')
+          final list = getIt<PrivilegeCubit>().checkPrivilege('169')
               ? manageList.listtext
-              : GetIt.I<PrivilegeCubit>().checkPrivilege('168') ||
-                      GetIt.I<PrivilegeCubit>().checkPrivilege('174')
+              : getIt<PrivilegeCubit>().checkPrivilege('168') ||
+                      getIt<PrivilegeCubit>().checkPrivilege('174')
                   ? manageList.listtext
                       .where((element) => element.idmange == userDepartment)
                       .toList()

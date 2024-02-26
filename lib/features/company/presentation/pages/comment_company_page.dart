@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/commentmodel.dart';
 import '../../../../ui/screen/care/card_comment.dart';
@@ -42,7 +42,7 @@ class _comment_companyState extends State<comment_company> {
     // getcommentParams.fk_comment=widget.idCompany;
     _formKey = GlobalKey<FormState>();
     _commentController = TextEditingController();
-    _companyCubit = GetIt.I<CompanyCubit>()
+    _companyCubit = getIt<CompanyCubit>()
       ..getComment(getcommentParams: getcommentParams);
     super.initState();
   }

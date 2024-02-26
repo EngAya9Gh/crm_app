@@ -9,11 +9,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
@@ -43,7 +43,7 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
 
   @override
   void initState() {
-    privilegeBloc = GetIt.I<PrivilegeCubit>();
+    privilegeBloc = getIt<PrivilegeCubit>();
     final currentUser = context.read<UserProvider>().currentUser;
     departmentId = privilegeBloc.checkPrivilege('159')
         ? currentUser.typeAdministration
@@ -51,8 +51,8 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
     regionId =
         privilegeBloc.checkPrivilege('162') ? currentUser.fkRegoin : null;
 
-    _taskCubit = GetIt.I<TaskCubit>();
-    _usersCubit = GetIt.I<UsersCubit>()
+    _taskCubit = getIt<TaskCubit>();
+    _usersCubit = getIt<UsersCubit>()
       ..getUsersByDepartmentAndRegion(
           regionId: regionId, departmentId: departmentId);
 

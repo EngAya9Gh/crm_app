@@ -9,12 +9,12 @@ import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/get_withd
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../features/manage_users/domain/use_cases/get_allusers_usecase.dart';
 import '../../../../../../model/usermodel.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../core/di/di_container.dart';
 import '../../../../model/reasonmodel.dart';
 import '../../../../services/Invoice_Service.dart';
 import '../../../../services/configService.dart';
@@ -344,7 +344,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
   @override
   Future<void> close() {
-    GetIt.I.resetLazySingleton<ManageWithdrawalsCubit>();
+    getIt.resetLazySingleton<ManageWithdrawalsCubit>();
     return super.close();
   }
 
