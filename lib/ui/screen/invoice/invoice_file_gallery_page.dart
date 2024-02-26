@@ -16,6 +16,7 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
+import '../../../core/common/helpers/checkSoragePermission.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';
@@ -646,6 +647,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   }
 
   pickImages() async {
+    if (!(await checkStoragePermission())) return;
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
       allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'dng', 'heic', 'pdf'],

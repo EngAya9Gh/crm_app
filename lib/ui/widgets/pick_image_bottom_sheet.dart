@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:ui';
+
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../core/common/helpers/checkSoragePermission.dart';
 
 typedef PickFileCallback = Function(BuildContext context, File file);
 
@@ -27,7 +30,8 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
       child: BottomSheet(
         backgroundColor: Colors.white,
         enableDrag: false,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(15))),
         onClosing: () {},
         builder: (BuildContext context) => Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -40,24 +44,24 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
                 SizedBox(height: 20),
                 Text(
                   "اختر صورة من:",
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(color: Colors.grey.shade600, fontWeight: FontWeight.w600),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Colors.grey.shade600, fontWeight: FontWeight.w600),
                 ),
                 SizedBox(height: 20),
                 imageSourceWidget(
-                  onTap: () async => await onSelectSource(context, ImageSource.camera),
+                  onTap: () async =>
+                      await onSelectSource(context, ImageSource.camera),
                   text: "الكاميرا",
                   iconData: Icons.camera,
                 ),
                 imageSourceWidget(
-                  onTap: () async => await onSelectSource(context, ImageSource.gallery),
+                  onTap: () async =>
+                      await onSelectSource(context, ImageSource.gallery),
                   text: "المعرض",
                   iconData: Icons.image_rounded,
                 ),
                 imageSourceWidget(
-                  onTap: () async => await onSelectSourceFile(context ),
+                  onTap: () async => await onSelectSourceFile(context),
                   text: "الملفات",
                   iconData: Icons.image_rounded,
                 ),
@@ -82,7 +86,8 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
 
     widget.onPickFile(context, file);
   }
-  Future<void> onSelectSourceFile(BuildContext context ) async {
+
+  Future<void> onSelectSourceFile(BuildContext context) async {
     final file = await pickSingleFile();
     if (!mounted) return;
 
@@ -110,7 +115,8 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
             SizedBox(width: 16),
             Text(
               text,
-              style: context.textTheme.titleSmall?.copyWith(color: Colors.grey.shade600),
+              style: context.textTheme.titleSmall
+                  ?.copyWith(color: Colors.grey.shade600),
             ),
           ],
         ),
@@ -119,9 +125,9 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   }
 
   Future<File?> pickImage(ImageSource source) async {
+    if (!(await checkStoragePermission())) return null;
     final ImagePicker picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
-
 
     if (pickedFile == null) {
       return null;
@@ -131,6 +137,7 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
   }
 
   Future<File?> pickSingleFile() async {
+    if (!(await checkStoragePermission())) return null;
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'dng', 'heic', 'pdf'],
@@ -141,4 +148,5 @@ class _PickImageBottomSheetState extends State<PickImageBottomSheet> {
     }
     File file = File(result.files.single.path.toString());
     return file;
-}}
+  }
+}
