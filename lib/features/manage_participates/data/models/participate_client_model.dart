@@ -44,13 +44,16 @@ class ParticipateClientModel extends Equatable {
     offerPrice = json['offer_price'];
     datePrice = json['date_price'];
     dateCreate = json['date_create'];
-    tag = json['tag'];
+    tag=tagFromJson(json['tag']);
+
     nameCountry = json['nameCountry'];
     nameRegoin = json['name_regoin'];
     nameUser = json['nameUser'];
     fkCountry = json['fk_country'];
   }
-
+  static tagFromJson(String? tag) {
+    return tag == "true";
+  }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id_clients'] = this.idClients;

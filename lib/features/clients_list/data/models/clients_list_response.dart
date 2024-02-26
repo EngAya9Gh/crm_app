@@ -41,7 +41,7 @@ class ClientModel {
   final String? userAdd;
   final String? nameAdduser;
   final String? dateVisitClient;
-  final bool? tag;
+    bool? tag;
   final String? doneVisit;
   final String? doneTransfer;
   final String? nameCity;
