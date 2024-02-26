@@ -10,6 +10,7 @@ class CommentModel {
     required this.imgImage,
     required this.nameEnterprise,
     required this.date_comment,
+    required this.type_comment,
   });
   late final String idComment;
   late final String fkUser;
@@ -19,6 +20,7 @@ class CommentModel {
   late  String? imgImage='';
   late final String nameEnterprise;
   late final String date_comment;
+  late final String type_comment;
 
   CommentModel.fromJson(Map<String, dynamic> json){
     idComment = json['id_comment'];
@@ -30,6 +32,7 @@ class CommentModel {
     json['img_image']: urlimage+ json['img_image'];
     nameEnterprise = json['name_enterprise'];
     date_comment = json['date_comment'];
+    type_comment = json['type_comment'];
   }
 
   Map<String, dynamic> toJson() {

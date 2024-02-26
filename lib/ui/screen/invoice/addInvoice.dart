@@ -1929,6 +1929,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                               invoice.name_enterprise!,
                                           date_comment:
                                               DateTime.now().toIso8601String(),
+                                          type_comment: '',
                                         );
                                         context
                                             .read<comment_vm>()
