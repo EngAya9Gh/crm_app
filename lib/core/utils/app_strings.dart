@@ -69,5 +69,6 @@ abstract class AppStrings {
 
   // agents and distributors
   static const String labelAgentsAndDistributors = 'الوكلاء والموزعين';
-  static const String agentSearchHint = "اسم المؤسسة .....";
+  static const String agentSearchHint = "اسم الوكيل/الموزع .....";
+  static const String agentSearchHintClient = "اسم المؤسسة...";
 }

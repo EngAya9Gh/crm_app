@@ -152,7 +152,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                           ],
                         ),
                         SizedBox(height: 3),
-                        if (widget.invoice.nameEnterpriseinv != null)
+                        if (widget.invoice.nameClient != null)
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -165,7 +165,7 @@ class _ParticipateInvoiceCardState extends State<ParticipateInvoiceCard> {
                               ),
                               Expanded(
                                 child: Text(
-                                  "${widget.invoice.nameEnterpriseinv.toString()}",
+                                  "${widget.invoice.nameClient.toString()}",
                                   maxLines: 3,
                                   style: TextStyle(
                                       fontFamily: kfontfamily2,

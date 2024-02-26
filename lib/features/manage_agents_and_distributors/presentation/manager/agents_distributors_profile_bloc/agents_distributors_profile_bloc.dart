@@ -93,7 +93,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
   List<ClientModel> _filterClientList(String query) {
     return _agentClientsList
-        .where((element) => element.nameClient!.toLowerCase().contains(query))
+        .where((element) => element.nameEnterprise!.toLowerCase().contains(query))
         .toList();
   }
 
@@ -132,8 +132,9 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   List<ProfileInvoiceModel> _filterInvoiceList(String query) {
     return _agentInvoicesList.where((element) {
       return element.idInvoice!.toString().contains(query) ||
-          element.nameEnterprise!.toLowerCase().contains(query) ||
-          element.nameUser!.toLowerCase().contains(query);
+          element.nameEnterprise!.toLowerCase().contains(query) ;
+      // ||
+      //     element.nameClient!.toLowerCase().contains(query);
     }).toList();
   }
 

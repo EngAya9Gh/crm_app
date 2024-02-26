@@ -18,7 +18,7 @@ class ProfileInvoiceModel extends Equatable {
   String? approveBackDone;
   String? isApprove;
   String? nameRegoin;
-  String? nameEnterpriseinv;
+  String? nameClient;
   String? currencyName;
   String? nameCountry;
   String? nameUser;
@@ -43,7 +43,7 @@ class ProfileInvoiceModel extends Equatable {
     this.approveBackDone,
     this.isApprove,
     this.nameRegoin,
-    this.nameEnterpriseinv,
+    this.nameClient,
     this.currencyName,
     this.nameCountry,
     this.nameUser,
@@ -71,7 +71,7 @@ class ProfileInvoiceModel extends Equatable {
         : json['approve_back_done'];
     isApprove = json['isApprove'];
     nameRegoin = json['name_regoin'];
-    nameEnterpriseinv = json['name_enterpriseinv'];
+    nameClient = json['name_client'];
     currencyName = json['currency_name'];
     nameCountry = json['nameCountry'];
     nameUser = json['nameUser'];
@@ -98,7 +98,7 @@ class ProfileInvoiceModel extends Equatable {
     data['approve_back_done'] = this.approveBackDone;
     data['isApprove'] = this.isApprove;
     data['name_regoin'] = this.nameRegoin;
-    data['name_enterpriseinv'] = this.nameEnterpriseinv;
+    data['name_client'] = this.nameClient;
     data['currency_name'] = this.currencyName;
     data['nameCountry'] = this.nameCountry;
     data['nameUser'] = this.nameUser;

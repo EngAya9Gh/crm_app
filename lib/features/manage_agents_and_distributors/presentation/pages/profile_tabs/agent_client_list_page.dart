@@ -78,7 +78,7 @@ class _AgentClientListPageState extends State<AgentClientListPage> {
                             controller: _searchTextField,
                             textInputAction: TextInputAction.search,
                             decoration: InputDecoration(
-                              hintText: AppStrings.agentSearchHint,
+                              hintText: AppStrings.agentSearchHintClient,
                               border: InputBorder.none,
                               prefixIcon: Icon(
                                 Icons.search,

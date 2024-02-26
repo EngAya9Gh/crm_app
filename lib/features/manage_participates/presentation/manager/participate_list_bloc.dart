@@ -219,8 +219,8 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         l ?? state.allParticipateClientsState);
     list = list
         .where((element) =>
-                (element.nameClient!.toLowerCase().contains(query) ?? false)
-            // || (element.n.toLowerCase().contains(query) ?? false)
+                (element.nameEnterprise!.toLowerCase().contains(query) ?? false)
+            // || (element.m.toLowerCase().contains(query) ?? false)
             )
         .toList();
     return list;
@@ -269,14 +269,14 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         List<ProfileInvoiceModel>.from(l ?? state.allParticipateInvoicesState);
     list = list
         .where((element) =>
-            (element.nameEnterpriseinv != null &&
-                    element.nameEnterpriseinv!.toLowerCase().contains(query) ??
+            (element.nameEnterprise != null &&
+                    element.nameEnterprise!.toLowerCase().contains(query) ??
                 false) ||
             (element.idInvoice != null &&
                     element.idInvoice!.toString().contains(query) ??
                 false) ||
-            (element.addressInvoice != null &&
-                    element.addressInvoice!.toLowerCase().contains(query) ??
+            (element.nameClient != null &&
+                    element.nameClient!.toLowerCase().contains(query) ??
                 false))
         .toList();
     return list;
