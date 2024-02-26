@@ -144,7 +144,7 @@ class _comment_companyState extends State<comment_company> {
                                   ? urlimage + comment.imgImage.toString()
                                   : '',
                               nameEnterprise: '',
-                              date_comment: comment.date_comment.toString());
+                              date_comment: comment.date_comment.toString(), type_comment: '');
                           return cardcomment(
                             commentmodel: commentmodel,
                           );
