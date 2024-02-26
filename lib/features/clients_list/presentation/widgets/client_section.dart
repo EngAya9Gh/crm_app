@@ -301,7 +301,7 @@ class _ClientSectionState extends State<ClientSection> {
                             10.verticalSpace,
                             AppTextField(
                               labelText: "سبب الاستبعاد",
-                              maxLines: 1,
+                              maxLines: 3,
                               controller: reasonController,
                               validator: HelperFunctions.instance.requiredFiled,
                             ),
