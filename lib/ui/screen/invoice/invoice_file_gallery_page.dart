@@ -134,7 +134,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     final body = {
                       "image_record": isDeleteRecordCommercialImageNetworkImage
                           ? ""
-                          : imageRecord?.split('/').last,
+                          : imageRecord?.split('/').last ?? "",
                       ...deleteFilesMap,
                     };
 
