@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
@@ -35,6 +36,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
   DateTime? _rangeEnd;
   late DateTime _firstDay;
   late DateTime _lastDay;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -152,7 +154,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       child: Consumer<EventProvider>(builder: (context, eventProvider, _) {
         final events = eventProvider.eventDataSource;
         initFocusDay(events);
-
         return Column(
           children: [
             TableCalendar<EventModel>(
@@ -305,52 +306,64 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                       ),
                                     ),
                                     const SizedBox(width: 16),
-                                    (value[index].isDone == "1" ||
-                                            value[index].isDone == "2")
-                                        ? SizedBox()
-                                        : SizedBox(
-                                            width: 100,
-                                            child: Column(
-                                              children: [
-                                                InkWell(
-                                                  child: Text("تمت الزيارة",
-                                                      style: context
-                                                          .textTheme.labelLarge
-                                                          ?.copyWith(
-                                                              color: context
-                                                                  .theme
-                                                                  .primaryColor,
-                                                              fontFamily:
-                                                                  kfontfamily2,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600)),
-                                                  onTap: () {
-                                                    _onEventSelected(
-                                                        value[index]);
-                                                  },
-                                                ),
-                                                const SizedBox(height: 4),
-                                                InkWell(
-                                                  child: Text("إعادة جدولة",
-                                                      style: context
-                                                          .textTheme.labelLarge
-                                                          ?.copyWith(
-                                                              color: context
-                                                                  .theme
-                                                                  .primaryColor,
-                                                              fontFamily:
-                                                                  kfontfamily2,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600)),
-                                                  onTap: () async {
-                                                    var tempinvoice;
-                                                    var tempEvent =
-                                                        value[index];
+                                    StatefulBuilder(
+                                      builder: (context, refresh) {
+                                        if (isLoading) {
+                                          return const CustomLoadingIndicator();
+                                        }
+                                        return (value[index].isDone == "1" ||
+                                                value[index].isDone == "2")
+                                            ? SizedBox()
+                                            : SizedBox(
+                                                width: 100,
+                                                child: Column(
+                                                  children: [
+                                                    InkWell(
+                                                      child: Text("تمت الزيارة",
+                                                          style: context
+                                                              .textTheme
+                                                              .labelLarge
+                                                              ?.copyWith(
+                                                                  color: context
+                                                                      .theme
+                                                                      .primaryColor,
+                                                                  fontFamily:
+                                                                      kfontfamily2,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600)),
+                                                      onTap: () async {
+                                                        refresh(() {
+                                                          isLoading = true;
+                                                        });
+                                                        await _onEventSelected(
+                                                            value[index]);
+                                                        refresh(() {
+                                                          isLoading = false;
+                                                        });
+                                                      },
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    InkWell(
+                                                      child: Text("إعادة جدولة",
+                                                          style: context
+                                                              .textTheme
+                                                              .labelLarge
+                                                              ?.copyWith(
+                                                                  color: context
+                                                                      .theme
+                                                                      .primaryColor,
+                                                                  fontFamily:
+                                                                      kfontfamily2,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600)),
+                                                      onTap: () async {
+                                                        var tempinvoice;
+                                                        var tempEvent =
+                                                            value[index];
 
-                                                    var status =
-                                                        await showDialog<
+                                                        var status = await showDialog<
                                                                 dynamic>(
                                                             context: context,
                                                             builder: (context) =>
@@ -368,56 +381,57 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                                                           index]
                                                                       .idinvoice!,
                                                                 ));
-                                                    if (status == true) {
-                                                      _selectedEvents =
-                                                          ValueNotifier(
+                                                        if (status == true) {
+                                                          _selectedEvents = ValueNotifier(
                                                               _getEventsForDay(
                                                                   _selectedDay!,
                                                                   eventProvider
                                                                       .eventDataSource));
-                                                      setState(() {});
-                                                    }
-                                                  },
-                                                ),
-                                                const SizedBox(height: 4),
-                                                InkWell(
-                                                  child: Text("إلغاء",
-                                                      style: context
-                                                          .textTheme.labelLarge
-                                                          ?.copyWith(
-                                                              color: context
-                                                                  .theme
-                                                                  .primaryColor,
-                                                              fontFamily:
-                                                                  kfontfamily2,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600)),
-                                                  onTap: () async {
-                                                    var status = await showDialog<
-                                                            dynamic>(
-                                                        context: context,
-                                                        builder: (context) =>
-                                                            CancelScheduleDialog(
-                                                              idClientsDate: value[
-                                                                      index]
-                                                                  .idClientsDate,
-                                                              event:
-                                                                  value[index],
-                                                            ));
-                                                    if (status == true) {
-                                                      _selectedEvents =
-                                                          ValueNotifier(
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    InkWell(
+                                                      child: Text("إلغاء",
+                                                          style: context
+                                                              .textTheme
+                                                              .labelLarge
+                                                              ?.copyWith(
+                                                                  color: context
+                                                                      .theme
+                                                                      .primaryColor,
+                                                                  fontFamily:
+                                                                      kfontfamily2,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600)),
+                                                      onTap: () async {
+                                                        var status = await showDialog<
+                                                                dynamic>(
+                                                            context: context,
+                                                            builder: (context) =>
+                                                                CancelScheduleDialog(
+                                                                  idClientsDate:
+                                                                      value[index]
+                                                                          .idClientsDate,
+                                                                  event: value[
+                                                                      index],
+                                                                ));
+                                                        if (status == true) {
+                                                          _selectedEvents = ValueNotifier(
                                                               _getEventsForDay(
                                                                   _selectedDay!,
                                                                   eventProvider
                                                                       .eventDataSource));
-                                                      setState(() {});
-                                                    }
-                                                  },
-                                                ),
-                                              ],
-                                            ))
+                                                          setState(() {});
+                                                        }
+                                                      },
+                                                    ),
+                                                  ],
+                                                ));
+                                      },
+                                    ),
                                   ]),
                                 ))),
                       );
@@ -457,9 +471,9 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     }
   }
 
-  _onEventSelected(EventModel event) {
+  _onEventSelected(EventModel event) async {
     if (event.agentName != null) {
-      context.read<EventProvider>().changeEventToDone(
+      await context.read<EventProvider>().changeEventToDone(
             event: event,
             onLoading: () {},
             onSuccess: () => context

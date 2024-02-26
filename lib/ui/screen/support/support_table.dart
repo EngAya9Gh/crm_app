@@ -1,4 +1,5 @@
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -255,7 +256,7 @@ class _support_tableState extends State<support_table> {
                   selector: (_, p1) => p1.appointmentsState,
                   builder: (context, value, child) {
                     if (value.isLoading) {
-                      return Center(child: CircularProgressIndicator());
+                      return Expanded(child: CustomLoadingIndicator());
                     }
                     if (value.isFailure) {
                       return Center(
