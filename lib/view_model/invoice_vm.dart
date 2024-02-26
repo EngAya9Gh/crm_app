@@ -16,8 +16,8 @@ import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
-import 'package:permission_handler/permission_handler.dart';
 
+import '../core/common/helpers/checkSoragePermission.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/agent_distributor_model.dart';
 import '../model/calendar/event_model.dart';
@@ -1174,20 +1174,13 @@ class invoice_vm extends ChangeNotifier {
   openFile(FileAttach attachFile) async {
     try {
       if (attachFile.file != null) {
-        final check = await Permission.storage.request();
-        if (check == PermissionStatus.denied) {
-          return;
-        }
-
+        if (!(await checkStoragePermission())) return;
         final result = await OpenFile.open(attachFile.file!.path);
 
         return;
       }
       final filename = attachFile.fileAttach!.name;
-      final check = await Permission.storage.request();
-      if (check == PermissionStatus.denied) {
-        return;
-      }
+      if (!(await checkStoragePermission())) return;
       final checkFile = await Api().checkExist(filename);
       if (checkFile != null) {
         final result = await OpenFile.open(checkFile.path);

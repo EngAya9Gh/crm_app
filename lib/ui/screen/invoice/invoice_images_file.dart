@@ -167,7 +167,9 @@ class _InvoiceImagesFilesState extends State<InvoiceImagesFiles> {
                       fit: BoxFit.cover,
                     )
                   : InkWell(
-                      onTap: () => invoiceVm.openFile(fileAttach),
+                      onTap: () {
+                        invoiceVm.openFile(fileAttach);
+                      },
                       child: Container(
                           width: 110,
                           decoration:
