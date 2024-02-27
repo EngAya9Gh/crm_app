@@ -4,6 +4,7 @@ import 'calendar/event_model.dart';
 class AppointmentModel {
   final String? idClientsDate;
   final DateTime? dateClientVisit;
+  final DateTime? dateEnd;
   final String? fkUser;
   final String? isDone;
   final String? fkClient;
@@ -12,6 +13,7 @@ class AppointmentModel {
   final String? processReason;
   final String? userIdProcess;
   final String? fkAgent;
+  final String? type_agent;
   final String? nameEnterprise;
   final String? nameAgent;
   final String? nameCity;
@@ -25,6 +27,7 @@ class AppointmentModel {
   const AppointmentModel({
     this.idClientsDate,
     this.dateClientVisit,
+    this.dateEnd,
     this.fkUser,
     this.isDone,
     this.fkClient,
@@ -33,6 +36,7 @@ class AppointmentModel {
     this.processReason,
     this.userIdProcess,
     this.fkAgent,
+    this.type_agent,
     this.nameEnterprise,
     this.nameAgent,
     this.nameCity,
@@ -50,6 +54,7 @@ class AppointmentModel {
     return AppointmentModel(
       idClientsDate: map['idclients_date'],
       dateClientVisit: DateTime.tryParse(map['date_client_visit']),
+      dateEnd:map['date_end']==null?null: DateTime.tryParse(map['date_end']),
       fkUser: map['fk_user'].toString(),
       isDone: map['is_done'].toString(),
       fkClient: map['fk_client'],
@@ -58,6 +63,7 @@ class AppointmentModel {
       processReason: map['processReason'],
       userIdProcess: map['user_id_process'].toString(),
       fkAgent: map['fk_agent'].toString(),
+      type_agent: map['type_agent'].toString(),
       nameEnterprise: map['name_enterprise'],
       nameAgent: map['name_agent'],
       nameCity: map['name_city'],
@@ -68,16 +74,21 @@ class AppointmentModel {
   }
 
   EventModel asEvent() {
-    DateTime first = dateClientVisit!.hour >= 21
-        ? dateClientVisit!.subtract(Duration(hours: 3))
-        : dateClientVisit!;
-    DateTime last = first.add(Duration(hours: 2));
-
+    DateTime first = dateClientVisit!;
+    // dateClientVisit!.hour >= 21
+    //     ? dateClientVisit!.subtract(Duration(hours: 3))
+    //     : dateClientVisit!;
+    DateTime last =
+    dateEnd==null
+        ? first.add(Duration(hours: 2))
+        :dateEnd!;
+     String agenttitle=type_agent.toString() =='1'?  ' وكيل ':' موزع ';
     return EventModel(
+
       fkIdClient: fkClient == null ? '' : fkClient.toString(),
       idinvoice: fkInvoice == null ? '' : fkInvoice.toString(),
       title: nameEnterprise == null
-          ? nameAgent.toString() + ' وكيل/موزع '
+          ? nameAgent.toString() + agenttitle
           : nameEnterprise.toString(),
       description: 'description',
       isDone: isDone,
@@ -85,7 +96,7 @@ class AppointmentModel {
       agentName: nameAgent,
       agent: agent,
       from: first,
-      to: last,
+      to: last, typedate: typeDate.toString() ,
     );
   }
 }

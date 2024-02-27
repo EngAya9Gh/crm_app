@@ -248,7 +248,7 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
           description: 'description',
           isAllDay: false,
           fkIdClient: '',
-          idinvoice: '');
+          idinvoice: '', typedate: '');
       //for edit
       final isEditing = widget.event != null;
 

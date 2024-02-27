@@ -10,6 +10,7 @@ import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/configmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/provider/config_vm.dart';
+import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
@@ -19,6 +20,7 @@ import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -50,6 +52,7 @@ class _support_addState extends State<support_add> {
   TextEditingController _textsupport = TextEditingController();
   TextEditingController _textnameuserclient = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+  TextEditingController _endtimeController = TextEditingController();
   late PrivilegeCubit _privilegeCubit;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -73,14 +76,17 @@ class _support_addState extends State<support_add> {
     _textsupport.dispose();
     _textnameuserclient.dispose();
     _timeController.dispose();
+    _endtimeController.dispose();
     super.dispose();
   }
 
   late TimeOfDay timinit;
+  late TimeOfDay timinit2;
 
   @override
   void initState() {
     timinit = TimeOfDay.now();
+    timinit2 = TimeOfDay.now();
     _eventProvider = context.read<EventProvider>();
     _privilegeCubit = getIt<PrivilegeCubit>();
 
@@ -141,6 +147,7 @@ class _support_addState extends State<support_add> {
             builder:
                 (BuildContext context, void Function(void Function()) refresh) {
               selectedTime == TimeOfDay(hour: -1, minute: 00);
+               endTime == TimeOfDay(hour: -1, minute: 00);
               return Directionality(
                 textDirection: myui.TextDirection.rtl,
                 child: Form(
@@ -244,6 +251,59 @@ class _support_addState extends State<support_add> {
                           ),
                         ],
                       ),
+                      // SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: TextFormField(
+                              validator: (value) {
+                                if (endTime ==
+                                    TimeOfDay(hour: -1, minute: 00)) {
+                                  return 'يرجى تعيين الوقت ';
+                                }
+                              },
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.date_range,
+                                  color: kMainColor,
+                                ),
+                                hintStyle: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                hintText: _invoice!.daterepaly == null &&
+                                    Provider.of<datetime_vm>(context,
+                                        listen: true)
+                                        .selectedEndTime ==
+                                        TimeOfDay(hour: -1, minute: 00)
+                                    ? 'نهاية الزيارة ' //_currentDate.toString()
+                                    : Provider.of<datetime_vm>(context,
+                                    listen: true)
+                                    .selectedEndTime
+                                    .minute
+                                    .toString() +
+                                    ' : ' +
+                                    Provider.of<datetime_vm>(context,
+                                        listen: true)
+                                        .selectedEndTime
+                                        .hour
+                                        .toInt()
+                                        .toString(),
+                                //_invoice!.dateinstall_task.toString(),
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                              ),
+                              // / controller: _timeController,
+                              readOnly: true,
+                              onTap: () {
+                                refresh(() {
+                                  _selectEndTime (context, timinit2);
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: 10),
                       RowEdit(name: "نوع التركيب", des: '*'),
                       DropdownButton<String>(
@@ -296,6 +356,12 @@ class _support_addState extends State<support_add> {
                                 _currentDate.day,
                                 selectedTime.hour,
                                 selectedTime.minute);
+                            DateTime date_end = DateTime(
+                                _currentDate.year,
+                                _currentDate.month,
+                                _currentDate.day,
+                                endTime.hour,
+                                endTime.minute);
 
                             final idUser = Provider.of<UserProvider>(context,
                                     listen: false)
@@ -307,6 +373,7 @@ class _support_addState extends State<support_add> {
                               fk_client: widget.idClient!,
                               fk_user: idUser!,
                               date_client_visit: datetask.toString(),
+                              date_end: date_end.toString(),
                               type_date: Value_installation_type!,
                               onSuccess: (value) {
                                 DateTime temp = datetask.hour >= 21
@@ -319,7 +386,7 @@ class _support_addState extends State<support_add> {
                                   title: _invoice!.name_enterprise!,
                                   description: "description",
                                   from: temp,
-                                  to: temp.add(Duration(hours: 2)),
+                                  to: temp.add(Duration(hours: 2)), typedate: '',
                                 );
 
                                 _eventProvider.addEvent(event);
@@ -691,22 +758,46 @@ class _support_addState extends State<support_add> {
                                   _invoice!.nameuserinstall.toString())),
 
                       if (nextInstallation?.date_client_visit != null)
-                        cardRow(
-                            title: 'تاريخ الزيارة القادمة',
-                            value: DateFormat('yyyy-MM-dd HH:mm')
-                                .format(nextInstallation!.date_client_visit!)),
-                      cardRow(
-                          title: 'عدد الزيارات التي تمت ',
-                          value: datesInstallation
-                              .where((element) => element.is_done == "1")
-                              .length
-                              .toString()),
-                      cardRow(
-                          title: 'عدد الزيارات المتبقية',
-                          value: datesInstallation
-                              .where((element) => element.is_done == "0")
-                              .length
-                              .toString()),
+                        InkWell(
+                          onTap: (){
+                            Navigator.push(context,
+                                CupertinoPageRoute(
+                                    builder: (context) => support_table()));
+
+                          },
+                          child: cardRow(
+                              title: 'تاريخ الزيارة القادمة',
+                              value: DateFormat('yyyy-MM-dd HH:mm')
+                                  .format(nextInstallation!.date_client_visit!)),
+                        ),
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context,
+                              CupertinoPageRoute(
+                                  builder: (context) => support_table()));
+
+                        },
+                        child: cardRow(
+                            title: 'عدد الزيارات التي تمت ',
+                            value: datesInstallation
+                                .where((element) => element.is_done == "1")
+                                .length
+                                .toString()),
+                      ),
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context,
+                              CupertinoPageRoute(
+                                  builder: (context) => support_table()));
+
+                        },
+                        child: cardRow(
+                            title: 'عدد الزيارات المتبقية',
+                            value: datesInstallation
+                                .where((element) => element.is_done == "0")
+                                .length
+                                .toString()),
+                      ),
 
                       _invoice!.clientusername == null
                           ? Container()
@@ -1357,9 +1448,11 @@ class _support_addState extends State<support_add> {
   }
 
   late DateTime _currentDate = DateTime(1, 1, 1);
+  late DateTime _EndDate = DateTime(1, 1, 1);
 
   // final DateFormat formatter = DateFormat('yyyy-MM-dd');
   TimeOfDay selectedTime = TimeOfDay(hour: -1, minute: 00);
+  TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
   late double _height;
   late double _width;
 
@@ -1389,6 +1482,28 @@ class _support_addState extends State<support_add> {
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedTime);
   }
+ Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: stime,
+    );
+    if (picked != null)
+      setState(() {
+        endTime = picked;
+        _hour = endTime.hour.toString();
+        _minute = endTime.minute.toString();
+        _time = _hour + ' : ' + _minute;
+        _endtimeController.text = _time;
+        _endtimeController.text = endTime.toString();
+
+        // Utils.toTime(selectedTime)
+        // formatDate(
+        // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
+        // [hh, ':', nn, " ", am]).toString();
+      });
+    Provider.of<datetime_vm>(context, listen: false)
+        .setdatetimevalueEnd(_currentDate, endTime);
+  }
 
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
     //String output = formatter.format(currentDate);
@@ -1405,7 +1520,7 @@ class _support_addState extends State<support_add> {
         _currentDate = pickedDate;
 
         final time = Duration(
-            hours: DateTime.now().hour,
+            hours:   DateTime.now().hour,
             minutes: DateTime.now().minute,
             seconds: DateTime.now().second);
 
@@ -1423,7 +1538,10 @@ class _support_addState extends State<support_add> {
 
   clear() {
     _currentDate = DateTime(1, 1, 1);
+    _EndDate = DateTime(1, 1, 1);
+
     selectedTime = TimeOfDay(hour: -1, minute: 00);
+    endTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
     selectInstallationType = null;
@@ -1435,7 +1553,9 @@ class _support_addState extends State<support_add> {
   clear2() {
     Navigator.of(context, rootNavigator: true).pop(false);
     _currentDate = DateTime(1, 1, 1);
+    _EndDate = DateTime(1, 1, 1);
     selectedTime = TimeOfDay(hour: -1, minute: 00);
+    endTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
     // _scaffoldKey.currentState!.showSnackBar(SnackBar(content: Text('تم التثبيت بنجاح')));

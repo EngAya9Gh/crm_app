@@ -10,6 +10,8 @@ import '../../../../../constants.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
+import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../domain/entities/agent_distributor_action_entity.dart';
 import '../../../domain/use_cases/get_all_cities_usecase.dart';
 
@@ -116,7 +118,9 @@ class AgentsDistributorsActionsCubit
 
   Future<void> actionAgentDistributor({
     String? agentId,
+    String? currenuser,
   }) async {
+    getCurrentUser(currenuser);
     try {
       isLoadingAction = true;
       emit(AgentsDistributorsActionsLoading());
@@ -161,6 +165,10 @@ class AgentsDistributorsActionsCubit
   onSelectCountry(String? countryId) {
     agentDistributorActionEntity =
         agentDistributorActionEntity.copyWith(countryId: countryId);
+  }
+  getCurrentUser(String? fk_user_add) {
+    agentDistributorActionEntity =
+        agentDistributorActionEntity.copyWith(currentUser: fk_user_add);
   }
 
   onSelectCity(String cityId) {

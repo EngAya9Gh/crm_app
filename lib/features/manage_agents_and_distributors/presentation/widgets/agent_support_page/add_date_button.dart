@@ -64,6 +64,11 @@ class _AddDateButtonState extends State<AddDateButton> {
                         ],
                       ),
                       SizedBox(height: 20),
+                      CustomDateTimePicker(
+                        dateTimeController: bloc.supportTimeEndController,
+                        dateTimeType: DateTimeEnum.time,
+                      ),
+                      SizedBox(height: 20),
                       RowEdit(name: "نوع التركيب", des: '*'),
                       SizedBox(height: 5),
                       StatefulBuilder(
@@ -120,7 +125,8 @@ class _AddDateButtonState extends State<AddDateButton> {
                                           context: context,
                                           bloc: bloc,
                                           dateClientVisit:
-                                              bloc.handleVisitTime(),
+                                              bloc.handleVisitTime(bloc.supportTimeController.text),
+                                          date_end:  bloc.handleVisitTime(bloc.supportTimeEndController.text),
                                           fkAgent: widget.agentId,
                                           typeDate: selectedInstallationType ==
                                                   'ميداني'
@@ -160,6 +166,7 @@ class _AddDateButtonState extends State<AddDateButton> {
     required BuildContext context,
     required AgentsDistributorsProfileBloc bloc,
     required DateTime dateClientVisit,
+    required DateTime date_end,
     required String fkAgent,
     required InstallationTypeEnum typeDate,
     VoidCallback? onSuccess,
@@ -171,6 +178,7 @@ class _AddDateButtonState extends State<AddDateButton> {
       is_done: '0',
       fkAgent: fkAgent,
       typeDate: typeDate,
+      date_end: date_end,
     );
 
     bloc.add(AddAgentDateEvent(

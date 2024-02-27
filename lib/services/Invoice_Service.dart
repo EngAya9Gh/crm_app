@@ -143,12 +143,14 @@ class Invoice_Service {
   Future<dynamic> addDateInstall({
     required String id_invoice,
     required String date_client_visit,
+    required String date_end,
     required String fk_user,
     required String fk_client,
     required String type_date,
   }) async {
     var result = await Api().post(url: url + "client/invoice/add_date_install.php", body: {
       'date_client_visit': date_client_visit,
+      'date_end': date_end,
       'fk_user': fk_user,
       'is_done': '0',
       'fk_invoice': id_invoice,
@@ -160,6 +162,7 @@ class Invoice_Service {
   Future<dynamic> editScheduleInstallation({
     required String scheduleId,
     required String dateClientVisit,
+    required String date_end,
    required String processReason,
     required String typeSchedule,
   }) async {
@@ -168,6 +171,7 @@ class Invoice_Service {
     var result = await Api().post(url:  url_laravel+"rescheduleOrCancelVisitClient/"+scheduleId, body: {
       'typeProcess': 'reschedule',
       'date_client_visit': dateClientVisit,
+      'date_end': date_end,
       'processReason':processReason,
       'type_date': typeSchedule.toString(),
     });

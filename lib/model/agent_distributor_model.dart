@@ -92,7 +92,7 @@ class AgentDistributorModel {
     return AgentDistributorModel(
       idAgent: json["id_agent"],
       nameAgent: json["name_agent"],
-      typeAgent: json["type_agent"],
+      typeAgent: json["type_agent"].toString(),
       emailAgent: json["email_egent"],
       mobileAgent: json["mobile_agent"],
       fkCountry: json["fk_country"],

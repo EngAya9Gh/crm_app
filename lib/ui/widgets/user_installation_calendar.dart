@@ -241,6 +241,8 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                   return ListView.builder(
                     itemCount: value.length,
                     itemBuilder: (context, index) {
+                      print(value[index].typedate.toString());
+
                       return Directionality(
                         textDirection: TextDirection.rtl,
                         child: Container(
@@ -273,7 +275,9 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                   onTap: () {
                                     _navigateToProfile(value[index]);
                                   },
-                                  child: Row(children: [
+                                  child: Row(
+
+                                      children: [
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -287,9 +291,9 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                                       fontFamily:
                                                           kfontfamily2)),
                                           Text(
-                                              '${intl.DateFormat("hh:mm a").format(value[index].from)}'
+                                              '${intl.DateFormat("hh:mm a").format(value[index].to)}'
                                               ' - '
-                                              '${intl.DateFormat("hh:mm a").format(value[index].to)}',
+                                              '${intl.DateFormat("hh:mm a").format(value[index].from)}',
                                               textDirection: TextDirection.ltr,
                                               textAlign: TextAlign.end,
                                               style: Theme.of(context)
@@ -380,8 +384,14 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                                                   idinvoice: value[
                                                                           index]
                                                                       .idinvoice!,
+                                                                  time_from:  value[
+                                                                  index].from, time_to:  value[
+                                                                index].to, datecurrent:  value[
+                                                                index].from, typedate:  value[
+                                                                index].typedate,
                                                                 ));
                                                         if (status == true) {
+
                                                           _selectedEvents = ValueNotifier(
                                                               _getEventsForDay(
                                                                   _selectedDay!,

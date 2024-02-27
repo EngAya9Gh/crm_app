@@ -4,10 +4,16 @@ class datetime_vm extends ChangeNotifier {
   late DateTime valuedateTime = DateTime(1, 1, 1);
   late DateTime valuedateTime2 = DateTime(1, 1, 1);
   TimeOfDay selectedTime = TimeOfDay(hour: -1, minute: 00);
+  TimeOfDay selectedEndTime = TimeOfDay(hour: -1, minute: 00);
 
   void setdatetimevalue(DateTime val, TimeOfDay? timeday) {
     valuedateTime = val;
     selectedTime = timeday!;
+    notifyListeners();
+  }
+  void setdatetimevalueEnd(DateTime val, TimeOfDay? timeday) {
+    // valuedateTime = val;
+    selectedEndTime = timeday!;
     notifyListeners();
   }
 

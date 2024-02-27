@@ -7,6 +7,7 @@ class EventModel {
   final String description;
   final DateTime from;
   final DateTime to;
+  final String typedate;
   final Color backgroundColor;
   final bool isAllDay;
   final String? fkIdClient;
@@ -23,6 +24,7 @@ class EventModel {
     required this.description,
     required this.from,
     required this.to,
+    required this.typedate,
     this.backgroundColor = Colors.red,
     this.isAllDay = false,
     this.idClientsDate,
@@ -62,7 +64,7 @@ class EventModel {
       isDone: isDone ?? this.isDone,
       idClientsDate: idClientsDate ?? this.idClientsDate,
       agentName: agentName ?? this.agentName,
-      agent: agent ?? this.agent,
+      agent: agent ?? this.agent, typedate: this.typedate,
     );
   }
 
@@ -75,6 +77,7 @@ class EventModel {
           description == other.description &&
           from == other.from &&
           to == other.to &&
+          typedate == other.typedate &&
           backgroundColor == other.backgroundColor &&
           isAllDay == other.isAllDay &&
           fkIdClient == other.fkIdClient &&
@@ -90,6 +93,7 @@ class EventModel {
       description.hashCode ^
       from.hashCode ^
       to.hashCode ^
+      typedate.hashCode ^
       backgroundColor.hashCode ^
       isAllDay.hashCode ^
       fkIdClient.hashCode ^

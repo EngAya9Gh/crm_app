@@ -55,6 +55,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   final supportFormKey = GlobalKey<FormState>();
   final TextEditingController supportDateController = TextEditingController();
   final TextEditingController supportTimeController = TextEditingController();
+  final TextEditingController supportTimeEndController = TextEditingController();
 
   List<ClientModel> _agentClientsList = [];
   List<ProfileInvoiceModel> _agentInvoicesList = [];
@@ -270,11 +271,12 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     );
   }
 
-  DateTime handleVisitTime() {
+  DateTime handleVisitTime(String selecttime) {
     final date = DateTime.parse(supportDateController.text);
-    final selectedTime = supportTimeController.text.split(':');
+    final selectedTime = selecttime.toString().split(':');
     final time = TimeOfDay(
         hour: int.parse(selectedTime[0]), minute: int.parse(selectedTime[1]));
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
   }
+
 }

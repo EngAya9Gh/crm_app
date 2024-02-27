@@ -19,8 +19,11 @@ class AgentMobileWidget extends StatelessWidget {
         ),
         SizedBox(height: 15),
         TextFormField(
+
           controller: cubit.phoneNumberController,
           decoration: InputDecoration(hintText: ''),
+
+
           onSaved: (phone) {
             if (phone != null) {
               cubit.onSavePhoneNumber(phone);

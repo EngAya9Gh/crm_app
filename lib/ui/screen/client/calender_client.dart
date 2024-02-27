@@ -350,7 +350,7 @@ class _calender_clientState extends State<calender_client> {
                                       description: 'description',
                                       from: temp,
                                       to: temp.add(Duration(hours: 2)),
-                                      idinvoice: null);
+                                      idinvoice: null, typedate: '');
 
                                   Provider.of<EventProvider>(context,
                                       listen: false)

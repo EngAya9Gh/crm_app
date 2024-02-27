@@ -20,6 +20,10 @@ class ReScheduleDialog extends StatefulWidget {
   final String idClientsDate;
   final String idinvoice;
   final String idClient;
+  final DateTime time_from;
+  final DateTime time_to;
+  final DateTime datecurrent;
+  final String typedate;
 
   final EventModel event;
   ReScheduleDialog(
@@ -27,7 +31,7 @@ class ReScheduleDialog extends StatefulWidget {
       required this.event,
       required this.idClientsDate,
       required this.idinvoice,
-      required this.idClient})
+      required this.idClient, required this.time_from, required this.time_to, required this.datecurrent, required this.typedate})
       : super(key: key);
 
   @override
@@ -40,10 +44,12 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   late EventProvider _eventProvider;
   TimeOfDay selectedTime = TimeOfDay(hour: -1, minute: 00);
   late DateTime _currentDate = DateTime(1, 1, 1);
+  TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
 
   late String _hour, _minute, _time;
   TextEditingController _timeController = TextEditingController();
   late TimeOfDay timinit;
+  late TimeOfDay timinit2;
   List<DateInstallationClient> datesInstallation = [];
   List<String> listInstallationType = [
     'ميداني',
@@ -95,12 +101,33 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedTime);
   }
+  Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: stime,
+    );
+    if (picked != null)
+      setState(() {
+        endTime = picked;
+        _hour = endTime.hour.toString();
+        _minute = endTime.minute.toString();
+        _time = _hour + ' : ' + _minute;
+
+      });
+    Provider.of<datetime_vm>(context, listen: false)
+        .setdatetimevalueEnd(_currentDate, endTime);
+  }
 
   clear() {
-    _currentDate = DateTime(1, 1, 1);
+
+
     selectedTime = TimeOfDay(hour: -1, minute: 00);
+    endTime = TimeOfDay(hour: -1, minute: 00);
+
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
+    Provider.of<datetime_vm>(context, listen: false)
+        .setdatetimevalueEnd(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
     selectInstallationType = null;
     valueInstallationType = null;
     // setState(() {
@@ -108,15 +135,27 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   }
 
   void initState() {
-    timinit = TimeOfDay.now();
+    selectInstallationType = null;
+    _currentDate=widget.datecurrent;
+    selectedTime=TimeOfDay.fromDateTime(widget.time_from);
+        endTime=TimeOfDay.fromDateTime(widget.time_to);
+    timinit = TimeOfDay.fromDateTime(widget.time_from);
+    timinit2 = TimeOfDay.fromDateTime(widget.time_to);
     _eventProvider = context.read<EventProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
+          .setdatetimevalue(_currentDate, selectedTime);
+         Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalueEnd(_currentDate, endTime);
+
+
+    });
+    setState(() {
+      valueInstallationType=widget.typedate.toString();
+
     });
 
-    selectInstallationType = null;
     super.initState();
   }
 
@@ -239,6 +278,58 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                           ),
                         ],
                       ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: TextFormField(
+                              validator: (value) {
+                                if (endTime ==
+                                    TimeOfDay(hour: -1, minute: 00)) {
+                                  return 'يرجى تعيين الوقت ';
+                                }
+                              },
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.date_range,
+                                  color: kMainColor,
+                                ),
+                                hintStyle: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                hintText:
+                                    Provider.of<datetime_vm>(context,
+                                        listen: true)
+                                        .selectedEndTime ==
+                                        TimeOfDay(hour: -1, minute: 00)
+                                    ? 'نهاية الزيارة ' //_currentDate.toString()
+                                    : Provider.of<datetime_vm>(context,
+                                    listen: true)
+                                    .selectedEndTime
+                                    .minute
+                                    .toString() +
+                                    ' : ' +
+                                    Provider.of<datetime_vm>(context,
+                                        listen: true)
+                                        .selectedEndTime
+                                        .hour
+                                        .toInt()
+                                        .toString(),
+                                //_invoice!.dateinstall_task.toString(),
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                              ),
+                              // / controller: _timeController,
+                              readOnly: true,
+                              onTap: () {
+                                refresh(() {
+                                  _selectEndTime (context, timinit2 );
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: 10),
                       RowEdit(name: "نوع التركيب", des: '*'),
                       DropdownButton<String>(
@@ -276,7 +367,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         controller: descresaonController,
                       ),
                       SizedBox(height: 10),
-                      Consumer<invoice_vm>(builder: (context, val, _) {
+                      Consumer<EventProvider>(builder: (context, val, _) {
                         if (val.isloadingRescheduleOrCancel)
                           return Center(child: CircularProgressIndicator());
                         else
@@ -291,12 +382,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                             Text('من فضلك اختر نوع التركيب ')));
                                 return;
                               }
-                              DateTime datetask = DateTime(
-                                  _currentDate.year,
-                                  _currentDate.month,
-                                  _currentDate.day,
-                                  selectedTime.hour,
-                                  selectedTime.minute);
+
                               if (_globalKey.currentState!.validate()) {
                                 // Navigator.of(context, rootNavigator: true).pop(false);
                                 _globalKey.currentState!.save();
@@ -309,18 +395,27 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     _currentDate.day,
                                     selectedTime.hour,
                                     selectedTime.minute);
+                                DateTime date_end = DateTime(
+                                    _currentDate.year,
+                                    _currentDate.month,
+                                    _currentDate.day,
+                                    endTime.hour,
+                                    endTime.minute);
 
                                 final idUser = Provider.of<UserProvider>(
                                         context,
                                         listen: false)
                                     .currentUser
                                     .idUser;
-                                Provider.of<invoice_vm>(context, listen: false)
+                                Provider.of<EventProvider>(context, listen: false)
                                     .editSchedule_vm(
                                   scheduleId: widget.idClientsDate,
-                                  dateClientVisit: datetask.toString(),
+                                  dateClientVisit: datetask ,
+                                  date_end: date_end ,
+                                   event:  widget.event,
                                   typeDate: valueInstallationType!,
                                   processReason: descresaonController.text,
+                                   onFailure: (void value) {  },
                                   onSuccess: (value) {
                                     DateTime temp = datetask.hour >= 21
                                         ? datetask.subtract(Duration(hours: 3))
@@ -328,8 +423,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     _eventProvider.editEvent(
                                         widget.event.copyWith(
                                           isDone: "3",
-                                          // from: temp,
-                                          // to: temp.add(Duration(hours: 2))
+                                          from: datetask,
+                                          to: date_end
                                         ),
                                         widget.event);
                                   },

@@ -1398,6 +1398,7 @@ class invoice_vm extends ChangeNotifier {
   Future<void> setdate_vm({
     required String id_invoice,
     required String date_client_visit,
+    required String date_end,
     required String fk_user,
     required String fk_client,
     required String type_date,
@@ -1413,6 +1414,7 @@ class invoice_vm extends ChangeNotifier {
     final data = await Invoice_Service().addDateInstall(
       id_invoice: id_invoice,
       date_client_visit: date_client_visit,
+      date_end: date_end,
       fk_user: fk_user,
       fk_client: fk_client,
       type_date: type_date,
@@ -1435,6 +1437,7 @@ class invoice_vm extends ChangeNotifier {
   Future<void> editSchedule_vm({
     required String scheduleId,
     required String dateClientVisit,
+    required String date_end,
     required String processReason,
     required String typeDate,
     required ValueChanged<String> onSuccess,
@@ -1445,6 +1448,7 @@ class invoice_vm extends ChangeNotifier {
     final data = await Invoice_Service().editScheduleInstallation(
         scheduleId: scheduleId,
         dateClientVisit: dateClientVisit,
+        date_end: date_end,
         typeSchedule: typeDate,
         processReason: processReason);
 

@@ -9,6 +9,7 @@ import '../../../../model/agent_distributor_model.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../pages/agent_distributor_profile_page.dart';
 import '../pages/agents_distributors_actions_page.dart';
+import 'package:intl/intl.dart' as intl;
 
 class AgentCard extends StatelessWidget {
   const AgentCard({
@@ -73,15 +74,34 @@ class AgentCard extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                     ),
-                    child: Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Center(
-                        child: Text(
-                          agentModel.nameAgent,
-                          style:
-                              TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                          children: [
+                            Expanded(
+                              child: Text(
+                                agentModel.nameAgent,
+                                style:
+                                TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                              ),
+                            ),
+                            Text(
+                              agentModel.addDate!=null?
+                              DateTime.tryParse(agentModel.addDate.toString() ) != null
+                                  ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(agentModel.addDate!))
+                                  : agentModel.addDate.toString():'',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                              textDirection: TextDirection.ltr,
+                            ),
+                          ],
                         ),
-                      ),
+
+                      ],
+
                     ),
                   ),
                 ),

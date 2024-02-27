@@ -6,6 +6,7 @@ import '../../../../core/common/enums/enums.dart';
 
 class AgentDistributorActionEntity extends Equatable {
   final String? name;
+  final String? currentUser;
   final ADType? type;
   final String? countryId;
   final String? cityId;
@@ -16,6 +17,7 @@ class AgentDistributorActionEntity extends Equatable {
 
   AgentDistributorActionEntity({
     this.name,
+    this.currentUser,
     this.type,
     this.countryId,
     this.cityId,
@@ -29,6 +31,7 @@ class AgentDistributorActionEntity extends Equatable {
     String? name,
     ADType? type,
     String? countryId,
+    String? currentUser,
     String? cityId,
     String? email,
     String? phoneNumber,
@@ -37,6 +40,7 @@ class AgentDistributorActionEntity extends Equatable {
   }) {
     return AgentDistributorActionEntity(
       name: name ?? this.name,
+      currentUser: currentUser ?? this.currentUser,
       type: type ?? this.type,
       countryId: countryId ?? this.countryId,
       cityId: cityId ?? this.cityId,
@@ -49,6 +53,7 @@ class AgentDistributorActionEntity extends Equatable {
 
   Map<String, dynamic> toMap() => {
         'name_agent': name,
+        'currentUser': currentUser,
         'type_agent': type?.index.toString(),
         'fk_country': countryId,
         'cityId': cityId,
@@ -87,6 +92,7 @@ class AgentDistributorActionEntity extends Equatable {
   @override
   List<Object?> get props => [
         name,
+    currentUser,
         type,
         countryId,
         cityId,

@@ -12,6 +12,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
+import 'package:intl/intl.dart' as intl;
+
 
 class ParticipateCard extends StatefulWidget {
   final ParticipateModel participate;
@@ -74,14 +76,31 @@ class _ParticipateCardState extends State<ParticipateCard> {
           ),
     
           //color: kMainColor,
-          child: Padding(
-            padding: EdgeInsets.all(4),
-            child: Center(
-              child: Text(
-                widget.participate.name_participate,
-                style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                children: [
+                  Expanded(
+                    child: Text(
+                      widget.participate.name_participate,
+                      style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                    ),
+                  ),
+                  Text(
+                    widget.participate.addDate!=null?
+                    DateTime.tryParse(  widget.participate.addDate.toString() ) != null
+                        ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(  widget.participate.addDate!))
+                        :   widget.participate.addDate.toString():'',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                    textDirection: TextDirection.ltr,
+                  ),
+                ],
               ),
-            ),
+            ],
           ),
         ),
       ),

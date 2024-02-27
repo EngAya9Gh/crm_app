@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../ui/screen/support/support_table.dart';
 import '../../../../../ui/widgets/custom_widget/RowWidget.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
@@ -43,17 +45,40 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                 SizedBox(height: 10),
                 AddDateButton(agentId: widget.agentId),
                 SizedBox(height: 20),
-                cardRow(
-                  title: 'عدد الزيارات التي تمت',
-                  value: bloc.finishedVisits.length.toString(),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context,
+                        CupertinoPageRoute(
+                            builder: (context) => support_table()));
+
+                  },
+                  child: cardRow(
+                    title: 'عدد الزيارات التي تمت',
+                    value: bloc.finishedVisits.length.toString(),
+                  ),
                 ),
-                cardRow(
-                  title: 'عدد الزيارات المتبقية',
-                  value: bloc.unfinishedVisits.length.toString(),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context,
+                        CupertinoPageRoute(
+                            builder: (context) => support_table()));
+
+                  },
+                  child: cardRow(
+                    title: 'عدد الزيارات المتبقية',
+                    value: bloc.unfinishedVisits.length.toString(),
+                  ),
                 ),
-                cardRow(
-                  title: 'عدد الزيارات الملغية',
-                  value: bloc.canceledVisits.length.toString(),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(context,
+                        CupertinoPageRoute(
+                            builder: (context) => support_table()));
+
+                  },                  child: cardRow(
+                    title: 'عدد الزيارات الملغية',
+                    value: bloc.canceledVisits.length.toString(),
+                  ),
                 ),
               ],
             ),

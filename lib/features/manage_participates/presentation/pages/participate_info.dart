@@ -1,7 +1,11 @@
 import 'package:crm_smart/core/common/widgets/text_row.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../constants.dart';
 import '../../../../ui/widgets/custom_widget/RowWidget.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_state.dart';
@@ -32,12 +36,48 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
         ),
         child: state.currentPaticipate != null
             ? Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+            children: [
+              Container(
+                height: 30,
+                width: 30,
+                //color: kMainColor,
+                decoration: BoxDecoration(
+                    color: kMainColor,
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(10))),
+                child: IconButton(
+                  onPressed: () async {
+                    await FlutterPhoneDirectCaller.callNumber(
+                        state.currentPaticipate!.mobile_participate.toString());
+                  },
+                  icon: Icon(Icons.call),
+                  iconSize: 15,
+                  color: kWhiteColor,
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  await FlutterPhoneDirectCaller.callNumber(
+                      state.currentPaticipate!.mobile_participate.toString());
+                },
+                child: Text(
+                  state.currentPaticipate!.mobile_participate.toString(),
+                  style: TextStyle(
+                      fontFamily: kfontfamily2, color: kMainColor),
+                ),
+              ),
+            ],
+          ),
+          10.verticalSpace,
           cardRow(
                     title: "الاسم",
                     value: state.currentPaticipate!.name_participate),
-          cardRow(
-                    title: "رقم الهاتف",
-                    value: state.currentPaticipate!.mobile_participate),
+          // cardRow(
+          //           title: "رقم الهاتف",
+          //           value: state.currentPaticipate!.mobile_participate),
           cardRow(
                     title: "اسم البنك",
                     value: state.currentPaticipate!.namebank_participate),
