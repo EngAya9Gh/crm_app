@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../core/di/di_container.dart';
-import '../../domain/use_cases/get_agent_byid_usecase.dart';
 import '../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 import 'profile_tabs/agent_client_list_page.dart';
@@ -67,7 +66,6 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
       final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
       bloc
 
-
         // ..add(GetAgentEvent(
         //   query: '',
         //   getAgentParams:
@@ -84,12 +82,9 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
               GetAgentInvoiceListParams(agentId: widget.agent.idAgent),
         ))
         ..add(GetAgentCommentListEvent(
-          getAgentCommentListParams: GetAgentCommentListParams(
-            agentId: widget.agent.idAgent,
-          )
-        )
-
-        );
+            getAgentCommentListParams: GetAgentCommentListParams(
+          agentId: widget.agent.idAgent,
+        )));
     });
     _navigateToIndexIfExists();
   }
@@ -152,11 +147,7 @@ class _AgentProfilePageBodyState extends State<AgentProfilePageBody>
               AgentClientListPage(agentId: widget.agent.idAgent),
               AgentInvoiceListPage(participateId: widget.agent.idAgent),
               AgentCommentListPage(agentId: widget.agent.idAgent),
-              AgentSupportPage(
-                  agent:widget.agent,
-                  agentId: widget.agent.idAgent
-
-              ),
+              AgentSupportPage(agent: widget.agent),
             ],
           );
         },

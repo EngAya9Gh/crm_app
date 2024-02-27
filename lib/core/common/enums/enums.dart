@@ -29,3 +29,16 @@ extension InstallationTypeExtension on InstallationTypeEnum {
 }
 
 enum VisitsStatusEnum { unfinished, finished, canceled, scheduled }
+
+enum YesNoEnum { yes, no }
+
+extension YesNoEnumExtension on YesNoEnum {
+  String get name {
+    switch (this) {
+      case YesNoEnum.yes:
+        return 'نعم';
+      case YesNoEnum.no:
+        return 'لا';
+    }
+  }
+}

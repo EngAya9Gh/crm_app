@@ -64,11 +64,12 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   final supportFormKey = GlobalKey<FormState>();
   final TextEditingController supportDateController = TextEditingController();
   final TextEditingController supportTimeController = TextEditingController();
-  final TextEditingController supportTimeEndController = TextEditingController();
+  final TextEditingController supportTimeEndController =
+      TextEditingController();
 
   List<ClientModel> _agentClientsList = [];
   List<ProfileInvoiceModel> _agentInvoicesList = [];
-  late AgentDistributorModel agentcurrent;
+
   void _onGetAgentClientListEvent(GetAgentClientListEvent event,
       Emitter<AgentsDistributorsProfileState> emit) async {
     emit(state.copyWith(
@@ -92,13 +93,15 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
       },
     );
   }
-  void _onGetAgentEvent(GetAgentEvent event,
-      Emitter<AgentsDistributorsProfileState> emit) async {
+
+  void _onGetAgentEvent(
+      GetAgentEvent event, Emitter<AgentsDistributorsProfileState> emit) async {
+    // todo: remove this >> un used method
+    return;
     // emit(state.copyWith(
     //   clientsStatus: StateStatus.loading,
     // ));
-    final result =
-        await _getAgentUsecase.call(event.getAgentParams);
+    final result = await _getAgentUsecase.call(event.getAgentParams);
     result.fold(
       (error) {
         emit(state.copyWith(
@@ -107,10 +110,8 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         ));
       },
       (data) {
-        emit(state.copyWith(
-          clientsStatus: StateStatus.success,
-            agentcurrent: data
-        ));
+        // emit(state.copyWith(
+        //     clientsStatus: StateStatus.success, agentcurrent: data));
       },
     );
   }
@@ -125,7 +126,8 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
   List<ClientModel> _filterClientList(String query) {
     return _agentClientsList
-        .where((element) => element.nameEnterprise!.toLowerCase().contains(query))
+        .where(
+            (element) => element.nameEnterprise!.toLowerCase().contains(query))
         .toList();
   }
 
@@ -164,7 +166,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   List<ProfileInvoiceModel> _filterInvoiceList(String query) {
     return _agentInvoicesList.where((element) {
       return element.idInvoice!.toString().contains(query) ||
-          element.nameEnterprise!.toLowerCase().contains(query) ;
+          element.nameEnterprise!.toLowerCase().contains(query);
       // ||
       //     element.nameClient!.toLowerCase().contains(query);
     }).toList();
@@ -223,7 +225,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     ));
 
     final result =
-    await _addAgentCommentUsecase.call(event.addAgentCommentParams);
+        await _addAgentCommentUsecase.call(event.addAgentCommentParams);
 
     result.fold(
       (error) {
@@ -240,28 +242,27 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
       },
     );
   }
+
   void _onDoneTrainingEvent(DoneAgentEvent event,
       Emitter<AgentsDistributorsProfileState> emit) async {
     emit(state.copyWith(
-      addedCommentStatus: StateStatus.loading,
+      doneTrainingStatus: StateStatus.loading,
     ));
 
-    final result =
-    await _doneTrainingUsecase.call(event.DoneParams);
+    final result = await _doneTrainingUsecase.call(event.DoneParams);
 
     result.fold(
       (error) {
         emit(state.copyWith(
-          addedCommentStatus: StateStatus.failure,
-          addedCommentError: error,
+          doneTrainingStatus: StateStatus.failure,
+          doneTrainingError: error,
         ));
       },
       (data) {
         emit(state.copyWith(
-          addedCommentStatus: StateStatus.success,
-          agentcurrent: data
+          doneTrainingStatus: StateStatus.success,
         ));
-        event.onSuccess?.call(agentcurrent);
+        event.onSuccess?.call(data);
       },
     );
   }
@@ -334,5 +335,4 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         hour: int.parse(selectedTime[0]), minute: int.parse(selectedTime[1]));
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
   }
-
 }

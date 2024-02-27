@@ -13,6 +13,7 @@ abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, List<ClientModel>>> getAgentClientsList({
     required String agentId,
   });
+
   Future<Either<String, AgentDistributorModel>> getAgent({
     required String agentId,
   });
@@ -29,7 +30,8 @@ abstract class AgentsDistributorsProfileDataSource {
     required String agentId,
     required String content,
   });
-  Future<Either<String, AgentDistributorModel>>doneTraining({
+
+  Future<Either<String, AgentDistributorModel>> doneTraining({
     required String agentId,
     required String fkuser,
   });
@@ -178,15 +180,18 @@ class AgentsDistributorsProfileDataSourceImpl
   }
 
   @override
-  Future<Either<String, AgentDistributorModel>> getAgent({required String agentId}) async {
-    // TODO: implement getAgent
+  Future<Either<String, AgentDistributorModel>> getAgent({
+    required String agentId,
+  }) async {
     try {
       dio.changeBaseUrl(EndPoints.baseUrl);
-      final response = await dio.get(endPoint: "agent/get_agent_byId.php?agentId=$agentId");
+      final response =
+          await dio.get(endPoint: "agent/get_agent_byId.php?agentId=$agentId");
 
       final data = response['data'];
 
-      final AgentDistributorModel agent = AgentDistributorModel.fromJson(data[0]);
+      final AgentDistributorModel agent =
+          AgentDistributorModel.fromJson(data[0]);
 
       return Right(agent);
     } catch (e) {
@@ -196,21 +201,24 @@ class AgentsDistributorsProfileDataSourceImpl
   }
 
   @override
-  Future<Either<String, AgentDistributorModel>> doneTraining({required String agentId, required String fkuser}) async {
-    try{
+  Future<Either<String, AgentDistributorModel>> doneTraining(
+      {required String agentId, required String fkuser}) async {
+    try {
       dio.changeBaseUrl(EndPoints.baseUrl);
-      final response = await dio.post(endPoint: "agent/done_training.php?id_agent=$agentId", data: {
-        // "agent_id": agentId,
+      final response = await dio
+          .post(endPoint: "agent/done_training.php?id_agent=$agentId", data: {
         "fkuser_training": fkuser,
       });
 
-      final data = response['data'];
-      final AgentDistributorModel agent = AgentDistributorModel.fromJson(data);
+      final List data = response['message'];
+      // todo : ask backend to convert the response from List<Map> to Map
+      final AgentDistributorModel agent =
+          AgentDistributorModel.fromJson(data.first);
+
       return Right(agent);
     } catch (e) {
       print("Error in done training: $e");
       return Left("Error in training: $e");
     }
-    }
-
+  }
 }

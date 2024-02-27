@@ -65,7 +65,7 @@ class AgentDistributorModel {
   String? nameUserAdd;
   String? nameUserUpdate;
   String? fkuser_training;
-  String? is_training;
+  bool? is_training;
   String? date_training;
   String? nameusertraining;
 
@@ -118,7 +118,7 @@ class AgentDistributorModel {
       nameUserUpdate: json['nameUserUpdate'],
       nameCity: json['name_city'],
       fkuser_training: json['fkuser_training'],
-      is_training: json['is_training'],
+      is_training: json['is_training'].toString() == "1",
       date_training: json['date_training'],
       nameusertraining: json['nameusertraining'],
     );
@@ -141,13 +141,13 @@ class AgentDistributorModel {
         "nameUserAdd": nameUserAdd,
         "nameUserUpdate": nameUserUpdate,
         "fkuser_training": fkuser_training,
-        "is_training": is_training,
+        "is_training": is_training == true ? "1" : "0",
         "date_training": date_training,
         "nameusertraining": nameusertraining,
       };
 
   @override
   String toString() {
-    return 'AgentDistributorModel{idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailEgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry,cityId: $cityId, description: $description, imageAgent: $imageAgent, cityName: $nameCity, addDate: $addDate, updateDate: $updateDate, fkUserAdd: $fkUserAdd, fkUserUpdate: $fkUserUpdate, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate}';
+    return 'AgentDistributorModel{idAgent: $idAgent, nameAgent: $nameAgent, typeAgent: $typeAgent, emailEgent: $emailAgent, mobileAgent: $mobileAgent, fkCountry: $fkCountry,cityId: $cityId, description: $description, imageAgent: $imageAgent, cityName: $nameCity, addDate: $addDate, updateDate: $updateDate, fkUserAdd: $fkUserAdd, fkUserUpdate: $fkUserUpdate, nameUserAdd: $nameUserAdd, nameUserUpdate: $nameUserUpdate, fkuser_training: $fkuser_training, is_training: $is_training, date_training: $date_training, nameusertraining: $nameusertraining}';
   }
 }
