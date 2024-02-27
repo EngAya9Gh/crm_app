@@ -1,8 +1,17 @@
-enum CommmentType {supportService, clientVisit, clientRequirements ,evaluateResult,generalNote}
+enum CommmentType {
+  all,
+  supportService,
+  clientVisit,
+  clientRequirements,
+  evaluateResult,
+  generalNote,
+}
 
 extension CommmentTypeExt on CommmentType {
   String get value {
     switch (this) {
+      case CommmentType.all:
+        return 'الكل';
       case CommmentType.supportService:
         return 'خدمة دعم';
       case CommmentType.clientVisit:

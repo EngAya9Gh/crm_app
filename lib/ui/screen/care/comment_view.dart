@@ -123,6 +123,8 @@ class _commentViewState extends State<commentView> {
                                           decoration: InputDecoration(
                                               labelText: 'نوع التعليق'),
                                           items: CommmentType.values
+                                              .where((element) =>
+                                                  element != CommmentType.all)
                                               .map((activitySize) {
                                             return DropdownMenuItem(
                                               child: Text(activitySize.value),
@@ -176,34 +178,6 @@ class _commentViewState extends State<commentView> {
                                 },
                                 child: Text(_selectedCommentType?.value ??
                                     'نوع التعليق'),
-                                // DropdownButtonFormField<CommmentType>(
-                                //   decoration: InputDecoration(labelText: 'نوع التعليق'
-                                //       //  enabledBorder: OutlineInputBorder(
-                                //       //      borderRadius: BorderRadius.circular(12),
-                                //       //      borderSide: BorderSide(width: 2, color: Colors.grey))
-                                //       ),
-                                //   items: CommmentType.values.map((activitySize) {
-                                //     return DropdownMenuItem(
-                                //       child: Text(activitySize.value),
-                                //       value: activitySize,
-                                //     );
-                                //   }).toList(),
-                                //   value: _selectedCommmentType,
-                                //   onChanged: (value) {
-                                //     if (value == null) {
-                                //       return;
-                                //     }
-                                //     _selectedCommmentType = value;
-                                //     setState(() {});
-                                //   },
-                                //   validator: (selectedCommmentType) {
-                                //     if (selectedCommmentType?.value.trim().isEmpty ??
-                                //         true) {
-                                //       return "هذا الحقل مطلوب";
-                                //     }
-                                //     return null;
-                                //   },
-                                // ),
                               ),
                               Consumer<comment_vm>(
                                 builder: (context, value, child) {

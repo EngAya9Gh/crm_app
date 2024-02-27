@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 import '../constants.dart';
+import '../core/common/enums/comment_type.dart';
 
 class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];
@@ -36,6 +37,11 @@ class comment_vm extends ChangeNotifier {
   }
 
   void filterCommentsByType(String type) {
+    if (type == CommmentType.all.value) {
+      filteredComments = _allCommentsList;
+      notifyListeners();
+      return;
+    }
     filteredComments = _allCommentsList
         .where((element) => element.type_comment == type)
         .toList();
@@ -57,6 +63,7 @@ class comment_vm extends ChangeNotifier {
               DateTime.now().toString(), //formatter.format(DateTime.now())
         });
         //listComments=[];
+        _allCommentsList.insert(0, CommentModel.fromJson(body));
         filteredComments.insert(0, CommentModel.fromJson(body));
         final index =
             filteredComments.indexWhere((element) => element.idComment == res);
