@@ -36,7 +36,7 @@ class _commentViewState extends State<commentView> {
   TextEditingController _comment = TextEditingController();
   CommmentType? _previousSelectedCommentType;
   CommmentType? _selectedCommentType;
-  CommmentType? _filterCommentType;
+  CommmentType? _filterCommentType = CommmentType.all;
 
   // late String fk_client;
   // String? nameEnterprise;
