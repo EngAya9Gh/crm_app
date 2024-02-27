@@ -46,7 +46,7 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
         final AgentDistributorModel trainer = bloc.traineeAgent!;
         return Column(
           children: [
-            if (trainer.nameusertraining != true)
+            if (trainer.nameusertraining != null)
               cardRow(
                   title: "موظف التدريب",
                   value: trainer.nameusertraining.toString()),
