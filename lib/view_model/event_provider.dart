@@ -21,10 +21,6 @@ class EventProvider extends ChangeNotifier {
   LinkedHashMap<DateTime, List<EventModel>> eventDataSource = LinkedHashMap();
   DateTime _selectDate = DateTime.now();
 
-  DateTime get selectDate => _selectDate;
-
-  void setDate(DateTime date) => _selectDate = date;
-
   List<String>? selectedMainCityFks;
   String? selectedFkUser;
   late String fkCountry;
@@ -123,6 +119,7 @@ class EventProvider extends ChangeNotifier {
       return;
     }
   }
+
   Future<void> editSchedule_vm({
     required String scheduleId,
     required DateTime dateClientVisit,
@@ -130,7 +127,6 @@ class EventProvider extends ChangeNotifier {
     required String processReason,
     required String typeDate,
     required EventModel event,
-
     required ValueChanged<String> onSuccess,
     required ValueChanged<void> onFailure,
   }) async {
@@ -149,14 +145,13 @@ class EventProvider extends ChangeNotifier {
       onFailure;
       return;
     }
-    list[index] = list[index].copyWith(
-        from: dateClientVisit,
-        to:date_end );
+    list[index] = list[index].copyWith(from: dateClientVisit, to: date_end);
     eventDataSource[event.from] = list;
     onSuccess.call(data);
     isloadingRescheduleOrCancel = false;
     notifyListeners();
   }
+
   onChangeFkUser(String idUser) {
     if (idUser.isEmpty) {
       selectedFkUser = null;
@@ -204,8 +199,9 @@ class EventProvider extends ChangeNotifier {
               title: element.nameEnterprise.toString(),
               description: 'description',
               from: temp,
-              to:  temp.add(Duration(hours: 2)),
-              idinvoice: null, typedate: '');
+              to: temp.add(Duration(hours: 2)),
+              idinvoice: null,
+              typedate: '');
           addEvents(event);
         }
       }
@@ -246,7 +242,8 @@ class EventProvider extends ChangeNotifier {
             description: 'description',
             from: temp,
             to: temp.add(Duration(hours: 2)),
-            idinvoice: null, typedate: '');
+            idinvoice: null,
+            typedate: '');
         addEvents(event);
       }
     });
@@ -290,6 +287,7 @@ class EventProvider extends ChangeNotifier {
       equals: isSameDay,
       hashCode: getHashCode,
     )..addAll(mapEvents);
+
     notifyListeners();
   }
 

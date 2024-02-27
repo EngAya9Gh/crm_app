@@ -26,13 +26,18 @@ class ReScheduleDialog extends StatefulWidget {
   final String typedate;
 
   final EventModel event;
-  ReScheduleDialog(
-      {Key? key,
-      required this.event,
-      required this.idClientsDate,
-      required this.idinvoice,
-      required this.idClient, required this.time_from, required this.time_to, required this.datecurrent, required this.typedate})
-      : super(key: key);
+
+  ReScheduleDialog({
+    Key? key,
+    required this.event,
+    required this.idClientsDate,
+    required this.idinvoice,
+    required this.idClient,
+    required this.time_from,
+    required this.time_to,
+    required this.datecurrent,
+    required this.typedate,
+  }) : super(key: key);
 
   @override
   State<ReScheduleDialog> createState() => _ReScheduleDialogState();
@@ -56,9 +61,9 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     'اونلاين',
   ];
   late String? selectInstallationType;
-  String? valueInstallationType = null;
 
   bool isInit = true;
+
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -101,6 +106,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedTime);
   }
+
   Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -112,33 +118,30 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
         _hour = endTime.hour.toString();
         _minute = endTime.minute.toString();
         _time = _hour + ' : ' + _minute;
-
       });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalueEnd(_currentDate, endTime);
   }
 
   clear() {
-
-
     selectedTime = TimeOfDay(hour: -1, minute: 00);
     endTime = TimeOfDay(hour: -1, minute: 00);
 
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalueEnd(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
+    Provider.of<datetime_vm>(context, listen: false).setdatetimevalueEnd(
+        DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
     selectInstallationType = null;
-    valueInstallationType = null;
+    selectInstallationType = null;
     // setState(() {
     //  });
   }
 
   void initState() {
     selectInstallationType = null;
-    _currentDate=widget.datecurrent;
-    selectedTime=TimeOfDay.fromDateTime(widget.time_from);
-        endTime=TimeOfDay.fromDateTime(widget.time_to);
+    _currentDate = widget.datecurrent;
+    selectedTime = TimeOfDay.fromDateTime(widget.time_from);
+    endTime = TimeOfDay.fromDateTime(widget.time_to);
     timinit = TimeOfDay.fromDateTime(widget.time_from);
     timinit2 = TimeOfDay.fromDateTime(widget.time_to);
     _eventProvider = context.read<EventProvider>();
@@ -146,14 +149,11 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false)
           .setdatetimevalue(_currentDate, selectedTime);
-         Provider.of<datetime_vm>(context, listen: false)
+      Provider.of<datetime_vm>(context, listen: false)
           .setdatetimevalueEnd(_currentDate, endTime);
-
-
     });
     setState(() {
-      valueInstallationType=widget.typedate.toString();
-
+      selectInstallationType = widget.typedate;
     });
 
     super.initState();
@@ -297,24 +297,23 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     color: Colors.black45,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
-                                hintText:
-                                    Provider.of<datetime_vm>(context,
-                                        listen: true)
-                                        .selectedEndTime ==
+                                hintText: Provider.of<datetime_vm>(context,
+                                                listen: true)
+                                            .selectedEndTime ==
                                         TimeOfDay(hour: -1, minute: 00)
                                     ? 'نهاية الزيارة ' //_currentDate.toString()
                                     : Provider.of<datetime_vm>(context,
-                                    listen: true)
-                                    .selectedEndTime
-                                    .minute
-                                    .toString() +
-                                    ' : ' +
-                                    Provider.of<datetime_vm>(context,
-                                        listen: true)
-                                        .selectedEndTime
-                                        .hour
-                                        .toInt()
-                                        .toString(),
+                                                listen: true)
+                                            .selectedEndTime
+                                            .minute
+                                            .toString() +
+                                        ' : ' +
+                                        Provider.of<datetime_vm>(context,
+                                                listen: true)
+                                            .selectedEndTime
+                                            .hour
+                                            .toInt()
+                                            .toString(),
                                 //_invoice!.dateinstall_task.toString(),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
@@ -323,7 +322,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectEndTime (context, timinit2 );
+                                  _selectEndTime(context, timinit2);
                                 });
                               },
                             ),
@@ -346,11 +345,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                             : selectInstallationType,
                         onChanged: (value) {
                           setState(() {
-                            selectInstallationType = value.toString();
-                            valueInstallationType = value.toString();
+                            selectInstallationType = value;
                           });
-                          Provider.of<datetime_vm>(context, listen: false)
-                              .notifyListeners();
                         },
                       ),
                       SizedBox(height: 10),
@@ -374,8 +370,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                           return CustomButton(
                             text: "حفظ",
                             onTap: () async {
-                              if (valueInstallationType == null ||
-                                  valueInstallationType!.isEmpty) {
+                              if (selectInstallationType == null ||
+                                  selectInstallationType!.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content:
@@ -407,51 +403,39 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                         listen: false)
                                     .currentUser
                                     .idUser;
-                                Provider.of<EventProvider>(context, listen: false)
+                                final EventModel editedEvent =
+                                    widget.event.copyWith(
+                                  isDone: "3",
+                                  from: datetask,
+                                  to: date_end,
+                                  typedate: selectInstallationType,
+                                );
+                                await Provider.of<EventProvider>(context,
+                                        listen: false)
                                     .editSchedule_vm(
                                   scheduleId: widget.idClientsDate,
-                                  dateClientVisit: datetask ,
-                                  date_end: date_end ,
-                                   event:  widget.event,
-                                  typeDate: valueInstallationType!,
+                                  dateClientVisit: datetask,
+                                  date_end: date_end,
+                                  event: widget.event,
+                                  typeDate: selectInstallationType!,
                                   processReason: descresaonController.text,
-                                   onFailure: (void value) {  },
+                                  onFailure: (void value) {},
                                   onSuccess: (value) {
-                                    DateTime temp = datetask.hour >= 21
-                                        ? datetask.subtract(Duration(hours: 3))
-                                        : datetask;
                                     _eventProvider.editEvent(
-                                        widget.event.copyWith(
-                                          isDone: "3",
-                                          from: datetask,
-                                          to: date_end
-                                        ),
-                                        widget.event);
+                                      editedEvent,
+                                      widget.event,
+                                    );
                                   },
-                                )
-                                    .then((value) {
-                                  //  Navigator.of(context, rootNavigator: true).pop(false);
-                                  Navigator.pop(context, true);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              "تمت عملية إعادة الجدولة الزيارة  ",
-                                              textDirection:
-                                                  myui.TextDirection.rtl)));
-                                  clear();
-
-                                  // datesInstallation.add(DateInstallationClient(
-                                  //   date_client_visit: datetask,
-                                  //   fk_user: idUser,
-                                  //   fk_client: widget.idClient,
-                                  //   is_done: '0',
-                                  //   fk_invoice: widget.invoice!.idInvoice,
-                                  // ));
-
-                                  setState(() {});
-                                });
-                                _currentDate = DateTime(1, 1, 1);
-                                selectedTime = TimeOfDay(hour: -1, minute: 00);
+                                );
+                                Navigator.pop(context, editedEvent);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "تمت عملية إعادة الجدولة الزيارة  ",
+                                            textDirection:
+                                                myui.TextDirection.rtl)));
+                                // clear();
+                                setState(() {});
                               }
                             },
                           );

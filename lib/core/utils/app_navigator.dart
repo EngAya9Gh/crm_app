@@ -67,7 +67,8 @@ abstract class AppNavigator {
         (Route<dynamic> route) => false);
   }
 
-  static void pop() {
+  // back with parameter
+  static void pop({dynamic result}) {
     return navigatorKey.currentState!.pop();
   }
 

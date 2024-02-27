@@ -51,12 +51,14 @@ class EventModel {
     String? idClientsDate,
     String? agentName,
     AgentDistributorModel? agent,
+    String? typedate,
   }) {
     return EventModel(
       title: title ?? this.title,
       description: description ?? this.description,
       from: from ?? this.from,
       to: to ?? this.to,
+      typedate: typedate ?? this.typedate,
       backgroundColor: backgroundColor ?? this.backgroundColor,
       isAllDay: isAllDay ?? this.isAllDay,
       fkIdClient: fkIdClient ?? this.fkIdClient,
@@ -64,7 +66,7 @@ class EventModel {
       isDone: isDone ?? this.isDone,
       idClientsDate: idClientsDate ?? this.idClientsDate,
       agentName: agentName ?? this.agentName,
-      agent: agent ?? this.agent, typedate: this.typedate,
+      agent: agent ?? this.agent,
     );
   }
 

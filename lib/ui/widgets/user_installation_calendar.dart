@@ -153,6 +153,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       textDirection: TextDirection.ltr,
       child: Consumer<EventProvider>(builder: (context, eventProvider, _) {
         final events = eventProvider.eventDataSource;
+        print("events.length ${events.length}");
         initFocusDay(events);
         return Column(
           children: [
@@ -275,9 +276,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                   onTap: () {
                                     _navigateToProfile(value[index]);
                                   },
-                                  child: Row(
-
-                                      children: [
+                                  child: Row(children: [
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -367,31 +366,35 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                                         var tempEvent =
                                                             value[index];
 
-                                                        var status = await showDialog<
-                                                                dynamic>(
-                                                            context: context,
-                                                            builder: (context) =>
-                                                                ReScheduleDialog(
-                                                                  // invoice: tempinvoice,
-                                                                  event:
-                                                                      tempEvent,
-                                                                  idClientsDate:
-                                                                      value[index]
-                                                                          .idClientsDate!,
-                                                                  idClient: value[
-                                                                          index]
-                                                                      .fkIdClient!,
-                                                                  idinvoice: value[
-                                                                          index]
-                                                                      .idinvoice!,
-                                                                  time_from:  value[
-                                                                  index].from, time_to:  value[
-                                                                index].to, datecurrent:  value[
-                                                                index].from, typedate:  value[
-                                                                index].typedate,
-                                                                ));
-                                                        if (status == true) {
-
+                                                        final EventModel?
+                                                            editedEvent =
+                                                            await showDialog<
+                                                                    dynamic>(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) =>
+                                                                        ReScheduleDialog(
+                                                                          // invoice: tempinvoice,
+                                                                          event:
+                                                                              tempEvent,
+                                                                          idClientsDate:
+                                                                              value[index].idClientsDate!,
+                                                                          idClient:
+                                                                              value[index].fkIdClient!,
+                                                                          idinvoice:
+                                                                              value[index].idinvoice!,
+                                                                          time_from:
+                                                                              value[index].from,
+                                                                          time_to:
+                                                                              value[index].to,
+                                                                          datecurrent:
+                                                                              value[index].from,
+                                                                          typedate:
+                                                                              value[index].typedate,
+                                                                        ));
+                                                        if (editedEvent !=
+                                                            null) {
                                                           _selectedEvents = ValueNotifier(
                                                               _getEventsForDay(
                                                                   _selectedDay!,
