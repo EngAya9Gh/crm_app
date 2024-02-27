@@ -5,17 +5,18 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
-import 'package:crm_smart/core/common/models/profile_invoice_model.dart' as _i6;
+import 'package:crm_smart/core/common/models/profile_invoice_model.dart' as _i7;
 import 'package:crm_smart/core/common/widgets/profile_comments_model.dart'
-    as _i7;
+    as _i8;
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart'
     as _i5;
 import 'package:crm_smart/features/manage_agents_and_distributors/domain/repositories/agents_distributors_profile_repo.dart'
     as _i3;
-import 'package:crm_smart/model/invoiceModel.dart' as _i8;
+import 'package:crm_smart/model/agent_distributor_model.dart' as _i6;
+import 'package:crm_smart/model/invoiceModel.dart' as _i9;
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:http/http.dart' as _i10;
-import 'package:mockito/annotations.dart' as _i9;
+import 'package:http/http.dart' as _i11;
+import 'package:mockito/annotations.dart' as _i10;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -70,8 +71,29 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
       ) as _i4.Future<_i2.Either<String, List<_i5.ClientModel>>>);
 
   @override
+  _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>> getAgentByID(
+          {required String? agentId}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getAgentByID,
+          [],
+          {#agentId: agentId},
+        ),
+        returnValue:
+            _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>.value(
+                _FakeEither_0<String, _i6.AgentDistributorModel>(
+          this,
+          Invocation.method(
+            #getAgentByID,
+            [],
+            {#agentId: agentId},
+          ),
+        )),
+      ) as _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>);
+
+  @override
   _i4.Future<
-      _i2.Either<String, List<_i6.ProfileInvoiceModel>>> getAgentInvoicesList(
+      _i2.Either<String, List<_i7.ProfileInvoiceModel>>> getAgentInvoicesList(
           {required String? agentId}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -80,8 +102,8 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
           {#agentId: agentId},
         ),
         returnValue:
-            _i4.Future<_i2.Either<String, List<_i6.ProfileInvoiceModel>>>.value(
-                _FakeEither_0<String, List<_i6.ProfileInvoiceModel>>(
+            _i4.Future<_i2.Either<String, List<_i7.ProfileInvoiceModel>>>.value(
+                _FakeEither_0<String, List<_i7.ProfileInvoiceModel>>(
           this,
           Invocation.method(
             #getAgentInvoicesList,
@@ -89,10 +111,10 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
             {#agentId: agentId},
           ),
         )),
-      ) as _i4.Future<_i2.Either<String, List<_i6.ProfileInvoiceModel>>>);
+      ) as _i4.Future<_i2.Either<String, List<_i7.ProfileInvoiceModel>>>);
 
   @override
-  _i4.Future<_i2.Either<String, List<_i7.ProfileCommentModel>>>
+  _i4.Future<_i2.Either<String, List<_i8.ProfileCommentModel>>>
       getParticipateCommentsList({required String? agentId}) =>
           (super.noSuchMethod(
             Invocation.method(
@@ -101,8 +123,8 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
               {#agentId: agentId},
             ),
             returnValue: _i4.Future<
-                    _i2.Either<String, List<_i7.ProfileCommentModel>>>.value(
-                _FakeEither_0<String, List<_i7.ProfileCommentModel>>(
+                    _i2.Either<String, List<_i8.ProfileCommentModel>>>.value(
+                _FakeEither_0<String, List<_i8.ProfileCommentModel>>(
               this,
               Invocation.method(
                 #getParticipateCommentsList,
@@ -110,10 +132,10 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
                 {#agentId: agentId},
               ),
             )),
-          ) as _i4.Future<_i2.Either<String, List<_i7.ProfileCommentModel>>>);
+          ) as _i4.Future<_i2.Either<String, List<_i8.ProfileCommentModel>>>);
 
   @override
-  _i4.Future<_i2.Either<String, _i7.ProfileCommentModel>> addAgentComment({
+  _i4.Future<_i2.Either<String, _i8.ProfileCommentModel>> addAgentComment({
     required String? agentId,
     required String? content,
   }) =>
@@ -127,8 +149,8 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
           },
         ),
         returnValue:
-            _i4.Future<_i2.Either<String, _i7.ProfileCommentModel>>.value(
-                _FakeEither_0<String, _i7.ProfileCommentModel>(
+            _i4.Future<_i2.Either<String, _i8.ProfileCommentModel>>.value(
+                _FakeEither_0<String, _i8.ProfileCommentModel>(
           this,
           Invocation.method(
             #addAgentComment,
@@ -139,11 +161,40 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
             },
           ),
         )),
-      ) as _i4.Future<_i2.Either<String, _i7.ProfileCommentModel>>);
+      ) as _i4.Future<_i2.Either<String, _i8.ProfileCommentModel>>);
+
+  @override
+  _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>> doneTraining({
+    required String? agentId,
+    required String? fkuser,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #doneTraining,
+          [],
+          {
+            #agentId: agentId,
+            #fkuser: fkuser,
+          },
+        ),
+        returnValue:
+            _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>.value(
+                _FakeEither_0<String, _i6.AgentDistributorModel>(
+          this,
+          Invocation.method(
+            #doneTraining,
+            [],
+            {
+              #agentId: agentId,
+              #fkuser: fkuser,
+            },
+          ),
+        )),
+      ) as _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>);
 
   @override
   _i4.Future<
-      _i2.Either<String, List<_i8.DateInstallationClient>>> getDateVisitAgent(
+      _i2.Either<String, List<_i9.DateInstallationClient>>> getDateVisitAgent(
           {required String? agentId}) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -152,8 +203,8 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
           {#agentId: agentId},
         ),
         returnValue: _i4
-            .Future<_i2.Either<String, List<_i8.DateInstallationClient>>>.value(
-            _FakeEither_0<String, List<_i8.DateInstallationClient>>(
+            .Future<_i2.Either<String, List<_i9.DateInstallationClient>>>.value(
+            _FakeEither_0<String, List<_i9.DateInstallationClient>>(
           this,
           Invocation.method(
             #getDateVisitAgent,
@@ -161,11 +212,11 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
             {#agentId: agentId},
           ),
         )),
-      ) as _i4.Future<_i2.Either<String, List<_i8.DateInstallationClient>>>);
+      ) as _i4.Future<_i2.Either<String, List<_i9.DateInstallationClient>>>);
 
   @override
   _i4.Future<_i2.Either<String, void>> addAgentDate(
-          {required _i8.DateInstallationClient? agentDateModel}) =>
+          {required _i9.DateInstallationClient? agentDateModel}) =>
       (super.noSuchMethod(
         Invocation.method(
           #addAgentDate,
@@ -187,7 +238,7 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
 /// A class which mocks [MockSpec].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class HttpClientMock extends _i1.Mock implements _i9.MockSpec<_i10.Client> {
+class HttpClientMock extends _i1.Mock implements _i10.MockSpec<_i11.Client> {
   HttpClientMock() {
     _i1.throwOnMissingStub(this);
   }
