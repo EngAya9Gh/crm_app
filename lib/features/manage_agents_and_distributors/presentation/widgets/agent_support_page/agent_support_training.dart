@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,111 +26,128 @@ class AgentSupportTraining extends StatefulWidget {
 }
 
 class _AgentSupportTrainingState extends State<AgentSupportTraining> {
-  late AgentDistributorModel trainer;
-
   @override
   void initState() {
-    trainer = widget.agent;
+    final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
+    bloc.traineeAgent = widget.agent;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
-    return Column(
-      children: [
-        // cardRow(
-        //   title: 'نوع التدريب',
-        //   value:  widget.agent.ty.toString(),
-        // ),
-        if (trainer.nameusertraining != null)
-          cardRow(
-              title: "موظف التدريب",
-              value: trainer.nameusertraining.toString()),
-        cardRow(
-            title: "هل تم التدريب",
-            value: trainer.is_training == true
-                ? YesNoEnum.yes.name
-                : YesNoEnum.no.name),
-        if (trainer.is_training == true)
-          cardRow(title: "تاريخ التدريب", value: trainer.date_training ?? ""),
-
-        if (trainer.is_training == false) ...[
-          SizedBox(height: 20),
-          ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(kMainColor)),
-              onPressed: () async {
-                await showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('التأكيد'),
-                        content: Text('هل تريد تأكيد العملية '),
-                        actions: <Widget>[
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+    bool isLoading = false;
+    return BlocBuilder<AgentsDistributorsProfileBloc,
+        AgentsDistributorsProfileState>(
+      buildWhen: (previous, current) {
+        return previous.doneTrainingStatus != current.doneTrainingStatus;
+      },
+      builder: (context, state) {
+        final AgentDistributorModel trainer = bloc.traineeAgent!;
+        return Column(
+          children: [
+            if (trainer.nameusertraining != null)
+              cardRow(
+                  title: "موظف التدريب",
+                  value: trainer.nameusertraining.toString()),
+            cardRow(
+                title: "هل تم التدريب",
+                value: trainer.is_training == true
+                    ? YesNoEnum.yes.name
+                    : YesNoEnum.no.name),
+            if (trainer.is_training == true)
+              cardRow(
+                  title: "تاريخ التدريب", value: trainer.date_training ?? ""),
+            if (trainer.is_training == false) ...[
+              SizedBox(height: 20),
+              ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(kMainColor)),
+                  onPressed: () async {
+                    await showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('التأكيد'),
+                            content: Text('هل تريد تأكيد العملية '),
+                            actions: <Widget>[
+                              Column(
                                 children: [
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  kMainColor)),
-                                      onPressed: () {
-                                        Navigator.of(context,
-                                                rootNavigator: true)
-                                            .pop(
-                                                false); // dismisses only the dialog and returns false
-                                      },
-                                      child: Text(YesNoEnum.no.name),
-                                    ),
-                                  ),
-                                  10.horizontalSpace,
-                                  Expanded(
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  kMainColor)),
-                                      onPressed: () async {
-                                        bloc.add(
-                                          DoneAgentEvent(
-                                            DoneTrainingParams(
-                                              agentId: trainer.idAgent,
-                                              fkuser_training:
-                                                  Provider.of<UserProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .currentUser
-                                                      .idUser
-                                                      .toString(),
-                                            ),
-                                            onSuccess: (val) {
-                                              AppNavigator.pop();
-                                              trainer = val;
-                                              setState(() {});
-                                            },
-                                          ),
-                                        );
-                                      },
-                                      child: Text(YesNoEnum.yes.name),
-                                    ),
-                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Expanded(
+                                        child: ElevatedButton(
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      kMainColor)),
+                                          onPressed: () {
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pop(
+                                                    false); // dismisses only the dialog and returns false
+                                          },
+                                          child: Text(YesNoEnum.no.name),
+                                        ),
+                                      ),
+                                      10.horizontalSpace,
+                                      Expanded(
+                                        child: StatefulBuilder(
+                                          builder: (context, setState) {
+                                            return isLoading
+                                                ? CustomLoadingIndicator()
+                                                : ElevatedButton(
+                                                    style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(
+                                                                    kMainColor)),
+                                                    onPressed: () async {
+                                                      isLoading = true;
+                                                      setState(() {});
+                                                      bloc.add(
+                                                        DoneAgentEvent(
+                                                          DoneTrainingParams(
+                                                            agentId:
+                                                                trainer.idAgent,
+                                                            fkuser_training:
+                                                                Provider.of<UserProvider>(
+                                                                        context,
+                                                                        listen:
+                                                                            false)
+                                                                    .currentUser
+                                                                    .idUser
+                                                                    .toString(),
+                                                          ),
+                                                          onSuccess: (val) {
+                                                            AppNavigator.pop();
+                                                            isLoading = false;
+                                                            setState(() {});
+                                                          },
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Text(
+                                                        YesNoEnum.yes.name),
+                                                  );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
-                              )
+                              ),
                             ],
-                          ),
-                        ],
-                      );
-                    });
-              },
-              child: Text('تم التدريب'))
-        ],
-      ],
+                          );
+                        });
+                  },
+                  child: Text('تم التدريب'))
+            ],
+          ],
+        );
+      },
     );
   }
 }

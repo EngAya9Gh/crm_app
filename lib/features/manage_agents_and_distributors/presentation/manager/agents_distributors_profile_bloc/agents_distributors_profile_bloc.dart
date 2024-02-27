@@ -67,6 +67,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   final TextEditingController supportTimeEndController =
       TextEditingController();
 
+  AgentDistributorModel? traineeAgent;
   List<ClientModel> _agentClientsList = [];
   List<ProfileInvoiceModel> _agentInvoicesList = [];
 
@@ -259,6 +260,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         ));
       },
       (data) {
+        traineeAgent = data;
         emit(state.copyWith(
           doneTrainingStatus: StateStatus.success,
         ));
