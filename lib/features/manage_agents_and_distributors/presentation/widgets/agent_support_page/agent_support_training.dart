@@ -67,79 +67,83 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
                     await showDialog(
                         context: context,
                         builder: (context) {
-                          return AlertDialog(
-                            title: Text('التأكيد'),
-                            content: Text('هل تريد تأكيد العملية '),
-                            actions: <Widget>[
-                              Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Expanded(
-                                        child: ElevatedButton(
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      kMainColor)),
-                                          onPressed: () {
-                                            Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .pop(
-                                                    false); // dismisses only the dialog and returns false
-                                          },
-                                          child: Text(YesNoEnum.no.name),
-                                        ),
-                                      ),
-                                      10.horizontalSpace,
-                                      Expanded(
-                                        child: StatefulBuilder(
-                                          builder: (context, setState) {
-                                            return isLoading
-                                                ? CustomLoadingIndicator()
-                                                : ElevatedButton(
-                                                    style: ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStateProperty
-                                                                .all(
-                                                                    kMainColor)),
-                                                    onPressed: () async {
-                                                      isLoading = true;
-                                                      setState(() {});
-                                                      bloc.add(
-                                                        DoneAgentEvent(
-                                                          DoneTrainingParams(
-                                                            agentId:
-                                                                trainer.idAgent,
-                                                            fkuser_training:
-                                                                Provider.of<UserProvider>(
-                                                                        context,
-                                                                        listen:
-                                                                            false)
-                                                                    .currentUser
-                                                                    .idUser
-                                                                    .toString(),
+                          return Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: AlertDialog(
+                              title: Text('التأكيد'),
+                              content: Text('هل تريد تأكيد العملية '),
+                              actions: <Widget>[
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                          child: StatefulBuilder(
+                                            builder: (context, setState) {
+                                              return isLoading
+                                                  ? CustomLoadingIndicator()
+                                                  : ElevatedButton(
+                                                      style: ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(
+                                                                      kMainColor)),
+                                                      onPressed: () async {
+                                                        isLoading = true;
+                                                        setState(() {});
+                                                        bloc.add(
+                                                          DoneAgentEvent(
+                                                            DoneTrainingParams(
+                                                              agentId: trainer
+                                                                  .idAgent,
+                                                              fkuser_training: Provider.of<
+                                                                          UserProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .currentUser
+                                                                  .idUser
+                                                                  .toString(),
+                                                            ),
+                                                            onSuccess: (val) {
+                                                              AppNavigator
+                                                                  .pop();
+                                                              isLoading = false;
+                                                              setState(() {});
+                                                            },
                                                           ),
-                                                          onSuccess: (val) {
-                                                            AppNavigator.pop();
-                                                            isLoading = false;
-                                                            setState(() {});
-                                                          },
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Text(
-                                                        YesNoEnum.yes.name),
-                                                  );
-                                          },
+                                                        );
+                                                      },
+                                                      child: Text(
+                                                          YesNoEnum.yes.name),
+                                                    );
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ],
+                                        10.horizontalSpace,
+                                        Expanded(
+                                          child: ElevatedButton(
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        kMainColor)),
+                                            onPressed: () {
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop(
+                                                      false); // dismisses only the dialog and returns false
+                                            },
+                                            child: Text(YesNoEnum.no.name),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
                           );
                         });
                   },

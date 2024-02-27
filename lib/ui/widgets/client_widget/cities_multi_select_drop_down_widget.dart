@@ -41,7 +41,7 @@ class CitiesMultiSelectDropDownWidget<T> extends StatelessWidget {
             borderSide: const BorderSide(color: Colors.grey),
           ),
         ).copyWith(
-          hintText: 'المنطقة',
+          hintText: hint,
         ),
       ),
     );

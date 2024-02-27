@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
@@ -8,7 +9,6 @@ class AgentMobileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // create instance of cubit without using get_it as it is a factory
     final cubit = BlocProvider.of<AgentsDistributorsActionsCubit>(context);
     return Column(
       children: [
@@ -19,11 +19,12 @@ class AgentMobileWidget extends StatelessWidget {
         ),
         SizedBox(height: 15),
         TextFormField(
-
           controller: cubit.phoneNumberController,
           decoration: InputDecoration(hintText: ''),
-
-
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+          ],
           onSaved: (phone) {
             if (phone != null) {
               cubit.onSavePhoneNumber(phone);
