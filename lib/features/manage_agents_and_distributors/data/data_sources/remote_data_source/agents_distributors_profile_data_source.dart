@@ -5,11 +5,15 @@ import 'package:injectable/injectable.dart';
 import '../../../../../core/api/api_services.dart';
 import '../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
 
 abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, List<ClientModel>>> getAgentClientsList({
+    required String agentId,
+  });
+  Future<Either<String, AgentDistributorModel>> getAgent({
     required String agentId,
   });
 
@@ -24,6 +28,10 @@ abstract class AgentsDistributorsProfileDataSource {
   Future<Either<String, ProfileCommentModel>> addAgentComment({
     required String agentId,
     required String content,
+  });
+  Future<Either<String, AgentDistributorModel>>doneTraining({
+    required String agentId,
+    required String fkuser,
   });
 
   Future<Either<String, List<DateInstallationClient>>> getDateVisitAgent({
@@ -168,4 +176,41 @@ class AgentsDistributorsProfileDataSourceImpl
       return Left("Error in addAgentDate: $e");
     }
   }
+
+  @override
+  Future<Either<String, AgentDistributorModel>> getAgent({required String agentId}) async {
+    // TODO: implement getAgent
+    try {
+      dio.changeBaseUrl(EndPoints.baseUrl);
+      final response = await dio.get(endPoint: "agent/get_agent_byId.php?agentId=$agentId");
+
+      final data = response['data'];
+
+      final AgentDistributorModel agent = AgentDistributorModel.fromJson(data[0]);
+
+      return Right(agent);
+    } catch (e) {
+      print("Error in getAgent: $e");
+      return Left("Error in getAgent: $e");
+    }
+  }
+
+  @override
+  Future<Either<String, AgentDistributorModel>> doneTraining({required String agentId, required String fkuser}) async {
+    try{
+      dio.changeBaseUrl(EndPoints.baseUrl);
+      final response = await dio.post(endPoint: "agent/done_training.php?id_agent=$agentId", data: {
+        // "agent_id": agentId,
+        "fkuser_training": fkuser,
+      });
+
+      final data = response['data'];
+      final AgentDistributorModel agent = AgentDistributorModel.fromJson(data);
+      return Right(agent);
+    } catch (e) {
+      print("Error in done training: $e");
+      return Left("Error in training: $e");
+    }
+    }
+
 }

@@ -26,6 +26,7 @@ class AgentsDistributorsProfileState extends Equatable {
 
   final StateStatus addDateVisitStatus;
   final String? addDateVisitError;
+  final AgentDistributorModel? agentcurrent;
 
   AgentsDistributorsProfileState({
     this.clientsList = const [],
@@ -47,6 +48,7 @@ class AgentsDistributorsProfileState extends Equatable {
     this.dateVisitError,
     this.addDateVisitStatus = StateStatus.initial,
     this.addDateVisitError,
+    this.agentcurrent,
   });
 
   AgentsDistributorsProfileState copyWith({
@@ -69,6 +71,7 @@ class AgentsDistributorsProfileState extends Equatable {
     String? dateVisitError,
     StateStatus? addDateVisitStatus,
     String? addDateVisitError,
+    AgentDistributorModel?  agentcurrent,
   }) {
     return AgentsDistributorsProfileState(
       clientsList: clientsList ?? this.clientsList,
@@ -90,6 +93,7 @@ class AgentsDistributorsProfileState extends Equatable {
       dateVisitError: dateVisitError,
       addDateVisitStatus: addDateVisitStatus ?? this.addDateVisitStatus,
       addDateVisitError: addDateVisitError,
+      agentcurrent: agentcurrent,
     );
   }
 

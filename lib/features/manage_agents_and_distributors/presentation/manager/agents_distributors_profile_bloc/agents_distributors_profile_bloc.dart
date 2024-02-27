@@ -6,11 +6,14 @@ import 'package:injectable/injectable.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
 import '../../../../manage_participates/domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../../domain/use_cases/add_agent_comments_usecase.dart';
 import '../../../domain/use_cases/add_agent_date_usecase.dart';
+import '../../../domain/use_cases/done_training_usecase.dart';
+import '../../../domain/use_cases/get_agent_byid_usecase.dart';
 import '../../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_comments_list_usecase.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
@@ -24,23 +27,29 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     AgentsDistributorsProfileState> {
   List<DateInstallationClient> agentDatesList = [];
   final GetAgentClientListUsecase _getAgentClientListUsecase;
+  final GetAgentUsecase _getAgentUsecase;
   final GetAgentInvoiceListUsecase _getAgentInvoiceListUsecase;
   final GetInvoiceByIdUsecase _getInvoiceByIdUsecase;
   final GetAgentCommentsListUsecase _getParticipateCommentListUsecase;
+  final DoneTrainingUsecase _doneTrainingUsecase;
   final AddAgentCommentUsecase _addAgentCommentUsecase;
   final AddAgentDateUseCase _addAgentDateUseCase;
   final GetAgentDatesListUsecase _getAgentDatesListUsecase;
 
   AgentsDistributorsProfileBloc(
     this._getAgentClientListUsecase,
+    this._getAgentUsecase,
     this._getAgentInvoiceListUsecase,
     this._getInvoiceByIdUsecase,
     this._getParticipateCommentListUsecase,
     this._addAgentCommentUsecase,
+    this._doneTrainingUsecase,
     this._addAgentDateUseCase,
     this._getAgentDatesListUsecase,
   ) : super(AgentsDistributorsProfileState()) {
     on<GetAgentClientListEvent>(_onGetAgentClientListEvent);
+    on<GetAgentEvent>(_onGetAgentEvent);
+    on<DoneAgentEvent>(_onDoneTrainingEvent);
     on<SearchClientEvent>(_onSearchClientEvent);
     on<GetAgentInvoiceListEvent>(_onGetAgentInvoiceListEvent);
     on<GetInvoiceByIdEvent>(_onGetInvoiceByIdEvent);
@@ -59,7 +68,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
   List<ClientModel> _agentClientsList = [];
   List<ProfileInvoiceModel> _agentInvoicesList = [];
-
+  late AgentDistributorModel agentcurrent;
   void _onGetAgentClientListEvent(GetAgentClientListEvent event,
       Emitter<AgentsDistributorsProfileState> emit) async {
     emit(state.copyWith(
@@ -79,6 +88,28 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
         emit(state.copyWith(
           clientsStatus: StateStatus.success,
           clientsList: _filterClientList(event.query),
+        ));
+      },
+    );
+  }
+  void _onGetAgentEvent(GetAgentEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    // emit(state.copyWith(
+    //   clientsStatus: StateStatus.loading,
+    // ));
+    final result =
+        await _getAgentUsecase.call(event.getAgentParams);
+    result.fold(
+      (error) {
+        emit(state.copyWith(
+          clientsStatus: StateStatus.failure,
+          clientsError: error,
+        ));
+      },
+      (data) {
+        emit(state.copyWith(
+          clientsStatus: StateStatus.success,
+            agentcurrent: data
         ));
       },
     );
@@ -192,7 +223,7 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     ));
 
     final result =
-        await _addAgentCommentUsecase.call(event.addAgentCommentParams);
+    await _addAgentCommentUsecase.call(event.addAgentCommentParams);
 
     result.fold(
       (error) {
@@ -206,6 +237,31 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
           addedCommentStatus: StateStatus.success,
         ));
         event.onSuccess?.call();
+      },
+    );
+  }
+  void _onDoneTrainingEvent(DoneAgentEvent event,
+      Emitter<AgentsDistributorsProfileState> emit) async {
+    emit(state.copyWith(
+      addedCommentStatus: StateStatus.loading,
+    ));
+
+    final result =
+    await _doneTrainingUsecase.call(event.DoneParams);
+
+    result.fold(
+      (error) {
+        emit(state.copyWith(
+          addedCommentStatus: StateStatus.failure,
+          addedCommentError: error,
+        ));
+      },
+      (data) {
+        emit(state.copyWith(
+          addedCommentStatus: StateStatus.success,
+          agentcurrent: data
+        ));
+        event.onSuccess?.call(agentcurrent);
       },
     );
   }

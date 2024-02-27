@@ -16,6 +16,19 @@ class GetAgentClientListEvent extends AgentsDistributorsProfileEvent
   @override
   List<Object?> get props => [query, getAgentClientListParams];
 }
+class GetAgentEvent extends AgentsDistributorsProfileEvent
+    with EquatableMixin {
+  final GetAgentParams getAgentParams;
+  final String query;
+
+  GetAgentEvent({
+    required this.query,
+    required this.getAgentParams,
+  });
+
+  @override
+  List<Object?> get props => [query, getAgentParams];
+}
 
 class SearchClientEvent extends AgentsDistributorsProfileEvent
     with EquatableMixin {
@@ -79,6 +92,12 @@ class AddAgentCommentEvent extends AgentsDistributorsProfileEvent {
   final VoidCallback? onSuccess;
 
   AddAgentCommentEvent(this.addAgentCommentParams, {this.onSuccess});
+}
+class DoneAgentEvent extends AgentsDistributorsProfileEvent {
+  final DoneTrainingParams DoneParams;
+  final ValueChanged<AgentDistributorModel>? onSuccess;
+
+  DoneAgentEvent(this.DoneParams, {this.onSuccess});
 }
 
 class GetAgentDatesListEvent extends AgentsDistributorsProfileEvent

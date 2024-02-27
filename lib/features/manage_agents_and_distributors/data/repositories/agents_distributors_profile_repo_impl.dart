@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/common/models/profile_invoice_model.dart';
+import '../../../../model/agent_distributor_model.dart';
 import '../../../../model/invoiceModel.dart';
 import '../../domain/repositories/agents_distributors_profile_repo.dart';
 import '../data_sources/remote_data_source/agents_distributors_profile_data_source.dart';
@@ -44,6 +45,7 @@ class AgentsDistributorsProfileRepoImpl
     return datasource.addAgentComment(agentId: agentId, content: content);
   }
 
+
   @override
   Future<Either<String, List<DateInstallationClient>>> getDateVisitAgent({
     required String agentId,
@@ -56,5 +58,19 @@ class AgentsDistributorsProfileRepoImpl
     required DateInstallationClient agentDateModel,
   }) {
     return datasource.addAgentDate(agentDateModel: agentDateModel);
+  }
+
+  @override
+  Future<Either<String, AgentDistributorModel>> getAgentByID({required String agentId}) {
+    // TODO: implement getAgentByID
+    return datasource.getAgent(agentId: agentId);
+
+  }
+
+  @override
+  Future<Either<String, AgentDistributorModel>> doneTraining({required String agentId, required String fkuser}) {
+
+  return datasource.doneTraining(agentId: agentId,fkuser:fkuser );
+
   }
 }
