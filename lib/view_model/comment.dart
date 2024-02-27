@@ -6,25 +6,26 @@ import 'package:intl/intl.dart';
 import '../constants.dart';
 
 class comment_vm extends ChangeNotifier {
-  List<CommentModel> listComments = [];
+  List<CommentModel> _allCommentsList = [];
+  List<CommentModel> filteredComments = [];
   bool isloadadd = false;
   bool isLoading = false;
 
   Future<void> getComment(String fk_client) async {
     try {
       isLoading = true;
-      listComments = [];
+      filteredComments = [];
       //isloadadd=true;
       notifyListeners();
       // if(listComments.isEmpty){
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'care/viewcomment.php?fk_client=$fk_client');
+      data = await Api()
+          .get(url: url + 'care/viewcomment.php?fk_client=$fk_client');
 
-      if (data != null) {
-        for (int i = 0; i < data.length; i++) {
-          listComments.add(CommentModel.fromJson(data[i]));
-        }
-      }
+      _allCommentsList = data.map((e) => CommentModel.fromJson(e)).toList();
+
+      filteredComments = _allCommentsList;
+
       isLoading = false;
       //isloadadd=false;
       notifyListeners();
@@ -34,21 +35,32 @@ class comment_vm extends ChangeNotifier {
     }
   }
 
-  Future<String> addComment_vm(Map<String, dynamic?> body, String? imageurl) async {
+  void filterCommentsByType(String type) {
+    filteredComments = _allCommentsList
+        .where((element) => element.type_comment == type)
+        .toList();
+    notifyListeners();
+  }
+
+  Future<String> addComment_vm(
+      Map<String, dynamic?> body, String? imageurl) async {
     try {
       isloadadd = true;
       final DateFormat formatter = DateFormat('yyyy-MM-dd h-m-s');
       notifyListeners();
-      String res = await Api().post(url: url + 'care/addcomment.php', body: body);
+      String res =
+          await Api().post(url: url + 'care/addcomment.php', body: body);
       if (res != "error") {
         body.addAll({
           'id_comment': res,
-          'date_comment': DateTime.now().toString(), //formatter.format(DateTime.now())
+          'date_comment':
+              DateTime.now().toString(), //formatter.format(DateTime.now())
         });
         //listComments=[];
-        listComments.insert(0, CommentModel.fromJson(body));
-        final index = listComments.indexWhere((element) => element.idComment == res);
-        listComments[index].imgImage = imageurl.toString();
+        filteredComments.insert(0, CommentModel.fromJson(body));
+        final index =
+            filteredComments.indexWhere((element) => element.idComment == res);
+        filteredComments[index].imgImage = imageurl.toString();
         isloadadd = false;
         notifyListeners();
       }
@@ -63,7 +75,7 @@ class comment_vm extends ChangeNotifier {
   }
 
   addCommentFromAddInvoice(CommentModel comment) {
-    listComments.insert(0, comment);
+    filteredComments.insert(0, comment);
     notifyListeners();
   }
 }

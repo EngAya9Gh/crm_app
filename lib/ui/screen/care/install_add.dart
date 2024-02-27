@@ -386,14 +386,14 @@ class _installAddState extends State<installAdd> {
                         left: 8, right: 8, top: 10.0, bottom: 5),
                     child:
                         Consumer<comment_vm>(builder: (context, value, child) {
-                      return value.listComments.length == 0
+                      return value.filteredComments.length == 0
                           ? Text('')
                           : Column(
                               children: [
                                 Expanded(
                                   child: ListView.builder(
                                       scrollDirection: Axis.vertical,
-                                      itemCount: value.listComments.length,
+                                      itemCount: value.filteredComments.length,
                                       itemBuilder: (context, index) {
                                         return SingleChildScrollView(
                                             child: Padding(
@@ -402,8 +402,8 @@ class _installAddState extends State<installAdd> {
                                                 child:
                                                     //Text(''),
                                                     cardcomment(
-                                                  commentmodel:
-                                                      value.listComments[index],
+                                                  commentmodel: value
+                                                      .filteredComments[index],
                                                 )));
                                       }),
                                 ),
