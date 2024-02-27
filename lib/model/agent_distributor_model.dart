@@ -64,6 +64,9 @@ class AgentDistributorModel {
   String? nameCity;
   String? nameUserAdd;
   String? nameUserUpdate;
+  String? fkuser_training;
+  String? is_training;
+  String? date_training;
 
   //endregion
 
@@ -85,6 +88,9 @@ class AgentDistributorModel {
     this.fkUserUpdate,
     this.nameUserAdd,
     this.nameUserUpdate,
+    this.fkuser_training,
+    this.is_training,
+    this.date_training,
   });
 
   factory AgentDistributorModel.fromJson(Map<String, dynamic> json) {
@@ -109,6 +115,9 @@ class AgentDistributorModel {
       nameUserAdd: json['nameUserAdd'],
       nameUserUpdate: json['nameUserUpdate'],
       nameCity: json['name_city'],
+      fkuser_training: json['fkuser_training'],
+      is_training: json['is_training'],
+      date_training: json['date_training'],
     );
   }
 
@@ -128,7 +137,9 @@ class AgentDistributorModel {
         "fk_user_update": fkUserUpdate,
         "nameUserAdd": nameUserAdd,
         "nameUserUpdate": nameUserUpdate,
-        "name_city": nameCity,
+        "fkuser_training": fkuser_training,
+        "is_training": is_training,
+        "date_training": date_training,
       };
 
   @override
