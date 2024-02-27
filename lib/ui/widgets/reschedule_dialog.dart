@@ -1,5 +1,6 @@
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
@@ -427,7 +428,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     );
                                   },
                                 );
-                                Navigator.pop(context, editedEvent);
+                                AppNavigator.pop(result: editedEvent);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                         content: Text(

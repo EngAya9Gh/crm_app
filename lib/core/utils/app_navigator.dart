@@ -69,7 +69,7 @@ abstract class AppNavigator {
 
   // back with parameter
   static void pop({dynamic result}) {
-    return navigatorKey.currentState!.pop();
+    return navigatorKey.currentState!.pop(result);
   }
 
   static removeAllAndPush(Widget page) {
