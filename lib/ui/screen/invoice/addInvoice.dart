@@ -1342,7 +1342,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                             invoice.selectedSellerType!.index.toString())
                           agentsListtemp.add(element);
                       });
-                      final selectedAgent =
+                      AgentDistributorModel? selectedAgent =
                           selectedSellerType == SellerType.distributor
                               ? invoice.selectedDistributor
                               : invoice.selectedAgent;
@@ -1380,10 +1380,17 @@ class _AddInvoiceState extends State<AddInvoice> {
                             //   selectedValue: selectedCollaborate,
                             // )
                             else
-                              sellerDropdown<AgentDistributorModel>(
-                                agentsListtemp, // agentsList,
-                                selectedSellerType,
-                                selectedValue: selectedAgent,
+                              Builder(
+                                builder: (context) {
+                                  agentsListtemp =
+                                      agentsListtemp.toSet().toList();
+
+                                  return sellerDropdown<AgentDistributorModel>(
+                                    agentsListtemp, // agentsList,
+                                    selectedSellerType,
+                                    selectedValue: selectedAgent,
+                                  );
+                                },
                               ),
                             SizedBox(height: 10),
                             Selector<invoice_vm, SellerType?>(
