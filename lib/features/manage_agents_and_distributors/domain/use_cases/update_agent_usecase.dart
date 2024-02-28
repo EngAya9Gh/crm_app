@@ -8,24 +8,27 @@ import '../../data/models/agent_distributor_action_model.dart';
 import '../repositories/agents_distributors_actions_repo.dart';
 
 @lazySingleton
-class AddAgentUseCase extends UseCase<Either<String, void>, AddAgentParams> {
-  AddAgentUseCase(this.repository);
+class UpdateAgentUseCase
+    extends UseCase<Either<String, void>, UpdateAgentParams> {
+  UpdateAgentUseCase(this.repository);
 
   final AgentsDistributorsActionsRepo repository;
 
   @override
-  Future<Either<String, void>> call(AddAgentParams params) {
-    return repository.addAgent(addAgentParams: params);
+  Future<Either<String, void>> call(UpdateAgentParams params) {
+    return repository.updateAgent(updateAgentParams: params);
   }
 }
 
-class AddAgentParams {
+class UpdateAgentParams {
+  final String agentId;
   final AgentDistributorActionModel agentActionModel;
   final File? file;
   final File? fileLogo;
   final List<File>? files;
 
-  AddAgentParams({
+  UpdateAgentParams({
+    required this.agentId,
     required this.agentActionModel,
     this.file,
     this.fileLogo,

@@ -2,18 +2,16 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../api/api.dart';
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../data/models/agent_distributor_action_model.dart';
 import '../../../domain/use_cases/add_agent_usecase.dart';
 import '../../../domain/use_cases/get_all_cities_usecase.dart';
+import '../../../domain/use_cases/update_agent_usecase.dart';
 
 part 'agents_distributors_actions_state.dart';
 
@@ -23,10 +21,12 @@ class AgentsDistributorsActionsCubit
   AgentsDistributorsActionsCubit(
     this.getAllCitiesUseCase,
     this.addAgentUseCase,
+    this.updateAgentUseCase,
   ) : super(AgentsDistributorsActionsInitial());
 
   final GetAllCitiesUseCase getAllCitiesUseCase;
   final AddAgentUseCase addAgentUseCase;
+  final UpdateAgentUseCase updateAgentUseCase;
 
   // support tab Keys and controllers
   final supportFormKey = GlobalKey<FormState>();
@@ -128,22 +128,22 @@ class AgentsDistributorsActionsCubit
     try {
       isLoadingAction = true;
       emit(AgentsDistributorsActionsLoading());
-      Either<String, void> response;
       if (agentId == null) {
-        addAgentUseCase(
+        await addAgentUseCase(
           AddAgentParams(
             agentActionModel: agentDistributorActionModel,
+            fileLogo: agentDistributorActionModel.filelogo,
             file: null,
-            filelogo: agentDistributorActionModel.filelogo,
           ),
         );
       } else {
-        response = await Api().postRequestWithFile(
-          "array",
-          url + 'agent/update_agent.php?id_agent=$agentId',
-          agentDistributorActionModel.toMap(),
-          agentDistributorActionModel.filelogo,
-          null,
+        await updateAgentUseCase(
+          UpdateAgentParams(
+            agentId: agentId,
+            agentActionModel: agentDistributorActionModel,
+            fileLogo: agentDistributorActionModel.filelogo,
+            file: null,
+          ),
         );
       }
 
