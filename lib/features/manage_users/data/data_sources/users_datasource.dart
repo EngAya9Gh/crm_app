@@ -54,8 +54,11 @@ class UsersDatasource {
   }) async {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrl);
-      final response =
-          await api.post(endPoint: EndPoints.users.updateUser, data: body);
+      final response = await api.post(
+        endPoint: EndPoints.users.updateUser,
+        data: body,
+        queryParameters: param,
+      );
       return ResponseWrapper<UserModel>.fromJson(
         response,
         (json) => UserModel.fromJson(json[0]),

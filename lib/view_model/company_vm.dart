@@ -5,25 +5,24 @@ import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
 import '../constants.dart';
-import '../model/ActivityModel.dart';
-import '../services/configService.dart';
 
 class CompanyProvider extends ChangeNotifier {
   List<CompanyModel> list_company = [];
 
   Future<void> getcompany({VoidCallback? onSuccess}) async {
-    // notifyListeners();
+    isloading = true;
+    notifyListeners();
+
     //  if(list_activity.isEmpty)
     var data = await Api().get(url: url + 'config/get_company.php');
 
     List<CompanyModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      
       prodlist.add(CompanyModel.fromJson(data[i]));
     }
     list_company = prodlist.toList();
     // list_company.insert(0, null);
-
+    isloading = false;
     onSuccess?.call();
 
     notifyListeners();
@@ -63,20 +62,23 @@ class CompanyProvider extends ChangeNotifier {
     return res;
   }
 
-  Future<String> update_company(Map<String, dynamic> body, String idcompany, File? file) async {
+  Future<String> update_company(
+      Map<String, dynamic> body, String idcompany, File? file) async {
     //name_mange
     isloading = true;
     notifyListeners();
     String res = await Api().postRequestWithFile(
         "array",
-        url + 'config/update_company.php?id_Company=${idcompany}', //users/addmangemt.php
+        url +
+            'config/update_company.php?id_Company=${idcompany}', //users/addmangemt.php
         body,
         file,
         null);
     body.addAll({
       'id_Company': idcompany,
     });
-    final index = list_company.indexWhere((element) => element.id_Company == idcompany);
+    final index =
+        list_company.indexWhere((element) => element.id_Company == idcompany);
     list_company[index] = CompanyModel.fromJson(body);
     isloading = false;
     notifyListeners();

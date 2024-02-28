@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/clients_list/domain/use_cases/add_client_usecase.dart';
 import 'package:crm_smart/features/clients_list/domain/use_cases/edit_client_usecase.dart';
@@ -60,6 +61,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
   late final ClientTypeProvider _clientTypeProvider;
   late final UserProvider _userProvider;
   final intl.DateFormat formatter = intl.DateFormat('yyyy-MM-dd');
+
   // late final AddClientParams addClientParams;
   late final TextEditingController nameClientController;
   late final TextEditingController descriptionActivityController;
@@ -398,7 +400,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                     if (value?.trim().isEmpty ?? true) {
                                       return 'هذا الحقل مطلوب.';
                                     }
-                                  }, // HelperFunctions.instance.requiredFiled,
+                                  },
+                                  // HelperFunctions.instance.requiredFiled,
                                   value: _selectedActivitySizeType,
                                   onChange: (value) {
                                     if (value == null) {
@@ -756,6 +759,16 @@ class _ActionClientPageState extends State<ActionClientPage> {
 
                           Consumer<CompanyProvider>(
                             builder: (context, company, _) {
+                              if (company.isloading) {
+                                return CustomLoadingIndicator();
+                              }
+                              if (company.selectedValueOut == null) {
+                                company.selectedValueOut = company.list_company
+                                    .firstWhereOrNull((element) =>
+                                        element.id_Company ==
+                                        widget.client?.preSystem)
+                                    ?.id_Company;
+                              }
                               return AppDropdownButtonFormField<CompanyModel,
                                   String>(
                                 items: company.list_company,
@@ -765,7 +778,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 },
                                 hint: "نظام سابق",
                                 itemAsValue: (CompanyModel? item) =>
-                                    item?.id_Company,
+                                    item!.id_Company,
                                 itemAsString: (item) => item!.name_company!,
                                 value: company.selectedValueOut,
                               );
@@ -1059,6 +1072,7 @@ class similar_dailog extends StatefulWidget {
       : super(key: key);
   String nameClient, name_enterprise, phone;
   AddClientParams addClientParams;
+
   @override
   State<similar_dailog> createState() => _similar_dailogState();
 }
@@ -1183,6 +1197,7 @@ class _similar_dailogState extends State<similar_dailog> {
 class CardSimilar extends StatelessWidget {
   CardSimilar({Key? key, required this.smClient}) : super(key: key);
   SimilarClient smClient;
+
   @override
   Widget build(BuildContext context) {
     return Container(
