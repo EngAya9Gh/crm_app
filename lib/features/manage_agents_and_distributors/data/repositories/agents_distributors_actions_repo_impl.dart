@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/add_agent_usecase.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -18,6 +19,15 @@ class AgentsDistributorsActionsRepoImpl extends AgentsDistributorsActionsRepo {
   }) async {
     return await agentsDistributorsActionsDataSource.getAllCities(
       fkCountry: fkCountry,
+    );
+  }
+
+  @override
+  Future<Either<String, void>> addAgent({
+    required AddAgentParams addAgentParams,
+  }) {
+    return agentsDistributorsActionsDataSource.addAgent(
+      addAgentParams: addAgentParams,
     );
   }
 }

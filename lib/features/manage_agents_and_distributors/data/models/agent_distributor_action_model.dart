@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../../../core/common/enums/enums.dart';
 
-class AgentDistributorActionEntity extends Equatable {
+class AgentDistributorActionModel extends Equatable {
   final String? name;
   final String? currentUser;
   final ADType? type;
@@ -15,7 +15,7 @@ class AgentDistributorActionEntity extends Equatable {
   final String? description;
   final File? filelogo;
 
-  AgentDistributorActionEntity({
+  AgentDistributorActionModel({
     this.name,
     this.currentUser,
     this.type,
@@ -27,7 +27,7 @@ class AgentDistributorActionEntity extends Equatable {
     this.filelogo,
   });
 
-  AgentDistributorActionEntity copyWith({
+  AgentDistributorActionModel copyWith({
     String? name,
     ADType? type,
     String? countryId,
@@ -38,7 +38,7 @@ class AgentDistributorActionEntity extends Equatable {
     String? description,
     File? filelogo,
   }) {
-    return AgentDistributorActionEntity(
+    return AgentDistributorActionModel(
       name: name ?? this.name,
       currentUser: currentUser ?? this.currentUser,
       type: type ?? this.type,
@@ -62,8 +62,8 @@ class AgentDistributorActionEntity extends Equatable {
         'description': description,
       }..removeWhere((key, value) => value == null);
 
-  factory AgentDistributorActionEntity.fromMap(Map<String, dynamic> map) {
-    return AgentDistributorActionEntity(
+  factory AgentDistributorActionModel.fromMap(Map<String, dynamic> map) {
+    return AgentDistributorActionModel(
       name: map['name_agent'],
       type: map['type_agent'] != null
           ? ADType.values[int.parse(map['type_agent'])]
@@ -76,8 +76,8 @@ class AgentDistributorActionEntity extends Equatable {
     );
   }
 
-  AgentDistributorActionEntity resetType() {
-    return AgentDistributorActionEntity(
+  AgentDistributorActionModel resetType() {
+    return AgentDistributorActionModel(
       name: name,
       type: null,
       countryId: countryId,
@@ -92,7 +92,7 @@ class AgentDistributorActionEntity extends Equatable {
   @override
   List<Object?> get props => [
         name,
-    currentUser,
+        currentUser,
         type,
         countryId,
         cityId,

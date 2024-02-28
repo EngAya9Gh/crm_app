@@ -46,7 +46,7 @@ class AgentTypesWidget extends StatelessWidget {
                         duration: kTabScrollDuration,
                         height: 50,
                         alignment: Alignment.center,
-                        decoration: cubit.agentDistributorActionEntity.type ==
+                        decoration: cubit.agentDistributorActionModel.type ==
                                 ADType.distributor
                             ? BoxDecoration(
                                 color: Colors.lightGreen,
@@ -80,15 +80,15 @@ class AgentTypesWidget extends StatelessWidget {
                       duration: kTabScrollDuration,
                       height: 50,
                       alignment: Alignment.center,
-                      decoration: cubit.agentDistributorActionEntity.type ==
-                              ADType.agent
-                          ? BoxDecoration(
-                              color: Colors.lightGreen,
-                              borderRadius: BorderRadiusDirectional.only(
-                                  topEnd: Radius.circular(10),
-                                  bottomEnd: Radius.circular(10)),
-                            )
-                          : null,
+                      decoration:
+                          cubit.agentDistributorActionModel.type == ADType.agent
+                              ? BoxDecoration(
+                                  color: Colors.lightGreen,
+                                  borderRadius: BorderRadiusDirectional.only(
+                                      topEnd: Radius.circular(10),
+                                      bottomEnd: Radius.circular(10)),
+                                )
+                              : null,
                       child: Text(
                         "وكيل",
                         textAlign: TextAlign.center,

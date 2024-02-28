@@ -23,18 +23,16 @@ class SaveButton extends StatelessWidget {
       width: double.infinity,
       text: 'حفظ',
       onTap: () async {
-        final currentUser=context.read<UserProvider>().currentUser.idUser;
+        final currentUser = context.read<UserProvider>().currentUser.idUser;
 
         cubit.formKey.currentState!.save();
         if (cubit.formKey.currentState!.validate()) {
           await cubit.actionAgentDistributor(
-            agentId: agentDistributorModel?.idAgent,
-            currenuser: currentUser
-          );
+              agentId: agentDistributorModel?.idAgent, currenuser: currentUser);
           AppNavigator.pop();
         } else {
-          if (cubit.agentDistributorActionEntity.type == null &&
-              cubit.agentDistributorActionEntity.name != null) {
+          if (cubit.agentDistributorActionModel.type == null &&
+              cubit.agentDistributorActionModel.name != null) {
             AppConstants.showSnakeBar(context, "من فضلك اختر النوع");
           } else {
             AppConstants.showSnakeBar(
