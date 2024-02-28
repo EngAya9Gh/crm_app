@@ -10,6 +10,7 @@ const kUnActiveColor = Colors.lightBlueAccent; //Color(0xdff4dc8c);
 const kfontfamily = 'Pacifico';
 const kfontfamily2 = 'Cairo-Regular';
 const kfontfamily3 = 'Amiri';
+//New Version of CRM 2.0.3
 const url = 'http://smartcrm.ws/aya/api/';
 const url_laravel = 'http://new.smartcrm.ws/api/';
 const urlimage = 'http://smartcrm.ws/aya/api/imagesApp/profile/';
