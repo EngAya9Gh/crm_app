@@ -130,10 +130,9 @@ class _support_addState extends State<support_add> {
     final _globalKey = GlobalKey<FormState>();
 
     final listDates = List<DateInstallationClient>.of(datesInstallation ?? []);
-    listDates
-        .sort((a, b) => a.date_client_visit!.compareTo(b.date_client_visit!));
+    listDates.sort((a, b) => a.dateClientVisit!.compareTo(b.dateClientVisit!));
     final nextInstallation =
-        listDates.firstWhereOrNull((element) => element.is_done == "0");
+        listDates.firstWhereOrNull((element) => element.isDone == "0");
 
     Widget dialog = SimpleDialog(
         titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
@@ -147,7 +146,7 @@ class _support_addState extends State<support_add> {
             builder:
                 (BuildContext context, void Function(void Function()) refresh) {
               selectedTime == TimeOfDay(hour: -1, minute: 00);
-               endTime == TimeOfDay(hour: -1, minute: 00);
+              endTime == TimeOfDay(hour: -1, minute: 00);
               return Directionality(
                 textDirection: myui.TextDirection.rtl,
                 child: Form(
@@ -272,23 +271,23 @@ class _support_addState extends State<support_add> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
                                 hintText: _invoice!.daterepaly == null &&
-                                    Provider.of<datetime_vm>(context,
-                                        listen: true)
-                                        .selectedEndTime ==
-                                        TimeOfDay(hour: -1, minute: 00)
+                                        Provider.of<datetime_vm>(context,
+                                                    listen: true)
+                                                .selectedEndTime ==
+                                            TimeOfDay(hour: -1, minute: 00)
                                     ? 'نهاية الزيارة ' //_currentDate.toString()
                                     : Provider.of<datetime_vm>(context,
-                                    listen: true)
-                                    .selectedEndTime
-                                    .minute
-                                    .toString() +
-                                    ' : ' +
-                                    Provider.of<datetime_vm>(context,
-                                        listen: true)
-                                        .selectedEndTime
-                                        .hour
-                                        .toInt()
-                                        .toString(),
+                                                listen: true)
+                                            .selectedEndTime
+                                            .minute
+                                            .toString() +
+                                        ' : ' +
+                                        Provider.of<datetime_vm>(context,
+                                                listen: true)
+                                            .selectedEndTime
+                                            .hour
+                                            .toInt()
+                                            .toString(),
                                 //_invoice!.dateinstall_task.toString(),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
@@ -297,7 +296,7 @@ class _support_addState extends State<support_add> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectEndTime (context, timinit2);
+                                  _selectEndTime(context, timinit2);
                                 });
                               },
                             ),
@@ -386,7 +385,8 @@ class _support_addState extends State<support_add> {
                                   title: _invoice!.name_enterprise!,
                                   description: "description",
                                   from: temp,
-                                  to: temp.add(Duration(hours: 2)), typedate: '',
+                                  to: temp.add(Duration(hours: 2)),
+                                  typedate: '',
                                 );
 
                                 _eventProvider.addEvent(event);
@@ -396,11 +396,11 @@ class _support_addState extends State<support_add> {
                               clear();
 
                               datesInstallation.add(DateInstallationClient(
-                                date_client_visit: datetask,
-                                fk_user: idUser,
-                                fk_client: widget.idClient,
-                                is_done: '0',
-                                fk_invoice: _invoice!.idInvoice,
+                                dateClientVisit: datetask,
+                                fkUser: idUser,
+                                fkClient: widget.idClient,
+                                isDone: '0',
+                                fkInvoice: _invoice!.idInvoice,
                               ));
 
                               setState(() {});
@@ -757,44 +757,44 @@ class _support_addState extends State<support_add> {
                               value: getnameshort(
                                   _invoice!.nameuserinstall.toString())),
 
-                      if (nextInstallation?.date_client_visit != null)
+                      if (nextInstallation?.dateClientVisit != null)
                         InkWell(
-                          onTap: (){
-                            Navigator.push(context,
+                          onTap: () {
+                            Navigator.push(
+                                context,
                                 CupertinoPageRoute(
                                     builder: (context) => support_table()));
-
                           },
                           child: cardRow(
                               title: 'تاريخ الزيارة القادمة',
                               value: DateFormat('yyyy-MM-dd HH:mm')
-                                  .format(nextInstallation!.date_client_visit!)),
+                                  .format(nextInstallation!.dateClientVisit!)),
                         ),
                       InkWell(
-                        onTap: (){
-                          Navigator.push(context,
+                        onTap: () {
+                          Navigator.push(
+                              context,
                               CupertinoPageRoute(
                                   builder: (context) => support_table()));
-
                         },
                         child: cardRow(
                             title: 'عدد الزيارات التي تمت ',
                             value: datesInstallation
-                                .where((element) => element.is_done == "1")
+                                .where((element) => element.isDone == "1")
                                 .length
                                 .toString()),
                       ),
                       InkWell(
-                        onTap: (){
-                          Navigator.push(context,
+                        onTap: () {
+                          Navigator.push(
+                              context,
                               CupertinoPageRoute(
                                   builder: (context) => support_table()));
-
                         },
                         child: cardRow(
                             title: 'عدد الزيارات المتبقية',
                             value: datesInstallation
-                                .where((element) => element.is_done == "0")
+                                .where((element) => element.isDone == "0")
                                 .length
                                 .toString()),
                       ),
@@ -921,8 +921,7 @@ class _support_addState extends State<support_add> {
 
                       _privilegeCubit.checkPrivilege('43')
                           ? _invoice!.dateinstall_done == null
-                              ?
-                      ElevatedButton(
+                              ? ElevatedButton(
                                   style: ButtonStyle(
                                       backgroundColor:
                                           MaterialStateProperty.all(
@@ -1483,7 +1482,8 @@ class _support_addState extends State<support_add> {
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedTime);
   }
- Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
+
+  Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: stime,
@@ -1521,7 +1521,7 @@ class _support_addState extends State<support_add> {
         _currentDate = pickedDate;
 
         final time = Duration(
-            hours:   DateTime.now().hour,
+            hours: DateTime.now().hour,
             minutes: DateTime.now().minute,
             seconds: DateTime.now().second);
 

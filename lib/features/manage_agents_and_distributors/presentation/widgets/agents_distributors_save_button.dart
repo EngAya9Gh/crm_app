@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../model/agent_distributor_model.dart';
 import '../../../../ui/widgets/custom_widget/custombutton.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import '../manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart';
 
 class SaveButton extends StatelessWidget {
@@ -23,18 +22,18 @@ class SaveButton extends StatelessWidget {
       width: double.infinity,
       text: 'حفظ',
       onTap: () async {
-        final currentUser=context.read<UserProvider>().currentUser.idUser;
+        final String? currentUser = AppConstants.currentUserId(context);
 
         cubit.formKey.currentState!.save();
         if (cubit.formKey.currentState!.validate()) {
           await cubit.actionAgentDistributor(
             agentId: agentDistributorModel?.idAgent,
-            currenuser: currentUser
+            currentUser: currentUser,
           );
           AppNavigator.pop();
         } else {
-          if (cubit.agentDistributorActionEntity.type == null &&
-              cubit.agentDistributorActionEntity.name != null) {
+          if (cubit.agentDistributorActionModel.type == null &&
+              cubit.agentDistributorActionModel.name != null) {
             AppConstants.showSnakeBar(context, "من فضلك اختر النوع");
           } else {
             AppConstants.showSnakeBar(

@@ -14,6 +14,7 @@ abstract class EndPoints {
   static const task = _Task();
   static const participate = _Participate();
   static const city = _City();
+  static const agentDistributor = _AgentDistributor();
 }
 
 class _App {
@@ -121,4 +122,17 @@ class _City {
   const _City();
 
   final String getCitiesFromMainCitiesIds = 'getCitiesFromMainCitiesIds';
+}
+
+class _AgentDistributor {
+  const _AgentDistributor();
+
+  final String getAgentClients = 'getAgentClints/';
+  final String getAgentById = 'agent/get_agent_byId.php';
+  final String getAgentInvoicesList = 'getAgentInvoices/';
+  final String getAgentCommentsList = 'getAgentComments/';
+  final String addCommentAgent = 'addCommentAgent';
+  final String getDateVisitAgent = 'getDateVisitAgent/';
+  final String addAgentDate = 'client/invoice/add_date_install.php';
+  final String doneTraining = 'agent/done_training.php';
 }

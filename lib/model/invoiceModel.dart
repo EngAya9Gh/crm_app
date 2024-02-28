@@ -113,6 +113,7 @@ class InvoiceModel extends CacheRepository {
   String? reason_suspend;
   String? reason_notReady;
   String? invoice_source;
+
   //endregion
 
   //region Constructor
@@ -838,76 +839,97 @@ class FileAttach {
 }
 
 class DateInstallationClient {
-  final String? idclients_date;
-  final String? fk_user;
-  final String? is_done;
-  final String? fk_client;
-  final String? fk_invoice;
-  final DateTime? date_client_visit;
-  final String? fkAgent;
-  final DateTime? date_end;
+  final String? idClientsDate;
+  final DateTime? dateClientVisit;
+  final String? fkUser;
+  final String? isDone;
+  final String? fkClient;
+  final String? fkInvoice;
   final InstallationTypeEnum? typeDate;
+  final String? processReason;
+  final String? userIdProcess;
+  final String? fkAgent;
+  final DateTime? dateEnd;
+  final String? nameAgent;
 
   DateInstallationClient({
-    this.idclients_date,
-    this.fk_user,
-    this.is_done,
-    this.fk_client,
-    this.fk_invoice,
-    this.date_client_visit,
-    this.fkAgent,
+    this.idClientsDate,
+    this.dateClientVisit,
+    this.fkUser,
+    this.isDone,
+    this.fkClient,
+    this.fkInvoice,
     this.typeDate,
-    this.date_end,
+    this.processReason,
+    this.userIdProcess,
+    this.fkAgent,
+    this.dateEnd,
+    this.nameAgent,
   });
 
   factory DateInstallationClient.fromJson(Map<String, dynamic> map) {
     return DateInstallationClient(
-      idclients_date: map['idclients_date'].toString(),
-      fk_user: map['fk_user'].toString(),
-      is_done: map['is_done'].toString(),
-      fk_client: map['fk_client'].toString(),
-      fk_invoice: map['fk_invoice'].toString(),
-      date_client_visit: DateTime.tryParse(map['date_client_visit']),
-      fkAgent: map['fk_agent'].toString(),
-      date_end: DateTime.tryParse(map['date_end']),
+      idClientsDate: map['idclients_date'].toString(),
+      dateClientVisit: DateTime.tryParse(map['date_client_visit'] ?? ''),
+      fkUser: map['fk_user'].toString(),
+      isDone: map['is_done'].toString(),
+      fkClient: map['fk_client'] ?? '',
+      fkInvoice: map['fk_invoice'] ?? '',
       typeDate: map['type_date'] == InstallationTypeEnum.field.name
           ? InstallationTypeEnum.field
           : InstallationTypeEnum.online,
+      processReason: map['processReason'] ?? '',
+      userIdProcess: map['user_id_process'] ?? '',
+      fkAgent: map['fk_agent'].toString(),
+      dateEnd: DateTime.tryParse(map['date_end'] ?? ''),
+      nameAgent: map['name_agent'],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'date_client_visit': date_client_visit,
-      'fk_user': fk_user,
-      'is_done': is_done,
-      "fk_agent": fkAgent,
-      "date_end": date_end,
-      "type_date": typeDate?.name,
+      'idclients_date': idClientsDate,
+      'date_client_visit': dateClientVisit?.toIso8601String(),
+      'fk_user': fkUser,
+      'is_done': isDone,
+      'fk_client': fkClient,
+      'fk_invoice': fkInvoice,
+      'type_date': typeDate?.name,
+      'processReason': processReason,
+      'user_id_process': userIdProcess,
+      'fk_agent': fkAgent,
+      'date_end': dateEnd,
+      'name_agent': nameAgent,
     };
   }
 
   DateInstallationClient copyWith({
-    String? idclients_date,
-    String? fk_user,
-    String? is_done,
-    String? fk_client,
-    String? fk_invoice,
-    DateTime? date_client_visit,
-    String? fkAgent,
-    DateTime? date_end,
+    String? idClientsDate,
+    DateTime? dateClientVisit,
+    String? fkUser,
+    String? isDone,
+    String? fkClient,
+    String? fkInvoice,
     InstallationTypeEnum? typeDate,
+    String? processReason,
+    String? userIdProcess,
+    String? fkAgent,
+    DateTime? dateEnd,
+    String? nameAgent,
   }) {
     return DateInstallationClient(
-      idclients_date: idclients_date ?? this.idclients_date,
-      fk_user: fk_user ?? this.fk_user,
-      is_done: is_done ?? this.is_done,
-      fk_client: fk_client ?? this.fk_client,
-      fk_invoice: fk_invoice ?? this.fk_invoice,
-      date_client_visit: date_client_visit ?? this.date_client_visit,
-      fkAgent: fkAgent ?? this.fkAgent,
-      date_end: date_end ?? this.date_end,
+      idClientsDate: idClientsDate ?? this.idClientsDate,
+      dateClientVisit: dateClientVisit ?? this.dateClientVisit,
+      fkUser: fkUser ?? this.fkUser,
+      isDone: isDone ?? this.isDone,
+      fkClient: fkClient ?? this.fkClient,
+      fkInvoice: fkInvoice ?? this.fkInvoice,
       typeDate: typeDate ?? this.typeDate,
+      processReason: processReason ?? this.processReason,
+      userIdProcess: userIdProcess ?? this.userIdProcess,
+      fkAgent: fkAgent ?? this.fkAgent,
+      dateEnd: dateEnd ?? this.dateEnd,
+      nameAgent: nameAgent ?? this.nameAgent,
     );
   }
 }

@@ -292,22 +292,22 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
   List<DateInstallationClient> get finishedVisits {
     return agentDatesList
         .where((element) =>
-            element.is_done == VisitsStatusEnum.finished.index.toString())
+            element.isDone == VisitsStatusEnum.finished.index.toString())
         .toList();
   }
 
   List<DateInstallationClient> get unfinishedVisits {
     return agentDatesList
         .where((element) =>
-            element.is_done == VisitsStatusEnum.unfinished.index.toString() ||
-            element.is_done == VisitsStatusEnum.scheduled.index.toString())
+            element.isDone == VisitsStatusEnum.unfinished.index.toString() ||
+            element.isDone == VisitsStatusEnum.scheduled.index.toString())
         .toList();
   }
 
   List<DateInstallationClient> get canceledVisits {
     return agentDatesList
         .where((element) =>
-            element.is_done == VisitsStatusEnum.canceled.index.toString())
+            element.isDone == VisitsStatusEnum.canceled.index.toString())
         .toList();
   }
 

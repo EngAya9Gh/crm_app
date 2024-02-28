@@ -5,25 +5,28 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../api/api.dart';
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/maincitymodel.dart';
-import '../../../../../view_model/user_vm_provider.dart';
-import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../domain/entities/agent_distributor_action_entity.dart';
+import '../../../data/models/agent_distributor_action_model.dart';
+import '../../../domain/use_cases/add_agent_usecase.dart';
 import '../../../domain/use_cases/get_all_cities_usecase.dart';
+import '../../../domain/use_cases/update_agent_usecase.dart';
 
 part 'agents_distributors_actions_state.dart';
 
 @injectable
 class AgentsDistributorsActionsCubit
     extends Cubit<AgentsDistributorsActionsState> {
-  AgentsDistributorsActionsCubit(this.getAllCitiesUseCase)
-      : super(AgentsDistributorsActionsInitial());
+  AgentsDistributorsActionsCubit(
+    this.getAllCitiesUseCase,
+    this.addAgentUseCase,
+    this.updateAgentUseCase,
+  ) : super(AgentsDistributorsActionsInitial());
 
   final GetAllCitiesUseCase getAllCitiesUseCase;
+  final AddAgentUseCase addAgentUseCase;
+  final UpdateAgentUseCase updateAgentUseCase;
 
   // support tab Keys and controllers
   final supportFormKey = GlobalKey<FormState>();
@@ -31,6 +34,7 @@ class AgentsDistributorsActionsCubit
       TextEditingController();
   final TextEditingController supportDateTypeController =
       TextEditingController();
+
   // keys and controllers
   final formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
@@ -41,12 +45,11 @@ class AgentsDistributorsActionsCubit
   File? logoFile;
   List<CityModel> citiesList = [];
 
-  AgentDistributorActionEntity agentDistributorActionEntity =
-      AgentDistributorActionEntity();
+  AgentDistributorActionModel agentDistributorActionModel =
+      AgentDistributorActionModel();
 
   MainCityModel? selectedCountry;
   CityModel? selectedCountryFromCity;
-  bool isLoadingAction = false;
 
   void loadCurrentAgentData(AgentDistributorModel? agentDistributorModel) {
     if (agentDistributorModel == null) {
@@ -59,7 +62,7 @@ class AgentsDistributorsActionsCubit
       descriptionController.text = agentDistributorModel.description;
       onSelectADType(ADType.values.firstWhere((element) =>
           element.index == int.parse(agentDistributorModel.typeAgent)));
-      agentDistributorActionEntity = agentDistributorActionEntity.copyWith(
+      agentDistributorActionModel = agentDistributorActionModel.copyWith(
         name: agentDistributorModel.nameAgent,
         email: agentDistributorModel.emailAgent,
         phoneNumber: agentDistributorModel.mobileAgent,
@@ -80,10 +83,9 @@ class AgentsDistributorsActionsCubit
   }
 
   void resetAgentDistributorActionEntity() {
-    agentDistributorActionEntity = AgentDistributorActionEntity();
+    agentDistributorActionModel = AgentDistributorActionModel();
     selectedCountry = null;
     selectedCountryFromCity = null;
-    isLoadingAction = false;
     emit(AgentsDistributorsActionsInitial());
   }
 
@@ -111,94 +113,117 @@ class AgentsDistributorsActionsCubit
           }
         }
         emit(AgentsDistributorsActionsSuccess());
-        _loadCurrentCity(agentDistributorActionEntity.cityId);
+        _loadCurrentCity(agentDistributorActionModel.cityId);
+      },
+    );
+  }
+
+  Future<void> addAgent() async {
+    emit(AgentsDistributorsActionsLoading());
+    final response = await addAgentUseCase(
+      AddAgentParams(
+        agentActionModel: agentDistributorActionModel,
+        file: null,
+        files: null,
+      ),
+    );
+
+    response.fold(
+      (l) {
+        emit(AgentsDistributorsActionsFailure(l));
+      },
+      (r) {
+        emit(AgentsDistributorsActionsSuccess());
+      },
+    );
+  }
+
+  Future<void> updateAgent({
+    required String agentId,
+  }) async {
+    emit(AgentsDistributorsActionsLoading());
+    final response = await updateAgentUseCase(
+      UpdateAgentParams(
+        agentId: agentId,
+        agentActionModel: agentDistributorActionModel,
+        file: null,
+        files: null,
+      ),
+    );
+
+    response.fold(
+      (l) {
+        emit(AgentsDistributorsActionsFailure(l));
+      },
+      (r) {
+        emit(AgentsDistributorsActionsSuccess());
       },
     );
   }
 
   Future<void> actionAgentDistributor({
     String? agentId,
-    String? currenuser,
+    String? currentUser,
   }) async {
-    getCurrentUser(currenuser);
-    try {
-      isLoadingAction = true;
-      emit(AgentsDistributorsActionsLoading());
-      dynamic response;
-      if (agentId == null) {
-        response = await Api().postRequestWithFile(
-          "array",
-          url + 'agent/add_agent.php',
-          agentDistributorActionEntity.toMap(),
-          agentDistributorActionEntity.filelogo,
-          null,
-        );
-      } else {
-        response = await Api().postRequestWithFile(
-          "array",
-          url + 'agent/update_agent.php?id_agent=$agentId',
-          agentDistributorActionEntity.toMap(),
-          agentDistributorActionEntity.filelogo,
-          null,
-        );
-      }
-
-      resetAgentDistributorActionEntity();
-    } catch (e) {
-      isLoadingAction = false;
-      emit(AgentsDistributorsActionsFailure(e.toString()));
+    getCurrentUser(currentUser);
+    if (agentId == null) {
+      await addAgent();
+    } else {
+      await updateAgent(agentId: agentId);
     }
+    resetAgentDistributorActionEntity();
   }
 
   onSelectADType(ADType type) {
-    if (type == agentDistributorActionEntity.type) {
-      agentDistributorActionEntity = agentDistributorActionEntity.resetType();
+    if (type == agentDistributorActionModel.type) {
+      agentDistributorActionModel = agentDistributorActionModel.resetType();
       emit(AgentsDistributorsActionsTypeChanged());
       return;
     }
 
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(type: type);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(type: type);
     emit(AgentsDistributorsActionsTypeChanged());
   }
 
   onSelectCountry(String? countryId) {
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(countryId: countryId);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(countryId: countryId);
   }
+
   getCurrentUser(String? fk_user_add) {
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(currentUser: fk_user_add);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(currentUser: fk_user_add);
   }
 
   onSelectCity(String cityId) {
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(cityId: cityId);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(cityId: cityId);
   }
 
   onSaveName(String? name) {
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(name: name);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(name: name);
   }
 
   onSaveEmail(String email) {
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(email: email);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(email: email);
   }
 
   onSaveDescription(String description) {
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(description: description);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(description: description);
   }
 
   onSaveImageFile() {
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(filelogo: logoFile);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(filelogo: logoFile);
   }
 
   onSavePhoneNumber(String phoneNumber) {
-    agentDistributorActionEntity =
-        agentDistributorActionEntity.copyWith(phoneNumber: phoneNumber);
+    agentDistributorActionModel =
+        agentDistributorActionModel.copyWith(phoneNumber: phoneNumber);
   }
 
   @override
@@ -208,6 +233,8 @@ class AgentsDistributorsActionsCubit
     phoneNumberController.dispose();
     descriptionController.dispose();
     logoController.dispose();
+    supportSelectedDateController.dispose();
+    supportDateTypeController.dispose();
     return super.close();
   }
 }
