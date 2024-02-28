@@ -376,6 +376,12 @@ class _ActionUserPageState extends State<ActionUserPage> {
     final fkCountry = currentUser.fkCountry;
     final userID = currentUser.idUser;
 
+    if (region == null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('من فضلك اختر الفرع')));
+      return;
+    }
+
     _usersCubit.actionUser(
       updateUser: user,
       addUserParams: ActionUserParams(
@@ -388,7 +394,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
         levelName: levelName,
         regionName: regionName,
         fkUserAction: userID!,
-        fkRegion: region!,
+        fkRegion: region,
         selectedMainCityIds: isEdit
             ? (hasChanges ? selectedMainCityIds : [])
             : selectedMainCityIds,
