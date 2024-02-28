@@ -794,7 +794,7 @@ class _support_addState extends State<support_add> {
                         child: cardRow(
                             title: 'عدد الزيارات المتبقية',
                             value: datesInstallation
-                                .where((element) => element.isDone == "0")
+                                .where((element) => element.isDone == "0"||element.isDone=='3')
                                 .length
                                 .toString()),
                       ),
