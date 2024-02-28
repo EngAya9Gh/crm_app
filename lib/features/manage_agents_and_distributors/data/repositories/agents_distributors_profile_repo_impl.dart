@@ -45,7 +45,6 @@ class AgentsDistributorsProfileRepoImpl
     return datasource.addAgentComment(agentId: agentId, content: content);
   }
 
-
   @override
   Future<Either<String, List<DateInstallationClient>>> getDateVisitAgent({
     required String agentId,
@@ -61,16 +60,15 @@ class AgentsDistributorsProfileRepoImpl
   }
 
   @override
-  Future<Either<String, AgentDistributorModel>> getAgentByID({required String agentId}) {
+  Future<Either<String, AgentDistributorModel>> getAgentByID(
+      {required String agentId}) {
     // TODO: implement getAgentByID
-    return datasource.getAgent(agentId: agentId);
-
+    return datasource.getAgentById(agentId: agentId);
   }
 
   @override
-  Future<Either<String, AgentDistributorModel>> doneTraining({required String agentId, required String fkuser}) {
-
-  return datasource.doneTraining(agentId: agentId,fkuser:fkuser );
-
+  Future<Either<String, AgentDistributorModel>> doneTraining(
+      {required String agentId, required String fkuser}) {
+    return datasource.doneTraining(agentId: agentId, fkUser: fkuser);
   }
 }

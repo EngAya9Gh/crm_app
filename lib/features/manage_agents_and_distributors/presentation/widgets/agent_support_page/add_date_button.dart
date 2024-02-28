@@ -124,9 +124,10 @@ class _AddDateButtonState extends State<AddDateButton> {
                                         _onTap(
                                           context: context,
                                           bloc: bloc,
-                                          dateClientVisit:
-                                              bloc.handleVisitTime(bloc.supportTimeController.text),
-                                          date_end:  bloc.handleVisitTime(bloc.supportTimeEndController.text),
+                                          dateClientVisit: bloc.handleVisitTime(
+                                              bloc.supportTimeController.text),
+                                          date_end: bloc.handleVisitTime(bloc
+                                              .supportTimeEndController.text),
                                           fkAgent: widget.agentId,
                                           typeDate: selectedInstallationType ==
                                                   'ميداني'
@@ -173,12 +174,12 @@ class _AddDateButtonState extends State<AddDateButton> {
   }) {
     final String currentUserId = AppConstants.currentUserId(context)!;
     final DateInstallationClient dateModel = DateInstallationClient(
-      date_client_visit: dateClientVisit,
-      fk_user: currentUserId,
-      is_done: '0',
+      dateClientVisit: dateClientVisit,
+      fkUser: currentUserId,
+      isDone: '0',
       fkAgent: fkAgent,
       typeDate: typeDate,
-      date_end: date_end,
+      dateEnd: date_end,
     );
 
     bloc.add(AddAgentDateEvent(

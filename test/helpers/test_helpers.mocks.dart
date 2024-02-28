@@ -5,6 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
 
+import 'package:crm_smart/core/api/api_services.dart' as _i10;
 import 'package:crm_smart/core/common/models/profile_invoice_model.dart' as _i7;
 import 'package:crm_smart/core/common/widgets/profile_comments_model.dart'
     as _i8;
@@ -15,8 +16,8 @@ import 'package:crm_smart/features/manage_agents_and_distributors/domain/reposit
 import 'package:crm_smart/model/agent_distributor_model.dart' as _i6;
 import 'package:crm_smart/model/invoiceModel.dart' as _i9;
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:http/http.dart' as _i11;
-import 'package:mockito/annotations.dart' as _i10;
+import 'package:http/http.dart' as _i12;
+import 'package:mockito/annotations.dart' as _i11;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -235,10 +236,114 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
       ) as _i4.Future<_i2.Either<String, void>>);
 }
 
+/// A class which mocks [ApiServices].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockApiServices extends _i1.Mock implements _i10.ApiServices {
+  MockApiServices() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<dynamic> get({
+    required String? endPoint,
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #get,
+          [],
+          {
+            #endPoint: endPoint,
+            #data: data,
+            #queryParameters: queryParameters,
+            #headers: headers,
+          },
+        ),
+        returnValue: _i4.Future<dynamic>.value(),
+      ) as _i4.Future<dynamic>);
+
+  @override
+  _i4.Future<dynamic> post({
+    required String? endPoint,
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    bool? isFormData = false,
+    Map<String, dynamic>? headers,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #post,
+          [],
+          {
+            #endPoint: endPoint,
+            #data: data,
+            #queryParameters: queryParameters,
+            #isFormData: isFormData,
+            #headers: headers,
+          },
+        ),
+        returnValue: _i4.Future<dynamic>.value(),
+      ) as _i4.Future<dynamic>);
+
+  @override
+  _i4.Future<dynamic> patch({
+    required String? endPoint,
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #patch,
+          [],
+          {
+            #endPoint: endPoint,
+            #data: data,
+            #queryParameters: queryParameters,
+            #headers: headers,
+          },
+        ),
+        returnValue: _i4.Future<dynamic>.value(),
+      ) as _i4.Future<dynamic>);
+
+  @override
+  _i4.Future<dynamic> delete({
+    required String? endPoint,
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #delete,
+          [],
+          {
+            #endPoint: endPoint,
+            #data: data,
+            #queryParameters: queryParameters,
+            #headers: headers,
+          },
+        ),
+        returnValue: _i4.Future<dynamic>.value(),
+      ) as _i4.Future<dynamic>);
+
+  @override
+  void changeBaseUrl(String? baseUrl) => super.noSuchMethod(
+        Invocation.method(
+          #changeBaseUrl,
+          [baseUrl],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
 /// A class which mocks [MockSpec].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class HttpClientMock extends _i1.Mock implements _i10.MockSpec<_i11.Client> {
+class HttpClientMock extends _i1.Mock implements _i11.MockSpec<_i12.Client> {
   HttpClientMock() {
     _i1.throwOnMissingStub(this);
   }

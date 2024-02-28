@@ -926,8 +926,8 @@ class invoice_vm extends ChangeNotifier {
     }
     List<DateInstallationClient> list = invoice.datesInstallationClient ?? [];
     list = list
-        .map((e) => e.idclients_date == event.idClientsDate
-            ? e.copyWith(is_done: '1')
+        .map((e) => e.idClientsDate == event.idClientsDate
+            ? e.copyWith(isDone: '1')
             : e)
         .toList();
 

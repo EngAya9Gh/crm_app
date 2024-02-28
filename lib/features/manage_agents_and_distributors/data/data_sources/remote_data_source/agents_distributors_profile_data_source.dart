@@ -14,10 +14,6 @@ abstract class AgentsDistributorsProfileDataSource {
     required String agentId,
   });
 
-  Future<Either<String, AgentDistributorModel>> getAgent({
-    required String agentId,
-  });
-
   Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoiceList({
     required String agentId,
   });
@@ -31,17 +27,21 @@ abstract class AgentsDistributorsProfileDataSource {
     required String content,
   });
 
-  Future<Either<String, AgentDistributorModel>> doneTraining({
-    required String agentId,
-    required String fkuser,
-  });
-
   Future<Either<String, List<DateInstallationClient>>> getDateVisitAgent({
     required String agentId,
   });
 
   Future<Either<String, void>> addAgentDate({
     required DateInstallationClient agentDateModel,
+  });
+
+  Future<Either<String, AgentDistributorModel>> doneTraining({
+    required String agentId,
+    required String fkUser,
+  });
+
+  Future<Either<String, AgentDistributorModel>> getAgentById({
+    required String agentId,
   });
 }
 
@@ -57,12 +57,12 @@ class AgentsDistributorsProfileDataSourceImpl
   }) async {
     try {
       dio.changeBaseUrl(EndPoints.apiBaseUrl2);
-      final response = await dio.get(endPoint: "getAgentClints/$agentId");
+      final endPoint = EndPoints.agentDistributor.getAgentClients;
+      final response = await dio.get(endPoint: "$endPoint$agentId");
 
       final data = response['data'];
 
       final List<ClientModel> clientsList = [];
-      print("data.length is => ${data.length}");
       for (int i = 0; i < data.length; i++) {
         print("index is => $i");
         print("data[i] is => ${data[i]}");
@@ -77,11 +77,13 @@ class AgentsDistributorsProfileDataSourceImpl
   }
 
   @override
-  Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoiceList(
-      {required String agentId}) async {
+  Future<Either<String, List<ProfileInvoiceModel>>> getAgentInvoiceList({
+    required String agentId,
+  }) async {
     try {
       dio.changeBaseUrl(EndPoints.apiBaseUrl2);
-      final response = await dio.get(endPoint: "getAgentInvoices/$agentId");
+      final endPoint = EndPoints.agentDistributor.getAgentInvoicesList;
+      final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];
 
       final List<ProfileInvoiceModel> invoicesList = [];
@@ -97,11 +99,13 @@ class AgentsDistributorsProfileDataSourceImpl
   }
 
   @override
-  Future<Either<String, List<ProfileCommentModel>>> getAgentCommentsList(
-      {required String agentId}) async {
+  Future<Either<String, List<ProfileCommentModel>>> getAgentCommentsList({
+    required String agentId,
+  }) async {
     try {
       dio.changeBaseUrl(EndPoints.apiBaseUrl2);
-      final response = await dio.get(endPoint: "getAgentComments/$agentId");
+      final endPoint = EndPoints.agentDistributor.getAgentCommentsList;
+      final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];
 
       final List<ProfileCommentModel> commentsList = [];
@@ -123,7 +127,8 @@ class AgentsDistributorsProfileDataSourceImpl
   }) async {
     try {
       dio.changeBaseUrl(EndPoints.apiBaseUrl2);
-      final response = await dio.post(endPoint: "addCommentAgent", data: {
+      final endPoint = EndPoints.agentDistributor.addCommentAgent;
+      final response = await dio.post(endPoint: endPoint, data: {
         "agent_id": agentId,
         "content": content,
       });
@@ -143,7 +148,8 @@ class AgentsDistributorsProfileDataSourceImpl
   }) async {
     try {
       dio.changeBaseUrl(EndPoints.apiBaseUrl2);
-      final response = await dio.get(endPoint: "getDateVisitAgent/$agentId");
+      final endPoint = EndPoints.agentDistributor.getDateVisitAgent;
+      final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];
 
       final List<DateInstallationClient> visitDates = [];
@@ -164,14 +170,11 @@ class AgentsDistributorsProfileDataSourceImpl
   }) async {
     try {
       dio.changeBaseUrl(EndPoints.baseUrl);
+      final endPoint = EndPoints.agentDistributor.addAgentDate;
       final response = await dio.post(
-        endPoint: "client/invoice/add_date_install.php",
+        endPoint: endPoint,
         data: agentDateModel.toMap(),
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
       );
-      print("response => $response");
       return Right(null);
     } catch (e) {
       print("Error in addAgentDate: $e");
@@ -180,7 +183,34 @@ class AgentsDistributorsProfileDataSourceImpl
   }
 
   @override
-  Future<Either<String, AgentDistributorModel>> getAgent({
+  Future<Either<String, AgentDistributorModel>> doneTraining({
+    required String agentId,
+    required String fkUser,
+  }) async {
+    try {
+      dio.changeBaseUrl(EndPoints.baseUrl);
+      final endPoint = EndPoints.agentDistributor.doneTraining;
+      final response = await dio.post(
+        endPoint: endPoint,
+        data: {"fkuser_training": fkUser},
+        queryParameters: {"id_agent": agentId},
+      );
+
+      // todo : ask backend to convert the response from List<Map> to Map
+      // todo : and change message to data
+      final List data = response['message'];
+      final AgentDistributorModel agent =
+          AgentDistributorModel.fromJson(data.first);
+
+      return Right(agent);
+    } catch (e) {
+      print("Error in done training: $e");
+      return Left("Error in training: $e");
+    }
+  }
+
+  @override
+  Future<Either<String, AgentDistributorModel>> getAgentById({
     required String agentId,
   }) async {
     try {
@@ -197,28 +227,6 @@ class AgentsDistributorsProfileDataSourceImpl
     } catch (e) {
       print("Error in getAgent: $e");
       return Left("Error in getAgent: $e");
-    }
-  }
-
-  @override
-  Future<Either<String, AgentDistributorModel>> doneTraining(
-      {required String agentId, required String fkuser}) async {
-    try {
-      dio.changeBaseUrl(EndPoints.baseUrl);
-      final response = await dio
-          .post(endPoint: "agent/done_training.php?id_agent=$agentId", data: {
-        "fkuser_training": fkuser,
-      });
-
-      final List data = response['message'];
-      // todo : ask backend to convert the response from List<Map> to Map
-      final AgentDistributorModel agent =
-          AgentDistributorModel.fromJson(data.first);
-
-      return Right(agent);
-    } catch (e) {
-      print("Error in done training: $e");
-      return Left("Error in training: $e");
     }
   }
 }
