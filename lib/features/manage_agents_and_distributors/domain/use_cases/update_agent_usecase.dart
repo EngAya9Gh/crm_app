@@ -24,14 +24,12 @@ class UpdateAgentParams {
   final String agentId;
   final AgentDistributorActionModel agentActionModel;
   final File? file;
-  final File? fileLogo;
   final List<File>? files;
 
   UpdateAgentParams({
     required this.agentId,
     required this.agentActionModel,
     this.file,
-    this.fileLogo,
     this.files,
   });
 }

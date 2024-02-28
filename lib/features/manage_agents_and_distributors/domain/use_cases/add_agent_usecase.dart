@@ -22,13 +22,11 @@ class AddAgentUseCase extends UseCase<Either<String, void>, AddAgentParams> {
 class AddAgentParams {
   final AgentDistributorActionModel agentActionModel;
   final File? file;
-  final File? fileLogo;
   final List<File>? files;
 
   AddAgentParams({
     required this.agentActionModel,
     this.file,
-    this.fileLogo,
     this.files,
   });
 }

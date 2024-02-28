@@ -55,7 +55,7 @@ class AgentsDistributorsActionsDataSourceImpl
         url + 'agent/add_agent.php',
         addAgentParams.agentActionModel.toMap(),
         addAgentParams.file,
-        addAgentParams.fileLogo,
+        addAgentParams.agentActionModel.filelogo,
       );
       return Right(null);
     } catch (e) {
@@ -74,7 +74,7 @@ class AgentsDistributorsActionsDataSourceImpl
         url + 'agent/update_agent.php?id_agent=${updateAgentParams.agentId}',
         updateAgentParams.agentActionModel.toMap(),
         updateAgentParams.file,
-        updateAgentParams.fileLogo,
+        updateAgentParams.agentActionModel.filelogo,
       );
       return Right(null);
     } catch (e) {

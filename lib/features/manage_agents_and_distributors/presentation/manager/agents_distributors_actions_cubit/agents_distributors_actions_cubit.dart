@@ -123,7 +123,6 @@ class AgentsDistributorsActionsCubit
     final response = await addAgentUseCase(
       AddAgentParams(
         agentActionModel: agentDistributorActionModel,
-        fileLogo: agentDistributorActionModel.filelogo,
         file: null,
         files: null,
       ),
@@ -147,7 +146,6 @@ class AgentsDistributorsActionsCubit
       UpdateAgentParams(
         agentId: agentId,
         agentActionModel: agentDistributorActionModel,
-        fileLogo: agentDistributorActionModel.filelogo,
         file: null,
         files: null,
       ),
@@ -235,6 +233,8 @@ class AgentsDistributorsActionsCubit
     phoneNumberController.dispose();
     descriptionController.dispose();
     logoController.dispose();
+    supportSelectedDateController.dispose();
+    supportDateTypeController.dispose();
     return super.close();
   }
 }
