@@ -50,7 +50,6 @@ class AgentsDistributorsActionsCubit
 
   MainCityModel? selectedCountry;
   CityModel? selectedCountryFromCity;
-  bool isLoadingAction = false;
 
   void loadCurrentAgentData(AgentDistributorModel? agentDistributorModel) {
     if (agentDistributorModel == null) {
@@ -87,7 +86,6 @@ class AgentsDistributorsActionsCubit
     agentDistributorActionModel = AgentDistributorActionModel();
     selectedCountry = null;
     selectedCountryFromCity = null;
-    isLoadingAction = false;
     emit(AgentsDistributorsActionsInitial());
   }
 
@@ -120,38 +118,62 @@ class AgentsDistributorsActionsCubit
     );
   }
 
+  Future<void> addAgent() async {
+    emit(AgentsDistributorsActionsLoading());
+    final response = await addAgentUseCase(
+      AddAgentParams(
+        agentActionModel: agentDistributorActionModel,
+        fileLogo: agentDistributorActionModel.filelogo,
+        file: null,
+        files: null,
+      ),
+    );
+
+    response.fold(
+      (l) {
+        emit(AgentsDistributorsActionsFailure(l));
+      },
+      (r) {
+        emit(AgentsDistributorsActionsSuccess());
+      },
+    );
+  }
+
+  Future<void> updateAgent({
+    required String agentId,
+  }) async {
+    emit(AgentsDistributorsActionsLoading());
+    final response = await updateAgentUseCase(
+      UpdateAgentParams(
+        agentId: agentId,
+        agentActionModel: agentDistributorActionModel,
+        fileLogo: agentDistributorActionModel.filelogo,
+        file: null,
+        files: null,
+      ),
+    );
+
+    response.fold(
+      (l) {
+        emit(AgentsDistributorsActionsFailure(l));
+      },
+      (r) {
+        emit(AgentsDistributorsActionsSuccess());
+      },
+    );
+  }
+
   Future<void> actionAgentDistributor({
     String? agentId,
-    String? currenuser,
+    String? currentUser,
   }) async {
-    getCurrentUser(currenuser);
-    try {
-      isLoadingAction = true;
-      emit(AgentsDistributorsActionsLoading());
-      if (agentId == null) {
-        await addAgentUseCase(
-          AddAgentParams(
-            agentActionModel: agentDistributorActionModel,
-            fileLogo: agentDistributorActionModel.filelogo,
-            file: null,
-          ),
-        );
-      } else {
-        await updateAgentUseCase(
-          UpdateAgentParams(
-            agentId: agentId,
-            agentActionModel: agentDistributorActionModel,
-            fileLogo: agentDistributorActionModel.filelogo,
-            file: null,
-          ),
-        );
-      }
-
-      resetAgentDistributorActionEntity();
-    } catch (e) {
-      isLoadingAction = false;
-      emit(AgentsDistributorsActionsFailure(e.toString()));
+    getCurrentUser(currentUser);
+    if (agentId == null) {
+      await addAgent();
+    } else {
+      await updateAgent(agentId: agentId);
     }
+    resetAgentDistributorActionEntity();
   }
 
   onSelectADType(ADType type) {
