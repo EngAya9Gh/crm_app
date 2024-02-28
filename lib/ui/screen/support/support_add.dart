@@ -798,6 +798,20 @@ class _support_addState extends State<support_add> {
                                 .length
                                 .toString()),
                       ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => support_table()));
+                        },
+                        child: cardRow(
+                            title: 'عدد الزيارات الملغية',
+                            value: datesInstallation
+                                .where((element) => element.isDone == "2")
+                                .length
+                                .toString()),
+                      ),
 
                       _invoice!.clientusername == null
                           ? Container()
