@@ -246,7 +246,9 @@ class _edit_invoiceState extends State<edit_invoice> {
 
                   cardRow(title: 'تاريخ عقد الإشتراك', value: widget.invoiceModel.dateCreate.toString()),
 
-                  cardRow(title: 'تاريخ اعتماد الفاتورة', value: widget.invoiceModel.date_approve.toString()),
+                  widget.invoiceModel.date_approve!=null?
+                  cardRow(title: 'تاريخ اعتماد الفاتورة', value: widget.invoiceModel.date_approve.toString())
+                  :Container(),
                   widget.invoiceModel.dateinstall_task!=null?
                   cardRow(title: 'تاريخ التركيب',
                       value: widget.invoiceModel.dateinstall_task.toString()):Container(),
