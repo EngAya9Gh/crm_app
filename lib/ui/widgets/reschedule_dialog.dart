@@ -69,7 +69,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
-        initialDate: currentDate,
+        initialDate: widget.time_from,
         firstDate: DateTime(2015),
         lastDate: DateTime(3010));
     if (pickedDate != null) //&& pickedDate != currentDate)

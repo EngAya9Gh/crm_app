@@ -62,7 +62,7 @@ class CustomDateTimePicker extends StatelessWidget {
         ? await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime.now(),
+            firstDate: DateTime(2018),
             lastDate: DateTime(2100),
           ).then((value) {
             if (value != null) {

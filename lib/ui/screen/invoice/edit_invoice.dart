@@ -82,9 +82,12 @@ class _edit_invoiceState extends State<edit_invoice> {
       Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(_currentDateApprove!);
     }
     _currentDateCreate = DateTime.parse(widget.invoiceModel.dateCreate.toString());
-    Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateCreate);
-    Provider.of<RegionProvider>(context, listen: false).changeVal(regoin);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue2(_currentDateCreate);
+      Provider.of<RegionProvider>(context, listen: false).changeVal(regoin);
     Provider.of<UserProvider>(context, listen: false).changeValUserID(iduser);
+    });
     super.initState();
   }
   @override
@@ -244,7 +247,9 @@ class _edit_invoiceState extends State<edit_invoice> {
                   cardRow(title: 'تاريخ عقد الإشتراك', value: widget.invoiceModel.dateCreate.toString()),
 
                   cardRow(title: 'تاريخ اعتماد الفاتورة', value: widget.invoiceModel.date_approve.toString()),
-                  cardRow(title: 'تاريخ التركيب', value: widget.invoiceModel.dateinstall_task.toString()),
+                  widget.invoiceModel.dateinstall_task!=null?
+                  cardRow(title: 'تاريخ التركيب',
+                      value: widget.invoiceModel.dateinstall_task.toString()):Container(),
 
                   SizedBox(
                     height: 10,
