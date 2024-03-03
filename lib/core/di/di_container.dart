@@ -28,7 +28,7 @@ abstract class AppModule {
   Future<SharedPreferences> get sharedPreferences =>
       SharedPreferences.getInstance();
   BaseOptions get dioOption => BaseOptions(
-        baseUrl: EndPoints.baseUrl,
+        baseUrl: EndPoints.phpUrl,
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 20),
         // headers: <String, String>{

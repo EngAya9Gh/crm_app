@@ -21,7 +21,7 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<List<ParticipateModel>>> getParticipateList(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.get(
           endPoint: EndPoints.participate.allParticipates,
           queryParameters: body);
@@ -42,7 +42,7 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<ParticipateModel>> addParticipate(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.post(
         endPoint: EndPoints.participate.addParticipate,
         data: body,
@@ -59,7 +59,7 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<ParticipateModel>> editParticipate(
       Map<String, dynamic> body, Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.post(
         endPoint: EndPoints.participate.updateParticipate,
         data: body,
@@ -77,12 +77,12 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<List<ParticipateClientModel>>>
       getParticipateClientsList(String participateId) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.get(
           endPoint:
               "${EndPoints.participate.allParticipateClients}/$participateId");
 
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       return ResponseWrapper<List<ParticipateClientModel>>(
         data: List.from((response['data'] as List<dynamic>).map(
             (e) => ParticipateClientModel.fromJson(e as Map<String, dynamic>))),
@@ -96,12 +96,12 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<List<ProfileInvoiceModel>>> getParticipateInvoicesList(
       String participateId) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.get(
           endPoint:
               "${EndPoints.participate.allParticipateInvoices}/$participateId");
 
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       return ResponseWrapper<List<ProfileInvoiceModel>>(
         data: List.from((response['data'] as List<dynamic>).map(
             (e) => ProfileInvoiceModel.fromJson(e as Map<String, dynamic>))),
@@ -115,7 +115,7 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<InvoiceModel>> getInvoiceDataById(
       Map<String, dynamic> param) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.get(
           endPoint: EndPoints.participate.IvoiceByID, queryParameters: param);
 
@@ -141,12 +141,12 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<List<ProfileCommentModel>>> getParticipateCommentsList(
       String participateId) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.get(
           endPoint:
               "${EndPoints.participate.allParticipateComments}/$participateId");
 
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       return ResponseWrapper<List<ProfileCommentModel>>(
         data: List.from((response['data'] as List<dynamic>).map(
             (e) => ProfileCommentModel.fromJson(e as Map<String, dynamic>))),
@@ -160,11 +160,11 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<ProfileCommentModel>> addComment(
       {required Map<String, dynamic> body}) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.post(
           endPoint: EndPoints.participate.addParticipateComment, data: body);
 
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       return ResponseWrapper<ProfileCommentModel>.fromJson(
         response,
         (json) => ProfileCommentModel.fromJson(response['data']),

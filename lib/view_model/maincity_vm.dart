@@ -216,11 +216,11 @@ class MainCityProvider extends ChangeNotifier {
   }
 
   Future _fetchCitiesFromApi(List<String> mainCitiesIds) async {
-    getIt<ApiServices>().changeBaseUrl(EndPoints.apiBaseUrl2);
+    getIt<ApiServices>().changeBaseUrl(EndPoints.laravelUrl);
     final response = await getIt<ApiServices>().post(
         endPoint: EndPoints.city.getCitiesFromMainCitiesIds,
         data: {'mainCitiesIds': mainCitiesIds.toString()});
-    getIt<ApiServices>().changeBaseUrl(EndPoints.baseUrl);
+    getIt<ApiServices>().changeBaseUrl(EndPoints.phpUrl);
 
     return response;
   }

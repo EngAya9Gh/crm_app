@@ -1,8 +1,8 @@
 abstract class EndPoints {
   EndPoints._();
 
-  static const baseUrl = "http://smartcrm.ws/test/api/";
-  static const String apiBaseUrl2 = 'http://test.smartcrm.ws/api/';
+  static const phpUrl = "http://smartcrm.ws/test/api/";
+  static const String laravelUrl = 'http://test.smartcrm.ws/api/';
   static const care = _Care();
   static const client = _Client();
   static const users = _Users();
@@ -127,6 +127,7 @@ class _City {
 class _AgentDistributor {
   const _AgentDistributor();
 
+  final String getAgentsAndDistributors = 'agent/get_agent.php';
   final String getAgentClients = 'getAgentClints/';
   final String getAgentById = 'agent/get_agent_byId.php';
   final String getAgentInvoicesList = 'getAgentInvoices/';

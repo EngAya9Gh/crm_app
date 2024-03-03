@@ -8,7 +8,7 @@ import '../../utils/end_points.dart';
 Dio dioInit() {
   final dio = Dio(
     BaseOptions(
-      baseUrl: EndPoints.baseUrl,
+      baseUrl: EndPoints.phpUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {
