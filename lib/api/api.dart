@@ -127,6 +127,9 @@ class Api {
     var response = await request.close();
     var bytes = await consolidateHttpClientResponseBytes(response);
     String dir = (await getDownloadsDirectory())!.path;
+    print("dir => $dir");
+    String dir2 = (await getApplicationDocumentsDirectory()).path;
+    print("dir2 => $dir2");
     File file = new File('$dir/$filename');
     await file.writeAsBytes(bytes);
     return file;
