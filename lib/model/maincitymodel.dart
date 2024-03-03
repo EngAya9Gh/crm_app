@@ -40,7 +40,6 @@ class MainCityModel {
     );
   }
 
-
   @override
   String toString() {
     return 'MainCityModel{id_maincity: $id_maincity, fk_country: $fk_country, namemaincity: $namemaincity}';

@@ -32,6 +32,8 @@ class _ApiInterceptors extends Interceptor {
 
     options.headers['AuthToken'] =
         'Bearer ${getIt<SharedPreferences>().getString('token_user')}';
+    options.headers['Authorization'] =
+        'Bearer ${getIt<SharedPreferences>().getString('token_user')}';
     super.onRequest(options, handler);
   }
 

@@ -3,6 +3,8 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../api/api.dart';
 import '../../../../../constants.dart';
+import '../../../../../core/api/api_services.dart';
+import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../domain/use_cases/add_agent_usecase.dart';
 import '../../../domain/use_cases/update_agent_usecase.dart';
@@ -24,20 +26,25 @@ abstract class AgentsDistributorsActionsDataSource {
 @LazySingleton(as: AgentsDistributorsActionsDataSource)
 class AgentsDistributorsActionsDataSourceImpl
     extends AgentsDistributorsActionsDataSource {
-  final Api api;
+  final ApiServices apiServices;
 
-  AgentsDistributorsActionsDataSourceImpl(this.api);
+  AgentsDistributorsActionsDataSourceImpl(this.apiServices);
 
   @override
   Future<Either<String, List<CityModel>>> getAllCities({
     required String fkCountry,
   }) async {
     try {
-      final data =
-          await api.get(url: url + 'config/getcity.php?fk_country=$fkCountry');
+      apiServices.changeBaseUrl(EndPoints.phpUrl);
+      final response = await apiServices.get(
+        endPoint: "${EndPoints.city.getAllCities}$fkCountry",
+      );
+
+      final data = response["message"];
+
       final List<CityModel> citiesList = [];
-      for (int i = 0; i < data.length; i++) {
-        citiesList.add(CityModel.fromJson(data[i]));
+      for (var city in data) {
+        citiesList.add(CityModel.fromJson(city));
       }
       return Right(citiesList);
     } catch (e) {
