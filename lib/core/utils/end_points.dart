@@ -137,4 +137,5 @@ class _AgentDistributor {
   final String getDateVisitAgent = 'getDateVisitAgent/';
   final String addAgentDate = 'client/invoice/add_date_install.php';
   final String doneTraining = 'agent/done_training.php';
+  final String addAgent = 'agent/add_agent.php';
 }

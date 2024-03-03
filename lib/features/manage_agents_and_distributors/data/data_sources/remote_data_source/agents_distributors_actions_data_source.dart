@@ -57,12 +57,15 @@ class AgentsDistributorsActionsDataSourceImpl
     required AddAgentParams addAgentParams,
   }) async {
     try {
-      await Api().postRequestWithFile(
+      final endPoint = EndPoints.agentDistributor.addAgent;
+      apiServices.changeBaseUrl(EndPoints.phpUrl);
+      final response = await apiServices.postRequestWithFile(
         "array",
-        url + 'agent/add_agent.php',
+        endPoint,
         addAgentParams.agentActionModel.toMap(),
         addAgentParams.file,
         addAgentParams.agentActionModel.filelogo,
+        files: addAgentParams.files,
       );
       return Right(null);
     } catch (e) {
