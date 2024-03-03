@@ -123,36 +123,131 @@ class Api {
   }
 
   Future<File> downloadFile(String url, String filename) async {
+    // final Directory dir = await getApplicationDocumentsDirectory();
+    //
+    // final String fullTargetPath = '${dir.path}/$filename';
+    //
+    // File file = File(fullTargetPath);
+    // if (file.existsSync()) {
+    //   return file;
+    // }
+    // file = await file.create(recursive: true);
+    // final File file = File.fromUri(Uri.parse(fullPath));
+
+    // get the path to the document directory.
+    ///////////// todo: try these methods
+    final File generatedFile = await _generateFileInDevice(filename: filename);
+    // final File generatedFile = await _generateFileInDevice1(filename: filename);
+    // final File generatedFile = await _generateFileInDevice2(filename: filename);
+    // final File generatedFile = await _generateFileInDevice3(filename: filename);
+
+    /////////////
+
+    // fetch the file by the url
+    final Uint8List fetchedFileBytes = await _fetchFileFromApi(url);
+    // write the bytes from the fetched file to the local file
+    final file = await _writeBytesToFile(
+      bytes: fetchedFileBytes,
+      file: generatedFile,
+    );
+
+    return file;
+  }
+
+  Future<Uint8List> _fetchFileFromApi(String url) async {
     HttpClient httpClient = new HttpClient();
     var request = await httpClient.getUrl(Uri.parse(url));
     var response = await request.close();
     var bytes = await consolidateHttpClientResponseBytes(response);
+    return bytes;
+  }
 
-    Directory? dir = await getDownloadsDirectory();
-    bool isDirExist = await _checkIfDirExist(dir);
-    print("is first dir exist? => $isDirExist");
-    print("first dir path => ${dir!.path}");
-    if (isDirExist == false) {
-      dir = await getApplicationDocumentsDirectory();
-      isDirExist = await _checkIfDirExist(dir);
-      print("is second dir exist? => $isDirExist");
-      print("second dir path => ${dir.path}");
+  Future<File> _generateFileInDevice({
+    required String filename,
+  }) async {
+    final Directory? dir = await getDownloadsDirectory();
+
+    if (dir == null) {
+      dir!.create(recursive: true);
     }
 
-    final String directoryPath = dir!.path;
+    final String fullTargetPath = '${dir.path}/$filename';
 
-    final String fullPath = '$directoryPath/$filename';
-    File file = new File(fullPath);
-    file = await file.create(recursive: true);
-    // final File file = File.fromUri(Uri.parse(fullPath));
+    File file = await _createFileFromUrl(url: fullTargetPath);
 
-    await file.writeAsBytes(bytes);
     return file;
   }
 
-  Future<bool> _checkIfDirExist(Directory? dir) async {
-    if (dir == null) return false;
-    return await dir.exists();
+  Future<File> _generateFileInDevice1({
+    required String filename,
+  }) async {
+    final Directory dir = await getApplicationDocumentsDirectory();
+    dir.create(recursive: true);
+
+    final String fullTargetPath = '${dir.path}/$filename';
+
+    File file = await _createFileFromUrl(url: fullTargetPath);
+
+    return file;
+  }
+
+  Future<File> _generateFileInDevice2({
+    required String filename,
+  }) async {
+    Directory? dir = await getDownloadsDirectory();
+
+    if (dir == null) {
+      dir = await getApplicationDocumentsDirectory();
+      dir.create(recursive: true);
+    }
+
+    final String fullTargetPath = '${dir.path}/$filename';
+
+    File file = await _createFileFromUrl(url: fullTargetPath);
+
+    return file;
+  }
+
+  Future<File> _generateFileInDevice3({
+    required String filename,
+  }) async {
+    Directory dir = await getApplicationDocumentsDirectory();
+    dir.create(recursive: true);
+
+    final String fullTargetPath = '${dir.path}/$filename';
+
+    File file = await _createFileFromUrl1(url: fullTargetPath);
+
+    return file;
+  }
+
+  Future<File> _createFileFromUrl({
+    required String url,
+  }) async {
+    final File file = File(url);
+    final bool isExist = await file.exists();
+    if (isExist) return file;
+    return await file.create(recursive: true);
+  }
+
+  Future<File> _createFileFromUrl1({
+    required String url,
+  }) async {
+    if (!Platform.isIOS) {
+      return _createFileFromUrl(url: url);
+    }
+    final File file = File.fromUri(Uri.parse(url));
+    final bool isExist = await file.exists();
+    if (isExist) return file;
+    return await file.create(recursive: true);
+  }
+
+  Future<File> _writeBytesToFile({
+    required Uint8List bytes,
+    required File file,
+  }) async {
+    file = await file.writeAsBytes(bytes);
+    return file;
   }
 
   Future<dynamic> postCrudInvoiceFile(
