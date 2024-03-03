@@ -1,8 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../api/api.dart';
-import '../../../../../constants.dart';
 import '../../../../../core/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/maincitymodel.dart';
@@ -59,7 +57,7 @@ class AgentsDistributorsActionsDataSourceImpl
     try {
       final endPoint = EndPoints.agentDistributor.addAgent;
       apiServices.changeBaseUrl(EndPoints.phpUrl);
-      final response = await apiServices.postRequestWithFile(
+      await apiServices.postRequestWithFile(
         "array",
         endPoint,
         addAgentParams.agentActionModel.toMap(),
@@ -79,13 +77,16 @@ class AgentsDistributorsActionsDataSourceImpl
     required UpdateAgentParams updateAgentParams,
   }) async {
     try {
-      await Api().postRequestWithFile(
+      final endPoint =
+          "${EndPoints.agentDistributor.updateAgent}${updateAgentParams.agentId}";
+      await apiServices.postRequestWithFile(
         "array",
-        url + 'agent/update_agent.php?id_agent=${updateAgentParams.agentId}',
+        endPoint,
         updateAgentParams.agentActionModel.toMap(),
         updateAgentParams.file,
         updateAgentParams.agentActionModel.filelogo,
       );
+
       return Right(null);
     } catch (e) {
       print("Error in updateAgent: $e");

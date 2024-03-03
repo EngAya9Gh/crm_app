@@ -5,6 +5,7 @@ import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/data/models/agent_distributor_action_model.dart';
 import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/add_agent_usecase.dart';
+import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/update_agent_usecase.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -51,8 +52,6 @@ void main() {
 
     test("addAgent", () async {
       // Arrange
-      final String fkCountry = "1";
-
       final AddAgentParams addAgentParams = AddAgentParams(
         agentActionModel: AgentDistributorActionModel(),
         files: [],
@@ -77,6 +76,40 @@ void main() {
       // Act
       final Either<String, void> result =
           await dataSource.addAgent(addAgentParams: addAgentParams);
+
+      // Assert
+      expect(result, isA<Either<String, void>>());
+    });
+
+    test("updateAgent", () async {
+      // Arrange
+      final String agentId = "1";
+
+      final UpdateAgentParams updateAgentParams = UpdateAgentParams(
+        agentId: agentId,
+        agentActionModel: AgentDistributorActionModel(),
+        files: [],
+        file: File(""),
+      );
+
+      final endPoint = EndPoints.agentDistributor.updateAgent;
+
+      when(mockApiServices.postRequestWithFile(
+        "array",
+        endPoint,
+        updateAgentParams.agentActionModel.toMap(),
+        updateAgentParams.file,
+        updateAgentParams.agentActionModel.filelogo,
+        files: updateAgentParams.files,
+      )).thenAnswer(
+        (_) async => {
+          "message": "Agent Added Successfully",
+        },
+      );
+
+      // Act
+      final Either<String, void> result =
+          await dataSource.updateAgent(updateAgentParams: updateAgentParams);
 
       // Assert
       expect(result, isA<Either<String, void>>());
