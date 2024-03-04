@@ -105,37 +105,39 @@ class DioServices extends ApiServices {
   }) async {
     try {
       final formData = FormData.fromMap(data);
-      if (file != null) {
-        formData.files.add(MapEntry(
-          "file",
-          MultipartFile.fromFileSync(file.path,
-              filename: file.path.split('/').last),
-        ));
-      }
-      if (filelogo != null) {
-        formData.files.add(MapEntry(
-          "filelogo",
-          MultipartFile.fromFileSync(filelogo.path,
-              filename: filelogo.path.split('/').last),
-        ));
-      }
-      if (files != null) {
-        for (int i = 0; i < files.length; i++) {
-          final element = files[i];
-          formData.files.add(MapEntry(
-            "uploadfiles[$i]",
-            MultipartFile.fromFileSync(element.path,
-                filename: element.path.split('/').last),
-          ));
-        }
-      }
-      final res = await dio.post(
-        url,
-        data: formData,
-      );
+      formData..files.addAll(_getFiles(file, filelogo, files));
+      final res = await dio.post(url, data: formData);
       return res.data;
     } catch (e) {
       throw handleException(e);
     }
+  }
+
+  List<MapEntry<String, MultipartFile>> _getFiles(
+      File? file, File? filelogo, List<File>? files) {
+    final result = <MapEntry<String, MultipartFile>>[];
+    if (file != null) {
+      result.add(_mapFileToEntry("file", file));
+    }
+    if (filelogo != null) {
+      result.add(_mapFileToEntry("filelogo", filelogo));
+    }
+    if (files != null) {
+      result.addAll(files.asMap().entries.map((e) => _mapFileToEntry(
+            "uploadfiles[${e.key}]",
+            e.value,
+          )));
+    }
+    return result;
+  }
+
+  MapEntry<String, MultipartFile> _mapFileToEntry(String key, File file) {
+    return MapEntry(
+      key,
+      MultipartFile.fromFileSync(
+        file.path,
+        filename: file.path.split('/').last,
+      ),
+    );
   }
 }
