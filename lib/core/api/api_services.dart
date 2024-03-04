@@ -31,7 +31,6 @@ abstract class ApiServices {
   });
 
   Future<dynamic> postRequestWithFile(
-    String type,
     String url,
     Map<String, dynamic> data,
     File? file,

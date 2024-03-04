@@ -195,26 +195,25 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
       ) as _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>);
 
   @override
-  _i4.Future<
-      _i2.Either<String, List<_i9.DateInstallationClient>>> getDateVisitAgent(
-          {required String? agentId}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getDateVisitAgent,
-          [],
-          {#agentId: agentId},
-        ),
-        returnValue: _i4
-            .Future<_i2.Either<String, List<_i9.DateInstallationClient>>>.value(
-            _FakeEither_0<String, List<_i9.DateInstallationClient>>(
-          this,
-          Invocation.method(
-            #getDateVisitAgent,
-            [],
-            {#agentId: agentId},
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<String, List<_i9.DateInstallationClient>>>);
+  _i4.Future<_i2.Either<String, List<_i9.DateInstallationClient>>>
+      getDateVisitAgent({required String? agentId}) => (super.noSuchMethod(
+            Invocation.method(
+              #getDateVisitAgent,
+              [],
+              {#agentId: agentId},
+            ),
+            returnValue: _i4.Future<
+                    _i2.Either<String, List<_i9.DateInstallationClient>>>.value(
+                _FakeEither_0<String, List<_i9.DateInstallationClient>>(
+              this,
+              Invocation.method(
+                #getDateVisitAgent,
+                [],
+                {#agentId: agentId},
+              ),
+            )),
+          ) as _i4
+              .Future<_i2.Either<String, List<_i9.DateInstallationClient>>>);
 
   @override
   _i4.Future<_i2.Either<String, void>> addAgentDate(
@@ -333,7 +332,6 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
 
   @override
   _i4.Future<dynamic> postRequestWithFile(
-    String? type,
     String? url,
     Map<String, dynamic>? data,
     _i11.File? file,
@@ -344,7 +342,6 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
         Invocation.method(
           #postRequestWithFile,
           [
-            type,
             url,
             data,
             file,

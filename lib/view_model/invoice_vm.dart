@@ -17,7 +17,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 
+import '../core/api/api_services.dart';
 import '../core/common/helpers/checkSoragePermission.dart';
+import '../core/di/di_container.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/agent_distributor_model.dart';
 import '../model/calendar/event_model.dart';
@@ -1251,21 +1253,26 @@ class invoice_vm extends ChangeNotifier {
       String? idInvoice, File? file, File? myfilelogo, List<File> files) async {
     isloadingdone = true;
     notifyListeners();
-    // upload files first
-    final res1 = await _uploadFiles(
+
+    // upload files
+    await _uploadFiles(
       invoiceId: idInvoice!,
       body: body,
-      file: file,
+      file: null,
       files: files,
     );
 
-    InvoiceModel data = await Invoice_Service().updateInvoice(
+    ApiServices apiServices = getIt<ApiServices>();
+    final response = await apiServices.postRequestWithFile(
+      url + "client/invoice/updateinvoice.php",
       body,
-      idInvoice!,
       file,
       myfilelogo,
-      [], // send empty list to avoid upload files again
+      files: [], // empty to avoid duplicate
     );
+
+    final invoicesList = response["message"];
+    final invoice = InvoiceModel.fromJson(invoicesList[0]);
 
     final index = listinvoiceClient
         .indexWhere((element) => element.idInvoice == idInvoice);
@@ -1276,19 +1283,19 @@ class invoice_vm extends ChangeNotifier {
     //   "products":listproductinvoic.map((e)=>e.toJson()).toList()
     // });
     if (index != -1)
-      listinvoiceClient[index] = data; //InvoiceModel.fromJson(body);
+      listinvoiceClient[index] = invoice; //InvoiceModel.fromJson(body);
     final index1 =
         listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
-    if (index1 != -1) listinvoices[index1] = data;
+    if (index1 != -1) listinvoices[index1] = invoice;
 
     int index2 = listInvoicesAccept
         .indexWhere((element) => element.idInvoice == idInvoice);
-    if (index2 != -1) listInvoicesAccept[index2] = data;
+    if (index2 != -1) listInvoicesAccept[index2] = invoice;
 
     //InvoiceModel.fromJson(body);
     //listProduct.insert(0, ProductModel.fromJson(body));
     isloadingdone = false;
-    currentInvoice = data;
+    currentInvoice = invoice;
     notifyListeners();
 
     return true;

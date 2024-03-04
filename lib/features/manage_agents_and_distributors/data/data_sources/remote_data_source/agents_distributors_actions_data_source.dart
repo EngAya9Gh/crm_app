@@ -58,7 +58,6 @@ class AgentsDistributorsActionsDataSourceImpl
       final endPoint = EndPoints.agentDistributor.addAgent;
       apiServices.changeBaseUrl(EndPoints.phpUrl);
       await apiServices.postRequestWithFile(
-        "array",
         endPoint,
         addAgentParams.agentActionModel.toMap(),
         addAgentParams.file,
@@ -80,7 +79,6 @@ class AgentsDistributorsActionsDataSourceImpl
       final endPoint =
           "${EndPoints.agentDistributor.updateAgent}${updateAgentParams.agentId}";
       await apiServices.postRequestWithFile(
-        "array",
         endPoint,
         updateAgentParams.agentActionModel.toMap(),
         updateAgentParams.file,
