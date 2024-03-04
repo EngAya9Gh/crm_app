@@ -15,6 +15,7 @@ abstract class EndPoints {
   static const participate = _Participate();
   static const city = _City();
   static const agentDistributor = _AgentDistributor();
+  static const invoice = _Invoice();
 }
 
 class _App {
@@ -139,4 +140,13 @@ class _AgentDistributor {
   final String doneTraining = 'agent/done_training.php';
   final String addAgent = 'agent/add_agent.php';
   final String updateAgent = 'agent/update_agent.php?id_agent=';
+}
+
+class _Invoice {
+  const _Invoice();
+
+  final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
+
+  final String crudFilesInvoice =
+      'FilesInvoice/crud_files_invoice.php?fk_invoice=';
 }

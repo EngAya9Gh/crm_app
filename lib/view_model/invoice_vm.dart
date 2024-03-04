@@ -6,6 +6,7 @@ import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
+import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -1164,9 +1165,11 @@ class invoice_vm extends ChangeNotifier {
     required File? file,
     required List<File> files,
   }) async {
+    final endPoint = EndPoints.invoice.crudFilesInvoice;
+
     return await Api().postCrudInvoiceFile(
       'array',
-      url + "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
+      "$url$endPoint$invoiceId",
       body,
       file,
       files: files,
@@ -1262,9 +1265,12 @@ class invoice_vm extends ChangeNotifier {
       files: files,
     );
 
+    final endPoint = EndPoints.invoice.clientUpdateInvoice;
     ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.phpUrl);
+
     final response = await apiServices.postRequestWithFile(
-      url + "client/invoice/updateinvoice.php",
+      endPoint,
       body,
       file,
       myfilelogo,
