@@ -40,24 +40,27 @@ import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 
-class support_add extends StatefulWidget {
-  support_add({required this.idinvoice, required this.idClient, Key? key})
-      : super(key: key);
-  String? idinvoice;
-  String? idClient;
+class SupportAdd extends StatefulWidget {
+  const SupportAdd({
+    Key? key,
+    required this.idInvoice,
+    required this.idClient,
+  }) : super(key: key);
+
+  final String? idInvoice;
+  final String? idClient;
 
   @override
-  _support_addState createState() => _support_addState();
+  _SupportAddState createState() => _SupportAddState();
 }
 
-class _support_addState extends State<support_add> {
+class _SupportAddState extends State<SupportAdd> {
   TextEditingController _textsupport = TextEditingController();
   TextEditingController _textnameuserclient = TextEditingController();
   TextEditingController _timeController = TextEditingController();
   TextEditingController _endtimeController = TextEditingController();
   late PrivilegeCubit _privilegeCubit;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   late InvoiceModel? _invoice = null;
   String? fk_client;
   bool valueresoan = false;
@@ -83,13 +86,8 @@ class _support_addState extends State<support_add> {
     super.dispose();
   }
 
-  late TimeOfDay timinit;
-  late TimeOfDay timinit2;
-
   @override
   void initState() {
-    timinit = TimeOfDay.now();
-    timinit2 = TimeOfDay.now();
     _eventProvider = context.read<EventProvider>();
     _privilegeCubit = getIt<PrivilegeCubit>();
 
@@ -121,7 +119,7 @@ class _support_addState extends State<support_add> {
     _width = MediaQuery.of(context).size.width;
     _invoice = Provider.of<invoice_vm>(context, listen: true)
         .listinvoiceClientSupport
-        .firstWhere((element) => element.idInvoice == widget.idinvoice);
+        .firstWhere((element) => element.idInvoice == widget.idInvoice);
 
     if (isInit) {
       _invoiceAttachFile = _invoice;
@@ -132,7 +130,7 @@ class _support_addState extends State<support_add> {
 
     final _globalKey = GlobalKey<FormState>();
 
-    final listDates = List<DateInstallationClient>.of(datesInstallation ?? []);
+    final listDates = List<DateInstallationClient>.of(datesInstallation);
     listDates.sort((a, b) => a.dateClientVisit!.compareTo(b.dateClientVisit!));
     final nextInstallation =
         listDates.firstWhereOrNull((element) => element.isDone == "0");
@@ -191,7 +189,7 @@ class _support_addState extends State<support_add> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectDate(context, DateTime.now());
+                                  _selectDate(context);
                                 });
                               },
                               validator: (value) {
@@ -210,6 +208,7 @@ class _support_addState extends State<support_add> {
                                     TimeOfDay(hour: -1, minute: 00)) {
                                   return 'يرجى تعيين الوقت ';
                                 }
+                                return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -246,7 +245,7 @@ class _support_addState extends State<support_add> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectTime(context, timinit);
+                                  _selectTime(context);
                                 });
                               },
                             ),
@@ -263,6 +262,7 @@ class _support_addState extends State<support_add> {
                                     TimeOfDay(hour: -1, minute: 00)) {
                                   return 'يرجى تعيين الوقت ';
                                 }
+                                return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -299,7 +299,7 @@ class _support_addState extends State<support_add> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectEndTime(context, timinit2);
+                                  _selectEndTime(context);
                                 });
                               },
                             ),
@@ -367,6 +367,12 @@ class _support_addState extends State<support_add> {
                                   contentPadding: EdgeInsets.zero,
                                   suffix: Icon(Icons.arrow_drop_down),
                                 ),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'يرجى اختيار موظف الدعم الفني';
+                                  }
+                                  return null;
+                                },
                               );
                             },
                           );
@@ -482,7 +488,7 @@ class _support_addState extends State<support_add> {
                     children: [
                       AddManualTaskButton(
                         list: supportPublicTypeList,
-                        invoiceId: widget.idinvoice,
+                        invoiceId: widget.idInvoice,
                       ),
                       Consumer<invoice_vm>(
                         builder: (context, invoiceViewmodel, _) {
@@ -1024,6 +1030,7 @@ class _support_addState extends State<support_add> {
                                                               .isEmpty) {
                                                             return 'الحقل فارغ';
                                                           }
+                                                          return null;
                                                         },
                                                       ),
                                                       SizedBox(height: 10),
@@ -1527,10 +1534,10 @@ class _support_addState extends State<support_add> {
 
   late String _hour, _minute, _time;
 
-  Future<Null> _selectTime(BuildContext context, TimeOfDay stime) async {
+  Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: stime,
+      initialTime: TimeOfDay.now(),
     );
     if (picked != null)
       setState(() {
@@ -1540,20 +1547,15 @@ class _support_addState extends State<support_add> {
         _time = _hour + ' : ' + _minute;
         _timeController.text = _time;
         _timeController.text = selectedTime.toString();
-
-        // Utils.toTime(selectedTime)
-        // formatDate(
-        // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-        // [hh, ':', nn, " ", am]).toString();
       });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedTime);
   }
 
-  Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
+  Future<Null> _selectEndTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: stime,
+      initialTime: TimeOfDay.now(),
     );
     if (picked != null)
       setState(() {
@@ -1563,24 +1565,18 @@ class _support_addState extends State<support_add> {
         _time = _hour + ' : ' + _minute;
         _endtimeController.text = _time;
         _endtimeController.text = endTime.toString();
-
-        // Utils.toTime(selectedTime)
-        // formatDate(
-        // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-        // [hh, ':', nn, " ", am]).toString();
       });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalueEnd(_currentDate, endTime);
   }
 
-  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    //String output = formatter.format(currentDate);
-    // DateFormat('yyyy-MM-dd – kk:mm').format(now);
+  Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
+        // date of today
+        currentDate: DateTime.now(),
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
         lastDate: DateTime(3010));
     if (pickedDate != null) //&& pickedDate != currentDate)
       setState(() {
