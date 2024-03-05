@@ -21,7 +21,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<List<ClientModel>>> getAllClientsList(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.get(
           endPoint: EndPoints.client.allClientsList, queryParameters: body);
 
@@ -42,11 +42,11 @@ class ClientsListDatasource {
       Map<String, dynamic> body) async {
     fun() async {
       final dio = getIt<Dio>();
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.post(
           endPoint: EndPoints.client.similarClientsList, data: body);
 
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final client = response; //ClientModel.fromJson(response);
       List<SimilarClient> listres =
           List.from((client as List<dynamic>).map((e) {
@@ -61,7 +61,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<List<ClientModel>>> getClientsByRegionList(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.get(
           endPoint: EndPoints.client.clientsByRegionList,
           queryParameters: body);
@@ -82,7 +82,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<List<ClientModel>>> getClientsByUserList(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.get(
           endPoint: EndPoints.client.clientsByUserList, queryParameters: body);
 
@@ -102,7 +102,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<List<ClientModel>>> getAllClientsWithFilterList(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.get(
           endPoint: EndPoints.client.allClientsWithFilter,
           queryParameters: body);
@@ -123,7 +123,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<List<RecommendedClient>>>
       getRecommendedClients() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.get(
         endPoint: EndPoints.care.getRecommendedClients,
       );
@@ -141,7 +141,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> addClient(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.post(
         endPoint: EndPoints.client.addClient,
         data: body,
@@ -157,7 +157,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> editClient1(
       Map<String, dynamic> body, Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.post(
         endPoint: EndPoints.client.editClient,
         data: body,
@@ -175,14 +175,14 @@ class ClientsListDatasource {
       Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
     fun() async {
       final dio = getIt<Dio>();
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.post(
         endPoint: EndPoints.client.changeTypeClient + id,
         data: body,
         queryParameters: params,
       );
 
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final client = ClientModel.fromJson(response['data']);
       final client1 = response['success'];
       return ResponseWrapper(message: client, data: client);
@@ -194,14 +194,14 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> approveClient_Reject(
       Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.post(
         endPoint: EndPoints.client.approveClient_reject_admin + id,
         data: body,
         queryParameters: params,
       );
 
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final client = ClientModel.fromJson(response['data']);
       return ResponseWrapper(message: client, data: client);
     }

@@ -15,10 +15,10 @@ class CommentCompanyDatasource {
   Future<ResponseWrapper<List<CompanyCommentModel>>> getCommment(
       String fk) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response =
           await api.get(endPoint: EndPoints.company.getComment + fk);
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
 
       return ResponseWrapper<List<CompanyCommentModel>>(
         data: List.from((response['data'] as List<dynamic>).map(
@@ -33,13 +33,13 @@ class CommentCompanyDatasource {
   Future<ResponseWrapper<CompanyCommentModel>> addComment(
       {required Map<String, dynamic> body, required String fk}) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.post(
         endPoint: EndPoints.company.addComment + fk,
         data: body,
       );
 
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       return ResponseWrapper<CompanyCommentModel>.fromJson(
         response,
         (json) => CompanyCommentModel.fromJson(response['data']),

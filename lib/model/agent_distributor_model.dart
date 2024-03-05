@@ -96,7 +96,6 @@ class AgentDistributorModel {
   });
 
   factory AgentDistributorModel.fromJson(Map<String, dynamic> json) {
-    print("json is => $json");
     return AgentDistributorModel(
       idAgent: json["id_agent"],
       nameAgent: json["name_agent"],

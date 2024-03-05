@@ -4,6 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
+import 'dart:io' as _i11;
 
 import 'package:crm_smart/core/api/api_services.dart' as _i10;
 import 'package:crm_smart/core/common/models/profile_invoice_model.dart' as _i7;
@@ -16,8 +17,8 @@ import 'package:crm_smart/features/manage_agents_and_distributors/domain/reposit
 import 'package:crm_smart/model/agent_distributor_model.dart' as _i6;
 import 'package:crm_smart/model/invoiceModel.dart' as _i9;
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:http/http.dart' as _i12;
-import 'package:mockito/annotations.dart' as _i11;
+import 'package:http/http.dart' as _i13;
+import 'package:mockito/annotations.dart' as _i12;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -194,26 +195,25 @@ class MockAgentsDistributorsProfileRepo extends _i1.Mock
       ) as _i4.Future<_i2.Either<String, _i6.AgentDistributorModel>>);
 
   @override
-  _i4.Future<
-      _i2.Either<String, List<_i9.DateInstallationClient>>> getDateVisitAgent(
-          {required String? agentId}) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #getDateVisitAgent,
-          [],
-          {#agentId: agentId},
-        ),
-        returnValue: _i4
-            .Future<_i2.Either<String, List<_i9.DateInstallationClient>>>.value(
-            _FakeEither_0<String, List<_i9.DateInstallationClient>>(
-          this,
-          Invocation.method(
-            #getDateVisitAgent,
-            [],
-            {#agentId: agentId},
-          ),
-        )),
-      ) as _i4.Future<_i2.Either<String, List<_i9.DateInstallationClient>>>);
+  _i4.Future<_i2.Either<String, List<_i9.DateInstallationClient>>>
+      getDateVisitAgent({required String? agentId}) => (super.noSuchMethod(
+            Invocation.method(
+              #getDateVisitAgent,
+              [],
+              {#agentId: agentId},
+            ),
+            returnValue: _i4.Future<
+                    _i2.Either<String, List<_i9.DateInstallationClient>>>.value(
+                _FakeEither_0<String, List<_i9.DateInstallationClient>>(
+              this,
+              Invocation.method(
+                #getDateVisitAgent,
+                [],
+                {#agentId: agentId},
+              ),
+            )),
+          ) as _i4
+              .Future<_i2.Either<String, List<_i9.DateInstallationClient>>>);
 
   @override
   _i4.Future<_i2.Either<String, void>> addAgentDate(
@@ -331,6 +331,28 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
       ) as _i4.Future<dynamic>);
 
   @override
+  _i4.Future<dynamic> postRequestWithFile(
+    String? url,
+    Map<String, dynamic>? data,
+    _i11.File? file,
+    _i11.File? filelogo, {
+    List<_i11.File>? files,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #postRequestWithFile,
+          [
+            url,
+            data,
+            file,
+            filelogo,
+          ],
+          {#files: files},
+        ),
+        returnValue: _i4.Future<dynamic>.value(),
+      ) as _i4.Future<dynamic>);
+
+  @override
   void changeBaseUrl(String? baseUrl) => super.noSuchMethod(
         Invocation.method(
           #changeBaseUrl,
@@ -343,7 +365,7 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
 /// A class which mocks [MockSpec].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class HttpClientMock extends _i1.Mock implements _i11.MockSpec<_i12.Client> {
+class HttpClientMock extends _i1.Mock implements _i12.MockSpec<_i13.Client> {
   HttpClientMock() {
     _i1.throwOnMissingStub(this);
   }

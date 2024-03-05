@@ -8,7 +8,7 @@ import '../../utils/end_points.dart';
 Dio dioInit() {
   final dio = Dio(
     BaseOptions(
-      baseUrl: EndPoints.baseUrl,
+      baseUrl: EndPoints.phpUrl,
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
       headers: {
@@ -31,6 +31,8 @@ class _ApiInterceptors extends Interceptor {
     getIt<Logger>().i("Request queryParameters: ${options.queryParameters}");
 
     options.headers['AuthToken'] =
+        'Bearer ${getIt<SharedPreferences>().getString('token_user')}';
+    options.headers['Authorization'] =
         'Bearer ${getIt<SharedPreferences>().getString('token_user')}';
     super.onRequest(options, handler);
   }

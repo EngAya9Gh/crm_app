@@ -28,10 +28,10 @@ class TaskDatasource {
         if (key != 'file_path') formData.fields.add(MapEntry(key, value));
       });
 
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response =
           await api.post(endPoint: EndPoints.task.addTask, data: formData);
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
 
       return ResponseWrapper<bool>(message: true, data: true);
     }
@@ -42,10 +42,10 @@ class TaskDatasource {
   Future<ResponseWrapper<List<TaskModel>>> filterTask(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response =
           await api.post(endPoint: EndPoints.task.filterTasksByAll, data: body);
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       if (response['data'] != false)
         return ResponseWrapper<List<TaskModel>>(
           data: List.from((response['data'] as List<dynamic>)
@@ -64,10 +64,10 @@ class TaskDatasource {
   Future<ResponseWrapper<void>> changeStatusTask(
       String taskId, Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.post(
           endPoint: EndPoints.task.changeStatusTask + taskId, data: body);
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       return ResponseWrapper<void>(data: [], message: []);
     }
 
@@ -77,11 +77,11 @@ class TaskDatasource {
   Future<ResponseWrapper<List<UserRegionDepartment>>>
       getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.apiBaseUrl2);
+      api.changeBaseUrl(EndPoints.laravelUrl);
       final response = await api.post(
           endPoint: EndPoints.task.getUsersByTypeAdministrationAndRegion,
           data: body);
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
 
       final data = jsonDecode(jsonEncode(response));
       return ResponseWrapper<List<UserRegionDepartment>>(

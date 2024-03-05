@@ -19,6 +19,7 @@ class Api {
   // "Accept": "application/json",
   // "Access-Control-Allow-Origin": "*"}
   static String? token = null;
+
   Api() {
     if (token == null) get_token();
   }
@@ -126,10 +127,32 @@ class Api {
     var request = await httpClient.getUrl(Uri.parse(url));
     var response = await request.close();
     var bytes = await consolidateHttpClientResponseBytes(response);
-    String dir = (await getDownloadsDirectory())!.path;
-    File file = new File('$dir/$filename');
+
+    Directory? dir = await getDownloadsDirectory();
+    bool isDirExist = await _checkIfDirExist(dir);
+    print("is first dir exist? => $isDirExist");
+    print("first dir path => ${dir!.path}");
+    if (isDirExist == false) {
+      dir = await getApplicationDocumentsDirectory();
+      isDirExist = await _checkIfDirExist(dir);
+      print("is second dir exist? => $isDirExist");
+      print("second dir path => ${dir.path}");
+    }
+
+    final String directoryPath = dir!.path;
+
+    final String fullPath = '$directoryPath/$filename';
+    File file = new File(fullPath);
+    file = await file.create(recursive: true);
+    // final File file = File.fromUri(Uri.parse(fullPath));
+
     await file.writeAsBytes(bytes);
     return file;
+  }
+
+  Future<bool> _checkIfDirExist(Directory? dir) async {
+    if (dir == null) return false;
+    return await dir.exists();
   }
 
   Future<dynamic> postCrudInvoiceFile(

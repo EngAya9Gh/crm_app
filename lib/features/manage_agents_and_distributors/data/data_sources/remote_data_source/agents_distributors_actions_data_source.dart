@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../api/api.dart';
-import '../../../../../constants.dart';
+import '../../../../../core/api/api_services.dart';
+import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../domain/use_cases/add_agent_usecase.dart';
 import '../../../domain/use_cases/update_agent_usecase.dart';
@@ -24,20 +24,25 @@ abstract class AgentsDistributorsActionsDataSource {
 @LazySingleton(as: AgentsDistributorsActionsDataSource)
 class AgentsDistributorsActionsDataSourceImpl
     extends AgentsDistributorsActionsDataSource {
-  final Api api;
+  final ApiServices apiServices;
 
-  AgentsDistributorsActionsDataSourceImpl(this.api);
+  AgentsDistributorsActionsDataSourceImpl(this.apiServices);
 
   @override
   Future<Either<String, List<CityModel>>> getAllCities({
     required String fkCountry,
   }) async {
     try {
-      final data =
-          await api.get(url: url + 'config/getcity.php?fk_country=$fkCountry');
+      apiServices.changeBaseUrl(EndPoints.phpUrl);
+      final response = await apiServices.get(
+        endPoint: "${EndPoints.city.getAllCities}$fkCountry",
+      );
+
+      final data = response["message"];
+
       final List<CityModel> citiesList = [];
-      for (int i = 0; i < data.length; i++) {
-        citiesList.add(CityModel.fromJson(data[i]));
+      for (var city in data) {
+        citiesList.add(CityModel.fromJson(city));
       }
       return Right(citiesList);
     } catch (e) {
@@ -50,12 +55,14 @@ class AgentsDistributorsActionsDataSourceImpl
     required AddAgentParams addAgentParams,
   }) async {
     try {
-      await Api().postRequestWithFile(
-        "array",
-        url + 'agent/add_agent.php',
+      final endPoint = EndPoints.agentDistributor.addAgent;
+      apiServices.changeBaseUrl(EndPoints.phpUrl);
+      await apiServices.postRequestWithFile(
+        endPoint,
         addAgentParams.agentActionModel.toMap(),
         addAgentParams.file,
         addAgentParams.agentActionModel.filelogo,
+        files: addAgentParams.files,
       );
       return Right(null);
     } catch (e) {
@@ -69,13 +76,15 @@ class AgentsDistributorsActionsDataSourceImpl
     required UpdateAgentParams updateAgentParams,
   }) async {
     try {
-      await Api().postRequestWithFile(
-        "array",
-        url + 'agent/update_agent.php?id_agent=${updateAgentParams.agentId}',
+      final endPoint =
+          "${EndPoints.agentDistributor.updateAgent}${updateAgentParams.agentId}";
+      await apiServices.postRequestWithFile(
+        endPoint,
         updateAgentParams.agentActionModel.toMap(),
         updateAgentParams.file,
         updateAgentParams.agentActionModel.filelogo,
       );
+
       return Right(null);
     } catch (e) {
       print("Error in updateAgent: $e");

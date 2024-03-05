@@ -15,7 +15,7 @@ class CommunicationListDatasource {
   Future<ResponseWrapper<List<DistinctiveClient>>> getCommunicationList(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrl);
+      api.changeBaseUrl(EndPoints.phpUrl);
       final response = await api.get(
           endPoint: EndPoints.client.distinctiveClient, queryParameters: body);
 
