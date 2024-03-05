@@ -152,13 +152,16 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  onChangeFkUser(String idUser) {
+  onChangeFkUser(String idUser, [bool? isInit]) {
     if (idUser.isEmpty) {
       selectedFkUser = null;
     } else {
       selectedFkUser = idUser;
     }
 
+    if (isInit ?? false) {
+      return;
+    }
     notifyListeners();
     getAppointments();
   }

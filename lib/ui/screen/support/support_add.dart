@@ -20,6 +20,7 @@ import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,6 +34,7 @@ import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
+import '../../../model/usermodel.dart';
 import '../../../view_model/reason_suspend.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/custom_widget/row_edit.dart';
@@ -68,6 +70,7 @@ class _support_addState extends State<support_add> {
   ];
   late String? selectInstallationType;
   String? Value_installation_type = null;
+
   //   void changeInstallationvalue(String? s) {
 
   // }
@@ -314,9 +317,7 @@ class _support_addState extends State<support_add> {
                             value: level_one,
                           );
                         }).toList(),
-                        value: selectInstallationType == null
-                            ? null
-                            : selectInstallationType,
+                        value: selectInstallationType,
                         onChanged: (value) {
                           setState(() {
                             selectInstallationType = value.toString();
@@ -327,6 +328,53 @@ class _support_addState extends State<support_add> {
                         },
                       ),
                       SizedBox(height: 10),
+                      // Assign to
+                      RowEdit(name: "اسناد الي", des: '*'),
+                      Builder(
+                        builder: (context) {
+                          _clearUser(context);
+                          return Consumer2<UserProvider, EventProvider>(
+                            builder: (context, user, event, child) {
+                              return DropdownSearch<UserModel>(
+                                dropdownButtonBuilder: (context) =>
+                                    SizedBox.shrink(),
+                                mode: Mode.DIALOG,
+                                filterFn: (user, filter) =>
+                                    user!.getfilteruser(filter!),
+                                compareFn: (item, selectedItem) =>
+                                    item?.idUser == selectedItem?.idUser,
+                                showSelectedItems: true,
+                                items: user.usersSupportManagement,
+                                itemAsString: (u) => u!.userAsString(),
+                                onChanged: (data) {
+                                  iduser = data!.idUser!;
+                                  context
+                                      .read<UserProvider>()
+                                      .changevalueuser(data);
+                                  _eventProvider.onChangeFkUser(iduser);
+                                },
+                                selectedItem: user.selectedUser,
+                                showSearchBox: true,
+                                dropdownSearchDecoration: InputDecoration(
+                                  isCollapsed: true,
+                                  hintText: 'موظف الدعم الفني',
+                                  alignLabelWithHint: true,
+                                  fillColor: Colors.grey.withOpacity(0.2),
+                                  border: UnderlineInputBorder(
+                                      borderSide: const BorderSide(
+                                    color: Colors.grey,
+                                  )),
+                                  contentPadding: EdgeInsets.zero,
+                                  suffix: Icon(Icons.arrow_drop_down),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+
+                      SizedBox(height: 15),
+                      // save button
                       CustomButton(
                         text: "حفظ",
                         onTap: () async {
@@ -362,15 +410,12 @@ class _support_addState extends State<support_add> {
                                 endTime.hour,
                                 endTime.minute);
 
-                            final idUser = Provider.of<UserProvider>(context,
-                                    listen: false)
-                                .currentUser
-                                .idUser;
+                            print("id user => $iduser");
                             Provider.of<invoice_vm>(context, listen: false)
                                 .setdate_vm(
                               id_invoice: _invoice!.idInvoice!,
                               fk_client: widget.idClient!,
-                              fk_user: idUser!,
+                              fk_user: iduser,
                               date_client_visit: datetask.toString(),
                               date_end: date_end.toString(),
                               type_date: Value_installation_type!,
@@ -397,7 +442,7 @@ class _support_addState extends State<support_add> {
 
                               datesInstallation.add(DateInstallationClient(
                                 dateClientVisit: datetask,
-                                fkUser: idUser,
+                                fkUser: iduser,
                                 fkClient: widget.idClient,
                                 isDone: '0',
                                 fkInvoice: _invoice!.idInvoice,
@@ -794,7 +839,9 @@ class _support_addState extends State<support_add> {
                         child: cardRow(
                             title: 'عدد الزيارات المتبقية',
                             value: datesInstallation
-                                .where((element) => element.isDone == "0"||element.isDone=='3')
+                                .where((element) =>
+                                    element.isDone == "0" ||
+                                    element.isDone == '3')
                                 .length
                                 .toString()),
                       ),
@@ -1459,6 +1506,12 @@ class _support_addState extends State<support_add> {
         ),
       ),
     );
+  }
+
+  void _clearUser(BuildContext context) {
+    iduser = "";
+    _eventProvider.onChangeFkUser(iduser, true);
+    context.read<UserProvider>().changevalueuser(null, true);
   }
 
   late DateTime _currentDate = DateTime(1, 1, 1);
