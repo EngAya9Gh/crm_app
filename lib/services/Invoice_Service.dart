@@ -176,9 +176,11 @@ class Invoice_Service {
     required String date_end,
     required String processReason,
     required String typeSchedule,
+    required String fk_user,
   }) async {
     print("URL::$url_laravel + rescheduleOrCancelVisitClient/$scheduleId");
     print(url_laravel + "rescheduleOrCancelVisitClient/" + scheduleId);
+    print("fk_user => $fk_user");
     var result = await Api().post(
         url: url_laravel + "rescheduleOrCancelVisitClient/" + scheduleId,
         body: {
@@ -187,6 +189,7 @@ class Invoice_Service {
           'date_end': date_end,
           'processReason': processReason,
           'type_date': typeSchedule.toString(),
+          'fk_user': fk_user,
         });
     print("URL result::$result");
     return result;

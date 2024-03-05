@@ -13,6 +13,8 @@ import '../../constants.dart';
 import '../../core/utils/app_strings.dart';
 import '../../model/calendar/event_model.dart';
 import '../../model/invoiceModel.dart';
+import '../screen/support/support_add.dart';
+import '../screen/support/support_table.dart';
 import 'custom_widget/custombutton.dart';
 import 'custom_widget/row_edit.dart';
 import 'custom_widget/text_form.dart';
@@ -351,6 +353,10 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         },
                       ),
                       SizedBox(height: 10),
+                      // todo: handle id user after editing from the backend
+                      RowEdit(name: "اسناد الي", des: '*'),
+                      TechSupportUsersDropDown(),
+                      SizedBox(height: 15),
                       RowEdit(name: "تحديد الأسباب", des: '*'),
                       EditTextFormField(
                         vaild: (value) {
@@ -417,6 +423,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   scheduleId: widget.idClientsDate,
                                   dateClientVisit: datetask,
                                   date_end: date_end,
+                                  fk_user: iduser,
                                   event: widget.event,
                                   typeDate: selectInstallationType!,
                                   processReason: descresaonController.text,

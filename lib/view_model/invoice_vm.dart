@@ -13,6 +13,7 @@ import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/Invoice_Service.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
+import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -1459,11 +1460,13 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
 
     final data = await Invoice_Service().editScheduleInstallation(
-        scheduleId: scheduleId,
-        dateClientVisit: dateClientVisit,
-        date_end: date_end,
-        typeSchedule: typeDate,
-        processReason: processReason);
+      scheduleId: scheduleId,
+      dateClientVisit: dateClientVisit,
+      date_end: date_end,
+      typeSchedule: typeDate,
+      processReason: processReason,
+      fk_user: iduser,
+    );
 
     onSuccess.call(data);
     isloadingRescheduleOrCancel = false;

@@ -330,55 +330,7 @@ class _SupportAddState extends State<SupportAdd> {
                       SizedBox(height: 10),
                       // Assign to
                       RowEdit(name: "اسناد الي", des: '*'),
-                      Builder(
-                        builder: (context) {
-                          _clearUser(context);
-                          return Consumer2<UserProvider, EventProvider>(
-                            builder: (context, user, event, child) {
-                              return DropdownSearch<UserModel>(
-                                dropdownButtonBuilder: (context) =>
-                                    SizedBox.shrink(),
-                                mode: Mode.DIALOG,
-                                filterFn: (user, filter) =>
-                                    user!.getfilteruser(filter!),
-                                compareFn: (item, selectedItem) =>
-                                    item?.idUser == selectedItem?.idUser,
-                                showSelectedItems: true,
-                                items: user.usersSupportManagement,
-                                itemAsString: (u) => u!.userAsString(),
-                                onChanged: (data) {
-                                  iduser = data!.idUser!;
-                                  context
-                                      .read<UserProvider>()
-                                      .changevalueuser(data);
-                                  _eventProvider.onChangeFkUser(iduser);
-                                },
-                                selectedItem: user.selectedUser,
-                                showSearchBox: true,
-                                dropdownSearchDecoration: InputDecoration(
-                                  isCollapsed: true,
-                                  hintText: 'موظف الدعم الفني',
-                                  alignLabelWithHint: true,
-                                  fillColor: Colors.grey.withOpacity(0.2),
-                                  border: UnderlineInputBorder(
-                                      borderSide: const BorderSide(
-                                    color: Colors.grey,
-                                  )),
-                                  contentPadding: EdgeInsets.zero,
-                                  suffix: Icon(Icons.arrow_drop_down),
-                                ),
-                                validator: (value) {
-                                  if (value == null) {
-                                    return 'يرجى اختيار موظف الدعم الفني';
-                                  }
-                                  return null;
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
-
+                      TechSupportUsersDropDown(),
                       SizedBox(height: 15),
                       // save button
                       CustomButton(
@@ -416,7 +368,6 @@ class _SupportAddState extends State<SupportAdd> {
                                 endTime.hour,
                                 endTime.minute);
 
-                            print("id user => $iduser");
                             Provider.of<invoice_vm>(context, listen: false)
                                 .setdate_vm(
                               id_invoice: _invoice!.idInvoice!,
@@ -2068,4 +2019,84 @@ class _dialog_readyState extends State<dialog_ready> {
   }
 
   clear() {}
+}
+
+class TechSupportUsersDropDown extends StatefulWidget {
+  const TechSupportUsersDropDown({
+    Key? key,
+    this.clear = false,
+  }) : super(key: key);
+
+  final bool clear;
+
+  @override
+  State<TechSupportUsersDropDown> createState() =>
+      _TechSupportUsersDropDownState();
+}
+
+class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
+  late final EventProvider eventProvider;
+
+  @override
+  void initState() {
+    eventProvider = context.read<EventProvider>();
+    if (widget.clear) {
+      _clearUser(context);
+    }
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        return Consumer2<UserProvider, EventProvider>(
+          builder: (context, user, event, child) {
+            return DropdownSearch<UserModel>(
+              dropdownButtonBuilder: (context) => SizedBox.shrink(),
+              mode: Mode.DIALOG,
+              filterFn: (user, filter) => user!.getfilteruser(filter!),
+              compareFn: (item, selectedItem) =>
+                  item?.idUser == selectedItem?.idUser,
+              showSelectedItems: true,
+              items: user.usersSupportManagement,
+              itemAsString: (u) => u!.userAsString(),
+              onChanged: (data) {
+                iduser = data!.idUser!;
+                context.read<UserProvider>().changevalueuser(data);
+                eventProvider.onChangeFkUser(iduser);
+              },
+              selectedItem: user.selectedUser,
+              showSearchBox: true,
+              dropdownSearchDecoration: InputDecoration(
+                isCollapsed: true,
+                hintText: 'موظف الدعم الفني',
+                alignLabelWithHint: true,
+                fillColor: Colors.grey.withOpacity(0.2),
+                border: UnderlineInputBorder(
+                    borderSide: const BorderSide(
+                  color: Colors.grey,
+                )),
+                contentPadding: EdgeInsets.zero,
+                suffix: Icon(Icons.arrow_drop_down),
+              ),
+              validator: (value) {
+                if (value == null) {
+                  return 'يرجى اختيار موظف الدعم الفني';
+                }
+                return null;
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _clearUser(BuildContext context) {
+    iduser = "";
+    eventProvider.onChangeFkUser(iduser, true);
+    context.read<UserProvider>().changevalueuser(null, true);
+  }
 }
