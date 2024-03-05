@@ -13,7 +13,6 @@ import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/fancy_image_shimmer_viewer.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
@@ -31,6 +30,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../features/app/presentation/widgets/app_elvated_button.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
@@ -333,9 +333,16 @@ class _SupportAddState extends State<SupportAdd> {
                       TechSupportUsersDropDown(),
                       SizedBox(height: 15),
                       // save button
-                      CustomButton(
+                      AppElevatedButton(
+                        isLoading:
+                            Provider.of<invoice_vm>(context, listen: true)
+                                .isloadingdone,
                         text: "حفظ",
-                        onTap: () async {
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0)),
+                        ),
+                        onPressed: () async {
                           if (Value_installation_type == null ||
                               Value_installation_type!.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(

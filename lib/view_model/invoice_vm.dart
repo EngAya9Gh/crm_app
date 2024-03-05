@@ -432,7 +432,7 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setisload({bool isLoading = true}) {
+  void setisload({bool isLoading = false}) {
     isloadingdone = isLoading;
     notifyListeners();
   }
