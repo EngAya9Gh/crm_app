@@ -58,6 +58,10 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     if (events == null) {
       return [];
     }
+    events.values.forEach((element) {
+      element.sort((a, b) => a.from.compareTo(b.from));
+    });
+
     return events[day] ?? [];
   }
 
