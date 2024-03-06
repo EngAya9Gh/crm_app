@@ -33,22 +33,28 @@ class marketingpage extends StatelessWidget {
         child: Column(
           children: [
             context.read<PrivilegeCubit>().checkPrivilege('53')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => clientmarketing()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => clientmarketing()));
                     },
                     title: 'عملاء التسويق الإلكتروني')
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('54')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => invoice_marketing()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => invoice_marketing()));
                     },
                     title: 'فواتير عملاء التسويق الإلكتروني')
                 : Container(),

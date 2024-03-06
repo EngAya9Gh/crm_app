@@ -89,7 +89,7 @@ class _carepageState extends State<carepage> {
         child: Column(
           children: [
             context.read<PrivilegeCubit>().checkPrivilege('44') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -104,7 +104,7 @@ class _carepageState extends State<carepage> {
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
 
             context.read<PrivilegeCubit>().checkPrivilege('9') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -118,7 +118,7 @@ class _carepageState extends State<carepage> {
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('137') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -132,7 +132,7 @@ class _carepageState extends State<carepage> {
                   )
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('29') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     // subtitle:   Provider.of<communication_vm>(
                     //     context, listen: true).listwelcomenumber.length.toString(),
                     colorbag: Colors.white,
@@ -148,7 +148,7 @@ class _carepageState extends State<carepage> {
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('30') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     // subtitle:
                     // Provider.of<communication_vm>(
                     //     context, listen: true).listinstallnumber.length.toString(),
@@ -168,7 +168,7 @@ class _carepageState extends State<carepage> {
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('33') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     // subtitle: Provider.of<ticket_vm>(context,listen: true)
                     //     .listticket_clientfilter.length.toString(),
                     colorbag: Colors.white,
@@ -183,7 +183,7 @@ class _carepageState extends State<carepage> {
                     title: 'تذاكر العملاء  ')
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('102') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -196,7 +196,7 @@ class _carepageState extends State<carepage> {
                     title: 'تقرير العناية بالعملاء')
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('103') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -209,7 +209,7 @@ class _carepageState extends State<carepage> {
                     title: 'تقرير مستوى التقييم')
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('104') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -222,7 +222,7 @@ class _carepageState extends State<carepage> {
                     title: AppStrings.labelRepeatComm)
                 : Container(), //'تقرير الاتصال الدوري '
             context.read<PrivilegeCubit>().checkPrivilege('105') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -235,7 +235,7 @@ class _carepageState extends State<carepage> {
                     title: AppStrings.labelNotUse)
                 : Container(), //' عملاء لا يستخدمون النظام '
             context.read<PrivilegeCubit>().checkPrivilege('106') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,

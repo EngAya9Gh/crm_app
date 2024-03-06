@@ -63,7 +63,7 @@ class _supportpageState extends State<supportpage> {
             // }, title: 'Task'),
 
             context.read<PrivilegeCubit>().checkPrivilege('19')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -71,13 +71,15 @@ class _supportpageState extends State<supportpage> {
                       //
                       Navigator.push(
                           context,
-                          CupertinoPageRoute(builder: (context) => ClientAccept() // support_view(type: 'only',)
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  ClientAccept() // support_view(type: 'only',)
                               ));
                     },
                     title: 'العملاء المشتركين')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
             context.read<PrivilegeCubit>().checkPrivilege('34')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -106,22 +108,28 @@ class _supportpageState extends State<supportpage> {
             //     : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('18')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => support_table()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => support_table()));
                     },
                     title: 'جدول التركيب للعملاء')
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('99')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => support_install_report()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => support_install_report()));
                     },
                     title: 'تقرير التركيب للعملاء')
                 : Container(),
@@ -136,23 +144,29 @@ class _supportpageState extends State<supportpage> {
             //            waiting_report()));
             //  }, title: 'تقرير عملاء الانتظار') ,
             context.read<PrivilegeCubit>().checkPrivilege('100')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => delayinstall()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => delayinstall()));
                     },
                     title: 'تقرير التأخير عن الجدولة للعملاء')
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('101')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => delayafterinstall()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => delayafterinstall()));
                     },
                     title: 'تقرير التأخير عن التركيب للعملاء')
                 : Container(),
