@@ -427,6 +427,10 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       builder: (context) => WillPopScope(
         onWillPop: () => Future.value(true),
         child: SimpleDialog(
+          title: Text(
+            "إغلاق الجدولة",
+            textAlign: TextAlign.center,
+          ),
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -460,7 +464,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                         builder: (context, refreshState) {
                           return AppElevatedButton(
                             isLoading: isLoading,
-                            text: "تم",
+                            text: "حفظ",
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 refreshState(() => isLoading = true);
