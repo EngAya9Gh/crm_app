@@ -36,7 +36,6 @@ class _commentViewState extends State<commentView> {
   TextEditingController _comment = TextEditingController();
   CommmentType? _previousSelectedCommentType;
   CommmentType? _selectedCommentType;
-  CommmentType? _filterCommentType = CommmentType.all;
 
   // late String fk_client;
   // String? nameEnterprise;
@@ -287,14 +286,16 @@ class _commentViewState extends State<commentView> {
                   value: activitySize,
                 );
               }).toList(),
-              value: _filterCommentType,
+              // use filterCommentType from the provider
+              value: context.watch<comment_vm>().filterCommentType,
               onChanged: (value) {
                 if (value == null) {
                   return;
                 }
                 Provider.of<comment_vm>(context, listen: false)
                     .filterCommentsByType(value.value);
-                _filterCommentType = value;
+                // update the filterCommentType in the provider
+                context.read<comment_vm>().filterCommentType = value;
                 setState(() {});
               },
               validator: (selectedCommentType) {

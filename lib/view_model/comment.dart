@@ -9,6 +9,7 @@ import '../core/common/enums/comment_type.dart';
 class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];
   List<CommentModel> filteredComments = [];
+  CommmentType filterCommentType = CommmentType.all;
   bool isloadadd = false;
   bool isLoading = false;
 
@@ -64,10 +65,9 @@ class comment_vm extends ChangeNotifier {
         });
         //listComments=[];
         _allCommentsList.insert(0, CommentModel.fromJson(body));
-        filteredComments.insert(0, CommentModel.fromJson(body));
-        final index =
-            filteredComments.indexWhere((element) => element.idComment == res);
-        filteredComments[index].imgImage = imageurl.toString();
+        filteredComments = _allCommentsList;
+        filterCommentsByType(filterCommentType.value);
+
         isloadadd = false;
         notifyListeners();
       }
