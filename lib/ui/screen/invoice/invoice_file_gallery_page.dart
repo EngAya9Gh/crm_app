@@ -16,7 +16,7 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
-import '../../../core/common/helpers/checkSoragePermission.dart';
+import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';

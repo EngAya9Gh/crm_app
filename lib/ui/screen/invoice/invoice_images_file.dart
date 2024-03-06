@@ -11,7 +11,7 @@ import 'package:mime/mime.dart';
 import 'package:path/path.dart' hide context;
 import 'package:provider/provider.dart';
 
-import '../../../core/common/helpers/checkSoragePermission.dart';
+import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../widgets/custom_widget/text_uitil.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';

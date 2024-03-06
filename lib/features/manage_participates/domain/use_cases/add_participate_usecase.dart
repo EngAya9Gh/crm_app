@@ -25,12 +25,14 @@ class AddParaticipateParams {
   final String? mobileParticipate;
   final String? namebankParticipate;
   final String? numberbankParticipate;
+  final String? fkCity;
 
   AddParaticipateParams({
     this.nameParticipate,
     this.mobileParticipate,
     this.namebankParticipate,
     this.numberbankParticipate,
+    this.fkCity,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,6 +41,7 @@ class AddParaticipateParams {
       'mobile_participate': mobileParticipate,
       'namebank_participate': namebankParticipate,
       'numberbank_participate': numberbankParticipate,
+      'fk_city': fkCity,
     }..removeWhere((key, value) => value == null);
 
     params = params.map((key, value) => MapEntry(key, value.toString()));

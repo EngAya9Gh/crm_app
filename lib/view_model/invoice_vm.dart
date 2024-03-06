@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 
 import '../core/api/api_services.dart';
-import '../core/common/helpers/checkSoragePermission.dart';
+import '../core/common/helpers/check_sorage_permission.dart';
 import '../core/di/di_container.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/agent_distributor_model.dart';
