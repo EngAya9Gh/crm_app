@@ -1,16 +1,9 @@
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/screen/support/support_add.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
-import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-//import 'package:flutter/cupertino.dart';
-
-import '../../../constants.dart';
 
 class support_view_invoices extends StatefulWidget {
   support_view_invoices({required this.itemClient, Key? key}) : super(key: key);
@@ -40,14 +33,15 @@ class support_view_invoicesState extends State<support_view_invoices> {
                   child: ListView.builder(
                     itemCount: listInvoice.length,
                     itemBuilder: (BuildContext context, int index) => Builder(
-                        builder: (context) => support_add(
-                              idinvoice: listInvoice[index].idInvoice,
+                        builder: (context) => SupportAdd(
+                              idInvoice: listInvoice[index].idInvoice,
                               idClient: widget.itemClient.idClients,
                             )),
                   ),
                 )
               : Padding(
-                  padding: EdgeInsets.only(top: 10, bottom: 50, right: 10, left: 10),
+                  padding:
+                      EdgeInsets.only(top: 10, bottom: 50, right: 10, left: 10),
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.06,
                     child: ContainerShadows(
