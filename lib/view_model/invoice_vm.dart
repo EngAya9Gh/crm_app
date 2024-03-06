@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
 import 'package:crm_smart/core/utils/end_points.dart';
@@ -928,10 +929,10 @@ class invoice_vm extends ChangeNotifier {
       return;
     }
     List<DateInstallationClient> list = invoice.datesInstallationClient ?? [];
-    list = list
-        .map((e) => e.idClientsDate == event.idClientsDate
-            ? e.copyWith(isDone: '1')
-            : e)
+    list
+        .map((date) => date.idClientsDate == event.idClientsDate
+            ? date.copyWith(isDone: IsDoneDateEnum.done.index.toString())
+            : date)
         .toList();
 
     invoice.datesInstallationClient = list;

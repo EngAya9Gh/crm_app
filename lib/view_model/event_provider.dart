@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/services/date_installation_service.dart';
@@ -299,19 +300,27 @@ class EventProvider extends ChangeNotifier {
   }) async {
     try {
       onLoading();
-      const isDone = 1;
+      final isDone = IsDoneDateEnum.done.index.toString();
       var data = await Api().post(
         url: url +
             "client/invoice/update_date_install.php?idclients_date=${event.idClientsDate}",
-        body: {"is_done": isDone.toString()},
+        body: {
+          "is_done": isDone,
+          "fk_client": event.fkIdClient,
+          "comment": event.comment,
+        },
       );
       final list = eventDataSource[event.from] ?? [];
-      final index = list.indexOf(event);
+      final index = list.map((e) => e.from).toList().indexOf(event.from);
       if (index == -1) {
         onFailure();
         return;
       }
-      list[index] = list[index].copyWith(isDone: "1");
+      list[index] = list[index].copyWith(
+        isDone: isDone,
+        fkIdClient: event.fkIdClient,
+        comment: event.comment,
+      );
       eventDataSource[event.from] = list;
       notifyListeners();
       onSuccess();
