@@ -5,8 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../core/common/widgets/cities_drop_down_widget.dart';
-import '../../../../core/common/widgets/custom_error_widget.dart';
-import '../../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../../core/utils/app_constants.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/responsive_padding.dart';
@@ -132,20 +130,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     ),
                     15.height,
                     // cities drop down
-                    BlocBuilder<CitiesCubit, CitiesState>(
-                      builder: (context, state) {
-                        if (state is CitiesLoading) {
-                          return CustomLoadingIndicator();
-                        } else if (state is CitiesError) {
-                          return CustomErrorWidget(onPressed: () {
-                            cubit.getAllCity(
-                                fkCountry:
-                                    AppConstants.currentCountry(context) ?? '');
-                          });
-                        }
-                        return CitiesDropDownWidget();
-                      },
-                    ),
+                    CitiesDropDownWidget(),
                   ],
                 ),
               ),

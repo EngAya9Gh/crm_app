@@ -9,6 +9,7 @@ import 'package:crm_smart/features/manage_participates/data/models/participate_c
 import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/common/models/page_state/bloc_status.dart';
@@ -23,7 +24,6 @@ import '../../domain/use_cases/get_participate_list_usecase.dart';
 
 @injectable
 class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
-  // ParticipateListBloc(initialState) : super(initialState);
   ParticipateListBloc(
     this._getParticipateListUsecase,
     this._addParticipateUserUsecase,
@@ -35,7 +35,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     this._addParticipateCommentUsecase,
   ) : super(ParticipateListState()) {
     on<GetParticipateListEvent>(_onGetParticipateListEvent);
-    on<SearchEvent>(_onSearchEvent);
+    on<FilterEvent>(_onFilterEvent);
     on<AddParticipateEvent>(_onAddParticipateEvent);
     on<EditParticipateEvent>(_onEditParticipateEvent);
     on<ChanageCurrentParticipate>(_onChangeCurrentParticipate);
@@ -58,6 +58,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
   final AddParticipateCommentUsecase _addParticipateCommentUsecase;
 
+  List<ParticipateModel> allParticipates = [];
+  late TextEditingController searchTextField = TextEditingController();
+
   FutureOr<void> _onGetParticipateListEvent(
       GetParticipateListEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(particiPateListState: PageState.loading()));
@@ -69,40 +72,53 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       (exception, message) =>
           emit(state.copyWith(particiPateListState: PageState.error())),
       (value) {
-        final filterData = filterList(event.query);
-        final lists = [filterData, (value.message ?? [])];
-        final commonElements = event.query.isNotEmpty
-            ? filterList(event.query, value.message)
-            : HelperFunctions.instance.intersection(lists);
+        allParticipates = value.message ?? [];
 
         emit(
           state.copyWith(
-            particiPateListState: event.query.isNotEmpty
-                ? PageState.loaded(data: commonElements)
-                : PageState.loaded(data: value.message ?? []),
             allParticipateState: value.message,
+            particiPateListState: PageState.loaded(data: allParticipates),
           ),
         );
       },
     );
   }
 
-  FutureOr<void> _onSearchEvent(
-      SearchEvent event, Emitter<ParticipateListState> emit) async {
+  FutureOr<void> _onFilterEvent(
+      FilterEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(
-        particiPateListState: PageState.loaded(data: filterList(event.query))));
+      particiPateListState: PageState.loaded(
+        data: filterParticipatesList(cityId: event.cityId),
+      ),
+    ));
   }
 
-  List<ParticipateModel> filterList(String query, [List<ParticipateModel>? l]) {
-    List<ParticipateModel> list =
-        List<ParticipateModel>.from(l ?? state.allParticipateState);
-    list = list
-        .where((element) =>
-            (element.name_participate.toLowerCase().contains(query) ?? false) ||
-            (element.numberbank_participate.toLowerCase().contains(query) ??
-                false))
-        .toList();
-    return list;
+  List<ParticipateModel> filterParticipatesList({String? cityId}) {
+    final searchList = _searchParticipates();
+    print("searchList => ${searchList.length}");
+    final filteredByCityList = _filterByCity(cityId: cityId, list: searchList);
+    print("filteredByCityList => ${filteredByCityList.length}");
+    return filteredByCityList;
+  }
+
+  List<ParticipateModel> _searchParticipates() {
+    if (searchTextField.text.isEmpty) {
+      return allParticipates;
+    }
+    final query = searchTextField.text.toLowerCase();
+    return allParticipates.where((element) {
+      return element.name_participate.toLowerCase().contains(query) ||
+          element.numberbank_participate.toLowerCase().contains(query);
+    }).toList();
+  }
+
+  List<ParticipateModel> _filterByCity({
+    String? cityId,
+    required List<ParticipateModel> list,
+  }) {
+    if (cityId == null || cityId.isEmpty) return list;
+    print('cityId => $cityId');
+    return list.where((element) => element.fkCity == cityId).toList();
   }
 
   FutureOr<void> _onAddParticipateEvent(

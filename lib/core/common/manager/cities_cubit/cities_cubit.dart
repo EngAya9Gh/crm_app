@@ -40,6 +40,7 @@ class CitiesCubit extends Cubit<CitiesState> {
     String? regionId,
     Function? onSuccess,
   }) async {
+    if (state is CitiesLoading || citiesList.isNotEmpty) return;
     emit(CitiesLoading());
 
     final response = await getAllCitiesUseCase(
