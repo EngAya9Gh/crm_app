@@ -448,291 +448,11 @@ class _SupportAddState extends State<SupportAdd> {
                         list: supportPublicTypeList,
                         invoiceId: widget.idInvoice,
                       ),
-                      Consumer<invoice_vm>(
-                        builder: (context, invoiceViewmodel, _) {
-                          return Container(
-                            height: 200,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            alignment: Alignment.center,
-                            child: selectedFile != null
-                                ? Stack(
-                                    children: [
-                                      Positioned.fill(
-                                          child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: Image.file(selectedFile!,
-                                            fit: BoxFit.cover),
-                                      )),
-                                      Positioned.fill(
-                                          child: Align(
-                                        alignment: Alignment.topRight,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                if (_invoiceAttachFile
-                                                        ?.attachFileStatus !=
-                                                    AttachFileStatus.loading)
-                                                  InkWell(
-                                                    onTap: () => pickImage(),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            90),
-                                                    child: Container(
-                                                      height: 40,
-                                                      width: 40,
-                                                      margin: EdgeInsets.only(
-                                                          top: 10, right: 15),
-                                                      decoration: BoxDecoration(
-                                                        color:
-                                                            Colors.grey.shade50,
-                                                        shape: BoxShape.circle,
-                                                      ),
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Icon(
-                                                          Icons
-                                                              .attachment_rounded,
-                                                          color: Colors
-                                                              .grey.shade700,
-                                                          size: 20),
-                                                    ),
-                                                  ),
-                                                InkWell(
-                                                  onTap: () {
-                                                    if (_invoiceAttachFile
-                                                            ?.attachFileStatus ==
-                                                        AttachFileStatus
-                                                            .loading) {
-                                                      return;
-                                                    } else if (_invoiceAttachFile
-                                                            ?.attachFileStatus ==
-                                                        AttachFileStatus
-                                                            .failed) {
-                                                      uploadAttachedFile();
-                                                      return;
-                                                    } else {
-                                                      uploadAttachedFile();
-                                                    }
-                                                  },
-                                                  borderRadius:
-                                                      BorderRadius.circular(90),
-                                                  child: Container(
-                                                    height: 40,
-                                                    width: 40,
-                                                    margin: EdgeInsets.only(
-                                                        top: 10, right: 15),
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          Colors.grey.shade50,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    alignment: Alignment.center,
-                                                    child: _invoiceAttachFile
-                                                                ?.attachFileStatus ==
-                                                            AttachFileStatus
-                                                                .loading
-                                                        ? SizedBox(
-                                                            height: 20,
-                                                            width: 20,
-                                                            child:
-                                                                CircularProgressIndicator())
-                                                        : _invoiceAttachFile
-                                                                    ?.attachFileStatus ==
-                                                                AttachFileStatus
-                                                                    .failed
-                                                            ? Icon(
-                                                                Icons.refresh,
-                                                                color:
-                                                                    kMainColor,
-                                                                size: 20)
-                                                            : Icon(Icons.done,
-                                                                color:
-                                                                    kMainColor,
-                                                                size: 20),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            if (_invoiceAttachFile
-                                                    ?.attachFileStatus !=
-                                                AttachFileStatus.loading)
-                                              InkWell(
-                                                onTap: () {
-                                                  setState(() {
-                                                    selectedFile = null;
-                                                    _invoiceAttachFile =
-                                                        _invoiceAttachFile?.copyWith(
-                                                            attachFileStatus:
-                                                                AttachFileStatus
-                                                                    .init);
-                                                  });
-                                                },
-                                                borderRadius:
-                                                    BorderRadius.circular(90),
-                                                child: Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  margin: EdgeInsets.only(
-                                                      top: 10, left: 15),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.grey.shade50,
-                                                    shape: BoxShape.circle,
-                                                  ),
-                                                  alignment: Alignment.center,
-                                                  child: Icon(
-                                                    Icons.delete_rounded,
-                                                    color: Colors.red,
-                                                    size: 20,
-                                                  ),
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                      )),
-                                    ],
-                                  )
-                                : (_invoiceAttachFile?.fileAttach?.isNotEmpty ??
-                                        false)
-                                    ? InkWell(
-                                        onTap: () => AppFileViewer(urls: [
-                                          urlfile +
-                                              _invoiceAttachFile!.fileAttach!
-                                        ]).show(context),
-                                        child: Stack(
-                                          children: [
-                                            Positioned.fill(
-                                                child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              child: FancyImageShimmerViewer(
-                                                imageUrl: urlfile +
-                                                    _invoiceAttachFile!
-                                                        .fileAttach!,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            )),
-                                            Positioned.fill(
-                                              child: Align(
-                                                alignment: Alignment.topRight,
-                                                child: Row(
-                                                  children: [
-                                                    if (_invoiceAttachFile
-                                                            ?.deleteAttachFileStatus !=
-                                                        AttachFileStatus
-                                                            .loading)
-                                                      InkWell(
-                                                        onTap: () =>
-                                                            pickImage(),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(90),
-                                                        child: Container(
-                                                          height: 40,
-                                                          width: 40,
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: 10,
-                                                                  right: 15),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Colors
-                                                                .grey.shade50,
-                                                            shape:
-                                                                BoxShape.circle,
-                                                          ),
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Icon(
-                                                              Icons
-                                                                  .attachment_rounded,
-                                                              color: Colors.grey
-                                                                  .shade700,
-                                                              size: 20),
-                                                        ),
-                                                      ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        deleteFile();
-                                                      },
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              90),
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 40,
-                                                        margin: EdgeInsets.only(
-                                                            top: 10, right: 15),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors
-                                                              .grey.shade50,
-                                                          shape:
-                                                              BoxShape.circle,
-                                                        ),
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: _invoiceAttachFile
-                                                                    ?.deleteAttachFileStatus ==
-                                                                AttachFileStatus
-                                                                    .loading
-                                                            ? SizedBox(
-                                                                height: 20,
-                                                                width: 20,
-                                                                child:
-                                                                    CircularProgressIndicator(
-                                                                  color: Colors
-                                                                      .red,
-                                                                ))
-                                                            : Icon(
-                                                                Icons
-                                                                    .delete_rounded,
-                                                                color:
-                                                                    Colors.red,
-                                                                size: 20,
-                                                              ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                    : InkWell(
-                                        borderRadius: BorderRadius.circular(15),
-                                        onTap: () => pickImage(),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(Icons.attachment_rounded,
-                                                color: Colors.grey.shade700,
-                                                size: 35),
-                                            SizedBox(height: 0),
-                                            Text(
-                                              'Attach file',
-                                              style: context
-                                                  .textTheme.titleMedium
-                                                  ?.copyWith(
-                                                      fontFamily: kfontfamily2,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      color:
-                                                          Colors.grey.shade600),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                          );
-                        },
-                      ),
+                      // todo : handle attachments
+                      _attachmentWidget(),
+                      // ParticipatesSupportInvoicesAttachments(
+                      //   onDeleteFileAttach: (FileAttach value) {},
+                      // ),
                       SizedBox(height: 20),
                       _privilegeCubit.checkPrivilege('42')
                           // ? _invoice!.dateinstall_task != null && _invoice!.dateinstall_done == null
@@ -1470,6 +1190,228 @@ class _SupportAddState extends State<SupportAdd> {
           ),
         ),
       ),
+    );
+  }
+
+  Consumer<invoice_vm> _attachmentWidget() {
+    return Consumer<invoice_vm>(
+      builder: (context, invoiceViewmodel, _) {
+        return Container(
+          height: 200,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          alignment: Alignment.center,
+          child: selectedFile != null
+              ? Stack(
+                  children: [
+                    Positioned.fill(
+                        child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.file(selectedFile!, fit: BoxFit.cover),
+                    )),
+                    Positioned.fill(
+                        child: Align(
+                      alignment: Alignment.topRight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              if (_invoiceAttachFile?.attachFileStatus !=
+                                  AttachFileStatus.loading)
+                                InkWell(
+                                  onTap: () => pickImage(),
+                                  borderRadius: BorderRadius.circular(90),
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    margin: EdgeInsets.only(top: 10, right: 15),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade50,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Icon(Icons.attachment_rounded,
+                                        color: Colors.grey.shade700, size: 20),
+                                  ),
+                                ),
+                              InkWell(
+                                onTap: () {
+                                  if (_invoiceAttachFile?.attachFileStatus ==
+                                      AttachFileStatus.loading) {
+                                    return;
+                                  } else if (_invoiceAttachFile
+                                          ?.attachFileStatus ==
+                                      AttachFileStatus.failed) {
+                                    uploadAttachedFile();
+                                    return;
+                                  } else {
+                                    uploadAttachedFile();
+                                  }
+                                },
+                                borderRadius: BorderRadius.circular(90),
+                                child: Container(
+                                  height: 40,
+                                  width: 40,
+                                  margin: EdgeInsets.only(top: 10, right: 15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade50,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: _invoiceAttachFile?.attachFileStatus ==
+                                          AttachFileStatus.loading
+                                      ? SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator())
+                                      : _invoiceAttachFile?.attachFileStatus ==
+                                              AttachFileStatus.failed
+                                          ? Icon(Icons.refresh,
+                                              color: kMainColor, size: 20)
+                                          : Icon(Icons.done,
+                                              color: kMainColor, size: 20),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (_invoiceAttachFile?.attachFileStatus !=
+                              AttachFileStatus.loading)
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  selectedFile = null;
+                                  _invoiceAttachFile =
+                                      _invoiceAttachFile?.copyWith(
+                                          attachFileStatus:
+                                              AttachFileStatus.init);
+                                });
+                              },
+                              borderRadius: BorderRadius.circular(90),
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                margin: EdgeInsets.only(top: 10, left: 15),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade50,
+                                  shape: BoxShape.circle,
+                                ),
+                                alignment: Alignment.center,
+                                child: Icon(
+                                  Icons.delete_rounded,
+                                  color: Colors.red,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    )),
+                  ],
+                )
+              : (_invoiceAttachFile?.fileAttach?.isNotEmpty ?? false)
+                  ? InkWell(
+                      onTap: () => AppFileViewer(
+                              urls: [urlfile + _invoiceAttachFile!.fileAttach!])
+                          .show(context),
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                              child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: FancyImageShimmerViewer(
+                              imageUrl:
+                                  urlfile + _invoiceAttachFile!.fileAttach!,
+                              fit: BoxFit.cover,
+                            ),
+                          )),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.topRight,
+                              child: Row(
+                                children: [
+                                  if (_invoiceAttachFile
+                                          ?.deleteAttachFileStatus !=
+                                      AttachFileStatus.loading)
+                                    InkWell(
+                                      onTap: () => pickImage(),
+                                      borderRadius: BorderRadius.circular(90),
+                                      child: Container(
+                                        height: 40,
+                                        width: 40,
+                                        margin:
+                                            EdgeInsets.only(top: 10, right: 15),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.shade50,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Icon(Icons.attachment_rounded,
+                                            color: Colors.grey.shade700,
+                                            size: 20),
+                                      ),
+                                    ),
+                                  InkWell(
+                                    onTap: () {
+                                      deleteFile();
+                                    },
+                                    borderRadius: BorderRadius.circular(90),
+                                    child: Container(
+                                      height: 40,
+                                      width: 40,
+                                      margin:
+                                          EdgeInsets.only(top: 10, right: 15),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade50,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: _invoiceAttachFile
+                                                  ?.deleteAttachFileStatus ==
+                                              AttachFileStatus.loading
+                                          ? SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.red,
+                                              ))
+                                          : Icon(
+                                              Icons.delete_rounded,
+                                              color: Colors.red,
+                                              size: 20,
+                                            ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: () => pickImage(),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.attachment_rounded,
+                              color: Colors.grey.shade700, size: 35),
+                          SizedBox(height: 0),
+                          Text(
+                            'Attach file',
+                            style: context.textTheme.titleMedium?.copyWith(
+                                fontFamily: kfontfamily2,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.grey.shade600),
+                          )
+                        ],
+                      ),
+                    ),
+        );
+      },
     );
   }
 
