@@ -73,27 +73,22 @@ class _ParticipateInvoiceListPageState
                             Radius.circular(5),
                           )),
                       height: 50,
-                      child: Padding(
+                      child: Container(
                         padding: const EdgeInsets.only(
                             top: 2, left: 8, right: 8, bottom: 2),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Directionality(
-                            textDirection: TextDirection.rtl,
-                            child: TextField(
-                              controller: _searchTextField,
-                              textInputAction: TextInputAction.search,
-                              decoration: InputDecoration(
-                                hintText: "اسم المؤسسة, رقم الفاتورة .....",
-                                border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: Colors.black,
-                                ),
-                              ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextField(
+                          controller: _searchTextField,
+                          textInputAction: TextInputAction.search,
+                          decoration: InputDecoration(
+                            hintText: "اسم المؤسسة, رقم الفاتورة .....",
+                            border: InputBorder.none,
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: Colors.black,
                             ),
                           ),
                         ),

@@ -12,7 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/utils/responsive_padding.dart';
+import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
+import '../../../clients_list/presentation/pages/filter_clients_sheet.dart';
 import '../widgets/participate_card.dart';
 
 class ParticipateListPage extends StatefulWidget {
@@ -87,30 +89,25 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          )),
-                      height: 50,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 2, left: 8, right: 8, bottom: 2),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Directionality(
-                            textDirection: TextDirection.rtl,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: TextField(
                               controller: _searchTextField,
                               textInputAction: TextInputAction.search,
                               decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
                                 hintText:
                                     "اسم المتعاون, رقم الموبايل للمتعاون.....",
-                                border: InputBorder.none,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: EdgeInsets.zero,
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: Colors.black,
@@ -119,7 +116,32 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                             ),
                           ),
                         ),
-                      ),
+                        Tooltip(
+                          message: "فلترة",
+                          child: InkWell(
+                            onTap: () {
+                              AppBottomSheet.show(
+                                context: context,
+                                child: FilterClientsSheet(
+                                  val: true,
+                                  onFilter: (value) {},
+                                ),
+                              );
+                            },
+                            borderRadius: BorderRadius.circular(10),
+                            child: Container(
+                              height: 46,
+                              width: 46,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Icon(Icons.filter_alt_rounded,
+                                  color: Colors.grey.shade600, size: 30.r),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     10.verticalSpace,
                     Padding(
