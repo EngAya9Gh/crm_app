@@ -1,4 +1,9 @@
+import 'package:crm_smart/core/common/extensions/extensions.dart';
+import 'package:crm_smart/core/common/manager/cities_cubit/cities_cubit.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/cities_drop_down_widget.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
@@ -25,33 +30,18 @@ class ParticipateListPage extends StatefulWidget {
 class _ParticipateListPageState extends State<ParticipateListPage> {
   late ParticipateListBloc _participateListBloc;
 
-  late TextEditingController _searchTextField;
-
   @override
   void initState() {
-    _searchTextField = TextEditingController()..addListener(onSearch);
-
+    _participateListBloc = context.read<ParticipateListBloc>();
+    context.read<CitiesCubit>()
+      ..getAllCity(fkCountry: AppConstants.currentCountry(context) ?? '')
+      ..selectedCity = null;
+    _participateListBloc.searchTextField.clear();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _participateListBloc = context.read<ParticipateListBloc>()
-        ..add(GetParticipateListEvent(
-            // fkCountry!,
-            query: _searchTextField.text));
+      _participateListBloc.add(GetParticipateListEvent());
     });
 
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _searchTextField
-      ..removeListener(onSearch)
-      ..dispose();
-    super.dispose();
-  }
-
-  void onSearch() {
-    print("search");
-    _participateListBloc.add(SearchEvent(_searchTextField.text));
   }
 
   @override
@@ -67,7 +57,10 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
               Navigator.push(
                 context,
                 CupertinoPageRoute<void>(
-                  builder: (BuildContext context) => ActionParticipate(),
+                  builder: (BuildContext context) {
+                    context.read<CitiesCubit>().selectedCity = null;
+                    return ActionParticipate();
+                  },
                   fullscreenDialog: true,
                 ),
               );
@@ -87,38 +80,48 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(5),
-                          )),
-                      height: 50,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 2, left: 8, right: 8, bottom: 2),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Directionality(
-                            textDirection: TextDirection.rtl,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Flexible(
                             child: TextField(
-                              controller: _searchTextField,
+                              controller: _participateListBloc.searchTextField,
                               textInputAction: TextInputAction.search,
                               decoration: InputDecoration(
-                                hintText:
-                                    "اسم المتعاون, رقم الموبايل للمتعاون.....",
-                                border: InputBorder.none,
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                                hintText: "اسم المتعاون, رقم الموبايل.....",
+                                hintStyle:
+                                    context.textTheme.titleSmall?.copyWith(
+                                  color: Colors.grey.shade600,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: EdgeInsets.zero,
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: Colors.black,
                                 ),
                               ),
+                              onChanged: (value) {
+                                _filterParticipates(context);
+                              },
                             ),
                           ),
-                        ),
+                          10.width,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.32,
+                            child: CitiesDropDownWidget(
+                              icon: Icons.filter_list_sharp,
+                              onSelected: () {
+                                _filterParticipates(context);
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     10.verticalSpace,
@@ -135,9 +138,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async =>
-                            _participateListBloc.add(GetParticipateListEvent(
-                                // fkCountry!,
-                                query: _searchTextField.text)),
+                            _participateListBloc.add(GetParticipateListEvent()),
                         child: ListView.separated(
                           padding: EdgeInsets.symmetric(
                               horizontal: 10, vertical: 10),
@@ -161,5 +162,11 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
         ),
       ),
     );
+  }
+
+  void _filterParticipates(BuildContext context) {
+    _participateListBloc
+      ..add(FilterEvent())
+      ..selectedCity = context.read<CitiesCubit>().selectedCity;
   }
 }
