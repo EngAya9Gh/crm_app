@@ -68,7 +68,7 @@ class _ManagementPageState extends State<ManagementPage> {
         child: Column(
           children: [
             _privilegeCubit.checkPrivilege('3') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -81,7 +81,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: 'إدارة المستخدمين')
                 : Container(),
             _privilegeCubit.checkPrivilege('17') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -94,7 +94,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: 'إدارة الصلاحيات')
                 : Container(),
             _privilegeCubit.checkPrivilege('142') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -106,7 +106,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     },
                     title: 'إدارة الإنسحابات')
                 : SizedBox.shrink(),
-            buildSelectCategory(
+            SelectCategory(
               colorbag: Colors.white,
               colortitle: Colors.black,
               colorarrow: Colors.black,
@@ -130,7 +130,7 @@ class _ManagementPageState extends State<ManagementPage> {
             //   title: 'الروابط الهامة',
             // ),
             _privilegeCubit.checkPrivilege('4') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -146,7 +146,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: 'المنتجات ')
                 : Container(),
             _privilegeCubit.checkPrivilege('20') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -161,7 +161,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: 'ملف الإعدادات ')
                 : Container(),
             _privilegeCubit.checkPrivilege('52') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     subtitle: Provider.of<UserProvider>(context, listen: false)
                         .currentUser
                         .nameCountry,
@@ -179,7 +179,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: 'تغيير الدولة')
                 : Container(),
             _privilegeCubit.checkPrivilege('63') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -194,7 +194,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: 'إداراة الفروع')
                 : Container(),
             _privilegeCubit.checkPrivilege('64') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -209,7 +209,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: 'إضافة الإدارات')
                 : Container(),
             _privilegeCubit.checkPrivilege('73') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -225,7 +225,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: 'أسباب الانسحاب')
                 : Container(),
             _privilegeCubit.checkPrivilege('77') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -240,7 +240,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     title: ' ادارة المناطق والمدن')
                 : Container(),
             _privilegeCubit.checkPrivilege('74') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -255,7 +255,7 @@ class _ManagementPageState extends State<ManagementPage> {
                     },
                     title: 'أنواع التذاكر')
                 : Container(),
-            buildSelectCategory(
+            SelectCategory(
                 colorbag: Colors.white,
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
@@ -287,7 +287,7 @@ class _ManagementPageState extends State<ManagementPage> {
             //     : Container(),
 
             _privilegeCubit.checkPrivilege('149') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,

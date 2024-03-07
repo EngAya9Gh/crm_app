@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
 import 'package:crm_smart/core/utils/end_points.dart';
@@ -20,7 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 
 import '../core/api/api_services.dart';
-import '../core/common/helpers/checkSoragePermission.dart';
+import '../core/common/helpers/check_sorage_permission.dart';
 import '../core/di/di_container.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/agent_distributor_model.dart';
@@ -929,10 +930,10 @@ class invoice_vm extends ChangeNotifier {
       return;
     }
     List<DateInstallationClient> list = invoice.datesInstallationClient ?? [];
-    list = list
-        .map((e) => e.idClientsDate == event.idClientsDate
-            ? e.copyWith(isDone: '1')
-            : e)
+    list
+        .map((date) => date.idClientsDate == event.idClientsDate
+            ? date.copyWith(isDone: IsDoneDateEnum.done.index.toString())
+            : date)
         .toList();
 
     invoice.datesInstallationClient = list;

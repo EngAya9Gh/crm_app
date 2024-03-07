@@ -1,12 +1,17 @@
-import 'package:crm_smart/core/utils/app_strings.dart';
-import 'package:crm_smart/core/utils/responsive_padding.dart';
-import 'package:crm_smart/features/app/presentation/widgets/app_text_field.dart.dart';
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/common/manager/cities_cubit/cities_cubit.dart';
+import '../../../../core/common/widgets/cities_drop_down_widget.dart';
+import '../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../core/utils/app_constants.dart';
+import '../../../../core/utils/app_strings.dart';
+import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_elvated_button.dart';
+import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
 import '../../data/models/participatModel.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
@@ -27,14 +32,24 @@ class _ActionParticipateState extends State<ActionParticipate> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _fromKey = GlobalKey<FormState>();
   late final ParticipateListBloc _participateListBloc;
+
   bool get isEdit => widget.participate != null;
   late final TextEditingController nameParticipateController;
   late final TextEditingController mobileParticipateController;
   late final TextEditingController nameBankParticipateController;
   late final TextEditingController numberBankParticipateController;
   late ValueNotifier<String?> clientName;
+
   @override
   void initState() {
+    final cubit = context.read<CitiesCubit>();
+    cubit.getAllCity(
+      fkCountry: AppConstants.currentCountry(context) ?? '',
+      regionId: null,
+      onSuccess: () {
+        cubit.loadCurrentCityById(cityId: widget.participate?.fkCity);
+      },
+    );
     _participateListBloc = context.read<ParticipateListBloc>();
     mobileParticipateController =
         TextEditingController(text: widget.participate?.mobile_participate);
@@ -52,9 +67,8 @@ class _ActionParticipateState extends State<ActionParticipate> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<CitiesCubit>();
     return Scaffold(
-      //AppScaffold
-
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
         child: ValueListenableBuilder<String?>(
@@ -82,7 +96,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                 child: ListView(
                   padding: HWEdgeInsets.only(left: 15, right: 15, top: 15),
                   children: [
-                    15.verticalSpace,
+                    15.height,
                     AppTextField(
                       labelText: "اسم المتعاون*",
                       maxLines: 1,
@@ -91,7 +105,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                       // maxLength: 15,
                       controller: nameParticipateController,
                     ),
-                    15.verticalSpace,
+                    15.height,
                     AppTextField(
                       labelText: "رقم المتعاون*",
                       validator: HelperFunctions.instance.requiredFiled,
@@ -100,7 +114,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                       maxLength: 15,
                       controller: mobileParticipateController,
                     ),
-                    15.verticalSpace,
+                    15.height,
                     AppTextField(
                       labelText: "بنك المتعاون*",
                       validator: HelperFunctions.instance.requiredFiled,
@@ -108,7 +122,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                       // hintText: '',
                       controller: nameBankParticipateController,
                     ),
-                    15.verticalSpace,
+                    15.height,
                     AppTextField(
                       labelText: "رقم بنك المتعاون*",
                       validator: HelperFunctions.instance.requiredFiled,
@@ -116,10 +130,26 @@ class _ActionParticipateState extends State<ActionParticipate> {
                       textInputType: TextInputType.phone,
                       controller: numberBankParticipateController,
                     ),
+                    15.height,
+                    // cities drop down
+                    BlocBuilder<CitiesCubit, CitiesState>(
+                      builder: (context, state) {
+                        if (state is CitiesLoading) {
+                          return CustomLoadingIndicator();
+                        } else if (state is CitiesError) {
+                          return CustomErrorWidget(onPressed: () {
+                            cubit.getAllCity(
+                                fkCountry:
+                                    AppConstants.currentCountry(context) ?? '');
+                          });
+                        }
+                        return CitiesDropDownWidget();
+                      },
+                    ),
                   ],
                 ),
               ),
-              10.verticalSpace,
+              10.height,
               BlocBuilder<ParticipateListBloc, ParticipateListState>(
                 builder: (context, state) {
                   return AppElevatedButton(
@@ -159,6 +189,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
+        fkCity: context.read<CitiesCubit>().selectedCity!.id_city,
       ),
       onSuccess: (client) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -177,6 +208,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
+        fkCity: context.read<CitiesCubit>().selectedCity!.id_city,
       ),
       onSuccess: (client) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

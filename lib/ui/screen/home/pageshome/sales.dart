@@ -2,7 +2,6 @@ import 'package:crm_smart/ui/screen/client/Acceptpage.dart';
 import 'package:crm_smart/ui/screen/client/approve_type_user.dart';
 import 'package:crm_smart/ui/screen/client/approvefinance_approve.dart';
 import 'package:crm_smart/ui/screen/client/outClient.dart';
-import 'package:crm_smart/ui/screen/client/tabclients.dart';
 import 'package:crm_smart/ui/screen/home/approvepage.dart';
 import 'package:crm_smart/ui/screen/home/widgethomeitem.dart';
 import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
@@ -11,7 +10,6 @@ import 'package:crm_smart/ui/screen/report/chartsales_user.dart';
 import 'package:crm_smart/ui/screen/report/deptsales.dart';
 import 'package:crm_smart/ui/screen/report/sales_reportstate.dart';
 import 'package:crm_smart/ui/screen/report/salesproduct.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +55,7 @@ class _salesState extends State<sales> {
         child: Column(
           children: [
             context.read<PrivilegeCubit>().checkPrivilege('36') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -66,35 +64,44 @@ class _salesState extends State<sales> {
                       //     CupertinoPageRoute(
                       //     builder: (context)=>
                       //         tabclients()));
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ClientsListPage()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ClientsListPage()));
                     },
                     title: ' قائمة العملاء',
                   )
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('39') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
-                          context, CupertinoPageRoute(builder: (context) => AgentsDistributorsInvoicesView()));
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  AgentsDistributorsInvoicesView()));
                     },
                     title: 'فواتير العملاء')
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('119') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => getLastCommentClient()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => getLastCommentClient()));
                     },
                     title: 'آخر تحديثات العملاء')
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('39') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -109,43 +116,46 @@ class _salesState extends State<sales> {
                     title: 'ديون العملاء')
                 : Container(), //تاريخ الفاتورة جنبو اسم المؤسسة
             context.read<PrivilegeCubit>().checkPrivilege('113') == true
-                ? buildSelectCategory(
-                colorbag: Colors.white,
-                colortitle: Colors.black,
-                colorarrow: Colors.black,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    CupertinoPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          ParticipateListPage(),
-                    ),
-                  );
-                },
-                title: 'المتعاونين')
+                ? SelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              ParticipateListPage(),
+                        ),
+                      );
+                    },
+                    title: 'المتعاونين')
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('114') == true
-                ? buildSelectCategory(
-              colorbag: Colors.white,
-              colortitle: Colors.black,
-              colorarrow: Colors.black,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        AgentsAndDistributorsPage(),
-                  ),
-                );
-              },
-              title: "الوكلاء والموزعين",
-            )
+                ? SelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        CupertinoPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              AgentsAndDistributorsPage(),
+                        ),
+                      );
+                    },
+                    title: "الوكلاء والموزعين",
+                  )
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('120') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => calender_client()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => calender_client()));
                     },
                     title: 'جدول زيارات العميل ',
                     colorbag: Colors.white,
@@ -154,7 +164,7 @@ class _salesState extends State<sales> {
                   )
                 : Container(),
 
-            buildSelectCategory(
+            SelectCategory(
                 colorbag: Colors.white,
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
@@ -162,37 +172,48 @@ class _salesState extends State<sales> {
                   Navigator.push(
                       context,
                       CupertinoPageRoute(
-                          builder: (context) => TransferPage() //AcceptPage()   // support_view(type: 'client',)
+                          builder: (context) =>
+                              TransferPage() //AcceptPage()   // support_view(type: 'client',)
                           ));
                 },
-                title: 'موافقات تحويل العملاء'), //تاريخ الفاتورة جنبو اسم المؤسسة
+                title:
+                    'موافقات تحويل العملاء'), //تاريخ الفاتورة جنبو اسم المؤسسة
 
             context.read<PrivilegeCubit>().checkPrivilege('40') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ApprovePage()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ApprovePage()));
                     },
                     title: ' طلبات موافقة المشرفين ')
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('111') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => ApproveFinancePage()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => ApproveFinancePage()));
                     },
                     title: ' طلبات اعتماد المالية ')
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('85') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartAPI()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => BarChartAPI()));
                     },
                     title: 'تقارير مبيعات الموظفين ',
                     colorbag: Colors.white,
@@ -200,7 +221,7 @@ class _salesState extends State<sales> {
                     colorarrow: Colors.black,
                   )
                 : Container(),
-            buildSelectCategory(
+            SelectCategory(
                 colorbag: Colors.white,
                 colortitle: Colors.black,
                 colorarrow: Colors.black,
@@ -208,16 +229,20 @@ class _salesState extends State<sales> {
                   Navigator.push(
                     context,
                     CupertinoPageRoute<void>(
-                      builder: (BuildContext context) => company_view(type: 'ticket'),
+                      builder: (BuildContext context) =>
+                          company_view(type: 'ticket'),
                     ),
                   );
                 },
                 title: 'الشركات المنافسة'),
 
             context.read<PrivilegeCubit>().checkPrivilege('86') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => BarChartregoinsales()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => BarChartregoinsales()));
                     },
                     title: ' تقارير مبيعات الفروع ',
                     colorbag: Colors.white,
@@ -226,9 +251,12 @@ class _salesState extends State<sales> {
                   )
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('88') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => salesproduct()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => salesproduct()));
                     },
                     title: ' تقارير مبيعات المنتجات ',
                     colorbag: Colors.white,
@@ -237,9 +265,12 @@ class _salesState extends State<sales> {
                   )
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('91') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => deptsales()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => deptsales()));
                     },
                     title: ' تقارير ديون العملاء ',
                     colorbag: Colors.white,
@@ -248,9 +279,12 @@ class _salesState extends State<sales> {
                   )
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('95') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => sales_reportstate()));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => sales_reportstate()));
                     },
                     title: ' تقارير حالات العملاء ',
                     colorbag: Colors.white,
@@ -260,29 +294,7 @@ class _salesState extends State<sales> {
                 : Container(),
 
             context.read<PrivilegeCubit>().checkPrivilege('14') == true
-                ? buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => deletedinvoice()));
-                    },
-                    title: 'الفواتير المحذوفة')
-                : Container(),
-            context.read<PrivilegeCubit>().checkPrivilege('143') == true
-                ? buildSelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => WithdrawalsInvoicesPage()));
-                    },
-                    title: 'إدارة الفواتير المنسحبة',
-                  )
-                : SizedBox.shrink(),
-
-            context.read<PrivilegeCubit>().checkPrivilege('35') == true
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
@@ -290,7 +302,36 @@ class _salesState extends State<sales> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => OutClient() //AcceptPage()   // support_view(type: 'client',)
+                              builder: (context) => deletedinvoice()));
+                    },
+                    title: 'الفواتير المحذوفة')
+                : Container(),
+            context.read<PrivilegeCubit>().checkPrivilege('143') == true
+                ? SelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => WithdrawalsInvoicesPage()));
+                    },
+                    title: 'إدارة الفواتير المنسحبة',
+                  )
+                : SizedBox.shrink(),
+
+            context.read<PrivilegeCubit>().checkPrivilege('35') == true
+                ? SelectCategory(
+                    colorbag: Colors.white,
+                    colortitle: Colors.black,
+                    colorarrow: Colors.black,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  OutClient() //AcceptPage()   // support_view(type: 'client',)
                               ));
                     },
                     title: 'الفواتير المنسحبة')

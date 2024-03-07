@@ -13,6 +13,8 @@ class ParticipateModel extends Equatable {
     this.fkUserUpdate,
     this.nameUserAdd,
     this.nameUserUpdate,
+    this.fkCity,
+    this.nameCity,
   });
 
   late String? id_participate = null;
@@ -26,6 +28,8 @@ class ParticipateModel extends Equatable {
   final String? fkUserUpdate;
   final String? nameUserAdd;
   final String? nameUserUpdate;
+  final String? fkCity;
+  final String? nameCity;
 
   factory ParticipateModel.fromJson(Map<String, dynamic> json) {
     return ParticipateModel(
@@ -40,6 +44,8 @@ class ParticipateModel extends Equatable {
       fkUserUpdate: json['fk_user_update'],
       nameUserAdd: json['nameUserAdd'],
       nameUserUpdate: json['nameUserUpdate'],
+      fkCity: json['fk_city'],
+      nameCity: json['name_city'],
     );
   }
 
@@ -56,15 +62,10 @@ class ParticipateModel extends Equatable {
     _data['fk_user_update'] = fkUserUpdate;
     _data['nameUserAdd'] = nameUserAdd;
     _data['nameUserUpdate'] = nameUserUpdate;
+    _data['fk_city'] = fkCity;
+    _data['name_city'] = nameCity;
 
     return _data;
-  }
-
-  bool getFilterParticipate(String query) {
-    return name_participate
-        .toLowerCase()
-        .toString()
-        .contains(query.toLowerCase());
   }
 
   @override
@@ -81,5 +82,7 @@ class ParticipateModel extends Equatable {
         fkUserUpdate,
         nameUserAdd,
         nameUserUpdate,
+        fkCity,
+        nameCity,
       ];
 }

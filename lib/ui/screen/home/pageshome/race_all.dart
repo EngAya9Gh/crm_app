@@ -33,27 +33,31 @@ class race_page extends StatelessWidget {
         child: Column(
           children: [
             context.read<PrivilegeCubit>().checkPrivilege('118')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
                         context,
-                        CupertinoPageRoute<void>(builder: (BuildContext context) => EmployeeRacePage()),
+                        CupertinoPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                EmployeeRacePage()),
                       );
                     },
                     title: 'سباق الموظفين')
                 : Container(),
             context.read<PrivilegeCubit>().checkPrivilege('117')
-                ? buildSelectCategory(
+                ? SelectCategory(
                     colorbag: Colors.white,
                     colortitle: Colors.black,
                     colorarrow: Colors.black,
                     onTap: () {
                       Navigator.push(
                         context,
-                        CupertinoPageRoute<void>(builder: (BuildContext context) => BranchRaceView()),
+                        CupertinoPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                BranchRaceView()),
                       );
                     },
                     title: 'سباق الفروع')
