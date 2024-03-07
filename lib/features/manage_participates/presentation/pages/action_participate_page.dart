@@ -153,7 +153,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
                         _onEditClient();
                         return;
                       }
-                      _onAddClient();
+                      _onAddParticipate();
                     },
                   );
                 },
@@ -167,6 +167,7 @@ class _ActionParticipateState extends State<ActionParticipate> {
   }
 
   void _onEditClient() {
+    final citiesCubit = context.read<CitiesCubit>();
     _participateListBloc.add(EditParticipateEvent(
       EditParticipateParams(
         idParticipate: widget.participate!.id_participate!,
@@ -174,32 +175,37 @@ class _ActionParticipateState extends State<ActionParticipate> {
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
-        fkCity: context.read<CitiesCubit>().selectedCity!.id_city,
+        fkCity: citiesCubit.selectedCity!.id_city,
       ),
       onSuccess: (client) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(isEdit
                 ? AppStrings.labelEditUser
                 : AppStrings.labelAddedUser)));
+        citiesCubit.selectedCity =
+            context.read<ParticipateListBloc>().selectedCity;
         Navigator.pop(context, client);
       },
     ));
   }
 
-  void _onAddClient() {
+  void _onAddParticipate() {
+    final citiesCubit = context.read<CitiesCubit>();
     _participateListBloc.add(AddParticipateEvent(
       AddParaticipateParams(
         nameParticipate: nameParticipateController.text,
         mobileParticipate: mobileParticipateController.text,
         namebankParticipate: nameBankParticipateController.text,
         numberbankParticipate: numberBankParticipateController.text,
-        fkCity: context.read<CitiesCubit>().selectedCity!.id_city,
+        fkCity: citiesCubit.selectedCity!.id_city,
       ),
       onSuccess: (client) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(isEdit
                 ? AppStrings.labelEditUser
                 : AppStrings.labelAddedUser)));
+        citiesCubit.selectedCity =
+            context.read<ParticipateListBloc>().selectedCity;
         Navigator.pop(context, client);
       },
     ));

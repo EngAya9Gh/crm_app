@@ -9,6 +9,7 @@ import 'package:crm_smart/features/manage_participates/data/models/participate_c
 import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
 import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
+import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -58,8 +59,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
   final AddParticipateCommentUsecase _addParticipateCommentUsecase;
 
+  CityModel? selectedCity;
   List<ParticipateModel> allParticipates = [];
-  late TextEditingController searchTextField = TextEditingController();
+  final TextEditingController searchTextField = TextEditingController();
 
   FutureOr<void> _onGetParticipateListEvent(
       GetParticipateListEvent event, Emitter<ParticipateListState> emit) async {
@@ -87,17 +89,13 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   FutureOr<void> _onFilterEvent(
       FilterEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(
-      particiPateListState: PageState.loaded(
-        data: filterParticipatesList(cityId: event.cityId),
-      ),
+      particiPateListState: PageState.loaded(data: filterParticipatesList()),
     ));
   }
 
-  List<ParticipateModel> filterParticipatesList({String? cityId}) {
+  List<ParticipateModel> filterParticipatesList() {
     final searchList = _searchParticipates();
-    print("searchList => ${searchList.length}");
-    final filteredByCityList = _filterByCity(cityId: cityId, list: searchList);
-    print("filteredByCityList => ${filteredByCityList.length}");
+    final filteredByCityList = _filterByCity(list: searchList);
     return filteredByCityList;
   }
 
@@ -113,9 +111,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   }
 
   List<ParticipateModel> _filterByCity({
-    String? cityId,
     required List<ParticipateModel> list,
   }) {
+    final cityId = selectedCity?.id_city;
     if (cityId == null || cityId.isEmpty) return list;
     print('cityId => $cityId');
     return list.where((element) => element.fkCity == cityId).toList();
@@ -134,13 +132,12 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       (value) {
         emit(state.copyWith(
             actionParticipateBlocStatus: const BlocStatus.success()));
-        List<ParticipateModel> participates = state.allParticipateState;
-        participates.insert(0, value.data!);
-        //  emit(state.copyWith(particiPateListState: PageState.loading()));
+        allParticipates.insert(0, value.data!);
         emit(
           state.copyWith(
-            particiPateListState: PageState.loaded(data: participates),
-            allParticipateState: participates,
+            particiPateListState:
+                PageState.loaded(data: filterParticipatesList()),
+            allParticipateState: allParticipates,
           ),
         );
         event.onSuccess?.call(value.data!);
@@ -162,8 +159,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       (value) {
         emit(state.copyWith(
             actionParticipateBlocStatus: const BlocStatus.success()));
-        List<ParticipateModel> participates = state.allParticipateState;
-        participates = participates
+        allParticipates = allParticipates
             .map((e) =>
                 e.id_participate == event.editParticipateParams.idParticipate
                     ? value.data!
@@ -173,8 +169,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         //  emit(state.copyWith(particiPateListState: PageState.loading()));
         emit(
           state.copyWith(
-            particiPateListState: PageState.loaded(data: participates),
-            allParticipateState: participates,
+            particiPateListState:
+                PageState.loaded(data: filterParticipatesList()),
+            allParticipateState: allParticipates,
           ),
         );
         event.onSuccess?.call(value.data!);

@@ -42,6 +42,18 @@ class CitiesDropDownWidget extends StatelessWidget {
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
+              prefixIcon: cubit.selectedCity == null
+                  ? null
+                  : IconButton(
+                      onPressed: () {
+                        cubit.selectedCity = null;
+                        onSelected?.call();
+                      },
+                      icon: Icon(
+                        Icons.clear,
+                        color: Colors.grey,
+                      ),
+                    ),
             ),
             isExpanded: true,
             validator: (value) {

@@ -55,7 +55,10 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
               Navigator.push(
                 context,
                 CupertinoPageRoute<void>(
-                  builder: (BuildContext context) => ActionParticipate(),
+                  builder: (BuildContext context) {
+                    context.read<CitiesCubit>().selectedCity = null;
+                    return ActionParticipate();
+                  },
                   fullscreenDialog: true,
                 ),
               );
@@ -153,8 +156,8 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
   }
 
   void _filterParticipates(BuildContext context) {
-    _participateListBloc.add(FilterEvent(
-      cityId: context.read<CitiesCubit>().selectedCity?.id_city,
-    ));
+    _participateListBloc
+      ..add(FilterEvent())
+      ..selectedCity = context.read<CitiesCubit>().selectedCity;
   }
 }
