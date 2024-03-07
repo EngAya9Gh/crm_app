@@ -57,7 +57,14 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
 
   List<EventModel> _getEventsForDay(
       DateTime day, LinkedHashMap<DateTime, List<EventModel>>? events) {
-    return events?[day] ?? [];
+    if (events == null) {
+      return [];
+    }
+    events.values.forEach((element) {
+      element.sort((a, b) => a.from.compareTo(b.from));
+    });
+
+    return events[day] ?? [];
   }
 
   List<EventModel> _getEventsForRange(DateTime start, DateTime end,

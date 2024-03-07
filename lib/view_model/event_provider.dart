@@ -130,16 +130,19 @@ class EventProvider extends ChangeNotifier {
     required EventModel event,
     required ValueChanged<String> onSuccess,
     required ValueChanged<void> onFailure,
+    required String fk_user,
   }) async {
     isloadingRescheduleOrCancel = true;
     notifyListeners();
 
     final data = await Invoice_Service().editScheduleInstallation(
-        scheduleId: scheduleId,
-        dateClientVisit: dateClientVisit.toString(),
-        date_end: date_end.toString(),
-        typeSchedule: typeDate,
-        processReason: processReason);
+      scheduleId: scheduleId,
+      dateClientVisit: dateClientVisit.toString(),
+      date_end: date_end.toString(),
+      typeSchedule: typeDate,
+      processReason: processReason,
+      fk_user: fk_user,
+    );
     final list = eventDataSource[event.from] ?? [];
     final index = list.indexOf(event);
     if (index == -1) {
@@ -153,13 +156,16 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  onChangeFkUser(String idUser) {
+  onChangeFkUser(String idUser, [bool? isInit]) {
     if (idUser.isEmpty) {
       selectedFkUser = null;
     } else {
       selectedFkUser = idUser;
     }
 
+    if (isInit ?? false) {
+      return;
+    }
     notifyListeners();
     getAppointments();
   }

@@ -11,9 +11,11 @@ import 'package:provider/provider.dart';
 
 import '../../constants.dart';
 import '../../core/utils/app_strings.dart';
+import '../../features/app/presentation/widgets/app_elvated_button.dart';
 import '../../model/calendar/event_model.dart';
 import '../../model/invoiceModel.dart';
-import 'custom_widget/custombutton.dart';
+import '../screen/support/support_add.dart';
+import '../screen/support/support_table.dart';
 import 'custom_widget/row_edit.dart';
 import 'custom_widget/text_form.dart';
 
@@ -351,6 +353,10 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         },
                       ),
                       SizedBox(height: 10),
+                      // todo: handle id user after editing from the backend
+                      RowEdit(name: "اسناد الي", des: '*'),
+                      TechSupportUsersDropDown(),
+                      SizedBox(height: 15),
                       RowEdit(name: "تحديد الأسباب", des: '*'),
                       EditTextFormField(
                         vaild: (value) {
@@ -365,81 +371,86 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       ),
                       SizedBox(height: 10),
                       Consumer<EventProvider>(builder: (context, val, _) {
-                        if (val.isloadingRescheduleOrCancel)
-                          return Center(child: CircularProgressIndicator());
-                        else
-                          return CustomButton(
-                            text: "حفظ",
-                            onTap: () async {
-                              if (selectInstallationType == null ||
-                                  selectInstallationType!.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content:
-                                            Text('من فضلك اختر نوع التركيب ')));
-                                return;
-                              }
+                        // if (val.isloadingRescheduleOrCancel)
+                        //   return Center(child: CircularProgressIndicator());
+                        // else
+                        return AppElevatedButton(
+                          isLoading: val.isloadingRescheduleOrCancel,
+                          text: "حفظ",
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0)),
+                          ),
+                          onPressed: () async {
+                            if (selectInstallationType == null ||
+                                selectInstallationType!.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text('من فضلك اختر نوع التركيب ')));
+                              return;
+                            }
 
-                              if (_globalKey.currentState!.validate()) {
-                                // Navigator.of(context, rootNavigator: true).pop(false);
-                                _globalKey.currentState!.save();
+                            if (_globalKey.currentState!.validate()) {
+                              // Navigator.of(context, rootNavigator: true).pop(false);
+                              _globalKey.currentState!.save();
 
-                                Provider.of<invoice_vm>(context, listen: false)
-                                    .setisload();
-                                DateTime datetask = DateTime(
-                                    _currentDate.year,
-                                    _currentDate.month,
-                                    _currentDate.day,
-                                    selectedTime.hour,
-                                    selectedTime.minute);
-                                DateTime date_end = DateTime(
-                                    _currentDate.year,
-                                    _currentDate.month,
-                                    _currentDate.day,
-                                    endTime.hour,
-                                    endTime.minute);
+                              Provider.of<invoice_vm>(context, listen: false)
+                                  .setisload();
+                              DateTime datetask = DateTime(
+                                  _currentDate.year,
+                                  _currentDate.month,
+                                  _currentDate.day,
+                                  selectedTime.hour,
+                                  selectedTime.minute);
+                              DateTime date_end = DateTime(
+                                  _currentDate.year,
+                                  _currentDate.month,
+                                  _currentDate.day,
+                                  endTime.hour,
+                                  endTime.minute);
 
-                                final idUser = Provider.of<UserProvider>(
-                                        context,
-                                        listen: false)
-                                    .currentUser
-                                    .idUser;
-                                final EventModel editedEvent =
-                                    widget.event.copyWith(
-                                  isDone: "3",
-                                  from: datetask,
-                                  to: date_end,
-                                  typedate: selectInstallationType,
-                                );
-                                await Provider.of<EventProvider>(context,
-                                        listen: false)
-                                    .editSchedule_vm(
-                                  scheduleId: widget.idClientsDate,
-                                  dateClientVisit: datetask,
-                                  date_end: date_end,
-                                  event: widget.event,
-                                  typeDate: selectInstallationType!,
-                                  processReason: descresaonController.text,
-                                  onFailure: (void value) {},
-                                  onSuccess: (value) {
-                                    _eventProvider.editEvent(
-                                      editedEvent,
-                                      widget.event,
-                                    );
-                                  },
-                                );
-                                AppNavigator.pop(result: editedEvent);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            "تمت عملية إعادة الجدولة الزيارة  ",
-                                            textDirection:
-                                                myui.TextDirection.rtl)));
-                                // clear();
-                                setState(() {});
-                              }
-                            },
-                          );
+                              final idUser = Provider.of<UserProvider>(context,
+                                      listen: false)
+                                  .currentUser
+                                  .idUser;
+                              final EventModel editedEvent =
+                                  widget.event.copyWith(
+                                isDone: "3",
+                                from: datetask,
+                                to: date_end,
+                                typedate: selectInstallationType,
+                              );
+                              await Provider.of<EventProvider>(context,
+                                      listen: false)
+                                  .editSchedule_vm(
+                                scheduleId: widget.idClientsDate,
+                                dateClientVisit: datetask,
+                                date_end: date_end,
+                                fk_user: iduser,
+                                event: widget.event,
+                                typeDate: selectInstallationType!,
+                                processReason: descresaonController.text,
+                                onFailure: (void value) {},
+                                onSuccess: (value) {
+                                  _eventProvider.editEvent(
+                                    editedEvent,
+                                    widget.event,
+                                  );
+                                },
+                              );
+                              AppNavigator.pop(result: editedEvent);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          "تمت عملية إعادة الجدولة الزيارة  ",
+                                          textDirection:
+                                              myui.TextDirection.rtl)));
+                              // clear();
+                              setState(() {});
+                            }
+                          },
+                        );
                       }),
                     ],
                   ),

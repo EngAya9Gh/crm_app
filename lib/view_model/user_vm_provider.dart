@@ -7,7 +7,6 @@ import 'package:crm_smart/services/UserService.dart';
 // import 'package:dartz/dartz.dart';
 // import 'package:dartz/dartz_unsafe.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api.dart';

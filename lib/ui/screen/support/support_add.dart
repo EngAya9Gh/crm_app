@@ -13,13 +13,13 @@ import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/fancy_image_shimmer_viewer.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,32 +30,37 @@ import 'package:provider/provider.dart';
 
 import '../../../core/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../features/app/presentation/widgets/app_elvated_button.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
+import '../../../model/usermodel.dart';
 import '../../../view_model/reason_suspend.dart';
 import '../../widgets/app_photo_viewer.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
 
-class support_add extends StatefulWidget {
-  support_add({required this.idinvoice, required this.idClient, Key? key})
-      : super(key: key);
-  String? idinvoice;
-  String? idClient;
+class SupportAdd extends StatefulWidget {
+  const SupportAdd({
+    Key? key,
+    required this.idInvoice,
+    required this.idClient,
+  }) : super(key: key);
+
+  final String? idInvoice;
+  final String? idClient;
 
   @override
-  _support_addState createState() => _support_addState();
+  _SupportAddState createState() => _SupportAddState();
 }
 
-class _support_addState extends State<support_add> {
+class _SupportAddState extends State<SupportAdd> {
   TextEditingController _textsupport = TextEditingController();
   TextEditingController _textnameuserclient = TextEditingController();
   TextEditingController _timeController = TextEditingController();
   TextEditingController _endtimeController = TextEditingController();
   late PrivilegeCubit _privilegeCubit;
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   late InvoiceModel? _invoice = null;
   String? fk_client;
   bool valueresoan = false;
@@ -68,6 +73,7 @@ class _support_addState extends State<support_add> {
   ];
   late String? selectInstallationType;
   String? Value_installation_type = null;
+
   //   void changeInstallationvalue(String? s) {
 
   // }
@@ -80,13 +86,8 @@ class _support_addState extends State<support_add> {
     super.dispose();
   }
 
-  late TimeOfDay timinit;
-  late TimeOfDay timinit2;
-
   @override
   void initState() {
-    timinit = TimeOfDay.now();
-    timinit2 = TimeOfDay.now();
     _eventProvider = context.read<EventProvider>();
     _privilegeCubit = getIt<PrivilegeCubit>();
 
@@ -118,7 +119,7 @@ class _support_addState extends State<support_add> {
     _width = MediaQuery.of(context).size.width;
     _invoice = Provider.of<invoice_vm>(context, listen: true)
         .listinvoiceClientSupport
-        .firstWhere((element) => element.idInvoice == widget.idinvoice);
+        .firstWhere((element) => element.idInvoice == widget.idInvoice);
 
     if (isInit) {
       _invoiceAttachFile = _invoice;
@@ -129,7 +130,7 @@ class _support_addState extends State<support_add> {
 
     final _globalKey = GlobalKey<FormState>();
 
-    final listDates = List<DateInstallationClient>.of(datesInstallation ?? []);
+    final listDates = List<DateInstallationClient>.of(datesInstallation);
     listDates.sort((a, b) => a.dateClientVisit!.compareTo(b.dateClientVisit!));
     final nextInstallation =
         listDates.firstWhereOrNull((element) => element.isDone == "0");
@@ -188,7 +189,7 @@ class _support_addState extends State<support_add> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectDate(context, DateTime.now());
+                                  _selectDate(context);
                                 });
                               },
                               validator: (value) {
@@ -207,6 +208,7 @@ class _support_addState extends State<support_add> {
                                     TimeOfDay(hour: -1, minute: 00)) {
                                   return 'يرجى تعيين الوقت ';
                                 }
+                                return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -243,7 +245,7 @@ class _support_addState extends State<support_add> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectTime(context, timinit);
+                                  _selectTime(context);
                                 });
                               },
                             ),
@@ -260,6 +262,7 @@ class _support_addState extends State<support_add> {
                                     TimeOfDay(hour: -1, minute: 00)) {
                                   return 'يرجى تعيين الوقت ';
                                 }
+                                return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -296,7 +299,7 @@ class _support_addState extends State<support_add> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectEndTime(context, timinit2);
+                                  _selectEndTime(context);
                                 });
                               },
                             ),
@@ -314,9 +317,7 @@ class _support_addState extends State<support_add> {
                             value: level_one,
                           );
                         }).toList(),
-                        value: selectInstallationType == null
-                            ? null
-                            : selectInstallationType,
+                        value: selectInstallationType,
                         onChanged: (value) {
                           setState(() {
                             selectInstallationType = value.toString();
@@ -327,9 +328,21 @@ class _support_addState extends State<support_add> {
                         },
                       ),
                       SizedBox(height: 10),
-                      CustomButton(
+                      // Assign to
+                      RowEdit(name: "اسناد الي", des: '*'),
+                      TechSupportUsersDropDown(),
+                      SizedBox(height: 15),
+                      // save button
+                      AppElevatedButton(
+                        isLoading:
+                            Provider.of<invoice_vm>(context, listen: true)
+                                .isloadingdone,
                         text: "حفظ",
-                        onTap: () async {
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(0)),
+                        ),
+                        onPressed: () async {
                           if (Value_installation_type == null ||
                               Value_installation_type!.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -362,15 +375,11 @@ class _support_addState extends State<support_add> {
                                 endTime.hour,
                                 endTime.minute);
 
-                            final idUser = Provider.of<UserProvider>(context,
-                                    listen: false)
-                                .currentUser
-                                .idUser;
                             Provider.of<invoice_vm>(context, listen: false)
                                 .setdate_vm(
                               id_invoice: _invoice!.idInvoice!,
                               fk_client: widget.idClient!,
-                              fk_user: idUser!,
+                              fk_user: iduser,
                               date_client_visit: datetask.toString(),
                               date_end: date_end.toString(),
                               type_date: Value_installation_type!,
@@ -397,7 +406,7 @@ class _support_addState extends State<support_add> {
 
                               datesInstallation.add(DateInstallationClient(
                                 dateClientVisit: datetask,
-                                fkUser: idUser,
+                                fkUser: iduser,
                                 fkClient: widget.idClient,
                                 isDone: '0',
                                 fkInvoice: _invoice!.idInvoice,
@@ -437,7 +446,7 @@ class _support_addState extends State<support_add> {
                     children: [
                       AddManualTaskButton(
                         list: supportPublicTypeList,
-                        invoiceId: widget.idinvoice,
+                        invoiceId: widget.idInvoice,
                       ),
                       Consumer<invoice_vm>(
                         builder: (context, invoiceViewmodel, _) {
@@ -794,7 +803,9 @@ class _support_addState extends State<support_add> {
                         child: cardRow(
                             title: 'عدد الزيارات المتبقية',
                             value: datesInstallation
-                                .where((element) => element.isDone == "0"||element.isDone=='3')
+                                .where((element) =>
+                                    element.isDone == "0" ||
+                                    element.isDone == '3')
                                 .length
                                 .toString()),
                       ),
@@ -977,6 +988,7 @@ class _support_addState extends State<support_add> {
                                                               .isEmpty) {
                                                             return 'الحقل فارغ';
                                                           }
+                                                          return null;
                                                         },
                                                       ),
                                                       SizedBox(height: 10),
@@ -1461,6 +1473,12 @@ class _support_addState extends State<support_add> {
     );
   }
 
+  void _clearUser(BuildContext context) {
+    iduser = "";
+    _eventProvider.onChangeFkUser(iduser, true);
+    context.read<UserProvider>().changevalueuser(null, true);
+  }
+
   late DateTime _currentDate = DateTime(1, 1, 1);
   late DateTime _EndDate = DateTime(1, 1, 1);
 
@@ -1474,10 +1492,10 @@ class _support_addState extends State<support_add> {
 
   late String _hour, _minute, _time;
 
-  Future<Null> _selectTime(BuildContext context, TimeOfDay stime) async {
+  Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: stime,
+      initialTime: TimeOfDay.now(),
     );
     if (picked != null)
       setState(() {
@@ -1487,20 +1505,15 @@ class _support_addState extends State<support_add> {
         _time = _hour + ' : ' + _minute;
         _timeController.text = _time;
         _timeController.text = selectedTime.toString();
-
-        // Utils.toTime(selectedTime)
-        // formatDate(
-        // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-        // [hh, ':', nn, " ", am]).toString();
       });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedTime);
   }
 
-  Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
+  Future<Null> _selectEndTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: stime,
+      initialTime: TimeOfDay.now(),
     );
     if (picked != null)
       setState(() {
@@ -1510,24 +1523,18 @@ class _support_addState extends State<support_add> {
         _time = _hour + ' : ' + _minute;
         _endtimeController.text = _time;
         _endtimeController.text = endTime.toString();
-
-        // Utils.toTime(selectedTime)
-        // formatDate(
-        // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-        // [hh, ':', nn, " ", am]).toString();
       });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalueEnd(_currentDate, endTime);
   }
 
-  Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    //String output = formatter.format(currentDate);
-    // DateFormat('yyyy-MM-dd – kk:mm').format(now);
+  Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
+        // date of today
+        currentDate: DateTime.now(),
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
         lastDate: DateTime(3010));
     if (pickedDate != null) //&& pickedDate != currentDate)
       setState(() {
@@ -2019,4 +2026,84 @@ class _dialog_readyState extends State<dialog_ready> {
   }
 
   clear() {}
+}
+
+class TechSupportUsersDropDown extends StatefulWidget {
+  const TechSupportUsersDropDown({
+    Key? key,
+    this.clear = false,
+  }) : super(key: key);
+
+  final bool clear;
+
+  @override
+  State<TechSupportUsersDropDown> createState() =>
+      _TechSupportUsersDropDownState();
+}
+
+class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
+  late final EventProvider eventProvider;
+
+  @override
+  void initState() {
+    eventProvider = context.read<EventProvider>();
+    if (widget.clear) {
+      _clearUser(context);
+    }
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        return Consumer2<UserProvider, EventProvider>(
+          builder: (context, user, event, child) {
+            return DropdownSearch<UserModel>(
+              dropdownButtonBuilder: (context) => SizedBox.shrink(),
+              mode: Mode.DIALOG,
+              filterFn: (user, filter) => user!.getfilteruser(filter!),
+              compareFn: (item, selectedItem) =>
+                  item?.idUser == selectedItem?.idUser,
+              showSelectedItems: true,
+              items: user.usersSupportManagement,
+              itemAsString: (u) => u!.userAsString(),
+              onChanged: (data) {
+                iduser = data!.idUser!;
+                context.read<UserProvider>().changevalueuser(data);
+                eventProvider.onChangeFkUser(iduser);
+              },
+              selectedItem: user.selectedUser,
+              showSearchBox: true,
+              dropdownSearchDecoration: InputDecoration(
+                isCollapsed: true,
+                hintText: 'موظف الدعم الفني',
+                alignLabelWithHint: true,
+                fillColor: Colors.grey.withOpacity(0.2),
+                border: UnderlineInputBorder(
+                    borderSide: const BorderSide(
+                  color: Colors.grey,
+                )),
+                contentPadding: EdgeInsets.zero,
+                suffix: Icon(Icons.arrow_drop_down),
+              ),
+              validator: (value) {
+                if (value == null) {
+                  return 'يرجى اختيار موظف الدعم الفني';
+                }
+                return null;
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _clearUser(BuildContext context) {
+    iduser = "";
+    eventProvider.onChangeFkUser(iduser, true);
+    context.read<UserProvider>().changevalueuser(null, true);
+  }
 }
