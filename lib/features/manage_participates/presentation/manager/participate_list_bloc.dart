@@ -1,27 +1,28 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/common/models/profile_invoice_model.dart';
-import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
-import 'package:crm_smart/features/manage_participates/data/models/participate_client_model.dart';
-import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
-import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
-import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
-import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/common/helpers/participate_filter_handlers.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../core/common/models/page_state/page_state.dart';
+import '../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../model/maincitymodel.dart';
+import '../../data/models/participatModel.dart';
+import '../../data/models/participate_client_model.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
+import '../../domain/use_cases/get_participate_client_list_usecase.dart';
 import '../../domain/use_cases/get_participate_comment_list_usecase.dart';
 import '../../domain/use_cases/get_participate_list_usecase.dart';
+import 'participate_list_event.dart';
+import 'participate_list_state.dart';
 
 @injectable
 class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
@@ -94,29 +95,17 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   }
 
   List<ParticipateModel> filterParticipatesList() {
-    final searchList = _searchParticipates();
-    final filteredByCityList = _filterByCity(list: searchList);
-    return filteredByCityList;
-  }
+    final searchFilterHandler = SearchFilterHandler();
+    final cityFilterHandler = CityFilterHandler();
+    searchFilterHandler.setNextHandler(cityFilterHandler);
 
-  List<ParticipateModel> _searchParticipates() {
-    if (searchTextField.text.isEmpty) {
-      return allParticipates;
-    }
-    final query = searchTextField.text.toLowerCase();
-    return allParticipates.where((element) {
-      return element.name_participate.toLowerCase().contains(query) ||
-          element.numberbank_participate.toLowerCase().contains(query);
-    }).toList();
-  }
+    final filterParticipates = searchFilterHandler.handleFiltering(
+      list: allParticipates,
+      query: searchTextField.text,
+      cityId: selectedCity?.id_city,
+    );
 
-  List<ParticipateModel> _filterByCity({
-    required List<ParticipateModel> list,
-  }) {
-    final cityId = selectedCity?.id_city;
-    if (cityId == null || cityId.isEmpty) return list;
-    print('cityId => $cityId');
-    return list.where((element) => element.fkCity == cityId).toList();
+    return filterParticipates;
   }
 
   FutureOr<void> _onAddParticipateEvent(

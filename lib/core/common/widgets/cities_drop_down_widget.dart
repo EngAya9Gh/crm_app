@@ -35,25 +35,12 @@ class CitiesDropDownWidget extends StatelessWidget {
             });
           }
           return DropdownButtonFormField<CityModel?>(
-            itemHeight: 50,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.grey.shade200,
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
-              prefixIcon: cubit.selectedCity == null
-                  ? null
-                  : IconButton(
-                      onPressed: () {
-                        cubit.selectedCity = null;
-                        onSelected?.call();
-                      },
-                      icon: Icon(
-                        Icons.clear,
-                        color: Colors.grey,
-                      ),
-                    ),
             ),
             isExpanded: true,
             validator: (value) {
@@ -62,11 +49,27 @@ class CitiesDropDownWidget extends StatelessWidget {
               }
               return null;
             },
-            icon: Icon(
-              icon ?? Icons.keyboard_arrow_down_rounded,
-              color: Colors.grey,
+            icon: cubit.selectedCity == null
+                ? Icon(
+                    icon ?? Icons.keyboard_arrow_down_rounded,
+                    color: Colors.grey,
+                  )
+                : InkWell(
+                    onTap: () {
+                      cubit.selectedCity = null;
+                      onSelected?.call();
+                    },
+                    child: Icon(
+                      Icons.clear,
+                      color: Colors.grey,
+                    ),
+                  ),
+            hint: Text(
+              "حدد المدينة",
+              style: context.textTheme.titleSmall?.copyWith(
+                color: Colors.grey.shade600,
+              ),
             ),
-            hint: Text("حدد المدينة"),
             items: cubit.citiesList
                 .map<DropdownMenuItem<CityModel?>>((CityModel? city) {
               return DropdownMenuItem<CityModel?>(

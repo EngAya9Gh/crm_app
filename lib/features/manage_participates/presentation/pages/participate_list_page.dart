@@ -1,7 +1,9 @@
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:crm_smart/core/common/manager/cities_cubit/cities_cubit.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/common/widgets/cities_drop_down_widget.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text.dart';
 import 'package:crm_smart/features/app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
@@ -79,41 +81,48 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: TextField(
-                        controller: _participateListBloc.searchTextField,
-                        textInputAction: TextInputAction.search,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                          hintText: "اسم المتعاون, رقم الموبايل للمتعاون.....",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: TextField(
+                              controller: _participateListBloc.searchTextField,
+                              textInputAction: TextInputAction.search,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.grey.shade200,
+                                hintText: "اسم المتعاون, رقم الموبايل.....",
+                                hintStyle:
+                                    context.textTheme.titleSmall?.copyWith(
+                                  color: Colors.grey.shade600,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide.none,
+                                ),
+                                contentPadding: EdgeInsets.zero,
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              onChanged: (value) {
+                                _filterParticipates(context);
+                              },
+                            ),
                           ),
-                          contentPadding: EdgeInsets.zero,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Colors.black,
+                          10.width,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.32,
+                            child: CitiesDropDownWidget(
+                              icon: Icons.filter_list_sharp,
+                              onSelected: () {
+                                _filterParticipates(context);
+                              },
+                            ),
                           ),
-                        ),
-                        onChanged: (value) {
-                          _filterParticipates(context);
-                        },
+                        ],
                       ),
-                    ),
-                    10.verticalSpace,
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: CitiesDropDownWidget(
-                            icon: Icons.filter_list_sharp,
-                            onSelected: () {
-                              _filterParticipates(context);
-                            },
-                          )),
                     ),
                     10.verticalSpace,
                     Padding(
