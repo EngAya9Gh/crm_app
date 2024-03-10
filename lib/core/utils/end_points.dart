@@ -150,5 +150,6 @@ class _Invoice {
   final String crudFilesInvoice =
       'FilesInvoice/crud_files_invoice.php?fk_invoice=';
 
-  final String getInvoiceAttachments = 'getFilesInvoices';
+  final String getClientSupportFiles = 'getFilesInvoices';
+  final String crudClientSupportFiles = 'InvoiceFiles';
 }

@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
-class InvoiceAttachmentModel extends Equatable {
+class ClientSupportFileModel extends Equatable {
   final String fileUrl;
   final String invoiceId;
   final String typeFile;
   final String id;
 
-  InvoiceAttachmentModel({
+  ClientSupportFileModel({
     required this.fileUrl,
     required this.invoiceId,
     required this.typeFile,
     required this.id,
   });
 
-  factory InvoiceAttachmentModel.fromJson(Map<String, dynamic> json) {
-    return InvoiceAttachmentModel(
+  factory ClientSupportFileModel.fromJson(Map<String, dynamic> json) {
+    return ClientSupportFileModel(
       fileUrl: json['file_attach_invoice'].toString(),
       invoiceId: json['fk_invoice'].toString(),
       typeFile: json['type_file'].toString(),
@@ -31,13 +31,13 @@ class InvoiceAttachmentModel extends Equatable {
     };
   }
 
-  InvoiceAttachmentModel copyWith({
+  ClientSupportFileModel copyWith({
     String? fileUrl,
     String? invoiceId,
     String? typeFile,
     String? id,
   }) {
-    return InvoiceAttachmentModel(
+    return ClientSupportFileModel(
       fileUrl: fileUrl ?? this.fileUrl,
       invoiceId: invoiceId ?? this.invoiceId,
       typeFile: typeFile ?? this.typeFile,

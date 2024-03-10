@@ -13,11 +13,14 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../model/similar_client.dart';
+import '../../data/models/client_support_file_model.dart';
 import '../../data/models/clients_list_response.dart';
 import '../../domain/use_cases/add_client_usecase.dart';
 import '../../domain/use_cases/approve_reject_client_usecase.dart';
 import '../../domain/use_cases/change_type_client_usecase.dart';
+import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/edit_client_usecase.dart';
+import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
 
@@ -34,6 +37,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._changeTypeClientUsecase,
     this._getSimilarClientsUsecase,
     this._approveRejectClientUsecase,
+    this._crudClientSupportFilesUsecase,
+    this._getClientSupportFilesUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
@@ -46,6 +51,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<ChangeTypeClientEvent>(_onEditTypeClientEvent);
     on<SwitchEvent>(_onSwitchEvent);
     on<ApproveRejectClientEvent>(_onApproveRejectClientEvent);
+    on<CrudClientSupportFilesEvent>(_onCrudClientSupportFilesEvent);
+    on<GetClientSupportFilesEvent>(_onGetClientSupportFilesEvent);
   }
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
@@ -55,6 +62,8 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final EditClientUserUsecase _editClientUserUsecase;
   final ChangeTypeClientUsecase _changeTypeClientUsecase;
   final ApproveRejectClientUsecase _approveRejectClientUsecase;
+  final CrudClientSupportFilesUsecase _crudClientSupportFilesUsecase;
+  final GetClientSupportFilesUsecase _getClientSupportFilesUsecase;
 
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
@@ -276,5 +285,60 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         event.onSuccess?.call(value.data!);
       },
     );
+  }
+
+  FutureOr<void> _onCrudClientSupportFilesEvent(
+      CrudClientSupportFilesEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(
+        clientSupportFilesBlocStatus: const BlocStatus.loading()));
+
+    final response = await _crudClientSupportFilesUsecase(
+        event.crudClientSupportFilesParams);
+
+    response.fold((l) {
+      emit(state.copyWith(
+        clientSupportFilesBlocStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      final List<ClientSupportFileModel> files =
+          _deleteFileFromList(event.crudClientSupportFilesParams.deletedFiles);
+      files.addAll(r);
+      emit(state.copyWith(
+        clientSupportFilesList: files,
+        clientSupportFilesBlocStatus: const BlocStatus.success(),
+      ));
+      event.onSuccess?.call(r);
+    });
+  }
+
+  List<ClientSupportFileModel> _deleteFileFromList(List<String> deletedFiles) {
+    return state.clientSupportFilesList
+        .where((element) => !deletedFiles.contains(element.id))
+        .toList();
+  }
+
+  FutureOr<void> _onGetClientSupportFilesEvent(
+      GetClientSupportFilesEvent event, Emitter<ClientsListState> emit) async {
+    emit(state.copyWith(
+        clientSupportFilesBlocStatus: const BlocStatus.loading()));
+
+    print(
+        "event.getClientSupportFilesParams => ${event.getClientSupportFilesParams.invoiceId}");
+    final response =
+        await _getClientSupportFilesUsecase(event.getClientSupportFilesParams);
+
+    print("response => $response");
+    response.fold((l) {
+      emit(state.copyWith(
+        clientSupportFilesBlocStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      print("data => $r");
+      emit(state.copyWith(
+        clientSupportFilesList: r,
+        clientSupportFilesBlocStatus: const BlocStatus.success(),
+      ));
+      event.onSuccess?.call(r);
+    });
   }
 }

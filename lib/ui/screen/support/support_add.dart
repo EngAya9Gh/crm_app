@@ -3,6 +3,8 @@ import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/function_global.dart';
@@ -22,6 +24,7 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
@@ -31,6 +34,9 @@ import 'package:provider/provider.dart';
 import '../../../core/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_elvated_button.dart';
+import '../../../features/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
+import '../../../features/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
+import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
@@ -74,6 +80,8 @@ class _SupportAddState extends State<SupportAdd> {
   late String? selectInstallationType;
   String? Value_installation_type = null;
 
+  late final ClientsListBloc clientsListBloc;
+
   //   void changeInstallationvalue(String? s) {
 
   // }
@@ -90,6 +98,7 @@ class _SupportAddState extends State<SupportAdd> {
   void initState() {
     _eventProvider = context.read<EventProvider>();
     _privilegeCubit = getIt<PrivilegeCubit>();
+    clientsListBloc = context.read<ClientsListBloc>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       //_ticketModel=_list.firstWhere((element) => element.fkClient)
@@ -97,6 +106,11 @@ class _SupportAddState extends State<SupportAdd> {
           .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
 
       //  Provider.of<typeclient>(context,listen: false).getreasons('ticket');
+
+      clientsListBloc
+          .add(GetClientSupportFilesEvent(GetClientSupportFilesParams(
+        invoiceId: widget.idInvoice!,
+      )));
     });
     selectInstallationType = null;
     super.initState();
@@ -450,6 +464,44 @@ class _SupportAddState extends State<SupportAdd> {
                       ),
                       // todo : handle attachments
                       _attachmentWidget(),
+                      BlocBuilder<ClientsListBloc, ClientsListState>(
+                        builder: (context, state) {
+                          if (state.clientSupportFilesBlocStatus.isLoading()) {
+                            return CustomLoadingIndicator();
+                          } else if (state.clientSupportFilesBlocStatus
+                              .isFail()) {
+                            return CustomErrorWidget(onPressed: () {
+                              clientsListBloc.add(GetClientSupportFilesEvent(
+                                  GetClientSupportFilesParams(
+                                invoiceId: widget.idInvoice!,
+                              )));
+                            });
+                          }
+                          // todo: display files
+                          return Text(
+                              "Length of data => ${state.clientSupportFilesList.length}");
+                        },
+                      ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            clientsListBloc.add(CrudClientSupportFilesEvent(
+                                CrudClientSupportFilesParams(
+                              invoiceId: widget.idInvoice!,
+                              deletedFiles: [],
+                              // selected files ot attached file if selected is null
+                              addedFiles: [selectedFile!],
+                            )));
+                          },
+                          child: Text("Add file")),
+                      ElevatedButton(
+                          onPressed: () async {
+                            clientsListBloc.add(GetClientSupportFilesEvent(
+                                GetClientSupportFilesParams(
+                              invoiceId: widget.idInvoice!,
+                            )));
+                          },
+                          child: Text("get files")),
+
                       // ParticipatesSupportInvoicesAttachments(
                       //   onDeleteFileAttach: (FileAttach value) {},
                       // ),

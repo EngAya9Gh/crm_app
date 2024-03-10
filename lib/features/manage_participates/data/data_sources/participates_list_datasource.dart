@@ -1,19 +1,15 @@
 import 'dart:convert';
 
-import 'package:crm_smart/core/common/models/invoice_attachment_model.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/api/api_services.dart';
 import '../../../../core/api/api_utils.dart';
-import '../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/common/widgets/profile_comments_model.dart';
 import '../../../../core/utils/end_points.dart';
-import '../../domain/use_cases/get_invoice_attachments_usecase.dart';
 import '../models/participate_client_model.dart';
 
 @injectable
@@ -176,25 +172,5 @@ class ParticipatesListDatasource {
     }
 
     return throwAppException(fun);
-  }
-
-  Future<Either<String, List<InvoiceAttachmentModel>>> getInvoiceAttachments(
-    GetInvoiceAttachmentsParams params,
-  ) async {
-    try {
-      api.changeBaseUrl(EndPoints.laravelUrl);
-      final response = await api.get(
-          endPoint: EndPoints.invoice.getInvoiceAttachments,
-          queryParameters: {
-            'fk_invoice': params.invoiceId,
-          });
-      final List data = apiDataHandler(response);
-      final List<InvoiceAttachmentModel> attachments =
-          data.map((e) => InvoiceAttachmentModel.fromJson(e)).toList();
-      return right(attachments);
-    } catch (e) {
-      print("error in getInvoiceAttachments => $e");
-      return left(e.toString());
-    }
   }
 }
