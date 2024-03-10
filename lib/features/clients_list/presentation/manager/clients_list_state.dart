@@ -11,7 +11,8 @@ class ClientsListState {
     this.actionClientBlocStatus = const BlocStatus.initial(),
     this.myclient_parm = false,
     this.clientSupportFilesList = const [],
-    this.clientSupportFilesBlocStatus = const BlocStatus.initial(),
+    this.getClientSupportFilesStatus = const BlocStatus.initial(),
+    this.crudClientSupportFilesStatus = const BlocStatus.initial(),
   }) : clientsListController = clientsListController ??
             PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
@@ -25,7 +26,8 @@ class ClientsListState {
   bool myclient_parm;
 
   final List<ClientSupportFileModel> clientSupportFilesList;
-  final BlocStatus clientSupportFilesBlocStatus;
+  final BlocStatus getClientSupportFilesStatus;
+  final BlocStatus crudClientSupportFilesStatus;
 
   ClientsListState copyWith({
     PagingController<int, ClientModel>? clientsListController,
@@ -39,6 +41,7 @@ class ClientsListState {
     bool myclient = false,
     List<ClientSupportFileModel>? clientSupportFilesList,
     BlocStatus? clientSupportFilesBlocStatus,
+    BlocStatus? crudClientSupportFilesStatus,
   }) {
     return ClientsListState(
       clientsListController:
@@ -59,8 +62,10 @@ class ClientsListState {
       myclient_parm: myclient,
       clientSupportFilesList:
           clientSupportFilesList ?? this.clientSupportFilesList,
-      clientSupportFilesBlocStatus:
-          clientSupportFilesBlocStatus ?? this.clientSupportFilesBlocStatus,
+      getClientSupportFilesStatus:
+          clientSupportFilesBlocStatus ?? this.getClientSupportFilesStatus,
+      crudClientSupportFilesStatus:
+          crudClientSupportFilesStatus ?? this.crudClientSupportFilesStatus,
     );
   }
 }

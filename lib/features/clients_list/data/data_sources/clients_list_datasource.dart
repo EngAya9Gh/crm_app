@@ -246,9 +246,13 @@ class ClientsListDatasource {
         endPoint: EndPoints.invoice.crudClientSupportFiles,
         data: formData,
       );
-      final List data = apiDataHandler(response);
-      final List<ClientSupportFileModel> files =
-          data.map((e) => ClientSupportFileModel.fromJson(e)).toList();
+      final data = apiDataHandler(response);
+      if (data is String) {
+        return Right([]);
+      }
+      final List<ClientSupportFileModel> files = (data as List)
+          .map((e) => ClientSupportFileModel.fromJson(e))
+          .toList();
       return right(files);
     } catch (e) {
       print("error in crudInvoiceAttachments => $e");

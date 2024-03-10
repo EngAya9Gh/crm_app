@@ -322,18 +322,14 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     emit(state.copyWith(
         clientSupportFilesBlocStatus: const BlocStatus.loading()));
 
-    print(
-        "event.getClientSupportFilesParams => ${event.getClientSupportFilesParams.invoiceId}");
     final response =
         await _getClientSupportFilesUsecase(event.getClientSupportFilesParams);
 
-    print("response => $response");
     response.fold((l) {
       emit(state.copyWith(
         clientSupportFilesBlocStatus: BlocStatus.fail(error: l),
       ));
     }, (r) {
-      print("data => $r");
       emit(state.copyWith(
         clientSupportFilesList: r,
         clientSupportFilesBlocStatus: const BlocStatus.success(),
