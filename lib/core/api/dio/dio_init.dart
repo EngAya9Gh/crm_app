@@ -28,14 +28,7 @@ class _ApiInterceptors extends Interceptor {
     getIt<Logger>().i("Request: ${options.method} ${options.uri}");
     getIt<Logger>().i("Request headers: ${options.headers}");
     if (options.data is FormData) {
-      options.data.fields.forEach((element) {
-        getIt<Logger>()
-            .i("Request FormData Field: ${element.key} => ${element.value}");
-      });
-      options.data.files.forEach((element) {
-        getIt<Logger>()
-            .i("Request FormData File: ${element.key} => ${element.value}");
-      });
+      getIt<Logger>().i("Request FormData: ${options.data.fields}");
     } else {
       getIt<Logger>().i("Request data: ${options.data}");
     }
