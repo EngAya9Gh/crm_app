@@ -53,6 +53,7 @@ class _Series {
   final getUsersSeries = 'series/view_series_manag.php';
   final updateUsersSeries = 'series/update_series_manage.php';
   final getWithdrawalsInvoices = 'series/getInvoice_Approve_back.php';
+  final getSeriesInvoiceAll = 'getSeriesInvoiceAll';
   final getWithdrawalInvoiceDetails = 'series/view_series_invoice.php';
   final setApproveSeries = 'series/set_approve_series.php';
   final getWithdrawnDetails = 'series/view_detail_demand.php';

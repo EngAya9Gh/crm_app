@@ -30,6 +30,7 @@ class ManageWithdrawalsState {
     this.handleAllUsers = const [],
     this.handleUsersSeries = const {},
     this.currentInvoice,
+    this.selectedFilter = const BlocStatus.initial(),
   });
 
   final PageState<List<UserSeries>> allUsersSeries;
@@ -39,12 +40,14 @@ class ManageWithdrawalsState {
   final PageState<WithdrawnDetailsModel> withdrawnDetailsState;
   final List<UserModel> allUsers;
   final List<UserWithdrawalsManager> handleAllUsers;
-  final Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>> handleUsersSeries;
+  final Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>>
+      handleUsersSeries;
   final BlocStatus updateUsersSeriesState;
   final BlocStatus setApproveSeriesState;
   final BlocStatus deleteWithdrawnRequestStatus;
   final BlocStatus actionRejectReason;
   final InvoiceModel? currentInvoice;
+  final BlocStatus selectedFilter;
 
   ManageWithdrawalsState copyWith({
     PageState<List<UserSeries>>? allUsersSeries,
@@ -53,28 +56,36 @@ class ManageWithdrawalsState {
     PageState<List<RejectReason>>? rejectReasonsStat,
     List<UserModel>? allUsers,
     List<UserWithdrawalsManager>? handleAllUsers,
-    Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>>? handleUsersSeries,
+    Map<UserWithdrawalsManager?, List<UserWithdrawalsManager>>?
+        handleUsersSeries,
     BlocStatus? updateUsersSeriesState,
     BlocStatus? setApproveSeriesState,
     BlocStatus? deleteWithdrawnRequestStatus,
     BlocStatus? actionRejectReason,
     PageState<WithdrawnDetailsModel>? withdrawnDetailsState,
     InvoiceModel? currentInvoice,
+    BlocStatus? selectedFilter,
   }) {
     return ManageWithdrawalsState(
-      withdrawalInvoiceDetails: withdrawalInvoiceDetails ?? this.withdrawalInvoiceDetails,
+      withdrawalInvoiceDetails:
+          withdrawalInvoiceDetails ?? this.withdrawalInvoiceDetails,
       allUsersSeries: allUsersSeries ?? this.allUsersSeries,
       withdrawalsInvoices: withdrawalsInvoices ?? this.withdrawalsInvoices,
       allUsers: allUsers ?? this.allUsers,
       handleAllUsers: handleAllUsers ?? this.handleAllUsers,
       handleUsersSeries: handleUsersSeries ?? this.handleUsersSeries,
-      updateUsersSeriesState: updateUsersSeriesState ?? this.updateUsersSeriesState,
-      setApproveSeriesState: setApproveSeriesState ?? this.setApproveSeriesState,
-      withdrawnDetailsState: withdrawnDetailsState ?? this.withdrawnDetailsState,
-      deleteWithdrawnRequestStatus: deleteWithdrawnRequestStatus ?? this.deleteWithdrawnRequestStatus,
+      updateUsersSeriesState:
+          updateUsersSeriesState ?? this.updateUsersSeriesState,
+      setApproveSeriesState:
+          setApproveSeriesState ?? this.setApproveSeriesState,
+      withdrawnDetailsState:
+          withdrawnDetailsState ?? this.withdrawnDetailsState,
+      deleteWithdrawnRequestStatus:
+          deleteWithdrawnRequestStatus ?? this.deleteWithdrawnRequestStatus,
       rejectReasonsStat: rejectReasonsStat ?? this.rejectReasonsStat,
       actionRejectReason: actionRejectReason ?? this.actionRejectReason,
       currentInvoice: currentInvoice ?? this.currentInvoice,
+      selectedFilter: selectedFilter ?? this.selectedFilter,
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 
 import '../repositories/manage_withdrawals_repository.dart';
 
-@injectable
+@lazySingleton
 class GetWithdrawalsInvoicesUsecase
     extends UseCaseNoParam<Result<ResponseWrapper<List<InvoiceModel>>>> {
   GetWithdrawalsInvoicesUsecase(this._repository);

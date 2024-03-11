@@ -113,127 +113,129 @@ class InvoiceModel extends CacheRepository {
   String? reason_suspend;
   String? reason_notReady;
   String? invoice_source;
+  String? dateBackNow;
 
   //endregion
 
   //region Constructor
-  InvoiceModel(
-      {this.idInvoice,
-      this.dateCreate,
-      this.typePay,
-      this.renewYear,
-      this.typeInstallation,
-      this.imageRecord,
-      this.imagelogo,
-      this.fkIdClient,
-      this.fkIdUser,
-      this.amountPaid,
-      this.notes,
-      this.nameUser,
-      this.nameClient,
-      required this.products,
-      this.total,
-      this.name_enterprise,
-      this.fk_regoin,
-      this.name_regoin,
-      this.type_client,
-      this.lastuserupdate,
-      this.lastuserupdateName,
-      this.nameuserinstall,
-      this.dateinstall_done,
-      this.isdoneinstall,
-      this.userinstall,
-      this.dateinstall_task,
-      this.fkusertask,
-      this.nameuserApprove,
-      this.date_lastuserupdate,
-      this.path,
-      this.fk_country,
-      this.reason_date,
-      this.date_approve,
-      this.stateclient,
-      this.value_back,
-      this.desc_reason_back,
-      this.reason_back,
-      this.fkuser_back,
-      this.date_change_back,
-      this.nameuserback,
-      this.nameuserreplay,
-      this.nameusertask,
-      this.daterepaly,
-      this.fkuserdatareplay,
-      this.iduser_approve,
-      this.isApprove,
-      this.mobile,
-      this.ismarketing,
-      this.city,
-      this.name_city,
-      this.namemaincity,
-      this.id_maincity,
-      this.numbarnch,
-      this.renewPlus,
-      this.numusers,
-      this.nummostda,
-      this.numTax,
-      this.imagelogopath,
-      this.hoursdelaytabel,
-      this.hoursdelayinstall,
-      this.clientusername,
-      this.address_invoice,
-      this.ready_install,
-      this.date_readyinstall,
-      this.user_ready_install,
-      this.date_not_readyinstall,
-      this.user_not_ready_install,
-      this.nameuser_ready_install,
-      this.nameuser_notready_install,
-      this.count_delay_ready,
-      this.isApproveFinance,
-      this.iduser_FApprove,
-      this.Date_FApprove,
-      this.rate_participate,
-      this.participate_fk,
-      this.fk_agent,
-      this.type_seller,
-      this.currency_name,
-      this.fk_regoin_invoice,
-      this.name_regoin_invoice,
-      this.user_delete,
-      this.date_delete,
-      this.datesInstallationClient,
-      this.fileAttach,
-      this.attachFileStatus,
-      this.deleteAttachFileStatus,
-      this.agent_distibutor,
-      this.participal,
-      this.renew2year,
-      this.renew_agent,
-      this.file_reject,
-      this.filesAttach,
-      this.approveBackDone,
-      this.TypeReadyClient,
-      this.notes_ready,
-      this.reason_suspend,
-      this.reason_notReady,
-      this.invoice_source
-      //name_city,mcit.namemaincity,mcit.id_maincity
-      // this.nameuserApprove,
-      // this.date_approve,
-      });
+  InvoiceModel({
+    this.idInvoice,
+    this.dateCreate,
+    this.typePay,
+    this.renewYear,
+    this.typeInstallation,
+    this.imageRecord,
+    this.imagelogo,
+    this.fkIdClient,
+    this.fkIdUser,
+    this.amountPaid,
+    this.notes,
+    this.nameUser,
+    this.nameClient,
+    required this.products,
+    this.total,
+    this.name_enterprise,
+    this.fk_regoin,
+    this.name_regoin,
+    this.type_client,
+    this.lastuserupdate,
+    this.lastuserupdateName,
+    this.nameuserinstall,
+    this.dateinstall_done,
+    this.isdoneinstall,
+    this.userinstall,
+    this.dateinstall_task,
+    this.fkusertask,
+    this.nameuserApprove,
+    this.date_lastuserupdate,
+    this.path,
+    this.fk_country,
+    this.reason_date,
+    this.date_approve,
+    this.stateclient,
+    this.value_back,
+    this.desc_reason_back,
+    this.reason_back,
+    this.fkuser_back,
+    this.date_change_back,
+    this.nameuserback,
+    this.nameuserreplay,
+    this.nameusertask,
+    this.daterepaly,
+    this.fkuserdatareplay,
+    this.iduser_approve,
+    this.isApprove,
+    this.mobile,
+    this.ismarketing,
+    this.city,
+    this.name_city,
+    this.namemaincity,
+    this.id_maincity,
+    this.numbarnch,
+    this.renewPlus,
+    this.numusers,
+    this.nummostda,
+    this.numTax,
+    this.imagelogopath,
+    this.hoursdelaytabel,
+    this.hoursdelayinstall,
+    this.clientusername,
+    this.address_invoice,
+    this.ready_install,
+    this.date_readyinstall,
+    this.user_ready_install,
+    this.date_not_readyinstall,
+    this.user_not_ready_install,
+    this.nameuser_ready_install,
+    this.nameuser_notready_install,
+    this.count_delay_ready,
+    this.isApproveFinance,
+    this.iduser_FApprove,
+    this.Date_FApprove,
+    this.rate_participate,
+    this.participate_fk,
+    this.fk_agent,
+    this.type_seller,
+    this.currency_name,
+    this.fk_regoin_invoice,
+    this.name_regoin_invoice,
+    this.user_delete,
+    this.date_delete,
+    this.datesInstallationClient,
+    this.fileAttach,
+    this.attachFileStatus,
+    this.deleteAttachFileStatus,
+    this.agent_distibutor,
+    this.participal,
+    this.renew2year,
+    this.renew_agent,
+    this.file_reject,
+    this.filesAttach,
+    this.approveBackDone,
+    this.TypeReadyClient,
+    this.notes_ready,
+    this.reason_suspend,
+    this.reason_notReady,
+    this.invoice_source,
+    this.dateBackNow,
+    //name_city,mcit.namemaincity,mcit.id_maincity
+    // this.nameuserApprove,
+    // this.date_approve,
+  });
 
   //endregion
 
   //region Json converters
   // var products;
   InvoiceModel.fromJson(Map<String, dynamic> jsondata) {
-    idInvoice = jsondata['id_invoice'];
-    user_delete = jsondata['user_delete'];
-    date_delete = jsondata['date_delete'];
-    dateCreate = jsondata['date_create'];
-    typePay = jsondata['type_pay'];
-    renewYear = jsondata['renew_year'];
-    typeInstallation = jsondata['type_installation'];
-    currency_name = jsondata['currency_name'];
+    idInvoice = jsondata['id_invoice']?.toString();
+    user_delete = jsondata['user_delete']?.toString();
+    date_delete = jsondata['date_delete']?.toString();
+    dateCreate = jsondata['date_create']?.toString();
+    typePay = jsondata['type_pay']?.toString();
+    renewYear = jsondata['renew_year']?.toString();
+    typeInstallation = jsondata['type_installation']?.toString();
+    currency_name = jsondata['currency_name']?.toString();
 
     imageRecord = jsondata['image_record'].toString().trim().isEmpty ||
             jsondata['image_record'] == null
@@ -245,81 +247,82 @@ class InvoiceModel extends CacheRepository {
         ? jsondata['imagelogo']
         : urlfilelogo + jsondata['imagelogo'];
 
-    fkIdClient = jsondata['fk_idClient'];
-    fkIdUser = jsondata['fk_idUser'];
-    amountPaid = jsondata['amount_paid'];
-    notes = jsondata['notes'];
-    nameUser = jsondata['nameUser'];
-    nameClient = jsondata['name_client'];
-    total = jsondata['total'];
-    name_enterprise = jsondata['name_enterprise'];
-    fk_regoin = jsondata['fk_regoin'];
-    name_regoin = jsondata['name_regoin'];
-    type_client = jsondata['type_client'];
-    lastuserupdate = jsondata['lastuserupdate'];
-    lastuserupdateName = jsondata['lastuserupdateName'];
+    fkIdClient = jsondata['fk_idClient']?.toString();
+    fkIdUser = jsondata['fk_idUser']?.toString();
+    amountPaid = jsondata['amount_paid']?.toString();
+    notes = jsondata['notes']?.toString();
+    nameUser = jsondata['nameUser']?.toString();
+    nameClient = jsondata['name_client']?.toString();
+    total = jsondata['total']?.toString();
+    name_enterprise = jsondata['name_enterprise']?.toString();
+    fk_regoin = jsondata['fk_regoin']?.toString();
+    name_regoin = jsondata['name_regoin']?.toString();
+    type_client = jsondata['type_client']?.toString();
+    lastuserupdate = jsondata['lastuserupdate']?.toString();
+    lastuserupdateName = jsondata['lastuserupdateName']?.toString();
 
-    nameuserinstall = jsondata['nameuserinstall'];
-    dateinstall_done = jsondata['dateinstall_done'];
-    isdoneinstall = jsondata['isdoneinstall'];
-    userinstall = jsondata['userinstall'];
-    dateinstall_task = jsondata['dateinstall_task'];
-    fkusertask = jsondata['fkusertask'];
-    date_lastuserupdate = jsondata['date_lastuserupdate'];
-    path = jsondata['path'];
-    fk_country = jsondata['fk_country'];
-    reason_date = jsondata['reason_date'];
-    stateclient = jsondata['stateclient'];
-    value_back = jsondata['value_back'];
-    desc_reason_back = jsondata['desc_reason_back'];
-    reason_back = jsondata['reason_back'];
-    fkuser_back = jsondata['fkuser_back'];
-    date_change_back = jsondata['date_change_back'];
-    nameuserback = jsondata['nameuserback'];
-    nameuserreplay = jsondata['nameuserreplay'];
-    nameusertask = jsondata['nameusertask'];
+    nameuserinstall = jsondata['nameuserinstall']?.toString();
+    dateinstall_done = jsondata['dateinstall_done']?.toString();
+    isdoneinstall = jsondata['isdoneinstall']?.toString();
+    userinstall = jsondata['userinstall']?.toString();
+    dateinstall_task = jsondata['dateinstall_task']?.toString();
+    fkusertask = jsondata['fkusertask']?.toString();
+    date_lastuserupdate = jsondata['date_lastuserupdate']?.toString();
+    path = jsondata['path']?.toString();
+    fk_country = jsondata['fk_country']?.toString();
+    reason_date = jsondata['reason_date']?.toString();
+    stateclient = jsondata['stateclient']?.toString();
+    value_back = jsondata['value_back']?.toString();
+    desc_reason_back = jsondata['desc_reason_back']?.toString();
+    reason_back = jsondata['reason_back']?.toString();
+    fkuser_back = jsondata['fkuser_back']?.toString();
+    date_change_back = jsondata['date_change_back']?.toString();
+    nameuserback = jsondata['nameuserback']?.toString();
+    nameuserreplay = jsondata['nameuserreplay']?.toString();
+    nameusertask = jsondata['nameusertask']?.toString();
 
-    daterepaly = jsondata['daterepaly'];
-    fkuserdatareplay = jsondata['fkuserdatareplay'];
+    daterepaly = jsondata['daterepaly']?.toString();
+    fkuserdatareplay = jsondata['fkuserdatareplay']?.toString();
 
-    iduser_approve = jsondata['iduser_approve'];
-    isApprove = jsondata['isApprove'];
-    nameuserApprove = jsondata['nameuserApprove'];
-    date_approve = jsondata['date_approve'];
-    mobile = jsondata['mobile'];
-    ismarketing = jsondata['ismarketing'];
-    city = jsondata['city'];
-    name_city = jsondata['name_city'];
-    namemaincity = jsondata['namemaincity'];
-    id_maincity = jsondata['id_maincity'];
-    numbarnch = jsondata['numbarnch'];
-    renewPlus = jsondata['renew_pluse'];
-    numusers = jsondata['numusers'];
-    nummostda = jsondata['nummostda'];
-    numTax = jsondata['numTax'];
-    hoursdelaytabel = jsondata['hoursdelaytabel'];
-    hoursdelayinstall = jsondata['hoursdelayinstall'];
-    clientusername = jsondata['clientusername'];
-    address_invoice = jsondata['address_invoice'];
-    ready_install = jsondata['ready_install'];
-    date_readyinstall = jsondata['date_readyinstall'];
-    user_ready_install = jsondata['user_ready_install'];
-    date_not_readyinstall = jsondata['date_not_readyinstall'];
-    user_not_ready_install = jsondata['user_not_ready_install'];
-    nameuser_ready_install = jsondata['nameuser_ready_install'];
-    nameuser_notready_install = jsondata['nameuser_notready_install'];
-    count_delay_ready = jsondata['count_delay_ready'];
-    isApproveFinance = jsondata['isApproveFinance'];
-    iduser_FApprove = jsondata['iduser_FApprove'];
-    Date_FApprove = jsondata['Date_FApprove'];
-    renew2year = jsondata['renew2year'];
-    rate_participate = jsondata['rate_participate'];
-    participate_fk = jsondata['participate_fk'];
-    fk_agent = jsondata['fk_agent'];
-    type_seller = jsondata['type_seller'];
-    fk_regoin_invoice = jsondata['fk_regoin_invoice'];
-    name_regoin_invoice = jsondata['name_regoin_invoice'];
-    renew_agent = jsondata['renew_agent'];
+    iduser_approve = jsondata['iduser_approve']?.toString();
+    isApprove = jsondata['isApprove']?.toString();
+    nameuserApprove = jsondata['nameuserApprove']?.toString();
+    date_approve = jsondata['date_approve']?.toString();
+    mobile = jsondata['mobile']?.toString();
+    ismarketing = jsondata['ismarketing']?.toString();
+    city = jsondata['city']?.toString();
+    name_city = jsondata['name_city']?.toString();
+    namemaincity = jsondata['namemaincity']?.toString();
+    id_maincity = jsondata['id_maincity']?.toString();
+    numbarnch = jsondata['numbarnch']?.toString();
+    renewPlus = jsondata['renew_pluse']?.toString();
+    numusers = jsondata['numusers']?.toString();
+    nummostda = jsondata['nummostda']?.toString();
+    numTax = jsondata['numTax']?.toString();
+    hoursdelaytabel = jsondata['hoursdelaytabel']?.toString();
+    hoursdelayinstall = jsondata['hoursdelayinstall']?.toString();
+    clientusername = jsondata['clientusername']?.toString();
+    address_invoice = jsondata['address_invoice']?.toString();
+    ready_install = jsondata['ready_install']?.toString();
+    date_readyinstall = jsondata['date_readyinstall']?.toString();
+    user_ready_install = jsondata['user_ready_install']?.toString();
+    date_not_readyinstall = jsondata['date_not_readyinstall']?.toString();
+    user_not_ready_install = jsondata['user_not_ready_install']?.toString();
+    nameuser_ready_install = jsondata['nameuser_ready_install']?.toString();
+    nameuser_notready_install =
+        jsondata['nameuser_notready_install']?.toString();
+    count_delay_ready = jsondata['count_delay_ready']?.toString();
+    isApproveFinance = jsondata['isApproveFinance']?.toString();
+    iduser_FApprove = jsondata['iduser_FApprove']?.toString();
+    Date_FApprove = jsondata['Date_FApprove']?.toString();
+    renew2year = jsondata['renew2year']?.toString();
+    rate_participate = jsondata['rate_participate']?.toString();
+    participate_fk = jsondata['participate_fk']?.toString();
+    fk_agent = jsondata['fk_agent']?.toString();
+    type_seller = jsondata['type_seller']?.toString();
+    fk_regoin_invoice = jsondata['fk_regoin_invoice']?.toString();
+    name_regoin_invoice = jsondata['name_regoin_invoice']?.toString();
+    renew_agent = jsondata['renew_agent']?.toString();
 
     participal = jsondata['participal_info'] == null
         ? null
@@ -334,19 +337,20 @@ class InvoiceModel extends CacheRepository {
     filesAttach = List.from(jsondata['files_attach'] ?? [])
         .map((e) => FileAttach.fromMap(e))
         .toList();
-    fileAttach = jsondata['file_attach'];
-    file_reject = jsondata['file_reject'];
-    approveBackDone = jsondata['approve_back_done'];
-    TypeReadyClient = jsondata['TypeReadyClient'];
+    fileAttach = jsondata['file_attach']?.toString();
+    file_reject = jsondata['file_reject']?.toString();
+    approveBackDone = jsondata['approve_back_done']?.toString();
+    TypeReadyClient = jsondata['TypeReadyClient']?.toString();
 
-    notes_ready = jsondata['notes_ready'];
-    reason_suspend = jsondata['reason_suspend'];
-    reason_notReady = jsondata['reason_notReady'];
+    notes_ready = jsondata['notes_ready']?.toString();
+    reason_suspend = jsondata['reason_suspend']?.toString();
+    reason_notReady = jsondata['reason_notReady']?.toString();
     tag = jsondata['tag'] == "true" ? true : false;
 
     attachFileStatus = AttachFileStatus.init;
     deleteAttachFileStatus = AttachFileStatus.init;
-    invoice_source = jsondata['invoice_source'];
+    invoice_source = jsondata['invoice_source']?.toString();
+    dateBackNow = jsondata['date_back_now']?.toString();
     //  json.decode(
     // jsondata['products']
     // )//  jsondata['products']
@@ -462,6 +466,7 @@ class InvoiceModel extends CacheRepository {
 
     _data['products'] = products!.map((e) => e.toJson()).toList();
     _data['invoice_source'] = invoice_source;
+    _data['date_back_now'] = dateBackNow;
     return _data;
   }
 
@@ -593,6 +598,7 @@ class InvoiceModel extends CacheRepository {
     String? approveBackDone,
     bool deleteImage = false,
     bool deleteRejectImage = false,
+    String? dateBackNow,
   }) {
     return InvoiceModel(
       idInvoice: idInvoice ?? this.idInvoice,
@@ -694,6 +700,7 @@ class InvoiceModel extends CacheRepository {
       filesAttach: filesAttach ?? this.filesAttach,
       renew_agent: renew_agent ?? this.renew_agent,
       approveBackDone: approveBackDone ?? this.approveBackDone,
+      dateBackNow: dateBackNow ?? this.dateBackNow,
     );
   }
 //endregion
@@ -869,10 +876,10 @@ class DateInstallationClient {
 
   factory DateInstallationClient.fromJson(Map<String, dynamic> map) {
     return DateInstallationClient(
-      idClientsDate: map['idclients_date'].toString(),
+      idClientsDate: map['idclients_date']?.toString(),
       dateClientVisit: DateTime.tryParse(map['date_client_visit'] ?? ''),
-      fkUser: map['fk_user'].toString(),
-      isDone: map['is_done'].toString(),
+      fkUser: map['fk_user']?.toString(),
+      isDone: map['is_done']?.toString(),
       fkClient: map['fk_client'] ?? '',
       fkInvoice: map['fk_invoice'] ?? '',
       typeDate: map['type_date'] == InstallationTypeEnum.field.name
@@ -880,7 +887,7 @@ class DateInstallationClient {
           : InstallationTypeEnum.online,
       processReason: map['processReason'] ?? '',
       userIdProcess: map['user_id_process'] ?? '',
-      fkAgent: map['fk_agent'].toString(),
+      fkAgent: map['fk_agent']?.toString(),
       dateEnd: DateTime.tryParse(map['date_end'] ?? ''),
       nameAgent: map['name_agent'],
     );
