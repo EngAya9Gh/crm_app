@@ -14,6 +14,7 @@ Dio dioInit() {
       headers: {
         'AuthToken':
             'Bearer ${getIt<SharedPreferences>().getString('token_user')}',
+        'accept': 'application/json',
       },
       contentType: "application/x-www-form-urlencoded; charset=utf-8",
     ),

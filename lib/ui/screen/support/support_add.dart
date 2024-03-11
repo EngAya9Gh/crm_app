@@ -6,6 +6,7 @@ import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
@@ -1311,7 +1312,6 @@ class _SupportAddState extends State<SupportAdd> {
                         alignment: Alignment.center,
                         child: Builder(
                           builder: (context) {
-                            print("objectobjectobject");
                             if (crudClientSupportFilesStatus.isLoading()) {
                               return CustomLoadingIndicator();
                             } else if (crudClientSupportFilesStatus.isFail()) {
@@ -1454,6 +1454,7 @@ class _SupportAddState extends State<SupportAdd> {
   }
 
   Widget networkImage(FileAttach fileAttach, VoidCallback onDelete) {
+    print("url is => ${EndPoints.laravelUrl}${fileAttach.fileAttach}");
     return InkWell(
       onTap: () {
         invoiceVm.openFile(fileAttach);
@@ -1467,9 +1468,13 @@ class _SupportAddState extends State<SupportAdd> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: FancyImageShimmerViewer(
-                  imageUrl: urlfile + fileAttach.fileAttach!,
+                  imageUrl: "${EndPoints.laravelUrl}${fileAttach.fileAttach}",
                   fit: BoxFit.cover,
                 ),
+                // Image.network(
+                //   "${EndPoints.laravelUrl}${fileAttach.fileAttach}",
+                //   fit: BoxFit.cover,
+                // ),
               ),
             ),
             if (context.read<PrivilegeCubit>().checkPrivilege('146') == true)
