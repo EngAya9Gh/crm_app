@@ -1,15 +1,16 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/invoice_widget/Card_invoice_client.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/invoice_widget/Card_invoice_client.dart';
+import '../search/search_container.dart';
+
 class OutClient extends StatefulWidget {
-  OutClient({ Key? key }) : super(key: key);
+  OutClient({Key? key}) : super(key: key);
 
   @override
   _OutClientState createState() => _OutClientState();
@@ -19,26 +20,28 @@ class _OutClientState extends State<OutClient> {
   String? regoin;
   String? typeclientvalue;
   late ClientModel1 itemClient;
-  // late String typepayController;
-  @override void didChangeDependencies() async {
 
+  // late String typepayController;
+  @override
+  void didChangeDependencies() async {
     super.didChangeDependencies();
   }
-  @override void initState() {
 
-    WidgetsBinding.instance.addPostFrameCallback((_)async{
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
       //if(widget.type=='only')
       //  Provider.of<invoice_vm>(context, listen: false).getinvoice_Local("مشترك",'approved only');
       //if(widget.type=='client')
-      Provider.of<ClientTypeProvider>(context,listen: false).changelisttype_install(null);
-      Provider.of<RegionProvider>(context,listen: false).changeVal(null);
+      Provider.of<ClientTypeProvider>(context, listen: false)
+          .changelisttype_install(null);
+      Provider.of<RegionProvider>(context, listen: false).changeVal(null);
 
       Provider.of<invoice_vm>(context, listen: false)
-          .getinvoice_Local("منسحب",'out',null);
-
+          .getinvoice_Local("منسحب", 'out', null);
     });
 
     super.initState();
@@ -48,7 +51,10 @@ class _OutClientState extends State<OutClient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('الفواتير المنسحبة ',style: TextStyle(color: kWhiteColor),),
+        title: Text(
+          'الفواتير المنسحبة ',
+          style: TextStyle(color: kWhiteColor),
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -67,86 +73,82 @@ class _OutClientState extends State<OutClient> {
                           padding: const EdgeInsets.only(left: 8.0, right: 8),
                           child: Consumer<RegionProvider>(
                             builder: (context, cart, child) {
-                              return
-                                DropdownButton(
-                                  isExpanded: true,
-                                  hint: Text("الفرع"),
-                                  items: cart.listRegionFilter.map((level_one) {
-                                    return DropdownMenuItem(
-
-                                      child: Text(level_one.regionName),
-                                      //label of item
-                                      value: level_one
-                                          .regionId, //value of item
-                                    );
-                                  }).toList(),
-                                  value: cart.selectedRegionId,
-                                  onChanged: (value) {
-                                    //  setState(() {
-                                    cart.changeVal(value.toString());
-                                    regoin = value.toString();
-                                    filtershow();
-                                  },
-                                );
+                              return DropdownButton(
+                                isExpanded: true,
+                                hint: Text("الفرع"),
+                                items: cart.listRegionFilter.map((level_one) {
+                                  return DropdownMenuItem(
+                                    child: Text(level_one.regionName),
+                                    //label of item
+                                    value: level_one.regionId, //value of item
+                                  );
+                                }).toList(),
+                                value: cart.selectedRegionId,
+                                onChanged: (value) {
+                                  //  setState(() {
+                                  cart.changeVal(value.toString());
+                                  regoin = value.toString();
+                                  filtershow();
+                                },
+                              );
                               //);
                             },
                           ),
                         ),
-                      ),// : Container(),
-
+                      ), // : Container(),
                     ],
                   ),
-                  search_widget(
-                      'waitout',
-                      hintnamefilter,''
-                    // Provider
-                    //     .of<invoice_vm>(context, listen: true)
-                    //     .listInvoicesAccept,
+                  search_widget('waitout', hintnamefilter, ''
+                      // Provider
+                      //     .of<invoice_vm>(context, listen: true)
+                      //     .listInvoicesAccept,
+                      ),
+                  SizedBox(
+                    height: 5,
                   ),
-                  SizedBox(height: 5,),
                   Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.73,
-
+                    height: MediaQuery.of(context).size.height * 0.73,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Consumer<invoice_vm>(
                           builder: (context, value, child) {
-                            return
-                              value.isloading==true?
-                              Center(child: CircularProgressIndicator()):
-                              value.listInvoicesAccept.length == 0 ?
-                              Center(
-                                child: Text(messageNoData),
-                              )
-                                  :Column(
-                                children: [
-                                  Expanded(
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: value.listInvoicesAccept.length,
-                                        itemBuilder: (context, index) {
-                                          // itemClient=Provider.of<client_vm>(context,listen: false)
-                                          //     .listClient.firstWhere(
-                                          //         (element) => element.idClients==value.listInvoicesAccept[index].fkIdClient);
-                                          return SingleChildScrollView(
-                                            child: Padding(
-                                                padding: const EdgeInsets.all(
-                                                    2),
-                                                child:
-                                                CardInvoiceClient(
-                                                  type: 'profile',
-                                                  invoice: value.listInvoicesAccept[index],
-                                                  //itemClient :  itemClient,
-                                                )) ,
-                                          );
-                                        }),
-                                  ),
-                                ],
-                              );
-                          }),
+                        return value.isloading == true
+                            ? Center(child: CircularProgressIndicator())
+                            : value.listInvoicesAccept.length == 0
+                                ? Center(
+                                    child: Text(messageNoData),
+                                  )
+                                : Column(
+                                    children: [
+                                      Expanded(
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.vertical,
+                                            itemCount:
+                                                value.listInvoicesAccept.length,
+                                            itemBuilder: (context, index) {
+                                              // itemClient=Provider.of<client_vm>(context,listen: false)
+                                              //     .listClient.firstWhere(
+                                              //         (element) => element.idClients==value.listInvoicesAccept[index].fkIdClient);
+                                              final invoice = value
+                                                  .listInvoicesAccept[index];
+                                              return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(2),
+                                                  child: CardInvoiceClient(
+                                                    // stateclient
+                                                    type: invoice.stateclient ==
+                                                            StatusClient
+                                                                .withdrawn.text
+                                                        ? 'withdrawn'
+                                                        : 'profile',
+                                                    invoice: invoice,
+                                                    //itemClient :  itemClient,
+                                                  ));
+                                            }),
+                                      ),
+                                    ],
+                                  );
+                      }),
                     ),
                   ),
                 ],
@@ -156,9 +158,7 @@ class _OutClientState extends State<OutClient> {
     );
   }
 
-  void filtershow(){
-
-
+  void filtershow() {
     //    Provider.of<invoice_vm>(context,listen: false)
     //       .getfilterinvoice(regoin);
     // Provider.of<client_vm>(context,listen: false)
@@ -175,8 +175,8 @@ class _OutClientState extends State<OutClient> {
     //      filter='تم التركيب';
     //      break;
     //  }
-    Provider.of<invoice_vm>(context,listen: false)
-        .getclienttype_filter('مستبعد',regoin,'out');
+    Provider.of<invoice_vm>(context, listen: false)
+        .getclienttype_filter('مستبعد', regoin, 'out');
 
     // }
   }
