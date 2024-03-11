@@ -271,7 +271,6 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
     required String? endPoint,
     Object? data,
     Map<String, dynamic>? queryParameters,
-    bool? isFormData = false,
     Map<String, dynamic>? headers,
   }) =>
       (super.noSuchMethod(
@@ -282,7 +281,6 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
             #endPoint: endPoint,
             #data: data,
             #queryParameters: queryParameters,
-            #isFormData: isFormData,
             #headers: headers,
           },
         ),

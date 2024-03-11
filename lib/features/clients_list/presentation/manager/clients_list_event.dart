@@ -116,3 +116,25 @@ class ApproveRejectClientEvent extends ClientsListEvent {
   @override
   List<Object?> get props => [approveRejectClientParams];
 }
+
+class GetClientSupportFilesEvent extends ClientsListEvent {
+  final GetClientSupportFilesParams getClientSupportFilesParams;
+  final ValueChanged<List<ClientSupportFileModel>>? onSuccess;
+
+  GetClientSupportFilesEvent(this.getClientSupportFilesParams,
+      {this.onSuccess});
+
+  @override
+  List<Object?> get props => [getClientSupportFilesParams];
+}
+
+class CrudClientSupportFilesEvent extends ClientsListEvent {
+  final CrudClientSupportFilesParams crudClientSupportFilesParams;
+  final ValueChanged<List<ClientSupportFileModel>>? onSuccess;
+
+  CrudClientSupportFilesEvent(this.crudClientSupportFilesParams,
+      {this.onSuccess});
+
+  @override
+  List<Object?> get props => [crudClientSupportFilesParams];
+}

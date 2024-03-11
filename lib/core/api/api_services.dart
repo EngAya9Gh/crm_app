@@ -12,7 +12,6 @@ abstract class ApiServices {
     required String endPoint,
     Object? data,
     Map<String, dynamic>? queryParameters,
-    bool isFormData = false,
     Map<String, dynamic>? headers,
   });
 

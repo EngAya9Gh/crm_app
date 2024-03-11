@@ -3,11 +3,15 @@ import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
+import 'package:crm_smart/features/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
+import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../model/similar_client.dart';
 import '../../domain/repositories/clients_list_repository.dart';
+import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../data_sources/clients_list_datasource.dart';
+import '../models/client_support_file_model.dart';
 
 @Injectable(as: ClientsListRepository)
 class ClientsListRepositoryImpl implements ClientsListRepository {
@@ -76,5 +80,18 @@ class ClientsListRepositoryImpl implements ClientsListRepository {
       Map<String, dynamic> body, Map<String, dynamic> params, String id) {
     // TODO: implement approveClientReject_admin
     return toApiResult(() => datasource.approveClient_Reject(body, params, id));
+  }
+
+  @override
+  Future<Either<String, List<ClientSupportFileModel>>> getClientSupportFiles(
+    GetClientSupportFilesParams params,
+  ) {
+    return datasource.getClientSupportFiles(params);
+  }
+
+  @override
+  Future<Either<String, List<ClientSupportFileModel>>> crudClientSupportFiles(
+      CrudClientSupportFilesParams params) {
+    return datasource.crudClientSupportFiles(params);
   }
 }

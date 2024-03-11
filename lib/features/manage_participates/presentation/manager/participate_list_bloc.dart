@@ -1,29 +1,31 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:crm_smart/core/common/helpers/helper_functions.dart';
-import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/common/models/profile_invoice_model.dart';
-import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
-import 'package:crm_smart/features/manage_participates/data/models/participate_client_model.dart';
-import 'package:crm_smart/features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart';
-import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_event.dart';
-import 'package:crm_smart/features/manage_participates/presentation/manager/participate_list_state.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/common/helpers/participate_filter_handlers.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
+import '../../../../core/common/models/page_state/page_state.dart';
+import '../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../model/maincitymodel.dart';
+import '../../data/models/participatModel.dart';
+import '../../data/models/participate_client_model.dart';
 import '../../domain/use_cases/add_participate_comment_usecase.dart';
 import '../../domain/use_cases/add_participate_usecase.dart';
 import '../../domain/use_cases/edit_paraticipate_usecase.dart';
 import '../../domain/use_cases/get_invoice_by_id_usecase.dart';
 import '../../domain/use_cases/get_participate_Invoice_list_usecase.dart';
+import '../../domain/use_cases/get_participate_client_list_usecase.dart';
 import '../../domain/use_cases/get_participate_comment_list_usecase.dart';
 import '../../domain/use_cases/get_participate_list_usecase.dart';
+import 'participate_list_event.dart';
+import 'participate_list_state.dart';
 
 @injectable
 class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
-  // ParticipateListBloc(initialState) : super(initialState);
   ParticipateListBloc(
     this._getParticipateListUsecase,
     this._addParticipateUserUsecase,
@@ -35,7 +37,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
     this._addParticipateCommentUsecase,
   ) : super(ParticipateListState()) {
     on<GetParticipateListEvent>(_onGetParticipateListEvent);
-    on<SearchEvent>(_onSearchEvent);
+    on<FilterEvent>(_onFilterEvent);
     on<AddParticipateEvent>(_onAddParticipateEvent);
     on<EditParticipateEvent>(_onEditParticipateEvent);
     on<ChanageCurrentParticipate>(_onChangeCurrentParticipate);
@@ -58,6 +60,10 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
   final ParticipateCommentListUsecase _getParticipateCommentListUsecase;
   final AddParticipateCommentUsecase _addParticipateCommentUsecase;
 
+  CityModel? selectedCity;
+  List<ParticipateModel> allParticipates = [];
+  final TextEditingController searchTextField = TextEditingController();
+
   FutureOr<void> _onGetParticipateListEvent(
       GetParticipateListEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(particiPateListState: PageState.loading()));
@@ -69,40 +75,37 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       (exception, message) =>
           emit(state.copyWith(particiPateListState: PageState.error())),
       (value) {
-        final filterData = filterList(event.query);
-        final lists = [filterData, (value.message ?? [])];
-        final commonElements = event.query.isNotEmpty
-            ? filterList(event.query, value.message)
-            : HelperFunctions.instance.intersection(lists);
+        allParticipates = value.message ?? [];
 
         emit(
           state.copyWith(
-            particiPateListState: event.query.isNotEmpty
-                ? PageState.loaded(data: commonElements)
-                : PageState.loaded(data: value.message ?? []),
             allParticipateState: value.message,
+            particiPateListState: PageState.loaded(data: allParticipates),
           ),
         );
       },
     );
   }
 
-  FutureOr<void> _onSearchEvent(
-      SearchEvent event, Emitter<ParticipateListState> emit) async {
+  FutureOr<void> _onFilterEvent(
+      FilterEvent event, Emitter<ParticipateListState> emit) async {
     emit(state.copyWith(
-        particiPateListState: PageState.loaded(data: filterList(event.query))));
+      particiPateListState: PageState.loaded(data: filterParticipatesList()),
+    ));
   }
 
-  List<ParticipateModel> filterList(String query, [List<ParticipateModel>? l]) {
-    List<ParticipateModel> list =
-        List<ParticipateModel>.from(l ?? state.allParticipateState);
-    list = list
-        .where((element) =>
-            (element.name_participate.toLowerCase().contains(query) ?? false) ||
-            (element.numberbank_participate.toLowerCase().contains(query) ??
-                false))
-        .toList();
-    return list;
+  List<ParticipateModel> filterParticipatesList() {
+    final searchFilterHandler = SearchFilterHandler();
+    final cityFilterHandler = CityFilterHandler();
+    searchFilterHandler.setNextHandler(cityFilterHandler);
+
+    final filterParticipates = searchFilterHandler.handleFiltering(
+      list: allParticipates,
+      query: searchTextField.text,
+      cityId: selectedCity?.id_city,
+    );
+
+    return filterParticipates;
   }
 
   FutureOr<void> _onAddParticipateEvent(
@@ -118,13 +121,12 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       (value) {
         emit(state.copyWith(
             actionParticipateBlocStatus: const BlocStatus.success()));
-        List<ParticipateModel> participates = state.allParticipateState;
-        participates.insert(0, value.data!);
-        //  emit(state.copyWith(particiPateListState: PageState.loading()));
+        allParticipates.insert(0, value.data!);
         emit(
           state.copyWith(
-            particiPateListState: PageState.loaded(data: participates),
-            allParticipateState: participates,
+            particiPateListState:
+                PageState.loaded(data: filterParticipatesList()),
+            allParticipateState: allParticipates,
           ),
         );
         event.onSuccess?.call(value.data!);
@@ -146,8 +148,7 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
       (value) {
         emit(state.copyWith(
             actionParticipateBlocStatus: const BlocStatus.success()));
-        List<ParticipateModel> participates = state.allParticipateState;
-        participates = participates
+        allParticipates = allParticipates
             .map((e) =>
                 e.id_participate == event.editParticipateParams.idParticipate
                     ? value.data!
@@ -157,8 +158,9 @@ class ParticipateListBloc extends Bloc<ParticipateEvent, ParticipateListState> {
         //  emit(state.copyWith(particiPateListState: PageState.loading()));
         emit(
           state.copyWith(
-            particiPateListState: PageState.loaded(data: participates),
-            allParticipateState: participates,
+            particiPateListState:
+                PageState.loaded(data: filterParticipatesList()),
+            allParticipateState: allParticipates,
           ),
         );
         event.onSuccess?.call(value.data!);

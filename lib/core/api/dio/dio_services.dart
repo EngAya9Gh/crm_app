@@ -36,13 +36,12 @@ class DioServices extends ApiServices {
     required String endPoint,
     dynamic data,
     Map<String, dynamic>? queryParameters,
-    bool isFormData = false,
     Map<String, dynamic>? headers,
   }) async {
     try {
       final res = await dio.post(
         endPoint,
-        data: isFormData ? FormData.fromMap(data) : data,
+        data: data,
         queryParameters: queryParameters,
       );
       return res.data;

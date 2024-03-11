@@ -418,31 +418,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     scrollDirection: Axis.vertical,
                   ),
                 )
-
-              // ListView.separated(
-              //   itemBuilder: (context, index) {
-              //     final attachFile = files[index];
-              //     if (attachFile.file != null) {
-              //       return fileImage(
-              //         attachFile,
-              //             () {
-              //           invoiceVm.deleteFileAttach(index);
-              //         },
-              //       );
-              //     } else {
-              //       return networkImage(
-              //         attachFile,
-              //             () {
-              //           invoiceVm.deleteFileAttach(index);
-              //           widget.onDeleteFileAttach(attachFile);
-              //         },
-              //       );
-              //     }
-              //   },
-              //   separatorBuilder: (context, index) => 10.horizontalSpace,
-              //   itemCount: files.length,
-              //   scrollDirection: Axis.horizontal,
-              // ),
             ],
           ),
         );

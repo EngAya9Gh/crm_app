@@ -1,16 +1,22 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:crm_smart/core/api/api_services.dart';
-import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/api/api_services.dart';
 import '../../../../core/api/api_utils.dart';
+import '../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/di/di_container.dart';
 import '../../../../core/utils/end_points.dart';
 import '../../../../model/similar_client.dart';
+import '../../domain/use_cases/crud_client_support_files_usecase.dart';
+import '../../domain/use_cases/get_client_support_files_usecase.dart';
+import '../models/client_support_file_model.dart';
 import '../models/clients_list_response.dart';
+import '../models/recommended_client.dart';
 
 @injectable
 class ClientsListDatasource {
@@ -207,5 +213,86 @@ class ClientsListDatasource {
     }
 
     return throwAppException(fun);
+  }
+
+  Future<Either<String, List<ClientSupportFileModel>>> getClientSupportFiles(
+    GetClientSupportFilesParams params,
+  ) async {
+    try {
+      api.changeBaseUrl(EndPoints.laravelUrl);
+
+      final response = await api.get(
+          endPoint: EndPoints.invoice.getClientSupportFiles,
+          queryParameters: {
+            'fk_invoice': params.invoiceId,
+          });
+      final List data = apiDataHandler(response);
+      final List<ClientSupportFileModel> attachments =
+          data.map((e) => ClientSupportFileModel.fromJson(e)).toList();
+      return right(attachments);
+    } catch (e) {
+      print("error in getInvoiceAttachments => $e");
+      return left(e.toString());
+    }
+  }
+
+  Future<Either<String, List<ClientSupportFileModel>>> crudClientSupportFiles(
+    CrudClientSupportFilesParams params,
+  ) async {
+    try {
+      api.changeBaseUrl(EndPoints.laravelUrl);
+      FormData formData = await _prepareBody(params);
+      final response = await api.post(
+        endPoint: EndPoints.invoice.crudClientSupportFiles,
+        data: formData,
+      );
+      final data = apiDataHandler(response);
+      if (data is String) {
+        return Right([]);
+      }
+      final List<ClientSupportFileModel> files = (data as List)
+          .map((e) => ClientSupportFileModel.fromJson(e))
+          .toList();
+      return right(files);
+    } catch (e) {
+      print("error in crudInvoiceAttachments => $e");
+      return left(e.toString());
+    }
+  }
+
+  Future<FormData> _prepareBody(CrudClientSupportFilesParams params) async {
+    final FormData formData = FormData.fromMap({
+      'fk_invoice': params.invoiceId,
+      'files_delete_ids': "[${params.deletedFiles.join(',')}]",
+    });
+
+    final files = await _prepareFiles(params.addedFiles);
+    formData.files.addAll(files);
+    return formData;
+  }
+
+  Future<List<MapEntry<String, MultipartFile>>> _prepareFiles(
+    List<File> files,
+  ) async {
+    final List<MultipartFile> multipartFiles = await Future.wait(
+      files.map(
+        (e) async {
+          return await MultipartFile.fromFile(
+            e.path,
+            filename: e.path.split('/').last,
+          );
+        },
+      ),
+    );
+    return _formFiles(multipartFiles);
+  }
+
+  List<MapEntry<String, MultipartFile>> _formFiles(
+      List<MultipartFile> multipartFiles) {
+    final List<MapEntry<String, MultipartFile>> files = [];
+    for (int i = 0; i < multipartFiles.length; i++) {
+      files.add(MapEntry('file_attach_invoice[$i]', multipartFiles[i]));
+    }
+    return files;
   }
 }

@@ -18,23 +18,19 @@ abstract class ParticipateEvent extends Equatable {
 }
 
 class GetParticipateListEvent extends ParticipateEvent {
-  final String query;
-
-  GetParticipateListEvent({
-    required this.query,
-  });
+  GetParticipateListEvent();
 
   @override
-  List<Object?> get props => [query];
+  List<Object?> get props => [];
 }
 
-class SearchEvent extends ParticipateEvent {
-  final String query;
+class FilterEvent extends ParticipateEvent {
+  final String? cityId;
 
-  SearchEvent(this.query);
+  FilterEvent({this.cityId});
 
   @override
-  List<Object?> get props => [query];
+  List<Object?> get props => [cityId];
 }
 
 class AddParticipateEvent extends ParticipateEvent {
@@ -60,14 +56,18 @@ class EditParticipateEvent extends ParticipateEvent {
 
 class SwitchProfileTabs extends ParticipateEvent {
   final TabEvent indexTab;
+
   SwitchProfileTabs(this.indexTab);
+
   @override
   List<Object?> get props => [indexTab];
 }
 
 class ChanageCurrentParticipate extends ParticipateEvent {
   late final ParticipateModel participateModel;
+
   ChanageCurrentParticipate(this.participateModel);
+
   @override
   List<Object?> get props => [participateModel];
 }
@@ -138,6 +138,7 @@ class GetInvoiceByIdEvent extends ParticipateEvent {
   final ValueChanged<InvoiceModel>? onSuccess;
 
   GetInvoiceByIdEvent(this.getInvoiceByIdParams, {this.onSuccess});
+
   @override
   List<Object?> get props => [getInvoiceByIdParams];
 }
@@ -158,6 +159,7 @@ class GetParticipateCommentListEvent extends ParticipateEvent {
 class AddParticipateCommentEvent extends ParticipateEvent {
   final AddParticipateCommentParams addParticipateCommentParams;
   final ValueChanged<String?>? onSuccess;
+
   AddParticipateCommentEvent(this.addParticipateCommentParams,
       {this.onSuccess});
 
