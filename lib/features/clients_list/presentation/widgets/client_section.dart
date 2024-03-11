@@ -644,12 +644,13 @@ class _ClientSectionState extends State<ClientSection> {
                     value: clientModel1.typeClient.toString()),
                 clientModel1.typeClient == 'مستبعد'
                     ? cardRow(
-                        value: clientModel1.nameuserdoning.toString(),
+                        value: clientModel1.nameUserApproveRreject.toString(),//nameuserdoning
                         title: 'قام بتحويل حالة العميل')
                     : IgnorePointer(),
+
                 clientModel1.typeClient == 'مستبعد'
                     ? cardRow(
-                        value: clientModel1.dateChangetype.toString(),
+                        value: clientModel1.date_approve_reject.toString(),//clientModel1.dateChangetype.toString(),
                         title: 'تاريخ تحويل حالة العميل')
                     : IgnorePointer(),
                 clientModel1.typeClient == 'مستبعد'

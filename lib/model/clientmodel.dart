@@ -66,6 +66,8 @@ class ClientModel1 extends CacheRepository {
     this.type_record,
     this.type_classification,
     this.reason_class,
+    this.nameUserApproveRreject,
+    this.date_approve_reject,
   });
 
   late final String? idClients;
@@ -133,6 +135,8 @@ class ClientModel1 extends CacheRepository {
   late final String? type_record;
   late final String? type_classification;
   late final String? reason_class;
+  late final String? nameUserApproveRreject;
+  late final String? date_approve_reject;
   //ClientModel.fromJson(Map<String, dynamic> json) {
 
   ClientModel1.fromJson(Map<String, dynamic> json) {
@@ -203,6 +207,8 @@ class ClientModel1 extends CacheRepository {
     type_record = json['type_record'] ;
     type_classification = json['type_classification'] ;
     reason_class = json['reason_class'] ;
+    nameUserApproveRreject = json['nameUserApproveRreject'] ;
+    date_approve_reject = json['date_approve_reject'] ;
   }
 
   Map<String, dynamic> toJson() {

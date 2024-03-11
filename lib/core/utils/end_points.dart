@@ -3,6 +3,7 @@ abstract class EndPoints {
 
   static const phpUrl = "http://smartcrm.ws/test/api/";
   static const String laravelUrl = 'http://test.smartcrm.ws/api/';
+  static const String laravelUrl_Image = 'http://test.smartcrm.ws/storage/';
   static const care = _Care();
   static const client = _Client();
   static const users = _Users();

@@ -1454,7 +1454,7 @@ class _SupportAddState extends State<SupportAdd> {
   }
 
   Widget networkImage(FileAttach fileAttach, VoidCallback onDelete) {
-    print("url is => ${EndPoints.laravelUrl}${fileAttach.fileAttach}");
+    print("url is => ${EndPoints.laravelUrl_Image}${fileAttach.fileAttach}");
     return InkWell(
       onTap: () {
         invoiceVm.openFile(fileAttach);
@@ -1468,7 +1468,7 @@ class _SupportAddState extends State<SupportAdd> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: FancyImageShimmerViewer(
-                  imageUrl: "${EndPoints.laravelUrl}${fileAttach.fileAttach}",
+                  imageUrl: "${EndPoints.laravelUrl_Image}${fileAttach.fileAttach}",
                   fit: BoxFit.cover,
                 ),
                 // Image.network(
