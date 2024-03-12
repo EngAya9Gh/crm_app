@@ -76,9 +76,10 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
                   return widget.type == 'profile'
                       ? ProfileClient(
                           tabIndex: 1,
-                          idClient: widget.invoice.fkIdClient.toString(),
-                        )
-                      : InvoiceView(invoice: widget.invoice);
+                          idClient: widget.invoice.fkIdClient.toString())
+                      : widget.type == 'withdrawn'
+                          ? WithdrawnDetailsPage(invoice: widget.invoice)
+                          : InvoiceView(invoice: widget.invoice);
                 },
               ),
             );
