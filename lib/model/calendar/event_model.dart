@@ -17,6 +17,7 @@ class EventModel {
   final String? agentName;
   final AgentDistributorModel? agent;
   final String? comment;
+  final String? fkUser;
 
   const EventModel({
     required this.fkIdClient,
@@ -33,11 +34,12 @@ class EventModel {
     this.agentName,
     this.agent,
     this.comment,
+    this.fkUser,
   });
 
   @override
   String toString() {
-    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typedate}';
+    return 'Event{title: $title, description: $description, from: $from, to: $to, backgroundColor: $backgroundColor, isAllDay: $isAllDay, fkIdClient: $fkIdClient, idinvoice: $idinvoice ,isDone: $isDone, idClientsDate: $idClientsDate, agentName: $agentName, agent: ${agent.toString()}, comment: $comment, typedate: $typedate, fkUser: $fkUser}';
   }
 
   EventModel copyWith({
@@ -55,6 +57,7 @@ class EventModel {
     AgentDistributorModel? agent,
     String? typedate,
     String? comment,
+    String? fkUser,
   }) {
     return EventModel(
       title: title ?? this.title,
@@ -71,6 +74,7 @@ class EventModel {
       agentName: agentName ?? this.agentName,
       agent: agent ?? this.agent,
       comment: comment ?? this.comment,
+      fkUser: fkUser ?? this.fkUser,
     );
   }
 
@@ -92,7 +96,8 @@ class EventModel {
           idClientsDate == other.idClientsDate &&
           agentName == other.agentName &&
           agent == other.agent &&
-          comment == other.comment;
+          comment == other.comment &&
+          fkUser == other.fkUser;
 
   @override
   int get hashCode =>
@@ -109,5 +114,6 @@ class EventModel {
       idClientsDate.hashCode ^
       agentName.hashCode ^
       agent.hashCode ^
-      comment.hashCode;
+      comment.hashCode ^
+      fkUser.hashCode;
 }

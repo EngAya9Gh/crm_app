@@ -138,7 +138,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
       textDirection: TextDirection.ltr,
       child: Consumer<EventProvider>(builder: (context, eventProvider, _) {
         final events = eventProvider.eventDataSource;
-        print("events.length ${events.length}");
         initFocusDay(events);
         return Column(
           children: [
@@ -329,13 +328,10 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                       fontFamily: kfontfamily2,
                       fontWeight: FontWeight.w600)),
               onTap: () async {
-                var tempinvoice;
-                var tempEvent = value[index];
-
+                EventModel tempEvent = value[index];
                 final EventModel? editedEvent = await showDialog<dynamic>(
                     context: context,
                     builder: (context) => ReScheduleDialog(
-                          // invoice: tempinvoice,
                           event: tempEvent,
                           idClientsDate: value[index].idClientsDate!,
                           idClient: value[index].fkIdClient!,
@@ -348,7 +344,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                 if (editedEvent != null) {
                   _selectedEvents = ValueNotifier(_getEventsForDay(
                       _selectedDay!, eventProvider.eventDataSource));
-                  setState(() {});
                 }
               },
             ),
@@ -431,79 +426,82 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
     return await showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => WillPopScope(
-        onWillPop: () => Future.value(true),
-        child: SimpleDialog(
-          title: Text(
-            "إغلاق الجدولة",
-            textAlign: TextAlign.center,
-          ),
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8.0,
-              ),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _commentController,
-                        decoration: InputDecoration(
-                          hintText: "أكتب تعليقك هنا",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
+      builder: (context) {
+        return WillPopScope(
+          onWillPop: () => Future.value(true),
+          child: SimpleDialog(
+            title: Text(
+              "إغلاق الجدولة",
+              textAlign: TextAlign.center,
+            ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          controller: _commentController,
+                          decoration: InputDecoration(
+                            hintText: "أكتب تعليقك هنا",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                           ),
+                          maxLines: 3,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "التعليق مطلوب";
+                            }
+                            return null;
+                          },
                         ),
-                        maxLines: 3,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "التعليق مطلوب";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      StatefulBuilder(
-                        builder: (context, refreshState) {
-                          return AppElevatedButton(
-                            isLoading: isLoading,
-                            text: "حفظ",
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                refreshState(() => isLoading = true);
-                                await context
-                                    .read<EventProvider>()
-                                    .changeEventToDone(
-                                      event: event.copyWith(
-                                        comment: _commentController.text,
-                                      ),
-                                      onLoading: () {},
-                                      onSuccess: () {},
-                                      onFailure: () {},
-                                    );
-                                context
-                                    .read<invoice_vm>()
-                                    .updateListInvoiceAfterMarkEventIsDone(
-                                        event);
-                                refreshState(() => isLoading = false);
-                                AppNavigator.pop(result: true);
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    ],
+                        SizedBox(height: 20),
+                        StatefulBuilder(
+                          builder: (context, refreshState) {
+                            return AppElevatedButton(
+                              isLoading: isLoading,
+                              text: "حفظ",
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  refreshState(() => isLoading = true);
+                                  await context
+                                      .read<EventProvider>()
+                                      .changeEventToDone(
+                                        event: event.copyWith(
+                                          comment: _commentController.text,
+                                        ),
+                                        onLoading: () {},
+                                        onSuccess: () {},
+                                        onFailure: () {},
+                                      );
+                                  context
+                                      .read<invoice_vm>()
+                                      .updateListInvoiceAfterMarkEventIsDone(
+                                          event);
+                                  refreshState(() => isLoading = false);
+                                  AppNavigator.pop(result: true);
+                                  isLoading = false;
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

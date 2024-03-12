@@ -1468,7 +1468,8 @@ class _SupportAddState extends State<SupportAdd> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: FancyImageShimmerViewer(
-                  imageUrl: "${EndPoints.laravelUrl_Image}${fileAttach.fileAttach}",
+                  imageUrl:
+                      "${EndPoints.laravelUrl_Image}${fileAttach.fileAttach}",
                   fit: BoxFit.cover,
                 ),
                 // Image.network(
@@ -2056,9 +2057,11 @@ class TechSupportUsersDropDown extends StatefulWidget {
   const TechSupportUsersDropDown({
     Key? key,
     this.clear = false,
+    this.fkUser,
   }) : super(key: key);
 
   final bool clear;
+  final String? fkUser;
 
   @override
   State<TechSupportUsersDropDown> createState() =>
@@ -2071,9 +2074,15 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
   @override
   void initState() {
     eventProvider = context.read<EventProvider>();
-    if (widget.clear) {
-      _clearUser(context);
-    }
+    // call after build is finished
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.fkUser != null) {
+        onSelectUser();
+      }
+      if (widget.clear) {
+        _clearUser(context);
+      }
+    });
 
     super.initState();
   }
@@ -2093,10 +2102,8 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
               showSelectedItems: true,
               items: user.usersSupportManagement,
               itemAsString: (u) => u!.userAsString(),
-              onChanged: (data) {
-                iduser = data!.idUser!;
-                context.read<UserProvider>().changevalueuser(data);
-                eventProvider.onChangeFkUser(iduser);
+              onChanged: (user) {
+                onSelectUser(user);
               },
               selectedItem: user.selectedUser,
               showSearchBox: true,
@@ -2123,6 +2130,18 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
         );
       },
     );
+  }
+
+  void onSelectUser([UserModel? user]) {
+    if (widget.fkUser != null) {
+      context.read<UserProvider>().changeValUserID(widget.fkUser);
+    }
+    if (user == null) {
+      return;
+    }
+    context.read<UserProvider>().changevalueuser(user);
+    iduser = user!.idUser!;
+    eventProvider.onChangeFkUser(iduser);
   }
 
   void _clearUser(BuildContext context) {
