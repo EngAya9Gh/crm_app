@@ -107,16 +107,13 @@ class _ActionParticipateState extends State<ActionParticipate> {
                     ),
                     15.height,
                     AppTextField(
-                      labelText: "بنك المتعاون*",
-                      validator: HelperFunctions.instance.requiredFiled,
+                      labelText: "بنك المتعاون",
                       maxLines: 1,
-                      // hintText: '',
                       controller: nameBankParticipateController,
                     ),
                     15.height,
                     AppTextField(
-                      labelText: "رقم بنك المتعاون*",
-                      validator: HelperFunctions.instance.requiredFiled,
+                      labelText: "رقم بنك المتعاون",
                       maxLines: 1,
                       textInputType: TextInputType.phone,
                       controller: numberBankParticipateController,
