@@ -34,16 +34,16 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _manageWithdrawalsCubit,
-      child: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('إدارة الفواتير المنسحبة',
-                style: TextStyle(color: kWhiteColor)),
-            centerTitle: true,
-            backgroundColor: kMainColor,
-          ),
-          body: CustomScrollView(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('إدارة الفواتير المنسحبة',
+              style: TextStyle(color: kWhiteColor)),
+          centerTitle: true,
+          backgroundColor: kMainColor,
+        ),
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
                 child: Padding(
@@ -63,6 +63,7 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                             hintText: "رقم/عنوان الفاتورة، اسم المؤسسة...",
                             hintStyle: context.textTheme.titleSmall?.copyWith(
                               color: Colors.grey.shade600,
+                              fontSize: 12.sp,
                             ),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -106,7 +107,13 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                                 value: e,
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 10),
-                                  child: Text(e.text),
+                                  child: Text(
+                                    e.text,
+                                    style:
+                                        context.textTheme.titleSmall?.copyWith(
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
                                 ),
                               );
                             },

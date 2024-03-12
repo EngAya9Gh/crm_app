@@ -133,93 +133,120 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
               init: Center(child: CircularProgressIndicator()),
               success: (data) {
                 return Padding(
-                  padding: REdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 150.h,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15)),
-                        child:
-                            // ClipRRect(
-                            //     borderRadius: BorderRadius.circular(15),
-                            //     child:
-                            //
-                            //     CachedNetworkImage(imageUrl: urlfile + data.fileReject!, fit: BoxFit.cover)),
-                            ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: data.fileReject!.mimeType?.contains("image") ==
-                                  true
-                              ? InkWell(
-                                  onTap: () => AppFileViewer(
-                                    imageSource: ImageSourceViewer.network,
-                                    urls: [urlfile + data.fileReject!],
-                                  ).show(context),
-                                  child: FancyImageShimmerViewer(
-                                    imageUrl: urlfile + data.fileReject!,
-                                    fit: BoxFit.cover,
+                  padding: REdgeInsets.symmetric(horizontal: 15),
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Container(
+                          height: 150.h,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: data.fileReject!.mimeType
+                                        ?.contains("image") ==
+                                    true
+                                ? InkWell(
+                                    onTap: () => AppFileViewer(
+                                      imageSource: ImageSourceViewer.network,
+                                      urls: [urlfile + data.fileReject!],
+                                    ).show(context),
+                                    child: FancyImageShimmerViewer(
+                                      imageUrl: urlfile + data.fileReject!,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : InkWell(
+                                    onTap: () => openFile(data.fileReject!),
+                                    child: Container(
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                            color: kMainColor.withOpacity(0.1)),
+                                        child: Icon(
+                                            Icons.picture_as_pdf_rounded,
+                                            color: Colors.grey,
+                                            size: 30)),
                                   ),
-                                )
-                              : InkWell(
-                                  onTap: () => openFile(data.fileReject!),
-                                  child: Container(
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                          color: kMainColor.withOpacity(0.1)),
-                                      child: Icon(Icons.picture_as_pdf_rounded,
-                                          color: Colors.grey, size: 30)),
-                                ),
+                          ),
                         ),
                       ),
-                      20.verticalSpacingRadius,
-                      cardRow(
-                          title: 'اسم الموظف الذي قام بالانسحاب',
-                          value: data.nameUser.toString()),
-                      cardRow(
-                          title: 'سبب الإنسحاب',
-                          value: data.reasonBack.toString()),
-                      cardRow(
-                          title: 'وصف سبب الإنسحاب',
-                          value: data.descReasonBack.toString()),
-                      cardRow(
-                          title: 'المبلغ المسترجع',
-                          value: data.valueBack.toString()),
-                      cardRow(
-                          title: 'تاريخ الإنسحاب',
-                          value:
-                              "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
-                      cardRow(
-                          title: 'الحالة',
-                          value: WithdrawalStatus
-                              .values[int.parse(data.approveBackDone!)].text,
-                          withDivider: false),
-                      if (context
-                              .read<PrivilegeCubit>()
-                              .checkPrivilege('145') &&
-                          state.currentInvoice?.approveBackDone == '0') ...{
-                        Spacer(),
-                        if (state.deleteWithdrawnRequestStatus.isLoading())
-                          Center(child: CircularProgressIndicator.adaptive())
-                        else
-                          ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.red)),
-                            onPressed: () async {
-                              _manageWithdrawalsCubit.deleteWithdrawalRequest(
-                                widget.invoice.idInvoice!,
-                                data.fileReject!,
-                                onSuccess: () {
-                                  Navigator.of(context)
-                                    ..pop()
-                                    ..pop();
-                                },
-                              );
-                            },
-                            child: Text('حذف الطلب'),
-                          ),
-                      }
+                      SliverToBoxAdapter(child: 20.verticalSpacingRadius),
+                      SliverToBoxAdapter(
+                        child: cardRow(
+                            title: 'اسم الموظف الذي قام بالانسحاب',
+                            value: data.nameUser.toString()),
+                      ),
+                      SliverToBoxAdapter(
+                        child: cardRow(
+                            title: 'سبب الإنسحاب',
+                            value: data.reasonBack.toString()),
+                      ),
+                      SliverToBoxAdapter(
+                        child: cardRow(
+                            title: 'وصف سبب الإنسحاب',
+                            value: data.descReasonBack.toString()),
+                      ),
+                      SliverToBoxAdapter(
+                        child: cardRow(
+                            title: 'المبلغ المسترجع',
+                            value: data.valueBack.toString()),
+                      ),
+                      SliverToBoxAdapter(
+                        child: cardRow(
+                            title: 'تاريخ الإنسحاب',
+                            value:
+                                "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
+                      ),
+                      SliverToBoxAdapter(
+                        child: cardRow(
+                            title: 'الحالة',
+                            value: WithdrawalStatus
+                                .values[int.parse(data.approveBackDone!)].text),
+                      ),
+                      SliverToBoxAdapter(
+                        child: cardRow(
+                            title: 'تاريخ طلب انسحاب العميل',
+                            value: data.dateBackNow,
+                            withDivider: false),
+                      ),
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          children: [
+                            if (context
+                                    .read<PrivilegeCubit>()
+                                    .checkPrivilege('145') &&
+                                state.currentInvoice?.approveBackDone ==
+                                    '0') ...{
+                              if (state.deleteWithdrawnRequestStatus
+                                  .isLoading())
+                                Center(
+                                    child: CircularProgressIndicator.adaptive())
+                              else
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Colors.red)),
+                                  onPressed: () async {
+                                    _manageWithdrawalsCubit
+                                        .deleteWithdrawalRequest(
+                                      widget.invoice.idInvoice!,
+                                      data.fileReject!,
+                                      onSuccess: () {
+                                        Navigator.of(context)
+                                          ..pop()
+                                          ..pop();
+                                      },
+                                    );
+                                  },
+                                  child: Text('حذف الطلب'),
+                                ),
+                            }
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 );
