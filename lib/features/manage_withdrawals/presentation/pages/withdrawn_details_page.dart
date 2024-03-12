@@ -192,7 +192,10 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                       cardRow(
                           title: 'الحالة',
                           value: WithdrawalStatus
-                              .values[int.parse(data.approveBackDone!)].text,
+                              .values[int.parse(data.approveBackDone!)].text),
+                      cardRow(
+                          title: 'تاريخ طلب انسحاب العميل',
+                          value: data.dateBackNow,
                           withDivider: false),
                       if (context
                               .read<PrivilegeCubit>()

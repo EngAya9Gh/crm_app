@@ -1,4 +1,4 @@
-enum InvoiceStatusEnum { pending, withdrawn, rejected, all, user }
+enum InvoiceStatusEnum { all, pending, withdrawn, rejected, user }
 
 extension InvoiceStatusEnumExtension on InvoiceStatusEnum {
   String get text {
@@ -13,7 +13,7 @@ extension InvoiceStatusEnumExtension on InvoiceStatusEnum {
         return 'مرفوضة';
       case InvoiceStatusEnum.user:
       default:
-        return 'user';
+        return 'يحتاج معالجة';
     }
   }
 }

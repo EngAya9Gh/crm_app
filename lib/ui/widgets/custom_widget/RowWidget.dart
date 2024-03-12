@@ -15,6 +15,7 @@ class cardRow extends StatelessWidget {
   String? value;
   bool isExpanded;
   final bool withDivider;
+
   // bool? isrow=true;
   @override
   Widget build(BuildContext context) {
@@ -32,8 +33,11 @@ class cardRow extends StatelessWidget {
             Flexible(
               child: Text(
                 title,
+                textDirection: TextDirection.rtl,
                 style: TextStyle(
-                    fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: kfontfamily2,
+                ),
               ),
             ),
             SizedBox(

@@ -68,13 +68,18 @@ class _CardInvoiceClientState extends State<CardInvoiceClient> {
             Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) => widget.type == 'profile'
-                    ? ProfileClient(
-                        tabIndex: 1,
-                        idClient: widget.invoice.fkIdClient.toString())
-                    : widget.type == 'withdrawn'
-                        ? WithdrawnDetailsPage(invoice: widget.invoice)
-                        : InvoiceView(invoice: widget.invoice),
+                builder: (context) {
+                  if (widget.invoice.stateclient ==
+                      StatusClient.withdrawn.text) {
+                    return WithdrawnDetailsPage(invoice: widget.invoice);
+                  }
+                  return widget.type == 'profile'
+                      ? ProfileClient(
+                          tabIndex: 1,
+                          idClient: widget.invoice.fkIdClient.toString(),
+                        )
+                      : InvoiceView(invoice: widget.invoice);
+                },
               ),
             );
           },
