@@ -824,7 +824,7 @@ class _ClientSectionState extends State<ClientSection> {
                               children: [
                                 clientModel1.typeClient == "عرض سعر" ||
                                         clientModel1.typeClient == "تفاوض" ||
-                                        // clientModel1.typeClient == "مستبعد" ||
+                                        clientModel1.typeClient == "مستبعد" ||
                                         clientModel1.typeClient ==
                                             'معلق استبعاد'
                                     ? Expanded(
