@@ -55,12 +55,12 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                     children: [
                       Flexible(
                         child: TextField(
-                          controller: TextEditingController(),
+                          controller: _manageWithdrawalsCubit.searchController,
                           textInputAction: TextInputAction.search,
                           decoration: InputDecoration(
                             filled: true,
                             fillColor: Colors.grey.shade200,
-                            hintText: "عنوان الفاتورة...",
+                            hintText: "رقم/عنوان الفاتورة، اسم المؤسسة...",
                             hintStyle: context.textTheme.titleSmall?.copyWith(
                               color: Colors.grey.shade600,
                             ),
@@ -74,12 +74,15 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                               color: Colors.black,
                             ),
                           ),
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            _manageWithdrawalsCubit
+                                .onSearchWithdrawalsInvoices();
+                          },
                         ),
                       ),
                       10.width,
                       SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.32,
+                        width: MediaQuery.of(context).size.width * 0.27,
                         // drop down for InvoiceStatusEnum
                         child: DropdownButtonFormField<InvoiceStatusEnum>(
                           decoration: InputDecoration(
@@ -130,21 +133,18 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                           child: BlocBuilder<ManageWithdrawalsCubit,
                               ManageWithdrawalsState>(
                             builder: (context, state) {
-                              return Expanded(
-                                child: ListView.separated(
-                                  shrinkWrap: true,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return CardInvoiceClient(
-                                      type: 'withdrawn',
-                                      invoice: data[index],
-                                      isFromWithdrawalsInvoicesList: true,
-                                    );
-                                  },
-                                  separatorBuilder: (context, int index) =>
-                                      10.verticalSpacingRadius,
-                                  itemCount: data.length,
-                                ),
+                              return ListView.separated(
+                                shrinkWrap: true,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return CardInvoiceClient(
+                                    type: 'withdrawn',
+                                    invoice: data[index],
+                                    isFromWithdrawalsInvoicesList: true,
+                                  );
+                                },
+                                separatorBuilder: (context, int index) =>
+                                    10.verticalSpacingRadius,
+                                itemCount: data.length,
                               );
                             },
                           ),

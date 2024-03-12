@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
@@ -9,6 +7,7 @@ import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/get_withd
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../features/manage_users/domain/use_cases/get_allusers_usecase.dart';
@@ -60,7 +59,10 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   final EditRejectReasonsUsecase _editRejectReasonsUsecase;
   final GetFilteredWithdrawalsInvoicesUsecase
       _getFilteredWithdrawalsInvoicesUsecase;
+
+  final searchController = TextEditingController();
   List<ReasonModel> reasons = [];
+  List<InvoiceModel> allInvoices = [];
   InvoiceStatusEnum _selectedFilter = InvoiceStatusEnum.user;
 
   InvoiceStatusEnum get selectedFilter => _selectedFilter;
@@ -250,11 +252,25 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
       (exception, message) =>
           emit(state.copyWith(withdrawalsInvoices: PageState.error())),
       (withdrawalsInvoice) {
-        emit(state.copyWith(
-            withdrawalsInvoices:
-                PageState.loaded(data: withdrawalsInvoice.message ?? [])));
+        allInvoices = withdrawalsInvoice.message ?? [];
+        onSearchWithdrawalsInvoices();
       },
     );
+  }
+
+  onSearchWithdrawalsInvoices() {
+    final value = searchController.text;
+    if (value.isEmpty) {
+      emit(state.copyWith(
+          withdrawalsInvoices: PageState.loaded(data: allInvoices)));
+      return;
+    }
+    final list = allInvoices.where((element) {
+      return element.idInvoice!.contains(value) ||
+          element.name_enterprise!.contains(value) ||
+          element.address_invoice!.contains(value);
+    }).toList();
+    emit(state.copyWith(withdrawalsInvoices: PageState.loaded(data: list)));
   }
 
   getWithdrawalInvoiceDetails(String fkInvoice) async {
