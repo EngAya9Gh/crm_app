@@ -133,8 +133,7 @@ class _ClientSectionState extends State<ClientSection> {
       _clientTypeProvider.changevalue(_clientTypeProvider.selectedValuemanag);
 
       Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(
-          intl.DateFormat('yyyy-MM-dd')
-              .parse(widget.client!.date_price.toString()),
+          intl.DateFormat('yyyy-MM-dd').parse(widget.client?.date_price ?? ''),
           isInit: true);
     });
 
@@ -664,20 +663,19 @@ class _ClientSectionState extends State<ClientSection> {
                         title: 'سبب الاستبعاد')
                     : IgnorePointer(),
 
-                clientModel1.typeClient=='عرض سعر'
+                clientModel1.typeClient == 'عرض سعر'
                     ? cardRow(
                         title: 'مبلغ عرض السعر',
                         value: clientModel1.offer_price.toString())
                     : IgnorePointer(),
 
-                clientModel1.typeClient=='عرض سعر'
+                clientModel1.typeClient == 'عرض سعر'
                     ? cardRow(
                         title: 'تاريخ عرض السعر',
                         value: clientModel1.date_price.toString())
                     : IgnorePointer(),
 
-
-                        clientModel1.user_do !=null
+                clientModel1.user_do != null
                     ? cardRow(
                         title: 'الموظف الذي قام بتغيير حالة العميل',
                         value: clientModel1.nameuserdoning.toString())

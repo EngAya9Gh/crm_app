@@ -5,6 +5,7 @@ import '../../data/models/invoice_withdrawal_series_model.dart';
 import '../../data/models/reject_reason.dart';
 import '../../data/models/user_series.dart';
 import '../../data/models/withdrawn_details_model.dart';
+import '../use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 
 abstract class ManageWithdrawalsRepository {
   Future<Result<ResponseWrapper<List<UserSeries>>>> getUsersSeries(
@@ -14,6 +15,10 @@ abstract class ManageWithdrawalsRepository {
       Map<String, dynamic> data);
 
   Future<Result<ResponseWrapper<List<InvoiceModel>>>> getWithdrawalsInvoice();
+
+  Future<Result<ResponseWrapper<List<InvoiceModel>>>>
+      getFilteredWithdrawalsInvoice(
+          GetFilteredWithdrawalsInvoicesParams params);
 
   Future<Result<ResponseWrapper<List<InvoiceWithdrawalSeries>>>>
       getWithdrawalInvoiceDetails(Map<String, dynamic> data);

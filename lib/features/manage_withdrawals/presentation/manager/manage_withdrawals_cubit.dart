@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
@@ -9,10 +7,12 @@ import 'package:crm_smart/features/manage_withdrawals/domain/use_cases/get_withd
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../features/manage_users/domain/use_cases/get_allusers_usecase.dart';
 import '../../../../../../model/usermodel.dart';
+import '../../../../core/common/enums/invoice_status_enum.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
 import '../../../../core/di/di_container.dart';
 import '../../../../model/reasonmodel.dart';
@@ -22,6 +22,7 @@ import '../../data/models/invoice_withdrawal_series_model.dart';
 import '../../data/models/user_series.dart';
 import '../../domain/use_cases/add_reject_reason_usecase.dart';
 import '../../domain/use_cases/edit_reject_reason_usecase.dart';
+import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 import '../../domain/use_cases/get_reject_reasons_usecase.dart';
 import '../../domain/use_cases/get_user_series_usecase.dart';
 import '../../domain/use_cases/get_withdrawal_invoice_details_usecase.dart';
@@ -44,6 +45,7 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     this._addRejectReasonsUsecase,
     this._getRejectReasonsUsecase,
     this._editRejectReasonsUsecase,
+    this._getFilteredWithdrawalsInvoicesUsecase,
   ) : super(ManageWithdrawalsState());
   final GetUserSeriesUsecase _getUserSeriesUsecase;
   final UpdateSeriesUsecase _updateSeriesUsecase;
@@ -55,7 +57,20 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
   final AddRejectReasonsUsecase _addRejectReasonsUsecase;
   final GetRejectReasonsUsecase _getRejectReasonsUsecase;
   final EditRejectReasonsUsecase _editRejectReasonsUsecase;
+  final GetFilteredWithdrawalsInvoicesUsecase
+      _getFilteredWithdrawalsInvoicesUsecase;
+
+  final searchController = TextEditingController();
   List<ReasonModel> reasons = [];
+  List<InvoiceModel> allInvoices = [];
+  InvoiceStatusEnum _selectedFilter = InvoiceStatusEnum.user;
+
+  InvoiceStatusEnum get selectedFilter => _selectedFilter;
+
+  set selectedFilter(InvoiceStatusEnum value) {
+    _selectedFilter = value;
+    emit(state.copyWith(selectedFilter: BlocStatus.success()));
+  }
 
   getUsersSeries(final String fkCountry) async {
     emit(state.copyWith(allUsersSeries: PageState.loading()));
@@ -209,10 +224,11 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
     emit(state.copyWith(handleUsersSeries: maps));
   }
 
+  @Deprecated("old way to get widthdrawals invoices")
   getWithdrawalsInvoices() async {
     emit(state.copyWith(withdrawalsInvoices: PageState.loading()));
 
-    final response = await _getWithdrawalsInvoicesUsecase();
+    final response = await _getWithdrawalsInvoicesUsecase.call();
 
     response.fold(
       (exception, message) =>
@@ -223,6 +239,38 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
                 PageState.loaded(data: withdrawalsInvoice.data ?? [])));
       },
     );
+  }
+
+  getFilteredWithdrawalsInvoices() async {
+    emit(state.copyWith(withdrawalsInvoices: PageState.loading()));
+
+    final response = await _getFilteredWithdrawalsInvoicesUsecase.call(
+      GetFilteredWithdrawalsInvoicesParams(status: _selectedFilter),
+    );
+
+    response.fold(
+      (exception, message) =>
+          emit(state.copyWith(withdrawalsInvoices: PageState.error())),
+      (withdrawalsInvoice) {
+        allInvoices = withdrawalsInvoice.message ?? [];
+        onSearchWithdrawalsInvoices();
+      },
+    );
+  }
+
+  onSearchWithdrawalsInvoices() {
+    final value = searchController.text;
+    if (value.isEmpty) {
+      emit(state.copyWith(
+          withdrawalsInvoices: PageState.loaded(data: allInvoices)));
+      return;
+    }
+    final list = allInvoices.where((element) {
+      return element.idInvoice!.contains(value) ||
+          element.name_enterprise!.contains(value) ||
+          element.address_invoice!.contains(value);
+    }).toList();
+    emit(state.copyWith(withdrawalsInvoices: PageState.loaded(data: list)));
   }
 
   getWithdrawalInvoiceDetails(String fkInvoice) async {

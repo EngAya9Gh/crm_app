@@ -8,10 +8,11 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../model/invoiceModel.dart';
 import '../../domain/repositories/manage_withdrawals_repository.dart';
+import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 import '../data_sources/manage_withdrawals_datasource.dart';
 import '../models/user_series.dart';
 
-@Injectable(as: ManageWithdrawalsRepository)
+@LazySingleton(as: ManageWithdrawalsRepository)
 class ManageWithdrawalsRepositoryImpl extends ManageWithdrawalsRepository {
   ManageWithdrawalsRepositoryImpl(this._datasource);
 
@@ -32,6 +33,14 @@ class ManageWithdrawalsRepositoryImpl extends ManageWithdrawalsRepository {
   @override
   Future<Result<ResponseWrapper<List<InvoiceModel>>>> getWithdrawalsInvoice() {
     return toApiResult(_datasource.getWithdrawalsInvoice);
+  }
+
+  @override
+  Future<Result<ResponseWrapper<List<InvoiceModel>>>>
+      getFilteredWithdrawalsInvoice(
+    GetFilteredWithdrawalsInvoicesParams params,
+  ) {
+    return toApiResult(() => _datasource.getFilteredWithdrawalsInvoice(params));
   }
 
   @override

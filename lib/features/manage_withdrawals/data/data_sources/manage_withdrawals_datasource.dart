@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:crm_smart/core/api/api_services.dart';
+import 'package:crm_smart/core/common/enums/invoice_status_enum.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/reject_reason.dart';
 import 'package:injectable/injectable.dart';
 
@@ -8,11 +9,12 @@ import '../../../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/utils/end_points.dart';
 import '../../../../model/invoiceModel.dart';
+import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
 import '../models/invoice_withdrawal_series_model.dart';
 import '../models/user_series.dart';
 import '../models/withdrawn_details_model.dart';
 
-@injectable
+@lazySingleton
 class ManageWithdrawalsDatasource {
   ManageWithdrawalsDatasource(this.api);
 
@@ -69,6 +71,31 @@ class ManageWithdrawalsDatasource {
         (json) {
           return List.from((json as List<dynamic>).map((e) {
             return InvoiceModel.fromJson(e as Map<String, dynamic>);
+          }));
+        },
+      );
+    }
+
+    return throwAppException(fun);
+  }
+
+  Future<ResponseWrapper<List<InvoiceModel>>> getFilteredWithdrawalsInvoice(
+    GetFilteredWithdrawalsInvoicesParams params,
+  ) async {
+    fun() async {
+      api.changeBaseUrl(EndPoints.laravelUrl);
+      final response = await api.get(
+        endPoint: EndPoints.series.getSeriesInvoiceAll,
+        queryParameters: {
+          "status": params.status.value,
+        },
+      );
+      return ResponseWrapper<List<InvoiceModel>>.fromJson(
+        response,
+        (json) {
+          return List.from((json as List<dynamic>).map((e) {
+            final item = InvoiceModel.fromJson(e);
+            return item;
           }));
         },
       );
