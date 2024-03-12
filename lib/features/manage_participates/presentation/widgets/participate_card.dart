@@ -1,5 +1,3 @@
-
-
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participatModel.dart';
@@ -9,15 +7,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_event.dart';
-import 'package:intl/intl.dart' as intl;
-
 
 class ParticipateCard extends StatefulWidget {
   final ParticipateModel participate;
-  const ParticipateCard({required this.participate,Key? key}) : super(key: key);
+  const ParticipateCard({required this.participate, Key? key})
+      : super(key: key);
 
   @override
   State<ParticipateCard> createState() => _ParticipateCardState();
@@ -26,89 +24,93 @@ class ParticipateCard extends StatefulWidget {
 class _ParticipateCardState extends State<ParticipateCard> {
   @override
   Widget build(BuildContext context) {
-     
-    return  Slidable(
+    return Slidable(
       endActionPane: ActionPane(
         motion: ScrollMotion(),
         children: [
           SlidableAction(
-            backgroundColor: context.colorScheme.primaryContainer,
-            foregroundColor: Colors.white,
-            icon: Icons.edit_rounded,
-            label: 'تعديل',
-            onPressed: (context)=> Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) => ActionParticipate(
-                participate: widget.participate)))
-          ),
-         
+              backgroundColor: context.colorScheme.primaryContainer,
+              foregroundColor: Colors.white,
+              icon: Icons.edit_rounded,
+              label: 'تعديل',
+              onPressed: (context) => Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) =>
+                          ActionParticipate(participate: widget.participate)))),
         ],
       ),
       child: InkWell(
         onTap: () {
-      context.read<ParticipateListBloc>().add(ChanageCurrentParticipate(widget.participate));
-      Navigator.push(
-          context,
-          CupertinoPageRoute(
-              builder: (context) => ParticipateProfilePage( participateId: widget.participate.id_participate??'0')));
-
-      },
-       child: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            offset: Offset(1.0, 1.0),
-            blurRadius: 8.0,
-            color: Colors.black87.withOpacity(0.2),
-          ),
-        ],
-        borderRadius: BorderRadius.all(Radius.circular(4)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(14.0),
+          context
+              .read<ParticipateListBloc>()
+              .add(ChanageCurrentParticipate(widget.participate));
+          Navigator.push(
+              context,
+              CupertinoPageRoute(
+                  builder: (context) => ParticipateProfilePage(
+                      participateId:
+                          widget.participate.id_participate ?? '0')));
+        },
         child: Container(
+          width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                offset: Offset(1.0, 1.0),
+                blurRadius: 8.0,
+                color: Colors.black87.withOpacity(0.2),
+              ),
+            ],
+            borderRadius: BorderRadius.all(Radius.circular(4)),
           ),
-    
-          //color: kMainColor,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          child: Padding(
+            padding: const EdgeInsets.all(14.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
 
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+              //color: kMainColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Expanded(
-                    child: Text(
-                      widget.participate.name_participate,
-                      style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
-                    ),
-                  ),
-                  Text(
-                    widget.participate.addDate!=null?
-                    DateTime.tryParse(  widget.participate.addDate.toString() ) != null
-                        ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(  widget.participate.addDate!))
-                        :   widget.participate.addDate.toString():'',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
-                    textDirection: TextDirection.ltr,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.participate.name_participate,
+                          style:
+                              TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                        ),
+                      ),
+                      Text(
+                        widget.participate.addDate != null
+                            ? DateTime.tryParse(widget.participate.addDate
+                                        .toString()) !=
+                                    null
+                                ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
+                                    .format(DateTime.parse(
+                                        widget.participate.addDate!))
+                                : widget.participate.addDate.toString()
+                            : '',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: kfontfamily2,
+                            color: kMainColor),
+                        textDirection: TextDirection.ltr,
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
-      ),
-    ),
     );
-                                  
   }
-
-  
 }

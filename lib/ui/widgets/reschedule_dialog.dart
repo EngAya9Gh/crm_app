@@ -28,6 +28,7 @@ class ReScheduleDialog extends StatefulWidget {
   final DateTime datecurrent;
   final String typedate;
 
+  // todo : use this event model to show the current user
   final EventModel event;
 
   ReScheduleDialog({
@@ -353,9 +354,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                         },
                       ),
                       SizedBox(height: 10),
-                      // todo: handle id user after editing from the backend
                       RowEdit(name: "اسناد الي", des: '*'),
-                      TechSupportUsersDropDown(),
+                      TechSupportUsersDropDown(fkUser: widget.event.fkUser),
                       SizedBox(height: 15),
                       RowEdit(name: "تحديد الأسباب", des: '*'),
                       EditTextFormField(
@@ -363,6 +363,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                           if (value!.isEmpty) {
                             return AppStrings.labelEmpty;
                           }
+                          return null;
                         },
                         hintText: "تحديد الأسباب",
                         paddcustom: EdgeInsets.all(8),
@@ -371,9 +372,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       ),
                       SizedBox(height: 10),
                       Consumer<EventProvider>(builder: (context, val, _) {
-                        // if (val.isloadingRescheduleOrCancel)
-                        //   return Center(child: CircularProgressIndicator());
-                        // else
                         return AppElevatedButton(
                           isLoading: val.isloadingRescheduleOrCancel,
                           text: "حفظ",

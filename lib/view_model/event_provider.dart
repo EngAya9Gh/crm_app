@@ -146,7 +146,9 @@ class EventProvider extends ChangeNotifier {
     final list = eventDataSource[event.from] ?? [];
     final index = list.indexOf(event);
     if (index == -1) {
-      onFailure;
+      onFailure.call(null);
+      isloadingRescheduleOrCancel = false;
+      notifyListeners();
       return;
     }
     list[index] = list[index].copyWith(from: dateClientVisit, to: date_end);

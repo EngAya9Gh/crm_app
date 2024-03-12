@@ -54,7 +54,8 @@ class AppointmentModel {
     return AppointmentModel(
       idClientsDate: map['idclients_date'],
       dateClientVisit: DateTime.tryParse(map['date_client_visit']),
-      dateEnd:map['date_end']==null?null: DateTime.tryParse(map['date_end']),
+      dateEnd:
+          map['date_end'] == null ? null : DateTime.tryParse(map['date_end']),
       fkUser: map['fk_user'].toString(),
       isDone: map['is_done'].toString(),
       fkClient: map['fk_client'],
@@ -78,13 +79,10 @@ class AppointmentModel {
     // dateClientVisit!.hour >= 21
     //     ? dateClientVisit!.subtract(Duration(hours: 3))
     //     : dateClientVisit!;
-    DateTime last =
-    dateEnd==null
-        ? first.add(Duration(hours: 2))
-        :dateEnd!;
-     String agenttitle=type_agent.toString() =='1'?  ' وكيل ':' موزع ';
+    DateTime last = dateEnd == null ? first.add(Duration(hours: 2)) : dateEnd!;
+    String agenttitle = type_agent.toString() == '1' ? ' وكيل ' : ' موزع ';
     return EventModel(
-
+      fkUser: fkUser,
       fkIdClient: fkClient == null ? '' : fkClient.toString(),
       idinvoice: fkInvoice == null ? '' : fkInvoice.toString(),
       title: nameEnterprise == null
@@ -96,7 +94,8 @@ class AppointmentModel {
       agentName: nameAgent,
       agent: agent,
       from: first,
-      to: last, typedate: typeDate.toString() ,
+      to: last,
+      typedate: typeDate.toString(),
     );
   }
 }

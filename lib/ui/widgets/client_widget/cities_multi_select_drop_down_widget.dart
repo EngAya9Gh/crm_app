@@ -1,5 +1,7 @@
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../view_model/maincity_vm.dart';
 
@@ -26,6 +28,32 @@ class CitiesMultiSelectDropDownWidget<T> extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0, right: 8),
       child: DropdownSearch<T>.multiSelection(
+        dropdownBuilder: (context, selectedItems) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.grey.withOpacity(0.2),
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                selectedItems.isEmpty
+                    ? hint
+                    : selectedItems
+                        .map((e) => itemAsString!(e))
+                        .toList()
+                        .join(', '),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: context.textTheme.titleSmall?.copyWith(
+                  fontSize: 12.sp,
+                ),
+              ),
+            ),
+          );
+        },
+        //
         mode: Mode.DIALOG,
         items: items,
         selectedItems: selectedItems,
