@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../../../../core/common/widgets/cities_drop_down_widget.dart';
-import '../../../../core/utils/app_constants.dart';
 import '../../../../core/utils/app_strings.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../app/presentation/widgets/app_elvated_button.dart';
@@ -37,17 +36,12 @@ class _ActionParticipateState extends State<ActionParticipate> {
   late final TextEditingController nameBankParticipateController;
   late final TextEditingController numberBankParticipateController;
   late ValueNotifier<String?> clientName;
+  late final CitiesCubit citiesCubit;
 
   @override
   void initState() {
-    final cubit = context.read<CitiesCubit>();
-    cubit.getAllCity(
-      fkCountry: AppConstants.currentCountry(context) ?? '',
-      regionId: null,
-      onSuccess: () {
-        cubit.loadCurrentCityById(cityId: widget.participate?.fkCity);
-      },
-    );
+    citiesCubit = context.read<CitiesCubit>();
+    citiesCubit.loadCurrentCityById(cityId: widget.participate?.fkCity);
     _participateListBloc = context.read<ParticipateListBloc>();
     mobileParticipateController =
         TextEditingController(text: widget.participate?.mobile_participate);
@@ -65,7 +59,6 @@ class _ActionParticipateState extends State<ActionParticipate> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<CitiesCubit>();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(kToolbarHeight),
@@ -167,7 +160,6 @@ class _ActionParticipateState extends State<ActionParticipate> {
   }
 
   void _onEditClient() {
-    final citiesCubit = context.read<CitiesCubit>();
     _participateListBloc.add(EditParticipateEvent(
       EditParticipateParams(
         idParticipate: widget.participate!.id_participate!,
@@ -190,7 +182,6 @@ class _ActionParticipateState extends State<ActionParticipate> {
   }
 
   void _onAddParticipate() {
-    final citiesCubit = context.read<CitiesCubit>();
     _participateListBloc.add(AddParticipateEvent(
       AddParaticipateParams(
         nameParticipate: nameParticipateController.text,

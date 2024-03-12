@@ -95,6 +95,7 @@ class _ParticipateListPageState extends State<ParticipateListPage> {
                                 hintStyle:
                                     context.textTheme.titleSmall?.copyWith(
                                   color: Colors.grey.shade600,
+                                  fontSize: 12.sp,
                                 ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),

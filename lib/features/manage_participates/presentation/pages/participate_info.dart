@@ -1,5 +1,3 @@
-import 'package:crm_smart/core/common/widgets/text_row.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -36,67 +34,78 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
         ),
         child: state.currentPaticipate != null
             ? Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-            children: [
-              Container(
-                height: 30,
-                width: 30,
-                //color: kMainColor,
-                decoration: BoxDecoration(
-                    color: kMainColor,
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(10))),
-                child: IconButton(
-                  onPressed: () async {
-                    await FlutterPhoneDirectCaller.callNumber(
-                        state.currentPaticipate!.mobile_participate.toString());
-                  },
-                  icon: Icon(Icons.call),
-                  iconSize: 15,
-                  color: kWhiteColor,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 30,
+                      width: 30,
+                      //color: kMainColor,
+                      decoration: BoxDecoration(
+                          color: kMainColor,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: IconButton(
+                        onPressed: () async {
+                          await FlutterPhoneDirectCaller.callNumber(state
+                              .currentPaticipate!.mobile_participate
+                              .toString());
+                        },
+                        icon: Icon(Icons.call),
+                        iconSize: 15,
+                        color: kWhiteColor,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        await FlutterPhoneDirectCaller.callNumber(state
+                            .currentPaticipate!.mobile_participate
+                            .toString());
+                      },
+                      child: Text(
+                        state.currentPaticipate!.mobile_participate.toString(),
+                        style: TextStyle(
+                            fontFamily: kfontfamily2, color: kMainColor),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              TextButton(
-                onPressed: () async {
-                  await FlutterPhoneDirectCaller.callNumber(
-                      state.currentPaticipate!.mobile_participate.toString());
-                },
-                child: Text(
-                  state.currentPaticipate!.mobile_participate.toString(),
-                  style: TextStyle(
-                      fontFamily: kfontfamily2, color: kMainColor),
-                ),
-              ),
-            ],
-          ),
-          10.verticalSpace,
-          cardRow(
+                10.verticalSpace,
+                cardRow(
                     title: "الاسم",
                     value: state.currentPaticipate!.name_participate),
-          // cardRow(
-          //           title: "رقم الهاتف",
-          //           value: state.currentPaticipate!.mobile_participate),
-          cardRow(
+                // cardRow(
+                //           title: "رقم الهاتف",
+                //           value: state.currentPaticipate!.mobile_participate),
+                cardRow(
                     title: "اسم البنك",
                     value: state.currentPaticipate!.namebank_participate),
-          cardRow(
+                cardRow(
                     title: "رقم البنك",
                     value: state.currentPaticipate!.numberbank_participate),
-          state.currentPaticipate!.nameUserAdd!=null?
-          cardRow(
-                    title: "الموظف الذي أضاف",
-                    value: state.currentPaticipate!.nameUserAdd.toString()):Container(),
-          state.currentPaticipate!.addDate!=null? cardRow(
-                    title: "تاريخ الاضافة",
-                    value: state.currentPaticipate!.addDate.toString()):Container(),
-          state.currentPaticipate!.nameUserUpdate!=null?cardRow(
-                    title: "آخر من عدل",
-                    value: state.currentPaticipate!.nameUserUpdate.toString()):Container(),
-          state.currentPaticipate!.updateDate!=null? cardRow(
-                    title: "تاريخ التعديل",
-                    value: state.currentPaticipate!.updateDate.toString()):Container(),
+                state.currentPaticipate!.nameUserAdd != null
+                    ? cardRow(
+                        title: "الموظف الذي أضاف",
+                        value: state.currentPaticipate!.nameUserAdd.toString())
+                    : Container(),
+                state.currentPaticipate!.addDate != null
+                    ? cardRow(
+                        title: "تاريخ الاضافة",
+                        value: state.currentPaticipate!.addDate.toString())
+                    : Container(),
+                state.currentPaticipate!.nameUserUpdate != null
+                    ? cardRow(
+                        title: "آخر من عدل",
+                        value:
+                            state.currentPaticipate!.nameUserUpdate.toString())
+                    : Container(),
+                state.currentPaticipate!.updateDate != null
+                    ? cardRow(
+                        title: "تاريخ التعديل",
+                        value: state.currentPaticipate!.updateDate.toString())
+                    : Container(),
+
+                cardRow(
+                    title: "المدينة", value: state.currentPaticipate!.nameCity),
               ])
             : Center(child: Text('حدث خطاء')),
       );

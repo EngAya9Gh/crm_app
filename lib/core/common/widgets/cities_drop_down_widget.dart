@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../features/app/presentation/widgets/app_text.dart';
 import '../../../model/maincitymodel.dart';
@@ -68,6 +69,7 @@ class CitiesDropDownWidget extends StatelessWidget {
               "حدد المدينة",
               style: context.textTheme.titleSmall?.copyWith(
                 color: Colors.grey.shade600,
+                fontSize: 12.sp,
               ),
             ),
             items: cubit.citiesList
