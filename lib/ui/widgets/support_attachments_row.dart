@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
 import '../../core/common/widgets/custom_error_widget.dart';
 import '../../core/common/widgets/custom_loading_indicator.dart';
-import '../../features/app/presentation/widgets/app_elvated_button.dart';
 import '../../features/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
 import '../../model/invoiceModel.dart';
 import 'custom_file_widget.dart';
@@ -50,7 +49,6 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
       children: [
         20.height,
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextUtilis(
               color: Colors.black,
@@ -58,6 +56,20 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
               fontWeight: FontWeight.bold,
               textstring: 'المرفقات:',
               underline: TextDecoration.none,
+            ),
+            Spacer(),
+            BlocBuilder<AttachmentsRowCubit, AttachmentsRowState>(
+              buildWhen: (previous, current) {
+                return previous is AttachmentsRowLoaded ||
+                    current is AttachmentsRowLoaded ||
+                    current is SaveChangesSuccess;
+              },
+              builder: (context, state) {
+                if (attachmentsRowCubit.selectedFilesList.isNotEmpty ||
+                    attachmentsRowCubit.deletedFilesList.isNotEmpty)
+                  return SaveAttachmentsChangesButton();
+                return SizedBox.shrink();
+              },
             ),
             TextButton(
               onPressed: () {
@@ -125,19 +137,6 @@ class _SupportAttachmentsRowState extends State<SupportAttachmentsRow> {
           },
         ),
         20.height,
-        BlocBuilder<AttachmentsRowCubit, AttachmentsRowState>(
-          buildWhen: (previous, current) {
-            return previous is AttachmentsRowLoaded ||
-                current is AttachmentsRowLoaded ||
-                current is SaveChangesSuccess;
-          },
-          builder: (context, state) {
-            if (attachmentsRowCubit.selectedFilesList.isNotEmpty ||
-                attachmentsRowCubit.deletedFilesList.isNotEmpty)
-              return SaveAttachmentsChangesButton();
-            return SizedBox.shrink();
-          },
-        ),
       ],
     );
   }
@@ -155,13 +154,14 @@ class SaveAttachmentsChangesButton extends StatelessWidget {
         return previous is SaveChangesLoading || current is SaveChangesLoading;
       },
       builder: (context, state) {
-        return AppElevatedButton(
-          isLoading: state is SaveChangesLoading,
-          onPressed: () {
-            context.read<AttachmentsRowCubit>().saveFilesChanges();
-          },
-          text: "حفظ",
-        );
+        return state is SaveChangesLoading
+            ? CustomLoadingIndicator()
+            : TextButton(
+                onPressed: () {
+                  context.read<AttachmentsRowCubit>().saveFilesChanges();
+                },
+                child: Text("حفظ"),
+              );
       },
     );
   }
