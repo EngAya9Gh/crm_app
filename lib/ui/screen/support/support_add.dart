@@ -24,7 +24,6 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
@@ -46,8 +45,8 @@ import '../../../model/usermodel.dart';
 import '../../../view_model/reason_suspend.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/fancy_image_shimmer_viewer.dart';
-import '../../widgets/pdf_with_zoom_icon.dart';
 import '../../widgets/pick_image_bottom_sheet.dart';
+import '../../widgets/support_attachments_row.dart';
 
 class SupportAdd extends StatefulWidget {
   const SupportAdd({
@@ -464,74 +463,77 @@ class _SupportAddState extends State<SupportAdd> {
                         invoiceId: widget.idInvoice,
                       ),
                       // attachments
-                      BlocBuilder<ClientsListBloc, ClientsListState>(
-                        builder: (context, state) {
-                          return _attachmentWidget(
-                              crudClientSupportFilesStatus: clientsListBloc
-                                  .state.getClientSupportFilesStatus);
-                        },
+                      SupportAttachmentsRow(
+                        idInvoice: widget.idInvoice!,
                       ),
-                      SizedBox(height: 20),
-                      BlocBuilder<ClientsListBloc, ClientsListState>(
-                        builder: (context, state) {
-                          if (state.getClientSupportFilesStatus.isLoading()) {
-                            return CustomLoadingIndicator();
-                          } else if (state.getClientSupportFilesStatus
-                              .isFail()) {
-                            return CustomErrorWidget(onPressed: () {
-                              clientsListBloc.add(GetClientSupportFilesEvent(
-                                  GetClientSupportFilesParams(
-                                invoiceId: widget.idInvoice!,
-                              )));
-                            });
-                          } else if (state.clientSupportFilesList.isEmpty) {
-                            return SizedBox.shrink();
-                          }
-                          return SizedBox(
-                            height: 125,
-                            child: ListView.separated(
-                              itemBuilder: (context, index) {
-                                final file =
-                                    state.clientSupportFilesList[index];
-                                if (file.fileUrl.endsWith('.pdf')) {
-                                  return InkWell(
-                                    onTap: () {
-                                      invoiceVm.deleteFileAttach(index);
-                                    },
-                                    child: PdfWithZoomIcon(
-                                      fileUrl: urlfile + file.fileUrl,
-                                      file: null,
-                                    ),
-                                  );
-                                } else {
-                                  return networkImage(
-                                    FileAttach(
-                                      id: file.id,
-                                      fileAttach: file.fileUrl,
-                                    ),
-                                    () {
-                                      clientsListBloc.add(
-                                        CrudClientSupportFilesEvent(
-                                          CrudClientSupportFilesParams(
-                                            invoiceId: widget.idInvoice!,
-                                            addedFiles: [],
-                                            deletedFiles: [file.id],
-                                          ),
-                                          onSuccess: (value) {},
-                                        ),
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                              separatorBuilder: (context, index) =>
-                                  10.horizontalSpace,
-                              itemCount: state.clientSupportFilesList.length,
-                              scrollDirection: Axis.horizontal,
-                            ),
-                          );
-                        },
-                      ),
+                      // BlocBuilder<ClientsListBloc, ClientsListState>(
+                      //   builder: (context, state) {
+                      //     return _attachmentWidget(
+                      //         crudClientSupportFilesStatus: clientsListBloc
+                      //             .state.getClientSupportFilesStatus);
+                      //   },
+                      // ),
+                      // SizedBox(height: 20),
+                      // BlocBuilder<ClientsListBloc, ClientsListState>(
+                      //   builder: (context, state) {
+                      //     if (state.getClientSupportFilesStatus.isLoading()) {
+                      //       return CustomLoadingIndicator();
+                      //     } else if (state.getClientSupportFilesStatus
+                      //         .isFail()) {
+                      //       return CustomErrorWidget(onPressed: () {
+                      //         clientsListBloc.add(GetClientSupportFilesEvent(
+                      //             GetClientSupportFilesParams(
+                      //           invoiceId: widget.idInvoice!,
+                      //         )));
+                      //       });
+                      //     } else if (state.clientSupportFilesList.isEmpty) {
+                      //       return SizedBox.shrink();
+                      //     }
+                      //     return SizedBox(
+                      //       height: 125,
+                      //       child: ListView.separated(
+                      //         itemBuilder: (context, index) {
+                      //           final file =
+                      //               state.clientSupportFilesList[index];
+                      //           if (file.fileUrl.endsWith('.pdf')) {
+                      //             return InkWell(
+                      //               onTap: () {
+                      //                 invoiceVm.deleteFileAttach(index);
+                      //               },
+                      //               child: PdfWithZoomIcon(
+                      //                 fileUrl: urlfile + file.fileUrl,
+                      //                 file: null,
+                      //               ),
+                      //             );
+                      //           } else {
+                      //             return networkImage(
+                      //               FileAttach(
+                      //                 id: file.id,
+                      //                 fileAttach: file.fileUrl,
+                      //               ),
+                      //               () {
+                      //                 clientsListBloc.add(
+                      //                   CrudClientSupportFilesEvent(
+                      //                     CrudClientSupportFilesParams(
+                      //                       invoiceId: widget.idInvoice!,
+                      //                       addedFiles: [],
+                      //                       deletedFiles: [file.id],
+                      //                     ),
+                      //                     onSuccess: (value) {},
+                      //                   ),
+                      //                 );
+                      //               },
+                      //             );
+                      //           }
+                      //         },
+                      //         separatorBuilder: (context, index) =>
+                      //             10.horizontalSpace,
+                      //         itemCount: state.clientSupportFilesList.length,
+                      //         scrollDirection: Axis.horizontal,
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
 
                       // ParticipatesSupportInvoicesAttachments(
                       //   onDeleteFileAttach: (FileAttach value) {},

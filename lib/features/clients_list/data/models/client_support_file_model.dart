@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 class ClientSupportFileModel extends Equatable {
@@ -5,12 +7,14 @@ class ClientSupportFileModel extends Equatable {
   final String invoiceId;
   final String typeFile;
   final String id;
+  final File? file;
 
   ClientSupportFileModel({
     required this.fileUrl,
     required this.invoiceId,
     required this.typeFile,
     required this.id,
+    this.file,
   });
 
   factory ClientSupportFileModel.fromJson(Map<String, dynamic> json) {
@@ -36,13 +40,29 @@ class ClientSupportFileModel extends Equatable {
     String? invoiceId,
     String? typeFile,
     String? id,
+    File? file,
   }) {
     return ClientSupportFileModel(
       fileUrl: fileUrl ?? this.fileUrl,
       invoiceId: invoiceId ?? this.invoiceId,
       typeFile: typeFile ?? this.typeFile,
       id: id ?? this.id,
+      file: file ?? this.file,
     );
+  }
+
+  factory ClientSupportFileModel.fromFile(File file) {
+    return ClientSupportFileModel(
+      fileUrl: file.path,
+      invoiceId: '',
+      typeFile: '1',
+      id: '',
+      file: file,
+    );
+  }
+
+  File toFile() {
+    return File(fileUrl);
   }
 
   @override

@@ -132,9 +132,13 @@ class _ClientSectionState extends State<ClientSection> {
           TextEditingController(text: widget.client?.offer_price);
       _clientTypeProvider.changevalue(_clientTypeProvider.selectedValuemanag);
 
-      Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(
-          intl.DateFormat('yyyy-MM-dd').parse(widget.client?.date_price ?? ''),
-          isInit: true);
+      String datePrice = widget.client?.date_price ?? '';
+      if (datePrice.isNotEmpty) {
+        Provider.of<datetime_vm>(context, listen: false).setdatetimevalue1(
+          intl.DateFormat('yyyy-MM-dd').parse(datePrice),
+          isInit: true,
+        );
+      }
     });
 
     super.initState();
@@ -643,13 +647,15 @@ class _ClientSectionState extends State<ClientSection> {
                     value: clientModel1.typeClient.toString()),
                 clientModel1.typeClient == 'مستبعد'
                     ? cardRow(
-                        value: clientModel1.nameUserApproveRreject.toString(),//nameuserdoning
+                        value: clientModel1.nameUserApproveRreject.toString(),
+                        //nameuserdoning
                         title: 'قام بتحويل حالة العميل')
                     : IgnorePointer(),
 
                 clientModel1.typeClient == 'مستبعد'
                     ? cardRow(
-                        value: clientModel1.date_approve_reject.toString(),//clientModel1.dateChangetype.toString(),
+                        value: clientModel1.date_approve_reject.toString(),
+                        //clientModel1.dateChangetype.toString(),
                         title: 'تاريخ تحويل حالة العميل')
                     : IgnorePointer(),
                 clientModel1.typeClient == 'مستبعد'
@@ -1253,7 +1259,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                                       .toString(),
                                                               "fk_user": widget
                                                                   .invoice!
-                                                                  .fkIdUser, //صاحب العميل
+                                                                  .fkIdUser,
+                                                              //صاحب العميل
                                                               "fk_regoin": widget
                                                                   .invoice!
                                                                   .fk_regoin,
@@ -1268,9 +1275,11 @@ class _ClientSectionState extends State<ClientSection> {
                                                                   widget
                                                                       .invoice!
                                                                       .name_enterprise,
-                                                              "fkusername": widget
-                                                                  .invoice!
-                                                                  .nameUser, //موظف المبيعات
+                                                              "fkusername":
+                                                                  widget
+                                                                      .invoice!
+                                                                      .nameUser,
+                                                              //موظف المبيعات
                                                               //"message":"",//
                                                               "nameuserApproved":
                                                                   Provider.of<UserProvider>(
@@ -1285,7 +1294,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                                       listen:
                                                                           false)
                                                                   .currentUser
-                                                                  .idUser //معتمد الاشتراك
+                                                                  .idUser
+                                                              //معتمد الاشتراك
                                                             },
                                                                 widget.invoice!
                                                                     .idInvoice).then(
@@ -1403,9 +1413,11 @@ class _ClientSectionState extends State<ClientSection> {
                                                                   widget
                                                                       .invoice!
                                                                       .name_enterprise,
-                                                              "fkusername": widget
-                                                                  .invoice!
-                                                                  .nameUser, //موظف المبيعات
+                                                              "fkusername":
+                                                                  widget
+                                                                      .invoice!
+                                                                      .nameUser,
+                                                              //موظف المبيعات
                                                               //"message":"",//
                                                               "nameuserApproved":
                                                                   Provider.of<UserProvider>(
@@ -1420,7 +1432,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                                       listen:
                                                                           false)
                                                                   .currentUser
-                                                                  .idUser //معتمد الاشتراك
+                                                                  .idUser
+                                                              //معتمد الاشتراك
                                                             },
                                                                 widget.invoice!
                                                                     .idInvoice).then(
@@ -1465,7 +1478,8 @@ class _ClientSectionState extends State<ClientSection> {
                             ),
                           )
                         : IgnorePointer()
-                    : IgnorePointer(), //:IgnorePointer(),
+                    : IgnorePointer(),
+                //:IgnorePointer(),
 
                 //approve finance
                 widget.invoice != null
@@ -1530,8 +1544,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                             DateTime.now()
                                                                 .toString(),
                                                         "fk_user": widget
-                                                            .invoice!
-                                                            .fkIdUser, //صاحب العميل
+                                                            .invoice!.fkIdUser,
+                                                        //صاحب العميل
                                                         "fk_regoin": widget
                                                             .invoice!.fk_regoin,
                                                         "regoin": widget
@@ -1545,8 +1559,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                             .invoice!
                                                             .name_enterprise,
                                                         "fkusername": widget
-                                                            .invoice!
-                                                            .nameUser, //موظف المبيعات
+                                                            .invoice!.nameUser,
+                                                        //موظف المبيعات
                                                         //"message":"",//
                                                         "nameuserApproved":
                                                             Provider.of<UserProvider>(
@@ -1561,7 +1575,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                                     listen:
                                                                         false)
                                                             .currentUser
-                                                            .idUser //معتمد الاشتراك
+                                                            .idUser
+                                                        //معتمد الاشتراك
                                                       },
                                                           widget.invoice!
                                                               .idInvoice).then(

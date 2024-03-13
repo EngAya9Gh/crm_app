@@ -1202,8 +1202,8 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
 
       File file;
-      file =
-          await Api().downloadFile(urlfile + attachFile.fileAttach!, filename);
+      file = await Api().downloadFile(
+          EndPoints.laravelUrl_Image + attachFile.fileAttach!, filename);
 
       if (file.existsSync()) {
         filesAttach = filesAttach
