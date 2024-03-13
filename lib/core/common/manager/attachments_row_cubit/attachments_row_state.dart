@@ -14,3 +14,13 @@ class AttachmentsRowError extends AttachmentsRowState {
 
   AttachmentsRowError({required this.message});
 }
+
+class SaveChangesLoading extends AttachmentsRowState {}
+
+class SaveChangesSuccess extends AttachmentsRowState {}
+
+class SaveChangesError extends AttachmentsRowState {
+  final String message;
+
+  SaveChangesError({required this.message});
+}

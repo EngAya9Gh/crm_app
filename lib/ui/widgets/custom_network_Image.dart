@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../constants.dart';
 import '../../core/utils/end_points.dart';
 import '../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../model/invoiceModel.dart';
@@ -12,12 +13,10 @@ class CustomNetworkImage extends StatelessWidget {
     Key? key,
     required this.fileAttach,
     required this.onDelete,
-    this.isLocal,
   }) : super(key: key);
 
   final FileAttach fileAttach;
   final VoidCallback onDelete;
-  final bool? isLocal;
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +32,15 @@ class CustomNetworkImage extends StatelessWidget {
             Positioned.fill(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: isLocal == true
-                    ? FancyImageShimmerViewer(
-                        imageUrl: fileAttach.fileAttach!,
-                        fit: BoxFit.cover,
-                      )
+                child: fileAttach.fileAttach!.endsWith('.pdf')
+                    ? Container(
+                        width: 110,
+                        decoration:
+                            BoxDecoration(color: kMainColor.withOpacity(0.1)),
+                        child: Icon(
+                          Icons.picture_as_pdf_rounded,
+                          color: Colors.grey,
+                        ))
                     : FancyImageShimmerViewer(
                         imageUrl:
                             "${EndPoints.laravelUrl_Image}${fileAttach.fileAttach}",

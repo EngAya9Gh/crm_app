@@ -353,8 +353,10 @@ Future<_i1.GetIt> $initGetIt(
       _i68.AppManagerCubit(gh<_i32.GetVersionUseCase>()));
   gh.factory<_i69.ApproveRejectClientUsecase>(
       () => _i69.ApproveRejectClientUsecase(gh<_i13.ClientsListRepository>()));
-  gh.factory<_i70.AttachmentsRowCubit>(
-      () => _i70.AttachmentsRowCubit(gh<_i24.GetClientSupportFilesUsecase>()));
+  gh.factory<_i70.AttachmentsRowCubit>(() => _i70.AttachmentsRowCubit(
+        gh<_i24.GetClientSupportFilesUsecase>(),
+        gh<_i21.CrudClientSupportFilesUsecase>(),
+      ));
   gh.factory<_i71.ChangeStatusTaskUsecase>(
       () => _i71.ChangeStatusTaskUsecase(gh<_i45.TaskRepository>()));
   gh.factory<_i72.ChangeTypeClientUsecase>(

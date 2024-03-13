@@ -1,23 +1,27 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../../features/clients_list/data/models/client_support_file_model.dart';
+import '../../../../features/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../../../features/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
-import '../../helpers/check_sorage_permission.dart';
 
 part 'attachments_row_state.dart';
 
 @injectable
 class AttachmentsRowCubit extends Cubit<AttachmentsRowState> {
-  AttachmentsRowCubit(this._getClientSupportFilesUsecase)
-      : super(AttachmentsRowInitial());
+  AttachmentsRowCubit(
+    this._getClientSupportFilesUsecase,
+    this._crudClientSupportFilesUsecase,
+  ) : super(AttachmentsRowInitial());
 
   final GetClientSupportFilesUsecase _getClientSupportFilesUsecase;
+  final CrudClientSupportFilesUsecase _crudClientSupportFilesUsecase;
 
+  String invoiceId = '';
   List<ClientSupportFileModel> _selectedFilesList = [];
 
   List<ClientSupportFileModel> get selectedFilesList => _selectedFilesList;
@@ -41,35 +45,10 @@ class AttachmentsRowCubit extends Cubit<AttachmentsRowState> {
     });
   }
 
-  pickImages() async {
-    if (!(await checkStoragePermission())) return;
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'dng', 'heic', 'pdf'],
-      type: FileType.custom,
-    );
-    if (result == null) {
-      return;
-    }
-
-    if (result.files.length > 20) {
-      emit(AttachmentsRowError(message: 'أكثر عدد مسموح به هو 20 ملف.'));
-      return;
-    }
-
-    final files = result.files.map((e) {
-      return ClientSupportFileModel(
-        fileUrl: e.path ?? '',
-        invoiceId: '',
-        typeFile: '1',
-        id: '',
-      );
-    }).toList();
-  }
-
-  void addFile(ClientSupportFileModel file) {
-    _selectedFilesList.add(file);
-    _allFilesList.add(file);
+  void addFile(File file) {
+    final fileModel = ClientSupportFileModel.fromFile(file);
+    _selectedFilesList.add(fileModel);
+    _allFilesList.add(fileModel);
     emit(AttachmentsRowLoaded());
   }
 
@@ -77,5 +56,30 @@ class AttachmentsRowCubit extends Cubit<AttachmentsRowState> {
     _allFilesList.remove(file);
     _deletedFilesList.add(file);
     emit(AttachmentsRowLoaded());
+  }
+
+  FutureOr<void> saveFilesChanges() async {
+    emit(SaveChangesLoading());
+
+    final params = CrudClientSupportFilesParams(
+      invoiceId: invoiceId,
+      deletedFiles: _deletedFilesList.map((e) => e.id).toList(),
+      addedFiles: _selectedFilesList.map((e) => e.file!).toList(),
+    );
+
+    final response = await _crudClientSupportFilesUsecase(params);
+
+    response.fold((l) {
+      emit(SaveChangesError(message: l));
+    }, (r) {
+      clear();
+      emit(SaveChangesSuccess());
+    });
+  }
+
+  // clear function
+  void clear() {
+    _selectedFilesList.clear();
+    _deletedFilesList.clear();
   }
 }
