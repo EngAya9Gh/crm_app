@@ -353,7 +353,7 @@ class _editclientState extends State<editclient> {
                     EditTextFormField(
                       obscureText: false,
                       hintText: AppStrings.labelClientEnterprise,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -371,7 +371,7 @@ class _editclientState extends State<editclient> {
 
                     RowEdit(name: AppStrings.labelClientName, des: '*'),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -383,7 +383,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(height: 5),
                     RowEdit(name: AppStrings.labelClientMobile, des: '*'),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -398,7 +398,7 @@ class _editclientState extends State<editclient> {
                     RowEdit(name: 'البريد الالكتروني', des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value?.trim().isEmpty ?? true) {
                           return "البريد الالكتروني مطلوب";
                         }
@@ -427,7 +427,7 @@ class _editclientState extends State<editclient> {
                         : EditTextFormField(
                             hintText: AppStrings.labelClientTypeJob,
                             obscureText: false,
-                            vaild: (value) {
+                            vaildator: (value) {
                               if (value!.isEmpty) {
                                 return AppStrings.labelEmpty;
                               }
@@ -532,7 +532,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(height: 15),
                     RowEdit(name: 'وصف النشاط', des: '*'),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -579,7 +579,7 @@ class _editclientState extends State<editclient> {
                     RowEdit(name: AppStrings.labelUsernameClient, des: '*'),
                     EditTextFormField(
                       maxline: 3,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }

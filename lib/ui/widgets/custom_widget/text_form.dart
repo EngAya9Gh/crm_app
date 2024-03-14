@@ -9,7 +9,7 @@ class EditTextFormField extends StatelessWidget {
   final String hintText;
   Function(String)? onChanged;
   Function()? ontap;
-  String? Function(String?)? vaild;
+  String? Function(String?)? vaildator;
   int? maxline;
   String? label;
   IconData? icon;
@@ -27,7 +27,7 @@ class EditTextFormField extends StatelessWidget {
       this.obscureText,
       required this.controller,
       this.onChanged,
-      this.vaild,
+      this.vaildator,
       this.label,
       this.icon,
       this.maxline,
@@ -46,7 +46,7 @@ class EditTextFormField extends StatelessWidget {
     return TextFormField(
       maxLines: maxline,
       onChanged: onChanged,
-      validator: vaild,
+      validator: vaildator,
       obscureText: false,
       controller: controller,
       cursorColor: Colors.black,
@@ -55,7 +55,7 @@ class EditTextFormField extends StatelessWidget {
       readOnly: read == null ? false : true,
       inputFormatters: inputformate,
       onSaved: onSaved,
-      maxLength:maxLength ,
+      maxLength: maxLength,
       minLines: minLines,
       decoration: InputDecoration(
         //icon: ,

@@ -403,7 +403,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                       SizedBox(height: 15),
                       RowEdit(name: "تحديد الأسباب", des: '*'),
                       EditTextFormField(
-                        vaild: (value) {
+                        vaildator: (value) {
                           if (value!.isEmpty) {
                             return AppStrings.labelEmpty;
                           }

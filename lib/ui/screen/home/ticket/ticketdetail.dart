@@ -18,12 +18,14 @@ import '../../../../features/manage_privilege/presentation/manager/privilege_cub
 import '../../../../function_global.dart';
 
 class ticketdetail extends StatelessWidget {
-  ticketdetail({this.type, required this.ticketModel, Key? key}) : super(key: key);
+  ticketdetail({this.type, required this.ticketModel, Key? key})
+      : super(key: key);
   String? type = null;
   TicketModel ticketModel;
   TextEditingController _textnotes = TextEditingController();
 
-  Widget _tranferall(String nameto, String namefrom, String date, String resoan) {
+  Widget _tranferall(
+      String nameto, String namefrom, String date, String resoan) {
     return Column(
       children: [
         cardRowDivided(
@@ -68,12 +70,15 @@ class ticketdetail extends StatelessWidget {
         titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
         insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
         contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        title: Center(child: Text('', style: TextStyle(fontFamily: kfontfamily2))),
+        title:
+            Center(child: Text('', style: TextStyle(fontFamily: kfontfamily2))),
         children: [
           ModalProgressHUD(
-            inAsyncCall: Provider.of<ticket_vm>(context, listen: true).isloading,
+            inAsyncCall:
+                Provider.of<ticket_vm>(context, listen: true).isloading,
             child: StatefulBuilder(
-              builder: (BuildContext context, void Function(void Function()) setState) {
+              builder: (BuildContext context,
+                  void Function(void Function()) setState) {
                 return Directionality(
                   textDirection: TextDirection.rtl,
                   child: Form(
@@ -89,7 +94,7 @@ class ticketdetail extends StatelessWidget {
                           hintText: 'ملاحظات الإغلاق  ',
                           obscureText: false,
                           controller: _textnotes,
-                          vaild: (value) {
+                          vaildator: (value) {
                             if (value.toString().trim().isEmpty) {
                               return 'الحقل فارغ';
                             }
@@ -103,14 +108,20 @@ class ticketdetail extends StatelessWidget {
                           onTap: () async {
                             if (_globalKey.currentState!.validate()) {
                               _globalKey.currentState!.save();
-                              Provider.of<ticket_vm>(context, listen: false).updateTicketvm({
+                              Provider.of<ticket_vm>(context, listen: false)
+                                  .updateTicketvm({
                                 'notes_ticket': _textnotes.text,
-                                'fk_user_close':
-                                    Provider.of<UserProvider>(context, listen: false).currentUser.idUser.toString(),
+                                'fk_user_close': Provider.of<UserProvider>(
+                                        context,
+                                        listen: false)
+                                    .currentUser
+                                    .idUser
+                                    .toString(),
                                 'date_close': DateTime.now().toString(),
                                 'type_ticket': 'مغلقة'
                               }, ticketModel.idTicket);
-                              Navigator.of(context, rootNavigator: true).pop(false);
+                              Navigator.of(context, rootNavigator: true)
+                                  .pop(false);
                               Navigator.pop(context);
                             }
                           },
@@ -145,20 +156,31 @@ class ticketdetail extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ticketModel.dateRecive == null
-                                ? context.read<PrivilegeCubit>().checkPrivilege('71')
+                                ? context
+                                        .read<PrivilegeCubit>()
+                                        .checkPrivilege('71')
                                     ? Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(right: 5.0),
+                                          padding:
+                                              const EdgeInsets.only(right: 5.0),
                                           child: ElevatedButton(
-                                              style:
-                                                  ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          kMainColor)),
                                               onPressed: () async {
-                                                Provider.of<ticket_vm>(context, listen: false).updateTicketvm({
-                                                  'fk_user_recive': Provider.of<UserProvider>(context, listen: false)
-                                                      .currentUser
-                                                      .idUser
-                                                      .toString(),
-                                                  'date_recive': DateTime.now().toString(),
+                                                Provider.of<ticket_vm>(context,
+                                                        listen: false)
+                                                    .updateTicketvm({
+                                                  'fk_user_recive':
+                                                      Provider.of<UserProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .currentUser
+                                                          .idUser
+                                                          .toString(),
+                                                  'date_recive':
+                                                      DateTime.now().toString(),
                                                   'type_ticket': 'قيد التنفيذ'
                                                 }, ticketModel.idTicket);
                                                 Navigator.pop(context);
@@ -169,15 +191,23 @@ class ticketdetail extends StatelessWidget {
                                     : Container()
                                 : Container(),
                             ticketModel.dateClose == null
-                                ? context.read<PrivilegeCubit>().checkPrivilege('72')
+                                ? context
+                                        .read<PrivilegeCubit>()
+                                        .checkPrivilege('72')
                                     ? Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(right: 5),
+                                          padding:
+                                              const EdgeInsets.only(right: 5),
                                           child: ElevatedButton(
-                                              style:
-                                                  ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          kMainColor)),
                                               onPressed: () async {
-                                                await showDialog<void>(context: context, builder: (context) => dialog);
+                                                await showDialog<void>(
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        dialog);
                                               },
                                               child: Text('اغلاق التذكرة')),
                                         ),
@@ -185,21 +215,37 @@ class ticketdetail extends StatelessWidget {
                                     : Container()
                                 : Container(),
                             // SizedBox(width: 2,),
-                            ticketModel.dateRecive != null && ticketModel.dateClose == null
-                                ? context.read<PrivilegeCubit>().checkPrivilege('75')
+                            ticketModel.dateRecive != null &&
+                                    ticketModel.dateClose == null
+                                ? context
+                                        .read<PrivilegeCubit>()
+                                        .checkPrivilege('75')
                                     ? Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(right: 5.0),
+                                          padding:
+                                              const EdgeInsets.only(right: 5.0),
                                           child: ElevatedButton(
-                                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        kMainColor)),
                                             onPressed: () {
                                               Navigator.push(
                                                   context,
                                                   CupertinoPageRoute(
-                                                      builder: (context) => transferClient(
-                                                            name_enterprise: ticketModel.nameEnterprise.toString(),
-                                                            idclient: ticketModel.fkClient.toString(),
-                                                            idticket: ticketModel.idTicket,
+                                                      builder: (context) =>
+                                                          transferClient(
+                                                            name_enterprise:
+                                                                ticketModel
+                                                                    .nameEnterprise
+                                                                    .toString(),
+                                                            idclient:
+                                                                ticketModel
+                                                                    .fkClient
+                                                                    .toString(),
+                                                            idticket:
+                                                                ticketModel
+                                                                    .idTicket,
                                                             type: "ticket",
                                                           ),
                                                       fullscreenDialog: true));
@@ -216,13 +262,16 @@ class ticketdetail extends StatelessWidget {
 
                             Expanded(
                               child: ElevatedButton(
-                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(kMainColor)),
                                 onPressed: () {
                                   Navigator.push(
                                       context,
                                       CupertinoPageRoute(
                                           builder: (context) => ProfileClient(
-                                                idClient: ticketModel.fkClient.toString(),
+                                                idClient: ticketModel.fkClient
+                                                    .toString(),
                                               )));
                                 },
                                 child: Text('ملف العميل'),
@@ -231,15 +280,20 @@ class ticketdetail extends StatelessWidget {
                             SizedBox(
                               width: 5,
                             ),
-                            ticketModel.dateClose != null && ticketModel.date_rate == null
+                            ticketModel.dateClose != null &&
+                                    ticketModel.date_rate == null
                                 ? Expanded(
                                     child: ElevatedButton(
-                                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  kMainColor)),
                                       onPressed: () {
                                         Navigator.push(
                                             context,
                                             CupertinoPageRoute(
-                                                builder: (context) => ticket_rate(
+                                                builder: (context) =>
+                                                    ticket_rate(
                                                       ticket_model: ticketModel,
                                                     )));
                                       },
@@ -254,11 +308,15 @@ class ticketdetail extends StatelessWidget {
 
                 ticketModel.dateClose != null
                     ? cardRowDivided(
-                        title: 'قام بإغلاق التذكرة ', value: getnameshort(ticketModel.nameuserclose.toString()))
+                        title: 'قام بإغلاق التذكرة ',
+                        value:
+                            getnameshort(ticketModel.nameuserclose.toString()))
                     : Container(),
 
                 ticketModel.dateClose != null
-                    ? cardRowDivided(title: 'تاريخ إغلاق التذكرة ', value: ticketModel.dateClose.toString())
+                    ? cardRowDivided(
+                        title: 'تاريخ إغلاق التذكرة ',
+                        value: ticketModel.dateClose.toString())
                     : Container(),
 
                 ticketModel.dateClose != null
@@ -277,27 +335,38 @@ class ticketdetail extends StatelessWidget {
                       ticketModel.transferticket![i]!.nameuserto.toString(),
                       ticketModel.transferticket![i]!.nameuserfrom.toString(),
                       ticketModel.transferticket![i]!.date_assigntr.toString(),
-                      ticketModel.transferticket![i]!.resoantransfer_ticket.toString()),
+                      ticketModel.transferticket![i]!.resoantransfer_ticket
+                          .toString()),
 
                 ticketModel.dateRecive != null
                     ? cardRowDivided(
-                        title: 'قام باستلام التذكرة ', value: getnameshort(ticketModel.nameuserrecive.toString()))
+                        title: 'قام باستلام التذكرة ',
+                        value:
+                            getnameshort(ticketModel.nameuserrecive.toString()))
                     : Container(),
                 ticketModel.dateRecive != null
-                    ? cardRowDivided(title: 'تاريخ استلام التذكرة ', value: ticketModel.dateRecive.toString())
+                    ? cardRowDivided(
+                        title: 'تاريخ استلام التذكرة ',
+                        value: ticketModel.dateRecive.toString())
                     : Container(),
 
                 Divider(
                   thickness: 1,
                   color: Colors.grey,
                 ),
-                cardRowDivided(title: 'قام بفتح التذكرة ', value: getnameshort(ticketModel.nameuseropen.toString())),
-                cardRowDivided(title: 'تاريخ فتح التذكرة ', value: ticketModel.dateOpen.toString()),
+                cardRowDivided(
+                    title: 'قام بفتح التذكرة ',
+                    value: getnameshort(ticketModel.nameuseropen.toString())),
+                cardRowDivided(
+                    title: 'تاريخ فتح التذكرة ',
+                    value: ticketModel.dateOpen.toString()),
                 Divider(
                   thickness: 1,
                   color: Colors.grey,
                 ),
-                cardRowDivided(title: 'نوع التذكرة', value: ticketModel.typeProblem.toString()),
+                cardRowDivided(
+                    title: 'نوع التذكرة',
+                    value: ticketModel.typeProblem.toString()),
                 //cardRow(title: 'وصف المشكلة',value: widget.ticketModel.detailsProblem.toString(),isExpanded: true,),
                 cardRowDivided(
                   title: 'تفاصيل التذكرة',
@@ -317,7 +386,8 @@ class ticketdetail extends StatelessWidget {
                         children: [
                           Text('تقييم بعد الإغلاق'),
                           RatingBar.builder(
-                            initialRating: double.parse(ticketModel.rate.toString()),
+                            initialRating:
+                                double.parse(ticketModel.rate.toString()),
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: false,
@@ -336,11 +406,15 @@ class ticketdetail extends StatelessWidget {
                     : Container(),
 
                 ticketModel.date_rate != null
-                    ? cardRowDivided(title: 'قام بالتقييم', value: ticketModel.nameuserrate.toString())
+                    ? cardRowDivided(
+                        title: 'قام بالتقييم',
+                        value: ticketModel.nameuserrate.toString())
                     : Container(),
 
                 ticketModel.date_rate != null
-                    ? cardRowDivided(title: 'تاريخ التقييم', value: ticketModel.date_rate.toString())
+                    ? cardRowDivided(
+                        title: 'تاريخ التقييم',
+                        value: ticketModel.date_rate.toString())
                     : Container(),
               ],
             ),

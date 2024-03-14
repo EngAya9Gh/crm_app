@@ -571,7 +571,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 )
                               : Container(),
                           if (_privilegeCubit.checkPrivilege('115') ||
-                ( _privilegeCubit.checkPrivilege('182')&& invoice.isApprove==null)) ...{
+                              (_privilegeCubit.checkPrivilege('182') &&
+                                  invoice.isApprove == null)) ...{
                             10.horizontalSpace,
                             CustomButton(
                               //width: MediaQuery.of(context).size.width * 0.2,
@@ -997,7 +998,7 @@ class _RejectDialogState extends State<RejectDialog> {
                     ),
                     SizedBox(height: 3),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -1009,7 +1010,7 @@ class _RejectDialogState extends State<RejectDialog> {
                     ),
                     SizedBox(height: 3),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.isEmpty) {
                           return AppStrings.labelEmpty;
                         }

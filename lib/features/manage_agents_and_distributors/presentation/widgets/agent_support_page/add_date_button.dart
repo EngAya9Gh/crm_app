@@ -229,8 +229,7 @@ class _AddDateButtonState extends State<AddDateButton> {
     required AgentsDistributorsProfileBloc bloc,
   }) {
     selectedInstallationType = null;
-    bloc.supportDateController.clear();
-    bloc.supportStartTimeController.clear();
+    bloc.clear();
   }
 
   void _supportEndTimeControllerListener() {

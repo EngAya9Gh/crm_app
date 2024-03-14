@@ -359,7 +359,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     ),
                     RowEdit(name: 'عنوان الفاتورة', des: '*'),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -375,7 +375,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     EditTextFormField(
                       obscureText: false,
                       hintText: AppStrings.labelAmountPaid,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value?.trim().isEmpty ?? true) {
                           return AppStrings.labelEmpty;
                         }
@@ -430,7 +430,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         return EditTextFormField(
                           hintText: AppStrings.labelRenew,
                           obscureText: false,
-                          vaild: (value) {
+                          vaildator: (value) {
                             if ((value?.trim() == '0' ||
                                     (value?.trim().isEmpty ?? true)) &&
                                 invoiceHaveProductsOfTypePrograms) {
@@ -479,7 +479,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       return EditTextFormField(
                         hintText: AppStrings.labelRenew2Year,
                         obscureText: false,
-                        vaild: (value) {
+                        vaildator: (value) {
                           if ((value?.trim() == '0' ||
                                   (value?.trim().isEmpty ?? true)) &&
                               invoiceHaveProductsOfTypeResources) {
@@ -541,7 +541,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                       EditTextFormField(
                         hintText: "اكتب تعليقاً...",
                         obscureText: false,
-                        vaild: (value) {
+                        vaildator: (value) {
                           if (value?.isEmpty ?? true) {
                             return "الحقل مطلوب.";
                           }
@@ -814,7 +814,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                 hintText: '',
                                 obscureText: false,
                                 controller: numTaxController,
-                                vaild: (value) {
+                                vaildator: (value) {
                                   if (value?.trim().isNotEmpty ?? false) {
                                     if (value!.length < 15) {
                                       return "يجب إدخال 15 محرف.";
@@ -851,7 +851,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                                     obscureText: false,
                                     controller:
                                         renewAdditionalOfBranchesController,
-                                    vaild: (text) {
+                                    vaildator: (text) {
                                       if (!value) {
                                         return null;
                                       }

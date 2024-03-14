@@ -42,8 +42,10 @@ class _ticketAddState extends State<ticketAdd> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientProvider>(context,listen: false).getclient_Accept( );
-      Provider.of<ClientProvider>(context,listen: false).changevalueclient(null);
+      await Provider.of<ClientProvider>(context, listen: false)
+          .getclient_Accept();
+      Provider.of<ClientProvider>(context, listen: false)
+          .changevalueclient(null);
     });
     super.initState();
   }
@@ -59,7 +61,7 @@ class _ticketAddState extends State<ticketAdd> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+        appBar: AppBar(),
         key: _scaffoldKey,
         body: ModalProgressHUD(
           inAsyncCall: Provider.of<ticket_vm>(context, listen: true).addvalue,
@@ -104,9 +106,9 @@ class _ticketAddState extends State<ticketAdd> {
                                 onChanged: (data) {
                                   widget.fk_client = data!.idClients;
                                   cart.changevalueclient(data);
-                                  name_enterprise=data.nameEnterprise!;
-                                  name_regoin=data.name_regoin!;
-                                  name_country=data.nameCountry!;
+                                  name_enterprise = data.nameEnterprise!;
+                                  name_regoin = data.name_regoin!;
+                                  name_country = data.nameCountry!;
                                   //filtershow();
                                 },
                                 selectedItem: cart.selectedclient,
@@ -136,23 +138,28 @@ class _ticketAddState extends State<ticketAdd> {
                           ),
                         ),
                         // RowEdit(name: 'بروفايل العميل', des: ''),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         ElevatedButton(
                           style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  kMainColor)),
+                              backgroundColor:
+                                  MaterialStateProperty.all(kMainColor)),
                           onPressed: () {
                             if (widget.fk_client != null)
-                              Navigator.push(context,CupertinoPageRoute(
-                                builder: (context)=>ProfileClient(
-                                  idClient:widget.fk_client.toString(),
-                                )
-
-                            ));
+                              Navigator.push(
+                                  context,
+                                  CupertinoPageRoute(
+                                      builder: (context) => ProfileClient(
+                                            idClient:
+                                                widget.fk_client.toString(),
+                                          )));
                           },
                           child: Text('ملف العميل'),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
 
                         RowEdit(name: 'نوع المشكلة', des: '*'),
 
@@ -204,7 +211,7 @@ class _ticketAddState extends State<ticketAdd> {
                         //SizedBox(height: 15,),
                         RowEdit(name: 'وصف المشكلة', des: ''),
                         EditTextFormField(
-                          vaild: (value) {
+                          vaildator: (value) {
                             if (value!.isEmpty) {
                               return 'الحقل فارغ';
                             }
@@ -224,25 +231,23 @@ class _ticketAddState extends State<ticketAdd> {
                               if (_globalKey.currentState!.validate()) {
                                 _globalKey.currentState!.save();
                                 if (widget.fk_client != null) {
-
-
-                                  bool isav= await Provider.of<ticket_vm>(context, listen: false)
+                                  bool isav = await Provider.of<ticket_vm>(
+                                          context,
+                                          listen: false)
                                       .addticket({
                                     'name_enterprise': name_enterprise,
                                     'fk_client': widget.fk_client.toString(),
-                                    'type_problem': Provider
-                                        .of<ClientTypeProvider>(
-                                        context,
-                                        listen: false)
-                                        .selectedValueOut
-                                        .toString(),
+                                    'type_problem':
+                                        Provider.of<ClientTypeProvider>(context,
+                                                listen: false)
+                                            .selectedValueOut
+                                            .toString(),
                                     'details_problem': problem_desc.text,
                                     //'notes_ticket': notes.text,
                                     'type_ticket': 'جديدة',
-                                    'fk_user_open':
-                                    Provider
-                                        .of<UserProvider>(context,
-                                        listen: false)
+                                    'fk_user_open': Provider.of<UserProvider>(
+                                            context,
+                                            listen: false)
                                         .currentUser
                                         .idUser
                                         .toString(),
@@ -250,30 +255,32 @@ class _ticketAddState extends State<ticketAdd> {
                                     'client_type': '0',
                                     'fk_regoin': '',
                                     'fkcountry': '',
-                                    'nameUser': Provider
-                                        .of<UserProvider>
-                                      (context, listen: false)
+                                    'nameUser': Provider.of<UserProvider>(
+                                            context,
+                                            listen: false)
                                         .currentUser
                                         .nameUser
                                         .toString(),
-
-                                  },widget.fk_client.toString()
-                                    // : error(context)
-                                  );
-                                  if(isav) {clear(context);}else{
+                                  }, widget.fk_client.toString()
+                                          // : error(context)
+                                          );
+                                  if (isav) {
+                                    clear(context);
+                                  } else {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                           'لا يمكن فتح تذكرة لعميل لديه تذكرة غير مغلقة')));
-                                }
+                                        SnackBar(
+                                            content: Text(
+                                                'لا يمكن فتح تذكرة لعميل لديه تذكرة غير مغلقة')));
+                                  }
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           content: Text(
                                               'من فضلك تأكد من عملية الإدخال')));
-
-                              }}}
-                              //child: Text(" حفظ"),
+                                }
+                              }
+                            }
+                            //child: Text(" حفظ"),
                             ),
                       ],
                     ),
@@ -295,6 +302,5 @@ class _ticketAddState extends State<ticketAdd> {
   error(context) {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text('هناك خطأ ما')));
-
   }
 }
