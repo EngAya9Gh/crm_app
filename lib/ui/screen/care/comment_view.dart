@@ -38,23 +38,6 @@ class _commentViewState extends State<commentView> {
   CommmentType? _selectedCommentType;
   CommmentType? _filterCommentType = CommmentType.all;
 
-  // late String fk_client;
-  // String? nameEnterprise;
-
-  @override
-  void initState() {
-    // fk_client = widget.client!.idClients.toString();
-    // nameEnterprise = widget.client!.nameEnterprise.toString();
-    // WidgetsBinding.instance.addPostFrameCallback((_)async {
-    //   Provider.of<comment_vm>(context, listen: false)
-    //       .getComment(widget.fk_client);
-    // });
-
-    _selectedCommentType;
-
-    super.initState();
-  }
-
   @override
   void dispose() {
     _comment.dispose();
