@@ -358,7 +358,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                 children: [
                                   RowEdit(name: 'السعر', des: ''),
                                   EditTextFormField(
-                                    vaild: (value) {
+                                    vaildator: (value) {
                                       if (value.toString().trim().isEmpty) {
                                         return AppStrings.labelEmpty;
                                       }

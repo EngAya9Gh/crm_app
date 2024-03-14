@@ -97,7 +97,7 @@ class _commentViewState extends State<commentView> {
                           child: Column(
                             children: [
                               EditTextFormField(
-                                vaild: (value) {
+                                vaildator: (value) {
                                   if (value!.toString().trim().isEmpty) {
                                     return AppStrings.labelEmpty;
                                   }

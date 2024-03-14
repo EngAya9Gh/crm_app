@@ -768,7 +768,7 @@ class _SupportAddState extends State<SupportAdd> {
                                                         obscureText: false,
                                                         controller:
                                                             _textnameuserclient,
-                                                        vaild: (value) {
+                                                        vaildator: (value) {
                                                           if (value
                                                               .toString()
                                                               .trim()
@@ -1797,16 +1797,16 @@ class _dialog_readyState extends State<dialog_ready> {
                           ),
                     SizedBox(height: 3),
                     EditTextFormField(
-                      vaild: (value) {
-                        if (value!.isEmpty) {
+                      controller: descresaonController,
+                      vaildator: (value) {
+                        if (value!.trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
                         return null;
                       },
-                      hintText: "الملاحظات",
+                      hintText: "الملاحظات*",
                       paddcustom: EdgeInsets.all(8),
                       maxline: 5,
-                      controller: descresaonController,
                     ),
                     Consumer<invoice_vm>(
                       builder: (context, value, child) {
@@ -1961,40 +1961,42 @@ class _dialog_readyState extends State<dialog_ready> {
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(kMainColor)),
                     onPressed: () async {
-                      if (Value_sales == '')
+                      if (Value_sales == '') {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('من فضلك اختر سبب من القائمة ')));
-                      else {
-                        Provider.of<invoice_vm>(context, listen: false)
-                            .setisload();
-                        final currentUser =
-                            context.read<UserProvider>().currentUser;
-
-                        var body = {
-                          'TypeReadyClient': 'notReady',
-                          'notes_ready': descresaonController.text,
-                          'reason_notReady': Value_sales,
-                          'nameUser': currentUser.nameUser.toString(),
-                          'date_temp':
-                              widget.invoice.date_not_readyinstall.toString(),
-                          'date_ready_prev':
-                              widget.invoice.date_readyinstall.toString(),
-                          'date_not_readyinstall': DateTime.now().toString(),
-                          'user_not_ready_install':
-                              currentUser.idUser.toString(),
-                          'ready_install': '0', //suspend client
-                        };
-                        if (widget.invoice.count_delay_ready != null)
-                          body.addAll({
-                            'count_delay_ready':
-                                widget.invoice.count_delay_ready.toString()
-                          });
-
-                        await Provider.of<invoice_vm>(context, listen: false)
-                            .set_ready_install(body, widget.invoice.idInvoice)
-                            .then((value) => clear());
-                        Navigator.of(context, rootNavigator: true).pop(true);
+                        return;
                       }
+
+                      if (!_globalKey.currentState!.validate()) return;
+
+                      Provider.of<invoice_vm>(context, listen: false)
+                          .setisload();
+                      final currentUser =
+                          context.read<UserProvider>().currentUser;
+
+                      var body = {
+                        'TypeReadyClient': 'notReady',
+                        'notes_ready': descresaonController.text,
+                        'reason_notReady': Value_sales,
+                        'nameUser': currentUser.nameUser.toString(),
+                        'date_temp':
+                            widget.invoice.date_not_readyinstall.toString(),
+                        'date_ready_prev':
+                            widget.invoice.date_readyinstall.toString(),
+                        'date_not_readyinstall': DateTime.now().toString(),
+                        'user_not_ready_install': currentUser.idUser.toString(),
+                        'ready_install': '0', //suspend client
+                      };
+                      if (widget.invoice.count_delay_ready != null)
+                        body.addAll({
+                          'count_delay_ready':
+                              widget.invoice.count_delay_ready.toString()
+                        });
+
+                      await Provider.of<invoice_vm>(context, listen: false)
+                          .set_ready_install(body, widget.invoice.idInvoice)
+                          .then((value) => clear());
+                      Navigator.of(context, rootNavigator: true).pop(true);
                     },
                     child: Text('نعم'),
                   ),

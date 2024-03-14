@@ -282,7 +282,7 @@ class _EditUserState extends State<EditUser> {
                       hintText: 'Email',
                       obscureText: false,
                       controller: emailController,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value?.trim() == null || value?.trim() == '') {
                           return "هذا الحقل مطلوب.";
                         } else {
@@ -440,7 +440,7 @@ class _EditUserState extends State<EditUser> {
                       hintText: '00966000000000',
                       obscureText: false,
                       controller: mobileController,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value?.trim() == null || value?.trim() == '') {
                           return "هذا الحقل مطلوب.";
                         }

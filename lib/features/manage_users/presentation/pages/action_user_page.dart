@@ -120,7 +120,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                     hintText: 'Name',
                     obscureText: false,
                     controller: nameController,
-                    vaild: (value) {
+                    vaildator: (value) {
                       if (isEdit) {
                         return null;
                       }
@@ -136,7 +136,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                 RowEdit(name: 'Email', des: '*'),
                 2.verticalSpace,
                 EditTextFormField(
-                  vaild: (data) {
+                  vaildator: (data) {
                     if (data?.trim() == null || data?.trim() == '') {
                       return "هذا الحقل مطلوب.";
                     } else {
@@ -283,7 +283,7 @@ class _ActionUserPageState extends State<ActionUserPage> {
                   hintText: '+966000000000',
                   obscureText: false,
                   controller: mobileController,
-                  vaild: (value) {
+                  vaildator: (value) {
                     if (value?.trim() == null || value?.trim() == '') {
                       return "هذا الحقل مطلوب.";
                     }
