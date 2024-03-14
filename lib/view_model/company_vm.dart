@@ -15,22 +15,21 @@ class CompanyProvider extends ChangeNotifier {
 
     //  if(list_activity.isEmpty)
     var data = await Api().get(url: url + 'config/get_company.php');
-
     List<CompanyModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
       prodlist.add(CompanyModel.fromJson(data[i]));
     }
-    list_company = prodlist.toList();
-    // list_company.insert(0, null);
+    list_company = prodlist;
+
     isloading = false;
     onSuccess?.call();
 
     notifyListeners();
   }
 
-  late String? selectedValueOut = null;
+  String? selectedValueOut;
 
-  initValueOut() => selectedValueOut = null;
+  initValueOut() => selectedValueOut != null;
 
   void changevalueOut(String? s) {
     if (s?.isEmpty ?? true) {

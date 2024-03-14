@@ -9,8 +9,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
-import '../../../../view_model/privilge_vm.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../pages/action_client_page.dart';
 
@@ -33,16 +31,18 @@ class _CardClientState extends State<CardClient> {
         children: [
           SlidableAction(
             onPressed: (actionContext) async {
-              ClientModel clientModel = await Navigator.push(
+              ClientModel? clientModel = await Navigator.push(
                 context,
                 CupertinoPageRoute(
                   builder: (context) =>
                       ActionClientPage(client: widget.clientModel),
                 ),
               );
-              setState(() {
-                widget.clientModel = clientModel;
-              });
+              if (clientModel != null) {
+                setState(() {
+                  widget.clientModel = clientModel;
+                });
+              }
             },
             backgroundColor: context.colorScheme.primaryContainer,
             foregroundColor: Colors.white,
@@ -59,11 +59,11 @@ class _CardClientState extends State<CardClient> {
           Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) => ProfileClient(idClient: widget.clientModel.idClients.toString()),
+                builder: (context) => ProfileClient(
+                    idClient: widget.clientModel.idClients.toString()),
               ));
         },
-        child:
-        Container(
+        child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10).r,
@@ -86,10 +86,13 @@ class _CardClientState extends State<CardClient> {
                     Expanded(
                       child: Text(
                         widget.clientModel.nameEnterprise.toString(),
-                        style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: kfontfamily2),
                       ),
                     ),
-                    if ((widget.clientModel.tag ?? false) && context.read<PrivilegeCubit>().checkPrivilege('133'))
+                    if ((widget.clientModel.tag ?? false) &&
+                        context.read<PrivilegeCubit>().checkPrivilege('133'))
                       Icon(
                         CupertinoIcons.checkmark_seal_fill,
                         color: Colors.amber,
@@ -98,9 +101,13 @@ class _CardClientState extends State<CardClient> {
                 ),
                 Text(
                   DateTime.tryParse(widget.clientModel.dateCreate!) != null
-                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(widget.clientModel.dateCreate!))
+                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(
+                          DateTime.parse(widget.clientModel.dateCreate!))
                       : widget.clientModel.dateCreate.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: kfontfamily2,
+                      color: kMainColor),
                   textDirection: TextDirection.ltr,
                 ),
               ],

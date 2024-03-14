@@ -54,6 +54,7 @@ class ActionClientPage extends StatefulWidget {
 }
 
 class _ActionClientPageState extends State<ActionClientPage> {
+  late CompanyProvider companyProvider;
   final _fromKey = GlobalKey<FormState>();
   late final ClientsListBloc _clientsListBloc;
   late ManageWithdrawalsCubit _manageWithdrawalsCubit;
@@ -91,6 +92,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
 
   @override
   void initState() {
+    companyProvider = context.read<CompanyProvider>();
     _clientsListBloc = context.read<ClientsListBloc>()
       ..add(GetRecommendedClientsEvent());
     _manageWithdrawalsCubit = getIt<ManageWithdrawalsCubit>()
@@ -166,7 +168,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                         widget.client?.activityTypeFk)
                 : null);
 
-      context.read<CompanyProvider>()
+      companyProvider
         ..initValueOut()
         ..getcompany(
             onSuccess: isEdit
@@ -204,6 +206,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
 
   @override
   void dispose() {
+    companyProvider.selectedValueOut = null;
     nameClientController.dispose();
     nameEnterpriseController.dispose();
     mobileController.dispose();
@@ -215,7 +218,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
     emailController.dispose();
     addressClientController.dispose();
     anotherNumberController.dispose();
-    reasonClassController?.dispose();
+    reasonClassController.dispose();
+    clientName.dispose();
+    reasonReject.dispose();
     super.dispose();
   }
 
@@ -762,13 +767,11 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               if (company.isloading) {
                                 return CustomLoadingIndicator();
                               }
-                              if (company.selectedValueOut == null) {
-                                company.selectedValueOut = company.list_company
-                                    .firstWhereOrNull((element) =>
-                                        element.id_Company ==
-                                        widget.client?.preSystem)
-                                    ?.id_Company;
-                              }
+                              company.selectedValueOut = company.list_company
+                                  .firstWhereOrNull((element) =>
+                                      element.id_Company ==
+                                      widget.client?.preSystem)
+                                  ?.id_Company;
                               return AppDropdownButtonFormField<CompanyModel,
                                   String>(
                                 items: company.list_company,
@@ -959,7 +962,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedActivitySizeType: _selectedActivitySizeType,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
-      statusClient: context.read<CompanyProvider>().selectedValueOut,
+      statusClient: companyProvider.selectedValueOut,
       typeClient: widget.client?.typeClient != "مشترك" &&
               widget.client?.typeClient != "منسحب"
           ? _clientTypeProvider.selectedValuemanag!
@@ -1026,11 +1029,11 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedActivitySizeType: _selectedActivitySizeType,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
-      statusClient: context.read<CompanyProvider>().selectedValueOut,
+      statusClient: companyProvider.selectedValueOut,
       type_record: context.read<UserProvider>().selectedClientRegistrationType,
       type_classification:
           context.read<UserProvider>().selectedClientClassificationType,
-      reason_class: reasonClassController!.text,
+      reason_class: reasonClassController.text,
     );
 
     Navigator.push(

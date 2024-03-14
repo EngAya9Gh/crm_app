@@ -25,14 +25,16 @@ class CommentModel {
   late final String type_comment;
 
   CommentModel.fromJson(Map<String, dynamic> json) {
+    final image = json['img_image'];
+    if (image != null) {
+      imgImage = urlimage + image;
+    }
     idComment = json['id_comment'];
     fkUser = json['fk_user'];
     fkClient = json['fk_client'];
     content = json['content'];
     nameUser = json['nameUser'];
-    imgImage = json['img_image'].toString().trim().isEmpty
-        ? json['img_image']
-        : urlimage + json['img_image'];
+    imgImage = image;
     nameEnterprise = json['name_enterprise'];
     date_comment = json['date_comment'];
     type_comment = json['type_comment'] ?? CommmentType.all.value;
