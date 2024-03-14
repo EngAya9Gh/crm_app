@@ -1,6 +1,7 @@
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/enums.dart';
@@ -21,13 +22,24 @@ class AddDateButton extends StatefulWidget {
 }
 
 class _AddDateButtonState extends State<AddDateButton> {
+  late final AgentsDistributorsProfileBloc agentBloc;
   String? selectedInstallationType;
 
   List<String> _items = InstallationTypeEnum.values.map((e) => e.name).toList();
 
   @override
+  void initState() {
+    agentBloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
+    agentBloc.supportEndTimeController
+        .addListener(_supportEndTimeControllerListener);
+    agentBloc.supportStartTimeController
+        .addListener(_supportStartTimeControllerListener);
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.of<AgentsDistributorsProfileBloc>(context);
     return ElevatedButton(
       child: Text('إضافة موعد جديد'),
       onPressed: () async {
@@ -37,9 +49,9 @@ class _AddDateButtonState extends State<AddDateButton> {
             return Directionality(
               textDirection: TextDirection.rtl,
               child: Form(
-                key: bloc.supportFormKey,
+                key: agentBloc.supportFormKey,
                 child: BlocProvider.value(
-                  value: bloc,
+                  value: agentBloc,
                   child: SimpleDialog(
                     titlePadding: const EdgeInsets.symmetric(vertical: 10),
                     insetPadding: EdgeInsets.all(10),
@@ -50,26 +62,44 @@ class _AddDateButtonState extends State<AddDateButton> {
                               fontFamily: kfontfamily2,
                             ))),
                     children: [
-                      Row(
-                        children: [
-                          CustomDateTimePicker(
-                            dateTimeController: bloc.supportDateController,
-                            dateTimeType: DateTimeEnum.date,
-                            isStartFromNow: true,
-                          ),
-                          SizedBox(width: 10),
-                          CustomDateTimePicker(
-                            dateTimeController: bloc.supportTimeController,
-                            dateTimeType: DateTimeEnum.time,
-                            isStartFromNow: true,
-                          ),
-                        ],
+                      CustomDateTimePicker(
+                        dateTimeController: agentBloc.supportDateController,
+                        dateTimeType: DateTimeEnum.date,
+                        isStartFromNow: true,
                       ),
                       SizedBox(height: 20),
-                      CustomDateTimePicker(
-                        dateTimeController: bloc.supportTimeEndController,
-                        dateTimeType: DateTimeEnum.time,
-                        isStartFromNow: true,
+                      Row(
+                        children: [
+                          Flexible(
+                            child: CustomDateTimePicker(
+                              dateTimeController:
+                                  agentBloc.supportStartTimeController,
+                              previousDateTimeController:
+                                  agentBloc.previousSupportStartTimeController,
+                              dateTimeType: DateTimeEnum.time,
+                              isStartFromNow: true,
+                              hintText: 'وقت البداية',
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          BlocBuilder<AgentsDistributorsProfileBloc,
+                              AgentsDistributorsProfileState>(
+                            builder: (context, state) {
+                              print(
+                                  "state.startDateSelected ${state.startDateSelected}");
+                              return Flexible(
+                                child: CustomDateTimePicker(
+                                  enabled: state.startDateSelected == true,
+                                  dateTimeController:
+                                      agentBloc.supportEndTimeController,
+                                  dateTimeType: DateTimeEnum.time,
+                                  isStartFromNow: true,
+                                  hintText: 'وقت النهاية',
+                                ),
+                              );
+                            },
+                          ),
+                        ],
                       ),
                       SizedBox(height: 20),
                       RowEdit(name: "نوع التركيب", des: '*'),
@@ -120,17 +150,20 @@ class _AddDateButtonState extends State<AddDateButton> {
                                         );
                                         return;
                                       }
-                                      if (bloc.supportFormKey.currentState!
+                                      if (agentBloc.supportFormKey.currentState!
                                           .validate()) {
-                                        final dateClientVisit =
-                                            bloc.supportDateController.text;
+                                        final dateClientVisit = agentBloc
+                                            .supportDateController.text;
                                         _onTap(
                                           context: context,
-                                          bloc: bloc,
-                                          dateClientVisit: bloc.handleVisitTime(
-                                              bloc.supportTimeController.text),
-                                          date_end: bloc.handleVisitTime(bloc
-                                              .supportTimeEndController.text),
+                                          bloc: agentBloc,
+                                          dateClientVisit: agentBloc
+                                              .handleVisitTime(agentBloc
+                                                  .supportStartTimeController
+                                                  .text),
+                                          date_end: agentBloc.handleVisitTime(
+                                              agentBloc.supportEndTimeController
+                                                  .text),
                                           fkAgent: widget.agentId,
                                           typeDate: selectedInstallationType ==
                                                   'ميداني'
@@ -140,12 +173,13 @@ class _AddDateButtonState extends State<AddDateButton> {
                                             Navigator.pop(context);
                                             AppConstants.showSnakeBar(
                                                 context, 'تمت الاضافة بنجاح');
-                                            bloc.add(GetAgentDatesListEvent(
-                                                getAgentDatesListParams:
-                                                    GetAgentDatesListParams(
-                                                        agentId:
-                                                            widget.agentId)));
-                                            _clearFields(bloc: bloc);
+                                            agentBloc.add(
+                                                GetAgentDatesListEvent(
+                                                    getAgentDatesListParams:
+                                                        GetAgentDatesListParams(
+                                                            agentId: widget
+                                                                .agentId)));
+                                            _clearFields(bloc: agentBloc);
                                           },
                                         );
                                       }
@@ -196,6 +230,78 @@ class _AddDateButtonState extends State<AddDateButton> {
   }) {
     selectedInstallationType = null;
     bloc.supportDateController.clear();
-    bloc.supportTimeController.clear();
+    bloc.supportStartTimeController.clear();
+  }
+
+  void _supportEndTimeControllerListener() {
+    if (agentBloc.supportEndTimeController.text.isEmpty) {
+      return;
+    }
+    try {
+      final DateTime selectedTime = DateFormat.jm().parseStrict(
+        agentBloc.supportEndTimeController.text,
+      );
+
+      final DateTime startTime = DateFormat.jm().parseStrict(
+        agentBloc.supportStartTimeController.text,
+      );
+
+      if (selectedTime.isBefore(startTime)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('وقت النهاية يجب ان يكون بعد وقت البداية'),
+          ),
+        );
+        agentBloc.supportEndTimeController.clear();
+      }
+    } catch (error) {
+      print('Error parsing time: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('حدث خطأ أثناء معالجة الوقت'),
+        ),
+      );
+      agentBloc.supportEndTimeController.clear();
+    }
+  }
+
+  void _supportStartTimeControllerListener() {
+    try {
+      if (agentBloc.supportStartTimeController.text.isEmpty) {
+        return;
+      }
+
+      agentBloc.add(EnableEndDateEvent());
+
+      if (agentBloc.supportEndTimeController.text.isEmpty) {
+        return;
+      }
+
+      final DateTime selectedTime = DateFormat.jm().parseStrict(
+        agentBloc.supportStartTimeController.text,
+      );
+
+      final DateTime endTime = DateFormat.jm().parseStrict(
+        agentBloc.supportEndTimeController.text,
+      );
+
+      if (selectedTime.isAfter(endTime)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('وقت البداية يجب ان يكون قبل وقت النهاية'),
+          ),
+        );
+        agentBloc.supportStartTimeController.text =
+            agentBloc.previousSupportStartTimeController.text;
+      }
+    } catch (error) {
+      print('Error parsing time: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('حدث خطأ أثناء معالجة الوقت'),
+        ),
+      );
+      agentBloc.supportStartTimeController.clear();
+    }
   }
 }
