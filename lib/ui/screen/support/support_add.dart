@@ -168,53 +168,50 @@ class _SupportAddState extends State<SupportAdd> {
                   key: _globalKey,
                   child: Column(
                     children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: kMainColor,
+                          ),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          hintText:
+                              // _invoice!.daterepaly == null
+                              //     &&
+                              Provider.of<datetime_vm>(context, listen: true)
+                                          .valuedateTime ==
+                                      DateTime(1, 1, 1)
+                                  ? 'تعيين التاريخ' //_currentDate.toString()
+                                  :
+                                  //_currentDate.toString(),
+                                  DateFormat('yyyy-MM-dd').format(
+                                      Provider.of<datetime_vm>(context,
+                                              listen: true)
+                                          .valuedateTime),
+
+                          //_invoice!.daterepaly.toString(),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          refresh(() {
+                            _selectDate(context);
+                          });
+                        },
+                        validator: (value) {
+                          if (_currentDate == DateTime(1, 1, 1)) {
+                            return 'يرجى تعيين التاريخ ';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10),
                       Row(
                         children: [
-                          Flexible(
-                            child: TextFormField(
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                  color: kMainColor,
-                                ),
-                                hintStyle: const TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                hintText:
-                                    // _invoice!.daterepaly == null
-                                    //     &&
-                                    Provider.of<datetime_vm>(context,
-                                                    listen: true)
-                                                .valuedateTime ==
-                                            DateTime(1, 1, 1)
-                                        ? 'تعيين التاريخ' //_currentDate.toString()
-                                        :
-                                        //_currentDate.toString(),
-                                        DateFormat('yyyy-MM-dd').format(
-                                            Provider.of<datetime_vm>(context,
-                                                    listen: true)
-                                                .valuedateTime),
-
-                                //_invoice!.daterepaly.toString(),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
-                              ),
-                              readOnly: true,
-                              onTap: () {
-                                refresh(() {
-                                  _selectDate(context);
-                                });
-                              },
-                              validator: (value) {
-                                if (_currentDate == DateTime(1, 1, 1)) {
-                                  return 'يرجى تعيين التاريخ ';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 10),
                           Flexible(
                             child: TextFormField(
                               validator: (value) {
@@ -236,18 +233,18 @@ class _SupportAddState extends State<SupportAdd> {
                                 hintText: _invoice!.daterepaly == null &&
                                         Provider.of<datetime_vm>(context,
                                                     listen: true)
-                                                .selectedTime ==
-                                            TimeOfDay(hour: -1, minute: 00)
-                                    ? 'الوقت ' //_currentDate.toString()
+                                                .selectedStartTime ==
+                                            null
+                                    ? 'بداية الزيارة'
                                     : Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedTime
+                                            .selectedStartTime!
                                             .minute
                                             .toString() +
                                         ' : ' +
                                         Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedTime
+                                            .selectedStartTime!
                                             .hour
                                             .toInt()
                                             .toString(),
@@ -259,16 +256,12 @@ class _SupportAddState extends State<SupportAdd> {
                               readOnly: true,
                               onTap: () {
                                 refresh(() {
-                                  _selectTime(context);
+                                  _selectStartTime(context);
                                 });
                               },
                             ),
                           ),
-                        ],
-                      ),
-                      // SizedBox(height: 10),
-                      Row(
-                        children: [
+                          SizedBox(width: 10),
                           Flexible(
                             child: TextFormField(
                               validator: (value) {
@@ -291,17 +284,17 @@ class _SupportAddState extends State<SupportAdd> {
                                         Provider.of<datetime_vm>(context,
                                                     listen: true)
                                                 .selectedEndTime ==
-                                            TimeOfDay(hour: -1, minute: 00)
+                                            null
                                     ? 'نهاية الزيارة ' //_currentDate.toString()
                                     : Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedEndTime
+                                            .selectedEndTime!
                                             .minute
                                             .toString() +
                                         ' : ' +
                                         Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedEndTime
+                                            .selectedEndTime!
                                             .hour
                                             .toInt()
                                             .toString(),
@@ -363,12 +356,6 @@ class _SupportAddState extends State<SupportAdd> {
                                 content: Text('من فضلك اختر نوع التركيب ')));
                             return;
                           }
-                          DateTime datetask = DateTime(
-                              _currentDate.year,
-                              _currentDate.month,
-                              _currentDate.day,
-                              selectedTime.hour,
-                              selectedTime.minute);
                           if (_globalKey.currentState!.validate()) {
                             Navigator.of(context, rootNavigator: true)
                                 .pop(false);
@@ -376,16 +363,17 @@ class _SupportAddState extends State<SupportAdd> {
 
                             Provider.of<invoice_vm>(context, listen: false)
                                 .setisload();
+                            final startDate = _currentDate ?? DateTime.now();
                             DateTime datetask = DateTime(
-                                _currentDate.year,
-                                _currentDate.month,
-                                _currentDate.day,
+                                startDate.year,
+                                startDate.month,
+                                startDate.day,
                                 selectedTime.hour,
                                 selectedTime.minute);
                             DateTime date_end = DateTime(
-                                _currentDate.year,
-                                _currentDate.month,
-                                _currentDate.day,
+                                startDate.year,
+                                startDate.month,
+                                startDate.day,
                                 endTime.hour,
                                 endTime.minute);
 
@@ -1512,8 +1500,8 @@ class _SupportAddState extends State<SupportAdd> {
     );
   }
 
-  late DateTime _currentDate = DateTime(1, 1, 1);
-  late DateTime _EndDate = DateTime(1, 1, 1);
+  DateTime _currentDate = DateTime.now();
+  DateTime? _EndDate;
 
   // final DateFormat formatter = DateFormat('yyyy-MM-dd');
   TimeOfDay selectedTime = TimeOfDay(hour: -1, minute: 00);
@@ -1523,20 +1511,48 @@ class _SupportAddState extends State<SupportAdd> {
 
   late String _hour, _minute, _time;
 
-  Future<Null> _selectTime(BuildContext context) async {
+  Future<Null> _selectStartTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    if (picked != null)
-      setState(() {
-        selectedTime = picked;
-        _hour = selectedTime.hour.toString();
-        _minute = selectedTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
-        _timeController.text = _time;
-        _timeController.text = selectedTime.toString();
-      });
+
+    if (picked == null) return;
+
+    if (context.read<datetime_vm>().selectedEndTime != null) {
+      final startTime = DateTime(
+        _currentDate.year,
+        _currentDate.month,
+        _currentDate.day,
+        picked.hour,
+        picked.minute,
+      );
+
+      // _date
+      final endTime = DateTime(
+        _currentDate.year,
+        _currentDate.month,
+        _currentDate.day,
+        context.read<datetime_vm>().selectedEndTime!.hour,
+        context.read<datetime_vm>().selectedEndTime!.minute,
+      );
+
+      if (startTime.isAfter(endTime)) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('يجب أن يكون وقت البداية قبل وقت النهاية'),
+        ));
+        return;
+      }
+    }
+
+    setState(() {
+      selectedTime = picked;
+      _hour = selectedTime.hour.toString();
+      _minute = selectedTime.minute.toString();
+      _time = _hour + ' : ' + _minute;
+      _timeController.text = _time;
+      _timeController.text = selectedTime.toString();
+    });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(_currentDate, selectedTime);
   }
@@ -1546,15 +1562,42 @@ class _SupportAddState extends State<SupportAdd> {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-    if (picked != null)
-      setState(() {
-        endTime = picked;
-        _hour = endTime.hour.toString();
-        _minute = endTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
-        _endtimeController.text = _time;
-        _endtimeController.text = endTime.toString();
-      });
+
+    if (picked == null) return;
+
+    if (context.read<datetime_vm>().selectedStartTime != null) {
+      final endDate = DateTime(
+        _currentDate.year,
+        _currentDate.month,
+        _currentDate.day,
+        picked.hour,
+        picked.minute,
+      );
+
+      final startTime = DateTime(
+        _currentDate.year,
+        _currentDate.month,
+        _currentDate.day,
+        context.read<datetime_vm>().selectedStartTime!.hour,
+        context.read<datetime_vm>().selectedStartTime!.minute,
+      );
+
+      if (startTime.isAfter(endDate)) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('يجب أن يكون وقت البداية قبل وقت النهاية'),
+        ));
+        return;
+      }
+    }
+
+    setState(() {
+      endTime = picked;
+      _hour = endTime.hour.toString();
+      _minute = endTime.minute.toString();
+      _time = _hour + ' : ' + _minute;
+      _endtimeController.text = _time;
+      _endtimeController.text = endTime.toString();
+    });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalueEnd(_currentDate, endTime);
   }
@@ -1577,7 +1620,7 @@ class _SupportAddState extends State<SupportAdd> {
             minutes: DateTime.now().minute,
             seconds: DateTime.now().second);
 
-        _currentDate.add(Duration(hours: DateTime.now().hour));
+        _currentDate?.add(Duration(hours: DateTime.now().hour));
 
         // _currentDate.add(Duration(hours: selectedTime.hour));
 

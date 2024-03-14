@@ -252,18 +252,18 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     fontWeight: FontWeight.w500),
                                 hintText: Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedTime ==
-                                        TimeOfDay(hour: -1, minute: 00)
+                                            .selectedStartTime ==
+                                        null
                                     ? 'الوقت ' //_currentDate.toString()
                                     : Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedTime
+                                            .selectedStartTime!
                                             .minute
                                             .toString() +
                                         ' : ' +
                                         Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedTime
+                                            .selectedStartTime!
                                             .hour
                                             .toInt()
                                             .toString(),
@@ -304,17 +304,17 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 hintText: Provider.of<datetime_vm>(context,
                                                 listen: true)
                                             .selectedEndTime ==
-                                        TimeOfDay(hour: -1, minute: 00)
+                                        null
                                     ? 'نهاية الزيارة ' //_currentDate.toString()
                                     : Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedEndTime
+                                            .selectedEndTime!
                                             .minute
                                             .toString() +
                                         ' : ' +
                                         Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedEndTime
+                                            .selectedEndTime!
                                             .hour
                                             .toInt()
                                             .toString(),
