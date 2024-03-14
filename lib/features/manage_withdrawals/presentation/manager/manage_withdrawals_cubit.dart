@@ -67,6 +67,9 @@ class ManageWithdrawalsCubit extends Cubit<ManageWithdrawalsState> {
 
   InvoiceStatusEnum get selectedFilter => _selectedFilter;
 
+  int get numberOfInvoices =>
+      state.withdrawalsInvoices.getDataWhenSuccess?.length ?? 0;
+
   set selectedFilter(InvoiceStatusEnum value) {
     _selectedFilter = value;
     emit(state.copyWith(selectedFilter: BlocStatus.success()));
