@@ -199,7 +199,7 @@ class _commentViewState extends State<commentView> {
                                   return IconButton(
                                       onPressed: () async {
                                         if (_globalKey.currentState!
-                                            .validate()) {
+                                            .validate() && _selectedCommentType?.value!=null) {
                                           _globalKey.currentState!.save();
 
                                           Provider.of<comment_vm>(context,
@@ -264,6 +264,9 @@ class _commentViewState extends State<commentView> {
                                             }
                                           });
                                         }
+                                        else
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                            content: Text('من فضلك اختر نوع التعليق ')));
                                       },
                                       icon:
                                           Icon(Icons.send, color: kMainColor));
