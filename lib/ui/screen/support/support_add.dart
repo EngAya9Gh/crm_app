@@ -101,12 +101,6 @@ class _SupportAddState extends State<SupportAdd> {
     invoiceVm = context.read<invoice_vm>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //_ticketModel=_list.firstWhere((element) => element.fkClient)
-      Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-
-      //  Provider.of<typeclient>(context,listen: false).getreasons('ticket');
-
       clientsListBloc
           .add(GetClientSupportFilesEvent(GetClientSupportFilesParams(
         invoiceId: widget.idInvoice!,
@@ -1605,38 +1599,25 @@ class _SupportAddState extends State<SupportAdd> {
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
-        // date of today
         currentDate: DateTime.now(),
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(3010));
-    if (pickedDate != null) //&& pickedDate != currentDate)
-      setState(() {
-        // _invoice.dateinstall_task=pickedDate.toString() ;
-        _currentDate = pickedDate;
+    if (pickedDate == null) return;
 
-        final time = Duration(
-            hours: DateTime.now().hour,
-            minutes: DateTime.now().minute,
-            seconds: DateTime.now().second);
+    setState(() {
+      _currentDate = pickedDate;
 
-        _currentDate?.add(Duration(hours: DateTime.now().hour));
-
-        // _currentDate.add(Duration(hours: selectedTime.hour));
-
-        // _invoice!.dateinstall_task = _currentDate.toString();
-        //_invoice!.daterepaly = _currentDate.toString();
-        //_currentDate.hour=DateTime.now().hour;
-      });
+      _currentDate.add(Duration(hours: DateTime.now().hour));
+    });
     Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(_currentDate, selectedTime);
+        .setdatetimevalue(_currentDate, null);
   }
 
   clear() {
-    _currentDate = DateTime(1, 1, 1);
-    _EndDate = DateTime(1, 1, 1);
+    _currentDate = DateTime.now();
+    _EndDate = null;
 
-    selectedTime = TimeOfDay(hour: -1, minute: 00);
     endTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
@@ -1649,7 +1630,7 @@ class _SupportAddState extends State<SupportAdd> {
   clear2() {
     Navigator.of(context, rootNavigator: true).pop(false);
     _currentDate = DateTime(1, 1, 1);
-    _EndDate = DateTime(1, 1, 1);
+    _EndDate = null;
     selectedTime = TimeOfDay(hour: -1, minute: 00);
     endTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
