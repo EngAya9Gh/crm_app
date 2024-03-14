@@ -5,6 +5,10 @@ enum CommmentType {
   clientRequirements,
   evaluateResult,
   generalNote,
+  reschedule,
+  excludeClient,
+  notReady,
+  suspend,
 }
 
 extension CommmentTypeExt on CommmentType {
@@ -22,6 +26,14 @@ extension CommmentTypeExt on CommmentType {
         return 'نتيجة تقييم';
       case CommmentType.generalNote:
         return 'ملاحظة عامة';
+      case CommmentType.reschedule:
+        return 'إعادة جدولة';
+      case CommmentType.excludeClient:
+        return 'استبعاد عميل';
+      case CommmentType.notReady:
+        return 'غير جاهز';
+      case CommmentType.suspend:
+        return 'تعليق التركيب';
     }
   }
 }

@@ -101,12 +101,6 @@ class _SupportAddState extends State<SupportAdd> {
     invoiceVm = context.read<invoice_vm>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //_ticketModel=_list.firstWhere((element) => element.fkClient)
-      Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
-
-      //  Provider.of<typeclient>(context,listen: false).getreasons('ticket');
-
       clientsListBloc
           .add(GetClientSupportFilesEvent(GetClientSupportFilesParams(
         invoiceId: widget.idInvoice!,
@@ -774,7 +768,7 @@ class _SupportAddState extends State<SupportAdd> {
                                                         obscureText: false,
                                                         controller:
                                                             _textnameuserclient,
-                                                        vaild: (value) {
+                                                        vaildator: (value) {
                                                           if (value
                                                               .toString()
                                                               .trim()
@@ -1605,38 +1599,25 @@ class _SupportAddState extends State<SupportAdd> {
   Future<void> _selectDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
-        // date of today
         currentDate: DateTime.now(),
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(3010));
-    if (pickedDate != null) //&& pickedDate != currentDate)
-      setState(() {
-        // _invoice.dateinstall_task=pickedDate.toString() ;
-        _currentDate = pickedDate;
+    if (pickedDate == null) return;
 
-        final time = Duration(
-            hours: DateTime.now().hour,
-            minutes: DateTime.now().minute,
-            seconds: DateTime.now().second);
+    setState(() {
+      _currentDate = pickedDate;
 
-        _currentDate?.add(Duration(hours: DateTime.now().hour));
-
-        // _currentDate.add(Duration(hours: selectedTime.hour));
-
-        // _invoice!.dateinstall_task = _currentDate.toString();
-        //_invoice!.daterepaly = _currentDate.toString();
-        //_currentDate.hour=DateTime.now().hour;
-      });
+      _currentDate.add(Duration(hours: DateTime.now().hour));
+    });
     Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(_currentDate, selectedTime);
+        .setdatetimevalue(_currentDate, null);
   }
 
   clear() {
-    _currentDate = DateTime(1, 1, 1);
-    _EndDate = DateTime(1, 1, 1);
+    _currentDate = DateTime.now();
+    _EndDate = null;
 
-    selectedTime = TimeOfDay(hour: -1, minute: 00);
     endTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
@@ -1649,7 +1630,7 @@ class _SupportAddState extends State<SupportAdd> {
   clear2() {
     Navigator.of(context, rootNavigator: true).pop(false);
     _currentDate = DateTime(1, 1, 1);
-    _EndDate = DateTime(1, 1, 1);
+    _EndDate = null;
     selectedTime = TimeOfDay(hour: -1, minute: 00);
     endTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
@@ -1816,16 +1797,16 @@ class _dialog_readyState extends State<dialog_ready> {
                           ),
                     SizedBox(height: 3),
                     EditTextFormField(
-                      vaild: (value) {
-                        if (value!.isEmpty) {
+                      controller: descresaonController,
+                      vaildator: (value) {
+                        if (value!.trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
                         return null;
                       },
-                      hintText: "الملاحظات",
+                      hintText: "الملاحظات*",
                       paddcustom: EdgeInsets.all(8),
                       maxline: 5,
-                      controller: descresaonController,
                     ),
                     Consumer<invoice_vm>(
                       builder: (context, value, child) {
@@ -1980,40 +1961,42 @@ class _dialog_readyState extends State<dialog_ready> {
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(kMainColor)),
                     onPressed: () async {
-                      if (Value_sales == '')
+                      if (Value_sales == '') {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text('من فضلك اختر سبب من القائمة ')));
-                      else {
-                        Provider.of<invoice_vm>(context, listen: false)
-                            .setisload();
-                        final currentUser =
-                            context.read<UserProvider>().currentUser;
-
-                        var body = {
-                          'TypeReadyClient': 'notReady',
-                          'notes_ready': descresaonController.text,
-                          'reason_notReady': Value_sales,
-                          'nameUser': currentUser.nameUser.toString(),
-                          'date_temp':
-                              widget.invoice.date_not_readyinstall.toString(),
-                          'date_ready_prev':
-                              widget.invoice.date_readyinstall.toString(),
-                          'date_not_readyinstall': DateTime.now().toString(),
-                          'user_not_ready_install':
-                              currentUser.idUser.toString(),
-                          'ready_install': '0', //suspend client
-                        };
-                        if (widget.invoice.count_delay_ready != null)
-                          body.addAll({
-                            'count_delay_ready':
-                                widget.invoice.count_delay_ready.toString()
-                          });
-
-                        await Provider.of<invoice_vm>(context, listen: false)
-                            .set_ready_install(body, widget.invoice.idInvoice)
-                            .then((value) => clear());
-                        Navigator.of(context, rootNavigator: true).pop(true);
+                        return;
                       }
+
+                      if (!_globalKey.currentState!.validate()) return;
+
+                      Provider.of<invoice_vm>(context, listen: false)
+                          .setisload();
+                      final currentUser =
+                          context.read<UserProvider>().currentUser;
+
+                      var body = {
+                        'TypeReadyClient': 'notReady',
+                        'notes_ready': descresaonController.text,
+                        'reason_notReady': Value_sales,
+                        'nameUser': currentUser.nameUser.toString(),
+                        'date_temp':
+                            widget.invoice.date_not_readyinstall.toString(),
+                        'date_ready_prev':
+                            widget.invoice.date_readyinstall.toString(),
+                        'date_not_readyinstall': DateTime.now().toString(),
+                        'user_not_ready_install': currentUser.idUser.toString(),
+                        'ready_install': '0', //suspend client
+                      };
+                      if (widget.invoice.count_delay_ready != null)
+                        body.addAll({
+                          'count_delay_ready':
+                              widget.invoice.count_delay_ready.toString()
+                        });
+
+                      await Provider.of<invoice_vm>(context, listen: false)
+                          .set_ready_install(body, widget.invoice.idInvoice)
+                          .then((value) => clear());
+                      Navigator.of(context, rootNavigator: true).pop(true);
                     },
                     child: Text('نعم'),
                   ),

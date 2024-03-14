@@ -132,7 +132,7 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       obscureText: false,
                       hintText: AppStrings.labelClientEnterprise,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -143,7 +143,7 @@ class _addClientState extends State<addClient> {
                     RowEdit(name: AppStrings.labelClientName, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -156,7 +156,7 @@ class _addClientState extends State<addClient> {
                     RowEdit(name: AppStrings.labelClientMobile, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -172,7 +172,7 @@ class _addClientState extends State<addClient> {
                     RowEdit(name: 'البريد الالكتروني', des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value?.trim().isEmpty ?? true) {
                           return "البريد الالكتروني مطلوب";
                         }
@@ -261,7 +261,7 @@ class _addClientState extends State<addClient> {
                     SizedBox(height: 15),
                     RowEdit(name: 'وصف النشاط', des: '*'),
                     EditTextFormField(
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }
@@ -303,7 +303,7 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       hintText: AppStrings.labelUsernameClient,
                       obscureText: false,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value!.toString().trim().isEmpty) {
                           return AppStrings.labelEmpty;
                         }

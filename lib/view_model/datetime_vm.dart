@@ -8,7 +8,7 @@ class datetime_vm extends ChangeNotifier {
 
   void setdatetimevalue(DateTime val, TimeOfDay? timeday) {
     valuedateTime = val;
-    selectedStartTime = timeday!;
+    selectedStartTime = timeday;
     notifyListeners();
   }
 

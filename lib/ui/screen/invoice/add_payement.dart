@@ -53,7 +53,7 @@ class add_payement extends StatelessWidget {
                 EditTextFormField(
                   obscureText: false,
                   hintText: 'اجمالي المبلغ المدفوع',
-                  vaild: (value) {
+                  vaildator: (value) {
                     if (value.toString().trim().isEmpty) {
                       return 'empty field';
                     }

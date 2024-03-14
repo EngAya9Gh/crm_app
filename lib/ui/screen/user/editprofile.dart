@@ -149,7 +149,7 @@ class _edit_profileState extends State<edit_profile> {
                           hintText: 'Name',
                           obscureText: false,
                           controller: nameuserController,
-                          vaild: (value) {
+                          vaildator: (value) {
                             if (value!.isEmpty) {
                               return 'الحقل فارغ';
                             }
@@ -165,7 +165,7 @@ class _edit_profileState extends State<edit_profile> {
                           hintText: 'Email',
                           obscureText: false,
                           controller: emailController,
-                          vaild: (value) {
+                          vaildator: (value) {
                             if (value!.isEmpty) {
                               return 'الحقل فارغ';
                             }

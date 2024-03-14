@@ -326,7 +326,7 @@ class _installAddState extends State<installAdd> {
                       child: Form(
                         key: _globalKey,
                         child: EditTextFormField(
-                          vaild: (value) {
+                          vaildator: (value) {
                             if (value!.toString().trim().isEmpty) {
                               return AppStrings.labelEmpty;
                             }

@@ -127,7 +127,7 @@ class _addUserState extends State<addUser> {
                       hintText: 'Name',
                       obscureText: false,
                       controller: nameController,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value?.trim() == null || value?.trim() == '') {
                           return "هذا الحقل مطلوب.";
                         }
@@ -143,7 +143,7 @@ class _addUserState extends State<addUser> {
                       height: 2,
                     ),
                     EditTextFormField(
-                      vaild: (data) {
+                      vaildator: (data) {
                         if (data?.trim() == null || data?.trim() == '') {
                           return "هذا الحقل مطلوب.";
                         } else {
@@ -326,7 +326,7 @@ class _addUserState extends State<addUser> {
                       hintText: '+966000000000',
                       obscureText: false,
                       controller: mobileController,
-                      vaild: (value) {
+                      vaildator: (value) {
                         if (value?.trim() == null || value?.trim() == '') {
                           return "هذا الحقل مطلوب.";
                         }

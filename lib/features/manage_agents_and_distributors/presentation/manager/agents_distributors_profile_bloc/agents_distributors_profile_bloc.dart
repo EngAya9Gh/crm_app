@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../core/common/models/profile_invoice_model.dart';
@@ -343,9 +344,33 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
 
   DateTime handleVisitTime(String selecttime) {
     final date = DateTime.parse(supportDateController.text);
-    final selectedTime = selecttime.toString().split(':');
+    final formattedTime = _formatTime(selecttime);
+
+    final selectedTime = formattedTime.split(':');
+
     final time = TimeOfDay(
-        hour: int.parse(selectedTime[0]), minute: int.parse(selectedTime[1]));
+      hour: int.parse(selectedTime[0]),
+      minute: int.parse(selectedTime[1]),
+    );
+
     return DateTime(date.year, date.month, date.day, time.hour, time.minute);
+  }
+
+  String _formatTime(String timeString) {
+    timeString = timeString.trim();
+
+    if (timeString.contains(RegExp(r'[AP]M', caseSensitive: false))) {
+      final parsedTime = DateFormat('h:mm a').parse(timeString);
+      return DateFormat('HH:mm').format(parsedTime);
+    } else {
+      return timeString;
+    }
+  }
+
+  void clear() {
+    supportDateController.clear();
+    supportStartTimeController.clear();
+    supportEndTimeController.clear();
+    previousSupportStartTimeController.clear();
   }
 }

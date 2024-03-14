@@ -16,6 +16,7 @@ class comment_vm extends ChangeNotifier {
   Future<void> getComment(String fk_client) async {
     try {
       isLoading = true;
+      _allCommentsList = [];
       filteredComments = [];
       //isloadadd=true;
       notifyListeners();

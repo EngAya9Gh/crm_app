@@ -62,7 +62,7 @@ class _ticket_rateState extends State<ticket_rate> {
                   hintText: 'ملاحظات التقييم  ',
                   obscureText: false,
                   controller: _textnotes,
-                  vaild: (value) {
+                  vaildator: (value) {
                     if (value.toString().trim().isEmpty) {
                       return 'الحقل فارغ';
                     }
