@@ -9,10 +9,12 @@ class CustomDateTimePicker extends StatelessWidget {
     Key? key,
     required this.dateTimeType,
     required this.dateTimeController,
+    this.isStartFromNow = false,
   }) : super(key: key);
 
   final DateTimeEnum dateTimeType;
   final TextEditingController dateTimeController;
+  final bool? isStartFromNow;
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +64,8 @@ class CustomDateTimePicker extends StatelessWidget {
         ? await showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime(2018),
-            lastDate: DateTime(2100),
+            firstDate: isStartFromNow == true ? DateTime.now() : DateTime(2018),
+            lastDate: isStartFromNow == true ? DateTime(2100) : DateTime(2100),
           ).then((value) {
             if (value != null) {
               dateTimeController.text = DateFormat('yyyy-MM-dd').format(value);
