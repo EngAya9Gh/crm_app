@@ -5,6 +5,7 @@ import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../constants.dart';
 import '../../../function_global.dart';
 
 //uplode 2023
@@ -51,29 +52,7 @@ class cardcomment extends StatelessWidget {
                               children: [
                                 CircleAvatar(
                                   radius: 20,
-                                  child: commentmodel.imgImage != null
-                                      ? commentmodel.nameUser.toString().isEmpty
-                                          ? Icon(
-                                              Icons.person,
-                                              size: 50,
-                                              color: Colors.lightBlueAccent,
-                                            )
-                                          : Text(commentmodel.nameUser
-                                              .toString()
-                                              .substring(0, 1))
-                                      : ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(45),
-                                          child: CachedNetworkImage(
-                                            width: 1000,
-                                            height: 1000,
-                                            fit: BoxFit.fill,
-                                            placeholder: (context, url) =>
-                                                const CircularProgressIndicator(),
-                                            imageUrl: commentmodel.imgImage
-                                                .toString(),
-                                          ),
-                                        ),
+                                  child: _prepareImage(),
                                 ),
                                 SizedBox(
                                   width: 10,
@@ -137,5 +116,32 @@ class cardcomment extends StatelessWidget {
                 ),
               ),
             ]));
+  }
+
+  Widget _prepareImage() {
+    final imageUrl = commentmodel.imgImage ?? '';
+    final name = commentmodel.nameUser ?? '';
+    if (imageUrl.isEmpty) {
+      if (name.isEmpty) {
+        return Icon(
+          Icons.person,
+          size: 50,
+          color: Colors.lightBlueAccent,
+        );
+      } else {
+        return Text(name.substring(0, 1));
+      }
+    }
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(45),
+      child: CachedNetworkImage(
+        width: 1000,
+        height: 1000,
+        fit: BoxFit.fill,
+        placeholder: (context, url) => const CircularProgressIndicator(),
+        imageUrl: urlimage + imageUrl,
+      ),
+    );
   }
 }

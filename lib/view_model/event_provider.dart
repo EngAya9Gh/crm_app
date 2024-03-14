@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:developer';
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
@@ -315,7 +316,7 @@ class EventProvider extends ChangeNotifier {
         body: {
           "is_done": isDone,
           "fk_client": event.fkIdClient,
-          "comment": event.comment,
+          // "comment": event.comment,
         },
       );
       final list = eventDataSource[event.from] ?? [];
@@ -333,6 +334,7 @@ class EventProvider extends ChangeNotifier {
       notifyListeners();
       onSuccess();
     } catch (e) {
+      log("error in changeEventToDone: $e");
       onFailure();
     }
   }
