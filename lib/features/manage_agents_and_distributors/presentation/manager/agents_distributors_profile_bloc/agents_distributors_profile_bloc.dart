@@ -58,13 +58,16 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
     on<AddAgentCommentEvent>(_onAddAgentCommentEvent);
     on<AddAgentDateEvent>(_onAddAgentDateEvent);
     on<GetAgentDatesListEvent>(_onGetAgentDatesListEvent);
+    on<EnableEndDateEvent>(_onEnableEndDateEvent);
   }
 
-  // date keys and controllers
   final supportFormKey = GlobalKey<FormState>();
   final TextEditingController supportDateController = TextEditingController();
-  final TextEditingController supportTimeController = TextEditingController();
-  final TextEditingController supportTimeEndController =
+  final TextEditingController previousSupportStartTimeController =
+      TextEditingController();
+  final TextEditingController supportStartTimeController =
+      TextEditingController();
+  final TextEditingController supportEndTimeController =
       TextEditingController();
 
   AgentDistributorModel? traineeAgent;
@@ -287,6 +290,14 @@ class AgentsDistributorsProfileBloc extends Bloc<AgentsDistributorsProfileEvent,
             dateVisitStatus: StateStatus.success, dateVisitList: data));
       },
     );
+  }
+
+  void _onEnableEndDateEvent(
+      EnableEndDateEvent event, Emitter<AgentsDistributorsProfileState> emit) {
+    if (state.startDateSelected != true &&
+        supportStartTimeController.text.isNotEmpty) {
+      emit(state.copyWith(startDateSelected: true));
+    }
   }
 
   List<DateInstallationClient> get finishedVisits {

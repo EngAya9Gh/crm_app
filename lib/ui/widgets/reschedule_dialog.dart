@@ -51,7 +51,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   final _globalKey = GlobalKey<FormState>();
   final TextEditingController descresaonController = TextEditingController();
   late EventProvider _eventProvider;
-  TimeOfDay selectedTime = TimeOfDay(hour: -1, minute: 00);
+  TimeOfDay selectedStartTime = TimeOfDay(hour: -1, minute: 00);
   late DateTime _currentDate = DateTime(1, 1, 1);
   TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
 
@@ -85,7 +85,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
         _currentDate.add(Duration(hours: DateTime.now().hour));
       });
     Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(_currentDate, selectedTime);
+        .setdatetimevalue(_currentDate, selectedStartTime);
   }
 
   Future<Null> _selectTime(BuildContext context, TimeOfDay stime) async {
@@ -93,22 +93,42 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
       context: context,
       initialTime: stime,
     );
-    if (picked != null)
-      setState(() {
-        selectedTime = picked;
-        _hour = selectedTime.hour.toString();
-        _minute = selectedTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
-        _timeController.text = _time;
-        _timeController.text = selectedTime.toString();
+    if (picked == null) return;
+    final startTime = DateTime(
+      _currentDate.year,
+      _currentDate.month,
+      _currentDate.day,
+      picked.hour,
+      picked.minute,
+    );
 
-        // Utils.toTime(selectedTime)
-        // formatDate(
-        // DateTime(2019, 08, 1, selectedTime.hour, selectedTime.minute),
-        // [hh, ':', nn, " ", am]).toString();
-      });
+    final endTime = DateTime(
+      _currentDate.year,
+      _currentDate.month,
+      _currentDate.day,
+      this.endTime.hour,
+      this.endTime.minute,
+    );
+
+    if (startTime.isAfter(endTime)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('لا يمكن أن يكون وقت البداية بعد وقت النهاية'),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      selectedStartTime = picked;
+      _hour = selectedStartTime.hour.toString();
+      _minute = selectedStartTime.minute.toString();
+      _time = _hour + ' : ' + _minute;
+      _timeController.text = _time;
+      _timeController.text = selectedStartTime.toString();
+    });
     Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(_currentDate, selectedTime);
+        .setdatetimevalue(_currentDate, selectedStartTime);
   }
 
   Future<Null> _selectEndTime(BuildContext context, TimeOfDay stime) async {
@@ -116,19 +136,44 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
       context: context,
       initialTime: stime,
     );
-    if (picked != null)
-      setState(() {
-        endTime = picked;
-        _hour = endTime.hour.toString();
-        _minute = endTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
-      });
+    if (picked == null) return;
+    final end = DateTime(
+      _currentDate.year,
+      _currentDate.month,
+      _currentDate.day,
+      picked.hour,
+      picked.minute,
+    );
+
+    final startTime = DateTime(
+      _currentDate.year,
+      _currentDate.month,
+      _currentDate.day,
+      selectedStartTime.hour,
+      selectedStartTime.minute,
+    );
+
+    if (end.isBefore(startTime)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('لا يمكن أن يكون وقت النهاية قبل وقت البداية'),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      endTime = picked;
+      _hour = endTime.hour.toString();
+      _minute = endTime.minute.toString();
+      _time = _hour + ' : ' + _minute;
+    });
     Provider.of<datetime_vm>(context, listen: false)
         .setdatetimevalueEnd(_currentDate, endTime);
   }
 
   clear() {
-    selectedTime = TimeOfDay(hour: -1, minute: 00);
+    selectedStartTime = TimeOfDay(hour: -1, minute: 00);
     endTime = TimeOfDay(hour: -1, minute: 00);
 
     Provider.of<datetime_vm>(context, listen: false)
@@ -144,7 +189,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
   void initState() {
     selectInstallationType = null;
     _currentDate = widget.datecurrent;
-    selectedTime = TimeOfDay.fromDateTime(widget.time_from);
+    selectedStartTime = TimeOfDay.fromDateTime(widget.time_from);
     endTime = TimeOfDay.fromDateTime(widget.time_to);
     timinit = TimeOfDay.fromDateTime(widget.time_from);
     timinit2 = TimeOfDay.fromDateTime(widget.time_to);
@@ -152,7 +197,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue(_currentDate, selectedTime);
+          .setdatetimevalue(_currentDate, selectedStartTime);
       Provider.of<datetime_vm>(context, listen: false)
           .setdatetimevalueEnd(_currentDate, endTime);
     });
@@ -179,67 +224,68 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
           StatefulBuilder(
             builder:
                 (BuildContext context, void Function(void Function()) refresh) {
-              selectedTime == TimeOfDay(hour: -1, minute: 00);
+              selectedStartTime == TimeOfDay(hour: -1, minute: 00);
               return Directionality(
                 textDirection: myui.TextDirection.rtl,
                 child: Form(
                   key: _globalKey,
                   child: Column(
                     children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range,
+                              color: kMainColor,
+                            ),
+                            hintStyle: const TextStyle(
+                                color: Colors.black45,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                            hintText:
+                                // _invoice!.daterepaly == null
+                                //     &&
+                                Provider.of<datetime_vm>(context, listen: true)
+                                            .valuedateTime ==
+                                        DateTime(1, 1, 1)
+                                    ? 'تعيين التاريخ' //_currentDate.toString()
+                                    :
+                                    //_currentDate.toString(),
+                                    DateFormat('yyyy-MM-dd').format(
+                                        Provider.of<datetime_vm>(context,
+                                                listen: true)
+                                            .valuedateTime),
+
+                            //_invoice!.daterepaly.toString(),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
+                          ),
+                          readOnly: true,
+                          onTap: () {
+                            refresh(() {
+                              _selectDate(context, DateTime.now());
+                            });
+                          },
+                          validator: (value) {
+                            if (_currentDate == DateTime(1, 1, 1)) {
+                              return 'يرجى تعيين التاريخ ';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 10),
                       Row(
                         children: [
                           Flexible(
                             child: TextFormField(
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                  color: kMainColor,
-                                ),
-                                hintStyle: const TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                hintText:
-                                    // _invoice!.daterepaly == null
-                                    //     &&
-                                    Provider.of<datetime_vm>(context,
-                                                    listen: true)
-                                                .valuedateTime ==
-                                            DateTime(1, 1, 1)
-                                        ? 'تعيين التاريخ' //_currentDate.toString()
-                                        :
-                                        //_currentDate.toString(),
-                                        DateFormat('yyyy-MM-dd').format(
-                                            Provider.of<datetime_vm>(context,
-                                                    listen: true)
-                                                .valuedateTime),
-
-                                //_invoice!.daterepaly.toString(),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
-                              ),
-                              readOnly: true,
-                              onTap: () {
-                                refresh(() {
-                                  _selectDate(context, DateTime.now());
-                                });
-                              },
                               validator: (value) {
-                                if (_currentDate == DateTime(1, 1, 1)) {
-                                  return 'يرجى تعيين التاريخ ';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: TextFormField(
-                              validator: (value) {
-                                if (selectedTime ==
+                                if (selectedStartTime ==
                                     TimeOfDay(hour: -1, minute: 00)) {
                                   return 'يرجى تعيين الوقت ';
                                 }
+                                return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -252,18 +298,18 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     fontWeight: FontWeight.w500),
                                 hintText: Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedTime ==
-                                        TimeOfDay(hour: -1, minute: 00)
+                                            .selectedStartTime ==
+                                        null
                                     ? 'الوقت ' //_currentDate.toString()
                                     : Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedTime
+                                            .selectedStartTime!
                                             .minute
                                             .toString() +
                                         ' : ' +
                                         Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedTime
+                                            .selectedStartTime!
                                             .hour
                                             .toInt()
                                             .toString(),
@@ -280,10 +326,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                               },
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
-                        children: [
+                          SizedBox(width: 10),
                           Flexible(
                             child: TextFormField(
                               validator: (value) {
@@ -291,6 +334,7 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                     TimeOfDay(hour: -1, minute: 00)) {
                                   return 'يرجى تعيين الوقت ';
                                 }
+                                return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -304,17 +348,17 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 hintText: Provider.of<datetime_vm>(context,
                                                 listen: true)
                                             .selectedEndTime ==
-                                        TimeOfDay(hour: -1, minute: 00)
+                                        null
                                     ? 'نهاية الزيارة ' //_currentDate.toString()
                                     : Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedEndTime
+                                            .selectedEndTime!
                                             .minute
                                             .toString() +
                                         ' : ' +
                                         Provider.of<datetime_vm>(context,
                                                 listen: true)
-                                            .selectedEndTime
+                                            .selectedEndTime!
                                             .hour
                                             .toInt()
                                             .toString(),
@@ -399,8 +443,8 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   _currentDate.year,
                                   _currentDate.month,
                                   _currentDate.day,
-                                  selectedTime.hour,
-                                  selectedTime.minute);
+                                  selectedStartTime.hour,
+                                  selectedStartTime.minute);
                               DateTime date_end = DateTime(
                                   _currentDate.year,
                                   _currentDate.month,

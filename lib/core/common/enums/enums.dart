@@ -17,6 +17,17 @@ extension ADTypeExtension on ADType {
 
 enum DateTimeEnum { date, time }
 
+extension DateTimeEnumExtension on DateTimeEnum {
+  String get name {
+    switch (this) {
+      case DateTimeEnum.date:
+        return 'التاريخ';
+      case DateTimeEnum.time:
+        return 'الوقت';
+    }
+  }
+}
+
 enum InstallationTypeEnum { field, online }
 
 extension InstallationTypeExtension on InstallationTypeEnum {
