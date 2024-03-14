@@ -122,3 +122,6 @@ class AddAgentDateEvent extends AgentsDistributorsProfileEvent {
     this.onSuccess,
   });
 }
+
+// enable end date
+class EnableEndDateEvent extends AgentsDistributorsProfileEvent {}

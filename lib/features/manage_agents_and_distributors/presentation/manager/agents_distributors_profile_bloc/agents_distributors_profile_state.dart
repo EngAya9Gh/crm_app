@@ -31,6 +31,8 @@ class AgentsDistributorsProfileState extends Equatable {
   final StateStatus doneTrainingStatus;
   final String? doneTrainingError;
 
+  final bool? startDateSelected;
+
   AgentsDistributorsProfileState({
     this.clientsList = const [],
     this.clientsStatus = StateStatus.initial,
@@ -53,6 +55,7 @@ class AgentsDistributorsProfileState extends Equatable {
     this.addDateVisitError,
     this.doneTrainingStatus = StateStatus.initial,
     this.doneTrainingError,
+    this.startDateSelected,
   });
 
   AgentsDistributorsProfileState copyWith({
@@ -77,6 +80,7 @@ class AgentsDistributorsProfileState extends Equatable {
     String? addDateVisitError,
     StateStatus? doneTrainingStatus,
     String? doneTrainingError,
+    bool? startDateSelected,
   }) {
     return AgentsDistributorsProfileState(
       clientsList: clientsList ?? this.clientsList,
@@ -100,6 +104,7 @@ class AgentsDistributorsProfileState extends Equatable {
       addDateVisitError: addDateVisitError,
       doneTrainingStatus: doneTrainingStatus ?? this.doneTrainingStatus,
       doneTrainingError: doneTrainingError,
+      startDateSelected: startDateSelected ?? this.startDateSelected,
     );
   }
 
@@ -126,5 +131,6 @@ class AgentsDistributorsProfileState extends Equatable {
         addDateVisitError,
         doneTrainingStatus,
         doneTrainingError,
+        startDateSelected,
       ];
 }
