@@ -11,7 +11,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -480,9 +479,11 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
   }
 
   InkWell _getFile(FileAttach fileAttach) {
-    if (fileAttach.fileAttach?.endsWith('.pdf') ?? false) {
+    if (fileAttach.file != null ||
+        (fileAttach.fileAttach?.endsWith('.pdf') ?? false)) {
       return InkWell(
-        onTap: () => _openFile(fileAttach),
+        onTap: () =>
+            invoiceVm.openFile(attachFile: fileAttach, baseUrl: urlfile),
         child: Container(
             width: double.infinity,
             decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
@@ -499,41 +500,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           fit: BoxFit.cover,
         ),
       );
-    }
-  }
-
-  _openFile(FileAttach attachFile) async {
-    if (attachFile.file != null) {
-      if (!(await checkStoragePermission())) return;
-      final result = await OpenFile.open(attachFile.file!.path);
-
-      return;
-    }
-    final filename = attachFile.fileAttach!.name;
-    if (!(await checkStoragePermission())) return;
-
-    filesAttach = filesAttach
-        .map((e) => e.id == attachFile.id
-            ? e.copyWith(fileStatus: DownloadFileStatus.loading)
-            : e)
-        .toList();
-
-    File file;
-    file = await Api().downloadFile(urlfile + attachFile.fileAttach!, filename);
-
-    if (file.existsSync()) {
-      filesAttach = filesAttach
-          .map((e) => e.id == attachFile.id
-              ? e.copyWith(fileStatus: DownloadFileStatus.downloaded)
-              : e)
-          .toList();
-      await OpenFile.open(file.path);
-    } else {
-      filesAttach = filesAttach
-          .map((e) => e.id == attachFile.id
-              ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded)
-              : e)
-          .toList();
     }
   }
 
@@ -559,7 +525,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                               ),
                             )
                           : InkWell(
-                              onTap: () => invoiceVm.openFile(fileAttach),
+                              onTap: () =>
+                                  invoiceVm.openFile(attachFile: fileAttach),
                               child: Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
@@ -569,28 +536,6 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                             ),
                 ),
               ),
-              // if (fileAttach.fileStatus == DownloadFileStatus.loading)
-              //   Positioned.fill(
-              //     child: Align(
-              //       alignment: Alignment.topRight,
-              //       child: InkWell(
-              //         onTap: onDelete,
-              //         borderRadius: BorderRadius.circular(90),
-              //         child: Container(
-              //           height: 30,
-              //           width: 30,
-              //           margin: EdgeInsets.only(top: 5, right: 60),
-              //           decoration: BoxDecoration(
-              //             color: Colors.grey.shade50,
-              //             shape: BoxShape.circle,
-              //           ),
-              //           alignment: Alignment.center,
-              //           child: CircularProgressIndicator(),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-
               if (context.read<PrivilegeCubit>().checkPrivilege('146'))
                 Positioned.fill(
                   child: Align(

@@ -1438,10 +1438,9 @@ class _SupportAddState extends State<SupportAdd> {
   }
 
   Widget networkImage(FileAttach fileAttach, VoidCallback onDelete) {
-    print("url is => ${EndPoints.laravelUrl_Image}${fileAttach.fileAttach}");
     return InkWell(
       onTap: () {
-        invoiceVm.openFile(fileAttach);
+        invoiceVm.openFile(attachFile: fileAttach);
       },
       child: SizedBox(
         width: 100,

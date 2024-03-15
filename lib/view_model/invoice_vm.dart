@@ -1178,7 +1178,10 @@ class invoice_vm extends ChangeNotifier {
     );
   }
 
-  openFile(FileAttach attachFile) async {
+  openFile({
+    required FileAttach attachFile,
+    String baseUrl = EndPoints.laravelUrl_Image,
+  }) async {
     try {
       if (attachFile.file != null) {
         if (!(await checkStoragePermission())) return;
@@ -1188,11 +1191,6 @@ class invoice_vm extends ChangeNotifier {
       }
       final filename = attachFile.fileAttach!.name;
       if (!(await checkStoragePermission())) return;
-      final checkFile = await Api().checkExist(filename);
-      if (checkFile != null) {
-        final result = await OpenFile.open(checkFile.path);
-        return;
-      }
 
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id
@@ -1202,8 +1200,8 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
 
       File file;
-      file = await Api().downloadFile(
-          EndPoints.laravelUrl_Image + attachFile.fileAttach!, filename);
+      file =
+          await Api().downloadFile(baseUrl + attachFile.fileAttach!, filename);
 
       if (file.existsSync()) {
         filesAttach = filesAttach
