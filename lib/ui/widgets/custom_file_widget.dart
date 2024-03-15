@@ -1,8 +1,9 @@
 import 'dart:io';
 
+import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
+import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../constants.dart';
 import '../../features/clients_list/data/models/client_support_file_model.dart';
@@ -25,30 +26,26 @@ class CustomFileWidget extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: Column(
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child:
-                        fileModel.file!.path.mimeType?.contains("image") == true
-                            ? Image.file(
-                                File(fileModel.file!.path),
-                                fit: BoxFit.cover,
-                                width: 110,
-                              )
-                            : Container(
-                                width: 110,
-                                decoration: BoxDecoration(
-                                    color: kMainColor.withOpacity(0.1)),
-                                child: Icon(
-                                  Icons.picture_as_pdf_rounded,
-                                  color: Colors.grey,
-                                )),
-                  ),
-                ),
-                5.verticalSpacingRadius,
-              ],
+            child: InkWell(
+              onTap: () => invoice_vm().openFile(
+                  attachFile: FileAttach(fileAttach: fileModel.fileUrl)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: fileModel.file!.path.mimeType?.contains("image") == true
+                    ? Image.file(
+                        File(fileModel.file!.path),
+                        fit: BoxFit.cover,
+                        width: 110,
+                      )
+                    : Container(
+                        width: 110,
+                        decoration:
+                            BoxDecoration(color: kMainColor.withOpacity(0.1)),
+                        child: Icon(
+                          Icons.picture_as_pdf_rounded,
+                          color: Colors.grey,
+                        )),
+              ),
             ),
           ),
           Positioned.fill(

@@ -2,11 +2,9 @@ import 'dart:collection';
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/widgets/reschedule_dialog.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +15,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../core/utils/app_navigator.dart';
 import '../../features/manage_agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import '../../view_model/invoice_vm.dart';
-import 'cancel_schedule_dialog.dart';
+import 'date_actions_buttons.dart';
 
 class USerInstallationCalendar extends StatefulWidget {
   const USerInstallationCalendar({Key? key}) : super(key: key);
@@ -284,8 +282,11 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                       builder: (context, refresh) {
                                         return _isDoneOrCanceled(value, index)
                                             ? SizedBox()
-                                            : _dateActionsButtons(context,
-                                                value, index, eventProvider);
+                                            : DateActionsButtons(
+                                                eventModel: value[index],
+                                                selectedEvents: _selectedEvents,
+                                                selectedDay: _selectedDay,
+                                              );
                                       },
                                     ),
                                   ]),
@@ -300,76 +301,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
         );
       }),
     );
-  }
-
-  SizedBox _dateActionsButtons(BuildContext context, List<EventModel> value,
-      int index, EventProvider eventProvider) {
-    return SizedBox(
-        width: 100,
-        child: Column(
-          children: [
-            InkWell(
-              child: Text("تمت الزيارة",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                await _onEventSelected(
-                  value[index],
-                );
-              },
-            ),
-            const SizedBox(height: 4),
-            InkWell(
-              child: Text("إعادة جدولة",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                EventModel tempEvent = value[index];
-                final EventModel? editedEvent = await showDialog<dynamic>(
-                    context: context,
-                    builder: (context) => ReScheduleDialog(
-                          event: tempEvent,
-                          idClientsDate: value[index].idClientsDate!,
-                          idClient: value[index].fkIdClient!,
-                          idinvoice: value[index].idinvoice!,
-                          time_from: value[index].from,
-                          time_to: value[index].to,
-                          datecurrent: value[index].from,
-                          typedate: value[index].typedate,
-                        ));
-                if (editedEvent != null) {
-                  _selectedEvents = ValueNotifier(_getEventsForDay(
-                      _selectedDay!, eventProvider.eventDataSource));
-                }
-              },
-            ),
-            const SizedBox(height: 4),
-            InkWell(
-              child: Text("إلغاء",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                var status = await showDialog<dynamic>(
-                    context: context,
-                    builder: (context) => CancelScheduleDialog(
-                          idClientsDate: value[index].idClientsDate,
-                          event: value[index],
-                        ));
-                if (status == true) {
-                  _selectedEvents = ValueNotifier(_getEventsForDay(
-                      _selectedDay!, eventProvider.eventDataSource));
-                  setState(() {});
-                }
-              },
-            ),
-          ],
-        ));
   }
 
   bool _isDoneOrCanceled(List<EventModel> value, int index) {

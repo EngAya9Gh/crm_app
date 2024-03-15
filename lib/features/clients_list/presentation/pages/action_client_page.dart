@@ -581,7 +581,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 return;
                               }
 
-                              print(_selectedClientRegistrationTye);
                               setState(() {
                                 selectedSourceClient = value.toString();
                                 if (selectedSourceClient != 'عميل موصى به' &&
@@ -727,7 +726,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               selectedSourceClient != null) ...{
                             Consumer<UserProvider>(
                                 builder: (contex, userPr, child) {
-                              print(userPr.selectedClientClassificationType);
                               return (userPr.selectedClientClassificationType ==
                                               "أخرى" &&
                                           userPr.selectedClientRegistrationType ==
@@ -996,10 +994,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
     _clientsListBloc.add(EditClientEvent(
       editClientParams,
       onSuccess: (client) {
-        print("type_record : ${client.type_record}");
-        print("type_classification : ${client.type_classification}");
-        print("reason_class: ${client.reason_class}");
-
         context.read<UserProvider>().changeClientClassificationTypeStatus('');
         context.read<UserProvider>().changeClientRegistrationTypeStatus('');
         Navigator.pop(context, client);

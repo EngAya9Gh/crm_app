@@ -188,12 +188,7 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                   setState(() {
                     value1 = value;
                   });
-                  print(value);
-
                   _clientsListBloc.add(SwitchEvent(mycl: value));
-
-                  print('_clientsListBloc.state.myclient_parm');
-                  print(_clientsListBloc.state.myclient_parm);
 
                   if (value)
                     _clientsListBloc.add(UpdateGetClientsParamsEvent(
@@ -221,8 +216,6 @@ class _ClientsListPageState extends State<ClientsListPage> with SearchMixin {
                       country: Nullable.value(fkCountry),
                       typeClient: Nullable.value(null),
                     )));
-                  print('_clientsListBloc.state.myclient_parm222');
-                  print(_clientsListBloc.state.myclient_parm);
                 },
                 title: Text("كل العملاء"),
               ),

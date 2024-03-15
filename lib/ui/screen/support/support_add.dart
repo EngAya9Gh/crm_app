@@ -1438,10 +1438,9 @@ class _SupportAddState extends State<SupportAdd> {
   }
 
   Widget networkImage(FileAttach fileAttach, VoidCallback onDelete) {
-    print("url is => ${EndPoints.laravelUrl_Image}${fileAttach.fileAttach}");
     return InkWell(
       onTap: () {
-        invoiceVm.openFile(fileAttach);
+        invoiceVm.openFile(attachFile: fileAttach);
       },
       child: SizedBox(
         width: 100,
@@ -2033,7 +2032,6 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
   @override
   void initState() {
     eventProvider = context.read<EventProvider>();
-    // call after build is finished
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.fkUser != null) {
         onSelectUser();
@@ -2099,7 +2097,7 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
       return;
     }
     context.read<UserProvider>().changevalueuser(user);
-    iduser = user!.idUser!;
+    iduser = user.idUser!;
     eventProvider.onChangeFkUser(iduser);
   }
 

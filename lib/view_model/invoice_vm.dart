@@ -1178,7 +1178,10 @@ class invoice_vm extends ChangeNotifier {
     );
   }
 
-  openFile(FileAttach attachFile) async {
+  openFile({
+    required FileAttach attachFile,
+    String baseUrl = EndPoints.laravelUrl_Image,
+  }) async {
     try {
       if (attachFile.file != null) {
         if (!(await checkStoragePermission())) return;
@@ -1188,11 +1191,6 @@ class invoice_vm extends ChangeNotifier {
       }
       final filename = attachFile.fileAttach!.name;
       if (!(await checkStoragePermission())) return;
-      final checkFile = await Api().checkExist(filename);
-      if (checkFile != null) {
-        final result = await OpenFile.open(checkFile.path);
-        return;
-      }
 
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id
@@ -1202,8 +1200,12 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
 
       File file;
-      file = await Api().downloadFile(
-          EndPoints.laravelUrl_Image + attachFile.fileAttach!, filename);
+      // if url then download file but take care we we have separated base url so we can't check using http or https
+      file = File(attachFile.fileAttach!);
+      if (!file.existsSync()) {
+        file = await Api()
+            .downloadFile(baseUrl + attachFile.fileAttach!, filename);
+      }
 
       if (file.existsSync()) {
         filesAttach = filesAttach
@@ -1222,6 +1224,7 @@ class invoice_vm extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
+      print("error in open file $e");
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id
               ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded)
@@ -1899,26 +1902,20 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
       final data = await Invoice_Service().crudFilesInvoice(
           files: files, body: body, invoiceId: invoiceId, file: file);
-      print('data.error ' + data.error);
-      if (data.error == '') {
-        final invoice = currentInvoice!.copyWith(
-          filesAttach: data.filesAttach,
-          imageRecord: (data.imageRecord?.isNotEmpty ?? false)
-              ? urlfile + data.imageRecord!
-              : null,
-        );
 
+      if (data.error == '') {
+        if (currentInvoice == null) return;
         final index = listinvoiceClient
             .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index != -1) listinvoiceClient[index] = invoice;
+        if (index != -1) listinvoiceClient[index] = currentInvoice!;
         final index1 = listinvoices
             .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index1 != -1) listinvoices[index1] = invoice;
+        if (index1 != -1) listinvoices[index1] = currentInvoice!;
         int index2 = listInvoicesAccept
             .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index2 != -1) listInvoicesAccept[index2] = invoice;
+        if (index2 != -1) listInvoicesAccept[index2] = currentInvoice!;
 
-        currentInvoice = invoice;
+        currentInvoice = currentInvoice;
         isLoadingCrudFiles = false;
         notifyListeners();
         onSucess?.call();

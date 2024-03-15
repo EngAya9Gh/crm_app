@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
 import 'package:crm_smart/ui/widgets/app_photo_viewer.dart';
@@ -125,35 +126,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                 )
               else
                 TextButton(
-                  onPressed: () {
-                    Map<String, String> deleteFilesMap = {};
-
-                    deletedFiles.forEachIndexed((i, e) {
-                      deleteFilesMap["id_files[$i]"] = e;
-                    });
-
-                    final body = {
-                      "image_record": isDeleteRecordCommercialImageNetworkImage
-                          ? ""
-                          : imageRecord?.split('/').last ?? "",
-                      ...deleteFilesMap,
-                    };
-
-                    final invoiceId = currentInvoice.idInvoice!;
-                    final files = filesAttach
-                        .where((element) => element.file != null)
-                        .map((e) => File(e.file!.path))
-                        .toList();
-
-                    invoiceVm.curdInvoiceFiles(
-                      body: body,
-                      invoiceId: invoiceId,
-                      file: recordCommercialImage,
-                      files: files,
-                      onSucess: () => Navigator.pop(context),
-                      onFail: (value) => failError(value),
-                    );
-                  },
+                  onPressed: () => _onSave(),
                   child: Text("حفظ",
                       style: TextStyle(
                           fontFamily: kfontfamily2,
@@ -408,7 +381,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     padding: REdgeInsets.only(bottom: 20, left: 10, right: 10),
                     itemBuilder: (context, index) {
                       final attachFile = filesAttach[index];
-                      if (attachFile.file != null) {
+                      if (attachFile.file != null ||
+                          (attachFile.fileAttach?.endsWith('.pdf') ?? false)) {
                         return fileImage(attachFile, index);
                       } else {
                         return networkImage(attachFile, index);
@@ -425,6 +399,36 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     );
   }
 
+  void _onSave() {
+    Map<String, String> deleteFilesMap = {};
+
+    deletedFiles.forEachIndexed((i, e) {
+      deleteFilesMap["id_files[$i]"] = e;
+    });
+
+    final body = {
+      "image_record": isDeleteRecordCommercialImageNetworkImage
+          ? ""
+          : imageRecord?.split('/').last ?? "",
+      ...deleteFilesMap,
+    };
+
+    final invoiceId = currentInvoice.idInvoice!;
+    final files = filesAttach
+        .where((element) => element.file != null)
+        .map((e) => File(e.file!.path))
+        .toList();
+
+    invoiceVm.curdInvoiceFiles(
+      body: body,
+      invoiceId: invoiceId,
+      file: recordCommercialImage,
+      files: files,
+      onSucess: () => AppNavigator.pop(),
+      onFail: (value) => failError(value),
+    );
+  }
+
   Widget fileImage(FileAttach fileAttach, int index) {
     return Column(
       children: [
@@ -434,28 +438,33 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child:
-                      fileAttach.file!.path.mimeType?.contains("image") == true
-                          ? InkWell(
-                              onTap: () => AppFileViewer(
-                                imageSource: ImageSourceViewer.file,
-                                files: [File(fileAttach.file!.path)],
-                              ).show(context),
-                              child: Image.file(
-                                File(fileAttach.file!.path),
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () => invoiceVm.openFile(fileAttach),
-                              child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: kMainColor.withOpacity(0.1)),
-                                  child: Icon(Icons.picture_as_pdf_rounded,
-                                      color: Colors.grey)),
-                            ),
+                  child: (fileAttach.file?.name.ext == '.pdf' ||
+                          (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
+                      ? InkWell(
+                          onTap: () => invoice_vm().openFile(
+                              attachFile: fileAttach, baseUrl: urlfile),
+                          child: Container(
+                              width: 110,
+                              decoration: BoxDecoration(
+                                  color: kMainColor.withOpacity(0.1)),
+                              child: Icon(
+                                Icons.picture_as_pdf_rounded,
+                                color: Colors.grey,
+                              )),
+                        )
+                      : InkWell(
+                          onTap: () => AppFileViewer(
+                            imageSource: ImageSourceViewer.file,
+                            files: [File(fileAttach.file!.path)],
+                          ).show(context),
+                          child: Image.file(
+                            File(fileAttach.file!.path),
+                            fit: BoxFit.cover,
+                            width: 110,
+                          ),
+                        ),
+
+                  // _getFile(fileAttach),
                 ),
               ),
               Positioned.fill(
@@ -484,7 +493,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         ),
         5.verticalSpacingRadius,
         TextScroll(
-          fileAttach.file!.path.name + "   ",
+          (fileAttach.file?.path.name ?? '') + "   ",
           mode: TextScrollMode.endless,
           velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
           delayBefore: Duration(milliseconds: 2000),
@@ -497,6 +506,31 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     );
   }
 
+  InkWell _getFile(FileAttach fileAttach) {
+    if (fileAttach.file != null ||
+        (fileAttach.fileAttach?.endsWith('.pdf') ?? false)) {
+      return InkWell(
+        onTap: () =>
+            invoiceVm.openFile(attachFile: fileAttach, baseUrl: urlfile),
+        child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
+            child: Icon(Icons.picture_as_pdf_rounded, color: Colors.grey)),
+      );
+    } else {
+      return InkWell(
+        onTap: () => AppFileViewer(
+          imageSource: ImageSourceViewer.network,
+          urls: [urlfile + fileAttach.fileAttach!],
+        ).show(context),
+        child: FancyImageShimmerViewer(
+          imageUrl: urlfile + fileAttach.fileAttach!,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+  }
+
   Widget networkImage(FileAttach fileAttach, int index) {
     return Column(
       children: [
@@ -506,51 +540,18 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child:
-                      fileAttach.fileAttach!.mimeType?.contains("image") == true
-                          ? InkWell(
-                              onTap: () => AppFileViewer(
-                                imageSource: ImageSourceViewer.network,
-                                urls: [urlfile + fileAttach.fileAttach!],
-                              ).show(context),
-                              child: FancyImageShimmerViewer(
-                                imageUrl: urlfile + fileAttach.fileAttach!,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () => invoiceVm.openFile(fileAttach),
-                              child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: kMainColor.withOpacity(0.1)),
-                                  child: Icon(Icons.picture_as_pdf_rounded,
-                                      color: Colors.grey, size: 30)),
-                            ),
+                  child: InkWell(
+                    onTap: () => AppFileViewer(
+                      imageSource: ImageSourceViewer.network,
+                      urls: [urlfile + fileAttach.fileAttach!],
+                    ).show(context),
+                    child: FancyImageShimmerViewer(
+                      imageUrl: urlfile + (fileAttach.fileAttach ?? ""),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-              // if (fileAttach.fileStatus == DownloadFileStatus.loading)
-              //   Positioned.fill(
-              //     child: Align(
-              //       alignment: Alignment.topRight,
-              //       child: InkWell(
-              //         onTap: onDelete,
-              //         borderRadius: BorderRadius.circular(90),
-              //         child: Container(
-              //           height: 30,
-              //           width: 30,
-              //           margin: EdgeInsets.only(top: 5, right: 60),
-              //           decoration: BoxDecoration(
-              //             color: Colors.grey.shade50,
-              //             shape: BoxShape.circle,
-              //           ),
-              //           alignment: Alignment.center,
-              //           child: CircularProgressIndicator(),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-
               if (context.read<PrivilegeCubit>().checkPrivilege('146'))
                 Positioned.fill(
                   child: Align(
