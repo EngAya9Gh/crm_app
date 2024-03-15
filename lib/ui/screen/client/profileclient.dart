@@ -248,7 +248,7 @@ class _ProfileClientState extends State<ProfileClient>
                                 itemClient: client,
                                 fkclient: client.idClients.toString(),
                                 fkuser: ''),
-                            commentView(client: client, event: widget.event),
+                            commentView(client: client, ),//event: widget.event),
 
                             support_view_invoices(itemClient: client),
                             care_client_view(

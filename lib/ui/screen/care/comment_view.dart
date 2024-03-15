@@ -20,11 +20,11 @@ class commentView extends StatefulWidget {
   commentView({
     required this.client,
     Key? key,
-    this.event,
+    // this.event,
   }) : super(key: key);
 
   ClientModel1? client;
-  final EventModel? event;
+  // final EventModel? event;
 
   @override
   _commentViewState createState() => _commentViewState();
@@ -228,21 +228,24 @@ class _commentViewState extends State<commentView> {
                                                 .img_image,
                                           ).then((value) {
                                             if (value != "error") {
-                                              if (widget.event != null &&
-                                                  isFirstComment) {
-                                                context
-                                                    .read<EventProvider>()
-                                                    .changeEventToDone(
-                                                      event: widget.event!,
-                                                      onLoading: () {},
-                                                      onSuccess: () => context
-                                                          .read<invoice_vm>()
-                                                          .updateListInvoiceAfterMarkEventIsDone(
-                                                              widget.event!),
-                                                      onFailure: () {},
-                                                    );
-                                                isFirstComment = false;
-                                              }
+                                              Provider.of<comment_vm>(context, listen: false)
+                                                  .getComment(widget.client!.idClients.toString());
+
+                                              // if (widget.event != null &&
+                                              //     isFirstComment) {
+                                              //   context
+                                              //       .read<EventProvider>()
+                                              //       .changeEventToDone(
+                                              //         event: widget.event!,
+                                              //         onLoading: () {},
+                                              //         onSuccess: () => context
+                                              //             .read<invoice_vm>()
+                                              //             .updateListInvoiceAfterMarkEventIsDone(
+                                              //                 widget.event!),
+                                              //         onFailure: () {},
+                                              //       );
+                                              //   isFirstComment = false;
+                                              // }
                                               _comment.text = '';
                                             }
                                           });

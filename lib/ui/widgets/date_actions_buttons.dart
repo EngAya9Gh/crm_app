@@ -187,7 +187,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                           ),
                           maxLines: 3,
                           validator: (value) {
-                            if (value!.isEmpty) {
+                            if (value!.trim().isEmpty) {
                               return "التعليق مطلوب";
                             }
                             return null;
