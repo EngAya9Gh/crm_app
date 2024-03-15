@@ -436,7 +436,33 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: _getFile(fileAttach),
+                  child: (fileAttach.file?.name.ext == '.pdf' ||
+                          (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
+                      ? InkWell(
+                          onTap: () => invoice_vm().openFile(
+                              attachFile: fileAttach, baseUrl: urlfile),
+                          child: Container(
+                              width: 110,
+                              decoration: BoxDecoration(
+                                  color: kMainColor.withOpacity(0.1)),
+                              child: Icon(
+                                Icons.picture_as_pdf_rounded,
+                                color: Colors.grey,
+                              )),
+                        )
+                      : InkWell(
+                          onTap: () => AppFileViewer(
+                            imageSource: ImageSourceViewer.file,
+                            files: [File(fileAttach.file!.path)],
+                          ).show(context),
+                          child: Image.file(
+                            File(fileAttach.file!.path),
+                            fit: BoxFit.cover,
+                            width: 110,
+                          ),
+                        ),
+
+                  // _getFile(fileAttach),
                 ),
               ),
               Positioned.fill(
@@ -512,28 +538,16 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child:
-                      fileAttach.fileAttach!.mimeType?.contains("image") == true
-                          ? InkWell(
-                              onTap: () => AppFileViewer(
-                                imageSource: ImageSourceViewer.network,
-                                urls: [urlfile + fileAttach.fileAttach!],
-                              ).show(context),
-                              child: FancyImageShimmerViewer(
-                                imageUrl: urlfile + fileAttach.fileAttach!,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () =>
-                                  invoiceVm.openFile(attachFile: fileAttach),
-                              child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: kMainColor.withOpacity(0.1)),
-                                  child: Icon(Icons.picture_as_pdf_rounded,
-                                      color: Colors.grey, size: 30)),
-                            ),
+                  child: InkWell(
+                    onTap: () => AppFileViewer(
+                      imageSource: ImageSourceViewer.network,
+                      urls: [urlfile + fileAttach.fileAttach!],
+                    ).show(context),
+                    child: FancyImageShimmerViewer(
+                      imageUrl: urlfile + (fileAttach.fileAttach ?? ""),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
               if (context.read<PrivilegeCubit>().checkPrivilege('146'))
