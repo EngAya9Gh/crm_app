@@ -142,45 +142,45 @@ class CustomDrawer extends StatelessWidget {
                 // ProductView();
               },
             ),
-            ListTile(
-              title: Text(
-                'يوزرات تجريبية',
-                style: TextStyle(
-                  fontFamily: kfontfamily2,
-                  fontSize: 20,
-                ),
-              ),
-              leading: Icon(
-                Icons.supervised_user_circle,
-                color: kMainColor,
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(
-                      builder: (BuildContext context) => usertest_view()),
-                );
-                // ProductView();
-              },
-            ),
-            ListTile(
-              title: Text(
-                'الروابط الهامة',
-                style: TextStyle(
-                  fontFamily: kfontfamily2,
-                  fontSize: 20,
-                ),
-              ),
-              leading: Icon(
-                Icons.supervised_user_circle,
-                color: kMainColor,
-              ),
-              onTap: () {
-                Navigator.push(context,
-                    CupertinoPageRoute(builder: (context) => ManageLinkPage()));
-                // ProductView();
-              },
-            ),
+            // ListTile(
+            //   title: Text(
+            //     'يوزرات تجريبية',
+            //     style: TextStyle(
+            //       fontFamily: kfontfamily2,
+            //       fontSize: 20,
+            //     ),
+            //   ),
+            //   leading: Icon(
+            //     Icons.supervised_user_circle,
+            //     color: kMainColor,
+            //   ),
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       CupertinoPageRoute<void>(
+            //           builder: (BuildContext context) => usertest_view()),
+            //     );
+            //     // ProductView();
+            //   },
+            // ),
+            // ListTile(
+            //   title: Text(
+            //     'الروابط الهامة',
+            //     style: TextStyle(
+            //       fontFamily: kfontfamily2,
+            //       fontSize: 20,
+            //     ),
+            //   ),
+            //   leading: Icon(
+            //     Icons.supervised_user_circle,
+            //     color: kMainColor,
+            //   ),
+            //   onTap: () {
+            //     Navigator.push(context,
+            //         CupertinoPageRoute(builder: (context) => ManageLinkPage()));
+            //     // ProductView();
+            //   },
+            // ),
             // Provider.of<privilge_vm>(context, listen: true).checkprivlge('117') == true
             //     ? ListTile(
             //   title: Text(

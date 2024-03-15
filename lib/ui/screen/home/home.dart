@@ -1,3 +1,4 @@
+import 'package:crm_smart/constantsList.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/ui/screen/home/build_card.dart';
@@ -91,7 +92,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    var sizeh = MediaQuery.of(context).size.height;
+    double sizeh = MediaQuery.of(context).size.height;
     var paddval = 1.0;
     paddval = sizeh / 3;
     return Directionality(
@@ -128,8 +129,13 @@ class _HomeState extends State<Home> {
         body: Directionality(
           textDirection: TextDirection.rtl,
           child: Padding(
-            padding: const EdgeInsets.only(top: 0),
-            child: BuildCard(),
+            padding: const EdgeInsets.only(top: 35),
+            child: BuildCard(
+              imageList: imageList,
+              itemCategory: itemCategory,
+              type: 'home',
+
+            ),
           ),
         ),
       ),

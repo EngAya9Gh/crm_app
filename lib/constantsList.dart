@@ -1,9 +1,13 @@
-import 'package:crm_smart/ui/screen/home/pageshome/Emarketing.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/Emarketing.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/care.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/All_clinets_page.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/finance.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/managment.dart';
-import 'package:crm_smart/ui/screen/home/pageshome/race_all.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/race_all.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/sales.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/All_invoice_page.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/relation_page.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/reports_page.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/support.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -27,11 +31,21 @@ final List<String> itemCategory = [
   'المبيعات',
   'الدعم الفني',
   'العناية بالعملاء',
-  'التسويق الإلكتروني',
+  // 'التسويق الإلكتروني',
   'إدارة',
-  'التحصيل',
-  'السباقات',
+  // 'التحصيل',
+  // 'السباقات',
   'إدارة المهام',
+];
+final List<String> itemCategory_sales = [
+  'العملاء',
+  'الفواتير',
+  'علاقات عامة',
+  'التسويق الإلكتروني',
+  'تقارير واحصائيات',
+  // 'التحصيل',
+  'السباقات',
+  // 'إدارة المهام',
 ];
 
 final List<String> listSelectCategory = [
@@ -47,11 +61,21 @@ final List<Widget> listwidget = [
   sales(),
   supportpage(),
   carepage(),
-  marketingpage(),
+  // marketingpage(),
   ManagementPage(),
-  financepage(),
-  race_page(),
+  // financepage(),
+  // race_page(),
   TaskManagementListPage(),
+];
+final List<Widget> listwidget_sales = [
+  sales_client(),
+  All_invoice_page(),
+  relation_page(),
+  marketingpage(),
+  // ManagementPage(),
+  reports_page(),
+  race_page(),
+  // TaskManagementListPage(),
 ];
 List<String> sourceClientsList = [
   'ميداني',
@@ -118,11 +142,21 @@ List<String> imageList = [
   'assest/images/bill.png',
   'assest/images/technical-support.png',
   'assest/images/social-care.png',
-  'assest/images/digitalmarketing.png',
+  // 'assest/images/digitalmarketing.png',
   'assest/images/administrator.png',
-  'assest/images/money.png',
-  'assest/images/race.png',
+  // 'assest/images/money.png',
+  // 'assest/images/race.png',
   'assest/images/managetask1.png',
+];
+List<String> imageList_sales = [
+  'assest/images/All_clients1.png',
+  'assest/images/All_invoice.png',
+  'assest/images/relationship.png',
+  'assest/images/digitalmarketing.png',
+  'assest/images/reports.png',
+  // 'assest/images/money.png',
+  'assest/images/race.png',
+  // 'assest/images/managetask1.png',
 ];
 
 List<String> clientsClassificationList = [

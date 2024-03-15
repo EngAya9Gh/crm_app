@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants.dart';
-import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../widgethomeitem.dart';
+import '../../../../../constants.dart';
+import '../../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../widgethomeitem.dart';
 
 class marketingpage extends StatelessWidget {
   const marketingpage({Key? key}) : super(key: key);

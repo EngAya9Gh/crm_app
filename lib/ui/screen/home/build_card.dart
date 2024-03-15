@@ -5,11 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BuildCard extends StatelessWidget {
-  BuildCard({Key? key}) : super(key: key);
+  BuildCard({
+    required this.imageList,
+    required this.itemCategory,
+    required this.type,
+    Key? key
 
+  }) : super(key: key);
+  String type='';
+  List<String > imageList=[];
+  List<String > itemCategory=[];
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return
+      Center(
       child: GridView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
         itemCount: itemCategory.length,
@@ -24,7 +33,10 @@ class BuildCard extends StatelessWidget {
           return buildCardCategory(
               image: imageList[index],
               item: itemCategory[index],
-              onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (context) => listwidget[index])));
+              onTap: () =>
+              type=='home'?  Navigator.push(context, CupertinoPageRoute(builder: (context) => listwidget[index]))
+              :Navigator.push(context, CupertinoPageRoute(builder: (context) => listwidget_sales[index]))
+          );
         },
       ),
     );

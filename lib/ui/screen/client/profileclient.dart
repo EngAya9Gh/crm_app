@@ -151,7 +151,8 @@ class _ProfileClientState extends State<ProfileClient>
                 child: Center(
                   child: Padding(
                       padding: const EdgeInsets.only(top: 5.0),
-                      child: TextScroll(
+                      child:
+                      TextScroll(
                         client!.nameEnterprise.toString() + "   ",
                         mode: TextScrollMode.endless,
                         velocity: Velocity(pixelsPerSecond: Offset(60, 0)),

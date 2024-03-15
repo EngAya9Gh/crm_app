@@ -1,9 +1,9 @@
 abstract class EndPoints {
   EndPoints._();
 
-  static const phpUrl = "http://smartcrm.ws/test/api/";
-  static const String laravelUrl = 'http://test.smartcrm.ws/api/';
-  static const String laravelUrl_Image = 'http://test.smartcrm.ws/storage/';
+  static const phpUrl = "http://smartcrm.ws/crm/api/";
+  static const String laravelUrl = 'http://new.smartcrm.ws/api/';
+  static const String laravelUrl_Image = 'http://new.smartcrm.ws/storage/';
 
   static const care = _Care();
   static const client = _Client();
