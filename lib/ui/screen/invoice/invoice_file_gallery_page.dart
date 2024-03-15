@@ -126,35 +126,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                 )
               else
                 TextButton(
-                  onPressed: () {
-                    Map<String, String> deleteFilesMap = {};
-
-                    deletedFiles.forEachIndexed((i, e) {
-                      deleteFilesMap["id_files[$i]"] = e;
-                    });
-
-                    final body = {
-                      "image_record": isDeleteRecordCommercialImageNetworkImage
-                          ? ""
-                          : imageRecord?.split('/').last ?? "",
-                      ...deleteFilesMap,
-                    };
-
-                    final invoiceId = currentInvoice.idInvoice!;
-                    final files = filesAttach
-                        .where((element) => element.file != null)
-                        .map((e) => File(e.file!.path))
-                        .toList();
-
-                    invoiceVm.curdInvoiceFiles(
-                      body: body,
-                      invoiceId: invoiceId,
-                      file: recordCommercialImage,
-                      files: files,
-                      onSucess: () => AppNavigator.pop(),
-                      onFail: (value) => failError(value),
-                    );
-                  },
+                  onPressed: () => _onSave(),
                   child: Text("حفظ",
                       style: TextStyle(
                           fontFamily: kfontfamily2,
@@ -424,6 +396,36 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
           ),
         );
       },
+    );
+  }
+
+  void _onSave() {
+    Map<String, String> deleteFilesMap = {};
+
+    deletedFiles.forEachIndexed((i, e) {
+      deleteFilesMap["id_files[$i]"] = e;
+    });
+
+    final body = {
+      "image_record": isDeleteRecordCommercialImageNetworkImage
+          ? ""
+          : imageRecord?.split('/').last ?? "",
+      ...deleteFilesMap,
+    };
+
+    final invoiceId = currentInvoice.idInvoice!;
+    final files = filesAttach
+        .where((element) => element.file != null)
+        .map((e) => File(e.file!.path))
+        .toList();
+
+    invoiceVm.curdInvoiceFiles(
+      body: body,
+      invoiceId: invoiceId,
+      file: recordCommercialImage,
+      files: files,
+      onSucess: () => AppNavigator.pop(),
+      onFail: (value) => failError(value),
     );
   }
 

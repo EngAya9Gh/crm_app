@@ -1898,25 +1898,29 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
       final data = await Invoice_Service().crudFilesInvoice(
           files: files, body: body, invoiceId: invoiceId, file: file);
+      print("data.filesAttach  ${data.filesAttach}");
+      print("data.imageRecord  ${data.imageRecord}");
+      print("data.error  ${data.error}");
       if (data.error == '') {
-        final invoice = currentInvoice!.copyWith(
-          filesAttach: data.filesAttach,
-          imageRecord: (data.imageRecord?.isNotEmpty ?? false)
-              ? urlfile + data.imageRecord!
-              : null,
-        );
+        // final currentInvoice = currentInvoice!.copyWith(
+        //   filesAttach: data.filesAttach,
+        //   imageRecord: (data.imageRecord?.isNotEmpty ?? false)
+        //       ? urlfile + data.imageRecord!
+        //       : null,
+        // );
 
+        if (currentInvoice == null) return;
         final index = listinvoiceClient
             .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index != -1) listinvoiceClient[index] = invoice;
+        if (index != -1) listinvoiceClient[index] = currentInvoice!;
         final index1 = listinvoices
             .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index1 != -1) listinvoices[index1] = invoice;
+        if (index1 != -1) listinvoices[index1] = currentInvoice!;
         int index2 = listInvoicesAccept
             .indexWhere((element) => element.idInvoice == invoiceId);
-        if (index2 != -1) listInvoicesAccept[index2] = invoice;
+        if (index2 != -1) listInvoicesAccept[index2] = currentInvoice!;
 
-        currentInvoice = invoice;
+        currentInvoice = currentInvoice;
         isLoadingCrudFiles = false;
         notifyListeners();
         onSucess?.call();
