@@ -490,7 +490,6 @@ class _ClientSectionState extends State<ClientSection> {
       if (!isUpdate) {
         clientModel1 = state.currentClientModel.data!;
       }
-      print("Client name: ${clientModel1.nameClient}");
       return Directionality(
         textDirection: TextDirection.rtl,
         child: Container(
@@ -850,12 +849,8 @@ class _ClientSectionState extends State<ClientSection> {
                                                 //   ),
                                                 // );
                                                 await showAlertDialog(context);
-                                            print('result.nameEnterprise');
-                                            print(result?.nameEnterprise);
                                             if (result != null)
                                               setState(() {
-                                                print('result.nameEnterprise');
-                                                print(result?.nameEnterprise);
                                                 clientModel1 =
                                                     result.mapToClientModel1();
                                               });
@@ -1625,7 +1620,6 @@ class _ClientSectionState extends State<ClientSection> {
 
   _onPressedUpdate(BuildContext context) async {
     isUpdate = true;
-    print(clientModel1.serialNumber);
     ClientModel result = await Navigator.push(
       context,
       CupertinoPageRoute(
@@ -1636,7 +1630,6 @@ class _ClientSectionState extends State<ClientSection> {
     setState(() {
       clientModel1 = result.mapToClientModel1();
     });
-    print(result.serialNumber);
     print(clientModel1.serialNumber);
   }
 

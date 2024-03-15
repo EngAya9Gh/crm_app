@@ -112,8 +112,6 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
       return;
     }
     emit(state.copyWith(similarClientsState: PageState.loading()));
-    print('getClientsWithFilterParams');
-    print(getClientsWithFilterParams.name_enterprise.toString());
     final response =
         await _getSimilarClientsUsecase(getClientsWithFilterParams);
 
@@ -140,14 +138,9 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
 
   FutureOr<void> _onSwitchEvent(
       SwitchEvent event, Emitter<ClientsListState> emit) {
-    print('object');
-    print(state.myclient_parm);
-    print(event.mycl);
     emit(state.copyWith(
       myclient: event.mycl,
     ));
-    print('myclient_parm');
-    print(state.myclient_parm);
   }
 
   FutureOr<void> _onSearchEvent(

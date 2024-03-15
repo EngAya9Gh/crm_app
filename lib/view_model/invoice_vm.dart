@@ -1222,6 +1222,7 @@ class invoice_vm extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
+      print("error in open file $e");
       filesAttach = filesAttach
           .map((e) => e.id == attachFile.id
               ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded)
@@ -1899,7 +1900,6 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
       final data = await Invoice_Service().crudFilesInvoice(
           files: files, body: body, invoiceId: invoiceId, file: file);
-      print('data.error ' + data.error);
       if (data.error == '') {
         final invoice = currentInvoice!.copyWith(
           filesAttach: data.filesAttach,

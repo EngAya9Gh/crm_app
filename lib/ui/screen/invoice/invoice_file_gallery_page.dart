@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
 import 'package:crm_smart/ui/widgets/app_photo_viewer.dart';
@@ -10,6 +11,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
@@ -150,7 +152,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                       invoiceId: invoiceId,
                       file: recordCommercialImage,
                       files: files,
-                      onSucess: () => Navigator.pop(context),
+                      onSucess: () => AppNavigator.pop(),
                       onFail: (value) => failError(value),
                     );
                   },
@@ -408,7 +410,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     padding: REdgeInsets.only(bottom: 20, left: 10, right: 10),
                     itemBuilder: (context, index) {
                       final attachFile = filesAttach[index];
-                      if (attachFile.file != null) {
+                      if (attachFile.file != null ||
+                          (attachFile.fileAttach?.endsWith('.pdf') ?? false)) {
                         return fileImage(attachFile, index);
                       } else {
                         return networkImage(attachFile, index);
@@ -434,28 +437,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
               Positioned.fill(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child:
-                      fileAttach.file!.path.mimeType?.contains("image") == true
-                          ? InkWell(
-                              onTap: () => AppFileViewer(
-                                imageSource: ImageSourceViewer.file,
-                                files: [File(fileAttach.file!.path)],
-                              ).show(context),
-                              child: Image.file(
-                                File(fileAttach.file!.path),
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            )
-                          : InkWell(
-                              onTap: () => invoiceVm.openFile(fileAttach),
-                              child: Container(
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      color: kMainColor.withOpacity(0.1)),
-                                  child: Icon(Icons.picture_as_pdf_rounded,
-                                      color: Colors.grey)),
-                            ),
+                  child: _getFile(fileAttach),
                 ),
               ),
               Positioned.fill(
@@ -484,7 +466,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         ),
         5.verticalSpacingRadius,
         TextScroll(
-          fileAttach.file!.path.name + "   ",
+          (fileAttach.file?.path.name ?? '') + "   ",
           mode: TextScrollMode.endless,
           velocity: Velocity(pixelsPerSecond: Offset(45, 0)),
           delayBefore: Duration(milliseconds: 2000),
@@ -495,6 +477,64 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         )
       ],
     );
+  }
+
+  InkWell _getFile(FileAttach fileAttach) {
+    if (fileAttach.fileAttach?.endsWith('.pdf') ?? false) {
+      return InkWell(
+        onTap: () => _openFile(fileAttach),
+        child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
+            child: Icon(Icons.picture_as_pdf_rounded, color: Colors.grey)),
+      );
+    } else {
+      return InkWell(
+        onTap: () => AppFileViewer(
+          imageSource: ImageSourceViewer.network,
+          urls: [urlfile + fileAttach.fileAttach!],
+        ).show(context),
+        child: FancyImageShimmerViewer(
+          imageUrl: urlfile + fileAttach.fileAttach!,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+  }
+
+  _openFile(FileAttach attachFile) async {
+    if (attachFile.file != null) {
+      if (!(await checkStoragePermission())) return;
+      final result = await OpenFile.open(attachFile.file!.path);
+
+      return;
+    }
+    final filename = attachFile.fileAttach!.name;
+    if (!(await checkStoragePermission())) return;
+
+    filesAttach = filesAttach
+        .map((e) => e.id == attachFile.id
+            ? e.copyWith(fileStatus: DownloadFileStatus.loading)
+            : e)
+        .toList();
+
+    File file;
+    file = await Api().downloadFile(urlfile + attachFile.fileAttach!, filename);
+
+    if (file.existsSync()) {
+      filesAttach = filesAttach
+          .map((e) => e.id == attachFile.id
+              ? e.copyWith(fileStatus: DownloadFileStatus.downloaded)
+              : e)
+          .toList();
+      await OpenFile.open(file.path);
+    } else {
+      filesAttach = filesAttach
+          .map((e) => e.id == attachFile.id
+              ? e.copyWith(fileStatus: DownloadFileStatus.unDownloaded)
+              : e)
+          .toList();
+    }
   }
 
   Widget networkImage(FileAttach fileAttach, int index) {
