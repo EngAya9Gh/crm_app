@@ -1880,6 +1880,8 @@ class _dialog_readyState extends State<dialog_ready> {
                                         content: Text(
                                             'من فضلك اختر سبب من القائمة ')));
                               else {
+                                if (!_globalKey.currentState!.validate()) return;
+
                                 Provider.of<invoice_vm>(context, listen: false)
                                     .setisload();
                                 final currentUser =
