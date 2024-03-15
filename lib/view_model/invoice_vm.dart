@@ -1200,8 +1200,12 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
 
       File file;
-      file =
-          await Api().downloadFile(baseUrl + attachFile.fileAttach!, filename);
+      // if url then download file but take care we we have separated base url so we can't check using http or https
+      file = File(attachFile.fileAttach!);
+      if (!file.existsSync()) {
+        file = await Api()
+            .downloadFile(baseUrl + attachFile.fileAttach!, filename);
+      }
 
       if (file.existsSync()) {
         filesAttach = filesAttach
@@ -1898,17 +1902,8 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
       final data = await Invoice_Service().crudFilesInvoice(
           files: files, body: body, invoiceId: invoiceId, file: file);
-      print("data.filesAttach  ${data.filesAttach}");
-      print("data.imageRecord  ${data.imageRecord}");
-      print("data.error  ${data.error}");
-      if (data.error == '') {
-        // final currentInvoice = currentInvoice!.copyWith(
-        //   filesAttach: data.filesAttach,
-        //   imageRecord: (data.imageRecord?.isNotEmpty ?? false)
-        //       ? urlfile + data.imageRecord!
-        //       : null,
-        // );
 
+      if (data.error == '') {
         if (currentInvoice == null) return;
         final index = listinvoiceClient
             .indexWhere((element) => element.idInvoice == invoiceId);
