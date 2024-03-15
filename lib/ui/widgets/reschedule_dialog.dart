@@ -4,7 +4,6 @@ import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -452,10 +451,6 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                   endTime.hour,
                                   endTime.minute);
 
-                              final idUser = Provider.of<UserProvider>(context,
-                                      listen: false)
-                                  .currentUser
-                                  .idUser;
                               final EventModel editedEvent =
                                   widget.event.copyWith(
                                 isDone: "3",
@@ -463,6 +458,11 @@ class _ReScheduleDialogState extends State<ReScheduleDialog> {
                                 to: date_end,
                                 typedate: selectInstallationType,
                               );
+                              String? assignedTo = iduser;
+                              if (assignedTo == null) {
+                                assignedTo = widget.event.fkUser;
+                              }
+
                               await Provider.of<EventProvider>(context,
                                       listen: false)
                                   .editSchedule_vm(

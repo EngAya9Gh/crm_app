@@ -31,6 +31,7 @@ class EventProvider extends ChangeNotifier {
   List<EventModel> get eventsOfSelectedDate => _events;
   PageState<List<AppointmentModel>> appointmentsState = PageState();
   bool isloadingRescheduleOrCancel = false;
+  bool isloadingDoneEvent = false;
 
   // List<InvoiceModel> listinvoices = [];
   List<ClientModel1> listclient = [];
@@ -309,6 +310,9 @@ class EventProvider extends ChangeNotifier {
   }) async {
     try {
       onLoading();
+      isloadingDoneEvent = true;
+      notifyListeners();
+
       final isDone = IsDoneDateEnum.done.index.toString();
       var data = await Api().post(
         url: url +
@@ -323,6 +327,8 @@ class EventProvider extends ChangeNotifier {
       final index = list.map((e) => e.from).toList().indexOf(event.from);
       if (index == -1) {
         onFailure();
+        isloadingDoneEvent = false;
+        notifyListeners();
         return;
       }
       list[index] = list[index].copyWith(
@@ -331,6 +337,7 @@ class EventProvider extends ChangeNotifier {
         comment: event.comment,
       );
       eventDataSource[event.from] = list;
+      isloadingDoneEvent = false;
       notifyListeners();
       onSuccess();
     } catch (e) {

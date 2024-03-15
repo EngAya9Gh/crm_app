@@ -2033,7 +2033,6 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
   @override
   void initState() {
     eventProvider = context.read<EventProvider>();
-    // call after build is finished
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.fkUser != null) {
         onSelectUser();
@@ -2099,7 +2098,7 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
       return;
     }
     context.read<UserProvider>().changevalueuser(user);
-    iduser = user!.idUser!;
+    iduser = user.idUser!;
     eventProvider.onChangeFkUser(iduser);
   }
 
