@@ -2,11 +2,9 @@ import 'dart:collection';
 
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/widgets/reschedule_dialog.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +15,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../../core/utils/app_navigator.dart';
 import '../../features/manage_agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import '../../view_model/invoice_vm.dart';
-import 'cancel_schedule_dialog.dart';
+import 'date_actions_buttons.dart';
 
 class USerInstallationCalendar extends StatefulWidget {
   const USerInstallationCalendar({Key? key}) : super(key: key);
@@ -284,7 +282,7 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
                                       builder: (context, refresh) {
                                         return _isDoneOrCanceled(value, index)
                                             ? SizedBox()
-                                            : ChangeToDoneButton(
+                                            : DateActionsButtons(
                                                 eventModel: value[index],
                                                 selectedEvents: _selectedEvents,
                                                 selectedDay: _selectedDay,
@@ -303,76 +301,6 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
         );
       }),
     );
-  }
-
-  SizedBox _dateActionsButtons(BuildContext context, List<EventModel> value,
-      int index, EventProvider eventProvider) {
-    return SizedBox(
-        width: 100,
-        child: Column(
-          children: [
-            InkWell(
-              child: Text("تمت الزيارة",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                await _onEventSelected(
-                  value[index],
-                );
-              },
-            ),
-            const SizedBox(height: 4),
-            InkWell(
-              child: Text("إعادة جدولة",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                EventModel tempEvent = value[index];
-                final EventModel? editedEvent = await showDialog<dynamic>(
-                    context: context,
-                    builder: (context) => ReScheduleDialog(
-                          event: tempEvent,
-                          idClientsDate: value[index].idClientsDate!,
-                          idClient: value[index].fkIdClient!,
-                          idinvoice: value[index].idinvoice!,
-                          time_from: value[index].from,
-                          time_to: value[index].to,
-                          datecurrent: value[index].from,
-                          typedate: value[index].typedate,
-                        ));
-                if (editedEvent != null) {
-                  _selectedEvents = ValueNotifier(_getEventsForDay(
-                      _selectedDay!, eventProvider.eventDataSource));
-                }
-              },
-            ),
-            const SizedBox(height: 4),
-            InkWell(
-              child: Text("إلغاء",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                var status = await showDialog<dynamic>(
-                    context: context,
-                    builder: (context) => CancelScheduleDialog(
-                          idClientsDate: value[index].idClientsDate,
-                          event: value[index],
-                        ));
-                if (status == true) {
-                  _selectedEvents = ValueNotifier(_getEventsForDay(
-                      _selectedDay!, eventProvider.eventDataSource));
-                  setState(() {});
-                }
-              },
-            ),
-          ],
-        ));
   }
 
   bool _isDoneOrCanceled(List<EventModel> value, int index) {
@@ -506,250 +434,5 @@ class _USerInstallationCalendarState extends State<USerInstallationCalendar> {
         );
       },
     );
-  }
-}
-
-class ChangeToDoneButton extends StatefulWidget {
-  const ChangeToDoneButton({
-    Key? key,
-    required this.eventModel,
-    required this.selectedEvents,
-    this.selectedDay,
-  }) : super(key: key);
-
-  final EventModel eventModel;
-  final ValueNotifier<List<EventModel>> selectedEvents;
-  final DateTime? selectedDay;
-
-  @override
-  State<ChangeToDoneButton> createState() => _ChangeToDoneButtonState();
-}
-
-class _ChangeToDoneButtonState extends State<ChangeToDoneButton> {
-  late final EventProvider eventProvider;
-  late final EventModel eventModel;
-  late ValueNotifier<List<EventModel>> _selectedEvents;
-  late DateTime? _selectedDay;
-
-  @override
-  void initState() {
-    eventProvider = context.read<EventProvider>();
-    _selectedEvents = widget.selectedEvents;
-    _selectedDay = widget.selectedDay;
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        width: 100,
-        child: Column(
-          children: [
-            InkWell(
-              child: Text("تمت الزيارة",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                await _onEventSelected(widget.eventModel);
-              },
-            ),
-            const SizedBox(height: 4),
-            InkWell(
-              child: Text("إعادة جدولة",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                EventModel tempEvent = widget.eventModel;
-                final EventModel? editedEvent = await showDialog<dynamic>(
-                    context: context,
-                    builder: (context) => ReScheduleDialog(
-                          event: tempEvent,
-                          idClientsDate: widget.eventModel.idClientsDate!,
-                          idClient: widget.eventModel.fkIdClient!,
-                          idinvoice: widget.eventModel.idinvoice!,
-                          time_from: widget.eventModel.from,
-                          time_to: widget.eventModel.to,
-                          datecurrent: widget.eventModel.from,
-                          typedate: widget.eventModel.typedate,
-                        ));
-                if (editedEvent != null) {
-                  _selectedEvents = ValueNotifier(_getEventsForDay(
-                      _selectedDay!, eventProvider.eventDataSource));
-                }
-              },
-            ),
-            const SizedBox(height: 4),
-            InkWell(
-              child: Text("إلغاء",
-                  style: context.textTheme.labelLarge?.copyWith(
-                      color: context.theme.primaryColor,
-                      fontFamily: kfontfamily2,
-                      fontWeight: FontWeight.w600)),
-              onTap: () async {
-                var status = await showDialog<dynamic>(
-                    context: context,
-                    builder: (context) => CancelScheduleDialog(
-                          idClientsDate: widget.eventModel.idClientsDate,
-                          event: widget.eventModel,
-                        ));
-                if (status == true) {
-                  _selectedEvents = ValueNotifier(_getEventsForDay(
-                      _selectedDay!, eventProvider.eventDataSource));
-                  setState(() {});
-                }
-              },
-            ),
-          ],
-        ));
-  }
-
-  bool _isDoneOrCanceled(List<EventModel> value, int index) {
-    return widget.eventModel.isDone == IsDoneDateEnum.done.value ||
-        widget.eventModel.isDone == IsDoneDateEnum.canceled.value;
-  }
-
-  _navigateToProfileOnEventTap(EventModel event) {
-    if (event.agentName != null) {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => AgentProfilePage(
-            agent: event.agent!,
-            tabIndex: 3,
-          ),
-        ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        CupertinoPageRoute(
-          builder: (context) => ProfileClient(
-            idClient: event.fkIdClient,
-            event: event,
-            tabIndex: 2,
-          ),
-        ),
-      );
-    }
-  }
-
-  _onEventSelected(EventModel event) async {
-    if (event.agentName != null) {
-      await context.read<EventProvider>().changeEventToDone(
-            event: event,
-            onLoading: () {},
-            onSuccess: () => context
-                .read<invoice_vm>()
-                .updateListInvoiceAfterMarkEventIsDone(
-                  event,
-                ),
-            onFailure: () {},
-          );
-    } else {
-      return await _onClientEventSelected(event);
-    }
-  }
-
-  Future<bool?> _onClientEventSelected(EventModel event) async {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final TextEditingController _commentController = TextEditingController();
-    bool isLoading = false;
-    return await showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return WillPopScope(
-          onWillPop: () => Future.value(true),
-          child: SimpleDialog(
-            title: Text(
-              "إغلاق الجدولة",
-              textAlign: TextAlign.center,
-            ),
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8.0,
-                ),
-                child: Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: _commentController,
-                          decoration: InputDecoration(
-                            hintText: "أكتب تعليقك هنا",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                          maxLines: 3,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "التعليق مطلوب";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 20),
-                        StatefulBuilder(
-                          builder: (context, refreshState) {
-                            return AppElevatedButton(
-                              isLoading: isLoading,
-                              text: "حفظ",
-                              onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  refreshState(() => isLoading = true);
-                                  await context
-                                      .read<EventProvider>()
-                                      .changeEventToDone(
-                                        event: event.copyWith(
-                                          comment: _commentController.text,
-                                        ),
-                                        onLoading: () {},
-                                        onSuccess: () {},
-                                        onFailure: () {},
-                                      );
-                                  context
-                                      .read<invoice_vm>()
-                                      .updateListInvoiceAfterMarkEventIsDone(
-                                          event);
-                                  refreshState(() => isLoading = false);
-                                  AppNavigator.pop(result: true);
-                                  isLoading = false;
-                                }
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  List<EventModel> _getEventsForDay(
-      DateTime day, LinkedHashMap<DateTime, List<EventModel>>? events) {
-    if (events == null) {
-      return [];
-    }
-    events.values.forEach((element) {
-      element.sort((a, b) => a.from.compareTo(b.from));
-    });
-
-    return events[day] ?? [];
   }
 }
