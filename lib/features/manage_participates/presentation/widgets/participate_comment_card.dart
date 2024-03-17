@@ -4,14 +4,15 @@ import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../../constants.dart';
 import '../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../core/utils/end_points.dart';
 import '../../../../function_global.dart';
 
 //uplode 2023
 class ParticipateCommenttCard extends StatelessWidget {
   ParticipateCommenttCard({required this.comment, Key? key}) : super(key: key);
   final ProfileCommentModel comment;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -77,7 +78,7 @@ class ParticipateCommenttCard extends StatelessWidget {
                                             placeholder: (context, url) =>
                                                 const CircularProgressIndicator(),
                                             imageUrl: comment.imgImage != ''
-                                                ? urlimage +
+                                                ? EndPoints.baseUrls.urlimage +
                                                     comment.imgImage.toString()
                                                 : '',
                                           ),

@@ -1,10 +1,9 @@
+import '../common/enums/enums.dart';
+
 abstract class EndPoints {
   EndPoints._();
 
-  static const phpUrl = "http://smartcrm.ws/crm/api/";
-  static const String laravelUrl = 'http://new.smartcrm.ws/api/';
-  static const String laravelUrl_Image = 'http://new.smartcrm.ws/storage/';
-
+  static final baseUrls = _BaseUrls();
   static const care = _Care();
   static const client = _Client();
   static const users = _Users();
@@ -18,6 +17,49 @@ abstract class EndPoints {
   static const city = _City();
   static const agentDistributor = _AgentDistributor();
   static const invoice = _Invoice();
+}
+
+class _BaseUrls {
+  static AppMode appMode = AppMode.development;
+
+  _BaseUrls() {
+    init();
+    print('AppMode: $appMode');
+    print('url: $url');
+    print('url_laravel: $url_laravel');
+    print('urlimage: $urlimage');
+    print('urlfile: $urlfile');
+    print('urlfilelogo: $urlfilelogo');
+    print('urlfileAgent: $urlfileAgent');
+  }
+
+  late final String url;
+  late final String url_laravel;
+  late final String urlimage;
+  late final String urlfile;
+  late final String urlfilelogo;
+  late final String urlfileAgent;
+  late final String laravelUrl_Image;
+
+  void init() {
+    if (appMode == AppMode.production) {
+      url = 'http://smartcrm.ws/crm/api/';
+      url_laravel = 'http://new.smartcrm.ws/api/';
+      urlimage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
+      urlfile = 'http://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
+      urlfilelogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
+      urlfileAgent = 'http://smartcrm.ws/crm/api/imagesApp/agent/';
+      laravelUrl_Image = 'http://new.smartcrm.ws/storage/';
+    } else {
+      url = 'http://smartcrm.ws/test/api/';
+      url_laravel = 'http://test.smartcrm.ws/api/';
+      urlimage = 'http://smartcrm.ws/test/api/imagesApp/profile/';
+      urlfile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
+      urlfilelogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
+      urlfileAgent = 'http://smartcrm.ws/test/api/imagesApp/agent/';
+      laravelUrl_Image = 'http://test.smartcrm.ws/storage/';
+    }
+  }
 }
 
 class _App {

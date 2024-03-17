@@ -2,8 +2,8 @@ import 'package:crm_smart/Repository/cache_repo.dart';
 import 'package:crm_smart/model/participatModel.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../constants.dart';
 import '../core/common/enums/enums.dart';
+import '../core/utils/end_points.dart';
 import 'agent_distributor_model.dart';
 
 // enum AttachFileStatus { empty, network, picked, uploading, deleting, failedUpload, failedDelete, success }
@@ -240,12 +240,12 @@ class InvoiceModel extends CacheRepository {
     imageRecord = jsondata['image_record'].toString().trim().isEmpty ||
             jsondata['image_record'] == null
         ? jsondata['image_record']
-        : urlfile + jsondata['image_record'];
+        : EndPoints.baseUrls.urlfile + jsondata['image_record'];
 
     imagelogo = jsondata['imagelogo'].toString().trim().isEmpty ||
             jsondata['imagelogo'] == null
         ? jsondata['imagelogo']
-        : urlfilelogo + jsondata['imagelogo'];
+        : EndPoints.baseUrls.urlfilelogo + jsondata['imagelogo'];
 
     fkIdClient = jsondata['fk_idClient']?.toString();
     fkIdUser = jsondata['fk_idUser']?.toString();

@@ -56,7 +56,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.laravelUrl);
+      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final endPoint = EndPoints.agentDistributor.getAgentClients;
       final response = await dio.get(endPoint: "$endPoint$agentId");
 
@@ -81,7 +81,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.laravelUrl);
+      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final endPoint = EndPoints.agentDistributor.getAgentInvoicesList;
       final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];
@@ -103,7 +103,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.laravelUrl);
+      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final endPoint = EndPoints.agentDistributor.getAgentCommentsList;
       final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];
@@ -126,7 +126,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String content,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.laravelUrl);
+      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final endPoint = EndPoints.agentDistributor.addCommentAgent;
       final response = await dio.post(endPoint: endPoint, data: {
         "agent_id": agentId,
@@ -147,7 +147,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.laravelUrl);
+      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final endPoint = EndPoints.agentDistributor.getDateVisitAgent;
       final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];
@@ -169,7 +169,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required DateInstallationClient agentDateModel,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.phpUrl);
+      dio.changeBaseUrl(EndPoints.baseUrls.url);
       final endPoint = EndPoints.agentDistributor.addAgentDate;
       final response = await dio.post(
         endPoint: endPoint,
@@ -188,7 +188,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String fkUser,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.phpUrl);
+      dio.changeBaseUrl(EndPoints.baseUrls.url);
       final endPoint = EndPoints.agentDistributor.doneTraining;
       final response = await dio.post(
         endPoint: endPoint,
@@ -214,7 +214,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.phpUrl);
+      dio.changeBaseUrl(EndPoints.baseUrls.url);
       final response =
           await dio.get(endPoint: "agent/get_agent_byId.php?agentId=$agentId");
 

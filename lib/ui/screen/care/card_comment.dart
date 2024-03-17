@@ -5,7 +5,7 @@ import 'package:crm_smart/ui/widgets/widgetcalendar/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../constants.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../function_global.dart';
 
 //uplode 2023
@@ -140,7 +140,7 @@ class cardcomment extends StatelessWidget {
         height: 1000,
         fit: BoxFit.fill,
         placeholder: (context, url) => const CircularProgressIndicator(),
-        imageUrl: urlimage + imageUrl,
+        imageUrl: EndPoints.baseUrls.urlimage + imageUrl,
       ),
     );
   }

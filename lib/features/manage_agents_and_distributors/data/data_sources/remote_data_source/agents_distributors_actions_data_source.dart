@@ -33,7 +33,7 @@ class AgentsDistributorsActionsDataSourceImpl
     required String fkCountry,
   }) async {
     try {
-      apiServices.changeBaseUrl(EndPoints.phpUrl);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await apiServices.get(
         endPoint: "${EndPoints.city.getAllCities}$fkCountry",
       );
@@ -56,7 +56,7 @@ class AgentsDistributorsActionsDataSourceImpl
   }) async {
     try {
       final endPoint = EndPoints.agentDistributor.addAgent;
-      apiServices.changeBaseUrl(EndPoints.phpUrl);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
       await apiServices.postRequestWithFile(
         endPoint,
         addAgentParams.agentActionModel.toMap(),

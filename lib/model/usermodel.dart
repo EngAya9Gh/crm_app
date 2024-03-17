@@ -1,5 +1,6 @@
 import 'package:crm_smart/model/maincitymodel.dart';
-import '../constants.dart';
+
+import '../core/utils/end_points.dart';
 import '../features/manage_privilege/data/models/privilege_model.dart';
 import '../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 
@@ -87,7 +88,7 @@ class UserModel {
   //     fkuserAdd= jsonData['fkuserAdd'];
   //     nameuserAdd= jsonData['nameuserAdd'];
   //     created_at= jsonData['created_at'];
-  //     img_image= jsonData['img_image'] == null ? '' : urlimage + jsonData['img_image'];
+  //     img_image= jsonData['img_image'] == null ? '' : EndPoints.baseUrls.urlimage + jsonData['img_image'];
   //     img_thumbnail= jsonData['img_thumbnail'] == null ? '' : urlimage+ jsonData['img_thumbnail'];
   //     path= jsonData['path'];
   //     fkuserupdate= jsonData['fkuserupdate'];
@@ -120,13 +121,19 @@ class UserModel {
       fkuserAdd: jsonData['fkuserAdd'],
       nameuserAdd: jsonData['nameuserAdd'],
       created_at: jsonData['created_at'],
-      img_image: jsonData['img_image'] == null ? '' : urlimage + jsonData['img_image'],
-      img_thumbnail: jsonData['img_thumbnail'] == null ? '' : urlimage + jsonData['img_thumbnail'],
+      img_image: jsonData['img_image'] == null
+          ? ''
+          : EndPoints.baseUrls.urlimage + jsonData['img_image'],
+      img_thumbnail: jsonData['img_thumbnail'] == null
+          ? ''
+          : EndPoints.baseUrls.urlimage + jsonData['img_thumbnail'],
       path: jsonData['path'],
       fkuserupdate: jsonData['fkuserupdate'],
       updated_at: jsonData['updated_at'],
       nameuserupdate: jsonData['nameuserupdate'],
-      maincitylist_user: List.of(jsonData['maincitylist_user'] ?? []).map((e) => UserRegion.fromMap(e)).toList(),
+      maincitylist_user: List.of(jsonData['maincitylist_user'] ?? [])
+          .map((e) => UserRegion.fromMap(e))
+          .toList(),
       // privilgelist: getproud(jsonData['privilgelist'])
     );
   }
@@ -160,15 +167,13 @@ class UserModel {
     return _data;
   }
 
-  UserWithdrawalsManager get asUserWithdrawalsManager => UserWithdrawalsManager(idUser, nameUser);
+  UserWithdrawalsManager get asUserWithdrawalsManager =>
+      UserWithdrawalsManager(idUser, nameUser);
 
   List<PrivilegeModel> getproud(data) {
     List<PrivilegeModel> prodlist = [];
     if (data != null) {
       for (int i = 0; i < data.length; i++) {
-
-
-        
         prodlist.add(PrivilegeModel.fromJson(data[i]));
       }
     }
@@ -183,7 +188,12 @@ class UserModel {
 
   ///this method will prevent the override of toString
   bool getfilteruser(String filter) {
-    return this.nameUser?.toLowerCase().toString().contains(filter.toLowerCase()) ?? false;
+    return this
+            .nameUser
+            ?.toLowerCase()
+            .toString()
+            .contains(filter.toLowerCase()) ??
+        false;
   }
 }
 

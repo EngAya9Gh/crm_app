@@ -31,6 +31,7 @@ import '../../../api/api.dart';
 import '../../../constants.dart';
 import '../../../core/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
@@ -657,7 +658,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                                           .toString(),
                                                                   //'idApproveClient':widget.itemapprove!.idApproveClient,
                                                                   "fk_user": invoice
-                                                                      .fkIdUser, //صاحب العميل
+                                                                      .fkIdUser,
+                                                                  //صاحب العميل
                                                                   "fk_regoin":
                                                                       invoice
                                                                           .fk_regoin,
@@ -673,7 +675,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                                           .name_enterprise,
                                                                   "fkusername":
                                                                       invoice
-                                                                          .nameUser, //موظف المبيعات
+                                                                          .nameUser,
+                                                                  //موظف المبيعات
                                                                   //"message":"",//
                                                                   "nameuserApproved": Provider.of<
                                                                               UserProvider>(
@@ -688,7 +691,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                                           listen:
                                                                               false)
                                                                       .currentUser
-                                                                      .idUser //معتمد الاشتراك
+                                                                      .idUser
+                                                                  //معتمد الاشتراك
                                                                 },
                                                                     invoice
                                                                         .idInvoice).then(
@@ -743,8 +747,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                 "isApprove": "0",
                                                 "name_enterprise":
                                                     invoice.name_enterprise,
-                                                "fkusername": invoice
-                                                    .nameUser, //موظف المبيعات
+                                                "fkusername": invoice.nameUser,
+                                                //موظف المبيعات
                                                 //"message":"",//
                                                 "nameuserApproved":
                                                     Provider.of<UserProvider>(
@@ -757,7 +761,8 @@ class _InvoiceViewState extends State<InvoiceView> {
                                                             context,
                                                             listen: false)
                                                         .currentUser
-                                                        .idUser //معتمد الاشتراك
+                                                        .idUser
+                                                //معتمد الاشتراك
                                               }, invoice.idInvoice).then(
                                                       (value) => value != false
                                                           ? clear()
@@ -1124,7 +1129,7 @@ class _RejectDialogState extends State<RejectDialog> {
                             )
                           : (_invoice.file_reject?.isNotEmpty ?? false)
                               ? InkWell(
-                                  //onTap: () => AppPhotoViewer(urls: [urlfile + _invoice.file_reject!]).show(context),
+                                  //onTap: () => AppPhotoViewer(urls: [EndPoints.baseUrls.urlfile + _invoice.file_reject!]).show(context),
                                   child: Stack(
                                     children: [
                                       Positioned.fill(
@@ -1133,7 +1138,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                             // ClipRRect(
                                             //   borderRadius: BorderRadius.circular(15),
                                             //   child: FancyImageShimmerViewer(
-                                            //     imageUrl: urlfile + _invoice.file_reject!,
+                                            //     imageUrl: EndPoints.baseUrls.urlfile + _invoice.file_reject!,
                                             //     fit: BoxFit.cover,
                                             //   ),
                                             // ),
@@ -1146,14 +1151,17 @@ class _RejectDialogState extends State<RejectDialog> {
                                                           ImageSourceViewer
                                                               .network,
                                                       urls: [
-                                                        urlfile +
+                                                        EndPoints.baseUrls
+                                                                .urlfile +
                                                             _invoice
                                                                 .file_reject!
                                                       ],
                                                     ).show(context),
                                                     child:
                                                         FancyImageShimmerViewer(
-                                                      imageUrl: urlfile +
+                                                      imageUrl: EndPoints
+                                                              .baseUrls
+                                                              .urlfile +
                                                           _invoice.file_reject!,
                                                       fit: BoxFit.cover,
                                                     ),
@@ -1478,8 +1486,8 @@ class _RejectDialogState extends State<RejectDialog> {
         }
 
         File file;
-        file = await Api()
-            .downloadFile(urlfile + attachFile, pp.basename(attachFile));
+        file = await Api().downloadFile(
+            EndPoints.baseUrls.urlfile + attachFile, pp.basename(attachFile));
         if (file.existsSync()) {
           final result = await OpenFile.open(file.path);
 

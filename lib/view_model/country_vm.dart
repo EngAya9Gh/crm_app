@@ -39,7 +39,7 @@ class country_vm extends ChangeNotifier {
       List<dynamic> data = [];
       listcountry = await RegoinService().getAllCountry();
       // data = await Api()
-      //     .get(url: url +
+      //     .get(url: EndPoints.baseUrls.url +
       //     'country/get_regoinByIdCountry.php?fk_country=${usercurrent!
       //         .fkCountry}');
       //

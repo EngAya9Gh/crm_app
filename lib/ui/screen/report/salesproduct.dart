@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/di/di_container.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class salesproduct extends StatefulWidget {
@@ -133,7 +134,7 @@ class _salesproductState extends State<salesproduct> {
 
       try {
         data = await Api().post(
-          url: url + endPoint,
+          url: EndPoints.baseUrls.url + endPoint,
           body: {'type': type},
         );
       } catch (e, st) {

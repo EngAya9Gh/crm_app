@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/di/di_container.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../helper/number_formatter.dart';
 import 'is_marketing_chekbox.dart';
@@ -117,7 +118,7 @@ class _BarChartregoinsalesState extends State<BarChartregoinsales> {
 
       try {
         data = await Api().post(
-          url: url + endPoint,
+          url: EndPoints.baseUrls.url + endPoint,
           body: {'type': type},
         );
       } catch (e, st) {

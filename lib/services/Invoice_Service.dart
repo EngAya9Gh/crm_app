@@ -5,14 +5,15 @@ import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/foundation.dart';
 
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 import '../model/attachement_invoice_files.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
   Future<List<InvoiceModel>> getinvoice(String fk_country) async {
-    var data = await Api()
-        .get(url: url + 'client/invoice/getinvoice.php?fk_country=$fk_country');
+    var data = await Api().get(
+        url: EndPoints.baseUrls.url +
+            'client/invoice/getinvoice.php?fk_country=$fk_country');
 
     List<InvoiceModel> prodlist = [];
     // final json = "[" + data[i] + "]";
@@ -31,24 +32,24 @@ class Invoice_Service {
     switch (type) {
       case "all":
         data = await Api().post(
-            url: url +
+            url: EndPoints.baseUrls.url +
                 "client/invoice/getinvoice_debt.php?fk_country=$fk_country",
             body: {'type': type});
         break;
       case "users":
         data = await Api().post(
-            url: url +
+            url: EndPoints.baseUrls.url +
                 "client/invoice/getinvoice_debt.php?fk_country=$fk_country&id_user=$param",
             body: {'type': type});
         break;
       case "regoin":
         data = await Api().post(
-            url: url +
+            url: EndPoints.baseUrls.url +
                 "client/invoice/getinvoice_debt.php?fk_country=$fk_country&id_regoin=$param",
             body: {'type': type});
         break;
     }
-    // await Api().get(url: url + 'client/invoice/getinvoice.php?fk_country=$fk_country');
+    // await Api().get(url: EndPoints.baseUrls.url +  'client/invoice/getinvoice.php?fk_country=$fk_country');
 
     List<InvoiceModel> prodlist = [];
     // final json = "[" + data[i] + "]";
@@ -69,7 +70,8 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicemaincity(
       String urlstring, Map<String, dynamic> body) async {
-    var data = await Api().post(url: url + urlstring, body: body);
+    var data =
+        await Api().post(url: EndPoints.baseUrls.url + urlstring, body: body);
 
     List<InvoiceModel> prodlist = [];
     // final json = "[" + data[i] + "]";
@@ -81,7 +83,8 @@ class Invoice_Service {
   }
 
   static Future<List<AgentDistributorModel>> getAgentsAndDistributors() async {
-    final response = await Api().get(url: url + 'agent/get_agent.php');
+    final response =
+        await Api().get(url: EndPoints.baseUrls.url + 'agent/get_agent.php');
     final list = List<AgentDistributorModel>.from(
         (response ?? []).map((x) => AgentDistributorModel.fromJson(x)));
 
@@ -89,7 +92,8 @@ class Invoice_Service {
   }
 
   static Future<List<ParticipateModel>> getCollaborators() async {
-    var response = await Api().get(url: url + 'agent/get_participate.php');
+    var response = await Api()
+        .get(url: EndPoints.baseUrls.url + 'agent/get_participate.php');
     final list = List<ParticipateModel>.from(
         (response ?? []).map((x) => ParticipateModel.fromJson(x)));
 
@@ -99,7 +103,8 @@ class Invoice_Service {
   Future<InvoiceModel?> setApproveClient(
       Map<String, dynamic> body, String idInvoice) async {
     var data = await Api().post(
-        url: url + "client/setApproveClient.php?idInvoice=$idInvoice",
+        url: EndPoints.baseUrls.url +
+            "client/setApproveClient.php?idInvoice=$idInvoice",
         body: body);
 
     if (data != null) return InvoiceModel.fromJson(data[0]);
@@ -111,7 +116,8 @@ class Invoice_Service {
   Future<InvoiceModel?> setApproveFClient(
       Map<String, dynamic> body, String idInvoice) async {
     var data = await Api().post(
-        url: url + "client/setAprroveFinanc.php?idInvoice=$idInvoice",
+        url: EndPoints.baseUrls.url +
+            "client/setAprroveFinanc.php?idInvoice=$idInvoice",
         body: body);
 
     if (data != null) return InvoiceModel.fromJson(data[0]);
@@ -124,7 +130,7 @@ class Invoice_Service {
     //not called because get local
     try {
       var data = await Api().get(
-          url: url +
+          url: EndPoints.baseUrls.url +
               'client/invoice/get_invoice_ByIdClient.php?fk_idClient=$fk_idClient');
 
       List<InvoiceModel> prodlist = [];
@@ -142,7 +148,8 @@ class Invoice_Service {
   Future<InvoiceModel> setdate(
       Map<String, dynamic> body, String id_invoice) async {
     var result = await Api().post(
-        url: url + "client/invoice/setdate.php?id_invoice=$id_invoice",
+        url: EndPoints.baseUrls.url +
+            "client/invoice/setdate.php?id_invoice=$id_invoice",
         body: body);
     //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
@@ -156,16 +163,17 @@ class Invoice_Service {
     required String fk_client,
     required String type_date,
   }) async {
-    var result = await Api()
-        .post(url: url + "client/invoice/add_date_install.php", body: {
-      'date_client_visit': date_client_visit,
-      'date_end': date_end,
-      'fk_user': fk_user,
-      'is_done': '0',
-      'fk_invoice': id_invoice,
-      'fk_client': fk_client.toString(),
-      'type_date': type_date.toString(),
-    });
+    var result = await Api().post(
+        url: EndPoints.baseUrls.url + "client/invoice/add_date_install.php",
+        body: {
+          'date_client_visit': date_client_visit,
+          'date_end': date_end,
+          'fk_user': fk_user,
+          'is_done': '0',
+          'fk_invoice': id_invoice,
+          'fk_client': fk_client.toString(),
+          'type_date': type_date.toString(),
+        });
     print("result => $result");
     return result;
   }
@@ -178,10 +186,15 @@ class Invoice_Service {
     required String typeSchedule,
     required String fk_user,
   }) async {
-    print("URL::$url_laravel + rescheduleOrCancelVisitClient/$scheduleId");
-    print(url_laravel + "rescheduleOrCancelVisitClient/" + scheduleId);
+    print(
+        "URL::${EndPoints.baseUrls.url_laravel}  + rescheduleOrCancelVisitClient/$scheduleId");
+    print(EndPoints.baseUrls.url_laravel +
+        "rescheduleOrCancelVisitClient/" +
+        scheduleId);
     var result = await Api().post(
-        url: url_laravel + "rescheduleOrCancelVisitClient/" + scheduleId,
+        url: EndPoints.baseUrls.url_laravel +
+            "rescheduleOrCancelVisitClient/" +
+            scheduleId,
         body: {
           'typeProcess': 'reschedule',
           'date_client_visit': dateClientVisit,
@@ -197,7 +210,9 @@ class Invoice_Service {
     required String scheduleId,
   }) async {
     var result = await Api().post(
-        url: url_laravel + "rescheduleOrCancelVisitClient/" + scheduleId,
+        url: EndPoints.baseUrls.url_laravel +
+            "rescheduleOrCancelVisitClient/" +
+            scheduleId,
         body: {'typeProcess': 'cancel'});
     return result;
   }
@@ -205,7 +220,8 @@ class Invoice_Service {
   Future<InvoiceModel> setdatedone(
       Map<String, dynamic> body, String id_invoice) async {
     var result = await Api().post(
-        url: url + "client/invoice/setdateinstall.php?id_invoice=$id_invoice",
+        url: EndPoints.baseUrls.url +
+            "client/invoice/setdateinstall.php?id_invoice=$id_invoice",
         body: body);
     //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
@@ -214,8 +230,8 @@ class Invoice_Service {
   Future<InvoiceModel> set_ready_install(
       Map<String, dynamic> body, String id_invoice) async {
     var result = await Api().post(
-        url:
-            url + "client/invoice/set_ready_install.php?id_invoice=$id_invoice",
+        url: EndPoints.baseUrls.url +
+            "client/invoice/set_ready_install.php?id_invoice=$id_invoice",
         body: body);
     //client/setApproveClient.php
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
@@ -225,7 +241,8 @@ class Invoice_Service {
       Map<String, dynamic> body, String id_invoice, File? file) async {
     var result = await Api().postRequestWithFile(
       'array',
-      url + "client/invoice/update_stateback.php?id_invoice=$id_invoice",
+      EndPoints.baseUrls.url +
+          "client/invoice/update_stateback.php?id_invoice=$id_invoice",
       body,
       file,
       null,
@@ -237,7 +254,8 @@ class Invoice_Service {
   Future<InvoiceModel> deleteBack(String id_invoice, String file_reject) async {
     var result = await Api().postRequestWithFile(
         'array',
-        url + "series/delete_demand_out.php?id_invoice=$id_invoice",
+        EndPoints.baseUrls.url +
+            "series/delete_demand_out.php?id_invoice=$id_invoice",
         {'file_reject': file_reject},
         null,
         null);
@@ -247,8 +265,8 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicebyiduser(String fk_idUser) async {
     var data = await Api().get(
-        url:
-            url + 'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
+        url: EndPoints.baseUrls.url +
+            'client/invoice/getinvoicebyiduser.php?fk_idUser=$fk_idUser');
 
     List<InvoiceModel> prodlist =
         await compute<List<dynamic>, List<InvoiceModel>>(
@@ -258,7 +276,8 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicebyregoin(String regoin) async {
     var data = await Api().get(
-        url: url + 'client/invoice/getinvoicebyregoin.php?fk_regoin=$regoin');
+        url: EndPoints.baseUrls.url +
+            'client/invoice/getinvoicebyregoin.php?fk_regoin=$regoin');
 
     List<InvoiceModel> prodlist =
         await compute<List<dynamic>, List<InvoiceModel>>(
@@ -269,7 +288,7 @@ class Invoice_Service {
   Future<List<InvoiceModel>> getmyinvoice_myregoin(
       String regoin, String userid) async {
     var data = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/getmyinvoice_myregoin.php?fk_regoin=$regoin&fk_idUser=$userid');
 
     List<InvoiceModel> prodlist =
@@ -280,7 +299,7 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoiceMarketing(String fk_country) async {
     var data = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/getMarketingInvoice.php?fk_country=$fk_country');
 
     List<InvoiceModel> prodlist = [];
@@ -293,7 +312,8 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicebyiduser_marketing(String iduser) async {
     var data = await Api().get(
-        url: url + 'client/invoice/getinvoiceMarkting_user.php?iduser=$iduser');
+        url: EndPoints.baseUrls.url +
+            'client/invoice/getinvoiceMarkting_user.php?iduser=$iduser');
 
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
@@ -305,7 +325,7 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoicebyregoin_marketing(String regoin) async {
     var data = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/getclientMarketing_regoin.php?regoin=$regoin');
 
     List<InvoiceModel> prodlist = [];
@@ -318,8 +338,8 @@ class Invoice_Service {
 
   Future<List<InvoiceModel>> getinvoaicebyregoin_accept_requst(
       Map<String, dynamic> body) async {
-    var data =
-        await Api().post(url: url + 'client/accept_requsts.php', body: body);
+    var data = await Api().post(
+        url: EndPoints.baseUrls.url + 'client/accept_requsts.php', body: body);
 
     List<InvoiceModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
@@ -333,7 +353,11 @@ class Invoice_Service {
       File? filelogo, List<File> files) async {
     try {
       var data = await Api().postRequestWithFile(
-          'array', url + "client/invoice/addinvoice.php", body, file, filelogo,
+          'array',
+          EndPoints.baseUrls.url + "client/invoice/addinvoice.php",
+          body,
+          file,
+          filelogo,
           files: files);
 
       return InvoiceModel.fromJson(data[0]);
@@ -344,7 +368,8 @@ class Invoice_Service {
 
   Future<InvoiceModel> getinvoicebyidInvoice(String idinvoice) async {
     var data = await Api().get(
-        url: url + 'client/invoice/getInvoiceID.php?id_invoice=$idinvoice');
+        url: EndPoints.baseUrls.url +
+            'client/invoice/getInvoiceID.php?id_invoice=$idinvoice');
 
     List<InvoiceModel> prodlist =
         await compute<List<dynamic>, List<InvoiceModel>>(
@@ -361,7 +386,8 @@ class Invoice_Service {
     try {
       final data = await Api().postCrudInvoiceFile(
           'array',
-          url + "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
+          EndPoints.baseUrls.url +
+              "FilesInvoice/crud_files_invoice.php?fk_invoice=$invoiceId",
           body,
           file,
           files: files);
@@ -376,8 +402,9 @@ class Invoice_Service {
 
   Future<String> addInvoiceProduct(Map<String, dynamic?> body) async {
     try {
-      String result = await Api()
-          .post(url: url + "client/invoice/addinvoice_product.php", body: body);
+      String result = await Api().post(
+          url: EndPoints.baseUrls.url + "client/invoice/addinvoice_product.php",
+          body: body);
 
       return result != "error" ? result : "false";
     } catch (e, st) {
@@ -388,36 +415,45 @@ class Invoice_Service {
   Future<InvoiceModel> updateInvoice(Map<String, dynamic> body,
       String idInvoice, File? file, File? filelogo, List<File> files) async {
     var result = await Api().postRequestWithFile(
-        'array', url + "client/invoice/updateinvoice.php", body, file, filelogo,
+        'array',
+        EndPoints.baseUrls.url + "client/invoice/updateinvoice.php",
+        body,
+        file,
+        filelogo,
         files: files);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
   Future<InvoiceModel> addPayment(
       Map<String, dynamic> body, String idInvoice) async {
-    var result = await Api()
-        .post(url: url + "client/invoice/add_payment.php", body: body);
+    var result = await Api().post(
+        url: EndPoints.baseUrls.url + "client/invoice/add_payment.php",
+        body: body);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
   Future<InvoiceModel> editinvoice(
       Map<String, dynamic> body, String idInvoice) async {
-    var result = await Api()
-        .post(url: url + "client/invoice/edit_invoices.php", body: body);
+    var result = await Api().post(
+        url: EndPoints.baseUrls.url + "client/invoice/edit_invoices.php",
+        body: body);
     return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
   }
 
   Future<bool> updateProductInvoice(
       Map<String, dynamic> body, String idInvoiceProduct) async {
     String result = await Api().post(
-        url: url + "client/invoice/updateinvoice_product.php", body: body);
+        url:
+            EndPoints.baseUrls.url + "client/invoice/updateinvoice_product.php",
+        body: body);
     return result == "done" ? true : false;
   }
 
   Future<String> deleteInvoiceById(Map<String, dynamic> body) async {
     try {
-      String res = await Api()
-          .post(url: url + 'client/invoice/deleteinvoice.php', body: body);
+      String res = await Api().post(
+          url: EndPoints.baseUrls.url + 'client/invoice/deleteinvoice.php',
+          body: body);
 
       return res;
     } catch (e) {
@@ -427,7 +463,7 @@ class Invoice_Service {
 
   Future<String> deleteProductInInvoice(String id_invoice_product) async {
     String res = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/deleteinvoice_product.php?id_invoice_product=$id_invoice_product');
     return res;
   }
@@ -435,7 +471,7 @@ class Invoice_Service {
   Future<List<InvoiceModel>> getinvoice_deleted(String fk_regoin) async {
     List<dynamic> data = [];
     data = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/get_invoice_deleted.php?fk_regoin=$fk_regoin');
 
     List<InvoiceModel> prodlist = [];

@@ -1,124 +1,151 @@
-
-
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/reasonmodel.dart';
 import 'package:crm_smart/services/configService.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
-class ClientTypeProvider extends ChangeNotifier{
-  List<String> type_of_client=[];
-  List<String> type_record_client=['صحيح','خاطئ'];
-  List<String> type_of_welcome=['الكل','تم الترحيب','لم يتم الترحيب'];
-  List<String> type_of_install_iso=['الكل','تم التأكد من الجودة',
-    'انتظار الجودة'];
-  List<String> typeOfClientFilter=['الكل','مشترك','تفاوض','عرض سعر','مستبعد','منسحب','معلق استبعاد'];
-  List<String> typeOfLinks=['فيديوهات تعريفية','ملفات تعريفية','مواقع جغرافية','مواقع ويب','روابط الأنظمة','صفحات سوشيال ميديا','أرقام تواصل'];
- // List<String> type_of_client=['تفاوض','عرض سعر','مستبعد','منسحب'];
-  List<ReasonModel> type_of_out=[]; //أسباب الانسحاب
-  List<String> listtype_install=['الكل','بالإنتظار','تم التركيب','معلق'];
-  List<String> listtype_notReady=['الكل','غير جاهز'];
-  List<String> listtype_care=['تم التواصل','بالإنتظار' ];
-  late String? selectedValuemanag=null;
+class ClientTypeProvider extends ChangeNotifier {
+  List<String> type_of_client = [];
+  List<String> type_record_client = ['صحيح', 'خاطئ'];
+  List<String> type_of_welcome = ['الكل', 'تم الترحيب', 'لم يتم الترحيب'];
+  List<String> type_of_install_iso = [
+    'الكل',
+    'تم التأكد من الجودة',
+    'انتظار الجودة'
+  ];
+  List<String> typeOfClientFilter = [
+    'الكل',
+    'مشترك',
+    'تفاوض',
+    'عرض سعر',
+    'مستبعد',
+    'منسحب',
+    'معلق استبعاد'
+  ];
+  List<String> typeOfLinks = [
+    'فيديوهات تعريفية',
+    'ملفات تعريفية',
+    'مواقع جغرافية',
+    'مواقع ويب',
+    'روابط الأنظمة',
+    'صفحات سوشيال ميديا',
+    'أرقام تواصل'
+  ];
+  // List<String> type_of_client=['تفاوض','عرض سعر','مستبعد','منسحب'];
+  List<ReasonModel> type_of_out = []; //أسباب الانسحاب
+  List<String> listtype_install = ['الكل', 'بالإنتظار', 'تم التركيب', 'معلق'];
+  List<String> listtype_notReady = ['الكل', 'غير جاهز'];
+  List<String> listtype_care = ['تم التواصل', 'بالإنتظار'];
+  late String? selectedValuemanag = null;
 
-  void changevalue(String? s){
-    selectedValuemanag=s;
+  void changevalue(String? s) {
+    selectedValuemanag = s;
     notifyListeners();
   }
-  late String? selectedValufilter=null;
-  void changevalueNotReady(String? s){
+
+  late String? selectedValufilter = null;
+  void changevalueNotReady(String? s) {
     print('s.toString()');
     print(s.toString());
-    selectedValufilter_NotReady=s;
+    selectedValufilter_NotReady = s;
     notifyListeners();
   }
-  late String? selectedValufilter_NotReady=null;
 
-  void changevaluefilter(String? s){
-    selectedValufilter=s;
+  late String? selectedValufilter_NotReady = null;
+
+  void changevaluefilter(String? s) {
+    selectedValufilter = s;
     notifyListeners();
-  }//listtype_install
+  } //listtype_install
 
-  late String? selectedlisttype_install=null;
+  late String? selectedlisttype_install = null;
 
-  void changelisttype_install(String? s){
-    selectedlisttype_install=s;
-    notifyListeners();
-  }
-  late String? selectedlisttype_care=null;
-
-  void changelisttype_care(String? s){
-    selectedlisttype_care=s;
+  void changelisttype_install(String? s) {
+    selectedlisttype_install = s;
     notifyListeners();
   }
-  late String? selectedwelcome=null;
 
-  void changelisttype_welcome(String? s){
-    selectedwelcome=s;
+  late String? selectedlisttype_care = null;
+
+  void changelisttype_care(String? s) {
+    selectedlisttype_care = s;
     notifyListeners();
   }
-  late String? selectedinstall_iso=null;
 
-  void changelisttype_install_iso(String? s){
-    selectedinstall_iso=s;
+  late String? selectedwelcome = null;
+
+  void changelisttype_welcome(String? s) {
+    selectedwelcome = s;
     notifyListeners();
   }
+
+  late String? selectedinstall_iso = null;
+
+  void changelisttype_install_iso(String? s) {
+    selectedinstall_iso = s;
+    notifyListeners();
+  }
+
   ///////////////////////////////////////////////
-   int selectedinstall=0;
+  int selectedinstall = 0;
 
-  void changeinstall(int s){
-    selectedinstall=s;
+  void changeinstall(int s) {
+    selectedinstall = s;
     notifyListeners();
   }
-  late String? selectedValueOut=null;
 
-  void changevalueOut(String s){
-    selectedValueOut=s;
+  late String? selectedValueOut = null;
+
+  void changevalueOut(String s) {
+    selectedValueOut = s;
     notifyListeners();
   }
+
   //
   Future<void> getreasons(String type) async {
+    selectedValueOut = null;
+    notifyListeners();
+    //if(type_of_out.isEmpty)
+    type_of_out = await config_service().getreason(type);
+    notifyListeners();
+  }
 
-  selectedValueOut=null;
-   notifyListeners();
-   //if(type_of_out.isEmpty)
-     type_of_out = await config_service().getreason(type);
-   notifyListeners();
- }
-
- bool isloading=false;
+  bool isloading = false;
   Future<String> addReson_vm(Map<String, dynamic?> body) async {
-    isloading =true;
+    isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url+'config/addreson.php',//users/addmangemt.php
+        url: EndPoints.baseUrls.url +
+            'config/addreson.php', //users/addmangemt.php
         body: body);
-    if (res!="error") {
+    if (res != "error") {
       body.addAll({
-        'id_reason':res,
+        'id_reason': res,
       });
-      type_of_out.insert(0,ReasonModel.fromJson(body));
-      isloading=false;
+      type_of_out.insert(0, ReasonModel.fromJson(body));
+      isloading = false;
       notifyListeners();
     }
     return res;
   }
-  Future<String> update_resoan(Map<String, dynamic?> body,
-      String idmanag) async {
+
+  Future<String> update_resoan(
+      Map<String, dynamic?> body, String idmanag) async {
     //name_mange
-    isloading=true;
+    isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url+'users/update_resoan.php?id_reason=${idmanag}',//users/addmangemt.php
+        url: EndPoints.baseUrls.url +
+            'users/update_resoan.php?id_reason=${idmanag}', //users/addmangemt.php
         body: body);
     body.addAll({
-      'id_reason':idmanag,
+      'id_reason': idmanag,
     });
-    final index=type_of_out.indexWhere((element)
-    => element.idReason==idmanag);
-    type_of_out[index]=ReasonModel.fromJson(body);
-    isloading =false;
+    final index =
+        type_of_out.indexWhere((element) => element.idReason == idmanag);
+    type_of_out[index] = ReasonModel.fromJson(body);
+    isloading = false;
     notifyListeners();
 
     return res;
