@@ -28,7 +28,8 @@ class _ticketclientviewState extends State<ticketclientview> {
       await Provider.of<ticket_vm>(context, listen: false).getticket();
       Provider.of<ticket_vm>(context, listen: false).changeticket(0);
       Provider.of<ticket_vm>(context, listen: false).gettypeticket_filter('0');
-      Provider.of<ClientTypeProvider>(context, listen: false).getreasons('ticket');
+      Provider.of<ClientTypeProvider>(context, listen: false)
+          .getreasons('ticket');
     });
     super.initState();
   }
@@ -43,7 +44,8 @@ class _ticketclientviewState extends State<ticketclientview> {
           style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
         ),
       ),
-      body: SafeArea(
+      body: Directionality(
+        textDirection: TextDirection.rtl,
         child: Padding(
           padding: EdgeInsets.all(2),
           child: ListView(
@@ -52,7 +54,9 @@ class _ticketclientviewState extends State<ticketclientview> {
                   ? Padding(
                       padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(kMainColor)),
                           onPressed: () async {
                             Navigator.push(
                                 context,
@@ -68,32 +72,32 @@ class _ticketclientviewState extends State<ticketclientview> {
                 height: 2,
               ),
               search_widget('ticket', "المؤسسة ,العميل , رقم الهاتف....", ''),
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: Consumer<ticket_vm>(builder: (context, selectedProvider, child) {
-                  return GroupButton(
-                      controller: GroupButtonController(
-                        selectedIndex: selectedProvider.selectedtypeticket,
-                      ),
-                      options: GroupButtonOptions(
-                          selectedColor: kMainColor, buttonWidth: 70, borderRadius: BorderRadius.circular(10)),
-                      buttons: ['جديدة', 'مستلمة', 'مغلقة', 'تم التقييم'],
-                      onSelected: (_, index, isselected) {
-                        //setState(() {
-                        typepayController = index.toString();
-                        selectedProvider.changeticket(index);
-                        getfilter();
-                        //});
-                      });
-                }),
-              ),
+              Consumer<ticket_vm>(builder: (context, selectedProvider, child) {
+                return GroupButton(
+                    controller: GroupButtonController(
+                      selectedIndex: selectedProvider.selectedtypeticket,
+                    ),
+                    options: GroupButtonOptions(
+                        selectedColor: kMainColor,
+                        buttonWidth: 70,
+                        borderRadius: BorderRadius.circular(10)),
+                    buttons: ['جديدة', 'مستلمة', 'مغلقة', 'تم التقييم'],
+                    onSelected: (_, index, isselected) {
+                      //setState(() {
+                      typepayController = index.toString();
+                      selectedProvider.changeticket(index);
+                      getfilter();
+                      //});
+                    });
+              }),
               SizedBox(
                 height: 2,
               ),
               Container(
                 height: MediaQuery.of(context).size.height * 0.8,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8, top: 8.0, bottom: 80),
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 8.0, bottom: 80),
                   child: Consumer<ticket_vm>(builder: (context, value, child) {
                     return value.isloading == true
                         ? Center(child: CircularProgressIndicator())
@@ -110,16 +114,25 @@ class _ticketclientviewState extends State<ticketclientview> {
                                             textDirection: TextDirection.rtl,
                                             child: SingleChildScrollView(
                                                 child: Padding(
-                                                    padding: const EdgeInsets.all(2),
+                                                    padding:
+                                                        const EdgeInsets.all(2),
                                                     child: Container(
                                                       decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.only(bottomRight: Radius.circular(0)),
+                                                            BorderRadius.only(
+                                                                bottomRight:
+                                                                    Radius
+                                                                        .circular(
+                                                                            0)),
                                                         boxShadow: <BoxShadow>[
                                                           BoxShadow(
-                                                            offset: Offset(1.0, 1.0),
+                                                            offset: Offset(
+                                                                1.0, 1.0),
                                                             blurRadius: 8.0,
-                                                            color: Colors.black87.withOpacity(0.2),
+                                                            color: Colors
+                                                                .black87
+                                                                .withOpacity(
+                                                                    0.2),
                                                           ),
                                                         ],
                                                         color: Colors.white30,
@@ -130,68 +143,80 @@ class _ticketclientviewState extends State<ticketclientview> {
                                                             Navigator.push(
                                                                 context,
                                                                 CupertinoPageRoute(
-                                                                    builder: (context) => ticketdetail(
-                                                                          ticketModel: value.tickesearchlist[index],
+                                                                    builder: (context) =>
+                                                                        ticketdetail(
+                                                                          ticketModel:
+                                                                              value.tickesearchlist[index],
                                                                         ) // support_view(type: 'only',)
                                                                     ));
                                                           },
                                                           child: Container(
-                                                            decoration: BoxDecoration(color: kWhiteColor),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    color:
+                                                                        kWhiteColor),
                                                             child: Padding(
-                                                              padding: const EdgeInsets.all(8.0),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
                                                               child: Column(
-                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
                                                                 children: [
                                                                   Row(
-                                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .spaceBetween,
                                                                     children: [
                                                                       Text(
-                                                                        '#' + value.tickesearchlist[index].idTicket,
+                                                                        '#' +
+                                                                            value.tickesearchlist[index].idTicket,
                                                                         style: TextStyle(
-                                                                            color: kMainColor,
-                                                                            fontFamily: kfontfamily2),
+                                                                            color:
+                                                                                kMainColor,
+                                                                            fontFamily:
+                                                                                kfontfamily2),
                                                                       ),
                                                                       Text(
                                                                         'تاريخ فتح التذكرة  ' +
-                                                                            value.tickesearchlist[index].dateOpen
-                                                                                .toString(),
+                                                                            value.tickesearchlist[index].dateOpen.toString(),
                                                                         style: TextStyle(
-                                                                            color: kMainColor,
-                                                                            fontFamily: kfontfamily2),
+                                                                            color:
+                                                                                kMainColor,
+                                                                            fontFamily:
+                                                                                kfontfamily2),
                                                                       ),
                                                                     ],
                                                                   ),
                                                                   Text(
-                                                                    value.tickesearchlist[index].nameEnterprise
+                                                                    value
+                                                                        .tickesearchlist[
+                                                                            index]
+                                                                        .nameEnterprise
                                                                         .toString(),
                                                                     style: TextStyle(
-                                                                        fontFamily: kfontfamily2,
-                                                                        fontWeight: FontWeight.bold),
+                                                                        fontFamily:
+                                                                            kfontfamily2,
+                                                                        fontWeight:
+                                                                            FontWeight.bold),
                                                                   ),
-                                                                  value.tickesearchlist[index].rate != null &&
-                                                                          value.tickesearchlist[index].rate
-                                                                                  .toString() !=
+                                                                  value.tickesearchlist[index].rate !=
+                                                                              null &&
+                                                                          value.tickesearchlist[index].rate.toString() !=
                                                                               ''
                                                                       ? Row(
                                                                           children: [
                                                                             //Text('تقييم بعد الإغلاق'),
                                                                             RatingBar.builder(
-                                                                              initialRating: value
-                                                                                          .tickesearchlist[index].rate
-                                                                                          .toString() ==
-                                                                                      null
-                                                                                  ? 0.0
-                                                                                  : double.parse(value
-                                                                                      .tickesearchlist[index].rate
-                                                                                      .toString()),
+                                                                              initialRating: value.tickesearchlist[index].rate.toString() == null ? 0.0 : double.parse(value.tickesearchlist[index].rate.toString()),
                                                                               minRating: 1,
                                                                               direction: Axis.horizontal,
                                                                               allowHalfRating: false,
                                                                               // glow: true,
                                                                               ignoreGestures: true,
                                                                               itemCount: 5,
-                                                                              itemPadding:
-                                                                                  EdgeInsets.symmetric(horizontal: 4.0),
+                                                                              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                                                                               itemBuilder: (context, _) => Icon(
                                                                                 Icons.star,
                                                                                 color: Colors.amber,
@@ -234,6 +259,7 @@ class _ticketclientviewState extends State<ticketclientview> {
   }
 
   void getfilter() {
-    Provider.of<ticket_vm>(context, listen: false).gettypeticket_filter(typepayController);
+    Provider.of<ticket_vm>(context, listen: false)
+        .gettypeticket_filter(typepayController);
   }
 }

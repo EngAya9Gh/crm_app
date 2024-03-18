@@ -1,3 +1,5 @@
+import 'package:crm_smart/core/common/enums/ticket_source_enum.dart';
+
 class TicketModel {
   TicketModel({
     required this.idTicket,
@@ -13,7 +15,6 @@ class TicketModel {
     required this.dateClose,
     required this.dateRecive,
     required this.clientType,
-
     required this.nameClient,
     required this.nameEnterprise,
     required this.nameRegoin,
@@ -21,10 +22,9 @@ class TicketModel {
     required this.nameuserrecive,
     required this.nameuserclose,
     required this.fk_country,
-
-     this.mobile,
-     this.transferticket,
-
+    this.ticketSource,
+    this.mobile,
+    this.transferticket,
   });
   late final String idTicket;
   late final String? fkClient;
@@ -38,7 +38,8 @@ class TicketModel {
   late final String? dateOpen;
   late final String? dateClose;
   late final String? dateRecive;
-  late final String?  clientType;
+  late final String? clientType;
+  late final TicketSourceEnums? ticketSource;
 
   late final String? nameClient;
   late final String? nameEnterprise;
@@ -55,9 +56,9 @@ class TicketModel {
   late final String? nameuserrate;
   late final String? notes_rate;
 
-  late List<TransferTicket?>? transferticket=[];
+  late List<TransferTicket?>? transferticket = [];
 
-  TicketModel.fromJson(Map<String, dynamic> json){
+  TicketModel.fromJson(Map<String, dynamic> json) {
     idTicket = json['id_ticket'];
     fkClient = json['fk_client'];
     typeProblem = json['type_problem'];
@@ -78,14 +79,14 @@ class TicketModel {
     nameuserrecive = json['nameuserrecive'];
     nameuserclose = json['nameuserclose'];
     fk_country = json['fk_country'];
-
+    ticketSource = TicketSourceEnumsExtension.fromString(json['ticket_source']);
     mobile = json['mobile'];
     rate = json['rate'];
     fkuser_rate = json['fkuser_rate'];
     date_rate = json['date_rate'];
     nameuserrate = json['nameuserrate'];
     notes_rate = json['notes_rate'];
-    transferticket=getproud(json['transferticket']);
+    transferticket = getproud(json['transferticket']);
   }
 
   Map<String, dynamic> toJson() {
@@ -103,6 +104,7 @@ class TicketModel {
     _data['date_close'] = dateClose;
     _data['date_recive'] = dateRecive;
     _data['client_type'] = clientType;
+    _data['ticket_source'] = ticketSource?.name;
 
     _data['name_client'] = nameClient;
     _data['name_enterprise'] = nameEnterprise;
@@ -118,45 +120,42 @@ class TicketModel {
     _data['date_rate'] = date_rate;
     _data['nameuserrate'] = nameuserrate;
     _data['notes_rate'] = notes_rate;
-    _data['transferticket'] =
-        transferticket!.map((e)=>e!.toJson()).toList();
+    _data['transferticket'] = transferticket!.map((e) => e!.toJson()).toList();
     return _data;
   }
-  List<TransferTicket> getproud(data){
+
+  List<TransferTicket> getproud(data) {
     List<TransferTicket> prodlist = [];
-    if(data!=null){
+    if (data != null) {
       for (int i = 0; i < data.length; i++) {
         prodlist.add(TransferTicket.fromJson(data[i]));
       }
     }
     return prodlist;
-
   }
 }
-class TransferTicket{
+
+class TransferTicket {
   TransferTicket({
     required this.id_tr_ticket,
-    required this.	resoantransfer_ticket,
-    required this.	fkuser_to,
+    required this.resoantransfer_ticket,
+    required this.fkuser_to,
     required this.fkuserfrom,
     required this.date_assigntr,
     required this.fk_ticket,
     required this.nameuserto,
     required this.nameuserfrom,
   });
-  late  String? id_tr_ticket;
-  late  String? 	resoantransfer_ticket;
-  late  String? 	fkuser_to;
-  late  String? fkuserfrom;
-  late  String? date_assigntr;
-  late  String? fk_ticket;
-  late  String? nameuserto;
-  late  String? nameuserfrom;
+  late String? id_tr_ticket;
+  late String? resoantransfer_ticket;
+  late String? fkuser_to;
+  late String? fkuserfrom;
+  late String? date_assigntr;
+  late String? fk_ticket;
+  late String? nameuserto;
+  late String? nameuserfrom;
 
-
-
-  TransferTicket.fromJson(Map<String, dynamic> json){
-
+  TransferTicket.fromJson(Map<String, dynamic> json) {
     id_tr_ticket = json['id_tr_ticket'];
     resoantransfer_ticket = json['resoantransfer_ticket'];
     fkuser_to = json['fkuser_to'];
@@ -165,14 +164,13 @@ class TransferTicket{
     fk_ticket = json['fk_ticket'];
     nameuserfrom = json['nameuserfrom'];
     nameuserto = json['nameuserto'];
-
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['id_tr_ticket'] = id_tr_ticket;
-    _data['resoantransfer_ticket'] = 	resoantransfer_ticket;
-    _data['fkuser_to'] = 	fkuser_to;
+    _data['resoantransfer_ticket'] = resoantransfer_ticket;
+    _data['fkuser_to'] = fkuser_to;
     _data['fkuserfrom'] = fkuserfrom;
     _data['date_assigntr'] = date_assigntr;
     _data['fk_ticket'] = fk_ticket;

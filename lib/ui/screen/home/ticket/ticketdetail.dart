@@ -367,7 +367,9 @@ class ticketdetail extends StatelessWidget {
                 cardRowDivided(
                     title: 'نوع التذكرة',
                     value: ticketModel.typeProblem.toString()),
-                //cardRow(title: 'وصف المشكلة',value: widget.ticketModel.detailsProblem.toString(),isExpanded: true,),
+                cardRowDivided(
+                    title: 'مصدر التذكرة',
+                    value: ticketModel.ticketSource?.name),
                 cardRowDivided(
                   title: 'تفاصيل التذكرة',
                   value: ticketModel.detailsProblem.toString(),

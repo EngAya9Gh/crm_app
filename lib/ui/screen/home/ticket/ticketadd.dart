@@ -14,11 +14,13 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/enums/ticket_source_enum.dart';
 import '../../client/profileclient.dart';
 
 class ticketAdd extends StatefulWidget {
   ticketAdd({this.fk_client, Key? key}) : super(key: key);
   String? fk_client;
+
   @override
   _ticketAddState createState() => _ticketAddState();
 }
@@ -27,11 +29,13 @@ class _ticketAddState extends State<ticketAdd> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final TextEditingController problem_desc = TextEditingController();
+
   //final TextEditingController notes = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
   late String name_enterprise;
   late String name_regoin;
   late String name_country;
+  TicketSourceEnums? ticketSource;
 
   @override
   void dispose() {
@@ -71,8 +75,8 @@ class _ticketAddState extends State<ticketAdd> {
               child: Form(
                 key: _globalKey,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                      top: 150, right: 20, left: 20, bottom: 150),
+                  padding:
+                      EdgeInsets.only(top: 50, right: 20, left: 20, bottom: 50),
                   child: ContainerShadows(
                     width: double.infinity,
                     //height: 400,
@@ -193,6 +197,10 @@ class _ticketAddState extends State<ticketAdd> {
                             );
                           },
                         ),
+
+                        RowEdit(name: 'مصدر التذكرة', des: ''),
+                        _ticketSourceDropDown(),
+
                         SizedBox(
                           height: 15,
                         ),
@@ -220,14 +228,13 @@ class _ticketAddState extends State<ticketAdd> {
                           controller: problem_desc,
                           maxline: 4,
                         ),
-                        SizedBox(
-                          height: 15,
-                        ),
+                        SizedBox(height: 15),
                         CustomButton(
                             width: double.infinity,
                             //MediaQuery.of(context).size.width * 0.2,
                             text: 'حفظ',
                             onTap: () async {
+                              print("sources => $ticketSource");
                               if (_globalKey.currentState!.validate()) {
                                 _globalKey.currentState!.save();
                                 if (widget.fk_client != null) {
@@ -235,6 +242,7 @@ class _ticketAddState extends State<ticketAdd> {
                                           context,
                                           listen: false)
                                       .addticket({
+                                    'ticket_source': ticketSource?.name,
                                     'name_enterprise': name_enterprise,
                                     'fk_client': widget.fk_client.toString(),
                                     'type_problem':
@@ -290,6 +298,31 @@ class _ticketAddState extends State<ticketAdd> {
             ),
           ),
         ));
+  }
+
+  SizedBox _ticketSourceDropDown() {
+    return SizedBox(
+      child: DropdownButtonFormField(
+        decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide(width: 2, color: Colors.grey))),
+
+        isExpanded: true,
+        hint: Text("مصدر التذكرة"),
+        items: TicketSourceEnums.values
+            .map((e) => DropdownMenuItem(
+                  child: Text(e.name),
+                  value: e.name,
+                ))
+            .toList(),
+        // value: cart.selectedValueOut,
+        onChanged: (value) {
+          ticketSource =
+              TicketSourceEnumsExtension.fromString(value.toString());
+        },
+      ),
+    );
   }
 
   clear(BuildContext context) {
