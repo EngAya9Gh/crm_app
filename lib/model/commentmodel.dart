@@ -1,5 +1,5 @@
-import '../constants.dart';
 import '../core/common/enums/comment_type.dart';
+import '../core/utils/end_points.dart';
 
 class CommentModel {
   CommentModel({
@@ -27,7 +27,7 @@ class CommentModel {
   CommentModel.fromJson(Map<String, dynamic> json) {
     final image = json['img_image'];
     if (image != null) {
-      imgImage = urlimage + image;
+      imgImage = EndPoints.baseUrls.urlimage + image;
     }
     idComment = json['id_comment'];
     fkUser = json['fk_user'];

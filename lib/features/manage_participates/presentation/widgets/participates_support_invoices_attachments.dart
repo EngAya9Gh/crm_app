@@ -12,6 +12,7 @@ import 'package:path/path.dart' hide context;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/check_sorage_permission.dart';
+import '../../../../core/utils/end_points.dart';
 import '../../../../ui/widgets/custom_widget/text_uitil.dart';
 import '../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -168,7 +169,8 @@ class _ParticipatesSupportInvoicesAttachmentsState
               borderRadius: BorderRadius.circular(15),
               child: fileAttach.fileAttach!.mimeType?.contains("image") == true
                   ? FancyImageShimmerViewer(
-                      imageUrl: urlfile + fileAttach.fileAttach!,
+                      imageUrl:
+                          EndPoints.baseUrls.urlfile + fileAttach.fileAttach!,
                       fit: BoxFit.cover,
                     )
                   : InkWell(

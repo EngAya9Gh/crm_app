@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../constants.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/di/di_container.dart';
+import '../../../../core/utils/end_points.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/commentmodel.dart';
 import '../../../../ui/screen/care/card_comment.dart';
@@ -141,10 +142,12 @@ class _comment_companyState extends State<comment_company> {
                               content: comment.content.toString(),
                               nameUser: comment.nameUser.toString(),
                               imgImage: comment.imgImage != ''
-                                  ? urlimage + comment.imgImage.toString()
+                                  ? EndPoints.baseUrls.urlimage +
+                                      comment.imgImage.toString()
                                   : '',
                               nameEnterprise: '',
-                              date_comment: comment.date_comment.toString(), type_comment: '');
+                              date_comment: comment.date_comment.toString(),
+                              type_comment: '');
                           return cardcomment(
                             commentmodel: commentmodel,
                           );

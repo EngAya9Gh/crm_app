@@ -14,9 +14,9 @@ class LinkDatasource {
 
   Future<ResponseWrapper<List<LinkImportantModel>>> getLink() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.laravelUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final response = await api.get(endPoint: EndPoints.link.getLink);
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       //
       // return ResponseWrapper<List<LinkImportantModel>>.fromJson(
       //   response['data'],
@@ -40,10 +40,10 @@ class LinkDatasource {
   Future<ResponseWrapper<LinkImportantModel>> addLink(
       {required Map<String, dynamic> body}) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.laravelUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final response =
           await api.post(endPoint: EndPoints.link.addLink, data: body);
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       return ResponseWrapper<LinkImportantModel>.fromJson(
         response,
         (json) => LinkImportantModel.fromJson(response['data']),
@@ -58,10 +58,10 @@ class LinkDatasource {
     required String id,
   }) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.laravelUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final response =
           await api.post(endPoint: EndPoints.link.updateLink + id, data: body);
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
 
       return ResponseWrapper<LinkImportantModel>.fromJson(
         response,

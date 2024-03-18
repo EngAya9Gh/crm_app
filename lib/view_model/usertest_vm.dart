@@ -3,61 +3,67 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/model/usertestmodel.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
-class usertest_vm  extends ChangeNotifier{
+class usertest_vm extends ChangeNotifier {
   List<UserTestModel> listProduct = [];
 
   UserModel? usercurrent;
-  void setvalue(user){
-    
-    usercurrent=user;
+  void setvalue(user) {
+    usercurrent = user;
     notifyListeners();
   }
-  bool isloading=false;
+
+  bool isloading = false;
 
   Future<void> getusertest_vm() async {
-    listProduct=[];
+    listProduct = [];
     isloading = true;
     notifyListeners();
-    var data = await Api()
-        .get(url: url + 'users/getusertest.php?fk_country=${usercurrent!.fkCountry.toString()}');
+    var data = await Api().get(
+        url: EndPoints.baseUrls.url +
+            'users/getusertest.php?fk_country=${usercurrent!.fkCountry.toString()}');
     for (int i = 0; i < data.length; i++) {
       listProduct.insert(0, UserTestModel.fromJson(data[i]));
       isloading = false;
       notifyListeners();
-    }}
-    Future<String> addusertest_vm(Map<String, dynamic?> body) async {
-      isloading = true;
-      notifyListeners();
-      String res = await Api().post(
-          url: url + 'users/add_usretest.php', //users/addmangemt.php
-          body: body);
-
-      body.addAll({
-        'id_usertest': res,
-      });
-
-      isloading = false;
-      listProduct.insert(0, UserTestModel.fromJson(body));
-
-      notifyListeners();
-      return "done";
-    }
-    Future<bool> updateusertest_vm(Map<String, dynamic?> body,
-        String id_usertest) async {
-      isloading = true;
-      notifyListeners();
-      String res = await Api().post(
-          url: url + 'users/update_usertest.php?id_usertest=${id_usertest}',
-          //users/addmangemt.php
-          body: body);
-
-      final index = listProduct.indexWhere(
-              (element) => element.id_usertest == id_usertest);
-      listProduct[index] = UserTestModel.fromJson(body);
-      isloading = false;
-      notifyListeners();
-      return true;
     }
   }
+
+  Future<String> addusertest_vm(Map<String, dynamic?> body) async {
+    isloading = true;
+    notifyListeners();
+    String res = await Api().post(
+        url: EndPoints.baseUrls.url +
+            'users/add_usretest.php', //users/addmangemt.php
+        body: body);
+
+    body.addAll({
+      'id_usertest': res,
+    });
+
+    isloading = false;
+    listProduct.insert(0, UserTestModel.fromJson(body));
+
+    notifyListeners();
+    return "done";
+  }
+
+  Future<bool> updateusertest_vm(
+      Map<String, dynamic?> body, String id_usertest) async {
+    isloading = true;
+    notifyListeners();
+    String res = await Api().post(
+        url: EndPoints.baseUrls.url +
+            'users/update_usertest.php?id_usertest=${id_usertest}',
+        //users/addmangemt.php
+        body: body);
+
+    final index =
+        listProduct.indexWhere((element) => element.id_usertest == id_usertest);
+    listProduct[index] = UserTestModel.fromJson(body);
+    isloading = false;
+    notifyListeners();
+    return true;
+  }
+}

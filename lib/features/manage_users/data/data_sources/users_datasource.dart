@@ -14,7 +14,7 @@ class UsersDatasource {
 
   Future<ResponseWrapper<List<UserModel>>> getAllUsers() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(endPoint: EndPoints.users.allUsers);
 
       return ResponseWrapper<List<UserModel>>.fromJson(
@@ -35,7 +35,7 @@ class UsersDatasource {
     required Map<String, dynamic> param,
   }) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response =
           await api.post(endPoint: EndPoints.users.addUser, data: body);
 
@@ -53,7 +53,7 @@ class UsersDatasource {
     required Map<String, dynamic> param,
   }) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.post(
         endPoint: EndPoints.users.updateUser,
         data: body,

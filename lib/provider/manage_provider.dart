@@ -2,7 +2,7 @@ import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/managmodel.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
 class manage_provider extends ChangeNotifier {
   List<ManageModel> listtext = [];
@@ -28,7 +28,8 @@ class manage_provider extends ChangeNotifier {
     //listoflevel=[];
     if (listtext.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'users/getmanagment.php');
+      data = await Api()
+          .get(url: EndPoints.baseUrls.url + 'users/getmanagment.php');
 
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
@@ -44,7 +45,8 @@ class manage_provider extends ChangeNotifier {
   Future<String> addmanage_vm(Map<String, dynamic?> body) async {
     //name_mange
     String res = await Api().post(
-        url: url + 'users/addmangemt.php', //users/addmangemt.php
+        url: EndPoints.baseUrls.url + 'users/addmangemt.php',
+        //users/addmangemt.php
         body: body);
     if (res != "error") {
       body.addAll({
@@ -57,10 +59,13 @@ class manage_provider extends ChangeNotifier {
     return res;
   }
 
-  Future<String> update_manage(Map<String, dynamic?> body, String idmanag) async {
+  Future<String> update_manage(
+      Map<String, dynamic?> body, String idmanag) async {
     //name_mange
     String res = await Api().post(
-        url: url + 'users/update_manage.php?idmange=${idmanag}', //users/addmangemt.php
+        url: EndPoints.baseUrls.url +
+            'users/update_manage.php?idmange=${idmanag}',
+        //users/addmangemt.php
         body: body);
     body.addAll({
       'idmange': idmanag,

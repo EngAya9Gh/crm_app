@@ -8,9 +8,9 @@ import '../../utils/end_points.dart';
 Dio dioInit() {
   final dio = Dio(
     BaseOptions(
-      baseUrl: EndPoints.phpUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
+      baseUrl: EndPoints.baseUrls.url,
+      // connectTimeout: const Duration(seconds: 10),
+      // receiveTimeout: const Duration(seconds: 10),
       headers: {
         'AuthToken':
             'Bearer ${getIt<SharedPreferences>().getString('token_user')}',

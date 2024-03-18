@@ -16,7 +16,7 @@ class PrivilegeDatasource {
   Future<ResponseWrapper<List<PrivilegeModel>>> getPrivileges(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(
           endPoint: EndPoints.privilege.getPrivileges, queryParameters: body);
       return ResponseWrapper<List<PrivilegeModel>>.fromJson(
@@ -31,7 +31,7 @@ class PrivilegeDatasource {
 
   Future<ResponseWrapper<List<LevelModel>>> getLevels() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(endPoint: EndPoints.privilege.getLevels);
 
       return ResponseWrapper<List<LevelModel>>.fromJson(
@@ -46,7 +46,7 @@ class PrivilegeDatasource {
 
   Future<ResponseWrapper<String>> addLevel(Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response =
           await api.post(endPoint: EndPoints.privilege.addLevel, data: body);
 
@@ -59,10 +59,10 @@ class PrivilegeDatasource {
   Future<ResponseWrapper<void>> updatePrivileges(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.laravelUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final response = await api.post(
           endPoint: EndPoints.privilege.updatePrivileges, data: body);
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       return ResponseWrapper(message: null, data: null);
     }
 

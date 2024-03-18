@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+enum AppMode { production, development }
+
 enum StateStatus { initial, loading, success, failure, empty }
 
 enum ADType { distributor, agent }

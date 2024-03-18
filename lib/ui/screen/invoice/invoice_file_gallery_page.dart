@@ -19,6 +19,7 @@ import '../../../api/api.dart';
 import '../../../constants.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/row_edit.dart';
@@ -442,7 +443,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                           (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
                       ? InkWell(
                           onTap: () => invoice_vm().openFile(
-                              attachFile: fileAttach, baseUrl: urlfile),
+                              attachFile: fileAttach,
+                              baseUrl: EndPoints.baseUrls.urlfile),
                           child: Container(
                               width: 110,
                               decoration: BoxDecoration(
@@ -510,8 +512,8 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     if (fileAttach.file != null ||
         (fileAttach.fileAttach?.endsWith('.pdf') ?? false)) {
       return InkWell(
-        onTap: () =>
-            invoiceVm.openFile(attachFile: fileAttach, baseUrl: urlfile),
+        onTap: () => invoiceVm.openFile(
+            attachFile: fileAttach, baseUrl: EndPoints.baseUrls.urlfile),
         child: Container(
             width: double.infinity,
             decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
@@ -521,10 +523,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
       return InkWell(
         onTap: () => AppFileViewer(
           imageSource: ImageSourceViewer.network,
-          urls: [urlfile + fileAttach.fileAttach!],
+          urls: [EndPoints.baseUrls.urlfile + fileAttach.fileAttach!],
         ).show(context),
         child: FancyImageShimmerViewer(
-          imageUrl: urlfile + fileAttach.fileAttach!,
+          imageUrl: EndPoints.baseUrls.urlfile + fileAttach.fileAttach!,
           fit: BoxFit.cover,
         ),
       );
@@ -543,10 +545,13 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   child: InkWell(
                     onTap: () => AppFileViewer(
                       imageSource: ImageSourceViewer.network,
-                      urls: [urlfile + fileAttach.fileAttach!],
+                      urls: [
+                        EndPoints.baseUrls.urlfile + fileAttach.fileAttach!
+                      ],
                     ).show(context),
                     child: FancyImageShimmerViewer(
-                      imageUrl: urlfile + (fileAttach.fileAttach ?? ""),
+                      imageUrl: EndPoints.baseUrls.urlfile +
+                          (fileAttach.fileAttach ?? ""),
                       fit: BoxFit.cover,
                     ),
                   ),

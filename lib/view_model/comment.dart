@@ -3,8 +3,8 @@ import 'package:crm_smart/model/commentmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-import '../constants.dart';
 import '../core/common/enums/comment_type.dart';
+import '../core/utils/end_points.dart';
 
 class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];
@@ -22,8 +22,9 @@ class comment_vm extends ChangeNotifier {
       notifyListeners();
       // if(listComments.isEmpty){
       List<dynamic> data = [];
-      data = await Api()
-          .get(url: url + 'care/viewcomment.php?fk_client=$fk_client');
+      data = await Api().get(
+          url: EndPoints.baseUrls.url +
+              'care/viewcomment.php?fk_client=$fk_client');
 
       _allCommentsList = data.map((e) => CommentModel.fromJson(e)).toList();
 
@@ -57,8 +58,8 @@ class comment_vm extends ChangeNotifier {
       isloadadd = true;
       final DateFormat formatter = DateFormat('yyyy-MM-dd h-m-s');
       notifyListeners();
-      String res =
-          await Api().post(url: url + 'care/addcomment.php', body: body);
+      String res = await Api().post(
+          url: EndPoints.baseUrls.url + 'care/addcomment.php', body: body);
       if (res != "error") {
         body.addAll({
           'id_comment': res,

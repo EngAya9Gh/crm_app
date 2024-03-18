@@ -4,7 +4,7 @@ import 'package:crm_smart/model/companyModel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
 class CompanyProvider extends ChangeNotifier {
   List<CompanyModel> list_company = [];
@@ -14,7 +14,8 @@ class CompanyProvider extends ChangeNotifier {
     notifyListeners();
 
     //  if(list_activity.isEmpty)
-    var data = await Api().get(url: url + 'config/get_company.php');
+    var data =
+        await Api().get(url: EndPoints.baseUrls.url + 'config/get_company.php');
     List<CompanyModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
       prodlist.add(CompanyModel.fromJson(data[i]));
@@ -46,7 +47,8 @@ class CompanyProvider extends ChangeNotifier {
     notifyListeners();
     String res = await Api().postRequestWithFile(
         "array",
-        url + 'config/add_company.php', //users/addmangemt.php
+        EndPoints.baseUrls.url +
+            'config/add_company.php', //users/addmangemt.php
         body,
         file,
         null);
@@ -68,7 +70,7 @@ class CompanyProvider extends ChangeNotifier {
     notifyListeners();
     String res = await Api().postRequestWithFile(
         "array",
-        url +
+        EndPoints.baseUrls.url +
             'config/update_company.php?id_Company=${idcompany}', //users/addmangemt.php
         body,
         file,

@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
 AgentDistributorResponse agentDistributorResponseFromJson(String str) =>
     AgentDistributorResponse.fromJson(json.decode(str));
@@ -107,7 +107,7 @@ class AgentDistributorModel {
       imageAgent: json["image_agent"].toString().trim().isEmpty ||
               json["image_agent"] == null
           ? json["image_agent"]
-          : urlfileAgent + json['image_agent'],
+          : EndPoints.baseUrls.urlfileAgent + json['image_agent'],
       cityId: json["cityId"],
       addDate: json['add_date'],
       updateDate: json['update_date'],

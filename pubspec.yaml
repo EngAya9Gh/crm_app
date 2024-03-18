@@ -1,7 +1,7 @@
 name: crm_smart
 description: A new Flutter project.
 publish_to: 'none'
-version: 2.0.5+25
+version: 2.0.5+26
 
 environment:
   sdk: ">=2.15.0 <3.0.0"
@@ -83,6 +83,7 @@ dependencies:
 
   # pdf
   syncfusion_flutter_pdfviewer: ^20.4.54
+  device_info_plus: ^9.1.2
 
 
 dependency_overrides:

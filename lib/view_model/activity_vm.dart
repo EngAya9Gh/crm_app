@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 import '../model/ActivityModel.dart';
 import '../services/configService.dart';
 
@@ -9,7 +9,8 @@ class ActivityProvider extends ChangeNotifier {
   List<ActivityModel> activitiesList = [];
 
   Future<void> getActivities({VoidCallback? onSuccess}) async {
-    if (activitiesList.isEmpty) activitiesList = await config_service().getactv('type');
+    if (activitiesList.isEmpty)
+      activitiesList = await config_service().getactv('type');
     onSuccess?.call();
     notifyListeners();
   }
@@ -26,7 +27,8 @@ class ActivityProvider extends ChangeNotifier {
 
   void onChangeSelectedActivityTypeId(String? s) {
     selectedActivityTypeId = s;
-    int index = activitiesList.indexWhere((element) => element.id_activity_type == s);
+    int index =
+        activitiesList.indexWhere((element) => element.id_activity_type == s);
     ActivityModel? activity;
     if (index != -1) activity = activitiesList[index];
     onChangeSelectedActivity(activity);
@@ -37,7 +39,8 @@ class ActivityProvider extends ChangeNotifier {
   Future<String> addActivityVm(Map<String, dynamic> body) async {
     isLoading = true;
     notifyListeners();
-    String res = await Api().post(url: url + 'config/addactv.php', body: body);
+    String res = await Api()
+        .post(url: EndPoints.baseUrls.url + 'config/addactv.php', body: body);
     if (res != "error") {
       body.addAll({
         'id_activity_type': res,
@@ -49,14 +52,19 @@ class ActivityProvider extends ChangeNotifier {
     return res;
   }
 
-  Future<String> updateActivity(Map<String, dynamic> body, String activityTypeId) async {
+  Future<String> updateActivity(
+      Map<String, dynamic> body, String activityTypeId) async {
     isLoading = true;
     notifyListeners();
-    String res = await Api().post(url: url + 'config/update_actv.php?id_activity_type=$activityTypeId', body: body);
+    String res = await Api().post(
+        url: EndPoints.baseUrls.url +
+            'config/update_actv.php?id_activity_type=$activityTypeId',
+        body: body);
     body.addAll({
       'id_activity_type': activityTypeId,
     });
-    final index = activitiesList.indexWhere((element) => element.id_activity_type == activityTypeId);
+    final index = activitiesList
+        .indexWhere((element) => element.id_activity_type == activityTypeId);
     activitiesList[index] = ActivityModel.fromJson(body);
     isLoading = false;
     notifyListeners();

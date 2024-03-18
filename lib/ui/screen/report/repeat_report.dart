@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/utils/app_strings.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../function_global.dart';
 import 'is_marketing_chekbox.dart';
 
@@ -61,7 +62,7 @@ class _repeat_reportState extends State<repeat_report> {
     switch (type) {
       case "datedays":
         data = await Api().get(
-          url: url +
+          url: EndPoints.baseUrls.url +
               "reports/care_communication_report.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$isMarketingParams",
           //body: {'type': type}
         );

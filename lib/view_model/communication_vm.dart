@@ -4,14 +4,14 @@ import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
-import '../constants.dart';
-import '../features/manage_privilege/data/models/privilege_model.dart';
+
+import '../core/utils/end_points.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunication = [];
   List<CommunicationModel> list_wrong_number = [];
-  List<CommunicationModel>  list_not_use = [];
+  List<CommunicationModel> list_not_use = [];
   List<CommunicationModel> listCommunicationrepeat = [];
   List<CommunicationModel> listCommunicationInstall = [];
   List<CommunicationModel> listCommunicationWelcome = [];
@@ -26,9 +26,13 @@ class communication_vm extends ChangeNotifier {
     final list = List.of(listCommunicationInstall);
 
     listCommunicationFilterSearch = list.where((element) {
-      return element.nameEnterprise.toLowerCase().contains(query.toLowerCase()) ||
-          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
-          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ?? false);
+      return element.nameEnterprise
+              .toLowerCase()
+              .contains(query.toLowerCase()) ||
+          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ??
+              false) ||
+          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ??
+              false);
     }).toList();
 
     notifyListeners();
@@ -38,9 +42,13 @@ class communication_vm extends ChangeNotifier {
     final list = List.of(list_not_use);
 
     listCommunicationFilterSearch = list.where((element) {
-      return element.nameEnterprise.toLowerCase().contains(query.toLowerCase()) ||
-          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ?? false) ||
-          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ?? false);
+      return element.nameEnterprise
+              .toLowerCase()
+              .contains(query.toLowerCase()) ||
+          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ??
+              false) ||
+          (element.nameClient?.toLowerCase().contains(query.toLowerCase()) ??
+              false);
     }).toList();
 
     notifyListeners();
@@ -83,36 +91,48 @@ class communication_vm extends ChangeNotifier {
       //   });
       // }
       List<dynamic> data = [];
-      data = await Api()
-          .get(url: url + 'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
-      
+      data = await Api().get(
+          url: EndPoints.baseUrls.url +
+              'care/getCommunicationClient.php?fk_client=$fk_client&id_communication=$idCommunication');
 
       if (data.length.toString().isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
           listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
         }
       }
-      final listWelcome = listCommunicationClient.where((element) => element.typeCommuncation == "ترحيب").toList();
-      final listInstallation = listCommunicationClient.where((element) => element.typeCommuncation == "تركيب").toList();
-      final listRepeat = listCommunicationClient.where((element) => element.typeCommuncation == "دوري").toList();
+      final listWelcome = listCommunicationClient
+          .where((element) => element.typeCommuncation == "ترحيب")
+          .toList();
+      final listInstallation = listCommunicationClient
+          .where((element) => element.typeCommuncation == "تركيب")
+          .toList();
+      final listRepeat = listCommunicationClient
+          .where((element) => element.typeCommuncation == "دوري")
+          .toList();
 
-      CommunicationModel? communicationSelected =
-          listWelcome.firstWhereOrNull((element) => element.idCommunication == idCommunication);
+      CommunicationModel? communicationSelected = listWelcome.firstWhereOrNull(
+          (element) => element.idCommunication == idCommunication);
 
       if (communicationSelected != null) {
-        listWelcome.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
+        listWelcome.removeWhere((element) =>
+            element.idCommunication == communicationSelected!.idCommunication);
         listWelcome.insert(0, communicationSelected);
       } else {
-        communicationSelected =
-            listInstallation.firstWhereOrNull((element) => element.idCommunication == idCommunication);
+        communicationSelected = listInstallation.firstWhereOrNull(
+            (element) => element.idCommunication == idCommunication);
 
         if (communicationSelected != null) {
-          listInstallation.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
+          listInstallation.removeWhere((element) =>
+              element.idCommunication ==
+              communicationSelected!.idCommunication);
           listInstallation.insert(0, communicationSelected);
         } else {
-          communicationSelected = listRepeat.firstWhereOrNull((element) => element.idCommunication == idCommunication);
+          communicationSelected = listRepeat.firstWhereOrNull(
+              (element) => element.idCommunication == idCommunication);
           if (communicationSelected != null) {
-            listRepeat.removeWhere((element) => element.idCommunication == communicationSelected!.idCommunication);
+            listRepeat.removeWhere((element) =>
+                element.idCommunication ==
+                communicationSelected!.idCommunication);
             listRepeat.insert(0, communicationSelected);
           }
         }
@@ -142,8 +162,9 @@ class communication_vm extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     List<dynamic> data = [];
-    data = await Api()
-        .get(url: url + 'reports/wrong_using.php?fk_country=${usercurrent!.fkCountry.toString()}&type=$type');
+    data = await Api().get(
+        url: EndPoints.baseUrls.url +
+            'reports/wrong_using.php?fk_country=${usercurrent!.fkCountry.toString()}&type=$type');
 
     for (int i = 0; i < data.length; i++) {
       _list.add(CommunicationModel.fromJson(data[i]));
@@ -166,15 +187,19 @@ class communication_vm extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     List<dynamic> data = [];
-    data = await Api().get(url: url + 'care/view_communcation.php?fk_client=${fk_client}');
-    
+    data = await Api().get(
+        url: EndPoints.baseUrls.url +
+            'care/view_communcation.php?fk_client=${fk_client}');
+
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationClient.add(CommunicationModel.fromJson(data[i]));
       }
       if (listCommunicationClient.isNotEmpty) {
         listCommunicationClient.forEach((element) {
-          if (element.fkClient == fk_client && element.dateCommunication != null && element.typeCommuncation == 'دوري'
+          if (element.fkClient == fk_client &&
+                  element.dateCommunication != null &&
+                  element.typeCommuncation == 'دوري'
               //&&element.fkUser==null
               ) list.add(element);
         });
@@ -187,7 +212,8 @@ class communication_vm extends ChangeNotifier {
 
   List<CommunicationModel> listCommunicationWelcome_temp = [];
 
-  void getcommtype_filter(String? filter, String? regoin, [String? myClientsParam]) async {
+  void getcommtype_filter(String? filter, String? regoin,
+      [String? myClientsParam]) async {
     listCommunicationWelcome = [];
     isloading = true;
     notifyListeners();
@@ -197,24 +223,20 @@ class communication_vm extends ChangeNotifier {
 
     List<CommunicationModel> _listInvoicesAccept = [];
     if (regoin == null || regoin == '0') {
-      
       if (listCommunicationWelcome.isNotEmpty) {
         if (filter == 'الكل' || filter == null) {
           _listInvoicesAccept = List.from(listCommunicationWelcome);
-          
         }
         if (filter == 'تم الترحيب')
           listCommunicationWelcome.forEach((element) {
             if (element.dateCommunication != null) {
               _listInvoicesAccept.add(element);
-              
             }
           });
         if (filter == 'لم يتم الترحيب')
           listCommunicationWelcome.forEach((element) {
             if (element.dateCommunication == null) {
               _listInvoicesAccept.add(element);
-              
             }
           });
       }
@@ -224,22 +246,21 @@ class communication_vm extends ChangeNotifier {
           listCommunicationWelcome.forEach((element) {
             if (element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              
             }
           });
 
         if (filter == 'تم الترحيب')
           listCommunicationWelcome.forEach((element) {
-            if (element.dateCommunication != null && element.fk_regoin == regoin) {
+            if (element.dateCommunication != null &&
+                element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              
             }
           });
         if (filter == 'لم يتم الترحيب')
           listCommunicationWelcome.forEach((element) {
-            if (element.dateCommunication == null && element.fk_regoin == regoin) {
+            if (element.dateCommunication == null &&
+                element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              
             }
           });
       }
@@ -252,40 +273,41 @@ class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunicationInstall_temp = [];
   List<CommunicationModel> listCommunicationInstall2_temp = [];
 
-  void getinstalltype_filter(String? filter, String? regoin, int typefilter, String? employeeId,
+  void getinstalltype_filter(
+      String? filter, String? regoin, int typefilter, String? employeeId,
       [String? myClientsParam]) async {
     listCommunicationInstall = [];
     isloading = true;
     notifyListeners();
 
-    if ((listCommunicationInstall_temp.isEmpty && typefilter == 1) || (myClientsParam != null && typefilter == 1))
+    if ((listCommunicationInstall_temp.isEmpty && typefilter == 1) ||
+        (myClientsParam != null && typefilter == 1))
       await getCommunicationInstall(typefilter, myClientsParam ?? '');
-    if ((listCommunicationInstall2_temp.isEmpty && typefilter == 2) || (myClientsParam != null && typefilter == 2))
+    if ((listCommunicationInstall2_temp.isEmpty && typefilter == 2) ||
+        (myClientsParam != null && typefilter == 2))
       await getCommunicationInstall(typefilter, myClientsParam ?? '');
-    if (typefilter == 1) listCommunicationInstall = List.from(listCommunicationInstall_temp);
-    if (typefilter == 2) listCommunicationInstall = List.from(listCommunicationInstall2_temp);
+    if (typefilter == 1)
+      listCommunicationInstall = List.from(listCommunicationInstall_temp);
+    if (typefilter == 2)
+      listCommunicationInstall = List.from(listCommunicationInstall2_temp);
 
     List<CommunicationModel> _listInvoicesAccept = [];
-    
-    
+
     if (regoin == '0' || regoin == null) {
       if (listCommunicationInstall.isNotEmpty) {
         if (filter == 'الكل') {
           _listInvoicesAccept = List.from(listCommunicationInstall);
-          
         }
         if (filter == 'تم التأكد من الجودة')
           listCommunicationInstall.forEach((element) {
             if (element.dateCommunication != null) {
               _listInvoicesAccept.add(element);
-              
             }
           });
         if (filter == 'انتظار الجودة')
           listCommunicationInstall.forEach((element) {
             if (element.dateCommunication == null) {
               _listInvoicesAccept.add(element);
-              
             }
           });
       }
@@ -295,22 +317,21 @@ class communication_vm extends ChangeNotifier {
           listCommunicationInstall.forEach((element) {
             if (element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              
             }
           });
 
         if (filter == 'تم التأكد من الجودة')
           listCommunicationInstall.forEach((element) {
-            if (element.dateCommunication != null && element.fk_regoin == regoin) {
+            if (element.dateCommunication != null &&
+                element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              
             }
           });
         if (filter == 'انتظار الجودة')
           listCommunicationInstall.forEach((element) {
-            if (element.dateCommunication == null && element.fk_regoin == regoin) {
+            if (element.dateCommunication == null &&
+                element.fk_regoin == regoin) {
               _listInvoicesAccept.add(element);
-              
             }
           });
       }
@@ -318,8 +339,9 @@ class communication_vm extends ChangeNotifier {
 
     listCommunicationInstall = List.from(_listInvoicesAccept);
     if (employeeId != null) {
-      listCommunicationInstall =
-          listCommunicationInstall.where((element) => element.userinstall == employeeId).toList();
+      listCommunicationInstall = listCommunicationInstall
+          .where((element) => element.userinstall == employeeId)
+          .toList();
     }
     isloading = false;
     notifyListeners();
@@ -335,7 +357,8 @@ class communication_vm extends ChangeNotifier {
         listCommunicationrepeat.forEach((element) {
           if (element.nameEnterprise.toString().contains(searchKey, 0) ||
               element.mobile.toString().contains(searchKey, 0) ||
-              element.nameClient.toString().contains(searchKey, 0)) _listInvoicesAccept.add(element);
+              element.nameClient.toString().contains(searchKey, 0))
+            _listInvoicesAccept.add(element);
         });
         listCommunicationrepeat = List.from(_listInvoicesAccept);
       }
@@ -345,7 +368,8 @@ class communication_vm extends ChangeNotifier {
   }
 
   //searchwelcome
-  Future<void> searchwelcome(String productName, String? type, String myClientsParams) async {
+  Future<void> searchwelcome(
+      String productName, String? type, String myClientsParams) async {
     List<CommunicationModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
     String searchKey = productName;
@@ -357,7 +381,8 @@ class communication_vm extends ChangeNotifier {
             listCommunicationWelcome.forEach((element) {
               if (element.nameEnterprise.contains(searchKey, 0) ||
                   element.mobile.toString().contains(searchKey, 0) ||
-                  element.nameClient.toString().contains(searchKey, 0)) _listInvoicesAccept.add(element);
+                  element.nameClient.toString().contains(searchKey, 0))
+                _listInvoicesAccept.add(element);
             });
             listCommunicationWelcome = _listInvoicesAccept;
           }
@@ -419,7 +444,7 @@ class communication_vm extends ChangeNotifier {
       if (res) {
         param = '&fk_regoin=' + usercurrent!.fkRegoin.toString();
       } else {
-        res =  privilegeCubit.checkPrivilege('121');
+        res = privilegeCubit.checkPrivilege('121');
         if (res) {
           param = '&fk_user=' + usercurrent!.idUser.toString();
         }
@@ -433,9 +458,7 @@ class communication_vm extends ChangeNotifier {
     listCommunicationInstall2_temp = [];
     isloading = true;
     notifyListeners();
-    
-    
-    
+
     // String param= get_privilgelist();
     if (type == 2) {
       await getInstall2(myClientsParams);
@@ -483,16 +506,17 @@ class communication_vm extends ChangeNotifier {
 
   bool isload = false;
 
-  void setload(bool val){
-    isload=val;
+  void setload(bool val) {
+    isload = val;
     notifyListeners();
-
   }
+
   bool valuebutton = false;
 
   CancelableOperation<dynamic>? _cancelableFuture;
 
-  Future<void> getCommunicationallrepeatpage(String country, String queryParams) async {
+  Future<void> getCommunicationallrepeatpage(
+      String country, String queryParams) async {
     listCommunicationrepeat = [];
     listCommunicationrepeatTemp = [];
     isload = true;
@@ -501,12 +525,12 @@ class communication_vm extends ChangeNotifier {
 
     _cancelableFuture?.cancel();
 
-    _cancelableFuture = CancelableOperation.fromFuture(
-        Api().get(url: url + 'care/getcomm_repeat.php?fk_country=$country${ queryParams}'));
+    _cancelableFuture = CancelableOperation.fromFuture(Api().get(
+        url: EndPoints.baseUrls.url +
+            'care/getcomm_repeat.php?fk_country=$country${queryParams}'));
 
     data = await _cancelableFuture?.value;
 
-    
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
@@ -517,7 +541,8 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getCommunicationallrepeatpage_done(String country, String param1) async {
+  Future<void> getCommunicationallrepeatpage_done(
+      String country, String param1) async {
     listCommunicationrepeat = [];
     listCommunicationrepeatTemp = [];
     isload = true;
@@ -526,12 +551,13 @@ class communication_vm extends ChangeNotifier {
 
     _cancelableFuture?.cancel();
 
-    _cancelableFuture = CancelableOperation.fromFuture(
-        Api().post(url: url + 'reports/report_care_rate.php?fk_country=$country$param1', body: {'type': 'datedays'}));
+    _cancelableFuture = CancelableOperation.fromFuture(Api().post(
+        url: EndPoints.baseUrls.url +
+            'reports/report_care_rate.php?fk_country=$country$param1',
+        body: {'type': 'datedays'}));
 
     data = await _cancelableFuture?.value;
 
-    
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationrepeat.add(CommunicationModel.fromJson(data[i]));
@@ -549,16 +575,20 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updatecarecommuncation(Map<String, dynamic?> body, String id_communication,
+  Future<void> updatecarecommuncation(
+      Map<String, dynamic?> body, String id_communication,
       {VoidCallback? onSuccess}) async {
     try {
       isload = true;
       notifyListeners();
-      var result =
-          await Api().post(url: url + 'care/updateCommunication.php?id_communication=$id_communication', body: body);
+      var result = await Api().post(
+          url: EndPoints.baseUrls.url +
+              'care/updateCommunication.php?id_communication=$id_communication',
+          body: body);
       //CommunicationModel data = CommunicationModel.fromJson(result[0]);
       if (listCommunicationrepeat.isNotEmpty) {
-        int index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
+        int index = listCommunicationrepeat.indexWhere(
+            (element) => element.idCommunication == id_communication);
         if (index != -1) {
           listCommunicationrepeat.removeAt(index);
         }
@@ -566,7 +596,8 @@ class communication_vm extends ChangeNotifier {
       }
 
       if (listCommunicationrepeatTemp.isNotEmpty) {
-        int index = listCommunicationrepeatTemp.indexWhere((element) => element.idCommunication == id_communication);
+        int index = listCommunicationrepeatTemp.indexWhere(
+            (element) => element.idCommunication == id_communication);
         if (index != -1) {
           listCommunicationrepeatTemp.removeAt(index);
         }
@@ -575,7 +606,11 @@ class communication_vm extends ChangeNotifier {
       isload = false;
       final communication = CommunicationModel.fromJson(result[0]);
       var list = careClientState['دوري'] ?? [];
-      list = list.map((e) => communication.idCommunication == e.idCommunication ? communication : e).toList();
+      list = list
+          .map((e) => communication.idCommunication == e.idCommunication
+              ? communication
+              : e)
+          .toList();
       careClientState['دوري'] = list;
       notifyListeners();
       onSuccess?.call();
@@ -586,16 +621,19 @@ class communication_vm extends ChangeNotifier {
   }
 
   //addcommuncation
-  Future<CommunicationModel> addcommmuncation(Map<String, dynamic?> body, String id_communication, int type,
+  Future<CommunicationModel> addcommmuncation(
+      Map<String, dynamic?> body, String id_communication, int type,
       {VoidCallback? onSuccess}) async {
-    
     isload = true;
     notifyListeners();
-    var result =
-        await Api().post(url: url + 'care/updateCommunication.php?id_communication=$id_communication', body: body);
+    var result = await Api().post(
+        url: EndPoints.baseUrls.url +
+            'care/updateCommunication.php?id_communication=$id_communication',
+        body: body);
     CommunicationModel data = CommunicationModel.fromJson(result[0]);
     if (listCommunication.isNotEmpty) {
-      int i = listCommunication.indexWhere((element) => element.idCommunication == id_communication);
+      int i = listCommunication
+          .indexWhere((element) => element.idCommunication == id_communication);
       if (i != -1) {
         listCommunication[i] = data;
       }
@@ -607,40 +645,48 @@ class communication_vm extends ChangeNotifier {
       case 'تركيب':
         if (type == 1) {
           if (listCommunicationInstall_temp.isNotEmpty) {
-            index = listCommunicationInstall_temp.indexWhere((element) => element.idCommunication == id_communication);
+            index = listCommunicationInstall_temp.indexWhere(
+                (element) => element.idCommunication == id_communication);
             if (index != -1) listCommunicationInstall_temp[index] = data;
           }
 
           if (listCommunicationInstall.isNotEmpty) {
-            index = listCommunicationInstall.indexWhere((element) => element.idCommunication == id_communication);
+            index = listCommunicationInstall.indexWhere(
+                (element) => element.idCommunication == id_communication);
             if (index != -1) listCommunicationInstall.removeAt(index);
           }
         }
         if (type == 2) {
           if (listCommunicationInstall2_temp.isNotEmpty) {
-            index = listCommunicationInstall2_temp.indexWhere((element) => element.idCommunication == id_communication);
+            index = listCommunicationInstall2_temp.indexWhere(
+                (element) => element.idCommunication == id_communication);
             if (index != -1) listCommunicationInstall2_temp[index] = data;
           }
 
           if (listCommunicationInstall.isNotEmpty) {
-            index = listCommunicationInstall.indexWhere((element) => element.idCommunication == id_communication);
+            index = listCommunicationInstall.indexWhere(
+                (element) => element.idCommunication == id_communication);
             if (index != -1) listCommunicationInstall.removeAt(index);
           }
           // listCommunicationInstall[index]= data;
         }
         var list = careClientState['تركيب'] ?? [];
-        list = list.map((e) => data.idCommunication == e.idCommunication ? data : e).toList();
+        list = list
+            .map((e) => data.idCommunication == e.idCommunication ? data : e)
+            .toList();
         careClientState['تركيب'] = list;
         // getCommunicationInstall(type);
         break;
       case 'ترحيب':
         if (listCommunicationWelcome_temp.isNotEmpty) {
-          index = listCommunicationWelcome_temp.indexWhere((element) => element.idCommunication == id_communication);
+          index = listCommunicationWelcome_temp.indexWhere(
+              (element) => element.idCommunication == id_communication);
           if (index != -1) listCommunicationWelcome_temp[index] = data;
         }
 
         if (listCommunicationWelcome.isNotEmpty) {
-          index = listCommunicationWelcome.indexWhere((element) => element.idCommunication == id_communication);
+          index = listCommunicationWelcome.indexWhere(
+              (element) => element.idCommunication == id_communication);
           if (index != -1) listCommunicationWelcome.removeAt(index);
         }
 
@@ -648,26 +694,32 @@ class communication_vm extends ChangeNotifier {
         // getCommunicationWelcome();
 
         var list = careClientState['ترحيب'] ?? [];
-        list = list.map((e) => data.idCommunication == e.idCommunication ? data : e).toList();
+        list = list
+            .map((e) => data.idCommunication == e.idCommunication ? data : e)
+            .toList();
         careClientState['ترحيب'] = list;
         break;
       case 'دوري':
         getCommunicationclientrepeat(data.fkClient);
         if (listCommunicationrepeat.isNotEmpty) {
-          index = listCommunicationrepeat.indexWhere((element) => element.idCommunication == id_communication);
+          index = listCommunicationrepeat.indexWhere(
+              (element) => element.idCommunication == id_communication);
           if (index != -1) listCommunicationrepeat.removeAt(index);
 
           // listCommunicationrepeat[index] = data;
         }
         if (listCommunicationrepeatTemp.isNotEmpty) {
-          index = listCommunicationrepeatTemp.indexWhere((element) => element.idCommunication == id_communication);
+          index = listCommunicationrepeatTemp.indexWhere(
+              (element) => element.idCommunication == id_communication);
           if (index != -1) listCommunicationrepeatTemp.removeAt(index);
 
           // listCommunicationrepeat[index] = data;
         }
 
         var list = careClientState['دوري'] ?? [];
-        list = list.map((e) => data.idCommunication == e.idCommunication ? data : e).toList();
+        list = list
+            .map((e) => data.idCommunication == e.idCommunication ? data : e)
+            .toList();
         careClientState['دوري'] = list;
         // index= listCommunicationClient.indexWhere(
         //         (element) =>
@@ -703,16 +755,18 @@ class communication_vm extends ChangeNotifier {
     List<dynamic> data = [];
     _cancelableWelcomeFuture?.cancel();
     _cancelableWelcomeFuture = CancelableOperation.fromFuture(Api().get(
-        url: url + 'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&type=$type$myClientsParam'));
+        url: EndPoints.baseUrls.url +
+            'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&type=$type$myClientsParam'));
 
     data = await (_cancelableWelcomeFuture?.value);
-    
+
     if (type == 'تركيب') {
       listCommunicationInstall_temp = [];
 
       if (data.length.toString().isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
-          listCommunicationInstall_temp.add(CommunicationModel.fromJson(data[i]));
+          listCommunicationInstall_temp
+              .add(CommunicationModel.fromJson(data[i]));
         }
         notifyListeners();
       }
@@ -721,7 +775,8 @@ class communication_vm extends ChangeNotifier {
 
       if (data.length.toString().isNotEmpty) {
         for (int i = 0; i < data.length; i++) {
-          listCommunicationWelcome_temp.add(CommunicationModel.fromJson(data[i]));
+          listCommunicationWelcome_temp
+              .add(CommunicationModel.fromJson(data[i]));
         }
         notifyListeners();
       }
@@ -733,8 +788,8 @@ class communication_vm extends ChangeNotifier {
   //   // if(listComments.isEmpty){
   //   List<dynamic> data=[];
   //   data= await Api()
-  //       .get(url:url+ 'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&&type=$type');
-  //   
+  //       .get(url:EndPoints.baseUrls.url +  'care/getCommunicationWelccom.php?fkcountry=${usercurrent!.fkCountry}&&type=$type');
+  //
   //   if(data.length.toString().isNotEmpty) {
   //     for (int i = 0; i < data.length; i++) {
   //       listCommunication.add(CommunicationModel.fromJson(data[i]));
@@ -751,15 +806,16 @@ class communication_vm extends ChangeNotifier {
 
     _cancelableCommunicationInstall2Future?.cancel();
     _cancelableCommunicationInstall2Future = CancelableOperation.fromFuture(
-        Api().get(url: url + 'care/get_install2.php?fk_country=${usercurrent!.fkCountry}$myClientsParams'));
+        Api().get(
+            url: EndPoints.baseUrls.url +
+                'care/get_install2.php?fk_country=${usercurrent!.fkCountry}$myClientsParams'));
 
     data = await _cancelableCommunicationInstall2Future?.value;
 
-    
-    
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
-        listCommunicationInstall2_temp.add(CommunicationModel.fromJson(data[i]));
+        listCommunicationInstall2_temp
+            .add(CommunicationModel.fromJson(data[i]));
       }
       // notifyListeners();
     }
@@ -774,11 +830,12 @@ class communication_vm extends ChangeNotifier {
     _cancelableCommunicationInstall1Future?.cancel();
 
     _cancelableCommunicationInstall1Future = CancelableOperation.fromFuture(
-        Api().get(url: url + 'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}$myClientsParams'));
+        Api().get(
+            url: EndPoints.baseUrls.url +
+                'care/get_install_1.php?fk_country=${usercurrent!.fkCountry}$myClientsParams'));
 
     data = await _cancelableCommunicationInstall1Future?.value;
-    
-    
+
     if (data.length.toString().isNotEmpty) {
       for (int i = 0; i < data.length; i++) {
         listCommunicationInstall_temp.add(CommunicationModel.fromJson(data[i]));

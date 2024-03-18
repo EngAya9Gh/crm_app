@@ -1,7 +1,8 @@
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
+
 import '../api/api.dart';
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 import '../helper/get_month_name.dart';
 import '../model/branch_race_model.dart';
 import '../ui/screen/target/target_data.dart';
@@ -14,7 +15,7 @@ extension DateFilterExt on DateFilterType {
       case DateFilterType.monthly:
         return "datemonth";
       case DateFilterType.quarterly:
-        // return "datedays";
+      // return "datedays";
       case DateFilterType.daily:
         return "datedays";
       case DateFilterType.yearly:
@@ -108,12 +109,16 @@ class BranchRaceViewmodel extends ChangeNotifier {
     if (!isFromBranchManage) {
       notifyListeners();
       if (selectedDateFilter == DateFilterType.quarterly &&
-          (selectedQuarterFilter != null && selectedQuarterYearFilter != null && !quarterState.isSuccess)) {
+          (selectedQuarterFilter != null &&
+              selectedQuarterYearFilter != null &&
+              !quarterState.isSuccess)) {
         onChangeQuarter(null);
       }
 
       if (selectedDateFilter == DateFilterType.monthly &&
-          (selectedMonthFilter != null && selectedMonthYearFilter != null && !monthlyState.isSuccess)) {
+          (selectedMonthFilter != null &&
+              selectedMonthYearFilter != null &&
+              !monthlyState.isSuccess)) {
         onChangeMonth(null);
       }
 
@@ -130,7 +135,8 @@ class BranchRaceViewmodel extends ChangeNotifier {
     final list = List<BranchRaceModel>.from(_allTargetsList)
         .where((element) =>
             element.typeTarget == selectedDateFilter.index.toString() &&
-            (element.name_regoin?.toLowerCase().contains(_querySearch) ?? false))
+            (element.name_regoin?.toLowerCase().contains(_querySearch) ??
+                false))
         .toList();
 
     targetsState = targetsState.copyWith(data: list);
@@ -140,19 +146,22 @@ class BranchRaceViewmodel extends ChangeNotifier {
   void fillLists(List<BranchRaceModel> list) {
     _allTargetsList = list;
     monthsFilter = list
-        .where((element) => element.typeTarget == DateFilterType.monthly.index.toString())
+        .where((element) =>
+            element.typeTarget == DateFilterType.monthly.index.toString())
         .map((e) => getMonthName(int.parse(e.nameTarget ?? '0')))
         .toSet()
         .toList();
 
     yearsFilter = list
-        .where((element) => element.typeTarget == DateFilterType.yearly.index.toString())
+        .where((element) =>
+            element.typeTarget == DateFilterType.yearly.index.toString())
         .map((e) => e.yearTarget!)
         .toSet()
         .toList();
 
     quarterYearsFilter = list
-        .where((element) => element.typeTarget == DateFilterType.quarterly.index.toString())
+        .where((element) =>
+            element.typeTarget == DateFilterType.quarterly.index.toString())
         .map((e) => e.yearTarget!)
         .toSet()
         .toList();
@@ -173,7 +182,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
     //     .toSet()
     //     .toList();
     // var data  = await Api().post(
-    //     url: url +
+    //     url: EndPoints.baseUrls.url +
     //         "target/get_sales_target.php?fk_country=$fkcountry&year=${year}",
     //     body: {'type': 'dateyear'});
     // List<BranchRaceModel> list=[];
@@ -194,7 +203,8 @@ class BranchRaceViewmodel extends ChangeNotifier {
         return;
       }
 
-      DateTime date = DateTime(int.parse(selectedMonthYearFilter!), getMonthNumber(selectedMonthFilter!), 01);
+      DateTime date = DateTime(int.parse(selectedMonthYearFilter!),
+          getMonthNumber(selectedMonthFilter!), 01);
 
       monthlyState = monthlyState.changeToLoading;
       notifyListeners();
@@ -207,10 +217,12 @@ class BranchRaceViewmodel extends ChangeNotifier {
 
       // list = list.where((element) => element.nameTarget == getMonthNumber(selectedMonthFilter!).toString()).toList();
       var data = await Api().post(
-          url: url + "target/get_sales_target.php?fk_country=$fkCountry&month=${date.toIso8601String()}",
+          url: EndPoints.baseUrls.url +
+              "target/get_sales_target.php?fk_country=$fkCountry&month=${date.toIso8601String()}",
           body: {'type': 'datemonth'});
       List<BranchRaceModel> list = [];
-      for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
+      for (int i = 0; i < data.length; i++)
+        list.add(BranchRaceModel.fromJson(data[i]));
 
       monthlyState = monthlyState.changeToLoaded(list);
       notifyListeners();
@@ -233,10 +245,13 @@ class BranchRaceViewmodel extends ChangeNotifier {
       yearlyState = yearlyState.changeToLoading;
       notifyListeners();
 
-      var data = await Api()
-          .post(url: url + "target/get_sales_target.php?fk_country=$fkCountry&year=$year", body: {'type': 'dateyear'});
+      var data = await Api().post(
+          url: EndPoints.baseUrls.url +
+              "target/get_sales_target.php?fk_country=$fkCountry&year=$year",
+          body: {'type': 'dateyear'});
       List<BranchRaceModel> list = [];
-      for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
+      for (int i = 0; i < data.length; i++)
+        list.add(BranchRaceModel.fromJson(data[i]));
 
       yearlyState = yearlyState.changeToLoaded(list);
 
@@ -273,11 +288,11 @@ class BranchRaceViewmodel extends ChangeNotifier {
       final params =
           "target/get_sales_target.php?fk_country=$fkCountry&from=$getFromQuarter&to=$getToQuarter&Q=$selectedQuarterFilter";
 
-      
-
-      var data = await Api().post(url: url + params, body: {'type': 'datedays'});
+      var data = await Api().post(
+          url: EndPoints.baseUrls.url + params, body: {'type': 'datedays'});
       List<BranchRaceModel> list = [];
-      for (int i = 0; i < data.length; i++) list.add(BranchRaceModel.fromJson(data[i]));
+      for (int i = 0; i < data.length; i++)
+        list.add(BranchRaceModel.fromJson(data[i]));
 
       quarterState = quarterState.changeToLoaded(list);
 
@@ -303,7 +318,7 @@ class BranchRaceViewmodel extends ChangeNotifier {
     //     .toSet()
     //     .toList();
     // var data  = await Api().post(
-    //     url: url +
+    //     url: EndPoints.baseUrls.url +
     //         "target/get_sales_target.php?fk_country=$fkcountry&year=${year}",
     //     body: {'type': 'dateyear'});
     // List<BranchRaceModel> list=[];
@@ -340,12 +355,14 @@ class BranchRaceViewmodel extends ChangeNotifier {
   }
 
   String get getFromQuarter {
-    return DateTime(int.parse(selectedQuarterYearFilter!), (getQuarterNumber(selectedQuarterFilter!) - 1) * 3 + 1)
+    return DateTime(int.parse(selectedQuarterYearFilter!),
+            (getQuarterNumber(selectedQuarterFilter!) - 1) * 3 + 1)
         .toIso8601String();
   }
 
   String get getToQuarter {
-    return DateTime(int.parse(selectedQuarterYearFilter!), (getQuarterNumber(selectedQuarterFilter!) - 1) * 3 + 3)
+    return DateTime(int.parse(selectedQuarterYearFilter!),
+            (getQuarterNumber(selectedQuarterFilter!) - 1) * 3 + 3)
         .toIso8601String();
   }
 
@@ -362,7 +379,9 @@ class BranchRaceViewmodel extends ChangeNotifier {
     }
   }
 
-  onAddTarget({required VoidCallback onSuccess, BranchRaceModel? branchRaceModel}) async {
+  onAddTarget(
+      {required VoidCallback onSuccess,
+      BranchRaceModel? branchRaceModel}) async {
     try {
       isLoadingAction = true;
       notifyListeners();
@@ -382,9 +401,8 @@ class BranchRaceViewmodel extends ChangeNotifier {
         };
 
         response = await Api().post(
-          url: url + 'target/add_target.php',
+          url: EndPoints.baseUrls.url + 'target/add_target.php',
           body: body,
-
         );
       } else {
         final body = {
@@ -396,9 +414,9 @@ class BranchRaceViewmodel extends ChangeNotifier {
         };
 
         response = await Api().post(
-          url: url + 'target/update_target.php?id_target=${branchRaceModel?.idTarget}',
+          url: EndPoints.baseUrls.url +
+              'target/update_target.php?id_target=${branchRaceModel?.idTarget}',
           body: body,
-
         );
       }
 
@@ -407,7 +425,6 @@ class BranchRaceViewmodel extends ChangeNotifier {
       getTargets();
       onSuccess();
     } catch (e, stackTrace) {
-      
       isLoadingAction = false;
       notifyListeners();
     }
@@ -427,7 +444,8 @@ class BranchRaceViewmodel extends ChangeNotifier {
     final list = List<BranchRaceModel>.from(_allTargetsList)
         .where((element) =>
             element.typeTarget == selectedDateFilter.index.toString() &&
-            (element.name_regoin?.toLowerCase().contains(_querySearch) ?? false))
+            (element.name_regoin?.toLowerCase().contains(_querySearch) ??
+                false))
         .toList();
     targetsState = targetsState.copyWith(data: list);
     notifyListeners();

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:in_date_utils/in_date_utils.dart';
 
 import '../api/api.dart';
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 import '../model/employee_report_model.dart';
 import '../ui/screen/target/target_data.dart';
 
@@ -24,27 +24,35 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
   DateTime? selectedDailyFrom;
   DateTime? selectedDailyTo;
 
-  PageState<List<EmployeeReportModel>> employeeMonthReportState = PageState.init();
-  PageState<List<EmployeeReportModel>> employeeQuarterReportState = PageState.init();
-  PageState<List<EmployeeReportModel>> employeeYearReportState = PageState.init();
-  PageState<List<EmployeeReportModel>> employeeDailyReportState = PageState.init();
+  PageState<List<EmployeeReportModel>> employeeMonthReportState =
+      PageState.init();
+  PageState<List<EmployeeReportModel>> employeeQuarterReportState =
+      PageState.init();
+  PageState<List<EmployeeReportModel>> employeeYearReportState =
+      PageState.init();
+  PageState<List<EmployeeReportModel>> employeeDailyReportState =
+      PageState.init();
   CancelableOperation<List<EmployeeReportModel>>? _cancelableFuture;
 
   //endregion
 
   String get getFromQuarter {
-    return DateTime(selectedQuarterYear!, (selectedQuarter! - 1) * 3 + 1).toIso8601String();
+    return DateTime(selectedQuarterYear!, (selectedQuarter! - 1) * 3 + 1)
+        .toIso8601String();
   }
 
   String get getToQuarter {
-    return DateTime(selectedQuarterYear!, (selectedQuarter! - 1) * 3 + 3).toIso8601String();
+    return DateTime(selectedQuarterYear!, (selectedQuarter! - 1) * 3 + 3)
+        .toIso8601String();
   }
-  int  get gettarget_lastYear {
+
+  int get gettarget_lastYear {
     //2022-2023
-    int salary=5000; //gettarget_CurrentYear
+    int salary = 5000; //gettarget_CurrentYear
     return salary * 6;
   }
-  int  get gettarget_CurrentYear {
+
+  int get gettarget_CurrentYear {
     //2024
     return 40000;
   }
@@ -62,15 +70,21 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
       return;
     }
     if (selectedDateFilterType == DateFilterType.quarterly &&
-        (selectedQuarter == null || selectedQuarterYear == null || employeeQuarterReportState.isSuccess)) {
+        (selectedQuarter == null ||
+            selectedQuarterYear == null ||
+            employeeQuarterReportState.isSuccess)) {
       return;
     }
     if (selectedDateFilterType == DateFilterType.daily &&
-        (selectedDailyFrom == null || selectedDailyTo == null || employeeDailyReportState.isSuccess)) {
+        (selectedDailyFrom == null ||
+            selectedDailyTo == null ||
+            employeeDailyReportState.isSuccess)) {
       return;
     }
     if (selectedDateFilterType == DateFilterType.monthly &&
-        (selectedMonth == null || selectedMonthYear == null || employeeMonthReportState.isSuccess)) {
+        (selectedMonth == null ||
+            selectedMonthYear == null ||
+            employeeMonthReportState.isSuccess)) {
       return;
     }
 
@@ -102,10 +116,11 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
     }
 
     body = body..addAll({"type": selectedDateFilterType.type});
-    queryParams = queryParams..addAll({
-      "fk_country": fkCountry,
-      "product": '1',
-    });
+    queryParams = queryParams
+      ..addAll({
+        "fk_country": fkCountry,
+        "product": '1',
+      });
 
     await _cancelableFuture?.cancel();
 
@@ -122,7 +137,8 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         notifyListeners();
       }
 
-      _cancelableFuture = CancelableOperation.fromFuture(_getReportApi(body: body, queryParams: queryParams));
+      _cancelableFuture = CancelableOperation.fromFuture(
+          _getReportApi(body: body, queryParams: queryParams));
 
       List<EmployeeReportModel> list = await _cancelableFuture?.value ?? [];
 
@@ -130,11 +146,15 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : ((num.parse(e.sales!) * 100) / ((gettarget_CurrentYear * 12))).toStringAsFixed(2)))
+                  : ((num.parse(e.sales!) * 100) /
+                          ((gettarget_CurrentYear * 12)))
+                      .toStringAsFixed(2)))
           .toList()
-        ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
+        ..sort((a, b) => num.parse(b.percentage ?? "0")
+            .compareTo(num.parse(a.percentage ?? "0")));
 
-      employeeYearReportState = employeeYearReportState.changeToLoaded(list ?? []);
+      employeeYearReportState =
+          employeeYearReportState.changeToLoaded(list ?? []);
 
       notifyListeners();
     } catch (e) {
@@ -153,7 +173,8 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         notifyListeners();
       }
 
-      _cancelableFuture = CancelableOperation.fromFuture(_getReportApi(body: body, queryParams: queryParams));
+      _cancelableFuture = CancelableOperation.fromFuture(
+          _getReportApi(body: body, queryParams: queryParams));
 
       List<EmployeeReportModel> list = await _cancelableFuture?.value ?? [];
 
@@ -161,11 +182,15 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : ((num.parse(e.sales!) * 100) / (((gettarget_CurrentYear * 3)))).toStringAsFixed(2)))
+                  : ((num.parse(e.sales!) * 100) /
+                          (((gettarget_CurrentYear * 3))))
+                      .toStringAsFixed(2)))
           .toList()
-        ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
+        ..sort((a, b) => num.parse(b.percentage ?? "0")
+            .compareTo(num.parse(a.percentage ?? "0")));
 
-      employeeQuarterReportState = employeeQuarterReportState.changeToLoaded(list ?? []);
+      employeeQuarterReportState =
+          employeeQuarterReportState.changeToLoaded(list ?? []);
 
       notifyListeners();
     } catch (e) {
@@ -184,7 +209,8 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         notifyListeners();
       }
 
-      _cancelableFuture = CancelableOperation.fromFuture(_getReportApi(body: body, queryParams: queryParams));
+      _cancelableFuture = CancelableOperation.fromFuture(
+          _getReportApi(body: body, queryParams: queryParams));
 
       List<EmployeeReportModel> list = await _cancelableFuture?.value ?? [];
 
@@ -192,9 +218,11 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
           .map((e) => e.copyWith(
               percentage: e.salary == null || e.sales == null
                   ? null
-                  : (((num.parse(e.sales!)) * 100) / (gettarget_CurrentYear)).toStringAsFixed(2)))
+                  : (((num.parse(e.sales!)) * 100) / (gettarget_CurrentYear))
+                      .toStringAsFixed(2)))
           .toList()
-        ..sort((a, b) => num.parse(b.percentage ?? "0.0").compareTo(num.parse(a.percentage ?? "0.0")));
+        ..sort((a, b) => num.parse(b.percentage ?? "0.0")
+            .compareTo(num.parse(a.percentage ?? "0.0")));
 
       employeeMonthReportState = employeeMonthReportState.changeToLoaded(list);
 
@@ -215,27 +243,34 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
         notifyListeners();
       }
 
-      _cancelableFuture = CancelableOperation.fromFuture(_getReportApi(body: body, queryParams: queryParams));
+      _cancelableFuture = CancelableOperation.fromFuture(
+          _getReportApi(body: body, queryParams: queryParams));
 
       List<EmployeeReportModel> list = await _cancelableFuture?.value ?? [];
 
       list = list.map((e) {
         final target = num.parse(e.salary ?? '0') * 6;
-        final numOfFilterDay = selectedDailyTo!.difference(selectedDailyFrom!).inDays;
-        final numOfDayInMonth = DTU.getDaysInMonth(selectedDailyFrom!.year, selectedDailyFrom!.month);
+        final numOfFilterDay =
+            selectedDailyTo!.difference(selectedDailyFrom!).inDays;
+        final numOfDayInMonth = DTU.getDaysInMonth(
+            selectedDailyFrom!.year, selectedDailyFrom!.month);
 
         return e.copyWith(
             percentage: e.salary == null || e.sales == null
                 ? null
-                : ((num.parse(e.sales!) * 100) / ((gettarget_CurrentYear / numOfDayInMonth) * numOfFilterDay)).toStringAsFixed(2));
+                : ((num.parse(e.sales!) * 100) /
+                        ((gettarget_CurrentYear / numOfDayInMonth) *
+                            numOfFilterDay))
+                    .toStringAsFixed(2));
       }).toList()
-        ..sort((a, b) => num.parse(b.percentage ?? "0").compareTo(num.parse(a.percentage ?? "0")));
+        ..sort((a, b) => num.parse(b.percentage ?? "0")
+            .compareTo(num.parse(a.percentage ?? "0")));
 
-      employeeDailyReportState = employeeDailyReportState.changeToLoaded(list ?? []);
+      employeeDailyReportState =
+          employeeDailyReportState.changeToLoaded(list ?? []);
 
       notifyListeners();
     } catch (e) {
-      
       employeeDailyReportState = employeeDailyReportState.changeToFailed;
       notifyListeners();
     }
@@ -245,7 +280,7 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
     required Map<String, dynamic> queryParams,
     required Map<String, dynamic> body,
   }) async {
-    final uri = Uri.parse(url);
+    final uri = Uri.parse(EndPoints.baseUrls.url);
 
     final requestUrl = Uri(
       host: uri.host,
@@ -260,7 +295,8 @@ class EmployeeRaceViewmodel extends ChangeNotifier {
       body: body,
     );
 
-    List<EmployeeReportModel> list = convertListFromJson(data, (json) => EmployeeReportModel.fromJson(json));
+    List<EmployeeReportModel> list =
+        convertListFromJson(data, (json) => EmployeeReportModel.fromJson(json));
     return list;
   }
 

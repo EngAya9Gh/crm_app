@@ -1,28 +1,22 @@
 //
 
+import 'dart:ui' as myui;
+
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/client_widget/cardAllclient.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/rowtitle.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:group_button/group_button.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'dart:ui' as myui;
+
 import '../../../constants.dart';
+import '../../../core/utils/end_points.dart';
 
 class delayinstall extends StatefulWidget {
   const delayinstall({Key? key}) : super(key: key);
@@ -50,8 +44,10 @@ class _delayinstallState extends State<delayinstall> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(0);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
     super.initState();
@@ -69,7 +65,8 @@ class _delayinstallState extends State<delayinstall> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
+    UserModel usermodel =
+        Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String iduser = usermodel.idUser.toString();
     // String idregoin = usermodel.fkRegoin.toString();
@@ -93,7 +90,9 @@ class _delayinstallState extends State<delayinstall> {
     switch (type) {
       case "userSum":
         data = await Api().post(
-            url: url + "reports/report_delay_install.php?fk_country=$fkcountry$paramprivilge", body: {'type': type});
+            url: EndPoints.baseUrls.url +
+                "reports/report_delay_install.php?fk_country=$fkcountry$paramprivilge",
+            body: {'type': type});
         break;
     }
 
@@ -104,11 +103,10 @@ class _delayinstallState extends State<delayinstall> {
     listInvoicesAccept = [];
     for (int i = 0; i < data.length; i++) {
       // tempdata.add(BarModel.fromJson(data[i]));
-      // 
+      //
       listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
     }
 
-    
     // for(int i=0;i<salesresult.length;i++)
     setState(() {
       salesresult = tempdata;
@@ -138,22 +136,23 @@ class _delayinstallState extends State<delayinstall> {
                   builder: (context, cart, child) {
                     return Row(
                       children: [
-                        if(cart.selectedUser != null)
-                          ...{
-                            IconButton(
-                                onPressed: () {
-                                  iduser = '';
-                                  cart.changevalueuser(null);
-                                  getData();
-                                },
-                                icon: Icon(Icons.highlight_off)),
-                            SizedBox(width: 10),
-                          },
+                        if (cart.selectedUser != null) ...{
+                          IconButton(
+                              onPressed: () {
+                                iduser = '';
+                                cart.changevalueuser(null);
+                                getData();
+                              },
+                              icon: Icon(Icons.highlight_off)),
+                          SizedBox(width: 10),
+                        },
                         Expanded(
                           child: DropdownSearch<UserModel>(
                             mode: Mode.DIALOG,
-                            filterFn: (user, filter) => user!.getfilteruser(filter!),
-                            compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                            filterFn: (user, filter) =>
+                                user!.getfilteruser(filter!),
+                            compareFn: (item, selectedItem) =>
+                                item?.idUser == selectedItem?.idUser,
                             items: cart.usersSupportManagement,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
@@ -170,7 +169,9 @@ class _delayinstallState extends State<delayinstall> {
                               fillColor: Colors.grey.withOpacity(0.2),
                               //labelText: "choose a user",
                               contentPadding: EdgeInsets.all(0),
-                              border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                              border: UnderlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.grey)),
                             ),
                           ),
                         ),
@@ -187,7 +188,8 @@ class _delayinstallState extends State<delayinstall> {
                     )),
                 height: 50,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 2, left: 8, right: 8, bottom: 2),
+                  padding: const EdgeInsets.only(
+                      top: 2, left: 8, right: 8, bottom: 2),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.grey.withOpacity(0.2),
@@ -205,9 +207,11 @@ class _delayinstallState extends State<delayinstall> {
                           List<InvoiceModel> clientlistsearch = [];
                           if (pattern.isNotEmpty) {
                             listInvoicesAccept.forEach((element) {
-                              if (element.name_enterprise!.contains(searchKey, 0) ||
+                              if (element.name_enterprise!
+                                      .contains(searchKey, 0) ||
                                   element.nameClient!.contains(searchKey, 0) ||
-                                  element.mobile!.contains(searchKey, 0)) clientlistsearch.add(element);
+                                  element.mobile!.contains(searchKey, 0))
+                                clientlistsearch.add(element);
                             });
                             setState(() {
                               listInvoicesAccept = List.from(clientlistsearch);
@@ -233,12 +237,17 @@ class _delayinstallState extends State<delayinstall> {
                             // scrollDirection: Axis.horizontal,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                child: RowEdit(name: "عدد العملاء",des: listInvoicesAccept.length.toString(),
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: RowEdit(
+                                    name: "عدد العملاء",
+                                    des: listInvoicesAccept.length.toString(),
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween),
                               ),
                               Container(
-                                height: MediaQuery.of(context).size.height * 0.75,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.75,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListView.builder(
@@ -250,12 +259,15 @@ class _delayinstallState extends State<delayinstall> {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(30)),
+                                                borderRadius: BorderRadius.only(
+                                                    bottomRight:
+                                                        Radius.circular(30)),
                                                 boxShadow: <BoxShadow>[
                                                   BoxShadow(
                                                     offset: Offset(1.0, 1.0),
                                                     blurRadius: 8.0,
-                                                    color: Colors.black87.withOpacity(0.2),
+                                                    color: Colors.black87
+                                                        .withOpacity(0.2),
                                                   ),
                                                 ],
                                                 color: Colors.white30,
@@ -267,29 +279,44 @@ class _delayinstallState extends State<delayinstall> {
                                                     Navigator.push(
                                                         context,
                                                         CupertinoPageRoute(
-                                                            builder: (context) => ProfileClient(
-                                                                  idClient: listInvoicesAccept[index].fkIdClient,
+                                                            builder: (context) =>
+                                                                ProfileClient(
+                                                                  idClient: listInvoicesAccept[
+                                                                          index]
+                                                                      .fkIdClient,
                                                                 )));
                                                   },
                                                   child: Container(
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
-                                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  5)),
                                                     ),
                                                     //height: 70,//MediaQuery.of(context).size.height*0.15,
                                                     child: Padding(
-                                                      padding: EdgeInsets.all(8),
+                                                      padding:
+                                                          EdgeInsets.all(8),
                                                       child: Flex(
-                                                        direction: Axis.vertical,
+                                                        direction:
+                                                            Axis.vertical,
                                                         children: [
                                                           Column(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
                                                             children: [
                                                               Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
                                                                 children: [
                                                                   Text(
-                                                                    listInvoicesAccept[index].name_regoin.toString(),
+                                                                    listInvoicesAccept[
+                                                                            index]
+                                                                        .name_regoin
+                                                                        .toString(),
                                                                     style: TextStyle(
                                                                         //fontWeight: FontWeight.bold,
                                                                         fontSize: 12,
@@ -297,15 +324,11 @@ class _delayinstallState extends State<delayinstall> {
                                                                         color: kMainColor),
                                                                   ),
                                                                   Text(
-                                                                    listInvoicesAccept[index]
-                                                                                .hoursdelaytabel
-                                                                                .toString() ==
+                                                                    listInvoicesAccept[index].hoursdelaytabel.toString() ==
                                                                             '-1'
                                                                         ? 'لم تتم الجدولة بعد'
                                                                         : ' ساعة ' +
-                                                                            listInvoicesAccept[index]
-                                                                                .hoursdelaytabel
-                                                                                .toString(),
+                                                                            listInvoicesAccept[index].hoursdelaytabel.toString(),
                                                                     style: TextStyle(
                                                                         fontSize: 12,
                                                                         // fontWeight: FontWeight.bold,
@@ -318,13 +341,19 @@ class _delayinstallState extends State<delayinstall> {
                                                                 //mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                 children: [
                                                                   Text(
-                                                                    listInvoicesAccept[index]
+                                                                    listInvoicesAccept[
+                                                                            index]
                                                                         .name_enterprise
                                                                         .toString(),
-                                                                    style: TextStyle(
-                                                                      fontWeight: FontWeight.bold,
-                                                                      fontSize: 12,
-                                                                      fontFamily: kfontfamily2,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontFamily:
+                                                                          kfontfamily2,
                                                                     ),
                                                                   ),
                                                                   // Text(
@@ -357,7 +386,8 @@ class _delayinstallState extends State<delayinstall> {
     );
   }
 
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDatefrom(
+      BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
@@ -368,7 +398,6 @@ class _delayinstallState extends State<delayinstall> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        
       });
   }
 
@@ -385,7 +414,6 @@ class _delayinstallState extends State<delayinstall> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        
       });
   }
 }
