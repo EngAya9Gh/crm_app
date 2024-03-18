@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/enums/ticket_source_enum.dart';
 import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
@@ -367,7 +368,9 @@ class ticketdetail extends StatelessWidget {
                 cardRowDivided(
                     title: 'نوع التذكرة',
                     value: ticketModel.typeProblem.toString()),
-                //cardRow(title: 'وصف المشكلة',value: widget.ticketModel.detailsProblem.toString(),isExpanded: true,),
+                cardRowDivided(
+                    title: 'مصدر التذكرة',
+                    value: ticketModel.ticketSource!.text),
                 cardRowDivided(
                   title: 'تفاصيل التذكرة',
                   value: ticketModel.detailsProblem.toString(),

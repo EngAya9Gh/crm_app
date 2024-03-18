@@ -2,7 +2,6 @@ import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +13,8 @@ import '../../../../features/manage_privilege/presentation/manager/privilege_cub
 import '../../../../function_global.dart';
 
 class TicketView extends StatefulWidget {
-  TicketView({this.type, required this.ticketModel, Key? key}) : super(key: key);
+  TicketView({this.type, required this.ticketModel, Key? key})
+      : super(key: key);
   String? type = null;
   TicketModel ticketModel;
 
@@ -40,10 +40,14 @@ class _TicketViewState extends State<TicketView> {
           padding: const EdgeInsets.all(3),
           child: Column(
             children: [
-              cardRow(title: 'حالة التذكرة', value: widget.ticketModel.typeTicket.toString()),
+              cardRow(
+                  title: 'حالة التذكرة',
+                  value: widget.ticketModel.typeTicket.toString()),
 
               // cardRow(title: 'اسم المؤسسة',value:widget.ticketModel.nameEnterprise.toString()),
-              cardRow(title: 'المدينة', value: widget.ticketModel.nameRegoin.toString()),
+              cardRow(
+                  title: 'المدينة',
+                  value: widget.ticketModel.nameRegoin.toString()),
 
               // widget.ticketModel.dateAssign!=null?
               // cardRow(title: 'تم تحويل التذكرة إلى ',value: getnameshort( widget.ticketModel.nameusertransfer.toString())):Container(),
@@ -54,24 +58,39 @@ class _TicketViewState extends State<TicketView> {
               //////////////////////////////////////////////////
               widget.ticketModel.dateClose != null
                   ? cardRow(
-                      title: 'قام بإغلاق التذكرة ', value: getnameshort(widget.ticketModel.nameuserclose.toString()))
+                      title: 'قام بإغلاق التذكرة ',
+                      value: getnameshort(
+                          widget.ticketModel.nameuserclose.toString()))
                   : Container(),
 
               widget.ticketModel.dateClose != null
-                  ? cardRow(title: 'تاريخ إغلاق التذكرة ', value: widget.ticketModel.dateClose.toString())
+                  ? cardRow(
+                      title: 'تاريخ إغلاق التذكرة ',
+                      value: widget.ticketModel.dateClose.toString())
                   : Container(),
 
               widget.ticketModel.dateRecive != null
                   ? cardRow(
-                      title: 'قام باستلام التذكرة ', value: getnameshort(widget.ticketModel.nameuserrecive.toString()))
+                      title: 'قام باستلام التذكرة ',
+                      value: getnameshort(
+                          widget.ticketModel.nameuserrecive.toString()))
                   : Container(),
               widget.ticketModel.dateRecive != null
-                  ? cardRow(title: 'تاريخ استلام التذكرة ', value: widget.ticketModel.dateRecive.toString())
+                  ? cardRow(
+                      title: 'تاريخ استلام التذكرة ',
+                      value: widget.ticketModel.dateRecive.toString())
                   : Container(),
 
-              cardRow(title: 'قام بفتح التذكرة ', value: getnameshort(widget.ticketModel.nameuseropen.toString())),
-              cardRow(title: 'تاريخ فتح التذكرة ', value: widget.ticketModel.dateOpen.toString()),
-              cardRow(title: 'نوع التذكرة', value: widget.ticketModel.typeProblem.toString()),
+              cardRow(
+                  title: 'قام بفتح التذكرة ',
+                  value:
+                      getnameshort(widget.ticketModel.nameuseropen.toString())),
+              cardRow(
+                  title: 'تاريخ فتح التذكرة ',
+                  value: widget.ticketModel.dateOpen.toString()),
+              cardRow(
+                  title: 'نوع التذكرة',
+                  value: widget.ticketModel.typeProblem.toString()),
               //cardRow(title: 'وصف المشكلة',value: widget.ticketModel.detailsProblem.toString(),isExpanded: true,),
               cardRow(
                 title: 'تفاصيل التذكرة',
@@ -87,19 +106,32 @@ class _TicketViewState extends State<TicketView> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         widget.ticketModel.dateRecive == null
-                            ? context.read<PrivilegeCubit>().checkPrivilege('71') == true
+                            ? context
+                                        .read<PrivilegeCubit>()
+                                        .checkPrivilege('71') ==
+                                    true
                                 ? Expanded(
                                     child: Padding(
-                                      padding: const EdgeInsets.only(right: 5.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 5.0),
                                       child: ElevatedButton(
-                                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      kMainColor)),
                                           onPressed: () async {
-                                            Provider.of<ticket_vm>(context, listen: false).updateTicketvm({
-                                              'fk_user_recive': Provider.of<UserProvider>(context, listen: false)
-                                                  .currentUser
-                                                  .idUser
-                                                  .toString(),
-                                              'date_recive': DateTime.now().toString(),
+                                            Provider.of<ticket_vm>(context,
+                                                    listen: false)
+                                                .updateTicketvm({
+                                              'fk_user_recive':
+                                                  Provider.of<UserProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .currentUser
+                                                      .idUser
+                                                      .toString(),
+                                              'date_recive':
+                                                  DateTime.now().toString(),
                                               'type_ticket': 'قيد التنفيذ'
                                             }, widget.ticketModel.idTicket);
                                           },
@@ -107,32 +139,63 @@ class _TicketViewState extends State<TicketView> {
                                     ),
                                   )
                                 : widget.ticketModel.dateClose == null
-                                    ? context.read<PrivilegeCubit>().checkPrivilege('72')
+                                    ? context
+                                            .read<PrivilegeCubit>()
+                                            .checkPrivilege('72')
                                         ? //regoin
                                         Expanded(
                                             child: Padding(
-                                              padding: const EdgeInsets.only(right: 5),
+                                              padding: const EdgeInsets.only(
+                                                  right: 5),
                                               child: ElevatedButton(
                                                   style: ButtonStyle(
-                                                      backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all(kMainColor)),
                                                   onPressed: () async {
-                                                    Provider.of<ticket_vm>(context, listen: false).updateTicketvm({
-                                                      'fk_user_close': Provider.of<UserProvider>(context, listen: false)
-                                                          .currentUser
-                                                          .idUser
-                                                          .toString(),
-                                                      'date_close': DateTime.now().toString(),
-                                                      'type_ticket': 'مغلقة',
-                                                      // 'fk_regoin':widget.ticketModel.,
-                                                      'fk_client': widget.ticketModel.fkClient.toString(),
+                                                    Provider.of<ticket_vm>(
+                                                            context,
+                                                            listen: false)
+                                                        .updateTicketvm(
+                                                            {
+                                                          'fk_user_close':
+                                                              Provider.of<UserProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .currentUser
+                                                                  .idUser
+                                                                  .toString(),
+                                                          'date_close':
+                                                              DateTime.now()
+                                                                  .toString(),
+                                                          'type_ticket':
+                                                              'مغلقة',
+                                                          // 'fk_regoin':widget.ticketModel.,
+                                                          'fk_client': widget
+                                                              .ticketModel
+                                                              .fkClient
+                                                              .toString(),
 
-                                                      'fkcountry': widget.ticketModel.fk_country.toString(),
-                                                      'name_enterprise': widget.ticketModel.nameEnterprise.toString(),
-                                                      'nameUser': Provider.of<UserProvider>(context, listen: false)
-                                                          .currentUser
-                                                          .nameUser
-                                                          .toString(),
-                                                    }, widget.ticketModel.idTicket);
+                                                          'fkcountry': widget
+                                                              .ticketModel
+                                                              .fk_country
+                                                              .toString(),
+                                                          'name_enterprise':
+                                                              widget.ticketModel
+                                                                  .nameEnterprise
+                                                                  .toString(),
+                                                          'nameUser': Provider
+                                                                  .of<UserProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                              .currentUser
+                                                              .nameUser
+                                                              .toString(),
+                                                        },
+                                                            widget.ticketModel
+                                                                .idTicket);
                                                   },
                                                   child: Text('اغلاق التذكرة')),
                                             ),
@@ -140,21 +203,38 @@ class _TicketViewState extends State<TicketView> {
                                         : Container()
                                     : Container()
                             : Container(),
-                        widget.ticketModel.dateRecive != null && widget.ticketModel.dateClose == null
-                            ? context.read<PrivilegeCubit>().checkPrivilege('75') == true
+                        widget.ticketModel.dateRecive != null &&
+                                widget.ticketModel.dateClose == null
+                            ? context
+                                        .read<PrivilegeCubit>()
+                                        .checkPrivilege('75') ==
+                                    true
                                 ? Expanded(
                                     child: Padding(
-                                      padding: const EdgeInsets.only(right: 5.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 5.0),
                                       child: ElevatedButton(
-                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    kMainColor)),
                                         onPressed: () {
                                           Navigator.push(
                                               context,
                                               CupertinoPageRoute(
-                                                  builder: (context) => transferClient(
-                                                        name_enterprise: widget.ticketModel.nameEnterprise.toString(),
-                                                        idclient: widget.ticketModel.fkClient.toString(),
-                                                        idticket: widget.ticketModel.idTicket,
+                                                  builder: (context) =>
+                                                      transferClient(
+                                                        name_enterprise: widget
+                                                            .ticketModel
+                                                            .nameEnterprise
+                                                            .toString(),
+                                                        idclient: widget
+                                                            .ticketModel
+                                                            .fkClient
+                                                            .toString(),
+                                                        idticket: widget
+                                                            .ticketModel
+                                                            .idTicket,
                                                         type: "ticket",
                                                       ),
                                                   fullscreenDialog: true));
@@ -167,13 +247,17 @@ class _TicketViewState extends State<TicketView> {
                             : Container(),
                         Expanded(
                           child: ElevatedButton(
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(kMainColor)),
                             onPressed: () {
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
                                       builder: (context) => ProfileClient(
-                                            idClient: widget.ticketModel.fkClient.toString(),
+                                            idClient: widget
+                                                .ticketModel.fkClient
+                                                .toString(),
                                           )));
                             },
                             child: Text('ملف العميل'),
