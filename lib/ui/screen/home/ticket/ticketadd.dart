@@ -234,15 +234,14 @@ class _ticketAddState extends State<ticketAdd> {
                             //MediaQuery.of(context).size.width * 0.2,
                             text: 'حفظ',
                             onTap: () async {
-                              print("sources => $ticketSource");
+                              _globalKey.currentState!.save();
                               if (_globalKey.currentState!.validate()) {
-                                _globalKey.currentState!.save();
                                 if (widget.fk_client != null) {
                                   bool isav = await Provider.of<ticket_vm>(
                                           context,
                                           listen: false)
                                       .addticket({
-                                    'ticket_source': ticketSource?.name,
+                                    'ticket_source': ticketSource?.text,
                                     'name_enterprise': name_enterprise,
                                     'fk_client': widget.fk_client.toString(),
                                     'type_problem':
@@ -303,6 +302,12 @@ class _ticketAddState extends State<ticketAdd> {
   SizedBox _ticketSourceDropDown() {
     return SizedBox(
       child: DropdownButtonFormField(
+        validator: (value) {
+          if (value == null) {
+            return 'الحقل فارغ';
+          }
+          return null;
+        },
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -312,8 +317,8 @@ class _ticketAddState extends State<ticketAdd> {
         hint: Text("مصدر التذكرة"),
         items: TicketSourceEnums.values
             .map((e) => DropdownMenuItem(
-                  child: Text(e.name),
-                  value: e.name,
+                  child: Text(e.text),
+                  value: e.text,
                 ))
             .toList(),
         // value: cart.selectedValueOut,

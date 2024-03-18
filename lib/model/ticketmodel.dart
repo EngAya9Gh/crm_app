@@ -104,7 +104,7 @@ class TicketModel {
     _data['date_close'] = dateClose;
     _data['date_recive'] = dateRecive;
     _data['client_type'] = clientType;
-    _data['ticket_source'] = ticketSource?.name;
+    _data['ticket_source'] = ticketSource?.text;
 
     _data['name_client'] = nameClient;
     _data['name_enterprise'] = nameEnterprise;

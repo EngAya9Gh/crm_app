@@ -13,7 +13,7 @@ enum TicketSourceEnums {
 }
 
 extension TicketSourceEnumsExtension on TicketSourceEnums {
-  String get name {
+  String get text {
     switch (this) {
       case TicketSourceEnums.periodicCall:
         return 'اتصال دوري';
@@ -41,27 +41,27 @@ extension TicketSourceEnumsExtension on TicketSourceEnums {
   }
 
   static TicketSourceEnums? fromString(String? value) {
-    if (value == TicketSourceEnums.periodicCall.name) {
+    if (value == TicketSourceEnums.periodicCall.text) {
       return TicketSourceEnums.periodicCall;
-    } else if (value == TicketSourceEnums.qualityFirst.name) {
+    } else if (value == TicketSourceEnums.qualityFirst.text) {
       return TicketSourceEnums.qualityFirst;
-    } else if (value == TicketSourceEnums.qualitySecond.name) {
+    } else if (value == TicketSourceEnums.qualitySecond.text) {
       return TicketSourceEnums.qualitySecond;
-    } else if (value == TicketSourceEnums.unifiedNumber.name) {
+    } else if (value == TicketSourceEnums.unifiedNumber.text) {
       return TicketSourceEnums.unifiedNumber;
-    } else if (value == TicketSourceEnums.directCall.name) {
+    } else if (value == TicketSourceEnums.directCall.text) {
       return TicketSourceEnums.directCall;
-    } else if (value == TicketSourceEnums.whatsapp.name) {
+    } else if (value == TicketSourceEnums.whatsapp.text) {
       return TicketSourceEnums.whatsapp;
-    } else if (value == TicketSourceEnums.facebook.name) {
+    } else if (value == TicketSourceEnums.facebook.text) {
       return TicketSourceEnums.facebook;
-    } else if (value == TicketSourceEnums.twitter.name) {
+    } else if (value == TicketSourceEnums.twitter.text) {
       return TicketSourceEnums.twitter;
-    } else if (value == TicketSourceEnums.youtube.name) {
+    } else if (value == TicketSourceEnums.youtube.text) {
       return TicketSourceEnums.youtube;
-    } else if (value == TicketSourceEnums.instagram.name) {
+    } else if (value == TicketSourceEnums.instagram.text) {
       return TicketSourceEnums.instagram;
-    } else if (value == TicketSourceEnums.tiktok.name) {
+    } else if (value == TicketSourceEnums.tiktok.text) {
       return TicketSourceEnums.tiktok;
     }
     return null;
