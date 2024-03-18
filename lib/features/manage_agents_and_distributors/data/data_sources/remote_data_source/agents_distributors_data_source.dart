@@ -19,7 +19,7 @@ class AgentsDistributorsDataSourceImpl extends AgentsDistributorsDataSource {
   Future<Either<String, List<AgentDistributorModel>>>
       getAgentsAndDistributors() async {
     try {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final String endPoint =
           EndPoints.agentDistributor.getAgentsAndDistributors;
       final result = await api.get(endPoint: endPoint);

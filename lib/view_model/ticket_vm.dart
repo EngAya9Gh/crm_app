@@ -1,176 +1,165 @@
-
-
-
-
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
-class ticket_vm extends ChangeNotifier{
-
-  List<TicketModel> listticket=[];
-  List<TicketModel> listticket_client=[];
-  List<TicketModel> listticket_clientprofile=[];
-  List<TicketModel> listticket_clientfilter=[];
-  List<TicketModel> tickesearchlist=[];
+class ticket_vm extends ChangeNotifier {
+  List<TicketModel> listticket = [];
+  List<TicketModel> listticket_client = [];
+  List<TicketModel> listticket_clientprofile = [];
+  List<TicketModel> listticket_clientfilter = [];
+  List<TicketModel> tickesearchlist = [];
   UserModel? usercurrent;
-  bool isloading=false;
-  void setvalue(user){
-    usercurrent=user;
+  bool isloading = false;
+  void setvalue(user) {
+    usercurrent = user;
     notifyListeners();
   }
   //List<String> Typeticket= ['مغلقة','مستلمة','جديدة'];
 
-  int selectedtypeticket=0;
+  int selectedtypeticket = 0;
 
-  void changeticket(int s){
-    selectedtypeticket=s;
+  void changeticket(int s) {
+    selectedtypeticket = s;
     notifyListeners();
   }
-   bool addvalue=false;
-  Future<bool> addticket(Map<String, dynamic?> body,String client)async {
-    addvalue=true;
-    notifyListeners();
-  bool isav=  await getclient_ticket_close(client);
-  
-  if(isav){
-    var data= await Api()
-        .post( url:url+"ticket/add_ticket.php",body:
-    body
-    );
-    TicketModel tm=  TicketModel.fromJson(data[0]);
-    listticket.insert(0,tm);
-    addvalue=false;
-    tickesearchlist.insert(0, tm);//List.from(listticket);
-    listticket_clientfilter=List.from(listticket);
-    notifyListeners();
 
-  }
-    addvalue=false;
-  notifyListeners();
+  bool addvalue = false;
+  Future<bool> addticket(Map<String, dynamic?> body, String client) async {
+    addvalue = true;
+    notifyListeners();
+    bool isav = await getclient_ticket_close(client);
+
+    if (isav) {
+      var data = await Api().post(
+          url: EndPoints.baseUrls.url + "ticket/add_ticket.php", body: body);
+      TicketModel tm = TicketModel.fromJson(data[0]);
+      listticket.insert(0, tm);
+      addvalue = false;
+      tickesearchlist.insert(0, tm); //List.from(listticket);
+      listticket_clientfilter = List.from(listticket);
+      notifyListeners();
+    }
+    addvalue = false;
+    notifyListeners();
     return isav;
   }
-  Future<void> searchProducts(
-      String productName) async {
-    List<TicketModel> ticketlistsearch=[];
+
+  Future<void> searchProducts(String productName) async {
+    List<TicketModel> ticketlistsearch = [];
     // code to convert the first character to uppercase
-    String searchKey =productName;//
+    String searchKey = productName; //
 
-    
-    
-    if(productName.isNotEmpty){
-    if(listticket.isNotEmpty ){
-      listticket.forEach((element) {
-        if(element.nameEnterprise!.contains(searchKey,0)
-            || element.nameClient!.contains(searchKey,0)
-            || element.mobile!.contains(searchKey,0) )
-          ticketlistsearch.add(element);
-      });
-      tickesearchlist=ticketlistsearch;
-    }}else
-      tickesearchlist=listticket;
-      notifyListeners();
-  }
-  Future<bool> updateTicketvm(Map<String, dynamic?> body,String? id_ticket)
-  async {
-    isloading=true;
+    if (productName.isNotEmpty) {
+      if (listticket.isNotEmpty) {
+        listticket.forEach((element) {
+          if (element.nameEnterprise!.contains(searchKey, 0) ||
+              element.nameClient!.contains(searchKey, 0) ||
+              element.mobile!.contains(searchKey, 0))
+            ticketlistsearch.add(element);
+        });
+        tickesearchlist = ticketlistsearch;
+      }
+    } else
+      tickesearchlist = listticket;
     notifyListeners();
-    var data = await Api()
-        .post(
-        url:url+"ticket/recive_ticket.php?id_ticket=$id_ticket",
-        body: body
-    );
-    int index=listticket.indexWhere(
-            (element) => element.idTicket==id_ticket);
+  }
 
-    listticket[index]=
-        TicketModel.fromJson(data[0]);
-    index=tickesearchlist.indexWhere(
-            (element) => element.idTicket==id_ticket);
-    tickesearchlist[index]=TicketModel.fromJson(data[0]);
+  Future<bool> updateTicketvm(
+      Map<String, dynamic?> body, String? id_ticket) async {
+    isloading = true;
+    notifyListeners();
+    var data = await Api().post(
+        url: EndPoints.baseUrls.url +
+            "ticket/recive_ticket.php?id_ticket=$id_ticket",
+        body: body);
+    int index =
+        listticket.indexWhere((element) => element.idTicket == id_ticket);
+
+    listticket[index] = TicketModel.fromJson(data[0]);
+    index =
+        tickesearchlist.indexWhere((element) => element.idTicket == id_ticket);
+    tickesearchlist[index] = TicketModel.fromJson(data[0]);
     tickesearchlist.removeAt(index);
-    isloading=false;
+    isloading = false;
     notifyListeners();
     return true;
   }
 
-  Future<void> setfTicketclient_vm(Map<String, dynamic?> body,String? id_ticket) async {
-   isloading=true;
-   notifyListeners();
-   var data= await Api()
-        .post( url:url+"ticket/trasfer_ticket.php?id_ticket=$id_ticket",
-        body: body
-    );
-      int index=listticket.indexWhere(
-              (element) => element.idTicket==id_ticket);
-    listticket[index]=TicketModel.fromJson(data[0]);
-   // listticket.removeAt(index);
-   tickesearchlist=List.from( listticket);
-   isloading=false;
-      notifyListeners();
-
+  Future<void> setfTicketclient_vm(
+      Map<String, dynamic?> body, String? id_ticket) async {
+    isloading = true;
+    notifyListeners();
+    var data = await Api().post(
+        url: EndPoints.baseUrls.url +
+            "ticket/trasfer_ticket.php?id_ticket=$id_ticket",
+        body: body);
+    int index =
+        listticket.indexWhere((element) => element.idTicket == id_ticket);
+    listticket[index] = TicketModel.fromJson(data[0]);
+    // listticket.removeAt(index);
+    tickesearchlist = List.from(listticket);
+    isloading = false;
+    notifyListeners();
   }
- Future< void> getclient_ticket(String fkIdClient)async{
-    listticket_client=[];
+
+  Future<void> getclient_ticket(String fkIdClient) async {
+    listticket_client = [];
     await getticket();
     //notifyListeners();
-    int index=0;
-   if(listticket.isNotEmpty){
+    int index = 0;
+    if (listticket.isNotEmpty) {
+      listticket.forEach((element) {
+        if (element.fkClient == fkIdClient) {
+          listticket_client.add(element);
 
-    listticket.forEach((element) {
-    if( element.fkClient==fkIdClient)
-    {
-      listticket_client.add(element);
-      
-      
-      
-      index++;
+          index++;
+        }
+      });
     }
-  });
-   }
-   notifyListeners();
-}
+    notifyListeners();
+  }
 
-  Future<bool> getclient_ticket_close(String client)async{
+  Future<bool> getclient_ticket_close(String client) async {
     await getticket();
 
-    bool isavl=true;
-      listticket.forEach((element) {
-        if(element.fkClient==client)
-          {
-            if(element.typeTicket=='جديدة' ||
-                element.typeTicket=='قيد التنفيذ')
-              isavl=false;
-              //return false;
-          }
-      });
+    bool isavl = true;
+    listticket.forEach((element) {
+      if (element.fkClient == client) {
+        if (element.typeTicket == 'جديدة' ||
+            element.typeTicket == 'قيد التنفيذ') isavl = false;
+        //return false;
+      }
+    });
 
     //notifyListeners();
     return isavl;
   }
- Future<void> getclientticket_filter(String filter)async{
-  await getticket();
-  if(listticket.isNotEmpty){
-    listticket_clientfilter=[];
 
-    listticket.forEach((element) {
-      if( element.typeTicket==filter) {
-        listticket_clientfilter.add(element);
-      }
-    });}
+  Future<void> getclientticket_filter(String filter) async {
+    await getticket();
+    if (listticket.isNotEmpty) {
+      listticket_clientfilter = [];
+
+      listticket.forEach((element) {
+        if (element.typeTicket == filter) {
+          listticket_clientfilter.add(element);
+        }
+      });
+    }
 
     notifyListeners();
-}
-  void gettypeticket_filter(String filter){
-    tickesearchlist=[];
-    if(listticket.isNotEmpty){
-      switch(filter){
+  }
+
+  void gettypeticket_filter(String filter) {
+    tickesearchlist = [];
+    if (listticket.isNotEmpty) {
+      switch (filter) {
         case '0':
           listticket.forEach((element) {
-            if( element.typeTicket=='جديدة') {
+            if (element.typeTicket == 'جديدة') {
               tickesearchlist.add(element);
             }
           });
@@ -178,48 +167,45 @@ class ticket_vm extends ChangeNotifier{
 
         case '1':
           listticket.forEach((element) {
-            if( element.typeTicket=='قيد التنفيذ') {
+            if (element.typeTicket == 'قيد التنفيذ') {
               tickesearchlist.add(element);
             }
           });
           break;
         case '2':
           listticket.forEach((element) {
-            if( element.typeTicket=='مغلقة') {
+            if (element.typeTicket == 'مغلقة') {
               tickesearchlist.add(element);
             }
           });
           break;
         case '3':
           listticket.forEach((element) {
-            if( element.typeTicket=='تم التقييم') {
+            if (element.typeTicket == 'تم التقييم') {
               tickesearchlist.add(element);
             }
           });
           break;
       }
-
     }
 
     notifyListeners();
   }
+
 //
-Future<void> getticket() async {
-  isloading=true;
-  notifyListeners();
-  var
-  data=await Api()
-      .get(url:url+ 'ticket/view_ticket.php?fk_country=${usercurrent!.fkCountry}');
-   
-   
-  List<TicketModel> prodlist = [];
-  for (int i = 0; i < data.length; i++) {
-    prodlist.add(TicketModel.fromJson(data[i]));
+  Future<void> getticket() async {
+    isloading = true;
+    notifyListeners();
+    var data = await Api().get(
+        url: EndPoints.baseUrls.url +
+            'ticket/view_ticket.php?fk_country=${usercurrent!.fkCountry}');
+
+    List<TicketModel> prodlist = [];
+    for (int i = 0; i < data.length; i++) {
+      prodlist.add(TicketModel.fromJson(data[i]));
+    }
+    listticket = prodlist;
+    isloading = false;
+    notifyListeners();
   }
-  listticket=prodlist;
-  isloading=false;
-  notifyListeners();
-}
-
-
 }

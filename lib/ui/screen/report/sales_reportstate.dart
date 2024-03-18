@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/di/di_container.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
@@ -115,25 +116,25 @@ class _sales_reportstateState extends State<sales_reportstate> {
       switch (type) {
         case "userSum":
           data = await Api().post(
-              url: url +
+              url: EndPoints.baseUrls.url +
                   "reports/sales_statereport.php?fk_country=$fkcountry$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;
         case "dateyear":
           data = await Api().post(
-              url: url +
+              url: EndPoints.baseUrls.url +
                   "reports/sales_statereport.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;
         case "datemonth":
           data = await Api().post(
-              url: url +
+              url: EndPoints.baseUrls.url +
                   "reports/sales_statereport.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;
         case "datedays":
           data = await Api().post(
-              url: url +
+              url: EndPoints.baseUrls.url +
                   "reports/sales_statereport.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$paramprivilge$isMarketingParams",
               body: {'type': type});
           break;

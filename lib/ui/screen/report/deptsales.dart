@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
@@ -45,10 +46,13 @@ class _deptsalesState extends State<deptsales> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<PrivilegeCubit>().checkPrivilege('55');
+    haveMarketingPrivilege =
+        context.read<PrivilegeCubit>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(0);
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
     super.initState();
@@ -73,7 +77,8 @@ class _deptsalesState extends State<deptsales> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
+    UserModel usermodel =
+        Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     String paramprivilge = '';
     if (context.read<PrivilegeCubit>().checkPrivilege('92')) {
@@ -118,17 +123,21 @@ class _deptsalesState extends State<deptsales> {
       var data;
       switch (type) {
         case "allregoin":
-          data = await Api()
-              .post(url: url + "reports/debt_report.php?fk_country=$fkcountry$isMarketingParams", body: {'type': type});
+          data = await Api().post(
+              url: EndPoints.baseUrls.url +
+                  "reports/debt_report.php?fk_country=$fkcountry$isMarketingParams",
+              body: {'type': type});
           break;
         case "users":
           data = await Api().post(
-              url: url + "reports/debt_report.php?fk_country=$fkcountry&id_user=$iduser$isMarketingParams",
+              url: EndPoints.baseUrls.url +
+                  "reports/debt_report.php?fk_country=$fkcountry&id_user=$iduser$isMarketingParams",
               body: {'type': type});
           break;
         case "regoin":
           data = await Api().post(
-              url: url + "reports/debt_report.php?fk_country=$fkcountry&id_regoin=$idregoin$isMarketingParams",
+              url: EndPoints.baseUrls.url +
+                  "reports/debt_report.php?fk_country=$fkcountry&id_regoin=$idregoin$isMarketingParams",
               body: {'type': type});
           break;
       }
@@ -203,7 +212,8 @@ class _deptsalesState extends State<deptsales> {
         //     //     Colors.primaries[Random().nextInt(Colors.primaries.length)]
         //     // ),
         //     charts.MaterialPalette.teal.shadeDefault,
-        colorFn: (BarModel bar, _) => charts.ColorUtil.fromDartColor(bar.colorval),
+        colorFn: (BarModel bar, _) =>
+            charts.ColorUtil.fromDartColor(bar.colorval),
         // charts.MaterialPalette.indigo.shadeDefault,
         domainFn: (BarModel genderModel, _) => getnameshort(genderModel.x),
         measureFn: (BarModel genderModel, __) => genderModel.y,
@@ -253,7 +263,8 @@ class _deptsalesState extends State<deptsales> {
                                 hint: Text("الفرع"),
                                 items: cart.listRegionFilter.map((level_one) {
                                   return DropdownMenuItem(
-                                    child: Text(level_one.regionName), //label of item
+                                    child: Text(
+                                        level_one.regionName), //label of item
                                     value: level_one.regionId, //value of item
                                   );
                                 }).toList(),
@@ -299,8 +310,10 @@ class _deptsalesState extends State<deptsales> {
                                   Expanded(
                                     child: DropdownSearch<UserModel>(
                                       mode: Mode.DIALOG,
-                                      filterFn: (user, filter) => user!.getfilteruser(filter!),
-                                      compareFn: (item, selectedItem) => item?.idUser == selectedItem?.idUser,
+                                      filterFn: (user, filter) =>
+                                          user!.getfilteruser(filter!),
+                                      compareFn: (item, selectedItem) =>
+                                          item?.idUser == selectedItem?.idUser,
                                       items: cart.usersSalesManagement,
                                       itemAsString: (u) => u!.userAsString(),
                                       onChanged: (data) {
@@ -319,7 +332,9 @@ class _deptsalesState extends State<deptsales> {
                                         alignLabelWithHint: true,
                                         fillColor: Colors.grey.withOpacity(0.2),
                                         contentPadding: EdgeInsets.all(0),
-                                        border: UnderlineInputBorder(borderSide: const BorderSide(color: Colors.grey)),
+                                        border: UnderlineInputBorder(
+                                            borderSide: const BorderSide(
+                                                color: Colors.grey)),
                                       ),
                                     ),
                                   ),
@@ -424,25 +439,29 @@ class _deptsalesState extends State<deptsales> {
                                         DataColumn(
                                           label: Text(
                                             '',
-                                            style: TextStyle(fontStyle: FontStyle.normal),
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.normal),
                                           ),
                                         ),
                                         DataColumn(
                                           label: Text(
                                             'الفرع',
-                                            style: TextStyle(fontStyle: FontStyle.normal),
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.normal),
                                           ),
                                         ),
                                         DataColumn(
                                           label: Text(
                                             'الديون',
-                                            style: TextStyle(fontStyle: FontStyle.normal),
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.normal),
                                           ),
                                         ),
                                         DataColumn(
                                           label: Text(
                                             'عدد الفواتير ',
-                                            style: TextStyle(fontStyle: FontStyle.normal),
+                                            style: TextStyle(
+                                                fontStyle: FontStyle.normal),
                                           ),
                                         ),
                                       ],
@@ -477,34 +496,50 @@ class _deptsalesState extends State<deptsales> {
                                     ? Column(
                                         children: [
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 30.0, right: 30, top: 10),
+                                            padding: const EdgeInsets.only(
+                                                left: 30.0, right: 30, top: 10),
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
                                                 Text(
                                                   'عدد الفواتير',
-                                                  style:
-                                                      TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                                                  style: TextStyle(
+                                                      fontFamily: kfontfamily2,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 Text(
-                                                  listInvoicesAccept.length.toString(),
-                                                  style:
-                                                      TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                                                  listInvoicesAccept.length
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontFamily: kfontfamily2,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ],
                                             ),
                                           ),
                                           Container(
-                                            height: MediaQuery.of(context).size.height * 0.67,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.67,
                                             child: ListView.builder(
                                                 scrollDirection: Axis.vertical,
-                                                itemCount: listInvoicesAccept.length,
+                                                itemCount:
+                                                    listInvoicesAccept.length,
                                                 itemBuilder: (context, index) {
                                                   return Padding(
-                                                      padding: const EdgeInsets.all(2),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              2),
                                                       child: CardInvoiceClient(
                                                         type: '',
-                                                        invoice: listInvoicesAccept[index],
+                                                        invoice:
+                                                            listInvoicesAccept[
+                                                                index],
                                                         //itemClient :  itemClient,
                                                       ));
                                                 }),

@@ -1,7 +1,8 @@
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:flutter/foundation.dart';
+
+import '../core/utils/end_points.dart';
 
 class DateInstallationService {
   static Future<List<AppointmentModel>> getDateInstallationMainCity({
@@ -13,7 +14,7 @@ class DateInstallationService {
     final mainCityParams = _getMainCityParams(mainCityFks);
 
     data = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/get_dateinstall_all_user.php?fk_country=$fkCountry$mainCityParams');
 
     return _mapJsonToList(data);
@@ -24,7 +25,7 @@ class DateInstallationService {
     List<dynamic> data = [];
 
     data = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/get_dateinstall_all_maincity.php?fk_country=$fkCountry&fk_user=$fkUser');
 
     return _mapJsonToList(data);
@@ -35,7 +36,7 @@ class DateInstallationService {
     List<dynamic> data = [];
 
     data = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/get_all_date_install.php?fk_country=$fkCountry');
 
     return _mapJsonToList(data);
@@ -49,7 +50,7 @@ class DateInstallationService {
     List<dynamic> data = [];
     final mainCityParams = _getMainCityParams(mainCityFks);
     data = await Api().get(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'client/invoice/get_dateinstall_mix.php?fk_country=$fkCountry&fk_user=$fkUser$mainCityParams');
 
     return _mapJsonToList(data);

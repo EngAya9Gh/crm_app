@@ -1,12 +1,9 @@
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/model/configmodel.dart';
-import 'package:crm_smart/model/levelmodel.dart';
 import 'package:crm_smart/model/regoin_model.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/services/RegoinServices.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
 class RegionProvider extends ChangeNotifier {
   List<RegionModel> listRegion = [];
@@ -51,15 +48,19 @@ class RegionProvider extends ChangeNotifier {
     listRegionFilter = [];
     if (listRegion.isEmpty) {
       List<dynamic> data = [];
-      data = await Api().get(url: url + 'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
+      data = await Api().get(
+          url: EndPoints.baseUrls.url +
+              'country/get_regoinByIdCountry.php?fk_country=${userCurrent!.fkCountry}');
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
           listRegion.add(RegionModel.fromJson(data[i]));
         }
       }
     }
-    listRegionFilter = List.from(listRegion); // [...listregoin];listregoin.tolist();
-    listRegionFilter.insert(0, RegionModel(regionId: '0', regionName: 'الكل', countryId: ''));
+    listRegionFilter =
+        List.from(listRegion); // [...listregoin];listregoin.tolist();
+    listRegionFilter.insert(
+        0, RegionModel(regionId: '0', regionName: 'الكل', countryId: ''));
     notifyListeners();
     //var  data=await RegoinService().getRegoinByCountry("1");
     //listregoin= data as  List<RegoinModel>;
@@ -71,7 +72,8 @@ class RegionProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url + 'users/add_regoin.php', //users/addmangemt.php
+        url: EndPoints.baseUrls.url +
+            'users/add_regoin.php', //users/addmangemt.php
         body: body);
     if (res != "error") {
       body.addAll({
@@ -88,10 +90,13 @@ class RegionProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url + 'users/update_regoin.php?id_regoin=${idmanag}', //users/addmangemt.php
+        url: EndPoints.baseUrls.url +
+            'users/update_regoin.php?id_regoin=${idmanag}',
+        //users/addmangemt.php
         body: body);
 
-    final index = listRegion.indexWhere((element) => element.regionId == idmanag);
+    final index =
+        listRegion.indexWhere((element) => element.regionId == idmanag);
     listRegion[index] = RegionModel.fromJson(body);
     // listregoin.add(RegoinModel.fromJson(body));
     isLoading = false;

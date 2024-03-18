@@ -5,7 +5,6 @@ import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../constants.dart';
 import '../core/di/di_container.dart';
 
 class MainCityProvider extends ChangeNotifier {
@@ -61,7 +60,7 @@ class MainCityProvider extends ChangeNotifier {
     if (listmaincity.isEmpty) {
       List<dynamic> data = [];
       data = await Api().get(
-          url: url +
+          url: EndPoints.baseUrls.url +
               'config/getmaincity.php?fk_country=${usercurrent!.fkCountry}');
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
@@ -91,7 +90,8 @@ class MainCityProvider extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url + 'config/addmaincity.php', //users/addmangemt.php
+        url: EndPoints.baseUrls.url +
+            'config/addmaincity.php', //users/addmangemt.php
         body: body);
     if (res != "error") {
       body.addAll({
@@ -112,7 +112,8 @@ class MainCityProvider extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url + 'config/update_maincity.php?id_maincity=${id_maincity}',
+        url: EndPoints.baseUrls.url +
+            'config/update_maincity.php?id_maincity=${id_maincity}',
         //users/addmangemt.php
         body: body);
     body.addAll({
@@ -138,7 +139,8 @@ class MainCityProvider extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url + 'config/addcity.php', //users/addmangemt.php
+        url: EndPoints.baseUrls.url +
+            'config/addcity.php', //users/addmangemt.php
         body: body);
     if (res != "error") {
       body.addAll({
@@ -155,7 +157,7 @@ class MainCityProvider extends ChangeNotifier {
     isloading = true;
     notifyListeners();
     String res = await Api().post(
-        url: url +
+        url: EndPoints.baseUrls.url +
             'config/updatecity.php?id_city=${id_city}', //users/addmangemt.php
         body: body);
     final index = listcity.indexWhere((element) => element.id_city == id_city);
@@ -170,8 +172,9 @@ class MainCityProvider extends ChangeNotifier {
     listcity = [];
     if (listcity.isEmpty) {
       List<dynamic> data = [];
-      data = await Api()
-          .get(url: url + 'config/getcity.php?fk_maincity=${fkmain}');
+      data = await Api().get(
+          url: EndPoints.baseUrls.url +
+              'config/getcity.php?fk_maincity=${fkmain}');
 
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
@@ -190,7 +193,8 @@ class MainCityProvider extends ChangeNotifier {
     if (listcity.isEmpty) {
       List<dynamic> data = [];
       data = await Api().get(
-          url: url + 'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
+          url: EndPoints.baseUrls.url +
+              'config/getcity.php?fk_country=${usercurrent!.fkCountry}');
 
       if (data != null) {
         for (int i = 0; i < data.length; i++) {
@@ -216,11 +220,11 @@ class MainCityProvider extends ChangeNotifier {
   }
 
   Future _fetchCitiesFromApi(List<String> mainCitiesIds) async {
-    getIt<ApiServices>().changeBaseUrl(EndPoints.laravelUrl);
+    getIt<ApiServices>().changeBaseUrl(EndPoints.baseUrls.url_laravel);
     final response = await getIt<ApiServices>().post(
         endPoint: EndPoints.city.getCitiesFromMainCitiesIds,
         data: {'mainCitiesIds': mainCitiesIds.toString()});
-    getIt<ApiServices>().changeBaseUrl(EndPoints.phpUrl);
+    getIt<ApiServices>().changeBaseUrl(EndPoints.baseUrls.url);
 
     return response;
   }

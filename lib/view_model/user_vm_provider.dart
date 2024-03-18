@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/api.dart';
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
 enum UserType {
   HigherManagement,
@@ -68,7 +68,9 @@ class UserProvider extends ChangeNotifier {
 
   String? _selectedClientRegistrationType = '';
   String? _selectedClientClassificationType = '';
+
   String get selectedClientRegistrationType => _selectedClientRegistrationType!;
+
   String get selectedClientClassificationType =>
       _selectedClientClassificationType!;
 
@@ -251,7 +253,7 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
     try {
       var data = await Api().post(
-        url: url + "users/delete_user.php?id_user=$userId",
+        url: EndPoints.baseUrls.url + "users/delete_user.php?id_user=$userId",
         body: null,
       );
 

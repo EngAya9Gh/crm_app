@@ -17,6 +17,7 @@ import '../../../../api/api.dart';
 import '../../../../constants.dart';
 import '../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../core/di/di_container.dart';
+import '../../../../core/utils/end_points.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/screen/client/profileclient.dart';
 import '../../../../ui/screen/invoice/invoiceView.dart';
@@ -150,10 +151,14 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                 ? InkWell(
                                     onTap: () => AppFileViewer(
                                       imageSource: ImageSourceViewer.network,
-                                      urls: [urlfile + data.fileReject!],
+                                      urls: [
+                                        EndPoints.baseUrls.urlfile +
+                                            data.fileReject!
+                                      ],
                                     ).show(context),
                                     child: FancyImageShimmerViewer(
-                                      imageUrl: urlfile + data.fileReject!,
+                                      imageUrl: EndPoints.baseUrls.urlfile +
+                                          data.fileReject!,
                                       fit: BoxFit.cover,
                                     ),
                                   )
@@ -283,8 +288,8 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
         }
 
         File file;
-        file = await Api()
-            .downloadFile(urlfile + attachFile, pp.basename(attachFile));
+        file = await Api().downloadFile(
+            EndPoints.baseUrls.urlfile + attachFile, pp.basename(attachFile));
         if (file.existsSync()) {
           final result = await OpenFile.open(file.path);
 

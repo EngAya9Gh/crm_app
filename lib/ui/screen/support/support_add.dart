@@ -483,7 +483,7 @@ class _SupportAddState extends State<SupportAdd> {
                       //                 invoiceVm.deleteFileAttach(index);
                       //               },
                       //               child: PdfWithZoomIcon(
-                      //                 fileUrl: urlfile + file.fileUrl,
+                      //                 fileUrl: EndPoints.baseUrls.urlfile + file.fileUrl,
                       //                 file: null,
                       //               ),
                       //             );
@@ -1452,11 +1452,11 @@ class _SupportAddState extends State<SupportAdd> {
                 borderRadius: BorderRadius.circular(15),
                 child: FancyImageShimmerViewer(
                   imageUrl:
-                      "${EndPoints.laravelUrl_Image}${fileAttach.fileAttach}",
+                      "${EndPoints.baseUrls.laravelUrl_Image}${fileAttach.fileAttach}",
                   fit: BoxFit.cover,
                 ),
                 // Image.network(
-                //   "${EndPoints.laravelUrl}${fileAttach.fileAttach}",
+                //   "${EndPoints.baseUrls.url_laravel}${fileAttach.fileAttach}",
                 //   fit: BoxFit.cover,
                 // ),
               ),
@@ -1880,7 +1880,8 @@ class _dialog_readyState extends State<dialog_ready> {
                                         content: Text(
                                             'من فضلك اختر سبب من القائمة ')));
                               else {
-                                if (!_globalKey.currentState!.validate()) return;
+                                if (!_globalKey.currentState!.validate())
+                                  return;
 
                                 Provider.of<invoice_vm>(context, listen: false)
                                     .setisload();

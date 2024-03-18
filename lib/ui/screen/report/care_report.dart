@@ -8,7 +8,6 @@ import 'package:crm_smart/model/chartmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
@@ -16,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
@@ -46,10 +46,13 @@ class _care_reportState extends State<care_report> {
 
   @override
   void initState() {
-    haveMarketingPrivilege = context.read<PrivilegeCubit>().checkPrivilege('55');
+    haveMarketingPrivilege =
+        context.read<PrivilegeCubit>().checkPrivilege('55');
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsalestype(0);
-      Provider.of<selected_button_provider>(context, listen: false).selectValuebarsales(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsalestype(0);
+      Provider.of<selected_button_provider>(context, listen: false)
+          .selectValuebarsales(0);
       super.initState();
     });
     if (!haveMarketingPrivilege) getData();
@@ -66,7 +69,8 @@ class _care_reportState extends State<care_report> {
     });
     List<BarModel> tempdata = [];
     rowsdata.clear();
-    UserModel usermodel = Provider.of<UserProvider>(context, listen: false).currentUser;
+    UserModel usermodel =
+        Provider.of<UserProvider>(context, listen: false).currentUser;
     String fkcountry = usermodel.fkCountry.toString();
     // String paramprivilge='';
     // if(Provider.of<privilge_vm>(context,listen: false)
@@ -97,23 +101,25 @@ class _care_reportState extends State<care_report> {
     switch (type) {
       case "userSum":
         data = await Api().post(
-            url: url + "reports/care_report.php?fk_country=$fkcountry$params$isMarketingParams", body: {'type': type});
+            url: EndPoints.baseUrls.url +
+                "reports/care_report.php?fk_country=$fkcountry$params$isMarketingParams",
+            body: {'type': type});
         break;
       case "dateyear":
         data = await Api().post(
-            url: url +
+            url: EndPoints.baseUrls.url +
                 "reports/care_report.php?fk_country=$fkcountry&year=${_selectedDate.year.toString()}$params$isMarketingParams",
             body: {'type': type});
         break;
       case "datemonth":
         data = await Api().post(
-            url: url +
+            url: EndPoints.baseUrls.url +
                 "reports/care_report.php?fk_country=$fkcountry&month=${_selectedDatemonth.toString()}$params$isMarketingParams",
             body: {'type': type});
         break;
       case "datedays":
         data = await Api().post(
-            url: url +
+            url: EndPoints.baseUrls.url +
                 "reports/care_report.php?fk_country=$fkcountry&from=${_selectedDatefrom.toString()}&to=${_selectedDateto.toString()}$params$isMarketingParams",
             body: {'type': type});
         break;
@@ -125,7 +131,7 @@ class _care_reportState extends State<care_report> {
     totalval = 0;
     for (int i = 0; i < data.length; i++) {
       tempdata.add(BarModel.fromJson(data[i]));
-      
+
       totalval += tempdata[i].y;
       rowsdata.add(DataRow(
         cells: <DataCell>[
@@ -180,7 +186,8 @@ class _care_reportState extends State<care_report> {
         //     //     Colors.primaries[Random().nextInt(Colors.primaries.length)]
         //     // ),
         //     charts.MaterialPalette.teal.shadeDefault,
-        colorFn: (BarModel bar, _) => charts.ColorUtil.fromDartColor(bar.colorval),
+        colorFn: (BarModel bar, _) =>
+            charts.ColorUtil.fromDartColor(bar.colorval),
         // charts.MaterialPalette.indigo.shadeDefault,
         domainFn: (BarModel genderModel, _) => genderModel.x,
         measureFn: (BarModel genderModel, __) => genderModel.y.floor(),
@@ -221,15 +228,17 @@ class _care_reportState extends State<care_report> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                  Consumer<selected_button_provider>(
+                      builder: (context, selectedProvider, child) {
                     return GroupButton(
                         controller: GroupButtonController(
                           selectedIndex: selectedProvider.isbarsales,
                         ),
-                        options: GroupButtonOptions(buttonWidth: 75, borderRadius: BorderRadius.circular(10)),
+                        options: GroupButtonOptions(
+                            buttonWidth: 75,
+                            borderRadius: BorderRadius.circular(10)),
                         buttons: ['سنوي', 'شهري', 'يومي'],
                         onSelected: (_, index, isselected) {
-                          
                           switch (index) {
                             case 0:
                               type = 'dateyear';
@@ -237,11 +246,13 @@ class _care_reportState extends State<care_report> {
                               break;
                             case 1:
                               type = 'datemonth';
-                              if (_selectedDatemonth != DateTime(1, 1, 1)) getData();
+                              if (_selectedDatemonth != DateTime(1, 1, 1))
+                                getData();
                               break;
                             case 2:
                               type = 'datedays';
-                              if (_selectedDatefrom != DateTime(1, 1, 1) && _selectedDateto != DateTime(1, 1, 1))
+                              if (_selectedDatefrom != DateTime(1, 1, 1) &&
+                                  _selectedDateto != DateTime(1, 1, 1))
                                 getData();
                               break;
                           }
@@ -261,17 +272,18 @@ class _care_reportState extends State<care_report> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
+                  Consumer<selected_button_provider>(
+                      builder: (context, selectedProvider, child) {
                     return GroupButton(
                         controller: GroupButtonController(
                           selectedIndex: selectedProvider.isbarsalestype,
                         ),
                         options: GroupButtonOptions(
-                            buttonWidth: (MediaQuery.of(context).size.width / 3) - 16,
+                            buttonWidth:
+                                (MediaQuery.of(context).size.width / 3) - 16,
                             borderRadius: BorderRadius.circular(10)),
                         buttons: ['ترحيب', 'جودة', 'العناية'],
                         onSelected: (_, index, isselected) {
-                          
                           switch (index) {
                             case 0:
                               typeproduct = 'ترحيب';
@@ -283,9 +295,11 @@ class _care_reportState extends State<care_report> {
                               typeproduct = 'العناية';
                               break;
                           }
-                          if ((_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) ||
+                          if ((_selectedDateto != DateTime(1, 1, 1) &&
+                                  _selectedDatefrom != DateTime(1, 1, 1)) ||
                               _selectedDate != DateTime(1, 1, 1) ||
-                              _selectedDatemonth != DateTime(1, 1, 1)) getData();
+                              _selectedDatemonth != DateTime(1, 1, 1))
+                            getData();
                           //setState(() {
                           //typeinstallController=index.toString();
                           selectedProvider.selectValuebarsalestype(index);
@@ -301,7 +315,9 @@ class _care_reportState extends State<care_report> {
                 getData();
               },
             ),
-            Provider.of<selected_button_provider>(context, listen: true).isbarsales == 0
+            Provider.of<selected_button_provider>(context, listen: true)
+                        .isbarsales ==
+                    0
                 ? TextFormField(
                     validator: (value) {
                       if (_selectedDate == DateTime(1, 1, 1)) {
@@ -313,7 +329,10 @@ class _care_reportState extends State<care_report> {
                         Icons.date_range,
                         color: kMainColor,
                       ),
-                      hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                      hintStyle: const TextStyle(
+                          color: Colors.black45,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500),
                       hintText: _selectedDate == DateTime(1, 1, 1)
                           ? 'السنة' //_currentDate.toString()
                           : DateFormat('yyyy').format(_selectedDate),
@@ -334,7 +353,8 @@ class _care_reportState extends State<care_report> {
                               height: 300,
                               child: YearPicker(
                                 firstDate: DateTime(DateTime.now().year - 3, 1),
-                                lastDate: DateTime(DateTime.now().year + 100, 1),
+                                lastDate:
+                                    DateTime(DateTime.now().year + 100, 1),
                                 initialDate: DateTime.now(),
                                 // save the selected date to _selectedDate DateTime variable.
                                 // It's used to set the previous selected date when
@@ -361,7 +381,9 @@ class _care_reportState extends State<care_report> {
                       // _selectDate(context, DateTime.now());
                     },
                   )
-                : Provider.of<selected_button_provider>(context, listen: true).isbarsales == 1
+                : Provider.of<selected_button_provider>(context, listen: true)
+                            .isbarsales ==
+                        1
                     ? Row(
                         children: [
                           Flexible(
@@ -376,11 +398,15 @@ class _care_reportState extends State<care_report> {
                                   Icons.date_range,
                                   color: kMainColor,
                                 ),
-                                hintStyle:
-                                    const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                hintText: _selectedDatemonth == DateTime(1, 1, 1)
-                                    ? 'الشهر' //_currentDate.toString()
-                                    : DateFormat('yyyy-MM').format(_selectedDatemonth),
+                                hintStyle: const TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                hintText:
+                                    _selectedDatemonth == DateTime(1, 1, 1)
+                                        ? 'الشهر' //_currentDate.toString()
+                                        : DateFormat('yyyy-MM')
+                                            .format(_selectedDatemonth),
                                 //_invoice!.dateinstall_task.toString(),
                                 filled: true,
                                 fillColor: Colors.grey.shade200,
@@ -397,9 +423,12 @@ class _care_reportState extends State<care_report> {
                                         width: 300,
                                         height: 300,
                                         child: CalendarDatePicker(
-                                          initialDate: DateTime(DateTime.now().year, 1),
-                                          firstDate: DateTime(DateTime.now().year - 100, 1),
-                                          lastDate: DateTime(DateTime.now().year + 100, 1),
+                                          initialDate:
+                                              DateTime(DateTime.now().year, 1),
+                                          firstDate: DateTime(
+                                              DateTime.now().year - 100, 1),
+                                          lastDate: DateTime(
+                                              DateTime.now().year + 100, 1),
                                           // : DateTime.now(),
                                           // save the selected date to _selectedDate DateTime variable.
                                           // It's used to set the previous selected date when
@@ -411,7 +440,6 @@ class _care_reportState extends State<care_report> {
                                               _selectedDatemonth = dateTime;
                                             });
 
-                                            
                                             // close the dialog when year is selected.
                                             Navigator.pop(context);
                                             getData();
@@ -431,7 +459,10 @@ class _care_reportState extends State<care_report> {
                           ),
                         ],
                       )
-                    : Provider.of<selected_button_provider>(context, listen: true).isbarsales == 2
+                    : Provider.of<selected_button_provider>(context,
+                                    listen: true)
+                                .isbarsales ==
+                            2
                         ? Row(
                             children: [
                               Flexible(
@@ -441,7 +472,8 @@ class _care_reportState extends State<care_report> {
                                     Text('from'),
                                     TextFormField(
                                       validator: (value) {
-                                        if (_selectedDatefrom == DateTime(1, 1, 1)) {
+                                        if (_selectedDatefrom ==
+                                            DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
                                       },
@@ -451,17 +483,22 @@ class _care_reportState extends State<care_report> {
                                           color: kMainColor,
                                         ),
                                         hintStyle: const TextStyle(
-                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                        hintText: _selectedDatefrom == DateTime(1, 1, 1)
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText: _selectedDatefrom ==
+                                                DateTime(1, 1, 1)
                                             ? 'from' //_currentDate.toString()
-                                            : DateFormat('yyyy-MM-dd').format(_selectedDatefrom),
+                                            : DateFormat('yyyy-MM-dd')
+                                                .format(_selectedDatefrom),
                                         //_invoice!.dateinstall_task.toString(),
                                         filled: true,
                                         fillColor: Colors.grey.shade200,
                                       ),
                                       readOnly: true,
                                       onTap: () {
-                                        _selectDatefrom(context, DateTime.now());
+                                        _selectDatefrom(
+                                            context, DateTime.now());
 
                                         // _selectDate(context, DateTime.now());
                                       },
@@ -475,7 +512,8 @@ class _care_reportState extends State<care_report> {
                                     Text('to'),
                                     TextFormField(
                                       validator: (value) {
-                                        if (_selectedDateto == DateTime(1, 1, 1)) {
+                                        if (_selectedDateto ==
+                                            DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
                                       },
@@ -485,10 +523,14 @@ class _care_reportState extends State<care_report> {
                                           color: kMainColor,
                                         ),
                                         hintStyle: const TextStyle(
-                                            color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                                        hintText: _selectedDateto == DateTime(1, 1, 1)
-                                            ? 'to' //_currentDate.toString()
-                                            : DateFormat('yyyy-MM-dd').format(_selectedDateto),
+                                            color: Colors.black45,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500),
+                                        hintText:
+                                            _selectedDateto == DateTime(1, 1, 1)
+                                                ? 'to' //_currentDate.toString()
+                                                : DateFormat('yyyy-MM-dd')
+                                                    .format(_selectedDateto),
                                         //_invoice!.dateinstall_task.toString(),
                                         filled: true,
                                         fillColor: Colors.grey.shade200,
@@ -518,14 +560,16 @@ class _care_reportState extends State<care_report> {
                               // scrollDirection: Axis.horizontal,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text('إجمالي '),
                                     Text(totalval.toInt().toString()),
                                   ],
                                 ),
                                 Container(
-                                  height: MediaQuery.of(context).size.height * 0.8, //BarChart
+                                  height: MediaQuery.of(context).size.height *
+                                      0.8, //BarChart
                                   child: charts.PieChart(
                                     _createSampleData(),
                                     // barRendererDecorator: new charts.BarLabelDecorator<String>(),
@@ -594,25 +638,29 @@ class _care_reportState extends State<care_report> {
                                       DataColumn(
                                         label: Text(
                                           '',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           'الموظف',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           'العدد',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ),
                                       DataColumn(
                                         label: Text(
                                           'عدد العملاء',
-                                          style: TextStyle(fontStyle: FontStyle.normal),
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.normal),
                                         ),
                                       ),
                                     ],
@@ -654,7 +702,8 @@ class _care_reportState extends State<care_report> {
     );
   }
 
-  Future<void> _selectDatefrom(BuildContext context, DateTime currentDate) async {
+  Future<void> _selectDatefrom(
+      BuildContext context, DateTime currentDate) async {
     DateTime? pickedDate = await showDatePicker(
         context: context,
         currentDate: currentDate,
@@ -665,8 +714,9 @@ class _care_reportState extends State<care_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDatefrom = pickedDate;
-        
-        if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
+
+        if (_selectedDateto != DateTime(1, 1, 1) &&
+            _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
 
@@ -683,8 +733,9 @@ class _care_reportState extends State<care_report> {
       setState(() {
         // Navigator.pop(context);
         _selectedDateto = pickedDate;
-        
-        if (_selectedDateto != DateTime(1, 1, 1) && _selectedDatefrom != DateTime(1, 1, 1)) getData();
+
+        if (_selectedDateto != DateTime(1, 1, 1) &&
+            _selectedDatefrom != DateTime(1, 1, 1)) getData();
       });
   }
 }

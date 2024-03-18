@@ -23,7 +23,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<List<UserSeries>>> getAllUsersSeries(
       Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(
           endPoint: EndPoints.series.getUsersSeries, queryParameters: params);
 
@@ -43,7 +43,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<List<UserSeries>>> updateAllUsersSeries(
       Map<String, dynamic> data) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.post(
           endPoint: EndPoints.series.updateUsersSeries, data: data);
 
@@ -62,7 +62,7 @@ class ManageWithdrawalsDatasource {
 
   Future<ResponseWrapper<List<InvoiceModel>>> getWithdrawalsInvoice() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response =
           await api.get(endPoint: EndPoints.series.getWithdrawalsInvoices);
 
@@ -83,7 +83,7 @@ class ManageWithdrawalsDatasource {
     GetFilteredWithdrawalsInvoicesParams params,
   ) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.laravelUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
       final response = await api.get(
         endPoint: EndPoints.series.getSeriesInvoiceAll,
         queryParameters: {
@@ -107,7 +107,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<List<InvoiceWithdrawalSeries>>>
       getWithdrawalInvoiceDetails(Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(
           endPoint: EndPoints.series.getWithdrawalInvoiceDetails,
           queryParameters: params);
@@ -128,7 +128,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<WithdrawnDetailsModel>> getWithdrawnDetails(
       Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(
           endPoint: EndPoints.series.getWithdrawnDetails,
           queryParameters: params);
@@ -145,7 +145,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<bool>> setApproveSeries(
       Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.post(
           endPoint: EndPoints.series.setApproveSeries,
           data: data,
@@ -159,7 +159,7 @@ class ManageWithdrawalsDatasource {
 
   Future<ResponseWrapper<List<RejectReason>>> getRejectReasons() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response =
           await api.get(endPoint: EndPoints.client.getRejectReasons);
       return ResponseWrapper<List<RejectReason>>.fromJson(
@@ -175,7 +175,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<String>> addRejectReasons(
       Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.post(
         endPoint: EndPoints.client.addRejectReasons,
         data: params,
@@ -189,7 +189,7 @@ class ManageWithdrawalsDatasource {
   Future<ResponseWrapper<String>> editRejectReasons(
       Map<String, dynamic> params, Map<String, dynamic> data) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.phpUrl);
+      api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.post(
         endPoint: EndPoints.client.editRejectReasons,
         data: data,

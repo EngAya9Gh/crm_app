@@ -1,4 +1,4 @@
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
 class EmployeeReportModel {
   String? sales;
@@ -8,7 +8,6 @@ class EmployeeReportModel {
   String? percentage;
   String? img_image = '';
 
-
   EmployeeReportModel({
     this.sales,
     this.countClient,
@@ -16,16 +15,17 @@ class EmployeeReportModel {
     this.salary,
     this.percentage,
     this.img_image,
-
   });
 
-  factory EmployeeReportModel.fromJson(Map<String, dynamic> json) => EmployeeReportModel(
+  factory EmployeeReportModel.fromJson(Map<String, dynamic> json) =>
+      EmployeeReportModel(
         sales: json["y"],
         countClient: json["countclient"],
         name: json["x"],
         salary: json["salary"],
-    img_image:json['img_image'].toString().trim().isEmpty?
-    json['img_image']: urlimage+ json['img_image'],
+        img_image: json['img_image'].toString().trim().isEmpty
+            ? json['img_image']
+            : EndPoints.baseUrls.urlimage + json['img_image'],
       );
 
   Map<String, dynamic> toJson() => {

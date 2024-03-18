@@ -10,7 +10,7 @@ import 'package:crm_smart/services/date_installation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 import '../model/clientmodel.dart';
 import '../services/Invoice_Service.dart';
 import 'page_state.dart';
@@ -315,7 +315,7 @@ class EventProvider extends ChangeNotifier {
 
       final isDone = IsDoneDateEnum.done.index.toString();
       var data = await Api().post(
-        url: url +
+        url: EndPoints.baseUrls.url +
             "client/invoice/update_date_install.php?idclients_date=${event.idClientsDate}",
         body: {
           "is_done": isDone,

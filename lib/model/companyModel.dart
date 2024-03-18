@@ -1,6 +1,4 @@
-
-
-import '../constants.dart';
+import '../core/utils/end_points.dart';
 
 class CompanyModel {
   CompanyModel({
@@ -10,18 +8,19 @@ class CompanyModel {
     // required this.type,
   });
 
-  late    String id_Company;
-  late     String? name_company;
-  late    String? path_logo='';
+  late String id_Company;
+  late String? name_company;
+  late String? path_logo = '';
+
   // late final String type;
 
-  CompanyModel.fromJson(Map<String, dynamic> json){
+  CompanyModel.fromJson(Map<String, dynamic> json) {
     id_Company = json['id_Company'];
     name_company = json['name_company'];
-    path_logo = json['path_logo'].toString().trim().isEmpty
-        ||json['path_logo']==null
-        ? json['path_logo']
-        : urlfilelogo+ json['path_logo'];
+    path_logo =
+        json['path_logo'].toString().trim().isEmpty || json['path_logo'] == null
+            ? json['path_logo']
+            : EndPoints.baseUrls.urlfilelogo + json['path_logo'];
     // type = json['type'];
   }
 

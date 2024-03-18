@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
@@ -1171,7 +1170,7 @@ class invoice_vm extends ChangeNotifier {
 
     return await Api().postCrudInvoiceFile(
       'array',
-      "$url$endPoint$invoiceId",
+      "${EndPoints.baseUrls.url}$endPoint$invoiceId",
       body,
       file,
       files: files,
@@ -1180,8 +1179,9 @@ class invoice_vm extends ChangeNotifier {
 
   openFile({
     required FileAttach attachFile,
-    String baseUrl = EndPoints.laravelUrl_Image,
+    String? baseUrl,
   }) async {
+    baseUrl ??= EndPoints.baseUrls.laravelUrl_Image;
     try {
       if (attachFile.file != null) {
         if (!(await checkStoragePermission())) return;
@@ -1272,7 +1272,7 @@ class invoice_vm extends ChangeNotifier {
 
     final endPoint = EndPoints.invoice.clientUpdateInvoice;
     ApiServices apiServices = getIt<ApiServices>();
-    apiServices.changeBaseUrl(EndPoints.phpUrl);
+    apiServices.changeBaseUrl(EndPoints.baseUrls.url);
 
     final response = await apiServices.postRequestWithFile(
       endPoint,
@@ -1775,7 +1775,7 @@ class invoice_vm extends ChangeNotifier {
       onLoading();
       var data = await Api().postRequestWithFile(
           'array',
-          url + "client/invoice/add_attach_invoice.php",
+          EndPoints.baseUrls.url + "client/invoice/add_attach_invoice.php",
           {"id_invoice": idInvoice},
           file,
           null);
@@ -1797,7 +1797,7 @@ class invoice_vm extends ChangeNotifier {
     try {
       onLoading();
       var data = await Api().post(
-        url: url + "FilesInvoice/delete_file_attach.php",
+        url: EndPoints.baseUrls.url + "FilesInvoice/delete_file_attach.php",
         body: {'id_invoice': idInvoice},
       );
 
@@ -2071,7 +2071,7 @@ class InvoiceFilter {
     required String params,
     String? state,
   }) {
-    return url + params + '&state=${state.toString()}';
+    return EndPoints.baseUrls.url + params + '&state=${state.toString()}';
   }
 
   static String? _handleState(String? state) {

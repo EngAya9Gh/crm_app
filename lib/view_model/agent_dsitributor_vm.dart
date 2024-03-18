@@ -57,7 +57,7 @@
 //         notifyListeners();
 //       }
 //       List<dynamic> data = [];
-//       data = await Api().get(url: url + 'config/getcity.php?fk_country=${fkCountry!}');
+//       data = await Api().get(url: EndPoints.baseUrls.url +  'config/getcity.php?fk_country=${fkCountry!}');
 //
 //       if (data != null) {
 //         for (int i = 0; i < data.length; i++) {
@@ -95,13 +95,13 @@
 //       dynamic response;
 //       if (agentId == null) {
 //         response = await Api().postRequestWithFile("array",
-//            url + 'agent/add_agent.php',
+//            EndPoints.baseUrls.url +  'agent/add_agent.php',
 //             agentDistributorActionParams.toMap(),
 //             agentDistributorActionParams.filelogo,null
 //         );
 //       } else {
 //         response = await Api().postRequestWithFile("array",
-//             url + 'agent/update_agent.php?id_agent=$agentId',
+//             EndPoints.baseUrls.url +  'agent/update_agent.php?id_agent=$agentId',
 //             agentDistributorActionParams.toMap(),
 //             agentDistributorActionParams.filelogo,null
 //
