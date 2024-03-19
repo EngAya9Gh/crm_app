@@ -314,14 +314,24 @@ class EventProvider extends ChangeNotifier {
       notifyListeners();
 
       final isDone = IsDoneDateEnum.done.index.toString();
+      var body = {
+        "is_done": isDone,
+        "comment": event.comment,
+
+      } ;
+      if(event.agentName != null)
+      body.addAll({
+        "fk_agent":event.agent!.idAgent
+      });
+      else
+        body.addAll({
+          "fk_client":event.fkIdClient,
+        });
       var data = await Api().post(
         url: EndPoints.baseUrls.url +
             "client/invoice/update_date_install.php?idclients_date=${event.idClientsDate}",
-        body: {
-          "is_done": isDone,
-          "fk_client": event.fkIdClient,
-          "comment": event.comment,
-        },
+
+        body: body
       );
       final list = eventDataSource[event.from] ?? [];
       final index = list.map((e) => e.from).toList().indexOf(event.from);

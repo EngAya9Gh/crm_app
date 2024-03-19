@@ -26,7 +26,7 @@ extension TicketSourceEnumsExtension on TicketSourceEnums {
       case TicketSourceEnums.directCall:
         return 'اتصال مباشر';
       case TicketSourceEnums.whatsapp:
-        return 'وتسأب';
+        return 'وتساب';
       case TicketSourceEnums.facebook:
         return 'فيسبوك';
       case TicketSourceEnums.twitter:

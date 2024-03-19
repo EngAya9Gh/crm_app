@@ -134,20 +134,21 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
   }
 
   _onEventSelected(EventModel event) async {
-    if (event.agentName != null) {
-      await context.read<EventProvider>().changeEventToDone(
-            event: event,
-            onLoading: () {},
-            onSuccess: () => context
-                .read<invoice_vm>()
-                .updateListInvoiceAfterMarkEventIsDone(
-                  event,
-                ),
-            onFailure: () {},
-          );
-    } else {
-      return await _onClientEventSelected(event);
-    }
+    // if (event.agentName != null) {
+    //   await context.read<EventProvider>().changeEventToDone(
+    //         event: event,
+    //         onLoading: () {},
+    //         onSuccess: () => context
+    //             .read<invoice_vm>()
+    //             .updateListInvoiceAfterMarkEventIsDone(
+    //               event,
+    //             ),
+    //         onFailure: () {},
+    //       );
+    // } else {
+    //   return await _onClientEventSelected(event);
+    // }
+    return await _onClientEventSelected(event);
   }
 
   Future<bool?> _onClientEventSelected(EventModel event) async {
