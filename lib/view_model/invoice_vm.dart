@@ -23,6 +23,7 @@ import '../core/api/api_services.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
 import '../core/di/di_container.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../helper/invoice_filter.dart';
 import '../model/agent_distributor_model.dart';
 import '../model/calendar/event_model.dart';
 import '../model/participatModel.dart';
@@ -54,7 +55,19 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isloading = false;
+  bool _isloading = false;
+
+  bool get isloading => _isloading;
+  set isloading(bool value) {
+    _isloading = value;
+    notifyListeners();
+  }
+
+  void changeIsLoading() {
+    _isloading = !_isloading;
+    notifyListeners();
+  }
+
   bool isloading_marketing = false;
   UserModel? usercurrent;
   String? typeClientValue;
@@ -423,13 +436,11 @@ class invoice_vm extends ChangeNotifier {
 
   Future<void> getinvoice_waiting() async {
     isloading = true;
-    notifyListeners();
     String? state = null;
     listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
-        'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}&state=${state.toString()}',
+        'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
         {'allmaincity': 'allmaincity'});
     isloading = false;
-    notifyListeners();
   }
 
   void setisload({bool isLoading = false}) {
@@ -444,19 +455,17 @@ class invoice_vm extends ChangeNotifier {
     List<CityModel> selectedCities = const [],
   }) async {
     isloading = true;
-    notifyListeners();
     await _cancelableFuture?.cancel();
     _cancelableFuture = await InvoiceFilter.execute(
       listSelectedRegions: listSelectedRegions,
       selectedCities: selectedCities,
       state: typeClientValue,
-      url:
+      endpoint:
           'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
     );
     listInvoicesAccept = await _cancelableFuture?.value ?? [];
     temp_listInvoicesAccept = List.from(listInvoicesAccept);
     isloading = false;
-    notifyListeners();
   }
 
   Future<void> getclienttype_filter(
@@ -713,7 +722,6 @@ class invoice_vm extends ChangeNotifier {
     // stopwatch.start();
     listInvoicesAccept = [];
     isloading = true;
-    notifyListeners();
     await getinvoiceswithprev(privilegeCubit);
     listInvoicesAccept = listInvoicesAccept
         .where((element) =>
@@ -730,7 +738,6 @@ class invoice_vm extends ChangeNotifier {
     List<InvoiceModel> list = [];
     listInvoicesAccept = [];
     isloading = true;
-    notifyListeners();
     bool res = privilegeCubit.checkPrivilege('94');
     if (res) {
       listinvoices = await Invoice_Service()
@@ -768,15 +775,6 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> getClientWaiting()async{
-  //   // element.stateclient == searchfilter
-  //   //     && element.isApprove == "1"
-  //   listInvoicesAccept = await Invoice_Service()
-  //       .getinvoicemaincity(
-  //       'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}'
-  //       ,{'all':'all'});
-  //   notifyListeners();
-  // }
   Future<void> getinvoice_Local(
       String searchfilter, String type, String? approvetype
       // , List<ClientModel> list
@@ -1529,7 +1527,6 @@ class invoice_vm extends ChangeNotifier {
 
   Future<void> deleteBack(String id_invoice, String file_reject) async {
     isloading = true;
-    notifyListeners();
     InvoiceModel data =
         await Invoice_Service().deleteBack(id_invoice, file_reject);
     int index =
@@ -1550,7 +1547,6 @@ class invoice_vm extends ChangeNotifier {
     }
 
     isloading = false;
-    notifyListeners();
   }
 
   bool isloadingdone = false;
@@ -1934,158 +1930,6 @@ class invoice_vm extends ChangeNotifier {
       print('exp  ' + e.runtimeType.toString());
 
       onFail?.call('error from app  ' + e.runtimeType.toString());
-    }
-  }
-}
-
-// todo: move this class to a separate file while refactoring
-class InvoiceFilter {
-  static Future<CancelableOperation<List<InvoiceModel>>?> execute({
-    List<MainCityModel>? listSelectedRegions,
-    List<CityModel> selectedCities = const [],
-    String? state,
-    String url = '',
-  }) async {
-    String type = '';
-    bool isAllRegions = false;
-    String params = '';
-    Map<String, String> data = {};
-
-    if (listSelectedRegions!.isNotEmpty) {
-      // handle if all main cities selected
-      isAllRegions = _checkIfAllRegions(listSelectedRegions);
-      // prepare params
-      params = _prepareQueryParams(
-        listSelectedMainCity: listSelectedRegions,
-        selectedCities: selectedCities,
-      );
-      print("params => $params");
-    }
-
-    // handle state and type
-    type = _handleRequestBody(
-      isAllRegions: isAllRegions,
-      selectedCities: selectedCities,
-      type: type,
-      state: state,
-    );
-    print("type => $type");
-
-    state = _handleState(state);
-    print("state => $state");
-
-    // prepare url
-    url = _prepareUrl(
-      params: params,
-      url: url,
-      state: state,
-    );
-    print("url => $url");
-
-    // prepare data
-    data = _prepareData(
-      isFilterByCities: selectedCities.isNotEmpty,
-      type: type,
-    );
-    print("data => $data");
-
-    return CancelableOperation.fromFuture(
-        Invoice_Service().getinvoicemaincity(url, data));
-  }
-
-  static bool _checkIfAllRegions(List<MainCityModel> listSelectedMainCity) =>
-      listSelectedMainCity.any((element) => element.id_maincity == '0');
-
-  static String _prepareQueryParams({
-    required List<MainCityModel> listSelectedMainCity,
-    required List<CityModel> selectedCities,
-  }) {
-    if (selectedCities.isNotEmpty) {
-      final ids = selectedCities.map((val) => val.id_city).join(', ');
-      return '&city_fks=($ids)';
-    }
-    return listSelectedMainCity.map((val) {
-      return '&maincity_fks[]=${val.id_maincity}';
-    }).join('');
-  }
-
-  static String _handleRequestBody({
-    required List<CityModel> selectedCities,
-    required String type,
-    required bool isAllRegions,
-    String? state,
-  }) {
-    if (selectedCities.isNotEmpty) {
-      return _handleBodyTypeForCities();
-    }
-    return _handleBodyTypeForRegions(isAllRegions, state);
-  }
-
-  static String _handleBodyTypeForCities() {
-    return 'allmixCity';
-  }
-
-  static String _handleBodyTypeForRegions(bool isAllRegions, String? state) {
-    if (isAllRegions && state == 'الكل')
-      return 'all';
-    else if (isAllRegions && state != 'الكل')
-      return 'allmaincity';
-    else if (!isAllRegions && state == 'الكل')
-      return 'allstate';
-    else if (!isAllRegions && state != 'الكل') return 'allmix';
-    return 'allmaincity';
-  }
-
-  static Map<String, String> _prepareData({
-    required String type,
-    required bool isFilterByCities,
-  }) {
-    if (isFilterByCities) {
-      return _prepareDataForCities(type);
-    }
-    return _prepareDataForRegions(type);
-  }
-
-  static Map<String, String> _prepareDataForCities(String type) {
-    if (type == 'allmixCity') {
-      return {'allmixCity': 'allmixCity'};
-    }
-    return {'allmixCity': 'allmixCity'};
-  }
-
-  static Map<String, String> _prepareDataForRegions(String type) {
-    if (type == 'all') {
-      return {};
-    } else if (type == 'allmaincity') {
-      return {'allmaincity': 'allmaincity'};
-    } else if (type == 'allstate') {
-      return {'allstate': 'allstate'};
-    } else if (type == 'allmix') {
-      return {'allmix': 'allmix'};
-    }
-    return {'allmaincity': 'allmaincity'};
-  }
-
-  static String _prepareUrl({
-    required String url,
-    required String params,
-    String? state,
-  }) {
-    return EndPoints.baseUrls.url + params + '&state=${state.toString()}';
-  }
-
-  static String? _handleState(String? state) {
-    switch (state) {
-      case 'بالإنتظار':
-        return null;
-      case 'تم التركيب':
-        return '1';
-      case 'معلق':
-        return 'suspend';
-      case 'غير جاهز':
-        return 'notReady';
-      default:
-        return state;
     }
   }
 }

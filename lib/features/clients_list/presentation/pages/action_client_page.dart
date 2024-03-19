@@ -1246,9 +1246,9 @@ class CardSimilar extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  DateTime.tryParse(smClient.date_create!) != null
+                  DateTime.tryParse(smClient.date_create) != null
                       ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
-                          .format(DateTime.parse(smClient.date_create!))
+                          .format(DateTime.parse(smClient.date_create))
                       : smClient.date_create.toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold,

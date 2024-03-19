@@ -88,7 +88,7 @@ class _supportpageState extends State<supportpage> {
                           context,
                           CupertinoPageRoute(
                               builder: (context) => ClientWaiting(
-                                    type_card: 'support',
+                                    typeCard: 'support',
                                   ) // support_view(type: 'only',)
                               ));
                     },
