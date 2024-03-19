@@ -43,7 +43,7 @@ class _BaseUrls {
   late final String laravelUrl_Image;
 
   void init() {
-    if (appMode == AppMode.development) {
+    if (appMode == AppMode.production) {
       url = 'http://smartcrm.ws/crm/api/';
       url_laravel = 'http://new.smartcrm.ws/api/';
       urlimage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
