@@ -339,7 +339,7 @@ class _TicketDetailsState extends State<TicketDetails> {
                     value: widget.ticketModel.typeProblem.toString()),
                 cardRowDivided(
                     title: 'مصدر التذكرة',
-                    value: widget.ticketModel.ticketSource!.text),
+                    value: widget.ticketModel.ticketSource?.text),
                 cardRowDivided(
                   title: 'تفاصيل التذكرة',
                   value: widget.ticketModel.detailsProblem.toString(),

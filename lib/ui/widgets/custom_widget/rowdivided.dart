@@ -35,9 +35,7 @@ class cardRowDivided extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
             ),
-            SizedBox(
-              width: 50,
-            ),
+            SizedBox(width: 50),
             //Spacer(flex: 1,),
             isExpanded == true
                 ? Expanded(
