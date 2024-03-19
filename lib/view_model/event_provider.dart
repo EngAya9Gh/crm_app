@@ -320,7 +320,7 @@ class EventProvider extends ChangeNotifier {
         body: {
           "is_done": isDone,
           "fk_client": event.fkIdClient,
-          // "comment": event.comment,
+          "comment": event.comment,
         },
       );
       final list = eventDataSource[event.from] ?? [];

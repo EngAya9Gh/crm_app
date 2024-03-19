@@ -232,9 +232,6 @@ class ticket_vm extends ChangeNotifier {
 
     categoriesList =
         data.map<CategoryModel>((e) => CategoryModel.fromMap(e)).toList();
-    categoriesList.forEach((element) {
-      print("name is => ${element.categoryAr}");
-    });
     isloading = false;
   }
 
@@ -249,9 +246,6 @@ class ticket_vm extends ChangeNotifier {
 
     subCategoriesList =
         data.map<SubCategoryModel>((e) => SubCategoryModel.fromMap(e)).toList();
-    subCategoriesList.forEach((element) {
-      print("sub name is => ${element.subCategoryAr}");
-    });
     isloading = false;
   }
 }
