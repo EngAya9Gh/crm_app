@@ -17,6 +17,7 @@ abstract class EndPoints {
   static const city = _City();
   static const agentDistributor = _AgentDistributor();
   static const invoice = _Invoice();
+  static const tickets = _Tickets();
 }
 
 class _BaseUrls {
@@ -197,4 +198,11 @@ class _Invoice {
 
   final String getClientSupportFiles = 'getFilesInvoices';
   final String crudClientSupportFiles = 'InvoiceFiles';
+}
+
+class _Tickets {
+  const _Tickets();
+
+  final String getCategoriesTicket = 'getCategoriesTicket';
+  final String getSubCategoriesTicket = 'getSubCategoriesTicket';
 }

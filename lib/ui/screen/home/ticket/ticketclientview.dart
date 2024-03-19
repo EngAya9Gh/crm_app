@@ -144,7 +144,7 @@ class _ticketclientviewState extends State<ticketclientview> {
                                                                 context,
                                                                 CupertinoPageRoute(
                                                                     builder: (context) =>
-                                                                        ticketdetail(
+                                                                        TicketDetails(
                                                                           ticketModel:
                                                                               value.tickesearchlist[index],
                                                                         ) // support_view(type: 'only',)

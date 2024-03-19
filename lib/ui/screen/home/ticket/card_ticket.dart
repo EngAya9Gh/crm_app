@@ -6,15 +6,13 @@ import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 
 class cardticket extends StatelessWidget {
-   cardticket({required this.ticketModel, Key? key}) : super(key: key);
+  cardticket({required this.ticketModel, Key? key}) : super(key: key);
   TicketModel ticketModel;
   @override
   Widget build(BuildContext context) {
-    return    Container(
+    return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            bottomRight: Radius.circular(0)
-        ),
+        borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
         boxShadow: <BoxShadow>[
           BoxShadow(
             offset: Offset(1.0, 1.0),
@@ -22,16 +20,19 @@ class cardticket extends StatelessWidget {
             color: Colors.black87.withOpacity(0.2),
           ),
         ],
-        color:  Colors.white30,),
+        color: Colors.white30,
+      ),
       child: Center(
         child: InkWell(
-          onTap: (){
-            Navigator.push(context, CupertinoPageRoute(
-                builder: (context)=>
-                    ticketdetail(
-                      type: '1',
-                      ticketModel:ticketModel,) // support_view(type: 'only',)
-            ));
+          onTap: () {
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => TicketDetails(
+                          type: '1',
+                          ticketModel: ticketModel,
+                        ) // support_view(type: 'only',)
+                    ));
           },
           child: Container(
             decoration: BoxDecoration(color: kWhiteColor),
@@ -44,30 +45,30 @@ class cardticket extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('#'+ticketModel.idTicket
-                        ,style: TextStyle(color: kMainColor,
-                            fontFamily:kfontfamily2 ),
-                      ),
-
                       Text(
-                          ticketModel.typeTicket.toString()
-                        ,style: TextStyle(color: kMainColor,
-                            fontFamily:kfontfamily2),
+                        '#' + ticketModel.idTicket,
+                        style: TextStyle(
+                            color: kMainColor, fontFamily: kfontfamily2),
                       ),
-                      Text('تاريخ فتح التذكرة  '+
-                          ticketModel.dateOpen.toString()
-                        ,style: TextStyle(color: kMainColor,
-                            fontFamily:kfontfamily2),
+                      Text(
+                        ticketModel.typeTicket.toString(),
+                        style: TextStyle(
+                            color: kMainColor, fontFamily: kfontfamily2),
                       ),
-
+                      Text(
+                        'تاريخ فتح التذكرة  ' + ticketModel.dateOpen.toString(),
+                        style: TextStyle(
+                            color: kMainColor, fontFamily: kfontfamily2),
+                      ),
                     ],
                   ),
                   Text(
-                      ticketModel.dateClose==null?
-                      ticketModel.detailsProblem.toString():
-                      ticketModel.notesTicket.toString()
-                     ,style: TextStyle( fontFamily:kfontfamily2,
-                        // fontWeight: FontWeight.bold
+                    ticketModel.dateClose == null
+                        ? ticketModel.detailsProblem.toString()
+                        : ticketModel.notesTicket.toString(),
+                    style: TextStyle(
+                      fontFamily: kfontfamily2,
+                      // fontWeight: FontWeight.bold
                     ),
                   ),
                 ],

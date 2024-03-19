@@ -1,8 +1,13 @@
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/di/di_container.dart';
+import 'package:crm_smart/model/category_model.dart';
+import 'package:crm_smart/model/sub_category_model.dart';
 import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../core/api/api_services.dart';
 import '../core/utils/end_points.dart';
 
 class ticket_vm extends ChangeNotifier {
@@ -11,12 +16,24 @@ class ticket_vm extends ChangeNotifier {
   List<TicketModel> listticket_clientprofile = [];
   List<TicketModel> listticket_clientfilter = [];
   List<TicketModel> tickesearchlist = [];
+  List<CategoryModel> categoriesList = [];
+  List<SubCategoryModel> subCategoriesList = [];
   UserModel? usercurrent;
-  bool isloading = false;
+  bool _isloading = false;
+
+  bool get isloading => _isloading;
+
+  set isloading(bool isloading) {
+    _isloading = isloading;
+    print("isloading: => $_isloading");
+    notifyListeners();
+  }
+
   void setvalue(user) {
     usercurrent = user;
     notifyListeners();
   }
+
   //List<String> Typeticket= ['مغلقة','مستلمة','جديدة'];
 
   int selectedtypeticket = 0;
@@ -27,6 +44,7 @@ class ticket_vm extends ChangeNotifier {
   }
 
   bool addvalue = false;
+
   Future<bool> addticket(Map<String, dynamic?> body, String client) async {
     addvalue = true;
     notifyListeners();
@@ -70,7 +88,6 @@ class ticket_vm extends ChangeNotifier {
   Future<bool> updateTicketvm(
       Map<String, dynamic?> body, String? id_ticket) async {
     isloading = true;
-    notifyListeners();
     var data = await Api().post(
         url: EndPoints.baseUrls.url +
             "ticket/recive_ticket.php?id_ticket=$id_ticket",
@@ -84,14 +101,12 @@ class ticket_vm extends ChangeNotifier {
     tickesearchlist[index] = TicketModel.fromJson(data[0]);
     tickesearchlist.removeAt(index);
     isloading = false;
-    notifyListeners();
     return true;
   }
 
   Future<void> setfTicketclient_vm(
       Map<String, dynamic?> body, String? id_ticket) async {
     isloading = true;
-    notifyListeners();
     var data = await Api().post(
         url: EndPoints.baseUrls.url +
             "ticket/trasfer_ticket.php?id_ticket=$id_ticket",
@@ -102,7 +117,6 @@ class ticket_vm extends ChangeNotifier {
     // listticket.removeAt(index);
     tickesearchlist = List.from(listticket);
     isloading = false;
-    notifyListeners();
   }
 
   Future<void> getclient_ticket(String fkIdClient) async {
@@ -195,7 +209,6 @@ class ticket_vm extends ChangeNotifier {
 //
   Future<void> getticket() async {
     isloading = true;
-    notifyListeners();
     var data = await Api().get(
         url: EndPoints.baseUrls.url +
             'ticket/view_ticket.php?fk_country=${usercurrent!.fkCountry}');
@@ -206,6 +219,39 @@ class ticket_vm extends ChangeNotifier {
     }
     listticket = prodlist;
     isloading = false;
-    notifyListeners();
+  }
+
+  Future<void> getCategories() async {
+    isloading = true;
+    final ApiServices apiServices = getIt();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+    final response = await apiServices.get(
+      endPoint: EndPoints.tickets.getCategoriesTicket,
+    );
+    final data = apiDataHandler(response);
+
+    categoriesList =
+        data.map<CategoryModel>((e) => CategoryModel.fromMap(e)).toList();
+    categoriesList.forEach((element) {
+      print("name is => ${element.categoryAr}");
+    });
+    isloading = false;
+  }
+
+  Future<void> getSubCategories() async {
+    isloading = true;
+    final ApiServices apiServices = getIt();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+    final response = await apiServices.get(
+      endPoint: EndPoints.tickets.getSubCategoriesTicket,
+    );
+    final data = apiDataHandler(response);
+
+    subCategoriesList =
+        data.map<SubCategoryModel>((e) => SubCategoryModel.fromMap(e)).toList();
+    subCategoriesList.forEach((element) {
+      print("sub name is => ${element.subCategoryAr}");
+    });
+    isloading = false;
   }
 }
