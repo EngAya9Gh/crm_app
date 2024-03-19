@@ -456,28 +456,28 @@ class _CloseTicketDialogState extends State<CloseTicketDialog> {
                           },
                         ),
                       ),
-                      CustomMultiSelectionDropdown<CategoryModel>(
-                        items: Provider.of<ticket_vm>(context, listen: false)
-                            .categoriesList,
-                        selectedItems: [],
-                        hint: 'التصنيف',
-                        isRequired: true,
-                        onChanged: (data) {
-                          selectedCategories = data;
-                        },
-                        itemAsString: (item) => item!.categoryAr,
-                      ),
-                      CustomMultiSelectionDropdown<SubCategoryModel>(
-                        items: Provider.of<ticket_vm>(context, listen: false)
-                            .subCategoriesList,
-                        selectedItems: [],
-                        hint: 'التصنيف الفرعي',
-                        isRequired: true,
-                        onChanged: (data) {
-                          selectedSubCategories = data;
-                        },
-                        itemAsString: (item) => item!.subCategoryAr,
-                      ),
+                      // CustomMultiSelectionDropdown<CategoryModel>(
+                      //   items: Provider.of<ticket_vm>(context, listen: false)
+                      //       .categoriesList,
+                      //   selectedItems: [],
+                      //   hint: 'التصنيف',
+                      //   isRequired: true,
+                      //   onChanged: (data) {
+                      //     selectedCategories = data;
+                      //   },
+                      //   itemAsString: (item) => item!.categoryAr,
+                      // ),
+                      // CustomMultiSelectionDropdown<SubCategoryModel>(
+                      //   items: Provider.of<ticket_vm>(context, listen: false)
+                      //       .subCategoriesList,
+                      //   selectedItems: [],
+                      //   hint: 'التصنيف الفرعي',
+                      //   isRequired: true,
+                      //   onChanged: (data) {
+                      //     selectedSubCategories = data;
+                      //   },
+                      //   itemAsString: (item) => item!.subCategoryAr,
+                      // ),
                       SizedBox(height: 10),
                       Consumer<ticket_vm>(
                         builder: (context, ticketVM, child) {
