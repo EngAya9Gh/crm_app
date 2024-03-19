@@ -16,38 +16,41 @@ import '../../widgets/client_widget/invoices_list_view.dart';
 import '../search/search_container.dart';
 
 class ClientWaiting extends StatefulWidget {
-  ClientWaiting({required this.type_card, Key? key}) : super(key: key);
-  String type_card;
+  const ClientWaiting({
+    Key? key,
+    required this.typeCard,
+  }) : super(key: key);
+
+  final String typeCard;
 
   @override
   _ClientWaitingState createState() => _ClientWaitingState();
 }
 
 class _ClientWaitingState extends State<ClientWaiting> {
+  late final invoice_vm invoiceVm;
   String? regoin;
   late ClientModel1 itemClient;
   late UserModel user;
 
   @override
   void initState() {
-    _loadData();
-
     _initVariables();
+
+    _loadData();
 
     super.initState();
   }
 
   void _initVariables() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final invoiceVm = Provider.of<invoice_vm>(context, listen: false);
+      invoiceVm = Provider.of<invoice_vm>(context, listen: false);
       invoiceVm.listInvoicesAccept = [];
       Provider.of<ClientTypeProvider>(context, listen: false)
           .changelisttype_install('الكل');
       invoiceVm.typeClientValue = 'الكل';
-      // Provider.of<ClientProvider>(context, listen: false).getallclientAccept();
-      invoiceVm.filterInvoices(
-        listSelectedRegions: context.read<MainCityProvider>().selectedRegions,
-      );
+
+      invoiceVm.changeIsLoading();
     });
   }
 
@@ -56,12 +59,16 @@ class _ClientWaitingState extends State<ClientWaiting> {
     context
         .read<MainCityProvider>()
         .filterMainCityByCurrentUserMainCityList(user);
-    context.read<MainCityProvider>().getCitiesFromRegions();
+    context.read<MainCityProvider>().getCitiesFromRegions().then((value) {
+      invoiceVm.filterInvoices(
+        listSelectedRegions: context.read<MainCityProvider>().selectedRegions,
+        selectedCities: context.read<MainCityProvider>().filteredCitiesList,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final MainCityProvider mainCityProvider = context.watch<MainCityProvider>();
     return Theme(
       data: context.theme.copyWith(
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -94,7 +101,7 @@ class _ClientWaitingState extends State<ClientWaiting> {
                   search_widget('waitsupport', hintnamefilter, ''),
                   InvoicesCounterWidget(),
                   SizedBox(height: 5),
-                  InvoicesListView(typeCard: widget.type_card),
+                  InvoicesListView(typeCard: widget.typeCard),
                 ],
               ),
             ),
