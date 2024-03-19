@@ -84,6 +84,7 @@ dependencies:
   # pdf
   syncfusion_flutter_pdfviewer: ^20.4.54
   device_info_plus: ^9.1.2
+  http_interceptor: ^1.0.2
 
 
 dependency_overrides:

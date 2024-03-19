@@ -1,11 +1,10 @@
-import 'package:crm_smart/ui/screen/home/pageshome/sales_section/Emarketing.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/care.dart';
-import 'package:crm_smart/ui/screen/home/pageshome/sales_section/All_clinets_page.dart';
-import 'package:crm_smart/ui/screen/home/pageshome/finance.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/managment.dart';
-import 'package:crm_smart/ui/screen/home/pageshome/sales_section/race_all.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/sales.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/All_clinets_page.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/sales_section/All_invoice_page.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/Emarketing.dart';
+import 'package:crm_smart/ui/screen/home/pageshome/sales_section/race_all.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/sales_section/relation_page.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/sales_section/reports_page.dart';
 import 'package:crm_smart/ui/screen/home/pageshome/support.dart';

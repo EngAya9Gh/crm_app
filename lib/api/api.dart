@@ -3,16 +3,19 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_interceptor/http_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/di/di_container.dart';
+import 'http_interceptors.dart';
 
 @lazySingleton
 class Api {
-  static final http.Client _client = http.Client();
+  static final http.Client _client =
+      InterceptedClient.build(interceptors: [LoggingInterceptor()]);
 
   // final client = RetryClient(http.Client());
   // headers: {
