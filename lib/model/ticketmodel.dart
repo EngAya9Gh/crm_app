@@ -1,6 +1,5 @@
-import 'package:crm_smart/core/common/enums/ticket_source_enum.dart';
-import 'package:crm_smart/model/category_model.dart';
-
+import '../core/common/enums/ticket_source_enum.dart';
+import 'category_model.dart';
 import 'sub_category_model.dart';
 
 class TicketModel {
@@ -99,6 +98,9 @@ class TicketModel {
   }
 
   List<SubCategoryModel>? _prepareSubCategories(Map<String, dynamic> json) {
+    // todo: data comming from the backend is not handled yet so it causes erros,, it must a be a list of subcategories but we are getting Strings
+    // todo: remove this return after the backend is fixed
+    return [];
     return json['subcategories_ticket_fk']
             ?.map<SubCategoryModel>((e) => SubCategoryModel.fromMap(e))
             .toList() ??
@@ -110,45 +112,6 @@ class TicketModel {
             ?.map<CategoryModel>((e) => CategoryModel.fromMap(e))
             .toList() ??
         [];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id_ticket'] = idTicket;
-    _data['fk_client'] = fkClient;
-    _data['type_problem'] = typeProblem;
-    _data['details_problem'] = detailsProblem;
-    _data['notes_ticket'] = notesTicket;
-    _data['type_ticket'] = typeTicket;
-    _data['fk_user_open'] = fkUserOpen;
-    _data['fk_user_close'] = fkUserClose;
-    _data['fk_user_recive'] = fkUserRecive;
-    _data['date_open'] = dateOpen;
-    _data['date_close'] = dateClose;
-    _data['date_recive'] = dateRecive;
-    _data['client_type'] = clientType;
-    _data['ticket_source'] = ticketSource?.text;
-
-    _data['name_client'] = nameClient;
-    _data['name_enterprise'] = nameEnterprise;
-    _data['name_regoin'] = nameRegoin;
-    _data['nameuseropen'] = nameuseropen;
-    _data['nameuserrecive'] = nameuserrecive;
-    _data['nameuserclose'] = nameuserclose;
-    _data['fk_country'] = fk_country;
-
-    _data['mobile'] = mobile;
-    _data['rate'] = rate;
-    _data['fkuser_rate'] = fkuser_rate;
-    _data['date_rate'] = date_rate;
-    _data['nameuserrate'] = nameuserrate;
-    _data['notes_rate'] = notes_rate;
-    _data['transferticket'] = transferticket?.map((e) => e!.toJson()).toList();
-
-    _data['categories_ticket_fk'] = categories?.map((e) => e.toMap()).toList();
-    _data['subcategories_ticket_fk'] =
-        subCategories?.map((e) => e.toMap()).toList();
-    return _data;
   }
 
   List<TransferTicket> getproud(data) {
