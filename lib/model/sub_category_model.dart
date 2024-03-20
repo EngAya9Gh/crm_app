@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class SubCategoryModel extends Equatable {
-  final int id;
+  final String id;
   final String subCategoryAr;
   final String subCategoryEn;
   final String classification;
@@ -14,7 +14,7 @@ class SubCategoryModel extends Equatable {
   });
 
   SubCategoryModel copyWith({
-    int? id,
+    String? id,
     String? subCategoryAr,
     String? subCategoryEn,
     String? classification,
@@ -29,7 +29,7 @@ class SubCategoryModel extends Equatable {
 
   factory SubCategoryModel.fromMap(Map<String, dynamic> json) {
     return SubCategoryModel(
-      id: json['id'],
+      id: json['id'].toString(),
       subCategoryAr: json['sub_category_ar'],
       subCategoryEn: json['sub_category_en'],
       classification: json['classification'],
