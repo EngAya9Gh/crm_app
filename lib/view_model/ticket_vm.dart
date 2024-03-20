@@ -120,7 +120,7 @@ class ticket_vm extends ChangeNotifier {
   }
 
   Future<bool> closeTicket(
-    Map<String, dynamic?> body,
+    Map<String, dynamic> body,
     String? idTicket,
   ) async {
     isloading = true;
@@ -134,13 +134,16 @@ class ticket_vm extends ChangeNotifier {
     );
     final data = apiDataHandler(response);
 
+    final closedTicket = TicketModel.fromJson(data);
+
     int index =
         listticket.indexWhere((element) => element.idTicket == idTicket);
+    listticket[index] = closedTicket;
 
-    listticket[index] = TicketModel.fromJson(data);
     index =
         tickesearchlist.indexWhere((element) => element.idTicket == idTicket);
-    tickesearchlist[index] = TicketModel.fromJson(data);
+    tickesearchlist[index] = closedTicket;
+
     tickesearchlist.removeAt(index);
     isloading = false;
     return true;

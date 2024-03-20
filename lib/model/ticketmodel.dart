@@ -100,7 +100,16 @@ class TicketModel {
   List<SubCategoryModel>? _prepareSubCategories(Map<String, dynamic> json) {
     // todo: data comming from the backend is not handled yet so it causes erros,, it must a be a list of subcategories but we are getting Strings
     // todo: remove this return after the backend is fixed
-    return [];
+    // return [];
+
+    if (json['subcategories_ticket_fk'].runtimeType == String) {
+      // print(
+      //     "id_ticket is => ${json['id_ticket']} >> subcategories_ticket_fk is a string => ${json['subcategories_ticket_fk']}");
+      return [];
+    }
+    // print(
+    //     "id_ticket is => ${json['id_ticket']} >> subcategories_ticket_fk is a list => ${json['subcategories_ticket_fk']}");
+
     return json['subcategories_ticket_fk']
             ?.map<SubCategoryModel>((e) => SubCategoryModel.fromMap(e))
             .toList() ??

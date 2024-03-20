@@ -344,6 +344,20 @@ class _TicketDetailsState extends State<TicketDetails> {
                   value: widget.ticketModel.detailsProblem.toString(),
                   isExpanded: true,
                 ),
+                cardRowDivided(
+                  title: 'الفئات',
+                  value: widget.ticketModel.categories
+                      ?.map((e) => e.categoryAr)
+                      .join(', '),
+                  isExpanded: true,
+                ),
+                cardRowDivided(
+                  title: 'الفئات الفرعية',
+                  value: widget.ticketModel.subCategories
+                      ?.map((e) => e.subCategoryAr)
+                      .join(', '),
+                  isExpanded: true,
+                ),
                 SizedBox(height: 10),
                 Divider(
                   thickness: 1,
