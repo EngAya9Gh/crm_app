@@ -21,6 +21,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
+  // change this to change the app mode
   static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
@@ -43,6 +44,7 @@ class _BaseUrls {
   late final String laravelUrl_Image;
 
   void init() {
+    // don't touch this line
     if (appMode == AppMode.production) {
       url = 'http://smartcrm.ws/crm/api/';
       url_laravel = 'http://new.smartcrm.ws/api/';
@@ -205,4 +207,5 @@ class _Tickets {
 
   final String getCategoriesTicket = 'getCategoriesTicket';
   final String getSubCategoriesTicket = 'getSubCategoriesTicket';
+  final String closeTicket = 'closeTicket';
 }

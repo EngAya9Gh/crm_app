@@ -97,6 +97,20 @@ class _TicketViewState extends State<TicketView> {
                 value: widget.ticketModel.detailsProblem.toString(),
                 isExpanded: true,
               ),
+              cardRow(
+                title: 'الفئات',
+                value: widget.ticketModel.categories
+                    ?.map((e) => e.categoryAr)
+                    .join(', '),
+                isExpanded: true,
+              ),
+              cardRow(
+                title: 'الفئات الفرعية',
+                value: widget.ticketModel.subCategories
+                    ?.map((e) => e.subCategoryAr)
+                    .join(', '),
+                isExpanded: true,
+              ),
               SizedBox(
                 height: 10,
               ),

@@ -1,4 +1,7 @@
 import 'package:crm_smart/core/common/enums/ticket_source_enum.dart';
+import 'package:crm_smart/model/category_model.dart';
+
+import 'sub_category_model.dart';
 
 class TicketModel {
   TicketModel({
@@ -26,6 +29,7 @@ class TicketModel {
     this.mobile,
     this.transferticket,
   });
+
   late final String idTicket;
   late final String? fkClient;
   late final String? typeProblem;
@@ -58,35 +62,54 @@ class TicketModel {
 
   late List<TransferTicket?>? transferticket = [];
 
+  late List<CategoryModel>? categories = [];
+  late List<SubCategoryModel>? subCategories = [];
+
   TicketModel.fromJson(Map<String, dynamic> json) {
-    idTicket = json['id_ticket'];
-    fkClient = json['fk_client'];
-    typeProblem = json['type_problem'];
-    detailsProblem = json['details_problem'];
-    notesTicket = json['notes_ticket'];
-    typeTicket = json['type_ticket'];
-    fkUserOpen = json['fk_user_open'];
-    fkUserClose = json['fk_user_close'];
-    fkUserRecive = json['fk_user_recive'];
-    dateOpen = json['date_open'];
-    dateClose = json['date_close'];
-    dateRecive = json['date_recive'];
-    clientType = json['client_type'];
-    nameClient = json['name_client'];
-    nameEnterprise = json['name_enterprise'];
-    nameRegoin = json['name_regoin'];
-    nameuseropen = json['nameuseropen'];
-    nameuserrecive = json['nameuserrecive'];
-    nameuserclose = json['nameuserclose'];
-    fk_country = json['fk_country'];
+    idTicket = json['id_ticket'].toString();
+    fkClient = json['fk_client']?.toString();
+    typeProblem = json['type_problem']?.toString();
+    detailsProblem = json['details_problem']?.toString();
+    notesTicket = json['notes_ticket']?.toString();
+    typeTicket = json['type_ticket']?.toString();
+    fkUserOpen = json['fk_user_open']?.toString();
+    fkUserClose = json['fk_user_close']?.toString();
+    fkUserRecive = json['fk_user_recive']?.toString();
+    dateOpen = json['date_open']?.toString();
+    dateClose = json['date_close']?.toString();
+    dateRecive = json['date_recive']?.toString();
+    clientType = json['client_type']?.toString();
+    nameClient = json['name_client']?.toString();
+    nameEnterprise = json['name_enterprise']?.toString();
+    nameRegoin = json['name_regoin']?.toString();
+    nameuseropen = json['nameuseropen']?.toString();
+    nameuserrecive = json['nameuserrecive']?.toString();
+    nameuserclose = json['nameuserclose']?.toString();
+    fk_country = json['fk_country']?.toString();
     ticketSource = TicketSourceEnumsExtension.fromString(json['ticket_source']);
-    mobile = json['mobile'];
-    rate = json['rate'];
-    fkuser_rate = json['fkuser_rate'];
-    date_rate = json['date_rate'];
-    nameuserrate = json['nameuserrate'];
-    notes_rate = json['notes_rate'];
+    mobile = json['mobile']?.toString();
+    rate = json['rate']?.toString();
+    fkuser_rate = json['fkuser_rate']?.toString();
+    date_rate = json['date_rate']?.toString();
+    nameuserrate = json['nameuserrate']?.toString();
+    notes_rate = json['notes_rate']?.toString();
     transferticket = getproud(json['transferticket']);
+    categories = _prepareCategories(json);
+    subCategories = _prepareSubCategories(json);
+  }
+
+  List<SubCategoryModel>? _prepareSubCategories(Map<String, dynamic> json) {
+    return json['subcategories_ticket_fk']
+            ?.map<SubCategoryModel>((e) => SubCategoryModel.fromMap(e))
+            .toList() ??
+        [];
+  }
+
+  List<CategoryModel>? _prepareCategories(Map<String, dynamic> json) {
+    return json['categories_ticket_fk']
+            ?.map<CategoryModel>((e) => CategoryModel.fromMap(e))
+            .toList() ??
+        [];
   }
 
   Map<String, dynamic> toJson() {
@@ -120,7 +143,11 @@ class TicketModel {
     _data['date_rate'] = date_rate;
     _data['nameuserrate'] = nameuserrate;
     _data['notes_rate'] = notes_rate;
-    _data['transferticket'] = transferticket!.map((e) => e!.toJson()).toList();
+    _data['transferticket'] = transferticket?.map((e) => e!.toJson()).toList();
+
+    _data['categories_ticket_fk'] = categories?.map((e) => e.toMap()).toList();
+    _data['subcategories_ticket_fk'] =
+        subCategories?.map((e) => e.toMap()).toList();
     return _data;
   }
 
@@ -146,6 +173,7 @@ class TransferTicket {
     required this.nameuserto,
     required this.nameuserfrom,
   });
+
   late String? id_tr_ticket;
   late String? resoantransfer_ticket;
   late String? fkuser_to;

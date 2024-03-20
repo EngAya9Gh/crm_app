@@ -42,8 +42,7 @@ class _TicketDetailsState extends State<TicketDetails> {
     ticketVm = context.read<ticket_vm>();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ticketVm.getCategories();
-      ticketVm.getSubCategories();
+      ticketVm.getCategories().then((value) => ticketVm.getSubCategories());
     });
 
     super.initState();
@@ -408,10 +407,18 @@ class CloseTicketDialog extends StatefulWidget {
 }
 
 class _CloseTicketDialogState extends State<CloseTicketDialog> {
+  late final ticket_vm ticketVm;
   final closeTicketFormKey = GlobalKey<FormState>();
   final notesController = TextEditingController();
-  List<CategoryModel> selectedCategories = [];
-  List<SubCategoryModel> selectedSubCategories = [];
+
+  @override
+  void initState() {
+    ticketVm = context.read<ticket_vm>();
+    ticketVm.selectedCategoriesList = [];
+    ticketVm.selectedSubCategoriesList = [];
+    ticketVm.filteredSubCategoriesList = [];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -456,28 +463,39 @@ class _CloseTicketDialogState extends State<CloseTicketDialog> {
                           },
                         ),
                       ),
-                      // CustomMultiSelectionDropdown<CategoryModel>(
-                      //   items: Provider.of<ticket_vm>(context, listen: false)
-                      //       .categoriesList,
-                      //   selectedItems: [],
-                      //   hint: 'التصنيف',
-                      //   isRequired: true,
-                      //   onChanged: (data) {
-                      //     selectedCategories = data;
-                      //   },
-                      //   itemAsString: (item) => item!.categoryAr,
-                      // ),
-                      // CustomMultiSelectionDropdown<SubCategoryModel>(
-                      //   items: Provider.of<ticket_vm>(context, listen: false)
-                      //       .subCategoriesList,
-                      //   selectedItems: [],
-                      //   hint: 'التصنيف الفرعي',
-                      //   isRequired: true,
-                      //   onChanged: (data) {
-                      //     selectedSubCategories = data;
-                      //   },
-                      //   itemAsString: (item) => item!.subCategoryAr,
-                      // ),
+                      Consumer<ticket_vm>(
+                        builder: (context, value, child) {
+                          return CustomMultiSelectionDropdown<CategoryModel>(
+                            items: ticketVm.allCategoriesList,
+                            selectedItems: [],
+                            hint: 'التصنيف',
+                            isRequired: true,
+                            onChanged: (data) {
+                              ticketVm.selectedCategoriesList = data;
+                              ticketVm.filterSubCategories();
+                            },
+                            itemAsString: (item) => item!.categoryAr,
+                          );
+                        },
+                      ),
+                      Consumer<ticket_vm>(
+                        builder: (context, value, child) {
+                          if (ticketVm.filteredSubCategoriesList.isNotEmpty) {
+                            return CustomMultiSelectionDropdown<
+                                SubCategoryModel>(
+                              items: ticketVm.filteredSubCategoriesList,
+                              selectedItems: [],
+                              hint: 'التصنيف الفرعي',
+                              isRequired: true,
+                              onChanged: (data) {
+                                ticketVm.selectedSubCategoriesList = data;
+                              },
+                              itemAsString: (item) => item!.subCategoryAr,
+                            );
+                          }
+                          return SizedBox.shrink();
+                        },
+                      ),
                       SizedBox(height: 10),
                       Consumer<ticket_vm>(
                         builder: (context, ticketVM, child) {
@@ -485,20 +503,16 @@ class _CloseTicketDialogState extends State<CloseTicketDialog> {
                             text: 'تثبيت',
                             isLoading: ticketVM.isloading,
                             onPressed: () async {
-                              // todo : add category and sub category
                               if (closeTicketFormKey.currentState!.validate()) {
                                 closeTicketFormKey.currentState!.save();
                                 Provider.of<ticket_vm>(context, listen: false)
-                                    .updateTicketvm({
+                                    .closeTicket({
+                                  'type_ticket': 'مغلقة',
                                   'notes_ticket': notesController.text,
-                                  'fk_user_close': Provider.of<UserProvider>(
-                                          context,
-                                          listen: false)
-                                      .currentUser
-                                      .idUser
-                                      .toString(),
-                                  'date_close': DateTime.now().toString(),
-                                  'type_ticket': 'مغلقة'
+                                  'categories_ticket_fk':
+                                      "[${ticketVm.selectedCategoriesList.map((e) => e.id).join(",")}]",
+                                  'subcategories_ticket':
+                                      "[${ticketVm.selectedSubCategoriesList.map((e) => e.id).join(",")}]",
                                 }, widget.ticketModel.idTicket);
                                 Navigator.of(context, rootNavigator: true)
                                     .pop();

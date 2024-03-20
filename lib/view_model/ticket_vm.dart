@@ -16,16 +16,31 @@ class ticket_vm extends ChangeNotifier {
   List<TicketModel> listticket_clientprofile = [];
   List<TicketModel> listticket_clientfilter = [];
   List<TicketModel> tickesearchlist = [];
-  List<CategoryModel> categoriesList = [];
-  List<SubCategoryModel> subCategoriesList = [];
+
+  // category and sub category
+  List<CategoryModel> allCategoriesList = [];
+  List<SubCategoryModel> allSubCategoriesList = [];
+  List<SubCategoryModel> filteredSubCategoriesList = [];
+  List<CategoryModel> selectedCategoriesList = [];
+  List<SubCategoryModel> selectedSubCategoriesList = [];
+
+  //
   UserModel? usercurrent;
+  bool _isCitiesLoading = false;
+
+  bool get isCitiesLoading => _isCitiesLoading;
+
+  set isCitiesLoading(bool isCitiesLoading) {
+    _isCitiesLoading = isCitiesLoading;
+    notifyListeners();
+  }
+
   bool _isloading = false;
 
   bool get isloading => _isloading;
 
   set isloading(bool isloading) {
     _isloading = isloading;
-    print("isloading: => $_isloading");
     notifyListeners();
   }
 
@@ -99,6 +114,33 @@ class ticket_vm extends ChangeNotifier {
     index =
         tickesearchlist.indexWhere((element) => element.idTicket == id_ticket);
     tickesearchlist[index] = TicketModel.fromJson(data[0]);
+    tickesearchlist.removeAt(index);
+    isloading = false;
+    return true;
+  }
+
+  Future<bool> closeTicket(
+    Map<String, dynamic?> body,
+    String? idTicket,
+  ) async {
+    isloading = true;
+
+    final ApiServices apiServices = getIt();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+    isloading = true;
+    final response = await apiServices.post(
+      endPoint: "${EndPoints.tickets.closeTicket}/$idTicket",
+      data: body,
+    );
+    final data = apiDataHandler(response);
+
+    int index =
+        listticket.indexWhere((element) => element.idTicket == idTicket);
+
+    listticket[index] = TicketModel.fromJson(data);
+    index =
+        tickesearchlist.indexWhere((element) => element.idTicket == idTicket);
+    tickesearchlist[index] = TicketModel.fromJson(data);
     tickesearchlist.removeAt(index);
     isloading = false;
     return true;
@@ -222,7 +264,7 @@ class ticket_vm extends ChangeNotifier {
   }
 
   Future<void> getCategories() async {
-    isloading = true;
+    isCitiesLoading = true;
     final ApiServices apiServices = getIt();
     apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
     final response = await apiServices.get(
@@ -230,13 +272,13 @@ class ticket_vm extends ChangeNotifier {
     );
     final data = apiDataHandler(response);
 
-    categoriesList =
+    allCategoriesList =
         data.map<CategoryModel>((e) => CategoryModel.fromMap(e)).toList();
-    isloading = false;
+    isCitiesLoading = false;
   }
 
   Future<void> getSubCategories() async {
-    isloading = true;
+    isCitiesLoading = true;
     final ApiServices apiServices = getIt();
     apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
     final response = await apiServices.get(
@@ -244,8 +286,20 @@ class ticket_vm extends ChangeNotifier {
     );
     final data = apiDataHandler(response);
 
-    subCategoriesList =
+    allSubCategoriesList =
         data.map<SubCategoryModel>((e) => SubCategoryModel.fromMap(e)).toList();
-    isloading = false;
+
+    filterSubCategories();
+
+    isCitiesLoading = false;
+  }
+
+  void filterSubCategories() {
+    filteredSubCategoriesList = allSubCategoriesList
+        .where((sub) => selectedCategoriesList
+            .any((category) => sub.classification == category.categoryAr))
+        .toList();
+
+    notifyListeners();
   }
 }

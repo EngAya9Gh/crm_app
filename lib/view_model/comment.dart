@@ -34,7 +34,7 @@ class comment_vm extends ChangeNotifier {
       //isloadadd=false;
       notifyListeners();
     } catch (e) {
-      print("error => $e");
+      print("error in getComment => $e");
       isLoading = false;
       notifyListeners();
     }
