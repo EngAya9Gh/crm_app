@@ -8,8 +8,13 @@ import '../../../../constants.dart';
 class cardticket extends StatelessWidget {
   cardticket({required this.ticketModel, Key? key}) : super(key: key);
   TicketModel ticketModel;
+
   @override
   Widget build(BuildContext context) {
+    print("ticketModel.fkUserOpen = ${ticketModel.fkUserOpen}");
+    print("ticketModel.fkUserReopen = ${ticketModel.fkUserReopen}");
+    print("ticketModel.idTicket = ${ticketModel.idTicket}");
+    print("ticketModel.idTicketDetail = ${ticketModel.idTicketDetail}");
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
@@ -46,7 +51,7 @@ class cardticket extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '#' + ticketModel.idTicket,
+                        '#${(ticketModel.idTicket ?? ticketModel.idTicketDetail)}',
                         style: TextStyle(
                             color: kMainColor, fontFamily: kfontfamily2),
                       ),
@@ -56,7 +61,7 @@ class cardticket extends StatelessWidget {
                             color: kMainColor, fontFamily: kfontfamily2),
                       ),
                       Text(
-                        'تاريخ فتح التذكرة  ' + ticketModel.dateOpen.toString(),
+                        "تاريخ فتح التذكرة ${ticketModel.dateOpen}",
                         style: TextStyle(
                             color: kMainColor, fontFamily: kfontfamily2),
                       ),

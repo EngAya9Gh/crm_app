@@ -15,6 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/enums/ticket_source_enum.dart';
+import '../../../../core/common/enums/ticket_type_enum.dart';
 import '../../client/profileclient.dart';
 
 class ticketAdd extends StatefulWidget {
@@ -68,7 +69,8 @@ class _ticketAddState extends State<ticketAdd> {
         appBar: AppBar(),
         key: _scaffoldKey,
         body: ModalProgressHUD(
-          inAsyncCall: Provider.of<ticket_vm>(context, listen: true).addvalue,
+          inAsyncCall:
+              Provider.of<ticket_vm>(context, listen: true).isOpeningTicket,
           child: SingleChildScrollView(
             child: Directionality(
               textDirection: TextDirection.rtl,
@@ -223,6 +225,7 @@ class _ticketAddState extends State<ticketAdd> {
                             if (value!.isEmpty) {
                               return 'الحقل فارغ';
                             }
+                            return null;
                           },
                           hintText: '',
                           controller: problem_desc,
@@ -240,17 +243,17 @@ class _ticketAddState extends State<ticketAdd> {
                                   bool isav = await Provider.of<ticket_vm>(
                                           context,
                                           listen: false)
-                                      .addticket({
-                                    'ticket_source': ticketSource?.text,
-                                    'name_enterprise': name_enterprise,
-                                    'fk_client': widget.fk_client.toString(),
-                                    'type_problem':
-                                        Provider.of<ClientTypeProvider>(context,
-                                                listen: false)
-                                            .selectedValueOut
-                                            .toString(),
+                                      .addOrReOpenTicket({
+                                    'fk_client': widget.fk_client,
+                                    'type_problem': context
+                                        .read<ClientTypeProvider>()
+                                        .selectedValueOut,
                                     'details_problem': problem_desc.text,
-                                    //'notes_ticket': notes.text,
+                                    'open_type': TicketType.newTicket.value,
+                                    'ticket_source': ticketSource?.text,
+                                    'client_type': '0',
+                                    // todo: used in the old request, delete if not used
+                                    'name_enterprise': name_enterprise,
                                     'type_ticket': 'جديدة',
                                     'fk_user_open': Provider.of<UserProvider>(
                                             context,
@@ -259,7 +262,6 @@ class _ticketAddState extends State<ticketAdd> {
                                         .idUser
                                         .toString(),
                                     'date_open': DateTime.now().toString(),
-                                    'client_type': '0',
                                     'fk_regoin': '',
                                     'fkcountry': '',
                                     'nameUser': Provider.of<UserProvider>(
@@ -268,6 +270,7 @@ class _ticketAddState extends State<ticketAdd> {
                                         .currentUser
                                         .nameUser
                                         .toString(),
+                                    // 'notes_ticket': notes.text,
                                   }, widget.fk_client.toString()
                                           // : error(context)
                                           );

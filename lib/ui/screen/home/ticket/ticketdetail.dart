@@ -17,6 +17,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/enums/ticket_type_enum.dart';
 import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../function_global.dart';
@@ -91,10 +92,7 @@ class _TicketDetailsState extends State<TicketDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.ticketModel.typeTicket.toString() +
-              ' ' +
-              '#' +
-              widget.ticketModel.idTicket,
+          '${widget.ticketModel.typeTicket} #${widget.ticketModel.idTicket ?? widget.ticketModel.idTicketDetail}',
           style: TextStyle(color: kWhiteColor),
         ),
         centerTitle: true,
@@ -521,7 +519,7 @@ class _CloseTicketDialogState extends State<CloseTicketDialog> {
                                 closeTicketFormKey.currentState!.save();
                                 Provider.of<ticket_vm>(context, listen: false)
                                     .closeTicket({
-                                  'type_ticket': 'مغلقة',
+                                  'type_ticket': TicketType.closed.name,
                                   'notes_ticket': notesController.text,
                                   'categories_ticket_fk':
                                       "[${ticketVm.selectedCategoriesList.map((e) => e.id).join(",")}]",

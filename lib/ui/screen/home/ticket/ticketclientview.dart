@@ -170,8 +170,7 @@ class _ticketclientviewState extends State<ticketclientview> {
                                                                             .spaceBetween,
                                                                     children: [
                                                                       Text(
-                                                                        '#' +
-                                                                            value.tickesearchlist[index].idTicket,
+                                                                        '#${value.tickesearchlist[index].idTicket ?? value.tickesearchlist[index].idTicketDetail}',
                                                                         style: TextStyle(
                                                                             color:
                                                                                 kMainColor,

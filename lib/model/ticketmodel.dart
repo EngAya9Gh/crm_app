@@ -27,9 +27,16 @@ class TicketModel {
     this.ticketSource,
     this.mobile,
     this.transferticket,
+    // new
+    this.idTicketDetail,
+    this.typeTicketReopen,
+    this.fkUserReopen,
+    this.dateReopen,
+    this.categoriesTicketFk,
+    this.subcategoriesTicketFk,
   });
 
-  late final String idTicket;
+  late final String? idTicket;
   late final String? fkClient;
   late final String? typeProblem;
   late final String? detailsProblem;
@@ -63,6 +70,13 @@ class TicketModel {
 
   late List<CategoryModel>? categories = [];
   late List<SubCategoryModel>? subCategories = [];
+  // new fields
+  late final String? idTicketDetail;
+  late final String? typeTicketReopen;
+  late final String? fkUserReopen;
+  late final String? dateReopen;
+  late final List<CategoryModel>? categoriesTicketFk;
+  late final List<SubCategoryModel>? subcategoriesTicketFk;
 
   TicketModel.fromJson(Map<String, dynamic> json) {
     idTicket = json['id_ticket'].toString();
@@ -95,6 +109,13 @@ class TicketModel {
     transferticket = getproud(json['transferticket']);
     categories = _prepareCategories(json);
     subCategories = _prepareSubCategories(json);
+    // new
+    idTicketDetail = json['id_ticket_detail']?.toString();
+    typeTicketReopen = json['type_ticket_reopen']?.toString();
+    fkUserReopen = json['fk_user_reopen']?.toString();
+    dateReopen = json['date_reopen']?.toString();
+    categoriesTicketFk = _prepareCategories(json);
+    subcategoriesTicketFk = _prepareSubCategories(json);
   }
 
   List<SubCategoryModel>? _prepareSubCategories(Map<String, dynamic> json) {
@@ -178,5 +199,108 @@ class TransferTicket {
     _data['nameuserto'] = nameuserto;
 
     return _data;
+  }
+}
+
+class NewTicketModel {
+  //{ //        "fk_client": "222",
+//         "type_problem": "مشكلة",
+//         "details_problem": "وصف",
+//         "client_type": null,
+//         "type_ticket_reopen": 1,
+//         "type_ticket": "اعادة فتح",
+//         "fk_user_reopen": 408,
+//         "date_reopen": "2024-03-21 15:45:32",
+//         "id_ticket_detail": 9}
+//{
+//         "fk_client": "222",
+//         "type_problem": "مشكلة",
+//         "details_problem": "وصف",
+//         "client_type": null,
+//         "type_ticket_reopen": 0,
+//         "type_ticket": "جديدة",
+//         "fk_user_open": 408,
+//         "date_open": "2024-03-21 15:50:05",
+//         "id_ticket_detail": 10
+//     }
+
+  final String? fkClient;
+  final String? typeProblem;
+  final String? detailsProblem;
+  final String? clientType;
+  final String? typeTicketReopen;
+  final String? typeTicket;
+  final String? fkUserReopen;
+  final String? dateReopen;
+  final String? idTicketDetail;
+  final String? fkUserOpen;
+
+  NewTicketModel({
+    this.fkClient,
+    this.typeProblem,
+    this.detailsProblem,
+    this.clientType,
+    this.typeTicketReopen,
+    this.typeTicket,
+    this.fkUserReopen,
+    this.dateReopen,
+    this.idTicketDetail,
+    this.fkUserOpen,
+  });
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['fk_client'] = fkClient;
+    _data['type_problem'] = typeProblem;
+    _data['details_problem'] = detailsProblem;
+    _data['client_type'] = clientType;
+    _data['type_ticket_reopen'] = typeTicketReopen;
+    _data['type_ticket'] = typeTicket;
+    _data['fk_user_reopen'] = fkUserReopen;
+    _data['date_reopen'] = dateReopen;
+    _data['id_ticket_detail'] = idTicketDetail;
+    _data['fk_user_open'] = fkUserOpen;
+    return _data;
+  }
+
+  factory NewTicketModel.fromJson(Map<String, dynamic> json) {
+    return NewTicketModel(
+      fkClient: json['fk_client']?.toString(),
+      typeProblem: json['type_problem']?.toString(),
+      detailsProblem: json['details_problem']?.toString(),
+      clientType: json['client_type']?.toString(),
+      typeTicketReopen: json['type_ticket_reopen']?.toString(),
+      typeTicket: json['type_ticket']?.toString(),
+      fkUserReopen: json['fk_user_reopen']?.toString(),
+      dateReopen: json['date_reopen']?.toString(),
+      idTicketDetail: json['id_ticket_detail']?.toString(),
+      fkUserOpen: json['fk_user_open']?.toString(),
+    );
+  }
+
+  NewTicketModel copyWith({
+    String? fkClient,
+    String? typeProblem,
+    String? detailsProblem,
+    String? clientType,
+    String? typeTicketReopen,
+    String? typeTicket,
+    String? fkUserReopen,
+    String? dateReopen,
+    String? idTicketDetail,
+    String? fkUserOpen,
+  }) {
+    return NewTicketModel(
+      fkClient: fkClient ?? this.fkClient,
+      typeProblem: typeProblem ?? this.typeProblem,
+      detailsProblem: detailsProblem ?? this.detailsProblem,
+      clientType: clientType ?? this.clientType,
+      typeTicketReopen: typeTicketReopen ?? this.typeTicketReopen,
+      typeTicket: typeTicket ?? this.typeTicket,
+      fkUserReopen: fkUserReopen ?? this.fkUserReopen,
+      dateReopen: dateReopen ?? this.dateReopen,
+      idTicketDetail: idTicketDetail ?? this.idTicketDetail,
+      fkUserOpen: fkUserOpen ?? this.fkUserOpen,
+    );
   }
 }

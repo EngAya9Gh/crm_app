@@ -58,10 +58,46 @@ class ticket_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool addvalue = false;
+  bool _isOpeningTicket = false;
+
+  bool get isOpeningTicket => _isOpeningTicket;
+
+  set isOpeningTicket(bool isOpeningTicket) {
+    _isOpeningTicket = isOpeningTicket;
+    notifyListeners();
+  }
+
+  Future<bool> addOrReOpenTicket(
+    Map<String, dynamic> body,
+    String client,
+  ) async {
+    isOpeningTicket = true;
+    try {
+      ApiServices apiServices = getIt();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      final response = await apiServices.post(
+        endPoint: EndPoints.tickets.addOrReOpenTicket,
+        data: body,
+      );
+      final data = apiDataHandler(response);
+
+      final ticket = TicketModel.fromJson(data);
+
+      listticket.insert(0, ticket);
+      tickesearchlist.insert(0, ticket);
+      listticket_clientfilter = List.from(listticket);
+
+      isOpeningTicket = false;
+
+      return true;
+    } catch (e) {
+      isOpeningTicket = false;
+      return false;
+    }
+  }
 
   Future<bool> addticket(Map<String, dynamic?> body, String client) async {
-    addvalue = true;
+    isOpeningTicket = true;
     notifyListeners();
     bool isav = await getclient_ticket_close(client);
 
@@ -70,12 +106,12 @@ class ticket_vm extends ChangeNotifier {
           url: EndPoints.baseUrls.url + "ticket/add_ticket.php", body: body);
       TicketModel tm = TicketModel.fromJson(data[0]);
       listticket.insert(0, tm);
-      addvalue = false;
+      isOpeningTicket = false;
       tickesearchlist.insert(0, tm); //List.from(listticket);
       listticket_clientfilter = List.from(listticket);
       notifyListeners();
     }
-    addvalue = false;
+    isOpeningTicket = false;
     notifyListeners();
     return isav;
   }
@@ -129,7 +165,7 @@ class ticket_vm extends ChangeNotifier {
     apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
     isloading = true;
     final response = await apiServices.post(
-      endPoint: "${EndPoints.tickets.closeTicket}/$idTicket",
+      endPoint: "${EndPoints.tickets.editTicketType}/$idTicket",
       data: body,
     );
     final data = apiDataHandler(response);

@@ -207,5 +207,6 @@ class _Tickets {
 
   final String getCategoriesTicket = 'getCategoriesTicket';
   final String getSubCategoriesTicket = 'getSubCategoriesTicket';
-  final String closeTicket = 'closeTicket';
+  final String editTicketType = 'editTicketType';
+  final String addOrReOpenTicket = 'addOrReOpenTicketService';
 }
