@@ -142,7 +142,7 @@ class InvoiceFilter {
   static String? _handleState(String? state) {
     switch (state) {
       case 'بالإنتظار':
-        return null;
+        return "wait";
       case 'تم التركيب':
         return '1';
       case 'معلق':

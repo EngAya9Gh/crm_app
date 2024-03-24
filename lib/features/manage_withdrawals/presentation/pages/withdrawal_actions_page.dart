@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
@@ -10,6 +11,7 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart' as intl;
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../../constants.dart';
@@ -68,28 +70,31 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
             centerTitle: true,
             backgroundColor: kMainColor,
           ),
-          body: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-            builder: (context, state) {
-              return PageStateBuilder<List<InvoiceWithdrawalSeries>>(
-                init: Center(child: CircularProgressIndicator()),
-                success: (data) {
-                  final hasDecline = data
-                      .any((element) => element.withdrawalStatus.isDeclined);
-                  final firstPendingEmployee = data.firstWhereOrNull(
-                      (element) => element.withdrawalStatus.isPending);
+          body: Directionality(
+            textDirection: TextDirection.rtl,
+            child: BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
+              builder: (context, state) {
+                return PageStateBuilder<List<InvoiceWithdrawalSeries>>(
+                  init: Center(child: CircularProgressIndicator()),
+                  success: (data) {
+                    final hasDecline = data
+                        .any((element) => element.withdrawalStatus.isDeclined);
+                    final firstPendingEmployee = data.firstWhereOrNull(
+                        (element) => element.withdrawalStatus.isPending);
 
-                  final isShowingActionButtons = !hasDecline &&
-                      firstPendingEmployee?.fkUser == currentUser.idUser;
-                  return Directionality(
-                    textDirection: TextDirection.rtl,
-                    child: Column(
+                    final isShowingActionButtons = !hasDecline &&
+                        firstPendingEmployee?.fkUser == currentUser.idUser;
+                    return Column(
                       children: [
                         Expanded(
                           child: ListView.separated(
                             padding: REdgeInsets.symmetric(
                                 horizontal: 10, vertical: 20),
                             itemBuilder: (BuildContext context, int index) =>
-                                cardWithdrawalManagerStatus(data[index]),
+                                cardWithdrawalManagerStatus(
+                              data: data[index],
+                              index: index,
+                            ),
                             separatorBuilder: (context, int index) =>
                                 15.verticalSpacingRadius,
                             itemCount: data.length,
@@ -123,28 +128,35 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
                           20.verticalSpacingRadius,
                         },
                       ],
+                    );
+                  },
+                  loading: Center(child: CircularProgressIndicator()),
+                  error: (error) => Center(
+                    child: IconButton(
+                      onPressed: () =>
+                          _manageWithdrawalsCubit.getWithdrawalInvoiceDetails(
+                              widget.invoice.idInvoice!),
+                      icon: Icon(Icons.refresh_rounded),
                     ),
-                  );
-                },
-                loading: Center(child: CircularProgressIndicator()),
-                error: (error) => Center(
-                  child: IconButton(
-                    onPressed: () => _manageWithdrawalsCubit
-                        .getWithdrawalInvoiceDetails(widget.invoice.idInvoice!),
-                    icon: Icon(Icons.refresh_rounded),
                   ),
-                ),
-                result: state.withdrawalInvoiceDetails,
-                empty: Center(child: Text("No Withdrawals Invoices")),
-              );
-            },
+                  result: state.withdrawalInvoiceDetails,
+                  empty: Center(child: Text("No Withdrawals Invoices")),
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget cardWithdrawalManagerStatus(InvoiceWithdrawalSeries data) {
+  Widget cardWithdrawalManagerStatus({
+    required InvoiceWithdrawalSeries data,
+    required int index,
+  }) {
+    index++;
+    double mainPadding = 10;
+    double subPadding = 55;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -156,11 +168,11 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
                 CircleAvatar(
                   radius: 17.r,
                   backgroundColor: Colors.blueGrey,
-                  child: Text(data.priorityApprove!,
+                  child: Text(index.toString(),
                       style: context.textTheme.bodyMedium!.copyWith(
                           color: Colors.white, fontWeight: FontWeight.w500)),
                 ),
-                20.horizontalSpace,
+                mainPadding.horizontalSpace,
                 Container(
                   child: Text(
                     data.nameUser!,
@@ -176,28 +188,59 @@ class _WithdrawalActionsPageState extends State<WithdrawalActionsPage> {
             ),
           ],
         ),
-        if (data.notesApprove?.isNotEmpty ?? false) ...{
+        if (data.notesApprove?.isNotEmpty ?? false) ...[
           10.verticalSpace,
           Padding(
-            padding: const EdgeInsets.only(right: 50.0),
+            padding: EdgeInsets.only(right: subPadding, left: mainPadding),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "التاريخ:",
+                  style: context.textTheme.titleSmall!.copyWith(
+                    color: AppColors.grey,
+                    fontSize: 12.sp,
+                  ),
+                ),
+                Text(
+                  intl.DateFormat("yyyy-MM-dd HH:mm:ss")
+                      .format(data.dateApprove!),
+                  style: context.textTheme.titleSmall!.copyWith(
+                    color: AppColors.grey,
+                    fontSize: 12.sp,
+                  ),
+                  textDirection: TextDirection.ltr,
+                ),
+              ],
+            ),
+          ),
+          10.verticalSpace,
+          Padding(
+            padding: EdgeInsets.only(right: subPadding),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 AppText(
                   "الملاحظة: ",
-                  style:
-                      context.textTheme.bodyMedium!.withColor(AppColors.grey),
+                  style: context.textTheme.titleSmall!.copyWith(
+                    color: AppColors.grey,
+                    fontSize: 12.sp,
+                  ),
                 ),
+                10.width,
                 Flexible(
                   child: AppText(
                     "${data.notesApprove}",
-                    style: context.textTheme.bodyMedium!
-                        .withColor(data.withdrawalStatus.color),
+                    style: context.textTheme.titleSmall!.copyWith(
+                      color: data.withdrawalStatus.color,
+                      fontSize: 12.sp,
+                    ),
                   ),
                 ),
               ],
             ),
           ),
-        },
+        ],
       ],
     );
   }

@@ -126,26 +126,14 @@ class ClientProvider extends ChangeNotifier {
     List<int> listval = [];
     List<ClientModel1> _list = [];
     notifyListeners();
-    if (listparam!.isEmpty)
-      _list = await ClientService()
-          .getAllClientsupport(usercurrent!.fkCountry.toString(), null);
-    else {
-      int idexist = -1;
 
-      // if(listparam!.isNotEmpty)
-      idexist = listparam.indexWhere((element) => element.id_maincity == '0');
+    listparam?.forEach((element) {
+      listval.add(int.parse(element.id_maincity));
+    });
 
-      if (idexist != -1)
-        _list = await ClientService()
-            .getAllClientsupport(usercurrent!.fkCountry.toString(), null);
-      else {
-        for (int i = 0; i < listparam.length; i++)
-          listval.add(int.parse(listparam[i].id_maincity));
+    _list = await ClientService()
+        .getAllClientsupport(usercurrent!.fkCountry.toString(), listval);
 
-        _list = await ClientService()
-            .getAllClientsupport(usercurrent!.fkCountry.toString(), listval);
-      }
-    }
     _list.forEach((element) {
       if (element.isApprove != null) listClientAccept.add(element);
     });

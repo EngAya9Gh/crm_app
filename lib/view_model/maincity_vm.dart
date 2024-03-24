@@ -24,8 +24,10 @@ class MainCityProvider extends ChangeNotifier {
 
   late List<MainCityModel> selectedRegions = [];
 
-  Future<void> changeitemlist(List<MainCityModel> s,
-      {bool isInit = false}) async {
+  Future<void> changeitemlist(
+    List<MainCityModel> s, {
+    bool isInit = false,
+  }) async {
     selectedRegions = s;
     isloading = true;
     if (!isInit) notifyListeners();
