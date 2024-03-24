@@ -25,7 +25,6 @@ class ticket_vm extends ChangeNotifier {
 
   set isloading(bool isloading) {
     _isloading = isloading;
-    print("isloading: => $_isloading");
     notifyListeners();
   }
 
