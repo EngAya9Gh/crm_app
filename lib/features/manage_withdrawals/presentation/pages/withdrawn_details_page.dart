@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/withdrawn_details_model.dart';
 import 'package:crm_smart/features/manage_withdrawals/presentation/pages/withdrawal_actions_page.dart';
 import 'package:crm_smart/features/manage_withdrawals/presentation/utils/withdrawal_status.dart';
@@ -137,6 +138,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                   padding: REdgeInsets.symmetric(horizontal: 15),
                   child: CustomScrollView(
                     slivers: [
+                      SliverToBoxAdapter(child: 20.height),
                       SliverToBoxAdapter(
                         child: Container(
                           height: 150.h,
