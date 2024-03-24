@@ -1,8 +1,9 @@
+import 'package:crm_smart/core/common/extensions/extensions.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../../view_model/branch_race_viewmodel.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import '../../../widgets/custom_widget/row_edit.dart';
 import '../widgets/branch_list.dart';
 
@@ -11,18 +12,16 @@ class YearlyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15.0),
-          child: RowEdit(name: 'اختر السنة', des: '*'),
-        ),
-        SizedBox(height: 5),
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 15),
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: ClipRRect(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Column(
+          children: [
+            10.height,
+            RowEdit(name: 'اختر السنة', des: '*'),
+            10.height,
+            ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
                 final years = vm.yearsFilter;
@@ -34,8 +33,10 @@ class YearlyPage extends StatelessWidget {
                     if (value == null) {
                       return "هذا الحقل مطلوب";
                     }
+                    return null;
                   },
-                  icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                  icon: Icon(Icons.keyboard_arrow_down_rounded,
+                      color: Colors.grey),
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.grey.shade300,
@@ -68,26 +69,26 @@ class YearlyPage extends StatelessWidget {
                 );
               }),
             ),
-          ),
+            15.height,
+            Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
+              final yearlyState = vm.yearlyState;
+
+              if (yearlyState.isLoading) {
+                return Center(child: CircularProgressIndicator.adaptive());
+              } else if (yearlyState.isFailure) {
+                return Center(
+                  child: IconButton(
+                      onPressed: () {}, // viewmodel.getTargets,
+                      icon: Icon(Icons.refresh)),
+                );
+              }
+
+              final list = yearlyState.data ?? [];
+              return Expanded(child: BranchList(targetList: list));
+            }),
+          ],
         ),
-        SizedBox(height: 5),
-        Consumer<BranchRaceViewmodel>(builder: (context, vm, _) {
-          final yearlyState = vm.yearlyState;
-
-          if (yearlyState.isLoading) {
-            return Center(child: CircularProgressIndicator.adaptive());
-          } else if (yearlyState.isFailure) {
-            return Center(
-              child: IconButton(
-                  onPressed: () {}, // viewmodel.getTargets,
-                  icon: Icon(Icons.refresh)),
-            );
-          }
-
-          final list = yearlyState.data ?? [];
-          return Expanded(child: BranchList(targetList: list));
-        }),
-      ],
+      ),
     );
   }
 }

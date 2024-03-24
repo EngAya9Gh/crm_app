@@ -16,73 +16,98 @@ class BranchCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Selector<BranchRaceViewmodel, DateFilterType>(
-        selector: (_, vm) => vm.selectedDateFilter,
-        builder: (context, selectedDateFilter, _) {
-          return
-            branchRaceModel.y==null?
-            Container(): Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            elevation: 5.0,
-            shadowColor: Colors.grey.shade200,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assest/images/default_branch.jpg"),
-                      fit: BoxFit.fill
+      selector: (_, vm) => vm.selectedDateFilter,
+      builder: (context, selectedDateFilter, _) {
+        if (branchRaceModel.y == null) {
+          return SizedBox.shrink();
+        }
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          elevation: 5.0,
+          shadowColor: Colors.grey.shade200,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // image
+                    Container(
+                      height: constraints.maxHeight * 0.6,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image:
+                                AssetImage("assest/images/default_branch.jpg"),
+                            fit: BoxFit.fill),
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(10),
+                          bottom: Radius.circular(3),
+                        ),
+                      ),
                     ),
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-                  ),
-                ),
-                SizedBox(height: 5),
-                Padding(
-                  padding: EdgeInsetsDirectional.only(start: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        selectedDateFilter == DateFilterType.yearly
-                            ? branchRaceModel.yearTarget ?? ''
-                            : selectedDateFilter == DateFilterType.quarterly
-                                ? "${branchRaceModel.nameTarget}-${branchRaceModel.yearTarget}"
-                                : "${getMonthName(int.parse(branchRaceModel.nameTarget ?? '0'))}-${branchRaceModel.yearTarget}",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Colors.blue.shade800, fontWeight: FontWeight.w500),
+                    Spacer(),
+                    // details
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(start: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            selectedDateFilter == DateFilterType.yearly
+                                ? branchRaceModel.yearTarget ?? ''
+                                : selectedDateFilter == DateFilterType.quarterly
+                                    ? "${branchRaceModel.nameTarget}-${branchRaceModel.yearTarget}"
+                                    : "${getMonthName(int.parse(branchRaceModel.nameTarget ?? '0'))}-${branchRaceModel.yearTarget}",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Colors.blue.shade800,
+                                    fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            branchRaceModel.x.toString(),
+                            // "فرع الخبر",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            branchRaceModel.y == null
+                                ? ''
+                                : (((double.parse(branchRaceModel.y
+                                                    .toString())) *
+                                                100) /
+                                            double.parse(branchRaceModel
+                                                .valueTarget
+                                                .toString()))
+                                        .toStringAsFixed(2) +
+                                    ' % ',
+                            // "92.65%",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    color: Colors.grey.shade500,
+                                    fontWeight: FontWeight.w500),
+                          ),
+                        ],
                       ),
-                      Text(
-                      branchRaceModel.x.toString(),
-                        // "فرع الخبر",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Colors.black, fontWeight: FontWeight.w600),
-                      ),
-                      Text(
-                        branchRaceModel.y==null?'':
-                        (((double.parse(branchRaceModel.y.toString())) * 100) /
-                                              double.parse(branchRaceModel.valueTarget.toString()))
-                                          .toStringAsFixed(2)+' % ' ,
-                        // "92.65%",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(color: Colors.grey.shade500, fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                    ),
+                  ],
+                );
+              },
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
-
 }
