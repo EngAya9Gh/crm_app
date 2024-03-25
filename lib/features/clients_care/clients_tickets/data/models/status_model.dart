@@ -22,6 +22,7 @@ class StatusModel {
     dateState = json['date_state'];
     stateName = json['stateName'];
   }
+
   num? idTicketDetail;
   num? fkTicket;
   num? fkState;
@@ -31,6 +32,7 @@ class StatusModel {
   String? userName;
   String? dateState;
   String? stateName;
+
   StatusModel copyWith({
     num? idTicketDetail,
     num? fkTicket,
@@ -53,6 +55,7 @@ class StatusModel {
         dateState: dateState ?? this.dateState,
         stateName: stateName ?? this.stateName,
       );
+
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id_ticket_detail'] = idTicketDetail;

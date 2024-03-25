@@ -13,8 +13,8 @@ class GetTicketByIdUseCase
   final TicketsRepo _repository;
 
   @override
-  Future<Either<String, TicketModel>> call(GetTicketByIdParams params) {
-    return _repository.getTicketById(params);
+  Future<Either<String, TicketModel>> call(GetTicketByIdParams params) async {
+    return await _repository.getTicketById(params);
   }
 }
 

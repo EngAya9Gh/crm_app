@@ -1,6 +1,6 @@
-import 'category_model.dart';
 import 'status_model.dart';
-import 'sub_category_model.dart';
+import 'ticket_category_model.dart';
+import 'ticket_sub_category_model.dart';
 
 class TicketModel {
   TicketModel({
@@ -62,8 +62,8 @@ class TicketModel {
   dynamic department;
   dynamic suspendId;
   dynamic suspendDate;
-  List<CategoryModel>? categoriesTicketFk;
-  List<SubCategoryModel>? subcategoriesTicketFk;
+  List<TicketCategoryModel>? categoriesTicketFk;
+  List<TicketSubCategoryModel>? subcategoriesTicketFk;
   dynamic ticketSource;
   String? nameClient;
   String? nameEnterprise;
@@ -98,13 +98,13 @@ class TicketModel {
     if (json['categories_ticket_fk'] != null) {
       categoriesTicketFk = [];
       json['categories_ticket_fk'].forEach((v) {
-        categoriesTicketFk?.add(CategoryModel.fromMap(v));
+        categoriesTicketFk?.add(TicketCategoryModel.fromMap(v));
       });
     }
     if (json['subcategories_ticket_fk'] != null) {
       subcategoriesTicketFk = [];
       json['subcategories_ticket_fk'].forEach((v) {
-        subcategoriesTicketFk?.add(SubCategoryModel.fromMap(v));
+        subcategoriesTicketFk?.add(TicketSubCategoryModel.fromMap(v));
       });
     }
     ticketSource = json['ticket_source'];
@@ -148,8 +148,8 @@ class TicketModel {
     dynamic department,
     dynamic suspendId,
     dynamic suspendDate,
-    List<CategoryModel>? categoriesTicketFk,
-    List<SubCategoryModel>? subcategoriesTicketFk,
+    List<TicketCategoryModel>? categoriesTicketFk,
+    List<TicketSubCategoryModel>? subcategoriesTicketFk,
     dynamic ticketSource,
     String? nameClient,
     String? nameEnterprise,

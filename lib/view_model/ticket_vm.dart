@@ -1,8 +1,8 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/di/di_container.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/data/models/category_model.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/data/models/sub_category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_sub_category_model.dart';
 import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,8 +16,8 @@ class ticket_vm extends ChangeNotifier {
   List<TicketModel> listticket_clientprofile = [];
   List<TicketModel> listticket_clientfilter = [];
   List<TicketModel> tickesearchlist = [];
-  List<CategoryModel> categoriesList = [];
-  List<SubCategoryModel> subCategoriesList = [];
+  List<TicketCategoryModel> categoriesList = [];
+  List<TicketSubCategoryModel> subCategoriesList = [];
   UserModel? usercurrent;
   bool _isloading = false;
 
@@ -229,8 +229,9 @@ class ticket_vm extends ChangeNotifier {
     );
     final data = apiDataHandler(response);
 
-    categoriesList =
-        data.map<CategoryModel>((e) => CategoryModel.fromMap(e)).toList();
+    categoriesList = data
+        .map<TicketCategoryModel>((e) => TicketCategoryModel.fromMap(e))
+        .toList();
     isloading = false;
   }
 
@@ -243,8 +244,9 @@ class ticket_vm extends ChangeNotifier {
     );
     final data = apiDataHandler(response);
 
-    subCategoriesList =
-        data.map<SubCategoryModel>((e) => SubCategoryModel.fromMap(e)).toList();
+    subCategoriesList = data
+        .map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e))
+        .toList();
     isloading = false;
   }
 }

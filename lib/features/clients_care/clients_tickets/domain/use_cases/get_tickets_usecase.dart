@@ -13,8 +13,9 @@ class GetTicketsUseCase
   final TicketsRepo _repository;
 
   @override
-  Future<Either<String, List<TicketModel>>> call(GetTicketsParams params) {
-    return _repository.getTickets();
+  Future<Either<String, List<TicketModel>>> call(
+      GetTicketsParams params) async {
+    return await _repository.getTickets();
   }
 }
 

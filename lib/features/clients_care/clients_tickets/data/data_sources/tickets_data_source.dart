@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/api/api_services.dart';
-import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/api/api_services.dart';
 import '../../../../../core/api/exceptions.dart';
+import '../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../core/utils/end_points.dart';
 import '../../data/models/TicketModel.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
@@ -31,7 +31,12 @@ class TicketsDataSourceImpl implements TicketsDataSource {
   Future<Either<String, TicketModel>> addTicket(AddTicketParams params) async {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
-      throw UnimplementedError();
+      final response = await _api.post(
+        endPoint: EndPoints.tickets.addTicket,
+        data: params.toMap(),
+      );
+      final data = apiDataHandler(response);
+      return Right(TicketModel.fromJson(data));
     } on AppException catch (e) {
       return Left(e.message);
     }
@@ -42,7 +47,12 @@ class TicketsDataSourceImpl implements TicketsDataSource {
       EditTicketTypeParams params) async {
     try {
       _api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
-      throw UnimplementedError();
+      final response = await _api.post(
+        endPoint: "${EndPoints.tickets.editTicketType}${params.idTicket}",
+        data: params.toMap(),
+      );
+      final data = apiDataHandler(response);
+      return Right(TicketModel.fromJson(data));
     } on AppException catch (e) {
       return Left(e.message);
     }

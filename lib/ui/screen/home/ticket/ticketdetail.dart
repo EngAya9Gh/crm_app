@@ -1,8 +1,8 @@
 import 'package:crm_smart/core/common/enums/ticket_source_enum.dart';
 import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/data/models/category_model.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/data/models/sub_category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_sub_category_model.dart';
 import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
@@ -409,8 +409,8 @@ class CloseTicketDialog extends StatefulWidget {
 class _CloseTicketDialogState extends State<CloseTicketDialog> {
   final closeTicketFormKey = GlobalKey<FormState>();
   final notesController = TextEditingController();
-  List<CategoryModel> selectedCategories = [];
-  List<SubCategoryModel> selectedSubCategories = [];
+  List<TicketCategoryModel> selectedCategories = [];
+  List<TicketSubCategoryModel> selectedSubCategories = [];
 
   @override
   Widget build(BuildContext context) {
