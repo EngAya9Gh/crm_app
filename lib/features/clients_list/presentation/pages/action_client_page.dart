@@ -151,6 +151,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _userProvider
+          .changeClientRegistrationTypeStatus(_selectedClientRegistrationTye);
       _mainCityProvider.changevalue(null);
 
       _mainCityProvider
@@ -942,6 +944,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
   bool get isEdit => widget.client != null;
 
   void _onEditClient() {
+    print(
+        "context.read<UserProvider>().selectedClientRegistrationType ${context.read<UserProvider>().selectedClientRegistrationType}");
     final EditClientParams editClientParams = EditClientParams(
       nameClient: nameClientController.text,
       nameEnterprise: nameEnterpriseController.text,
