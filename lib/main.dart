@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:crm_smart/core/di/di_container.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/domain/use_cases/edit_ticket_type_usecase.dart';
 import 'package:crm_smart/provider/authprovider.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
 import 'package:crm_smart/provider/config_vm.dart';
@@ -205,15 +204,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     currentUser =
         Provider.of<UserProvider>(context, listen: false).getcurrentuser();
-    getIt<EditTicketTypeUseCase>().call(EditTicketTypeParams(
-        idTicket: '1530',
-        typeTicket: 'close',
-        notes: '1',
-        // notesRate: '1',
-        // rate: '1',
-        notesTicket: '1',
-        categoriesTicketFk: "[22,23]",
-        subcategoriesTicket: "[15]"));
     super.initState();
   }
 

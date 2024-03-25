@@ -1,5 +1,5 @@
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/clients_tickets_view.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/home/ticket/ticketclientview.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
@@ -152,7 +152,7 @@ class _transferClientState extends State<transferClient> {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 CupertinoPageRoute(
-                                    builder: (context) => ticketclientview()),
+                                    builder: (context) => ClientsTicketsPage()),
                                 (route) => false);
                           } else {
                             String? reason_transfer = 'transfer';

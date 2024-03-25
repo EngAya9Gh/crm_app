@@ -29,7 +29,7 @@ class TicketCategoryModel extends Equatable {
 
   factory TicketCategoryModel.fromMap(Map<String, dynamic> json) {
     return TicketCategoryModel(
-      id: json['id'],
+      id: json['id'].toString(),
       categoryAr: json['category_ar'],
       categoryEn: json['category_en'],
       classification: json['classification'],

@@ -1,9 +1,9 @@
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/clients_tickets_view.dart';
 import 'package:crm_smart/features/communication_list/presentation/pages/communication_list_page.dart';
 import 'package:crm_smart/ui/screen/care/care_clientaccept.dart';
 import 'package:crm_smart/ui/screen/care/care_page_view.dart';
 import 'package:crm_smart/ui/screen/care/view_installed.dart';
 import 'package:crm_smart/ui/screen/care/view_welcome.dart';
-import 'package:crm_smart/ui/screen/home/ticket/ticketclientview.dart';
 import 'package:crm_smart/ui/screen/report/care_report.dart';
 import 'package:crm_smart/ui/screen/report/not_using_system.dart';
 import 'package:crm_smart/ui/screen/report/repeat_report.dart';
@@ -178,7 +178,7 @@ class _carepageState extends State<carepage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => ticketclientview()));
+                              builder: (context) => ClientsTicketsPage()));
                     },
                     title: 'تذاكر العملاء  ')
                 : Container(),

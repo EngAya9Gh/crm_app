@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
 import '../../../data/models/TicketModel.dart';
@@ -9,6 +12,7 @@ import '../../../domain/use_cases/get_tickets_usecase.dart';
 
 part 'tickets_state.dart';
 
+@injectable
 class TicketsCubit extends Cubit<TicketsState> {
   final GetTicketsUseCase _getTicketsUseCase;
   final GetTicketByIdUseCase _getTicketByIdUseCase;
@@ -22,12 +26,31 @@ class TicketsCubit extends Cubit<TicketsState> {
     this._editTicketTypeUseCase,
   ) : super(TicketsInitial());
 
+  // filter
+  final List<String> _filters = ['جديدة', 'قيد التنفيذ', 'مغلقة', 'تم التقييم'];
+
+  List<String> get filters => _filters;
+  int _currentFilterIdx = 0;
+
+  set currentFilterIdx(int idx) {
+    _currentFilterIdx = idx;
+    filterTickets();
+  }
+
+  // tickets
+  List<TicketModel> allTickets = [];
+  List<TicketModel> filteredTickets = [];
+
   Future<void> getTickets() async {
     emit(GetTicketsLoading());
     final result = await _getTicketsUseCase(GetTicketsParams());
     result.fold(
       (error) => emit(GetTicketsError(error)),
-      (tickets) => emit(GetTicketsLoaded(tickets)),
+      (tickets) {
+        allTickets = tickets;
+        filteredTickets = tickets;
+        filterTickets();
+      },
     );
   }
 
@@ -56,5 +79,16 @@ class TicketsCubit extends Cubit<TicketsState> {
       (error) => emit(EditTicketTypeError(error)),
       (ticket) => emit(EditTicketTypeLoaded(ticket)),
     );
+  }
+
+  Future<void> filterTickets() async {
+    if (allTickets.isEmpty) {
+      log('allTickets is empty, fetching tickets...');
+      await getTickets();
+    }
+    filteredTickets = allTickets
+        .where((ticket) => ticket.typeTicket == _filters[_currentFilterIdx])
+        .toList();
+    emit(TicketsFiltered());
   }
 }

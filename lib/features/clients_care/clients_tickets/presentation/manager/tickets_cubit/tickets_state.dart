@@ -9,11 +9,7 @@ class TicketsInitial extends TicketsState {}
 
 class GetTicketsLoading extends TicketsState {}
 
-class GetTicketsLoaded extends TicketsState {
-  final List<TicketModel> tickets;
-
-  GetTicketsLoaded(this.tickets);
-}
+class GetTicketsLoaded extends TicketsState {}
 
 class GetTicketsError extends TicketsState {
   final String message;
@@ -68,3 +64,6 @@ class EditTicketTypeError extends TicketsState {
 
   EditTicketTypeError(this.message);
 }
+
+// filter
+class TicketsFiltered extends TicketsState {}

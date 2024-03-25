@@ -20,7 +20,7 @@ class TicketModel {
     this.reciveId,
     this.openId,
     this.iDcustomer,
-    this.idTicket,
+    required this.idTicket,
     this.nameEnterprisetc,
     this.notesRate,
     this.rate,
@@ -53,7 +53,7 @@ class TicketModel {
   dynamic reciveId;
   dynamic openId;
   dynamic iDcustomer;
-  String? idTicket;
+  late String idTicket;
   dynamic nameEnterprisetc;
   dynamic notesRate;
   dynamic rate;
