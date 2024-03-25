@@ -1,8 +1,8 @@
 import 'package:crm_smart/core/common/enums/ticket_source_enum.dart';
 import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
-import 'package:crm_smart/model/category_model.dart';
-import 'package:crm_smart/model/sub_category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/sub_category_model.dart';
 import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
@@ -17,7 +17,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../function_global.dart';
 

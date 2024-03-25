@@ -49,6 +49,7 @@ import 'core/config/theme/theme.dart';
 import 'core/utils/app_navigator.dart';
 import 'features/app/presentation/pages/splash_screen.dart';
 import 'features/app/presentation/widgets/app_loader_widget/app_loader.dart';
+import 'features/clients_care/clients_tickets/domain/use_cases/get_tickets_usecase.dart';
 
 //import 'package:firebase_core/firebase_core.dart';
 
@@ -204,6 +205,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     currentUser =
         Provider.of<UserProvider>(context, listen: false).getcurrentuser();
+    getIt<GetTicketsUseCase>().call(GetTicketsParams());
     super.initState();
   }
 

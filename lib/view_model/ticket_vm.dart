@@ -1,8 +1,8 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/di/di_container.dart';
-import 'package:crm_smart/model/category_model.dart';
-import 'package:crm_smart/model/sub_category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/sub_category_model.dart';
 import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';

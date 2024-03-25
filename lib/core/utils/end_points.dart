@@ -205,4 +205,9 @@ class _Tickets {
 
   final String getCategoriesTicket = 'getCategoriesTicket';
   final String getSubCategoriesTicket = 'getSubCategoriesTicket';
+
+  final String getTickets = 'getTickets';
+  final String getTicketById = 'getTicketById/';
+  final String editTicketType = 'editTicketType/';
+  final String addTicket = 'addTicket';
 }
