@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../data/models/TicketModel.dart';
+import '../../data/models/ticket_model.dart';
 import '../../domain/repositories/tickets_repo.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';

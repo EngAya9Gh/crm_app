@@ -4,7 +4,7 @@ import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../features/clients_care/clients_tickets/data/models/TicketModel.dart';
+import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 //import 'package:flutter/cupertino.dart';
 
 class ticketall extends StatefulWidget {

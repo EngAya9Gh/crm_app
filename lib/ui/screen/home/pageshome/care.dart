@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/clients_tickets_view.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
 import 'package:crm_smart/features/communication_list/presentation/pages/communication_list_page.dart';
 import 'package:crm_smart/ui/screen/care/care_clientaccept.dart';
 import 'package:crm_smart/ui/screen/care/care_page_view.dart';

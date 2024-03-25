@@ -9,7 +9,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../features/clients_care/clients_tickets/data/models/TicketModel.dart';
+import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import '../../../widgets/custom_widget/text_form.dart';
 import '../../care/card_comment.dart';
 

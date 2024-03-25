@@ -14,7 +14,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../features/clients_care/clients_tickets/data/models/TicketModel.dart';
+import '../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 
 class careView extends StatefulWidget {
   careView({required this.fk_client, Key? key}) : super(key: key);

@@ -5,7 +5,7 @@ import '../../../../../core/api/api_services.dart';
 import '../../../../../core/api/exceptions.dart';
 import '../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../core/utils/end_points.dart';
-import '../../data/models/TicketModel.dart';
+import '../../data/models/ticket_model.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../../domain/use_cases/get_ticket_by_id_usecase.dart';

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../ui/screen/home/ticket/ticketdetail.dart';
-import '../../data/models/TicketModel.dart';
+import '../../data/models/ticket_model.dart';
+import '../pages/ticket_detail_page.dart';
 
 class TicketCard extends StatelessWidget {
   const TicketCard({
@@ -39,7 +39,7 @@ class TicketCard extends StatelessWidget {
                     onTap: () {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) {
-                        return TicketDetails(
+                        return TicketDetailsPage(
                           ticketModel: ticket,
                         );
                       }));

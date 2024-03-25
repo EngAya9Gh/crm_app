@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../data/models/TicketModel.dart';
+import '../../../data/models/ticket_model.dart';
 import '../../../domain/use_cases/add_ticket_usecase.dart';
 import '../../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../../../domain/use_cases/get_ticket_by_id_usecase.dart';
@@ -87,7 +87,6 @@ class TicketsCubit extends Cubit<TicketsState> {
   }
 
   Future<void> filterTickets() async {
-    print("asdasdadas");
     if (allTickets.isEmpty) {
       log('allTickets is empty, fetching tickets...');
       await getTickets();

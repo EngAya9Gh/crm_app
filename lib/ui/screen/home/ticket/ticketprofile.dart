@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../features/clients_care/clients_tickets/data/models/TicketModel.dart';
+import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import '../../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../widgethomeitem.dart';
 import 'ticket_status_card.dart';

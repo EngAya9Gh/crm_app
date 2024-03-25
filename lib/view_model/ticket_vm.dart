@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../core/api/api_services.dart';
 import '../core/utils/end_points.dart';
-import '../features/clients_care/clients_tickets/data/models/TicketModel.dart';
+import '../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 
 class ticket_vm extends ChangeNotifier {
   List<TicketModel> listticket = [];
