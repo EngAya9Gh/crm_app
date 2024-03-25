@@ -32,6 +32,8 @@ class TicketsCubit extends Cubit<TicketsState> {
   List<String> get filters => _filters;
   int _currentFilterIdx = 0;
 
+  int get currentFilterIdx => _currentFilterIdx;
+
   set currentFilterIdx(int idx) {
     _currentFilterIdx = idx;
     filterTickets();
@@ -87,7 +89,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       await getTickets();
     }
     filteredTickets = allTickets
-        .where((ticket) => ticket.typeTicket == _filters[_currentFilterIdx])
+        .where((ticket) => ticket.typeTicket == _filters[currentFilterIdx])
         .toList();
     emit(TicketsFiltered());
   }
