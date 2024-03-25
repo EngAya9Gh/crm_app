@@ -141,7 +141,7 @@ class _SupportAddState extends State<SupportAdd> {
     final listDates = List<DateInstallationClient>.of(datesInstallation);
     listDates.sort((a, b) => a.dateClientVisit!.compareTo(b.dateClientVisit!));
     final nextInstallation =
-        listDates.firstWhereOrNull((element) => element.isDone == "0");
+        listDates.firstWhereOrNull((element) => element.isDone == "0"||element.isDone=='3');
 
     Widget dialog = SimpleDialog(
         titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
