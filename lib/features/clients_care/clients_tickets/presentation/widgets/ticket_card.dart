@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../ui/screen/home/ticket/ticketdetail.dart';
 import '../../data/models/TicketModel.dart';
 
 class TicketCard extends StatelessWidget {
@@ -35,14 +37,12 @@ class TicketCard extends StatelessWidget {
                 child: Center(
                   child: InkWell(
                     onTap: () {
-                      // todo: fix this
-                      // Navigator.push(
-                      //     context,
-                      //     CupertinoPageRoute(
-                      //         builder: (context) => TicketDetails(
-                      //               ticketModel: ticket,
-                      //             ) // support_view(type: 'only',)
-                      //         ));
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) {
+                        return TicketDetails(
+                          ticketModel: ticket,
+                        );
+                      }));
                     },
                     child: Container(
                       decoration: BoxDecoration(color: kWhiteColor),
@@ -55,7 +55,7 @@ class TicketCard extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  '#' + ticket.idTicket,
+                                  "#${ticket.idTicket}",
                                   style: TextStyle(
                                       color: kMainColor,
                                       fontFamily: kfontfamily2),
@@ -74,31 +74,22 @@ class TicketCard extends StatelessWidget {
                                   fontFamily: kfontfamily2,
                                   fontWeight: FontWeight.bold),
                             ),
-                            ticket.rate != null && ticket.rate != ''
-                                ? Row(
-                                    children: [
-                                      //Text('تقييم بعد الإغلاق'),
-                                      RatingBar.builder(
-                                        initialRating: ticket.rate == null
-                                            ? 0.0
-                                            : double.parse(ticket.rate),
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        // glow: true,
-                                        ignoreGestures: true,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (double value) {},
-                                      ),
-                                    ],
-                                  )
-                                : Container(),
+                            if (ticket.rate != null && ticket.rate != '')
+                              RatingBar.builder(
+                                initialRating: double.parse(ticket.rate ?? '0'),
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: false,
+                                ignoreGestures: true,
+                                itemCount: 5,
+                                itemPadding:
+                                    EdgeInsets.symmetric(horizontal: 4.0),
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (double value) {},
+                              ),
                           ],
                         ),
                       ),

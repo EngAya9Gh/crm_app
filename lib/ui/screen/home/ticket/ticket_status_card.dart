@@ -1,13 +1,15 @@
-import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketdetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/clients_care/clients_tickets/data/models/TicketModel.dart';
 
-class cardticket extends StatelessWidget {
-  cardticket({required this.ticketModel, Key? key}) : super(key: key);
-  TicketModel ticketModel;
+class TicketStatusCard extends StatelessWidget {
+  const TicketStatusCard({required this.ticketModel, Key? key})
+      : super(key: key);
+  final TicketModel ticketModel;
+
   @override
   Widget build(BuildContext context) {
     return Container(

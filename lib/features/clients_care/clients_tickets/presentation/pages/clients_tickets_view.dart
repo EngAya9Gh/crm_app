@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../ui/screen/home/ticket/ticketadd.dart';
 import '../../../../../ui/screen/search/search_container.dart';
-import '../../../../../view_model/ticket_vm.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
@@ -26,8 +25,9 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
   @override
   void initState() {
     ticketsCubit = context.read<TicketsCubit>();
+    ticketsCubit.searchController.clear();
+    ticketsCubit.currentFilterIdx = 0;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      ticketsCubit.currentFilterIdx = 0;
       await ticketsCubit.getTickets();
       Provider.of<ClientTypeProvider>(context, listen: false)
           .getreasons('ticket');
@@ -71,20 +71,18 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
                 SizedBox(height: 2),
               ],
               search_widget('ticket', "المؤسسة ,العميل , رقم الهاتف....", ''),
-              Consumer<ticket_vm>(builder: (context, selectedProvider, child) {
-                return GroupButton(
-                    controller: GroupButtonController(
-                      selectedIndex: ticketsCubit.currentFilterIdx,
-                    ),
-                    options: GroupButtonOptions(
-                        selectedColor: kMainColor,
-                        buttonWidth: 70,
-                        borderRadius: BorderRadius.circular(10)),
-                    buttons: ticketsCubit.filters,
-                    onSelected: (_, index, isSelected) {
-                      ticketsCubit.currentFilterIdx = index;
-                    });
-              }),
+              GroupButton(
+                  controller: GroupButtonController(
+                    selectedIndex: ticketsCubit.currentFilterIdx,
+                  ),
+                  options: GroupButtonOptions(
+                      selectedColor: kMainColor,
+                      buttonWidth: 70,
+                      borderRadius: BorderRadius.circular(10)),
+                  buttons: ticketsCubit.filters,
+                  onSelected: (_, index, isSelected) {
+                    ticketsCubit.currentFilterIdx = index;
+                  }),
               SizedBox(height: 2),
               Container(
                 height: MediaQuery.of(context).size.height * 0.8,

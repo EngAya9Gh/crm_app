@@ -3,12 +3,12 @@ import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/di/di_container.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_category_model.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_sub_category_model.dart';
-import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../core/api/api_services.dart';
 import '../core/utils/end_points.dart';
+import '../features/clients_care/clients_tickets/data/models/TicketModel.dart';
 
 class ticket_vm extends ChangeNotifier {
   List<TicketModel> listticket = [];
@@ -73,8 +73,7 @@ class ticket_vm extends ChangeNotifier {
       if (listticket.isNotEmpty) {
         listticket.forEach((element) {
           if (element.nameEnterprise!.contains(searchKey, 0) ||
-              element.nameClient!.contains(searchKey, 0) ||
-              element.mobile!.contains(searchKey, 0))
+              element.nameClient!.contains(searchKey, 0))
             ticketlistsearch.add(element);
         });
         tickesearchlist = ticketlistsearch;

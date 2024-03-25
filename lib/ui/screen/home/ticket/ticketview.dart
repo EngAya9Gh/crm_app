@@ -1,4 +1,3 @@
-import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/screen/client/transfer_client.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/clients_care/clients_tickets/data/models/TicketModel.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../function_global.dart';
 
@@ -45,9 +45,9 @@ class _TicketViewState extends State<TicketView> {
                   value: widget.ticketModel.typeTicket.toString()),
 
               // cardRow(title: 'اسم المؤسسة',value:widget.ticketModel.nameEnterprise.toString()),
-              cardRow(
-                  title: 'المدينة',
-                  value: widget.ticketModel.nameRegoin.toString()),
+              // cardRow(
+              //     title: 'المدينة',
+              //     value: widget.ticketModel.nameRegoin.toString()),
 
               // widget.ticketModel.dateAssign!=null?
               // cardRow(title: 'تم تحويل التذكرة إلى ',value: getnameshort( widget.ticketModel.nameusertransfer.toString())):Container(),
@@ -59,8 +59,7 @@ class _TicketViewState extends State<TicketView> {
               widget.ticketModel.dateClose != null
                   ? cardRow(
                       title: 'قام بإغلاق التذكرة ',
-                      value: getnameshort(
-                          widget.ticketModel.nameuserclose.toString()))
+                      value: getnameshort(widget.ticketModel.fkUserClose))
                   : Container(),
 
               widget.ticketModel.dateClose != null
@@ -72,8 +71,7 @@ class _TicketViewState extends State<TicketView> {
               widget.ticketModel.dateRecive != null
                   ? cardRow(
                       title: 'قام باستلام التذكرة ',
-                      value: getnameshort(
-                          widget.ticketModel.nameuserrecive.toString()))
+                      value: getnameshort(widget.ticketModel.fkUserRecive))
                   : Container(),
               widget.ticketModel.dateRecive != null
                   ? cardRow(
@@ -83,8 +81,7 @@ class _TicketViewState extends State<TicketView> {
 
               cardRow(
                   title: 'قام بفتح التذكرة ',
-                  value:
-                      getnameshort(widget.ticketModel.nameuseropen.toString())),
+                  value: getnameshort(widget.ticketModel.fkUserOpen)),
               cardRow(
                   title: 'تاريخ فتح التذكرة ',
                   value: widget.ticketModel.dateOpen.toString()),
@@ -177,10 +174,10 @@ class _TicketViewState extends State<TicketView> {
                                                               .fkClient
                                                               .toString(),
 
-                                                          'fkcountry': widget
-                                                              .ticketModel
-                                                              .fk_country
-                                                              .toString(),
+                                                          // 'fkcountry': widget
+                                                          //     .ticketModel
+                                                          //     .fk_country
+                                                          //     .toString(),
                                                           'name_enterprise':
                                                               widget.ticketModel
                                                                   .nameEnterprise

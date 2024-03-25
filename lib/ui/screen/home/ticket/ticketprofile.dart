@@ -1,14 +1,14 @@
 import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/model/ticketmodel.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/clients_care/clients_tickets/data/models/TicketModel.dart';
 import '../../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../widgethomeitem.dart';
-import 'card_ticket.dart';
+import 'ticket_status_card.dart';
 
 class ticketprofile extends StatefulWidget {
   ticketprofile({required this.itemClient, Key? key}) : super(key: key);
@@ -82,7 +82,7 @@ class ticketprofileState extends State<ticketprofile> {
                     itemBuilder: (BuildContext context, int index) => Builder(
                         builder: (context) => Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: cardticket(
+                              child: TicketStatusCard(
                                 ticketModel: list_ticket[index],
                               ),
                             )),

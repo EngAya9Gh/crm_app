@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
 import '../../../data/models/TicketModel.dart';
 import '../../../domain/use_cases/add_ticket_usecase.dart';
@@ -25,6 +25,9 @@ class TicketsCubit extends Cubit<TicketsState> {
     this._addTicketUseCase,
     this._editTicketTypeUseCase,
   ) : super(TicketsInitial());
+
+  // controllers
+  final searchController = TextEditingController();
 
   // filter
   final List<String> _filters = ['جديدة', 'قيد التنفيذ', 'مغلقة', 'تم التقييم'];
@@ -84,6 +87,7 @@ class TicketsCubit extends Cubit<TicketsState> {
   }
 
   Future<void> filterTickets() async {
+    print("asdasdadas");
     if (allTickets.isEmpty) {
       log('allTickets is empty, fetching tickets...');
       await getTickets();
@@ -91,6 +95,24 @@ class TicketsCubit extends Cubit<TicketsState> {
     filteredTickets = allTickets
         .where((ticket) => ticket.typeTicket == _filters[currentFilterIdx])
         .toList();
+    if (searchController.text.isNotEmpty) {
+      searchTickets(searchController.text);
+    } else {
+      emit(TicketsFiltered());
+    }
+  }
+
+  void searchTickets(String query) {
+    searchController.text = query;
+    if (query.isEmpty) {
+      filterTickets();
+    } else {
+      filteredTickets = filteredTickets.where((ticket) {
+        final nameEnterprise = ticket.nameEnterprise ?? '';
+        final nameClient = ticket.nameClient ?? '';
+        return nameEnterprise.contains(query) || nameClient.contains(query);
+      }).toList();
+    }
     emit(TicketsFiltered());
   }
 }
