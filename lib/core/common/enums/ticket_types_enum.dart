@@ -1,4 +1,5 @@
 enum TicketTypesEnum {
+  open,
   reopen,
   close,
   receive,
@@ -6,8 +7,10 @@ enum TicketTypesEnum {
 }
 
 extension TicketTypeExtension on TicketTypesEnum {
-  String get name {
+  String get nameEn {
     switch (this) {
+      case TicketTypesEnum.open:
+        return 'open';
       case TicketTypesEnum.reopen:
         return 'reopen';
       case TicketTypesEnum.close:
@@ -21,14 +24,16 @@ extension TicketTypeExtension on TicketTypesEnum {
 
   String get nameAr {
     switch (this) {
+      case TicketTypesEnum.open:
+        return 'جديدة';
       case TicketTypesEnum.reopen:
-        return 'فتح';
+        return 'معاد فتحها';
       case TicketTypesEnum.close:
-        return 'اغلاق';
+        return 'مغلقة';
       case TicketTypesEnum.receive:
-        return 'استلام';
+        return 'قيد التنفيذ';
       case TicketTypesEnum.rate:
-        return 'تقييم';
+        return 'تم التقييم';
     }
   }
 }

@@ -5,6 +5,7 @@ import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart'
 import '../core/common/manager/cities_cubit/cities_cubit.dart';
 import '../core/di/di_container.dart';
 import '../features/app/presentation/bloc/app_manager_cubit.dart';
+import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../features/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../features/communication_list/presentation/manager/communication_list_bloc.dart';
@@ -31,6 +32,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<CitiesCubit>()),
         BlocProvider(create: (context) => getIt<AttachmentsRowCubit>()),
         BlocProvider(create: (context) => getIt<TicketsCubit>()),
+        BlocProvider(create: (context) => getIt<AddTicketCubit>()),
       ],
       child: child,
     );

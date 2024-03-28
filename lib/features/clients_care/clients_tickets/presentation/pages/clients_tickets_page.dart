@@ -4,12 +4,12 @@ import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../ui/screen/home/ticket/ticketadd.dart';
 import '../../../../../ui/screen/search/search_container.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/tickets_list.dart';
+import 'add_ticket_page.dart';
 
 class ClientsTicketsPage extends StatefulWidget {
   const ClientsTicketsPage({Key? key}) : super(key: key);
@@ -53,16 +53,16 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
             children: [
               if (context.read<PrivilegeCubit>().checkPrivilege('26')) ...[
                 Padding(
-                  padding: const EdgeInsets.only(left: 8.0, right: 8),
-                  child: ElevatedButton(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8),
+                    child: ElevatedButton(
                       style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(kMainColor)),
+                        backgroundColor: MaterialStateProperty.all(kMainColor),
+                      ),
                       onPressed: () async {
-                        AppNavigator.push(ticketAdd(fk_client: null));
+                        AppNavigator.push(AddTicketPage(fkClient: null));
                       },
-                      child: Text(' فتح تذكرة دعم ')),
-                ),
+                      child: Text(' فتح تذكرة دعم '),
+                    )),
                 SizedBox(height: 2),
               ],
               search_widget('ticket', "المؤسسة ,العميل , رقم الهاتف....", ''),
@@ -74,7 +74,7 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
                       selectedColor: kMainColor,
                       buttonWidth: 70,
                       borderRadius: BorderRadius.circular(10)),
-                  buttons: ticketsCubit.filters,
+                  buttons: ticketsCubit.filtersAr,
                   onSelected: (_, index, isSelected) {
                     ticketsCubit.currentFilterIdx = index;
                   }),

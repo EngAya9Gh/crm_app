@@ -161,7 +161,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
         idTicket: widget.ticketModel.idTicket,
         notesTicket: notesController.text,
         notes: notesController.text,
-        typeTicket: TicketTypesEnum.close.name,
+        typeTicket: TicketTypesEnum.close.nameEn,
         categoriesTicketFk:
             "[${ticketsCubit.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
         subcategoriesTicket:

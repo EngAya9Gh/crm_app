@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/api/api_services.dart';
+import '../../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../../../core/di/di_container.dart';
 import '../../../../../../core/utils/end_points.dart';
@@ -36,9 +37,12 @@ class TicketsCubit extends Cubit<TicketsState> {
   final searchController = TextEditingController();
 
   // filter
-  final List<String> _filters = ['جديدة', 'قيد التنفيذ', 'مغلقة', 'تم التقييم'];
+  final List<String> _filtersAr =
+      TicketTypesEnum.values.map((e) => e.nameAr).toList();
+  final List<String> _filtersEn =
+      TicketTypesEnum.values.map((e) => e.nameEn).toList();
 
-  List<String> get filters => _filters;
+  List<String> get filtersAr => _filtersAr;
   int _currentFilterIdx = 0;
 
   int get currentFilterIdx => _currentFilterIdx;
@@ -53,15 +57,93 @@ class TicketsCubit extends Cubit<TicketsState> {
   List<TicketModel> filteredTicketsByType = [];
   List<TicketModel> searchResultTickets = [];
 
-  // todo: refactor this and use dependency injection
-
+  // categories
   List<TicketCategoryModel> allCategoriesList = [];
   List<TicketCategoryModel> selectedCategoriesList = [];
 
+  // sub categories
   List<TicketSubCategoryModel> allSubCategoriesList = [];
   List<TicketSubCategoryModel> filteredSubCategoriesByCategories = [];
   List<TicketSubCategoryModel> selectedSubCategoriesList = [];
 
+  // Tickets methods
+  Future<void> getTickets() async {
+    emit(GetTicketsLoading());
+    final result = await _getTicketsUseCase(GetTicketsParams());
+    result.fold(
+      (error) => emit(GetTicketsError(error)),
+      (tickets) {
+        allTickets = tickets;
+        filteredTicketsByType = tickets;
+        filterTicketsByType();
+      },
+    );
+  }
+
+  Future<void> getTicketById(GetTicketByIdParams params) async {
+    emit(GetTicketByIdLoading());
+    final result = await _getTicketByIdUseCase(params);
+    result.fold(
+      (error) => emit(GetTicketByIdError(error)),
+      (ticket) => emit(GetTicketByIdLoaded(ticket)),
+    );
+  }
+
+  // Future<void> addTicket(AddTicketParams params) async {
+  //   emit(AddTicketLoading());
+  //   final result = await _addTicketUseCase(params);
+  //   result.fold(
+  //     (error) => emit(AddTicketError(error)),
+  //     (ticket) => emit(AddTicketLoaded(ticket)),
+  //   );
+  // }
+
+  Future<void> editTicketType(EditTicketTypeParams params) async {
+    emit(EditTicketTypeLoading());
+    final result = await _editTicketTypeUseCase(params);
+    result.fold(
+      (error) => emit(EditTicketTypeError(error)),
+      (ticket) => emit(EditTicketTypeLoaded(ticket)),
+    );
+  }
+
+  Future<void> filterTicketsByType() async {
+    if (allTickets.isEmpty) {
+      log('allTickets is empty, fetching tickets...');
+      await getTickets();
+    }
+    filteredTicketsByType = allTickets.where((ticket) {
+      return ticket.typeTicket == filtersAr[currentFilterIdx] ||
+          ticket.typeTicket == _filtersEn[currentFilterIdx];
+    }).toList();
+    searchResultTickets = filteredTicketsByType;
+    if (searchController.text.isNotEmpty) {
+      searchTickets(searchController.text);
+    } else {
+      emit(TicketsFiltered());
+    }
+  }
+
+  void searchTickets(String query) {
+    searchController.text = query;
+    if (query.isEmpty) {
+      searchResultTickets = filteredTicketsByType;
+      emit(TicketsFiltered());
+      return;
+    }
+
+    searchResultTickets = filteredTicketsByType.where((ticket) {
+      final nameEnterprise = ticket.nameEnterprise ?? '';
+      final nameClient = ticket.nameClient ?? '';
+      final idTicket = ticket.idTicket;
+      return nameEnterprise.contains(query) ||
+          nameClient.contains(query) ||
+          idTicket.contains(query);
+    }).toList();
+    emit(TicketsFiltered());
+  }
+
+  // categories methods
   Future<void> getCategories() async {
     emit(CategoriesLoading());
     try {
@@ -108,82 +190,5 @@ class TicketsCubit extends Cubit<TicketsState> {
         .toList();
 
     emit(SubCategoriesLoaded());
-  }
-
-  //
-
-  Future<void> getTickets() async {
-    emit(GetTicketsLoading());
-    final result = await _getTicketsUseCase(GetTicketsParams());
-    result.fold(
-      (error) => emit(GetTicketsError(error)),
-      (tickets) {
-        allTickets = tickets;
-        filteredTicketsByType = tickets;
-        filterTicketsByType();
-      },
-    );
-  }
-
-  Future<void> getTicketById(GetTicketByIdParams params) async {
-    emit(GetTicketByIdLoading());
-    final result = await _getTicketByIdUseCase(params);
-    result.fold(
-      (error) => emit(GetTicketByIdError(error)),
-      (ticket) => emit(GetTicketByIdLoaded(ticket)),
-    );
-  }
-
-  Future<void> addTicket(AddTicketParams params) async {
-    emit(AddTicketLoading());
-    final result = await _addTicketUseCase(params);
-    result.fold(
-      (error) => emit(AddTicketError(error)),
-      (ticket) => emit(AddTicketLoaded(ticket)),
-    );
-  }
-
-  Future<void> editTicketType(EditTicketTypeParams params) async {
-    emit(EditTicketTypeLoading());
-    final result = await _editTicketTypeUseCase(params);
-    result.fold(
-      (error) => emit(EditTicketTypeError(error)),
-      (ticket) => emit(EditTicketTypeLoaded(ticket)),
-    );
-  }
-
-  Future<void> filterTicketsByType() async {
-    if (allTickets.isEmpty) {
-      log('allTickets is empty, fetching tickets...');
-      await getTickets();
-    }
-    filteredTicketsByType = allTickets
-        .where((ticket) => ticket.typeTicket == _filters[currentFilterIdx])
-        .toList();
-    searchResultTickets = filteredTicketsByType;
-    if (searchController.text.isNotEmpty) {
-      searchTickets(searchController.text);
-    } else {
-      emit(TicketsFiltered());
-    }
-  }
-
-  void searchTickets(String query) {
-    searchController.text = query;
-    if (query.isEmpty) {
-      searchResultTickets = filteredTicketsByType;
-      emit(TicketsFiltered());
-      return;
-    }
-
-    searchResultTickets = filteredTicketsByType.where((ticket) {
-      final nameEnterprise = ticket.nameEnterprise ?? '';
-      final nameClient = ticket.nameClient ?? '';
-      final idTicket = ticket.idTicket;
-      return nameEnterprise.contains(query) ||
-          nameClient.contains(query) ||
-          idTicket.contains(query);
-    }).toList();
-    emit(TicketsFiltered());
   }
 }

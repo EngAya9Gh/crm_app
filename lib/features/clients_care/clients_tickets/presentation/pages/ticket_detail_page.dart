@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../function_global.dart';
 import '../../../../../ui/widgets/custom_widget/rowdivided.dart';
-import '../../../../../view_model/ticket_vm.dart';
 import '../../data/models/ticket_model.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/ticket_details_buttons.dart';
@@ -24,7 +23,6 @@ class TicketDetailsPage extends StatefulWidget {
 }
 
 class _TicketDetailsPageState extends State<TicketDetailsPage> {
-  late final ticket_vm ticketVm;
   late final TicketsCubit ticketsCubit;
 
   @override
@@ -33,7 +31,6 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
     ticketsCubit.selectedCategoriesList = [];
     ticketsCubit.selectedSubCategoriesList = [];
     ticketsCubit.filteredSubCategoriesByCategories = [];
-    ticketVm = context.read<ticket_vm>();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ticketsCubit
