@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,7 @@ class TicketDetailsButtons extends StatelessWidget {
                       'date_recive': DateTime.now(),
                       'type_ticket': 'قيد التنفيذ'
                     }, ticketModel.idTicket);
-                    Navigator.pop(context);
+                    AppNavigator.pop();
                   },
                   child: Text('استلام\nالتذكرة')),
             ),

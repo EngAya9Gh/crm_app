@@ -1,8 +1,8 @@
 enum TicketTypesEnum {
   open,
   reopen,
-  close,
   receive,
+  close,
   rate,
 }
 
@@ -13,10 +13,10 @@ extension TicketTypeExtension on TicketTypesEnum {
         return 'open';
       case TicketTypesEnum.reopen:
         return 'reopen';
-      case TicketTypesEnum.close:
-        return 'close';
       case TicketTypesEnum.receive:
         return 'recive';
+      case TicketTypesEnum.close:
+        return 'close';
       case TicketTypesEnum.rate:
         return 'rate';
     }
@@ -28,10 +28,10 @@ extension TicketTypeExtension on TicketTypesEnum {
         return 'جديدة';
       case TicketTypesEnum.reopen:
         return 'معاد فتحها';
-      case TicketTypesEnum.close:
-        return 'مغلقة';
       case TicketTypesEnum.receive:
         return 'قيد التنفيذ';
+      case TicketTypesEnum.close:
+        return 'مغلقة';
       case TicketTypesEnum.rate:
         return 'تم التقييم';
     }

@@ -12,8 +12,6 @@ import '../../../../../../core/utils/end_points.dart';
 import '../../../data/models/ticket_category_model.dart';
 import '../../../data/models/ticket_model.dart';
 import '../../../data/models/ticket_sub_category_model.dart';
-import '../../../domain/use_cases/add_ticket_usecase.dart';
-import '../../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../../../domain/use_cases/get_ticket_by_id_usecase.dart';
 import '../../../domain/use_cases/get_tickets_usecase.dart';
 
@@ -23,14 +21,10 @@ part 'tickets_state.dart';
 class TicketsCubit extends Cubit<TicketsState> {
   final GetTicketsUseCase _getTicketsUseCase;
   final GetTicketByIdUseCase _getTicketByIdUseCase;
-  final AddTicketUseCase _addTicketUseCase;
-  final EditTicketTypeUseCase _editTicketTypeUseCase;
 
   TicketsCubit(
     this._getTicketsUseCase,
     this._getTicketByIdUseCase,
-    this._addTicketUseCase,
-    this._editTicketTypeUseCase,
   ) : super(TicketsInitial());
 
   // controllers
@@ -89,32 +83,13 @@ class TicketsCubit extends Cubit<TicketsState> {
     );
   }
 
-  // Future<void> addTicket(AddTicketParams params) async {
-  //   emit(AddTicketLoading());
-  //   final result = await _addTicketUseCase(params);
-  //   result.fold(
-  //     (error) => emit(AddTicketError(error)),
-  //     (ticket) => emit(AddTicketLoaded(ticket)),
-  //   );
-  // }
-
-  Future<void> editTicketType(EditTicketTypeParams params) async {
-    emit(EditTicketTypeLoading());
-    final result = await _editTicketTypeUseCase(params);
-    result.fold(
-      (error) => emit(EditTicketTypeError(error)),
-      (ticket) => emit(EditTicketTypeLoaded(ticket)),
-    );
-  }
-
   Future<void> filterTicketsByType() async {
     if (allTickets.isEmpty) {
       log('allTickets is empty, fetching tickets...');
       await getTickets();
     }
     filteredTicketsByType = allTickets.where((ticket) {
-      return ticket.typeTicket == filtersAr[currentFilterIdx] ||
-          ticket.typeTicket == _filtersEn[currentFilterIdx];
+      return ticket.typeTicket == _filtersEn[currentFilterIdx];
     }).toList();
     searchResultTickets = filteredTicketsByType;
     if (searchController.text.isNotEmpty) {

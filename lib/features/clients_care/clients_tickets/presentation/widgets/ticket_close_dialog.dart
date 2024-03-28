@@ -1,11 +1,9 @@
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/domain/use_cases/edit_ticket_type_usecase.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -14,6 +12,9 @@ import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../../data/models/ticket_model.dart';
 import '../../data/models/ticket_sub_category_model.dart';
+import '../../domain/use_cases/edit_ticket_type_usecase.dart';
+import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
+import '../manager/tickets_cubit/tickets_cubit.dart';
 
 class TicketCloseDialog extends StatefulWidget {
   const TicketCloseDialog({
@@ -157,16 +158,17 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
       TicketsCubit ticketCubit, BuildContext context) async {
     if (closeTicketFormKey.currentState!.validate()) {
       closeTicketFormKey.currentState!.save();
-      await ticketCubit.editTicketType(EditTicketTypeParams(
-        idTicket: widget.ticketModel.idTicket,
-        notesTicket: notesController.text,
-        notes: notesController.text,
-        typeTicket: TicketTypesEnum.close.nameEn,
-        categoriesTicketFk:
-            "[${ticketsCubit.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
-        subcategoriesTicket:
-            "[${ticketsCubit.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
-      ));
+
+      await context.read<EditTicketCubit>().editTicketType(EditTicketTypeParams(
+            idTicket: widget.ticketModel.idTicket,
+            notesTicket: notesController.text,
+            notes: notesController.text,
+            typeTicket: TicketTypesEnum.close.nameEn,
+            categoriesTicketFk:
+                "[${ticketsCubit.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
+            subcategoriesTicket:
+                "[${ticketsCubit.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
+          ));
       Navigator.of(context, rootNavigator: true).pop();
       Navigator.pop(context);
     }

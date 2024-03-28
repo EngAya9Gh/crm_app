@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/screen/search/search_container.dart';
 import '../../../../../view_model/typeclient.dart';
 import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';

@@ -36,7 +36,6 @@ class _AddTicketPageState extends State<AddTicketPage> {
 
   final TextEditingController problem_desc = TextEditingController();
 
-  //final TextEditingController notes = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
   late String name_enterprise;
   late String name_regoin;
@@ -125,67 +124,43 @@ class _AddTicketPageState extends State<AddTicketPage> {
                               backgroundColor:
                                   MaterialStateProperty.all(kMainColor)),
                           onPressed: () {
-                            AppNavigator.push(
-                                ProfileClient(idClient: fkClient!));
+                            AppNavigator.push(ProfileClient(
+                              idClient: fkClient!,
+                            ));
                           },
                           child: Text('ملف العميل'),
                         ),
-                      SizedBox(
-                        height: 10,
-                      ),
-
+                      SizedBox(height: 10),
                       RowEdit(name: 'نوع المشكلة', des: '*'),
-
                       Consumer<ClientTypeProvider>(
                         builder: (context, cart, child) {
                           return SizedBox(
-                            //width: 240,
                             child: DropdownButtonFormField(
                               decoration: InputDecoration(
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                       borderSide: BorderSide(
-                                          width: 2, color: Colors.grey))),
-
+                                        width: 2,
+                                        color: Colors.grey,
+                                      ))),
                               isExpanded: true,
-                              //hint: Text("حدد حالة العميل"),
                               items: cart.type_of_out.map((level_one) {
                                 return DropdownMenuItem(
-                                  child: Text(
-                                      level_one.nameReason), //label of item
-                                  value: level_one.nameReason, //value of item
+                                  child: Text(level_one.nameReason),
+                                  value: level_one.nameReason,
                                 );
                               }).toList(),
                               value: cart.selectedValueOut,
                               onChanged: (value) {
-                                //  setState(() {
                                 cart.changevalueOut(value.toString());
-                                // });
                               },
                             ),
                           );
                         },
                       ),
-
                       RowEdit(name: 'مصدر التذكرة', des: ''),
                       _ticketSourceDropDown(),
-
-                      SizedBox(
-                        height: 15,
-                      ),
-                      // RowEdit(name: 'ملاحظات ', des: ''),
-                      //
-                      // EditTextFormField(
-                      //   vaild: (value) {
-                      //     if (value!.isEmpty) {
-                      //       return 'الحقل فارغ';
-                      //     }
-                      //   },
-                      //   hintText: '',
-                      //   controller: notes,
-                      //   maxline: 3,
-                      // ),
-                      //SizedBox(height: 15,),
+                      SizedBox(height: 15),
                       RowEdit(name: 'وصف المشكلة', des: ''),
                       EditTextFormField(
                         vaildator: (value) {
@@ -223,7 +198,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                       );
                                       return;
                                     }
-                                    addTicketCubit.addTicket(
+                                    await addTicketCubit.addTicket(
                                       AddTicketParams(
                                         fkClient: fkClient!,
                                         typeProblem:
@@ -238,6 +213,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                         notes: '',
                                       ),
                                     );
+                                    AppNavigator.pop();
                                   }
                                 }),
                           );
@@ -265,7 +241,6 @@ class _AddTicketPageState extends State<AddTicketPage> {
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide(width: 2, color: Colors.grey))),
-
         isExpanded: true,
         hint: Text("مصدر التذكرة"),
         items: TicketSourceEnums.values
@@ -274,10 +249,10 @@ class _AddTicketPageState extends State<AddTicketPage> {
                   value: e.text,
                 ))
             .toList(),
-        // value: cart.selectedValueOut,
         onChanged: (value) {
-          ticketSource =
-              TicketSourceEnumsExtension.fromString(value.toString());
+          ticketSource = TicketSourceEnumsExtension.fromString(
+            value.toString(),
+          );
         },
       ),
     );

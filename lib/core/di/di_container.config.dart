@@ -36,6 +36,8 @@ import '../../features/clients_care/clients_tickets/domain/use_cases/get_tickets
     as _i98;
 import '../../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart'
     as _i119;
+import '../../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart'
+    as _i124;
 import '../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart'
     as _i111;
 import '../../features/clients_list/data/data_sources/clients_list_datasource.dart'
@@ -141,7 +143,7 @@ import '../../features/manage_agents_and_distributors/domain/use_cases/update_ag
 import '../../features/manage_agents_and_distributors/presentation/manager/agents_distributors_actions_cubit/agents_distributors_actions_cubit.dart'
     as _i120;
 import '../../features/manage_agents_and_distributors/presentation/manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart'
-    as _i129;
+    as _i130;
 import '../../features/manage_agents_and_distributors/presentation/manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart'
     as _i121;
 import '../../features/manage_participates/data/data_sources/participates_list_datasource.dart'
@@ -157,17 +159,17 @@ import '../../features/manage_participates/domain/use_cases/add_participate_usec
 import '../../features/manage_participates/domain/use_cases/edit_paraticipate_usecase.dart'
     as _i123;
 import '../../features/manage_participates/domain/use_cases/get_invoice_by_id_usecase.dart'
-    as _i124;
-import '../../features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart'
     as _i125;
-import '../../features/manage_participates/domain/use_cases/get_participate_comment_list_usecase.dart'
+import '../../features/manage_participates/domain/use_cases/get_participate_client_list_usecase.dart'
     as _i126;
-import '../../features/manage_participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+import '../../features/manage_participates/domain/use_cases/get_participate_comment_list_usecase.dart'
     as _i127;
+import '../../features/manage_participates/domain/use_cases/get_participate_Invoice_list_usecase.dart'
+    as _i128;
 import '../../features/manage_participates/domain/use_cases/get_participate_list_usecase.dart'
     as _i108;
 import '../../features/manage_participates/presentation/manager/participate_list_bloc.dart'
-    as _i128;
+    as _i129;
 import '../../features/manage_privilege/data/data_sources/privilege_datasource.dart'
     as _i40;
 import '../../features/manage_privilege/data/repositories/privilege_repository_impl.dart'
@@ -245,7 +247,7 @@ import '../api/dio/dio_services.dart' as _i8;
 import '../common/manager/attachments_row_cubit/attachments_row_cubit.dart'
     as _i74;
 import '../common/manager/cities_cubit/cities_cubit.dart' as _i122;
-import 'di_container.dart' as _i130;
+import 'di_container.dart' as _i131;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 Future<_i1.GetIt> $initGetIt(
@@ -492,8 +494,6 @@ Future<_i1.GetIt> $initGetIt(
   gh.factory<_i111.TicketsCubit>(() => _i111.TicketsCubit(
         gh<_i98.GetTicketsUseCase>(),
         gh<_i97.GetTicketByIdUseCase>(),
-        gh<_i62.AddTicketUseCase>(),
-        gh<_i82.EditTicketTypeUseCase>(),
       ));
   gh.lazySingleton<_i112.UpdateAgentUseCase>(
       () => _i112.UpdateAgentUseCase(gh<_i64.AgentsDistributorsActionsRepo>()));
@@ -527,33 +527,35 @@ Future<_i1.GetIt> $initGetIt(
       _i122.CitiesCubit(gh<_i90.GetAllCitiesUseCase>()));
   gh.factory<_i123.EditParticipateUserUsecase>(() =>
       _i123.EditParticipateUserUsecase(gh<_i106.ParticipateListRepository>()));
-  gh.factory<_i124.GetInvoiceByIdUsecase>(
-      () => _i124.GetInvoiceByIdUsecase(gh<_i106.ParticipateListRepository>()));
-  gh.factory<_i125.ParticipateClientListUsecase>(() =>
-      _i125.ParticipateClientListUsecase(
+  gh.factory<_i124.EditTicketCubit>(
+      () => _i124.EditTicketCubit(gh<_i82.EditTicketTypeUseCase>()));
+  gh.factory<_i125.GetInvoiceByIdUsecase>(
+      () => _i125.GetInvoiceByIdUsecase(gh<_i106.ParticipateListRepository>()));
+  gh.factory<_i126.ParticipateClientListUsecase>(() =>
+      _i126.ParticipateClientListUsecase(
           gh<_i106.ParticipateListRepository>()));
-  gh.factory<_i126.ParticipateCommentListUsecase>(() =>
-      _i126.ParticipateCommentListUsecase(
+  gh.factory<_i127.ParticipateCommentListUsecase>(() =>
+      _i127.ParticipateCommentListUsecase(
           gh<_i106.ParticipateListRepository>()));
-  gh.factory<_i127.ParticipateInvoiceListUsecase>(() =>
-      _i127.ParticipateInvoiceListUsecase(
+  gh.factory<_i128.ParticipateInvoiceListUsecase>(() =>
+      _i128.ParticipateInvoiceListUsecase(
           gh<_i106.ParticipateListRepository>()));
-  gh.factory<_i128.ParticipateListBloc>(() => _i128.ParticipateListBloc(
+  gh.factory<_i129.ParticipateListBloc>(() => _i129.ParticipateListBloc(
         gh<_i108.ParticipateListUsecase>(),
         gh<_i118.AddParticipateUserUsecase>(),
         gh<_i123.EditParticipateUserUsecase>(),
-        gh<_i125.ParticipateClientListUsecase>(),
-        gh<_i127.ParticipateInvoiceListUsecase>(),
-        gh<_i124.GetInvoiceByIdUsecase>(),
-        gh<_i126.ParticipateCommentListUsecase>(),
+        gh<_i126.ParticipateClientListUsecase>(),
+        gh<_i128.ParticipateInvoiceListUsecase>(),
+        gh<_i125.GetInvoiceByIdUsecase>(),
+        gh<_i127.ParticipateCommentListUsecase>(),
         gh<_i117.AddParticipateCommentUsecase>(),
       ));
-  gh.factory<_i129.AgentsDistributorsProfileBloc>(
-      () => _i129.AgentsDistributorsProfileBloc(
+  gh.factory<_i130.AgentsDistributorsProfileBloc>(
+      () => _i130.AgentsDistributorsProfileBloc(
             gh<_i84.GetAgentClientListUsecase>(),
             gh<_i88.GetAgentUsecase>(),
             gh<_i87.GetAgentInvoiceListUsecase>(),
-            gh<_i124.GetInvoiceByIdUsecase>(),
+            gh<_i125.GetInvoiceByIdUsecase>(),
             gh<_i85.GetAgentCommentsListUsecase>(),
             gh<_i114.AddAgentCommentUsecase>(),
             gh<_i80.DoneTrainingUsecase>(),
@@ -563,4 +565,4 @@ Future<_i1.GetIt> $initGetIt(
   return getIt;
 }
 
-class _$AppModule extends _i130.AppModule {}
+class _$AppModule extends _i131.AppModule {}
