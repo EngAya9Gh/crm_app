@@ -1,21 +1,25 @@
 import 'package:crm_smart/constants.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class cardRowDivided extends StatelessWidget {
-  cardRowDivided(
-      {this.alignment,
-      required this.value,
-      required this.title,
-      this.isExpanded,
-      Key? key})
-      : super(key: key);
+class CardRowDivided extends StatelessWidget {
+  CardRowDivided({
+    this.alignment,
+    required this.value,
+    required this.title,
+    this.isExpanded,
+    Key? key,
+    this.maxLines = 1,
+    this.valueAsWidget,
+  }) : super(key: key);
   var alignment;
   String title;
   String? value;
   bool? isExpanded = false;
+  final int maxLines;
+  final Widget? valueAsWidget;
 
-  // bool? isrow=true;
   @override
   Widget build(BuildContext context) {
     if (value == null || value == "null" || value!.isEmpty) {
@@ -24,43 +28,48 @@ class cardRowDivided extends StatelessWidget {
     return Column(
       children: [
         Row(
-          mainAxisAlignment:
-              alignment == null ? MainAxisAlignment.spaceBetween : alignment,
+          mainAxisAlignment: alignment ?? MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               title,
-              style: TextStyle(
-                  fontWeight: FontWeight.w600, fontFamily: kfontfamily2),
+              style: context.textTheme.titleMedium?.copyWith(
+                fontSize: 14.sp,
+              ),
             ),
-            SizedBox(width: 50),
-            //Spacer(flex: 1,),
-            isExpanded == true
-                ? Expanded(
-                    flex: 1,
-                    child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Text(
-                          value!,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontFamily: kfontfamily2),
-                        )))
-                : Text(
-                    value!,
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, fontFamily: kfontfamily2),
-                  ),
+            valueAsWidget != null
+                ? valueAsWidget!
+                : isExpanded == true
+                    ? Expanded(
+                        flex: 1,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: _handleMultiLinesText(),
+                        ))
+                    : _handleMultiLinesText(),
           ],
-        ),
-        //Spacer(),
-        //  isrow==true?
-        //Divider(thickness: 1,color: Colors.grey,),//:Container(),
-        //const MySeparator(color: Colors.grey),
-        SizedBox(
-          height: 5,
         ),
       ],
     );
+  }
+
+  Text _handleMultiLinesText() {
+    return maxLines > 1
+        ? Text(
+            value!,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontFamily: kfontfamily2,
+            ),
+            maxLines: maxLines,
+            overflow: TextOverflow.ellipsis,
+          )
+        : Text(
+            value!,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontFamily: kfontfamily2,
+            ),
+          );
   }
 }

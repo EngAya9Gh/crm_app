@@ -8,12 +8,13 @@ import '../../../../constants.dart';
 import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 import '../../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
 import '../widgethomeitem.dart';
-import 'ticket_status_card.dart';
+import 'ticket_card.dart';
 
 class ticketprofile extends StatefulWidget {
   ticketprofile({required this.itemClient, Key? key}) : super(key: key);
 
   ClientModel1 itemClient;
+
   @override
   ticketprofileState createState() => ticketprofileState();
 }
@@ -82,7 +83,7 @@ class ticketprofileState extends State<ticketprofile> {
                     itemBuilder: (BuildContext context, int index) => Builder(
                         builder: (context) => Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: TicketStatusCard(
+                              child: TicketCard(
                                 ticketModel: list_ticket[index],
                               ),
                             )),

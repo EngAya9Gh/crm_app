@@ -22,7 +22,6 @@ extension TicketTypeExtension on TicketTypesEnum {
     }
   }
 
-  // get current ticket type from the en name
   static TicketTypesEnum getTicketType(String? name) {
     switch (name) {
       case 'open':
@@ -37,6 +36,23 @@ extension TicketTypeExtension on TicketTypesEnum {
         return TicketTypesEnum.rate;
       default:
         return TicketTypesEnum.open;
+    }
+  }
+
+  String getUserTitle() {
+    switch (this) {
+      case TicketTypesEnum.open:
+        return 'قام بفتح التذكرة';
+      case TicketTypesEnum.receive:
+        return 'قام باستلام التذكرة';
+      case TicketTypesEnum.close:
+        return 'قام بإغلاق التذكرة';
+      case TicketTypesEnum.rate:
+        return 'قام بالتقييم';
+      case TicketTypesEnum.reopen:
+        return 'قام بإعادة فتح التذكرة';
+      default:
+        return '';
     }
   }
 
