@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -169,8 +170,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
             subcategoriesTicket:
                 "[${ticketsCubit.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
           ));
-      Navigator.of(context, rootNavigator: true).pop();
-      Navigator.pop(context);
+      AppNavigator.pop();
     }
   }
 }
