@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class CustomLoadingIndicator extends StatelessWidget {
-  const CustomLoadingIndicator({Key? key, this.size}) : super(key: key);
+  const CustomLoadingIndicator({
+    Key? key,
+    this.size,
+    this.isCentered = true,
+  }) : super(key: key);
 
   final double? size;
+  final bool isCentered;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(
-        strokeWidth: size ?? 4,
-      ),
-    );
+    final Widget child = CircularProgressIndicator(strokeWidth: size ?? 4);
+    return isCentered ? Center(child: child) : child;
   }
 }

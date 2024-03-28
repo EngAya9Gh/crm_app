@@ -1,17 +1,16 @@
-import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/widgets/close_ticket_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../../ui/screen/client/transfer_client.dart';
 import '../../../../../ui/screen/home/ticket/ticket_rate.dart';
-import '../../../../../view_model/ticket_vm.dart';
-import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../data/models/ticket_model.dart';
-import 'ticket_close_dialog.dart';
+import 'recieve_ticket_button.dart';
 
 class TicketDetailsButtons extends StatelessWidget {
   const TicketDetailsButtons({
@@ -23,49 +22,17 @@ class TicketDetailsButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final EditTicketCubit editTicketCubit = context.read<EditTicketCubit>();
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (ticketModel.dateRecive == null &&
             context.read<PrivilegeCubit>().checkPrivilege('71')) ...[
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(kMainColor)),
-                  onPressed: () async {
-                    Provider.of<ticket_vm>(context, listen: false)
-                        .updateTicketvm({
-                      'fk_user_recive':
-                          Provider.of<UserProvider>(context, listen: false)
-                              .currentUser
-                              .idUser,
-                      'date_recive': DateTime.now(),
-                      'type_ticket': 'قيد التنفيذ'
-                    }, ticketModel.idTicket);
-                    AppNavigator.pop();
-                  },
-                  child: Text('استلام\nالتذكرة')),
-            ),
-          )
+          ReceiveTicketButton(ticketModel: ticketModel),
         ],
         if (ticketModel.dateClose == null &&
             context.read<PrivilegeCubit>().checkPrivilege('72')) ...[
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(kMainColor)),
-                onPressed: () async {
-                  await showDialog<void>(
-                      context: context,
-                      builder: (context) => TicketCloseDialog(
-                            ticketModel: ticketModel,
-                          ));
-                },
-                child: Text('اغلاق\nالتذكرة')),
-          ),
+          CloseTicketButton(ticketModel: ticketModel),
         ],
         if (ticketModel.dateRecive != null &&
             ticketModel.dateClose == null &&
