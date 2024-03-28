@@ -88,7 +88,7 @@ class TicketDetailsButtons extends StatelessWidget {
                               ),
                           fullscreenDialog: true));
                 },
-                child: Text('تحويل التذكرة'),
+                child: Text('تحويل\nالتذكرة'),
               ),
             ),
           )

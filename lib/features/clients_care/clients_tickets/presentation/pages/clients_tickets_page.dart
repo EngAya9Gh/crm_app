@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
@@ -59,12 +59,7 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
                           backgroundColor:
                               MaterialStateProperty.all(kMainColor)),
                       onPressed: () async {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => ticketAdd(
-                                      fk_client: null,
-                                    )));
+                        AppNavigator.push(ticketAdd(fk_client: null));
                       },
                       child: Text(' فتح تذكرة دعم ')),
                 ),

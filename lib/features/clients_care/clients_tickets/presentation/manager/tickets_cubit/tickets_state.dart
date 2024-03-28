@@ -67,3 +67,27 @@ class EditTicketTypeError extends TicketsState {
 
 // filter
 class TicketsFiltered extends TicketsState {}
+
+// categories
+
+class CategoriesLoading extends TicketsState {}
+
+class CategoriesLoaded extends TicketsState {}
+
+class CategoriesError extends TicketsState {
+  final String message;
+
+  CategoriesError(this.message);
+}
+
+// subcategories
+
+class SubCategoriesLoading extends TicketsState {}
+
+class SubCategoriesLoaded extends TicketsState {}
+
+class SubCategoriesError extends TicketsState {
+  final String message;
+
+  SubCategoriesError(this.message);
+}

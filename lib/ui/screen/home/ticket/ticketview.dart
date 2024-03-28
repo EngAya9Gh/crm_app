@@ -94,10 +94,21 @@ class _TicketViewState extends State<TicketView> {
                 value: widget.ticketModel.detailsProblem.toString(),
                 isExpanded: true,
               ),
-              SizedBox(
-                height: 10,
+              SizedBox(height: 10),
+              cardRow(
+                title: 'الفئات',
+                value: widget.ticketModel.categoriesTicketFk
+                    ?.map((e) => e.categoryAr)
+                    .join(', '),
+                isExpanded: true,
               ),
-
+              cardRow(
+                title: 'الفئات الفرعية',
+                value: widget.ticketModel.subcategoriesTicketFk
+                    ?.map((e) => e.subCategoryAr)
+                    .join(', '),
+                isExpanded: true,
+              ),
               widget.type == null
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,

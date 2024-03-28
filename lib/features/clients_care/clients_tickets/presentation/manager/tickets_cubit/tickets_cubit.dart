@@ -4,7 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../../core/api/api_services.dart';
+import '../../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../../core/di/di_container.dart';
+import '../../../../../../core/utils/end_points.dart';
+import '../../../data/models/ticket_category_model.dart';
 import '../../../data/models/ticket_model.dart';
+import '../../../data/models/ticket_sub_category_model.dart';
 import '../../../domain/use_cases/add_ticket_usecase.dart';
 import '../../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../../../domain/use_cases/get_ticket_by_id_usecase.dart';
@@ -39,12 +45,72 @@ class TicketsCubit extends Cubit<TicketsState> {
 
   set currentFilterIdx(int idx) {
     _currentFilterIdx = idx;
-    filterTickets();
+    filterTicketsByType();
   }
 
   // tickets
   List<TicketModel> allTickets = [];
-  List<TicketModel> filteredTickets = [];
+  List<TicketModel> filteredTicketsByType = [];
+  List<TicketModel> searchResultTickets = [];
+
+  // todo: refactor this and use dependency injection
+
+  List<TicketCategoryModel> allCategoriesList = [];
+  List<TicketCategoryModel> selectedCategoriesList = [];
+
+  List<TicketSubCategoryModel> allSubCategoriesList = [];
+  List<TicketSubCategoryModel> filteredSubCategoriesByCategories = [];
+  List<TicketSubCategoryModel> selectedSubCategoriesList = [];
+
+  Future<void> getCategories() async {
+    emit(CategoriesLoading());
+    try {
+      final ApiServices apiServices = getIt();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.tickets.getCategoriesTicket,
+      );
+      final data = apiDataHandler(response);
+
+      allCategoriesList = data
+          .map<TicketCategoryModel>((e) => TicketCategoryModel.fromMap(e))
+          .toList();
+      emit(CategoriesLoaded());
+    } catch (e) {
+      emit(CategoriesError(e.toString()));
+    }
+  }
+
+  Future<void> getSubCategories() async {
+    emit(SubCategoriesLoading());
+    try {
+      final ApiServices apiServices = getIt();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.tickets.getSubCategoriesTicket,
+      );
+      final data = apiDataHandler(response);
+
+      allSubCategoriesList = data
+          .map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e))
+          .toList();
+
+      filterSubCategories();
+    } catch (e) {
+      emit(SubCategoriesError(e.toString()));
+    }
+  }
+
+  void filterSubCategories() {
+    filteredSubCategoriesByCategories = allSubCategoriesList
+        .where((sub) => selectedCategoriesList
+            .any((category) => sub.classification == category.categoryAr))
+        .toList();
+
+    emit(SubCategoriesLoaded());
+  }
+
+  //
 
   Future<void> getTickets() async {
     emit(GetTicketsLoading());
@@ -53,8 +119,8 @@ class TicketsCubit extends Cubit<TicketsState> {
       (error) => emit(GetTicketsError(error)),
       (tickets) {
         allTickets = tickets;
-        filteredTickets = tickets;
-        filterTickets();
+        filteredTicketsByType = tickets;
+        filterTicketsByType();
       },
     );
   }
@@ -86,14 +152,15 @@ class TicketsCubit extends Cubit<TicketsState> {
     );
   }
 
-  Future<void> filterTickets() async {
+  Future<void> filterTicketsByType() async {
     if (allTickets.isEmpty) {
       log('allTickets is empty, fetching tickets...');
       await getTickets();
     }
-    filteredTickets = allTickets
+    filteredTicketsByType = allTickets
         .where((ticket) => ticket.typeTicket == _filters[currentFilterIdx])
         .toList();
+    searchResultTickets = filteredTicketsByType;
     if (searchController.text.isNotEmpty) {
       searchTickets(searchController.text);
     } else {
@@ -104,14 +171,19 @@ class TicketsCubit extends Cubit<TicketsState> {
   void searchTickets(String query) {
     searchController.text = query;
     if (query.isEmpty) {
-      filterTickets();
-    } else {
-      filteredTickets = filteredTickets.where((ticket) {
-        final nameEnterprise = ticket.nameEnterprise ?? '';
-        final nameClient = ticket.nameClient ?? '';
-        return nameEnterprise.contains(query) || nameClient.contains(query);
-      }).toList();
+      searchResultTickets = filteredTicketsByType;
+      emit(TicketsFiltered());
+      return;
     }
+
+    searchResultTickets = filteredTicketsByType.where((ticket) {
+      final nameEnterprise = ticket.nameEnterprise ?? '';
+      final nameClient = ticket.nameClient ?? '';
+      final idTicket = ticket.idTicket;
+      return nameEnterprise.contains(query) ||
+          nameClient.contains(query) ||
+          idTicket.contains(query);
+    }).toList();
     emit(TicketsFiltered());
   }
 }

@@ -3,7 +3,6 @@ import 'package:crm_smart/features/clients_care/clients_tickets/domain/use_cases
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
@@ -29,14 +28,20 @@ class TicketCloseDialog extends StatefulWidget {
 }
 
 class _TicketCloseDialogState extends State<TicketCloseDialog> {
+  late final TicketsCubit ticketsCubit;
+  late final ticket_vm ticketVm;
   final closeTicketFormKey = GlobalKey<FormState>();
   final notesController = TextEditingController();
-  List<TicketCategoryModel> selectedCategories = [];
-  List<TicketSubCategoryModel> selectedSubCategories = [];
+
+  @override
+  void initState() {
+    ticketsCubit = context.read<TicketsCubit>();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ticketCubit = context.read<TicketsCubit>();
     return SimpleDialog(
         titlePadding: const EdgeInsets.all(15),
         contentPadding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
@@ -79,26 +84,40 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                         ),
                       ),
                       CustomMultiSelectionDropdown<TicketCategoryModel>(
-                        items: Provider.of<ticket_vm>(context, listen: false)
-                            .categoriesList,
+                        items: ticketsCubit.allCategoriesList,
                         selectedItems: [],
                         hint: 'التصنيف',
                         isRequired: true,
                         onChanged: (data) {
-                          selectedCategories = data;
+                          ticketsCubit.selectedCategoriesList = data;
+                          ticketsCubit.filterSubCategories();
                         },
                         itemAsString: (item) => item!.categoryAr,
                       ),
-                      CustomMultiSelectionDropdown<TicketSubCategoryModel>(
-                        items: Provider.of<ticket_vm>(context, listen: false)
-                            .subCategoriesList,
-                        selectedItems: [],
-                        hint: 'التصنيف الفرعي',
-                        isRequired: true,
-                        onChanged: (data) {
-                          selectedSubCategories = data;
+                      BlocBuilder<TicketsCubit, TicketsState>(
+                        buildWhen: (previous, current) {
+                          return current is SubCategoriesLoaded ||
+                              current is SubCategoriesLoading ||
+                              current is SubCategoriesError;
                         },
-                        itemAsString: (item) => item!.subCategoryAr,
+                        builder: (context, state) {
+                          if (ticketsCubit
+                              .filteredSubCategoriesByCategories.isEmpty) {
+                            return SizedBox.shrink();
+                          }
+                          return CustomMultiSelectionDropdown<
+                              TicketSubCategoryModel>(
+                            items:
+                                ticketsCubit.filteredSubCategoriesByCategories,
+                            selectedItems: [],
+                            hint: 'التصنيف الفرعي',
+                            isRequired: true,
+                            onChanged: (data) {
+                              ticketsCubit.selectedSubCategoriesList = data;
+                            },
+                            itemAsString: (item) => item!.subCategoryAr,
+                          );
+                        },
                       ),
                       SizedBox(height: 10),
                       BlocBuilder<TicketsCubit, TicketsState>(
@@ -111,7 +130,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                           if (state is EditTicketTypeError) {
                             return CustomErrorWidget(
                               onPressed: () async {
-                                await _onCloseDialog(ticketCubit, context);
+                                await _onCloseDialog(ticketsCubit, context);
                               },
                             );
                           }
@@ -119,7 +138,8 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                             text: 'تثبيت',
                             isLoading: state is EditTicketTypeLoading,
                             onPressed: () async {
-                              await _onCloseDialog(ticketCubit, context);
+                              await _onCloseDialog(ticketsCubit, context);
+                              await ticketsCubit.getTickets();
                             },
                           );
                         },
@@ -143,9 +163,9 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
         notes: notesController.text,
         typeTicket: TicketTypesEnum.close.name,
         categoriesTicketFk:
-            "[${selectedCategories.map((e) => e.id).toList().join(',')}]",
+            "[${ticketsCubit.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
         subcategoriesTicket:
-            "[${selectedSubCategories.map((e) => e.id).toList().join(',')}]",
+            "[${ticketsCubit.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
       ));
       Navigator.of(context, rootNavigator: true).pop();
       Navigator.pop(context);

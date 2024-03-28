@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -37,12 +37,7 @@ class TicketCard extends StatelessWidget {
                 child: Center(
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(context,
-                          CupertinoPageRoute(builder: (context) {
-                        return TicketDetailsPage(
-                          ticketModel: ticket,
-                        );
-                      }));
+                      AppNavigator.push(TicketDetailsPage(ticketModel: ticket));
                     },
                     child: Container(
                       decoration: BoxDecoration(color: kWhiteColor),

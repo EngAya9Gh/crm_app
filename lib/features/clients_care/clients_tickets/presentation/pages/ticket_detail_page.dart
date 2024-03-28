@@ -7,6 +7,7 @@ import '../../../../../function_global.dart';
 import '../../../../../ui/widgets/custom_widget/rowdivided.dart';
 import '../../../../../view_model/ticket_vm.dart';
 import '../../data/models/ticket_model.dart';
+import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/ticket_details_buttons.dart';
 
 class TicketDetailsPage extends StatefulWidget {
@@ -24,14 +25,20 @@ class TicketDetailsPage extends StatefulWidget {
 
 class _TicketDetailsPageState extends State<TicketDetailsPage> {
   late final ticket_vm ticketVm;
+  late final TicketsCubit ticketsCubit;
 
   @override
   void initState() {
+    ticketsCubit = context.read<TicketsCubit>();
+    ticketsCubit.selectedCategoriesList = [];
+    ticketsCubit.selectedSubCategoriesList = [];
+    ticketsCubit.filteredSubCategoriesByCategories = [];
     ticketVm = context.read<ticket_vm>();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ticketVm.getCategories();
-      ticketVm.getSubCategories();
+      ticketsCubit
+          .getCategories()
+          .then((value) => ticketsCubit.getSubCategories());
     });
 
     super.initState();
@@ -131,6 +138,20 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                 cardRowDivided(
                   title: 'تفاصيل التذكرة',
                   value: widget.ticketModel.detailsProblem,
+                  isExpanded: true,
+                ),
+                cardRowDivided(
+                  title: 'الفئات',
+                  value: widget.ticketModel.categoriesTicketFk
+                      ?.map((e) => e.categoryAr)
+                      .join(', '),
+                  isExpanded: true,
+                ),
+                cardRowDivided(
+                  title: 'الفئات الفرعية',
+                  value: widget.ticketModel.subcategoriesTicketFk
+                      ?.map((e) => e.subCategoryAr)
+                      .join(', '),
                   isExpanded: true,
                 ),
                 SizedBox(height: 10),
