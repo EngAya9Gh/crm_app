@@ -69,11 +69,11 @@ class _ReopenTicketButtonState extends State<ReopenTicketButton> {
                           state is EditTicketLoading
                               ? CircularProgressIndicator()
                               : TextButton(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     _formKey.currentState?.save();
                                     if (!_formKey.currentState!.validate())
                                       return;
-                                    context
+                                    await context
                                         .read<EditTicketCubit>()
                                         .editTicketType(EditTicketTypeParams(
                                           idTicket: widget.ticketModel.idTicket,
@@ -81,6 +81,7 @@ class _ReopenTicketButtonState extends State<ReopenTicketButton> {
                                               TicketTypesEnum.reopen.nameEn,
                                           notes: notesController.text,
                                         ));
+                                    AppNavigator.pop();
                                   },
                                   child: Text('نعم'),
                                 ),

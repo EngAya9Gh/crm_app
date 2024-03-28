@@ -12,6 +12,7 @@ class CardRowDivided extends StatelessWidget {
     Key? key,
     this.maxLines = 1,
     this.valueAsWidget,
+    this.crossAxisAlignment,
   }) : super(key: key);
   var alignment;
   String title;
@@ -19,6 +20,7 @@ class CardRowDivided extends StatelessWidget {
   bool? isExpanded = false;
   final int maxLines;
   final Widget? valueAsWidget;
+  final CrossAxisAlignment? crossAxisAlignment;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class CardRowDivided extends StatelessWidget {
       children: [
         Row(
           mainAxisAlignment: alignment ?? MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
           children: [
             Text(
               title,
@@ -44,25 +46,29 @@ class CardRowDivided extends StatelessWidget {
                         flex: 1,
                         child: Align(
                           alignment: Alignment.bottomLeft,
-                          child: _handleMultiLinesText(),
+                          child: _handleMultiLinesText(context),
                         ))
-                    : _handleMultiLinesText(),
+                    : _handleMultiLinesText(context),
           ],
         ),
       ],
     );
   }
 
-  Text _handleMultiLinesText() {
+  Widget _handleMultiLinesText(BuildContext context) {
     return maxLines > 1
-        ? Text(
-            value!,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontFamily: kfontfamily2,
+        ? SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            child: Text(
+              value!,
+              textDirection: TextDirection.ltr,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontFamily: kfontfamily2,
+              ),
+              maxLines: maxLines,
+              overflow: TextOverflow.ellipsis,
             ),
-            maxLines: maxLines,
-            overflow: TextOverflow.ellipsis,
           )
         : Text(
             value!,
