@@ -33,22 +33,6 @@ class GetTicketByIdError extends TicketsState {
   GetTicketByIdError(this.message);
 }
 
-// edit ticket type
-
-class EditTicketTypeLoading extends TicketsState {}
-
-class EditTicketTypeLoaded extends TicketsState {
-  final TicketModel ticket;
-
-  EditTicketTypeLoaded(this.ticket);
-}
-
-class EditTicketTypeError extends TicketsState {
-  final String message;
-
-  EditTicketTypeError(this.message);
-}
-
 // filter
 class TicketsFiltered extends TicketsState {}
 

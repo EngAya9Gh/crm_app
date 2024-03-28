@@ -122,14 +122,9 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                         },
                       ),
                       SizedBox(height: 10),
-                      BlocBuilder<TicketsCubit, TicketsState>(
-                        buildWhen: (previous, current) {
-                          return current is EditTicketTypeLoading ||
-                              current is EditTicketTypeLoaded ||
-                              current is EditTicketTypeError;
-                        },
+                      BlocBuilder<EditTicketCubit, EditTicketState>(
                         builder: (context, state) {
-                          if (state is EditTicketTypeError) {
+                          if (state is EditTicketError) {
                             return CustomErrorWidget(
                               onPressed: () async {
                                 await _onCloseDialog(ticketsCubit, context);
@@ -138,7 +133,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                           }
                           return AppElevatedButton(
                             text: 'تثبيت',
-                            isLoading: state is EditTicketTypeLoading,
+                            isLoading: state is EditTicketLoading,
                             onPressed: () async {
                               await _onCloseDialog(ticketsCubit, context);
                               await ticketsCubit.getTickets();

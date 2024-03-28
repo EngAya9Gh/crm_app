@@ -1,6 +1,3 @@
-import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/presentation/widgets/close_ticket_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,13 +5,15 @@ import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../../ui/screen/client/transfer_client.dart';
 import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../data/models/ticket_model.dart';
+import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../pages/ticket_rate_page.dart';
+import 'close_ticket_button.dart';
 import 'recieve_ticket_button.dart';
+import 'reopen_ticket_button.dart';
 
 class TicketDetailsButtons extends StatelessWidget {
   const TicketDetailsButtons({
@@ -41,18 +40,18 @@ class TicketDetailsButtons extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // opened ticket
+          // receive ticket button
           if (currentTicketType == TicketTypesEnum.open &&
               context.read<PrivilegeCubit>().checkPrivilege('71')) ...[
             ReceiveTicketButton(ticketModel: ticketModel),
           ],
-          // closed ticket
+          // close ticket button
           if (currentTicketType != TicketTypesEnum.close &&
               currentTicketType != TicketTypesEnum.rate &&
               context.read<PrivilegeCubit>().checkPrivilege('72')) ...[
             CloseTicketButton(ticketModel: ticketModel),
           ],
-          // received ticket
+          // transfer ticket button
           if (currentTicketType == TicketTypesEnum.receive &&
               context.read<PrivilegeCubit>().checkPrivilege('75')) ...[
             Expanded(
@@ -75,17 +74,18 @@ class TicketDetailsButtons extends StatelessWidget {
             )
           ],
           SizedBox(width: 5),
+          // reopen ticket button
+          if (currentTicketType == TicketTypesEnum.close) ...[
+            ReopenTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
+          ],
+          // client file button
           Expanded(
             child: ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(kMainColor)),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => ProfileClient(
-                              idClient: ticketModel.fkClient,
-                            )));
+                AppNavigator.push(TicketRatePage(ticket_model: ticketModel));
               },
               child: Text(currentTicketType == TicketTypesEnum.close ||
                       currentTicketType == TicketTypesEnum.rate
@@ -94,6 +94,7 @@ class TicketDetailsButtons extends StatelessWidget {
             ),
           ),
           SizedBox(width: 5),
+          // rate ticket button
           if (currentTicketType == TicketTypesEnum.close) ...[
             Expanded(
               child: ElevatedButton(
