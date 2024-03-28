@@ -36,7 +36,7 @@ class TicketsDataSourceImpl implements TicketsDataSource {
         data: params.toMap(),
       );
       final data = apiDataHandler(response);
-      return Right(TicketModel.fromJson(data));
+      return Right(TicketModel.fromMap(data));
     } on AppException catch (e) {
       return Left(e.message);
     }
@@ -52,7 +52,7 @@ class TicketsDataSourceImpl implements TicketsDataSource {
         data: params.toMap(),
       );
       final data = apiDataHandler(response);
-      return Right(TicketModel.fromJson(data));
+      return Right(TicketModel.fromMap(data));
     } on AppException catch (e) {
       return Left(e.message);
     }
@@ -66,7 +66,7 @@ class TicketsDataSourceImpl implements TicketsDataSource {
         endPoint: EndPoints.tickets.getTickets,
       );
       final data = apiDataHandler(response);
-      return Right((data as List).map((e) => TicketModel.fromJson(e)).toList());
+      return Right((data as List).map((e) => TicketModel.fromMap(e)).toList());
     } on AppException catch (e) {
       return Left(e.message);
     }
@@ -81,7 +81,7 @@ class TicketsDataSourceImpl implements TicketsDataSource {
         endPoint: "${EndPoints.tickets.getTicketById}${params.id}",
       );
       final data = apiDataHandler(response);
-      return Right(TicketModel.fromJson(data));
+      return Right(TicketModel.fromMap(data));
     } on AppException catch (e) {
       return Left(e.message);
     }

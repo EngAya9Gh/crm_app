@@ -22,6 +22,24 @@ extension TicketTypeExtension on TicketTypesEnum {
     }
   }
 
+  // get current ticket type from the en name
+  static TicketTypesEnum getTicketType(String? name) {
+    switch (name) {
+      case 'open':
+        return TicketTypesEnum.open;
+      case 'reopen':
+        return TicketTypesEnum.reopen;
+      case 'recive':
+        return TicketTypesEnum.receive;
+      case 'close':
+        return TicketTypesEnum.close;
+      case 'rate':
+        return TicketTypesEnum.rate;
+      default:
+        return TicketTypesEnum.open;
+    }
+  }
+
   String get nameAr {
     switch (this) {
       case TicketTypesEnum.open:

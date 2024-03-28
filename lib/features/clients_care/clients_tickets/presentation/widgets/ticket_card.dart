@@ -56,7 +56,7 @@ class TicketCard extends StatelessWidget {
                                       fontFamily: kfontfamily2),
                                 ),
                                 Text(
-                                  "تاريخ فتح التذكرة ${ticket.status?.first.first.dateState}",
+                                  "التاريخ ${ticket.status?.first.dateState}",
                                   style: TextStyle(
                                       color: kMainColor,
                                       fontFamily: kfontfamily2),
