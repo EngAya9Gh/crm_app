@@ -9,6 +9,7 @@ import '../../data/models/ticket_model.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
 import '../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../../domain/use_cases/get_ticket_by_id_usecase.dart';
+import '../../domain/use_cases/transfer_ticket_usecase.dart';
 
 abstract class TicketsDataSource {
   Future<Either<String, List<TicketModel>>> getTickets();
@@ -19,6 +20,8 @@ abstract class TicketsDataSource {
       EditTicketTypeParams params);
 
   Future<Either<String, TicketModel>> addTicket(AddTicketParams params);
+
+  Future<Either<String, dynamic>> transferTicket(TransferTicketParams params);
 }
 
 @LazySingleton(as: TicketsDataSource)
@@ -82,6 +85,21 @@ class TicketsDataSourceImpl implements TicketsDataSource {
       );
       final data = apiDataHandler(response);
       return Right(TicketModel.fromMap(data));
+    } on AppException catch (e) {
+      return Left(e.message);
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> transferTicket(
+      TransferTicketParams params) async {
+    try {
+      _api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+
+      return Right(_api.post(
+        endPoint: "${EndPoints.tickets.transferTicket}${params.idTicket}",
+        data: params.toMap(),
+      ));
     } on AppException catch (e) {
       return Left(e.message);
     }

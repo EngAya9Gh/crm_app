@@ -739,7 +739,6 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //isapproved
   void removeclient(idclient) {
     int index =
         listClient.indexWhere((element) => element.idClients == idclient);

@@ -210,4 +210,5 @@ class _Tickets {
   final String getTicketById = 'getTicketById/';
   final String editTicketType = 'editTicketType/';
   final String addTicket = 'addTicket';
+  final String transferTicket = 'TransferTicket/';
 }

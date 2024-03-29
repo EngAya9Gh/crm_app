@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/clients_care/clients_tickets/domain/use_cases/transfer_ticket_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -30,5 +31,10 @@ class TicketsRepoImpl implements TicketsRepo {
 
   Future<Either<String, TicketModel>> addTicket(AddTicketParams params) {
     return _dataSource.addTicket(params);
+  }
+
+  @override
+  Future<Either<String, dynamic>> transferTicket(TransferTicketParams params) {
+    return _dataSource.transferTicket(params);
   }
 }

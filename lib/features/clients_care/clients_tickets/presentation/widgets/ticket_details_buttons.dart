@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
-import '../../../../../ui/screen/client/transfer_client.dart';
 import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../data/models/ticket_model.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
-import '../pages/ticket_rate_page.dart';
+import 'client_profile_button.dart';
 import 'close_ticket_button.dart';
+import 'rate_after_closing_button.dart';
 import 'recieve_ticket_button.dart';
 import 'reopen_ticket_button.dart';
+import 'transfer_ticket_button.dart';
 
 class TicketDetailsButtons extends StatelessWidget {
   const TicketDetailsButtons({
@@ -34,81 +34,64 @@ class TicketDetailsButtons extends StatelessWidget {
         } else if (state is EditTicketSuccess) {
           AppNavigator.pop();
           context.read<TicketsCubit>().getTickets();
-          AppConstants.showSnakeBar(context, 'تم استلام التذكرة بنجاح');
+          AppConstants.showSnakeBar(context, 'تمت العملية بنجاح');
         }
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // receive ticket button
-          if (currentTicketType == TicketTypesEnum.open &&
-              context.read<PrivilegeCubit>().checkPrivilege('71')) ...[
+          if (isAllowedToReceive(currentTicketType, context)) ...[
             ReceiveTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
           ],
           // close ticket button
-          if (currentTicketType != TicketTypesEnum.close &&
-              currentTicketType != TicketTypesEnum.rate &&
-              context.read<PrivilegeCubit>().checkPrivilege('72')) ...[
+          if (_isAllowedToClose(currentTicketType, context)) ...[
             CloseTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
           ],
           // transfer ticket button
-          if (currentTicketType == TicketTypesEnum.receive &&
-              context.read<PrivilegeCubit>().checkPrivilege('75')) ...[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5.0),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(kMainColor)),
-                  onPressed: () {
-                    AppNavigator.push(transferClient(
-                      name_enterprise: ticketModel.nameEnterprise.toString(),
-                      idclient: ticketModel.fkClient.toString(),
-                      idticket: ticketModel.idTicket,
-                      type: "ticket",
-                    ));
-                  },
-                  child: Text('تحويل\nالتذكرة'),
-                ),
-              ),
-            )
+          if (_isAllowedToTransfer(currentTicketType, context)) ...[
+            TransferTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
           ],
-          SizedBox(width: 5),
           // reopen ticket button
           if (currentTicketType == TicketTypesEnum.close) ...[
             ReopenTicketButton(ticketModel: ticketModel),
             SizedBox(width: 5),
           ],
           // client file button
-          Expanded(
-            child: ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(kMainColor)),
-              onPressed: () {
-                AppNavigator.push(TicketRatePage(ticket_model: ticketModel));
-              },
-              child: Text(currentTicketType == TicketTypesEnum.close ||
-                      currentTicketType == TicketTypesEnum.rate
-                  ? 'ملف العميل'
-                  : 'ملف\nالعميل'),
-            ),
-          ),
+          ClientProfileButton(ticketModel: ticketModel),
           SizedBox(width: 5),
           // rate ticket button
           if (currentTicketType == TicketTypesEnum.close) ...[
-            Expanded(
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(kMainColor)),
-                onPressed: () {
-                  AppNavigator.push(TicketRatePage(ticket_model: ticketModel));
-                },
-                child: Text('تقييم بعد الإغلاق'),
-              ),
-            )
+            RateAfterClosingButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
           ],
         ],
       ),
     );
   }
+
+  bool isAllowedToReceive(
+      TicketTypesEnum currentTicketType, BuildContext context) {
+    return _isNewTicket(currentTicketType) &&
+        context.read<PrivilegeCubit>().checkPrivilege('71');
+  }
+
+  bool _isAllowedToTransfer(
+      TicketTypesEnum currentTicketType, BuildContext context) {
+    return currentTicketType == TicketTypesEnum.receive &&
+        context.read<PrivilegeCubit>().checkPrivilege('75');
+  }
+
+  bool _isAllowedToClose(
+      TicketTypesEnum currentTicketType, BuildContext context) {
+    return currentTicketType != TicketTypesEnum.close &&
+        currentTicketType != TicketTypesEnum.rate &&
+        context.read<PrivilegeCubit>().checkPrivilege('72');
+  }
+
+  bool _isNewTicket(TicketTypesEnum type) =>
+      (type == TicketTypesEnum.open || type == TicketTypesEnum.reopen);
 }

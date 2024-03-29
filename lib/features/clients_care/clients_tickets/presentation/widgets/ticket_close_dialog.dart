@@ -71,7 +71,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                         child: EditTextFormField(
                           maxline: 10,
                           paddcustom: EdgeInsets.symmetric(
-                            horizontal: 0,
+                            horizontal: 10,
                             vertical: 10,
                           ),
                           hintText: 'ملاحظات الإغلاق',

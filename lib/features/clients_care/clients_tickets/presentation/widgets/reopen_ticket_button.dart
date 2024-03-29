@@ -1,13 +1,13 @@
-import 'package:crm_smart/core/common/enums/ticket_types_enum.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/domain/use_cases/edit_ticket_type_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/enums/ticket_types_enum.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../data/models/ticket_model.dart';
+import '../../domain/use_cases/edit_ticket_type_usecase.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 
 class ReopenTicketButton extends StatefulWidget {
@@ -45,25 +45,22 @@ class _ReopenTicketButtonState extends State<ReopenTicketButton> {
                         // notes field
                         content: Form(
                           key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              EditTextFormField(
-                                paddcustom: EdgeInsets.all(10),
-                                maxline: 5,
-                                hintText: 'ملاحظات الإعادة',
-                                obscureText: false,
-                                controller: notesController,
-                                vaildator: (value) {
-                                  if (value?.trim().isEmpty ?? true) {
-                                    return AppStrings.messageEmpty;
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
+                          child: EditTextFormField(
+                            paddcustom: EdgeInsets.all(10),
+                            maxline: 4,
+                            hintText: 'ملاحظات الإعادة',
+                            obscureText: false,
+                            controller: notesController,
+                            vaildator: (value) {
+                              if (value?.trim().isEmpty ?? true) {
+                                return AppStrings.messageEmpty;
+                              }
+                              return null;
+                            },
                           ),
                         ),
+                        contentPadding: EdgeInsets.only(
+                            top: 10, left: 10, right: 10, bottom: 0),
                         actionsAlignment: MainAxisAlignment.spaceBetween,
                         actions: [
                           state is EditTicketLoading

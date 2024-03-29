@@ -59,7 +59,8 @@ class EditTextFormField extends StatelessWidget {
       minLines: minLines,
       decoration: InputDecoration(
         //icon: ,
-        contentPadding: paddcustom ?? EdgeInsets.all(2),
+        contentPadding:
+            paddcustom ?? EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         prefixIcon: icon == null
             ? null
             : Icon(

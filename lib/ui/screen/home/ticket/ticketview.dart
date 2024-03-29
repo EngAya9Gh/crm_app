@@ -1,5 +1,5 @@
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/screen/client/transfer_client.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -231,16 +231,16 @@ class _TicketViewState extends State<TicketView> {
                                               context,
                                               CupertinoPageRoute(
                                                   builder: (context) =>
-                                                      transferClient(
-                                                        name_enterprise: widget
+                                                      TransferClientPage(
+                                                        nameEnterprise: widget
                                                             .ticketModel
                                                             .nameEnterprise
                                                             .toString(),
-                                                        idclient: widget
+                                                        idClient: widget
                                                             .ticketModel
                                                             .fkClient
                                                             .toString(),
-                                                        idticket: widget
+                                                        idTicket: widget
                                                             .ticketModel
                                                             .idTicket,
                                                         type: "ticket",

@@ -46,8 +46,8 @@ class _ApiInterceptors extends Interceptor {
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     getIt<Logger>()
         .i("Response: ${response.statusCode} ${response.statusMessage}");
-    getIt<Logger>().i("Response headers: ${response.headers}");
-    // getIt<Logger>().i("Response data: ${response.data}");
+    getIt<Logger>()
+        .i("Response url: ${response.requestOptions.uri.toString()}");
 
     super.onResponse(response, handler);
   }

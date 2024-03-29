@@ -61,7 +61,7 @@ extension TicketTypeExtension on TicketTypesEnum {
       case TicketTypesEnum.open:
         return 'جديدة';
       case TicketTypesEnum.reopen:
-        return 'معاد فتحها';
+        return 'إعادة فتح';
       case TicketTypesEnum.receive:
         return 'قيد التنفيذ';
       case TicketTypesEnum.close:
