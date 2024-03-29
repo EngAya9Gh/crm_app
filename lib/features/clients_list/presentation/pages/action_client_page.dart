@@ -141,7 +141,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
         : widget.client?.type_classification == null
             ? null
             : widget.client?.type_classification!;
-
+  print('_selectedClientsClassification');
+  print(_selectedClientsClassification);
     selectedSourceClient = !isEdit
         ? null
         : widget.client?.sourceClient == null
@@ -172,7 +173,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                     .onChangeSelectedActivityTypeId(
                         widget.client?.activityTypeFk)
                 : null);
-
+      print('companyProvider.selectedValueOut.toString() init');
+      print(companyProvider.selectedValueOut.toString());
       companyProvider
         ..initValueOut()
         ..getcompany(
@@ -683,8 +685,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                           (_selectedClientRegistrationTye ==
                                                   "خاطئ" &&
                                               isEdit)
-                                      ? AppDropdownButtonFormField<String,
-                                          String>(
+                                      ? AppDropdownButtonFormField<String?,
+                                          String?>(
                                           items: clientsClassificationList,
                                           hint: "نوع التصنيف*",
                                           itemAsValue: (String? item) => item!,
@@ -770,17 +772,19 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               if (company.isloading) {
                                 return CustomLoadingIndicator();
                               }
-                              company.selectedValueOut = company.list_company
-                                  .firstWhereOrNull((element) =>
-                                      element.id_Company ==
-                                      widget.client?.preSystem)
-                                  ?.id_Company;
-                              return AppDropdownButtonFormField<CompanyModel,
+                              // company.selectedValueOut = company.list_company
+                              //     .firstWhereOrNull((element) =>
+                              //         element.id_Company ==
+                              //         widget.client?.preSystem)
+                              //     ?.id_Company;
+                              return AppDropdownButtonFormField<CompanyModel?,
                                   String>(
                                 items: company.list_company,
                                 isWithImage: true,
                                 onChange: (value) {
                                   company.changevalueOut(value.toString());
+                                  print('companyProvider.selectedValueOut.toString()');
+                                  print(companyProvider.selectedValueOut.toString());
                                 },
                                 hint: "نظام سابق",
                                 itemAsValue: (CompanyModel? item) =>
@@ -790,117 +794,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               );
                             },
                           ),
-                          //   10.verticalSpace,
-                          //       if (_privilegeCubit.checkPrivilege('27') && isShowingClientStatus && isEdit) ...{
-                          //         AppDropdownButtonFormField<String, String>(
-                          //           items: clientTypeProvider.type_of_client,
-                          //           onChange: (status) {
-                          //             clientTypeProvider.changevalue(status.toString());
-                          //           },
-                          //           hint: "حالة العميل",
-                          //           itemAsValue: (String? item) => item,
-                          //           itemAsString: (item) => item!,
-                          //           value: clientTypeProvider.selectedValuemanag,
-                          //         ),
-                          //         10.verticalSpace,
-                          //       },
-                          //       if (_privilegeCubit.checkPrivilege('27') &&
-                          //           isEdit &&
-                          //           clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
-                          //         Row(
-                          //           crossAxisAlignment: CrossAxisAlignment.center,
-                          //           children: [
-                          //             Expanded(
-                          //               flex: 3,
-                          //               child: AppTextField(
-                          //                 labelText: "عرض سعر",
-                          //                 maxLines: 1,
-                          //                 controller: offerPriceController,
-                          //                 textInputType: TextInputType.number,
-                          //               ),
-                          //             ),
-                          //             10.horizontalSpace,
-                          //             Expanded(
-                          //               flex: 5,
-                          //               child: TextFormField(
-                          //                 validator: (value) {
-                          //                   if (dateOfferPrice == DateTime(1, 1, 1)) {
-                          //                     return 'يرجى تعيين التاريخ ';
-                          //                   }
-                          //                   return null;
-                          //                 },
-                          //                 style: context.textTheme.titleSmall.r?.copyWith(
-                          //                   color: context.colorScheme.onBackground,
-                          //                   decoration: TextDecoration.none,
-                          //                   decorationColor: context.colorScheme.borderTextField,
-                          //                 ),
-                          //                 textAlignVertical: TextAlignVertical.center,
-                          //                 textAlign: TextAlign.center,
-                          //                 decoration: InputDecoration(
-                          //                     prefixIcon: Icon(
-                          //                       Icons.date_range,
-                          //                       color: kMainColor,
-                          //                     ),
-                          //                     hintStyle: const TextStyle(
-                          //                         color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                          //                     hintText: intl.DateFormat("yyyy/MM/dd")
-                          //                         .format(Provider.of<datetime_vm>(context, listen: true).valuedateTime),
-                          //                     border: OutlineInputBorder(
-                          //                       borderSide: BorderSide(color: context.colorScheme.primary),
-                          //                       borderRadius: BorderRadius.circular(10).r,
-                          //                     ),
-                          //                     focusedBorder: OutlineInputBorder(
-                          //                       borderSide: BorderSide(color: context.colorScheme.primary),
-                          //                       borderRadius: BorderRadius.circular(10).r,
-                          //                     ),
-                          //                     enabledBorder: OutlineInputBorder(
-                          //                       borderSide: BorderSide(color: context.colorScheme.primary),
-                          //                       borderRadius: BorderRadius.circular(10).r,
-                          //                     ),
-                          //                     filled: false,
-                          //                     isDense: true,
-                          //                     isCollapsed: true),
-                          //                 readOnly: true,
-                          //                 onTap: () {
-                          //                   _selectDate(context, DateTime.now());
-                          //                 },
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //         10.verticalSpace,
-                          //       },
-                          //       if (_privilegeCubit.checkPrivilege('27') &&
-                          //           isEdit &&
-                          //           clientTypeProvider.selectedValuemanag == "مستبعد") ...{
-                          //         BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-                          //           builder: (context, state) {
-                          //             return ValueListenableBuilder<String?>(
-                          //                 valueListenable: reasonReject,
-                          //                 builder: (context, value, _) {
-                          //                   return AppDropdownButtonFormField<RejectReason, String>(
-                          //                     items: state.rejectReasonsStat.getDataWhenSuccess ?? [],
-                          //                     onChange: (reason) {
-                          //                       reasonReject.value = reason;
-                          //                     },
-                          //                     hint: "أسباب الاستبعاد",
-                          //                     itemAsValue: (RejectReason? item) => item!.idRejectClient!,
-                          //                     itemAsString: (item) => item!.nameReasonReject!,
-                          //                     value: value,
-                          //                     validator: HelperFunctions.instance.requiredFiled,
-                          //                   );
-                          //                 });
-                          //           },
-                          //         ),
-                          //         10.verticalSpace,
-                          //         AppTextField(
-                          //           labelText: "سبب الاستبعاد",
-                          //           maxLines: 1,
-                          //           controller: reasonController,
-                          //           validator: HelperFunctions.instance.requiredFiled,
-                          //         ),
-                          //         10.verticalSpace,
-                          //       },
+
                         ],
                       ),
                     ),
@@ -918,7 +812,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             if (!_fromKey.currentState!.validate()) {
                               return;
                             }
-
+                            print('companyProvider.selectedValueOut.toString()');
+                            print(context.read<CompanyProvider>().selectedValueOut.toString());
                             if (isEdit) {
                               _onEditClient();
                               return;
@@ -967,7 +862,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedActivitySizeType: _selectedActivitySizeType,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
-      statusClient: companyProvider.selectedValueOut,
+      statusClient: context.read<CompanyProvider>().selectedValueOut,
       typeClient: widget.client?.typeClient != "مشترك" &&
               widget.client?.typeClient != "منسحب"
           ? _clientTypeProvider.selectedValuemanag!
@@ -1001,8 +896,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
     _clientsListBloc.add(EditClientEvent(
       editClientParams,
       onSuccess: (client) {
-        context.read<UserProvider>().changeClientClassificationTypeStatus('');
-        context.read<UserProvider>().changeClientRegistrationTypeStatus('');
+        // context.read<UserProvider>().changeClientClassificationTypeStatus('');
+        // context.read<UserProvider>().changeClientRegistrationTypeStatus('');
         Navigator.pop(context, client);
       },
     ));
@@ -1030,11 +925,12 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedActivitySizeType: _selectedActivitySizeType,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
-      statusClient: companyProvider.selectedValueOut,
+      statusClient: context.read<CompanyProvider>().selectedValueOut,
       type_record: context.read<UserProvider>().selectedClientRegistrationType,
       type_classification:
           context.read<UserProvider>().selectedClientClassificationType,
       reason_class: reasonClassController.text,
+
     );
 
     Navigator.push(

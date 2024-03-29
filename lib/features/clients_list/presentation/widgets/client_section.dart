@@ -698,8 +698,8 @@ class _ClientSectionState extends State<ClientSection> {
                     value: clientModel1.mobileuser.toString()),
 
                 if (clientModel1.reasonTransfer != null)
-                  context.read<PrivilegeCubit>().checkPrivilege('150') ==
-                              true &&
+                  // context.read<PrivilegeCubit>().checkPrivilege('150') ==
+                  //             true &&
                           clientModel1.fkusertrasfer != null
                       ? cardRow(
                           title: 'قام بتحويل العميل',
@@ -714,7 +714,7 @@ class _ClientSectionState extends State<ClientSection> {
                               clientModel1.nameusertransfer.toString()))
                       : IgnorePointer(),
 
-                context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                         (clientModel1.reasonTransfer != null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(
@@ -722,13 +722,13 @@ class _ClientSectionState extends State<ClientSection> {
                         value: clientModel1.nameTransferTo.toString())
                     : IgnorePointer(),
 
-                context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                         (clientModel1.reasonTransfer == null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
                     : IgnorePointer(),
 
-                context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                         (clientModel1.reasonTransfer != null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(title: 'حالة التحويل', value: 'معلق')
