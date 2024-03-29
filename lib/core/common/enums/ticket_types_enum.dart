@@ -59,11 +59,11 @@ extension TicketTypeExtension on TicketTypesEnum {
   String get nameAr {
     switch (this) {
       case TicketTypesEnum.open:
-        return 'جديدة';
+        return 'جديد';
       case TicketTypesEnum.reopen:
-        return 'إعادة فتح';
+        return 'اعادة فتح';
       case TicketTypesEnum.receive:
-        return 'قيد التنفيذ';
+        return 'مستلمة';
       case TicketTypesEnum.close:
         return 'مغلقة';
       case TicketTypesEnum.rate:

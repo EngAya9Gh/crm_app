@@ -1,3 +1,4 @@
+import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/common/enums/ticket_types_enum.dart';
@@ -35,7 +36,7 @@ class _ClientProfileButtonState extends State<ClientProfileButton> {
     return CustomTicketDetailsActionButton(
       isExpanded: isExpanded,
       onPressed: () {
-        AppNavigator.push(TicketRatePage(ticket_model: widget.ticketModel));
+        AppNavigator.push(ProfileClient(   idClient: widget.ticketModel.fkClient,));
       },
       text: 'ملف العميل',
     );

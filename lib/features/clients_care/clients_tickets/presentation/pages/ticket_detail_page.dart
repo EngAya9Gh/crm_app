@@ -78,6 +78,12 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
                   child: Column(
                     children: [
                       CardRowDivided(
+                        title: 'العميل',
+                        value: widget.ticketModel.nameEnterprise ?? '',
+                      ),
+                      SizedBox(height: 10),
+
+                      CardRowDivided(
                         title: 'نوع التذكرة',
                         value: widget.ticketModel.typeProblem ?? '',
                       ),

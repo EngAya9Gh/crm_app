@@ -33,17 +33,19 @@ class CardRowDivided extends StatelessWidget {
           mainAxisAlignment: alignment ?? MainAxisAlignment.spaceBetween,
           crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: context.textTheme.titleMedium?.copyWith(
-                fontSize: 14.sp,
+            Flexible(
+              child: Text(
+                title,
+                style: context.textTheme.titleMedium?.copyWith(
+                  fontSize: 14.sp,
+                ),
               ),
             ),
             valueAsWidget != null
                 ? valueAsWidget!
                 : isExpanded == true
                     ? Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Align(
                           alignment: Alignment.bottomLeft,
                           child: _handleMultiLinesText(context),
@@ -59,23 +61,27 @@ class CardRowDivided extends StatelessWidget {
     return maxLines > 1
         ? SizedBox(
             width: MediaQuery.of(context).size.width * 0.6,
-            child: Text(
+            child: Flexible(
+              child: Text(
+                value!,
+                textDirection: TextDirection.ltr,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: kfontfamily2,
+                ),
+                maxLines: maxLines,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          )
+        : Flexible(
+          child: Text(
               value!,
-              textDirection: TextDirection.ltr,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontFamily: kfontfamily2,
               ),
-              maxLines: maxLines,
-              overflow: TextOverflow.ellipsis,
             ),
-          )
-        : Text(
-            value!,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontFamily: kfontfamily2,
-            ),
-          );
+        );
   }
 }

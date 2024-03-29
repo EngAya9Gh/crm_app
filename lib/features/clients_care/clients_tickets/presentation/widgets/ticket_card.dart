@@ -56,7 +56,8 @@ class TicketCard extends StatelessWidget {
                                       fontFamily: kfontfamily2),
                                 ),
                                 Text(
-                                  "التاريخ ${ticket.status?.first.dateState}",
+                                    ticket.status!=null&&ticket.status!.isNotEmpty?
+                                    "التاريخ ${ticket.status?.first.dateState.toString()}" :'',
                                   style: TextStyle(
                                       color: kMainColor,
                                       fontFamily: kfontfamily2),

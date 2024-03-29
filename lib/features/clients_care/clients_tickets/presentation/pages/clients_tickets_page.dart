@@ -72,8 +72,8 @@ class _ClientsTicketsPageState extends State<ClientsTicketsPage> {
                   ),
                   options: GroupButtonOptions(
                       selectedColor: kMainColor,
-                      buttonWidth: 70,
-                      borderRadius: BorderRadius.circular(10)),
+                      buttonWidth: 65,
+                      borderRadius: BorderRadius.circular(5)),
                   buttons: ticketsCubit.filtersAr,
                   onSelected: (_, index, isSelected) {
                     ticketsCubit.currentFilterIdx = index;
