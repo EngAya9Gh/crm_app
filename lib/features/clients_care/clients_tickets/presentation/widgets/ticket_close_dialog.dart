@@ -1,12 +1,10 @@
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/domain/use_cases/edit_ticket_type_usecase.dart';
-import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/common/widgets/custom_error_widget.dart';
 import '../../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/widgets/custom_widget/text_form.dart';
@@ -15,6 +13,9 @@ import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../data/models/ticket_category_model.dart';
 import '../../data/models/ticket_model.dart';
 import '../../data/models/ticket_sub_category_model.dart';
+import '../../domain/use_cases/edit_ticket_type_usecase.dart';
+import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
+import '../manager/tickets_cubit/tickets_cubit.dart';
 
 class TicketCloseDialog extends StatefulWidget {
   const TicketCloseDialog({
@@ -29,14 +30,25 @@ class TicketCloseDialog extends StatefulWidget {
 }
 
 class _TicketCloseDialogState extends State<TicketCloseDialog> {
+  late final TicketsCubit ticketsCubit;
+  late final ticket_vm ticketVm;
   final closeTicketFormKey = GlobalKey<FormState>();
   final notesController = TextEditingController();
-  List<TicketCategoryModel> selectedCategories = [];
-  List<TicketSubCategoryModel> selectedSubCategories = [];
+  late final bool isClosedBefore;
+
+  @override
+  void initState() {
+    ticketsCubit = context.read<TicketsCubit>();
+    isClosedBefore = widget.ticketModel.status?.any((element) {
+          return element.stateName == TicketTypesEnum.close.nameEn;
+        }) ??
+        false;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final ticketCubit = context.read<TicketsCubit>();
     return SimpleDialog(
         titlePadding: const EdgeInsets.all(15),
         contentPadding: EdgeInsets.only(left: 15, right: 15, bottom: 20),
@@ -64,7 +76,7 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                         child: EditTextFormField(
                           maxline: 10,
                           paddcustom: EdgeInsets.symmetric(
-                            horizontal: 0,
+                            horizontal: 10,
                             vertical: 10,
                           ),
                           hintText: 'ملاحظات الإغلاق',
@@ -78,48 +90,60 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                           },
                         ),
                       ),
-                      CustomMultiSelectionDropdown<TicketCategoryModel>(
-                        items: Provider.of<ticket_vm>(context, listen: false)
-                            .categoriesList,
-                        selectedItems: [],
-                        hint: 'التصنيف',
-                        isRequired: true,
-                        onChanged: (data) {
-                          selectedCategories = data;
-                        },
-                        itemAsString: (item) => item!.categoryAr,
-                      ),
-                      CustomMultiSelectionDropdown<TicketSubCategoryModel>(
-                        items: Provider.of<ticket_vm>(context, listen: false)
-                            .subCategoriesList,
-                        selectedItems: [],
-                        hint: 'التصنيف الفرعي',
-                        isRequired: true,
-                        onChanged: (data) {
-                          selectedSubCategories = data;
-                        },
-                        itemAsString: (item) => item!.subCategoryAr,
-                      ),
+                      if (!isClosedBefore) ...[
+                        CustomMultiSelectionDropdown<TicketCategoryModel>(
+                          items: ticketsCubit.allCategoriesList,
+                          selectedItems: [],
+                          hint: 'التصنيف',
+                          isRequired: true,
+                          onChanged: (data) {
+                            ticketsCubit.selectedCategoriesList = data;
+                            ticketsCubit.filterSubCategories();
+                          },
+                          itemAsString: (item) => item!.categoryAr,
+                        ),
+                        BlocBuilder<TicketsCubit, TicketsState>(
+                          buildWhen: (previous, current) {
+                            return current is SubCategoriesLoaded ||
+                                current is SubCategoriesLoading ||
+                                current is SubCategoriesError;
+                          },
+                          builder: (context, state) {
+                            if (ticketsCubit
+                                .filteredSubCategoriesByCategories.isEmpty) {
+                              return SizedBox.shrink();
+                            }
+                            return CustomMultiSelectionDropdown<
+                                TicketSubCategoryModel>(
+                              items: ticketsCubit
+                                  .filteredSubCategoriesByCategories,
+                              selectedItems: [],
+                              hint: 'التصنيف الفرعي',
+                              isRequired: true,
+                              onChanged: (data) {
+                                ticketsCubit.selectedSubCategoriesList = data;
+                              },
+                              itemAsString: (item) => item!.subCategoryAr,
+                            );
+                          },
+                        ),
+                      ],
                       SizedBox(height: 10),
-                      BlocBuilder<TicketsCubit, TicketsState>(
-                        buildWhen: (previous, current) {
-                          return current is EditTicketTypeLoading ||
-                              current is EditTicketTypeLoaded ||
-                              current is EditTicketTypeError;
-                        },
+                      BlocBuilder<EditTicketCubit, EditTicketState>(
                         builder: (context, state) {
-                          if (state is EditTicketTypeError) {
+                          if (state is EditTicketError) {
                             return CustomErrorWidget(
                               onPressed: () async {
-                                await _onCloseDialog(ticketCubit, context);
+                                await _onCloseDialog(ticketsCubit, context);
                               },
                             );
                           }
                           return AppElevatedButton(
                             text: 'تثبيت',
-                            isLoading: state is EditTicketTypeLoading,
+                            isLoading: state is EditTicketLoading,
                             onPressed: () async {
-                              await _onCloseDialog(ticketCubit, context);
+                              await _onCloseDialog(ticketsCubit, context);
+                              await ticketsCubit.getTickets();
                             },
                           );
                         },
@@ -137,18 +161,18 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
       TicketsCubit ticketCubit, BuildContext context) async {
     if (closeTicketFormKey.currentState!.validate()) {
       closeTicketFormKey.currentState!.save();
-      await ticketCubit.editTicketType(EditTicketTypeParams(
-        idTicket: widget.ticketModel.idTicket,
-        notesTicket: notesController.text,
-        notes: notesController.text,
-        typeTicket: TicketTypesEnum.close.name,
-        categoriesTicketFk:
-            "[${selectedCategories.map((e) => e.id).toList().join(',')}]",
-        subcategoriesTicket:
-            "[${selectedSubCategories.map((e) => e.id).toList().join(',')}]",
-      ));
-      Navigator.of(context, rootNavigator: true).pop();
-      Navigator.pop(context);
+
+      await context.read<EditTicketCubit>().editTicketType(EditTicketTypeParams(
+            idTicket: widget.ticketModel.idTicket,
+            notesTicket: notesController.text,
+            notes: notesController.text,
+            typeTicket: TicketTypesEnum.close.nameEn,
+            categoriesTicketFk:
+                "[${ticketsCubit.selectedCategoriesList.map((e) => e.id).toList().join(',')}]",
+            subcategoriesTicket:
+                "[${ticketsCubit.selectedSubCategoriesList.map((e) => e.id).toList().join(',')}]",
+          ));
+      AppNavigator.pop();
     }
   }
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../function_global.dart';
-import '../../../../../ui/widgets/custom_widget/rowdivided.dart';
-import '../../../../../view_model/ticket_vm.dart';
+import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../ui/widgets/custom_widget/card_row_divided.dart';
 import '../../data/models/ticket_model.dart';
+import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/ticket_details_buttons.dart';
+import '../widgets/ticket_status_card.dart';
 
 class TicketDetailsPage extends StatefulWidget {
   const TicketDetailsPage({
@@ -23,15 +23,19 @@ class TicketDetailsPage extends StatefulWidget {
 }
 
 class _TicketDetailsPageState extends State<TicketDetailsPage> {
-  late final ticket_vm ticketVm;
+  late final TicketsCubit ticketsCubit;
 
   @override
   void initState() {
-    ticketVm = context.read<ticket_vm>();
+    ticketsCubit = context.read<TicketsCubit>();
+    ticketsCubit.selectedCategoriesList = [];
+    ticketsCubit.selectedSubCategoriesList = [];
+    ticketsCubit.filteredSubCategoriesByCategories = [];
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ticketVm.getCategories();
-      ticketVm.getSubCategories();
+      ticketsCubit
+          .getCategories()
+          .then((value) => ticketsCubit.getSubCategories());
     });
 
     super.initState();
@@ -39,143 +43,81 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final currentTicketType =
+        TicketTypeExtension.getTicketType(widget.ticketModel.typeTicket);
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${widget.ticketModel.typeTicket} #${widget.ticketModel.idTicket}",
+          "${currentTicketType.nameAr} #${widget.ticketModel.idTicket}",
           style: TextStyle(color: kWhiteColor),
         ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 10.0, top: 10, right: 10),
-        child: SingleChildScrollView(
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: Column(
-              children: [
-                if (widget.type == null)
-                  Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: TicketDetailsButtons(
-                        ticketModel: widget.ticketModel,
-                      )),
-                if (widget.ticketModel.dateClose != null) ...[
-                  cardRowDivided(
-                      title: 'قام بإغلاق التذكرة ',
-                      value: getnameshort(
-                        widget.ticketModel.fkUserClose.toString(),
-                      )),
-                  cardRowDivided(
-                    title: 'تاريخ إغلاق التذكرة ',
-                    value: widget.ticketModel.dateClose,
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: CustomScrollView(
+            slivers: [
+              // ticket details buttons
+              SliverToBoxAdapter(
+                child: widget.type == null
+                    ? TicketDetailsButtons(ticketModel: widget.ticketModel)
+                    : SizedBox.shrink(),
+              ),
+              SliverToBoxAdapter(child: SizedBox(height: 10)),
+              SliverToBoxAdapter(child: Divider(thickness: 2)),
+              // ticket details
+              SliverToBoxAdapter(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: kWhiteColor,
                   ),
-                  cardRowDivided(
-                    title: '  ملاحظات إغلاق التذكرة ',
-                    value: widget.ticketModel.notesTicket,
-                    isExpanded: true,
+                  child: Column(
+                    children: [
+                      CardRowDivided(
+                        title: 'نوع التذكرة',
+                        value: widget.ticketModel.typeProblem ?? '',
+                      ),
+                      SizedBox(height: 10),
+                      CardRowDivided(
+                        title: 'مصدر التذكرة',
+                        value: widget.ticketModel.ticketSource ?? '',
+                      ),
+                      SizedBox(height: 10),
+                      CardRowDivided(
+                        title: 'تفاصيل التذكرة',
+                        value: widget.ticketModel.detailsProblem ?? '',
+                      ),
+                    ],
                   ),
-                ],
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey,
                 ),
-                // for (int i = 0;
-                //     i < widget.ticketModel.transferticket!.length;
-                //     i++)
-                //   _tranferall(
-                //       widget.ticketModel.transferticket![i]!.nameuserto
-                //           ,
-                //       widget.ticketModel.transferticket![i]!.nameuserfrom
-                //           ,
-                //       widget.ticketModel.transferticket![i]!.date_assigntr
-                //           ,
-                //       widget
-                //           .ticketModel.transferticket![i]!.resoantransfer_ticket
-                //           ),
-
-                if (widget.ticketModel.dateRecive != null) ...[
-                  cardRowDivided(
-                      title: 'قام باستلام التذكرة ',
-                      value: getnameshort(
-                        widget.ticketModel.fkUserRecive.toString(),
-                      )),
-                ],
-                widget.ticketModel.dateRecive != null
-                    ? cardRowDivided(
-                        title: 'تاريخ استلام التذكرة ',
-                        value: widget.ticketModel.dateRecive)
-                    : Container(),
-
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey,
+              ),
+              SliverToBoxAdapter(child: Divider(thickness: 2)),
+              // ticket status details
+              SliverList.separated(
+                itemCount: widget.ticketModel.status?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return TicketStatusCard(
+                    ticketModel: widget.ticketModel,
+                    statusModel: widget.ticketModel.status![index],
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return SizedBox(height: 10);
+                },
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Divider(thickness: 2),
+                    SizedBox(height: 10),
+                  ],
                 ),
-                cardRowDivided(
-                    title: 'قام بفتح التذكرة ',
-                    value:
-                        getnameshort(widget.ticketModel.fkUserOpen.toString())),
-                cardRowDivided(
-                    title: 'تاريخ فتح التذكرة ',
-                    value: widget.ticketModel.dateOpen),
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
-                cardRowDivided(
-                    title: 'نوع التذكرة',
-                    value: widget.ticketModel.typeProblem),
-                cardRowDivided(
-                    title: 'مصدر التذكرة',
-                    value: widget.ticketModel.ticketSource),
-                cardRowDivided(
-                  title: 'تفاصيل التذكرة',
-                  value: widget.ticketModel.detailsProblem,
-                  isExpanded: true,
-                ),
-                SizedBox(height: 10),
-                Divider(
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
-                //cardRowDivided( title: 'تقييم بعد الإغلاق',value:  ticketModel.rate),
-                widget.ticketModel.dateRate != null
-                    ? Row(
-                        children: [
-                          Text('تقييم بعد الإغلاق'),
-                          RatingBar.builder(
-                            initialRating:
-                                double.parse(widget.ticketModel.rate),
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: false,
-                            // glow: true,
-                            ignoreGestures: true,
-                            itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                            itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            onRatingUpdate: (double value) {},
-                          ),
-                        ],
-                      )
-                    : Container(),
-
-                widget.ticketModel.dateRate != null
-                    ? cardRowDivided(
-                        title: 'قام بالتقييم',
-                        value: widget.ticketModel.fkuserRate)
-                    : Container(),
-
-                widget.ticketModel.dateRate != null
-                    ? cardRowDivided(
-                        title: 'تاريخ التقييم',
-                        value: widget.ticketModel.dateRate)
-                    : Container(),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

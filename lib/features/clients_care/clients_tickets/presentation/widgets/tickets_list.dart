@@ -23,15 +23,19 @@ class TicketsList extends StatelessWidget {
         if (state is GetTicketsLoading) {
           return CustomLoadingIndicator();
         } else if (state is GetTicketsError) {
-          return CustomErrorWidget(onPressed: () {
-            ticketsCubit.getTickets();
+          return CustomErrorWidget(onPressed: () async {
+            await ticketsCubit.getTickets();
           });
+        } else if (ticketsCubit.searchResultTickets.isEmpty) {
+          return Center(
+            child: Text('لا توجد تذاكر'),
+          );
         }
         return ListView.builder(
           scrollDirection: Axis.vertical,
-          itemCount: ticketsCubit.filteredTickets.length,
+          itemCount: ticketsCubit.searchResultTickets.length,
           itemBuilder: (context, index) {
-            return TicketCard(ticket: ticketsCubit.filteredTickets[index]);
+            return TicketCard(ticket: ticketsCubit.searchResultTickets[index]);
           },
         );
       },

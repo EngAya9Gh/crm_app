@@ -52,7 +52,7 @@ class ticket_vm extends ChangeNotifier {
     if (isav) {
       var data = await Api().post(
           url: EndPoints.baseUrls.url + "ticket/add_ticket.php", body: body);
-      TicketModel tm = TicketModel.fromJson(data[0]);
+      TicketModel tm = TicketModel.fromMap(data[0]);
       listticket.insert(0, tm);
       addvalue = false;
       tickesearchlist.insert(0, tm); //List.from(listticket);
@@ -93,10 +93,10 @@ class ticket_vm extends ChangeNotifier {
     int index =
         listticket.indexWhere((element) => element.idTicket == id_ticket);
 
-    listticket[index] = TicketModel.fromJson(data[0]);
+    listticket[index] = TicketModel.fromMap(data[0]);
     index =
         tickesearchlist.indexWhere((element) => element.idTicket == id_ticket);
-    tickesearchlist[index] = TicketModel.fromJson(data[0]);
+    tickesearchlist[index] = TicketModel.fromMap(data[0]);
     tickesearchlist.removeAt(index);
     isloading = false;
     return true;
@@ -111,7 +111,7 @@ class ticket_vm extends ChangeNotifier {
         body: body);
     int index =
         listticket.indexWhere((element) => element.idTicket == id_ticket);
-    listticket[index] = TicketModel.fromJson(data[0]);
+    listticket[index] = TicketModel.fromMap(data[0]);
     // listticket.removeAt(index);
     tickesearchlist = List.from(listticket);
     isloading = false;
@@ -213,7 +213,7 @@ class ticket_vm extends ChangeNotifier {
 
     List<TicketModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      prodlist.add(TicketModel.fromJson(data[i]));
+      prodlist.add(TicketModel.fromMap(data[i]));
     }
     listticket = prodlist;
     isloading = false;

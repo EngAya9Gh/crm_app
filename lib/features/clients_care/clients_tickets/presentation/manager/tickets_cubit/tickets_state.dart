@@ -33,37 +33,29 @@ class GetTicketByIdError extends TicketsState {
   GetTicketByIdError(this.message);
 }
 
-// add ticket
-
-class AddTicketLoading extends TicketsState {}
-
-class AddTicketLoaded extends TicketsState {
-  final TicketModel ticket;
-
-  AddTicketLoaded(this.ticket);
-}
-
-class AddTicketError extends TicketsState {
-  final String message;
-
-  AddTicketError(this.message);
-}
-
-// edit ticket type
-
-class EditTicketTypeLoading extends TicketsState {}
-
-class EditTicketTypeLoaded extends TicketsState {
-  final TicketModel ticket;
-
-  EditTicketTypeLoaded(this.ticket);
-}
-
-class EditTicketTypeError extends TicketsState {
-  final String message;
-
-  EditTicketTypeError(this.message);
-}
-
 // filter
 class TicketsFiltered extends TicketsState {}
+
+// categories
+
+class CategoriesLoading extends TicketsState {}
+
+class CategoriesLoaded extends TicketsState {}
+
+class CategoriesError extends TicketsState {
+  final String message;
+
+  CategoriesError(this.message);
+}
+
+// subcategories
+
+class SubCategoriesLoading extends TicketsState {}
+
+class SubCategoriesLoaded extends TicketsState {}
+
+class SubCategoriesError extends TicketsState {
+  final String message;
+
+  SubCategoriesError(this.message);
+}

@@ -1,16 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../../constants.dart';
-import '../../../../../ui/screen/client/profileclient.dart';
-import '../../../../../ui/screen/client/transfer_client.dart';
-import '../../../../../ui/screen/home/ticket/ticket_rate.dart';
-import '../../../../../view_model/ticket_vm.dart';
-import '../../../../../view_model/user_vm_provider.dart';
+import '../../../../../core/common/enums/ticket_types_enum.dart';
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
 import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../data/models/ticket_model.dart';
-import 'ticket_close_dialog.dart';
+import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
+import '../manager/tickets_cubit/tickets_cubit.dart';
+import 'client_profile_button.dart';
+import 'close_ticket_button.dart';
+import 'rate_after_closing_button.dart';
+import 'receive_ticket_button.dart';
+import 'reopen_ticket_button.dart';
+import 'transfer_ticket_button.dart';
 
 class TicketDetailsButtons extends StatelessWidget {
   const TicketDetailsButtons({
@@ -22,112 +25,71 @@ class TicketDetailsButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (ticketModel.dateRecive == null &&
-            context.read<PrivilegeCubit>().checkPrivilege('71')) ...[
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(kMainColor)),
-                  onPressed: () async {
-                    Provider.of<ticket_vm>(context, listen: false)
-                        .updateTicketvm({
-                      'fk_user_recive':
-                          Provider.of<UserProvider>(context, listen: false)
-                              .currentUser
-                              .idUser,
-                      'date_recive': DateTime.now(),
-                      'type_ticket': 'قيد التنفيذ'
-                    }, ticketModel.idTicket);
-                    Navigator.pop(context);
-                  },
-                  child: Text('استلام\nالتذكرة')),
-            ),
-          )
+    final currentTicketType =
+        TicketTypeExtension.getTicketType(ticketModel.typeTicket);
+    return BlocListener<EditTicketCubit, EditTicketState>(
+      listener: (context, state) {
+        if (state is EditTicketError) {
+          AppConstants.showSnakeBar(context, state.message);
+        } else if (state is EditTicketSuccess) {
+          AppNavigator.pop();
+          context.read<TicketsCubit>().getTickets();
+          AppConstants.showSnakeBar(context, 'تمت العملية بنجاح');
+        }
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // receive ticket button
+          if (isAllowedToReceive(currentTicketType, context)) ...[
+            ReceiveTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
+          ],
+          // transfer ticket button
+          if (_isAllowedToTransfer(currentTicketType, context)) ...[
+            TransferTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
+          ],
+          // close ticket button
+          if (_isAllowedToClose(currentTicketType, context)) ...[
+            CloseTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
+          ],
+          // reopen ticket button
+          if (currentTicketType == TicketTypesEnum.close) ...[
+            ReopenTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
+            RateAfterClosingButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
+          ],
+          // client file button
+          ClientProfileButton(ticketModel: ticketModel),
+          SizedBox(width: 5),
+          // rate ticket button
         ],
-        if (ticketModel.dateClose == null &&
-            context.read<PrivilegeCubit>().checkPrivilege('72')) ...[
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(kMainColor)),
-                onPressed: () async {
-                  await showDialog<void>(
-                      context: context,
-                      builder: (context) => TicketCloseDialog(
-                            ticketModel: ticketModel,
-                          ));
-                },
-                child: Text('اغلاق\nالتذكرة')),
-          ),
-        ],
-        if (ticketModel.dateRecive != null &&
-            ticketModel.dateClose == null &&
-            context.read<PrivilegeCubit>().checkPrivilege('75')) ...[
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 5.0),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(kMainColor)),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      CupertinoPageRoute(
-                          builder: (context) => transferClient(
-                                name_enterprise:
-                                    ticketModel.nameEnterprise.toString(),
-                                idclient: ticketModel.fkClient.toString(),
-                                idticket: ticketModel.idTicket,
-                                type: "ticket",
-                              ),
-                          fullscreenDialog: true));
-                },
-                child: Text('تحويل التذكرة'),
-              ),
-            ),
-          )
-        ],
-        SizedBox(width: 5),
-        Expanded(
-          child: ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(kMainColor)),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => ProfileClient(
-                            idClient: ticketModel.fkClient,
-                          )));
-            },
-            child: Text('ملف\nالعميل'),
-          ),
-        ),
-        SizedBox(width: 5),
-        if (ticketModel.dateClose != null && ticketModel.dateRate == null) ...[
-          Expanded(
-            child: ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(kMainColor)),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    CupertinoPageRoute(
-                        builder: (context) => ticket_rate(
-                              ticket_model: ticketModel,
-                            )));
-              },
-              child: Text('تقييم بعد الإغلاق'),
-            ),
-          )
-        ],
-      ],
+      ),
     );
   }
+
+  bool isAllowedToReceive(
+      TicketTypesEnum currentTicketType, BuildContext context) {
+    return _isNewTicket(currentTicketType) &&
+        context.read<PrivilegeCubit>().checkPrivilege('71');
+  }
+
+  bool _isAllowedToTransfer(
+      TicketTypesEnum currentTicketType, BuildContext context) {
+    return currentTicketType == TicketTypesEnum.receive &&
+        context.read<PrivilegeCubit>().checkPrivilege('75');
+  }
+
+  bool _isAllowedToClose(
+      TicketTypesEnum currentTicketType, BuildContext context) {
+    return currentTicketType != TicketTypesEnum.close &&
+        currentTicketType != TicketTypesEnum.rate &&
+        context.read<PrivilegeCubit>().checkPrivilege('72');
+  }
+
+  bool _isNewTicket(TicketTypesEnum type) =>
+      (type == TicketTypesEnum.open || type == TicketTypesEnum.reopen);
 }

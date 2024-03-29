@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import '../../../../constants.dart';
 import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 
-class TicketStatusCard extends StatelessWidget {
-  const TicketStatusCard({required this.ticketModel, Key? key})
-      : super(key: key);
+class TicketCard extends StatelessWidget {
+  const TicketCard({
+    required this.ticketModel,
+    Key? key,
+  }) : super(key: key);
   final TicketModel ticketModel;
 
   @override

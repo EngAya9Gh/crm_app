@@ -1,34 +1,73 @@
 enum TicketTypesEnum {
+  open,
   reopen,
-  close,
   receive,
+  close,
   rate,
 }
 
 extension TicketTypeExtension on TicketTypesEnum {
-  String get name {
+  String get nameEn {
     switch (this) {
+      case TicketTypesEnum.open:
+        return 'open';
       case TicketTypesEnum.reopen:
         return 'reopen';
-      case TicketTypesEnum.close:
-        return 'close';
       case TicketTypesEnum.receive:
         return 'recive';
+      case TicketTypesEnum.close:
+        return 'close';
       case TicketTypesEnum.rate:
         return 'rate';
     }
   }
 
+  static TicketTypesEnum getTicketType(String? name) {
+    switch (name) {
+      case 'open':
+        return TicketTypesEnum.open;
+      case 'reopen':
+        return TicketTypesEnum.reopen;
+      case 'recive':
+        return TicketTypesEnum.receive;
+      case 'close':
+        return TicketTypesEnum.close;
+      case 'rate':
+        return TicketTypesEnum.rate;
+      default:
+        return TicketTypesEnum.open;
+    }
+  }
+
+  String getUserTitle() {
+    switch (this) {
+      case TicketTypesEnum.open:
+        return 'قام بفتح التذكرة';
+      case TicketTypesEnum.receive:
+        return 'قام باستلام التذكرة';
+      case TicketTypesEnum.close:
+        return 'قام بإغلاق التذكرة';
+      case TicketTypesEnum.rate:
+        return 'قام بالتقييم';
+      case TicketTypesEnum.reopen:
+        return 'قام بإعادة فتح التذكرة';
+      default:
+        return '';
+    }
+  }
+
   String get nameAr {
     switch (this) {
+      case TicketTypesEnum.open:
+        return 'جديدة';
       case TicketTypesEnum.reopen:
-        return 'فتح';
-      case TicketTypesEnum.close:
-        return 'اغلاق';
+        return 'إعادة فتح';
       case TicketTypesEnum.receive:
-        return 'استلام';
+        return 'قيد التنفيذ';
+      case TicketTypesEnum.close:
+        return 'مغلقة';
       case TicketTypesEnum.rate:
-        return 'تقييم';
+        return 'تم التقييم';
     }
   }
 }

@@ -19,7 +19,8 @@ class cardRow extends StatelessWidget {
   // bool? isrow=true;
   @override
   Widget build(BuildContext context) {
-    if (value == null || value == "null") return SizedBox.shrink();
+    if (value == null || value == "null" || value!.isEmpty)
+      return SizedBox.shrink();
     return Column(
       //mainAxisAlignment: MainAxisAlignment.start,
       // crossAxisAlignment: CrossAxisAlignment.start,

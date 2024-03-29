@@ -1,7 +1,7 @@
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/add_ticket_page.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticket_all.dart';
-import 'package:crm_smart/ui/screen/home/ticket/ticketadd.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketview.dart';
 import 'package:crm_smart/ui/widgets/container_boxShadows.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
@@ -224,8 +224,8 @@ class _careViewState extends State<careView> {
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(
-                                        builder: (context) => ticketAdd(
-                                              fk_client:
+                                        builder: (context) => AddTicketPage(
+                                              fkClient:
                                                   widget.fk_client.toString(),
                                             )));
                               },
