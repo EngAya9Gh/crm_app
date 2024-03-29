@@ -59,47 +59,44 @@ class _TicketDetailsPageState extends State<TicketDetailsPage> {
           textDirection: TextDirection.rtl,
           child: CustomScrollView(
             slivers: [
+              // ticket details buttons
               SliverToBoxAdapter(
                 child: widget.type == null
-                    ? Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TicketDetailsButtons(
-                          ticketModel: widget.ticketModel,
-                        ))
+                    ? TicketDetailsButtons(ticketModel: widget.ticketModel)
                     : SizedBox.shrink(),
               ),
-              // ticket main details
+              SliverToBoxAdapter(child: SizedBox(height: 10)),
+              SliverToBoxAdapter(child: Divider(thickness: 2)),
+              // ticket details
               SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: kWhiteColor,
-                    ),
-                    child: Column(
-                      children: [
-                        CardRowDivided(
-                          title: 'نوع التذكرة',
-                          value: widget.ticketModel.typeProblem ?? '',
-                        ),
-                        SizedBox(height: 10),
-                        CardRowDivided(
-                          title: 'مصدر التذكرة',
-                          value: widget.ticketModel.ticketSource ?? '',
-                        ),
-                        SizedBox(height: 10),
-                        CardRowDivided(
-                          title: 'تفاصيل التذكرة',
-                          value: widget.ticketModel.detailsProblem ?? '',
-                        ),
-                      ],
-                    ),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: kWhiteColor,
+                  ),
+                  child: Column(
+                    children: [
+                      CardRowDivided(
+                        title: 'نوع التذكرة',
+                        value: widget.ticketModel.typeProblem ?? '',
+                      ),
+                      SizedBox(height: 10),
+                      CardRowDivided(
+                        title: 'مصدر التذكرة',
+                        value: widget.ticketModel.ticketSource ?? '',
+                      ),
+                      SizedBox(height: 10),
+                      CardRowDivided(
+                        title: 'تفاصيل التذكرة',
+                        value: widget.ticketModel.detailsProblem ?? '',
+                      ),
+                    ],
                   ),
                 ),
               ),
               SliverToBoxAdapter(child: Divider(thickness: 2)),
-              // ticket status
+              // ticket status details
               SliverList.separated(
                 itemCount: widget.ticketModel.status?.length ?? 0,
                 itemBuilder: (context, index) {

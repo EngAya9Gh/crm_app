@@ -45,29 +45,27 @@ class TicketDetailsButtons extends StatelessWidget {
             ReceiveTicketButton(ticketModel: ticketModel),
             SizedBox(width: 5),
           ],
-          // close ticket button
-          if (_isAllowedToClose(currentTicketType, context)) ...[
-            CloseTicketButton(ticketModel: ticketModel),
-            SizedBox(width: 5),
-          ],
           // transfer ticket button
           if (_isAllowedToTransfer(currentTicketType, context)) ...[
             TransferTicketButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
+          ],
+          // close ticket button
+          if (_isAllowedToClose(currentTicketType, context)) ...[
+            CloseTicketButton(ticketModel: ticketModel),
             SizedBox(width: 5),
           ],
           // reopen ticket button
           if (currentTicketType == TicketTypesEnum.close) ...[
             ReopenTicketButton(ticketModel: ticketModel),
             SizedBox(width: 5),
+            RateAfterClosingButton(ticketModel: ticketModel),
+            SizedBox(width: 5),
           ],
           // client file button
           ClientProfileButton(ticketModel: ticketModel),
           SizedBox(width: 5),
           // rate ticket button
-          if (currentTicketType == TicketTypesEnum.close) ...[
-            RateAfterClosingButton(ticketModel: ticketModel),
-            SizedBox(width: 5),
-          ],
         ],
       ),
     );
