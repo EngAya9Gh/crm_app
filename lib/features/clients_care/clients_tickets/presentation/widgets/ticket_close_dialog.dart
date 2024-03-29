@@ -34,10 +34,15 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
   late final ticket_vm ticketVm;
   final closeTicketFormKey = GlobalKey<FormState>();
   final notesController = TextEditingController();
+  late final bool isClosedBefore;
 
   @override
   void initState() {
     ticketsCubit = context.read<TicketsCubit>();
+    isClosedBefore = widget.ticketModel.status?.any((element) {
+          return element.stateName == TicketTypesEnum.close.nameEn;
+        }) ??
+        false;
 
     super.initState();
   }
@@ -85,42 +90,44 @@ class _TicketCloseDialogState extends State<TicketCloseDialog> {
                           },
                         ),
                       ),
-                      CustomMultiSelectionDropdown<TicketCategoryModel>(
-                        items: ticketsCubit.allCategoriesList,
-                        selectedItems: [],
-                        hint: 'التصنيف',
-                        isRequired: true,
-                        onChanged: (data) {
-                          ticketsCubit.selectedCategoriesList = data;
-                          ticketsCubit.filterSubCategories();
-                        },
-                        itemAsString: (item) => item!.categoryAr,
-                      ),
-                      BlocBuilder<TicketsCubit, TicketsState>(
-                        buildWhen: (previous, current) {
-                          return current is SubCategoriesLoaded ||
-                              current is SubCategoriesLoading ||
-                              current is SubCategoriesError;
-                        },
-                        builder: (context, state) {
-                          if (ticketsCubit
-                              .filteredSubCategoriesByCategories.isEmpty) {
-                            return SizedBox.shrink();
-                          }
-                          return CustomMultiSelectionDropdown<
-                              TicketSubCategoryModel>(
-                            items:
-                                ticketsCubit.filteredSubCategoriesByCategories,
-                            selectedItems: [],
-                            hint: 'التصنيف الفرعي',
-                            isRequired: true,
-                            onChanged: (data) {
-                              ticketsCubit.selectedSubCategoriesList = data;
-                            },
-                            itemAsString: (item) => item!.subCategoryAr,
-                          );
-                        },
-                      ),
+                      if (!isClosedBefore) ...[
+                        CustomMultiSelectionDropdown<TicketCategoryModel>(
+                          items: ticketsCubit.allCategoriesList,
+                          selectedItems: [],
+                          hint: 'التصنيف',
+                          isRequired: true,
+                          onChanged: (data) {
+                            ticketsCubit.selectedCategoriesList = data;
+                            ticketsCubit.filterSubCategories();
+                          },
+                          itemAsString: (item) => item!.categoryAr,
+                        ),
+                        BlocBuilder<TicketsCubit, TicketsState>(
+                          buildWhen: (previous, current) {
+                            return current is SubCategoriesLoaded ||
+                                current is SubCategoriesLoading ||
+                                current is SubCategoriesError;
+                          },
+                          builder: (context, state) {
+                            if (ticketsCubit
+                                .filteredSubCategoriesByCategories.isEmpty) {
+                              return SizedBox.shrink();
+                            }
+                            return CustomMultiSelectionDropdown<
+                                TicketSubCategoryModel>(
+                              items: ticketsCubit
+                                  .filteredSubCategoriesByCategories,
+                              selectedItems: [],
+                              hint: 'التصنيف الفرعي',
+                              isRequired: true,
+                              onChanged: (data) {
+                                ticketsCubit.selectedSubCategoriesList = data;
+                              },
+                              itemAsString: (item) => item!.subCategoryAr,
+                            );
+                          },
+                        ),
+                      ],
                       SizedBox(height: 10),
                       BlocBuilder<EditTicketCubit, EditTicketState>(
                         builder: (context, state) {
