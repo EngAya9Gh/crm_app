@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../data/models/ticket_model.dart';
 import '../pages/transfer_client_page.dart';
+import 'custom_ticket_details_action_button.dart';
 
 class TransferTicketButton extends StatelessWidget {
   const TransferTicketButton({
@@ -15,20 +15,16 @@ class TransferTicketButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ElevatedButton(
-        style:
-            ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
-        onPressed: () {
-          AppNavigator.push(TransferClientPage(
-            nameEnterprise: ticketModel.nameEnterprise.toString(),
-            idClient: ticketModel.fkClient.toString(),
-            idTicket: ticketModel.idTicket,
-            type: "ticket",
-          ));
-        },
-        child: Text('تحويل\nالتذكرة'),
-      ),
+    return CustomTicketDetailsActionButton(
+      onPressed: () {
+        AppNavigator.push(TransferClientPage(
+          nameEnterprise: ticketModel.nameEnterprise.toString(),
+          idClient: ticketModel.fkClient.toString(),
+          idTicket: ticketModel.idTicket,
+          type: "ticket",
+        ));
+      },
+      text: 'تحويل التذكرة',
     );
   }
 }

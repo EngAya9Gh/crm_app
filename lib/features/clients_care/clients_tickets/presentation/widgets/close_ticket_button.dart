@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../../constants.dart';
 import '../../data/models/ticket_model.dart';
+import 'custom_ticket_details_action_button.dart';
 import 'ticket_close_dialog.dart';
 
 class CloseTicketButton extends StatelessWidget {
@@ -14,21 +14,17 @@ class CloseTicketButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 5),
-      child: ElevatedButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(kMainColor)),
-          onPressed: () async {
-            await showDialog<void>(
-                context: context,
-                builder: (context) {
-                  return TicketCloseDialog(
-                    ticketModel: ticketModel,
-                  );
-                });
-          },
-          child: Text('اغلاق\nالتذكرة')),
+    return CustomTicketDetailsActionButton(
+      onPressed: () async {
+        await showDialog<void>(
+            context: context,
+            builder: (context) {
+              return TicketCloseDialog(
+                ticketModel: ticketModel,
+              );
+            });
+      },
+      text: 'اغلاق التذكرة',
     );
   }
 }

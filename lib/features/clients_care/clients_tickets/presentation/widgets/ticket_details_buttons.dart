@@ -11,7 +11,7 @@ import '../manager/tickets_cubit/tickets_cubit.dart';
 import 'client_profile_button.dart';
 import 'close_ticket_button.dart';
 import 'rate_after_closing_button.dart';
-import 'recieve_ticket_button.dart';
+import 'receive_ticket_button.dart';
 import 'reopen_ticket_button.dart';
 import 'transfer_ticket_button.dart';
 
