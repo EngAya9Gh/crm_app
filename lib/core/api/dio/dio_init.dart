@@ -47,7 +47,7 @@ class _ApiInterceptors extends Interceptor {
     getIt<Logger>()
         .i("Response: ${response.statusCode} ${response.statusMessage}");
     getIt<Logger>().i("Response headers: ${response.headers}");
-    getIt<Logger>().i("Response data: ${response.data}");
+    // getIt<Logger>().i("Response data: ${response.data}");
 
     super.onResponse(response, handler);
   }
@@ -55,7 +55,8 @@ class _ApiInterceptors extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
     getIt<Logger>().e("Error url: ${err.requestOptions.uri}");
-    getIt<Logger>().e("Error message: ${err.error}");
+    getIt<Logger>().e("Error message: ${err.message}");
+    getIt<Logger>().e("Error error: ${err.error}");
     getIt<Logger>().e("Error type: ${err.type}");
 
     super.onError(err, handler);

@@ -18,12 +18,10 @@ class cardRowDivided extends StatelessWidget {
   // bool? isrow=true;
   @override
   Widget build(BuildContext context) {
-    if (value?.isEmpty ?? true) {
+    if (value == null || value == "null" || value!.isEmpty) {
       return SizedBox.shrink();
     }
     return Column(
-      //mainAxisAlignment: MainAxisAlignment.start,
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment:

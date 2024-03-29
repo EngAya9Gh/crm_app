@@ -1,11 +1,12 @@
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -82,8 +83,8 @@ class search_widget extends StatelessWidget {
                     break;
 
                   case 'ticket':
-                    Provider.of<ticket_vm>(context, listen: false)
-                        .searchProducts(pattern);
+                    BlocProvider.of<TicketsCubit>(context)
+                        .searchTickets(pattern);
                     break;
 
                   case 'user':

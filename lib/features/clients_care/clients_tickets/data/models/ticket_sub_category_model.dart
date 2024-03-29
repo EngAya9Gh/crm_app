@@ -1,25 +1,25 @@
 import 'package:equatable/equatable.dart';
 
-class SubCategoryModel extends Equatable {
-  final int id;
+class TicketSubCategoryModel extends Equatable {
+  final String id;
   final String subCategoryAr;
   final String subCategoryEn;
   final String classification;
 
-  SubCategoryModel({
+  const TicketSubCategoryModel({
     required this.id,
     required this.subCategoryAr,
     required this.subCategoryEn,
     required this.classification,
   });
 
-  SubCategoryModel copyWith({
-    int? id,
+  TicketSubCategoryModel copyWith({
+    String? id,
     String? subCategoryAr,
     String? subCategoryEn,
     String? classification,
   }) {
-    return SubCategoryModel(
+    return TicketSubCategoryModel(
       id: id ?? this.id,
       subCategoryAr: subCategoryAr ?? this.subCategoryAr,
       subCategoryEn: subCategoryEn ?? this.subCategoryEn,
@@ -27,9 +27,9 @@ class SubCategoryModel extends Equatable {
     );
   }
 
-  factory SubCategoryModel.fromMap(Map<String, dynamic> json) {
-    return SubCategoryModel(
-      id: json['id'],
+  factory TicketSubCategoryModel.fromMap(Map<String, dynamic> json) {
+    return TicketSubCategoryModel(
+      id: json['id'].toString(),
       subCategoryAr: json['sub_category_ar'],
       subCategoryEn: json['sub_category_en'],
       classification: json['classification'],
