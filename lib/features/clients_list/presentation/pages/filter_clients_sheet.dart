@@ -12,6 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/responsive_padding.dart';
+import '../../../../constantsList.dart';
 import '../../../../core/di/di_container.dart';
 import '../../../../model/ActivityModel.dart';
 import '../../../../model/usermodel.dart';
@@ -41,6 +42,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
   late ValueNotifier<int?> _userNotifier;
   late ValueNotifier<String?> _statusNotifier;
   late ValueNotifier<String?> _recordTypeNotifier;
+  late ValueNotifier<String?> _classTypeNotifier;
   late ClientsListBloc _clientsListBloc;
   late final UserModel userModel;
   late PrivilegeCubit _privilegeCubit;
@@ -60,6 +62,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
         _clientsListBloc.state.getClientsWithFilterParams?.typeClient);
     _recordTypeNotifier = ValueNotifier(
         _clientsListBloc.state.getClientsWithFilterParams?.typeClient_record);
+    _classTypeNotifier = ValueNotifier(
+        _clientsListBloc.state.getClientsWithFilterParams?.typeClassfication);
     super.initState();
   }
 
@@ -90,19 +94,22 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     _activityNotifier,
                     _userNotifier,
                     _statusNotifier,
-                    _recordTypeNotifier
+                    _recordTypeNotifier,
+                    _classTypeNotifier,
                   ]),
                   builder: (context, child) => AppTextButton(
                     onPressed: _regionNotifier.value != null ||
                             _activityNotifier.value != null ||
                             _userNotifier.value != null ||
                             _recordTypeNotifier.value != null ||
+                        _classTypeNotifier.value != null ||
                             _statusNotifier.value != null
                         ? () {
                             _regionNotifier.value = null;
                             _activityNotifier.value = null;
                             _userNotifier.value = null;
                             _recordTypeNotifier.value = null;
+                            _classTypeNotifier.value = null;
                             _statusNotifier.value = null;
                           }
                         : null,
@@ -137,7 +144,13 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                     );
                   },
                 ),
-                10.horizontalSpace,
+              ],
+            ),
+            20.verticalSpace,
+            Row(
+              children: [
+
+                // 10.horizontalSpace,
                 Consumer<ClientTypeProvider>(
                   builder: (context, clientTypeVm, child) {
                     return Expanded(
@@ -154,6 +167,35 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                 if (value == null) return;
 
                                 _recordTypeNotifier.value = value;
+                              },
+                            );
+                          }),
+                    );
+                  },
+                ),
+                10.horizontalSpace,
+                Consumer<UserProvider>(
+                  builder: (context, vm, child) {
+                    return Expanded(
+                      child: ValueListenableBuilder<String?>(
+                          valueListenable: _classTypeNotifier,
+                          builder: (context, value, _) {
+                            return AppDropdownButtonFormField<String?,
+                                String?>(
+                              items: clientsClassificationList,
+                              hint: "نوع التصنيف*",
+                              itemAsValue: (String? item) => item!,
+                              itemAsString: (item) => item!,
+
+                              value: _classTypeNotifier.value,
+                              onChange: (value) {
+                                // vm
+                                //     .changeClientClassificationTypeStatus(
+                                //     value!);
+                                if (value == null) return;
+
+                                _classTypeNotifier.value = value;
+
                               },
                             );
                           }),
@@ -348,6 +390,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         activityTypeId: Nullable.value(_activityNotifier.value),
                         typeClient_record:
                             Nullable.value(_recordTypeNotifier.value),
+                        typeClassfication:
+                            Nullable.value(_classTypeNotifier.value),
                         typeClient: Nullable.value('مشترك'),
                         userId: Nullable.value(_userNotifier.value),
                         userPrivilegeId: Nullable.value(null),
@@ -363,6 +407,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         typeClient: Nullable.value(_statusNotifier.value),
                         typeClient_record:
                             Nullable.value(_recordTypeNotifier.value),
+                        typeClassfication:
+                        Nullable.value(_classTypeNotifier.value),
                         userId: Nullable.value(_userNotifier.value),
                       ),
                     );

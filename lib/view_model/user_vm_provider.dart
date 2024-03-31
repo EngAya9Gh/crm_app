@@ -81,7 +81,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   void changeClientClassificationTypeStatus(
-      String selectedClientClassificationType) {
+      String? selectedClientClassificationType) {
     _selectedClientClassificationType = selectedClientClassificationType;
     notifyListeners();
   }

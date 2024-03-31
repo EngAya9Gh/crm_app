@@ -21,7 +21,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.development;
+  static AppMode appMode = AppMode.production;
 
   _BaseUrls() {
     init();

@@ -24,7 +24,8 @@ class ManageLinkPage extends StatefulWidget {
 
 class _ManageLinkPageState extends State<ManageLinkPage> {
   late LinkCubit _linkCubit;
-
+  String clause='';
+      String department='';
   @override
   void initState() {
     _linkCubit = getIt<LinkCubit>()..getLinks();
@@ -66,6 +67,8 @@ class _ManageLinkPageState extends State<ManageLinkPage> {
                   itemBuilder: (context, index) {
                     print(data.length);
                     final link = data[index];
+                    clause=link.clause==null? '':link.clause.toString();
+                    department=link.department.toString() ?? '';
                     print(link.title);
                     return InkWell(
                       onTap: () async {
@@ -110,7 +113,8 @@ class _ManageLinkPageState extends State<ManageLinkPage> {
                                     padding: EdgeInsetsDirectional.only(
                                         end: 50, start: 20),
                                     child: AppText(
-                                      link.link ?? '',
+                                      ( department  )+' ('+
+                                          ( clause )+' )',
                                       style: context.textTheme.bodySmall!
                                           .copyWith(
                                               color:

@@ -29,6 +29,7 @@ class GetClientsWithFilterParams {
   final int? regionId;
   final String? typeClient;
   final String? typeClient_record;
+  final String? typeClassfication;
   final int? userId;
   final int? activityTypeId;
   final String? userPrivilegeId;
@@ -45,6 +46,7 @@ class GetClientsWithFilterParams {
     this.userPrivilegeId,
     this.regionPrivilegeId,
     this.typeClient_record,
+    this.typeClassfication,
     this.query,
     this.perPage = AppConstants.kPerPage,
   });
@@ -61,6 +63,7 @@ class GetClientsWithFilterParams {
       'activity_type_fk': activityTypeId,
       'fk_user_prv': userPrivilegeId,
       'fk_regoin_prv': regionPrivilegeId,
+      'typeClassfication': typeClassfication,
       'filter': query,
     }..removeWhere((key, value) => value == null || value == '');
 
@@ -75,6 +78,7 @@ class GetClientsWithFilterParams {
     Nullable<int?>? regionId,
     Nullable<String?>? typeClient,
     Nullable<String?>? typeClient_record,
+    Nullable<String?>? typeClassfication,
     Nullable<int?>? userId,
     Nullable<int?>? activityTypeId,
     Nullable<String?>? userPrivilegeId,
@@ -90,6 +94,9 @@ class GetClientsWithFilterParams {
       typeClient_record: typeClient_record != null
           ? typeClient_record.value
           : this.typeClient_record,
+      typeClassfication: typeClassfication != null
+          ? typeClassfication.value
+          : this.typeClassfication,
       userId: userId != null ? userId.value : this.userId,
       activityTypeId:
           activityTypeId != null ? activityTypeId.value : this.activityTypeId,

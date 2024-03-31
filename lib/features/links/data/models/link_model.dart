@@ -8,6 +8,8 @@ class LinkImportantModel {
   String? link;
   String? notes;
   String? address;
+  String? clause;
+  String? department;
   String? user_id;
 
   LinkImportantModel({
@@ -16,6 +18,8 @@ class LinkImportantModel {
     this.link,
     this.notes,
     this.address,
+    this.clause,
+    this.department,
     this.user_id,
 
   });
@@ -27,7 +31,9 @@ class LinkImportantModel {
 
       link: jsonData['link'].toString(),
       notes: jsonData['notes'].toString(),
-      address: jsonData!['address'],
+      clause: jsonData['clause'].toString(),
+      address: jsonData!['address'].toString(),
+      department: jsonData!['department'].toString(),
       user_id: jsonData['user_id'].toString(),
 
     );
@@ -41,6 +47,8 @@ class LinkImportantModel {
     _data['link'] = link;
     _data['notes'] = notes;
     _data['address'] = address;
+    _data['clause'] = clause;
+    _data['department'] = department;
     _data['user_id'] = user_id;
 
     return _data;
