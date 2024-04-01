@@ -33,9 +33,9 @@ class CompanyProvider extends ChangeNotifier {
   initValueOut() => selectedValueOut != null;
 
   void changevalueOut(String? s) {
-    if (s?.isEmpty ?? true) {
-      return;
-    }
+    // if (s?.isEmpty ?? true) {
+    //   return;
+    // }
     selectedValueOut = s;
     notifyListeners();
   }

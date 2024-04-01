@@ -21,25 +21,25 @@ class EditTextFormField extends StatelessWidget {
   int? maxLength;
   int? minLines;
 
-  EditTextFormField(
-      {this.ontap,
-      required this.hintText,
-      this.obscureText,
-      required this.controller,
-      this.onChanged,
-      this.vaildator,
-      this.label,
-      this.icon,
-      this.maxline,
-      this.inputType,
-      this.read,
-      this.paddcustom,
-      this.onSaved,
-      this.inputformate,
-      this.maxLength,
-      this.minLines,
-      Key? key})
-      : super(key: key);
+  EditTextFormField({
+    this.ontap,
+    required this.hintText,
+    this.obscureText,
+    required this.controller,
+    this.onChanged,
+    this.vaildator,
+    this.label,
+    this.icon,
+    this.maxline,
+    this.inputType,
+    this.read,
+    this.paddcustom,
+    this.onSaved,
+    this.inputformate,
+    this.maxLength,
+    this.minLines,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,11 +59,14 @@ class EditTextFormField extends StatelessWidget {
       minLines: minLines,
       decoration: InputDecoration(
         //icon: ,
-        contentPadding: paddcustom == null ? EdgeInsets.all(2) : paddcustom,
-        prefixIcon: Icon(
-          icon,
-          color: kMainColor,
-        ),
+        contentPadding:
+            paddcustom ?? EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        prefixIcon: icon == null
+            ? null
+            : Icon(
+                icon,
+                color: kMainColor,
+              ),
         counter: SizedBox.shrink(),
         hintStyle: const TextStyle(
             color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),

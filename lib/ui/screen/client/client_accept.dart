@@ -21,8 +21,13 @@ class _ClientAcceptState extends State<ClientAccept> {
   late List<MainCityModel>? selecteditemmaincity = [];
   late TextEditingController _searchTextField;
 
+  late final ClientProvider clientProvider;
+  late final MainCityProvider mainCityProvider;
+
   @override
   void initState() {
+    clientProvider = Provider.of<ClientProvider>(context, listen: false);
+    mainCityProvider = Provider.of<MainCityProvider>(context, listen: false);
     _searchTextField = TextEditingController();
     _searchTextField.addListener(onSearch);
     context.read<MainCityProvider>().changeitemlist([], isInit: true);
@@ -30,19 +35,20 @@ class _ClientAcceptState extends State<ClientAccept> {
       // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
       // Add Your Code here.
       // only
-      Provider.of<ClientProvider>(context, listen: false).clear();
+      clientProvider.clear();
       //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      Provider.of<ClientProvider>(context, listen: false).listClientAccept = [];
+      clientProvider.listClientAccept = [];
       // Provider.of<client_vm>(context, listen: false)
       //   .getallclient();
       // Provider.of<client_vm>(context, listen: false). getclient_Local('مشترك');
 
       //  Provider.of<client_vm>(context,listen: false)
       //     .getallclientAccept();
-      Provider.of<ClientProvider>(context, listen: false).getfilterviewSupport(
-          Provider.of<MainCityProvider>(context, listen: false)
-              .selectedRegions);
+      if (mainCityProvider.selectedRegions.isEmpty) {
+        mainCityProvider.selectedRegions = mainCityProvider.listmaincityfilter;
+      }
+      clientProvider.getfilterviewSupport(mainCityProvider.selectedRegions);
     });
 
     super.initState();
@@ -100,7 +106,18 @@ class _ClientAcceptState extends State<ClientAccept> {
                                 selectedItems: cart.selectedRegions,
                                 itemAsString: (u) => u!.userAsString(),
                                 onChanged: (data) {
+                                  // if contains all then check all cities
+                                  if (data.any((element) =>
+                                      element.namemaincity == 'الكل')) {
+                                    data = cart.listmaincityfilter;
+                                  }
                                   selecteditemmaincity = data;
+                                  // remove the choice "all" only
+                                  if (data.any((element) =>
+                                      element.namemaincity == 'الكل')) {
+                                    data.removeWhere((element) =>
+                                        element.namemaincity == 'الكل');
+                                  }
                                   cart.changeitemlist(data);
                                   filtershow();
                                 },
@@ -239,8 +256,7 @@ class _ClientAcceptState extends State<ClientAccept> {
     //
     //   Provider.of<invoice_vm>(context,listen: false)
     //       .getclienttype_filter(typeclientvalue!,regoin,'only');
-    Provider.of<ClientProvider>(context, listen: false)
-        .getfilterviewSupport(selecteditemmaincity);
+    clientProvider.getfilterviewSupport(selecteditemmaincity);
     //   if(regoin==null)
     //  Provider.of<invoice_vm>(context,listen: false).getclienttype_filter(typepayController,regoin);
     // else {

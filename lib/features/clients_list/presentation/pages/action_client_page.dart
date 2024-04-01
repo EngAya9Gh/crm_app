@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/clients_list/domain/use_cases/add_client_usecase.dart';
@@ -140,7 +141,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
         : widget.client?.type_classification == null
             ? null
             : widget.client?.type_classification!;
-
+  print('_selectedClientsClassification');
+  print(_selectedClientsClassification);
     selectedSourceClient = !isEdit
         ? null
         : widget.client?.sourceClient == null
@@ -150,6 +152,10 @@ class _ActionClientPageState extends State<ActionClientPage> {
     _selectedARecommendedClient = widget.client?.fkClientSource;
     selectedCity = widget.client?.city;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (_selectedClientRegistrationTye != null) {
+        _userProvider
+            .changeClientRegistrationTypeStatus(_selectedClientRegistrationTye);
+      }
       _mainCityProvider.changevalue(null);
 
       _mainCityProvider
@@ -167,7 +173,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                     .onChangeSelectedActivityTypeId(
                         widget.client?.activityTypeFk)
                 : null);
-
+      print('companyProvider.selectedValueOut.toString() init');
+      print(companyProvider.selectedValueOut.toString());
       companyProvider
         ..initValueOut()
         ..getcompany(
@@ -678,8 +685,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                           (_selectedClientRegistrationTye ==
                                                   "خاطئ" &&
                                               isEdit)
-                                      ? AppDropdownButtonFormField<String,
-                                          String>(
+                                      ? AppDropdownButtonFormField<String?,
+                                          String?>(
                                           items: clientsClassificationList,
                                           hint: "نوع التصنيف*",
                                           itemAsValue: (String? item) => item!,
@@ -765,17 +772,19 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               if (company.isloading) {
                                 return CustomLoadingIndicator();
                               }
-                              company.selectedValueOut = company.list_company
-                                  .firstWhereOrNull((element) =>
-                                      element.id_Company ==
-                                      widget.client?.preSystem)
-                                  ?.id_Company;
-                              return AppDropdownButtonFormField<CompanyModel,
+                              // company.selectedValueOut = company.list_company
+                              //     .firstWhereOrNull((element) =>
+                              //         element.id_Company ==
+                              //         widget.client?.preSystem)
+                              //     ?.id_Company;
+                              return AppDropdownButtonFormField<CompanyModel?,
                                   String>(
                                 items: company.list_company,
                                 isWithImage: true,
                                 onChange: (value) {
                                   company.changevalueOut(value.toString());
+                                  print('companyProvider.selectedValueOut.toString()');
+                                  print(companyProvider.selectedValueOut.toString());
                                 },
                                 hint: "نظام سابق",
                                 itemAsValue: (CompanyModel? item) =>
@@ -785,117 +794,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               );
                             },
                           ),
-                          //   10.verticalSpace,
-                          //       if (_privilegeCubit.checkPrivilege('27') && isShowingClientStatus && isEdit) ...{
-                          //         AppDropdownButtonFormField<String, String>(
-                          //           items: clientTypeProvider.type_of_client,
-                          //           onChange: (status) {
-                          //             clientTypeProvider.changevalue(status.toString());
-                          //           },
-                          //           hint: "حالة العميل",
-                          //           itemAsValue: (String? item) => item,
-                          //           itemAsString: (item) => item!,
-                          //           value: clientTypeProvider.selectedValuemanag,
-                          //         ),
-                          //         10.verticalSpace,
-                          //       },
-                          //       if (_privilegeCubit.checkPrivilege('27') &&
-                          //           isEdit &&
-                          //           clientTypeProvider.selectedValuemanag == "عرض سعر") ...{
-                          //         Row(
-                          //           crossAxisAlignment: CrossAxisAlignment.center,
-                          //           children: [
-                          //             Expanded(
-                          //               flex: 3,
-                          //               child: AppTextField(
-                          //                 labelText: "عرض سعر",
-                          //                 maxLines: 1,
-                          //                 controller: offerPriceController,
-                          //                 textInputType: TextInputType.number,
-                          //               ),
-                          //             ),
-                          //             10.horizontalSpace,
-                          //             Expanded(
-                          //               flex: 5,
-                          //               child: TextFormField(
-                          //                 validator: (value) {
-                          //                   if (dateOfferPrice == DateTime(1, 1, 1)) {
-                          //                     return 'يرجى تعيين التاريخ ';
-                          //                   }
-                          //                   return null;
-                          //                 },
-                          //                 style: context.textTheme.titleSmall.r?.copyWith(
-                          //                   color: context.colorScheme.onBackground,
-                          //                   decoration: TextDecoration.none,
-                          //                   decorationColor: context.colorScheme.borderTextField,
-                          //                 ),
-                          //                 textAlignVertical: TextAlignVertical.center,
-                          //                 textAlign: TextAlign.center,
-                          //                 decoration: InputDecoration(
-                          //                     prefixIcon: Icon(
-                          //                       Icons.date_range,
-                          //                       color: kMainColor,
-                          //                     ),
-                          //                     hintStyle: const TextStyle(
-                          //                         color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-                          //                     hintText: intl.DateFormat("yyyy/MM/dd")
-                          //                         .format(Provider.of<datetime_vm>(context, listen: true).valuedateTime),
-                          //                     border: OutlineInputBorder(
-                          //                       borderSide: BorderSide(color: context.colorScheme.primary),
-                          //                       borderRadius: BorderRadius.circular(10).r,
-                          //                     ),
-                          //                     focusedBorder: OutlineInputBorder(
-                          //                       borderSide: BorderSide(color: context.colorScheme.primary),
-                          //                       borderRadius: BorderRadius.circular(10).r,
-                          //                     ),
-                          //                     enabledBorder: OutlineInputBorder(
-                          //                       borderSide: BorderSide(color: context.colorScheme.primary),
-                          //                       borderRadius: BorderRadius.circular(10).r,
-                          //                     ),
-                          //                     filled: false,
-                          //                     isDense: true,
-                          //                     isCollapsed: true),
-                          //                 readOnly: true,
-                          //                 onTap: () {
-                          //                   _selectDate(context, DateTime.now());
-                          //                 },
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //         10.verticalSpace,
-                          //       },
-                          //       if (_privilegeCubit.checkPrivilege('27') &&
-                          //           isEdit &&
-                          //           clientTypeProvider.selectedValuemanag == "مستبعد") ...{
-                          //         BlocBuilder<ManageWithdrawalsCubit, ManageWithdrawalsState>(
-                          //           builder: (context, state) {
-                          //             return ValueListenableBuilder<String?>(
-                          //                 valueListenable: reasonReject,
-                          //                 builder: (context, value, _) {
-                          //                   return AppDropdownButtonFormField<RejectReason, String>(
-                          //                     items: state.rejectReasonsStat.getDataWhenSuccess ?? [],
-                          //                     onChange: (reason) {
-                          //                       reasonReject.value = reason;
-                          //                     },
-                          //                     hint: "أسباب الاستبعاد",
-                          //                     itemAsValue: (RejectReason? item) => item!.idRejectClient!,
-                          //                     itemAsString: (item) => item!.nameReasonReject!,
-                          //                     value: value,
-                          //                     validator: HelperFunctions.instance.requiredFiled,
-                          //                   );
-                          //                 });
-                          //           },
-                          //         ),
-                          //         10.verticalSpace,
-                          //         AppTextField(
-                          //           labelText: "سبب الاستبعاد",
-                          //           maxLines: 1,
-                          //           controller: reasonController,
-                          //           validator: HelperFunctions.instance.requiredFiled,
-                          //         ),
-                          //         10.verticalSpace,
-                          //       },
+
                         ],
                       ),
                     ),
@@ -913,7 +812,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             if (!_fromKey.currentState!.validate()) {
                               return;
                             }
-
+                            print('companyProvider.selectedValueOut.toString()');
+                            print(context.read<CompanyProvider>().selectedValueOut.toString());
                             if (isEdit) {
                               _onEditClient();
                               return;
@@ -941,6 +841,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
   bool get isEdit => widget.client != null;
 
   void _onEditClient() {
+    print(
+        "context.read<UserProvider>().selectedClientRegistrationType ${context.read<UserProvider>().selectedClientRegistrationType}");
     final EditClientParams editClientParams = EditClientParams(
       nameClient: nameClientController.text,
       nameEnterprise: nameEnterpriseController.text,
@@ -960,7 +862,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedActivitySizeType: _selectedActivitySizeType,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
-      statusClient: companyProvider.selectedValueOut,
+      statusClient: context.read<CompanyProvider>().selectedValueOut,
       typeClient: widget.client?.typeClient != "مشترك" &&
               widget.client?.typeClient != "منسحب"
           ? _clientTypeProvider.selectedValuemanag!
@@ -994,8 +896,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
     _clientsListBloc.add(EditClientEvent(
       editClientParams,
       onSuccess: (client) {
-        context.read<UserProvider>().changeClientClassificationTypeStatus('');
-        context.read<UserProvider>().changeClientRegistrationTypeStatus('');
+        // context.read<UserProvider>().changeClientClassificationTypeStatus('');
+        // context.read<UserProvider>().changeClientRegistrationTypeStatus('');
         Navigator.pop(context, client);
       },
     ));
@@ -1023,11 +925,12 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedActivitySizeType: _selectedActivitySizeType,
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
-      statusClient: companyProvider.selectedValueOut,
+      statusClient: context.read<CompanyProvider>().selectedValueOut,
       type_record: context.read<UserProvider>().selectedClientRegistrationType,
       type_classification:
           context.read<UserProvider>().selectedClientClassificationType,
       reason_class: reasonClassController.text,
+
     );
 
     Navigator.push(
@@ -1110,81 +1013,110 @@ class _similar_dailogState extends State<similar_dailog> {
     return Scaffold(
       appBar: SmartCrmAppBar(
           appBarParams: AppBarParams(title: 'قائمة العملاء المتشابهين')),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: BlocBuilder<ClientsListBloc, ClientsListState>(
-          builder: (context, state) {
-            return state.similarClientsState.when(
-              init: () => Center(child: CircularProgressIndicator()),
-              loading: () => Center(child: CircularProgressIndicator()),
-              loaded: (data) => Column(
-                children: [
-                  Padding(
-                    padding: HWEdgeInsets.symmetric(horizontal: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppText("عدد العملاء"),
-                        AppText(data.length.toString()),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.separated(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      itemBuilder: (BuildContext context, int index) =>
-                          CardSimilar(
-                        smClient: state.similarClientsState.data[index],
-                      ),
-                      separatorBuilder: (BuildContext context, int index) =>
-                          SizedBox(height: 10),
-                      itemCount: state.similarClientsState.data.length,
-                    ),
-                  ),
-                  15.verticalSpace,
-                  BlocBuilder<ClientsListBloc, ClientsListState>(
-                    builder: (context, state) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: RefreshIndicator(
+        onRefresh: () {
+          _clientsListBloc
+              .add(GetSimilarClientsListEvent(GetSimilarClientsListParams(
+            name_client: widget.nameClient,
+            name_enterprise: widget.name_enterprise,
+            phone: widget.phone,
+          )));
+          return Future.value();
+        },
+        child: Directionality(
+          textDirection: TextDirection.rtl,
+          child: BlocBuilder<ClientsListBloc, ClientsListState>(
+            buildWhen: (previous, current) =>
+                previous.similarClientsState != current.similarClientsState,
+            builder: (context, state) {
+              return state.similarClientsState.when(
+                init: () => Center(child: CircularProgressIndicator()),
+                loading: () => Center(child: CircularProgressIndicator()),
+                loaded: (data) => Column(
+                  children: [
+                    Padding(
+                      padding: HWEdgeInsets.symmetric(horizontal: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppElevatedButton(
-                            isLoading: state.actionClientBlocStatus.isLoading(),
-                            text: "إضافة",
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0)),
-                            ),
-                            onPressed: () {
-                              _clientsListBloc.add(AddClientEvent(
-                                  widget.addClientParams, onSuccess: (client) {
-                                Navigator.pop(context, client);
-                                Navigator.pop(context, client);
-                              }));
-                            },
-                          ),
-                          AppElevatedButton(
-                            isLoading: state.actionClientBlocStatus.isLoading(),
-                            text: "رجوع",
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(0)),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
+                          AppText("عدد العملاء"),
+                          AppText(data.length.toString()),
                         ],
-                      );
-                    },
-                  ),
-                  15.verticalSpace,
-                ],
-              ),
-              empty: () => Text("Empty "),
-              error: (exception) => Text("Exception"),
-            );
-          },
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.separated(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        itemBuilder: (BuildContext context, int index) =>
+                            CardSimilar(
+                          smClient: state.similarClientsState.data[index],
+                        ),
+                        separatorBuilder: (BuildContext context, int index) =>
+                            SizedBox(height: 10),
+                        itemCount: state.similarClientsState.data.length,
+                      ),
+                    ),
+                    15.verticalSpace,
+                    BlocBuilder<ClientsListBloc, ClientsListState>(
+                      buildWhen: (previous, current) =>
+                          previous.actionClientBlocStatus !=
+                          current.actionClientBlocStatus,
+                      builder: (context, state) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            AppElevatedButton(
+                              isLoading:
+                                  state.actionClientBlocStatus.isLoading(),
+                              text: "إضافة",
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0)),
+                              ),
+                              onPressed: () {
+                                _clientsListBloc.add(
+                                    AddClientEvent(widget.addClientParams,
+                                        onSuccess: (client) {
+                                  _clientsListBloc.add(ResetClientList());
+                                  Navigator.pop(context, client);
+                                  Navigator.pop(context, client);
+                                }));
+                              },
+                            ),
+                            AppElevatedButton(
+                              isLoading:
+                                  state.actionClientBlocStatus.isLoading(),
+                              text: "رجوع",
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(0)),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                    15.verticalSpace,
+                  ],
+                ),
+                empty: () => Text("Empty "),
+                error: (exception) {
+                  return CustomErrorWidget(onPressed: () {
+                    _clientsListBloc.add(
+                        GetSimilarClientsListEvent(GetSimilarClientsListParams(
+                      name_client: widget.nameClient,
+                      name_enterprise: widget.name_enterprise,
+                      phone: widget.phone,
+                    )));
+                  });
+                },
+              );
+            },
+          ),
         ),
       ),
     );

@@ -1,14 +1,14 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/di/di_container.dart';
-import 'package:crm_smart/model/category_model.dart';
-import 'package:crm_smart/model/sub_category_model.dart';
-import 'package:crm_smart/model/ticketmodel.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_category_model.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_sub_category_model.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../core/api/api_services.dart';
 import '../core/utils/end_points.dart';
+import '../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 
 class ticket_vm extends ChangeNotifier {
   List<TicketModel> listticket = [];
@@ -16,8 +16,8 @@ class ticket_vm extends ChangeNotifier {
   List<TicketModel> listticket_clientprofile = [];
   List<TicketModel> listticket_clientfilter = [];
   List<TicketModel> tickesearchlist = [];
-  List<CategoryModel> categoriesList = [];
-  List<SubCategoryModel> subCategoriesList = [];
+  List<TicketCategoryModel> categoriesList = [];
+  List<TicketSubCategoryModel> subCategoriesList = [];
   UserModel? usercurrent;
   bool _isloading = false;
 
@@ -25,7 +25,6 @@ class ticket_vm extends ChangeNotifier {
 
   set isloading(bool isloading) {
     _isloading = isloading;
-    print("isloading: => $_isloading");
     notifyListeners();
   }
 
@@ -53,7 +52,7 @@ class ticket_vm extends ChangeNotifier {
     if (isav) {
       var data = await Api().post(
           url: EndPoints.baseUrls.url + "ticket/add_ticket.php", body: body);
-      TicketModel tm = TicketModel.fromJson(data[0]);
+      TicketModel tm = TicketModel.fromMap(data[0]);
       listticket.insert(0, tm);
       addvalue = false;
       tickesearchlist.insert(0, tm); //List.from(listticket);
@@ -74,8 +73,7 @@ class ticket_vm extends ChangeNotifier {
       if (listticket.isNotEmpty) {
         listticket.forEach((element) {
           if (element.nameEnterprise!.contains(searchKey, 0) ||
-              element.nameClient!.contains(searchKey, 0) ||
-              element.mobile!.contains(searchKey, 0))
+              element.nameClient!.contains(searchKey, 0))
             ticketlistsearch.add(element);
         });
         tickesearchlist = ticketlistsearch;
@@ -95,10 +93,10 @@ class ticket_vm extends ChangeNotifier {
     int index =
         listticket.indexWhere((element) => element.idTicket == id_ticket);
 
-    listticket[index] = TicketModel.fromJson(data[0]);
+    listticket[index] = TicketModel.fromMap(data[0]);
     index =
         tickesearchlist.indexWhere((element) => element.idTicket == id_ticket);
-    tickesearchlist[index] = TicketModel.fromJson(data[0]);
+    tickesearchlist[index] = TicketModel.fromMap(data[0]);
     tickesearchlist.removeAt(index);
     isloading = false;
     return true;
@@ -113,7 +111,7 @@ class ticket_vm extends ChangeNotifier {
         body: body);
     int index =
         listticket.indexWhere((element) => element.idTicket == id_ticket);
-    listticket[index] = TicketModel.fromJson(data[0]);
+    listticket[index] = TicketModel.fromMap(data[0]);
     // listticket.removeAt(index);
     tickesearchlist = List.from(listticket);
     isloading = false;
@@ -215,7 +213,7 @@ class ticket_vm extends ChangeNotifier {
 
     List<TicketModel> prodlist = [];
     for (int i = 0; i < data.length; i++) {
-      prodlist.add(TicketModel.fromJson(data[i]));
+      prodlist.add(TicketModel.fromMap(data[i]));
     }
     listticket = prodlist;
     isloading = false;
@@ -230,8 +228,9 @@ class ticket_vm extends ChangeNotifier {
     );
     final data = apiDataHandler(response);
 
-    categoriesList =
-        data.map<CategoryModel>((e) => CategoryModel.fromMap(e)).toList();
+    categoriesList = data
+        .map<TicketCategoryModel>((e) => TicketCategoryModel.fromMap(e))
+        .toList();
     isloading = false;
   }
 
@@ -244,8 +243,9 @@ class ticket_vm extends ChangeNotifier {
     );
     final data = apiDataHandler(response);
 
-    subCategoriesList =
-        data.map<SubCategoryModel>((e) => SubCategoryModel.fromMap(e)).toList();
+    subCategoriesList = data
+        .map<TicketSubCategoryModel>((e) => TicketSubCategoryModel.fromMap(e))
+        .toList();
     isloading = false;
   }
 }

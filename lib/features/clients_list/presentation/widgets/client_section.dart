@@ -3,10 +3,10 @@ import 'dart:ui' as myui;
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/transfer_client_page.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/clients_list/domain/use_cases/change_type_client_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/screen/client/transfer_client.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
@@ -698,8 +698,8 @@ class _ClientSectionState extends State<ClientSection> {
                     value: clientModel1.mobileuser.toString()),
 
                 if (clientModel1.reasonTransfer != null)
-                  context.read<PrivilegeCubit>().checkPrivilege('150') ==
-                              true &&
+                  // context.read<PrivilegeCubit>().checkPrivilege('150') ==
+                  //             true &&
                           clientModel1.fkusertrasfer != null
                       ? cardRow(
                           title: 'قام بتحويل العميل',
@@ -714,7 +714,7 @@ class _ClientSectionState extends State<ClientSection> {
                               clientModel1.nameusertransfer.toString()))
                       : IgnorePointer(),
 
-                context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                         (clientModel1.reasonTransfer != null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(
@@ -722,13 +722,13 @@ class _ClientSectionState extends State<ClientSection> {
                         value: clientModel1.nameTransferTo.toString())
                     : IgnorePointer(),
 
-                context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                         (clientModel1.reasonTransfer == null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
                     : IgnorePointer(),
 
-                context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
+                // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
                         (clientModel1.reasonTransfer != null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(title: 'حالة التحويل', value: 'معلق')
@@ -899,12 +899,12 @@ class _ClientSectionState extends State<ClientSection> {
                                                 context,
                                                 CupertinoPageRoute(
                                                     builder: (context) =>
-                                                        transferClient(
-                                                          name_enterprise:
+                                                        TransferClientPage(
+                                                          nameEnterprise:
                                                               clientModel1
                                                                   .nameEnterprise
                                                                   .toString(),
-                                                          idclient: clientModel1
+                                                          idClient: clientModel1
                                                               .idClients
                                                               .toString(),
                                                           type: "client",

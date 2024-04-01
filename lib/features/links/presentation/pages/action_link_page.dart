@@ -27,9 +27,11 @@ class ActionLinkPage extends StatefulWidget {
 
 class _ActionLinkPageState extends State<ActionLinkPage> {
   late ValueNotifier<String?> _titleLinkController;
-  late TextEditingController _linkDescriptionController;
+  late TextEditingController _namelinkController;
   late TextEditingController _linkController;
   late TextEditingController _notesController;
+  late TextEditingController _clauseController;
+  late TextEditingController _addressController;
   late GlobalKey<FormState> _formKey;
   late LinkCubit _linkCubit;
   late UserModel currentUser;
@@ -45,9 +47,13 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
     _linkCubit = getIt<LinkCubit>();
     _titleLinkController = ValueNotifier(linkModel?.title.toString());
     _linkController = TextEditingController(text: linkModel?.link.toString());
-    _notesController = TextEditingController(text: linkModel?.notes.toString());
-    _linkDescriptionController =
-        TextEditingController(text: linkModel?.address.toString());
+    _notesController = TextEditingController(text: linkModel?.notes==null?'':linkModel?.notes.toString());
+
+    _clauseController = TextEditingController(text: linkModel?.clause==null?'': linkModel?.clause.toString());
+    _addressController = TextEditingController(text: linkModel?.address==null?'':linkModel?.address.toString());
+
+    _namelinkController =
+        TextEditingController(text: linkModel?.department==null?'':linkModel?.department.toString());
     _formKey = GlobalKey<FormState>();
 
     super.initState();
@@ -57,7 +63,9 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
   void dispose() {
     _linkController.dispose();
     _notesController.dispose();
-    _linkDescriptionController.dispose();
+    _clauseController.dispose();
+    _addressController.dispose();
+    _namelinkController.dispose();
 
     super.dispose();
   }
@@ -111,18 +119,39 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                       ),
                     ],
                   ),
-                  // AppTextField(
-                  //   labelText: "عنوان الرابط*",
-                  //   maxLines: 1,
-                  //   validator: HelperFunctions.instance.requiredFiled,
-                  //   controller: _titleLinkController,
-                  // ),
+
+                  20.verticalSpace,
+
+                  AppTextField(
+                    labelText: "الاسم*",
+                    validator: HelperFunctions.instance.requiredFiled,
+                    controller: _namelinkController,
+                    // minLines: 1,
+                    contentPadding: HWEdgeInsets.all(15),
+                  ),
+                  20.verticalSpace,
+
+                  AppTextField(
+                    labelText: "البند*",
+                    validator: HelperFunctions.instance.requiredFiled,
+                    controller: _clauseController,
+                    // minLines: 5,
+                    contentPadding: HWEdgeInsets.all(15),
+                  ),
                   20.verticalSpace,
                   AppTextField(
                     labelText: "الرابط*",
                     validator: HelperFunctions.instance.requiredFiled,
                     controller: _linkController,
-                    minLines: 5,
+                    // minLines: 5,
+                    contentPadding: HWEdgeInsets.all(15),
+                  ),
+                  20.verticalSpace,
+                  AppTextField(
+                    labelText: "العنوان*",
+                    validator: HelperFunctions.instance.requiredFiled,
+                    controller: _addressController,
+                    minLines: 3,
                     contentPadding: HWEdgeInsets.all(15),
                   ),
                   20.verticalSpace,
@@ -164,10 +193,12 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                                 id: linkModel == null
                                     ? null
                                     : linkModel!.id.toString(),
-                                address: '',
+                                address: _addressController.text.toString(),
                                 link: _linkController.text.toString(),
                                 notes: _notesController.text.toString(),
                                 title: _titleLinkController.value.toString(),
+                                clause: _clauseController.text.toString(),
+                                department: _namelinkController.text.toString(),
                               ),
                             );
                           },

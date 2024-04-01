@@ -28,6 +28,8 @@ class ActionLinksParams {
   final String link;
   final String notes;
   final String address;
+  final String clause;
+  final String department;
   final String user_id;
 
   final String? id;
@@ -37,6 +39,8 @@ class ActionLinksParams {
     required this.link,
     required this.notes,
     required this.address,
+    required this.clause,
+    required this.department,
     required this.user_id,
     this.id,
   });
@@ -47,6 +51,8 @@ class ActionLinksParams {
           'link': link,
           'notes': notes,
           'address': address,
+          'department': department,
+          'clause': clause,
           'user_id': user_id,
         }
       : {
@@ -54,6 +60,8 @@ class ActionLinksParams {
           'link': link,
           'notes': notes,
           'address': address,
+          'department': department,
+          'clause': clause,
           'user_id': user_id,
         };
 

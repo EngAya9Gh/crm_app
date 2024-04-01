@@ -1,13 +1,17 @@
-import 'package:crm_smart/model/ticketmodel.dart';
-import 'package:crm_smart/ui/screen/home/ticket/ticketdetail.dart';
+import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/ticket_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants.dart';
+import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 
-class cardticket extends StatelessWidget {
-  cardticket({required this.ticketModel, Key? key}) : super(key: key);
-  TicketModel ticketModel;
+class TicketCard extends StatelessWidget {
+  const TicketCard({
+    required this.ticketModel,
+    Key? key,
+  }) : super(key: key);
+  final TicketModel ticketModel;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +32,7 @@ class cardticket extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => TicketDetails(
+                    builder: (context) => TicketDetailsPage(
                           type: '1',
                           ticketModel: ticketModel,
                         ) // support_view(type: 'only',)
