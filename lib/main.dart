@@ -240,12 +240,17 @@ class _MyAppState extends State<MyApp> {
               );
             }
           }
-          return MaterialApp(
-            navigatorKey: AppNavigator.navigatorKey,
-            debugShowCheckedModeBanner: false,
-            title: 'Smart CRM',
-            theme: AppTheme.light(context),
-            home: homeWidget,
+          return GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            child: MaterialApp(
+              navigatorKey: AppNavigator.navigatorKey,
+              debugShowCheckedModeBanner: false,
+              title: 'Smart CRM',
+              theme: AppTheme.light(context),
+              home: homeWidget,
+            ),
           );
         },
       ),

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/screen/home/home.dart';
-import '../../../../../ui/widgets/custom_widget/customformtext.dart';
 import '../../../../../ui/widgets/custom_widget/customlogo.dart';
 import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import '../manager/login_cubit/login_cubit.dart';
+import '../widgets/verification_number_fields.dart';
 
 class VerifyOtpPage extends StatefulWidget {
   VerifyOtpPage({Key? key}) : super(key: key);
@@ -46,22 +47,39 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomLogo(),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "We have sent a code to ",
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontSize: 12.sp,
+                            ),
+                      ),
+                      TextSpan(
+                        text: loginCubit.emailController.text,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 20),
-                CustomFormField(
-                  icon: Icons.lock,
-                  textdirehint: TextDirection.ltr,
-                  read: false,
-                  radius: 10,
-                  con: loginCubit.otpCodeController,
-                  maxline: 1,
-                  inputType: TextInputType.number,
-                  vaild: (data) {
-                    if (data?.isEmpty ?? true) {
+                VerificationNumberFields(
+                  controller: loginCubit.otpCodeController,
+                  validator: (code) {
+                    if (_isValidCode(code)) {
                       return AppStrings.messageEmpty;
                     }
                     return null;
                   },
-                  hintText: AppStrings.hintCodeText,
+                  onCompleted: (code) async {
+                    await loginCubit.verifyOtp();
+                  },
+                  onChanged: (String value) {},
                 ),
                 SizedBox(height: 30),
                 BlocBuilder<LoginCubit, LoginState>(
@@ -70,6 +88,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                       isLoading: state is VerifyOtpLoading,
                       text: AppStrings.textButtonCode,
                       onPressed: () async {
+                        FocusManager.instance.primaryFocus?.unfocus();
                         if (loginCubit.otpFormKey.currentState!.validate()) {
                           await loginCubit.verifyOtp();
                         }
@@ -84,4 +103,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
       ),
     );
   }
+
+  bool _isValidCode(String? code) =>
+      (code?.isEmpty ?? true) || code!.length < 5;
 }
