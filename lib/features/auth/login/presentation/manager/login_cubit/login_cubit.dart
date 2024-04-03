@@ -28,6 +28,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   final loginFormKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
+  final otpFormKey = GlobalKey<FormState>();
+  final otpCodeController = TextEditingController();
 
   Future<void> login() async {
     emit(LoginLoading());
@@ -40,10 +42,13 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  Future<void> verifyOtp(String otp, String email) async {
+  Future<void> verifyOtp() async {
     emit(VerifyOtpLoading());
     final result = await _verifyOtpUsecase(
-      VerifyOtpParams(otp: otp, email: email),
+      VerifyOtpParams(
+        otp: otpCodeController.text,
+        email: emailController.text,
+      ),
     );
     result.fold(
       (error) => emit(VerifyOtpFailure(error)),

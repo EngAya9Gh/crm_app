@@ -31,7 +31,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
-        print("state is $state");
         if (state is LoginFailure) {
           // AppConstants.showSnakeBar(context, state.message);
           AppConstants.showSnakeBar(context, AppStrings.emailError);

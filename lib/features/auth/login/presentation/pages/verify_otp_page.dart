@@ -1,4 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../core/utils/app_constants.dart';
+import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/utils/app_strings.dart';
+import '../../../../../ui/screen/home/home.dart';
+import '../../../../../ui/widgets/custom_widget/customformtext.dart';
+import '../../../../../ui/widgets/custom_widget/customlogo.dart';
+import '../../../../app/presentation/widgets/app_elvated_button.dart';
+import '../manager/login_cubit/login_cubit.dart';
 
 class VerifyOtpPage extends StatefulWidget {
   VerifyOtpPage({Key? key}) : super(key: key);
@@ -8,144 +18,69 @@ class VerifyOtpPage extends StatefulWidget {
 }
 
 class _VerifyOtpPageState extends State<VerifyOtpPage> {
-  String? valueField;
-  TextEditingController? _textcontroller = TextEditingController();
-  TextEditingController? _code = TextEditingController();
-  final _globalKey = GlobalKey<FormState>();
-  String valEmail = "";
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  late final LoginCubit loginCubit;
+
+  @override
+  void initState() {
+    loginCubit = context.read<LoginCubit>();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox();
-
-    // return Scaffold(
-    //   key: _scaffoldKey,
-    //   backgroundColor: Colors.white,
-    //   body: ModalProgressHUD(
-    //     inAsyncCall: Provider.of<AuthProvider>(context).isLoading,
-    //     child: Directionality(
-    //       textDirection: TextDirection.ltr,
-    //       child: Padding(
-    //         padding: const EdgeInsets.only(bottom: 20, right: 30, left: 30),
-    //         //SingleChild
-    //         child: Form(
-    //           key: _globalKey,
-    //           child: Column(
-    //             mainAxisAlignment: MainAxisAlignment.center,
-    //             children: [
-    //               CustomLogo(),
-    //               SizedBox(
-    //                 height: 20,
-    //               ),
-    //               // IconButton(
-    //               //     onPressed: () async {
-    //               //       user.
-    //               //     },
-    //               //     icon: Icon(Icons.add)),
-    //               CustomFormField(
-    //                 textdirehint: TextDirection.ltr,
-    //                 read: false,
-    //                 radius: 10,
-    //                 con: _textcontroller,
-    //                 maxline: 1,
-    //                 inputType: !val.sendcode ? TextInputType.phone : null,
-    //                 vaild: (data) {
-    //                   if (data!.isEmpty) {
-    //                     return AppStrings.messageEmpty;
-    //                   }
-    //                   if (val.sendcode) return validateEmail(data.trim());
-    //                 },
-    //                 hintText: val.sendcode
-    //                     ? AppStrings.hintEmailText
-    //                     : AppStrings.hintCodeText,
-    //                 onChanged: (data) {
-    //                   valueField = data;
-    //                   valEmail = val.sendcode ? data : valEmail;
-    //                 },
-    //               ),
-    //               SizedBox(height: 30),
-    //               // BlocBuilder<LoginCubit, LoginState>(
-    //               //   builder: (context, state) {
-    //               //     return AppElevatedButton(
-    //               //         isLoading: state is LoginLoading,
-    //               //         text: val.sendcode
-    //               //             ? AppStrings.textButtonCode
-    //               //             : AppStrings.textButtonCode2,
-    //               //         onPressed: () async {
-    //               //           if (_globalKey.currentState!.validate()) {
-    //               //             _globalKey.currentState!.save();
-    //               //             if (val.sendcode) {
-    //               //               context.read<LoginCubit>().sendCode(valEmail);
-    //               //             } else {
-    //               //               context.read<LoginCubit>().verifyCode(
-    //               //                     email: valEmail,
-    //               //                     code: valueField,
-    //               //                   );
-    //               //             }
-    //               //           }
-    //               //         });
-    //               //   },
-    //               // ),
-    //
-    //               CustomButton(
-    //                 text: val.sendcode
-    //                     ? AppStrings.textButtonCode
-    //                     : AppStrings.textButtonCode2,
-    //                 onTap: () async {
-    //                   if (_globalKey.currentState!.validate()) {
-    //                     _globalKey.currentState!.save();
-    //                     //
-    //
-    //                     Provider.of<AuthProvider>(context, listen: false)
-    //                         .changeboolValueisLoading(true);
-    //                     final email = valEmail.trim();
-    //                     final otpCode = valueField?.trim() ?? '';
-    //
-    //                     String? res =
-    //                         await AuthServices().verfiy_otp(email, otpCode);
-    //
-    //                     if (res != "false") {
-    //                       SharedPreferences preferences =
-    //                           getIt<SharedPreferences>();
-    //                       preferences.setBool(kKeepMeLoggedIn, true);
-    //                       String id = jsonDecode(res!)["message"].toString();
-    //                       String tk = jsonDecode(res!)["data"]!;
-    //                       print('tk');
-    //                       print(id);
-    //                       print(tk);
-    //                       preferences.setString("id_user", id!);
-    //                       preferences.setString("token_user", tk);
-    //
-    //                       // preferences.set("map_clientlist",res!);
-    //                       await Provider.of<UserProvider>(context,
-    //                               listen: false)
-    //                           .getcurrentuser();
-    //                       Provider.of<AuthProvider>(context, listen: false)
-    //                           .changeboolValueisLoading(false);
-    //                       val.changeboolValue();
-    //                       Navigator.pushAndRemoveUntil(
-    //                           context,
-    //                           CupertinoPageRoute(builder: (context) => Home()),
-    //                           (rouets) => false);
-    //                     } else {
-    //                       Provider.of<AuthProvider>(context, listen: false)
-    //                           .changeboolValueisLoading(false);
-    //
-    //                       ScaffoldMessenger.of(context).showSnackBar(
-    //                           new SnackBar(
-    //                               content:
-    //                                   new Text(AppStrings.codeVerifyError)));
-    //                     }
-    //                   }
-    //                 },
-    //               )
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
+    return BlocListener<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state is VerifyOtpFailure) {
+          AppConstants.showSnakeBar(context, state.message);
+        } else if (state is VerifyOtpSuccess) {
+          AppNavigator.pushReplacement(Home());
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Form(
+          key: loginCubit.otpFormKey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CustomLogo(),
+                SizedBox(height: 20),
+                CustomFormField(
+                  textdirehint: TextDirection.ltr,
+                  read: false,
+                  radius: 10,
+                  con: loginCubit.otpCodeController,
+                  maxline: 1,
+                  inputType: TextInputType.number,
+                  vaild: (data) {
+                    if (data?.isEmpty ?? true) {
+                      return AppStrings.messageEmpty;
+                    }
+                    return null;
+                  },
+                  hintText: AppStrings.hintCodeText,
+                ),
+                SizedBox(height: 30),
+                BlocBuilder<LoginCubit, LoginState>(
+                  builder: (context, state) {
+                    return AppElevatedButton(
+                      isLoading: state is VerifyOtpLoading,
+                      text: AppStrings.textButtonCode,
+                      onPressed: () async {
+                        if (loginCubit.otpFormKey.currentState!.validate()) {
+                          await loginCubit.verifyOtp();
+                        }
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
