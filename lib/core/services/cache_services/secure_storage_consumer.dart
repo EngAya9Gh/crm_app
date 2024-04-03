@@ -20,7 +20,6 @@ class SecureStorageConsumer extends CacheServices {
     required dynamic value,
   }) async {
     try {
-      getIt<Logger>().d('secure storage key is => $key');
       if (value.runtimeType != String) {
         getIt<Logger>().e('Value must be a string');
         throw CacheExceptions(message: 'Value must be a string');
@@ -37,6 +36,12 @@ class SecureStorageConsumer extends CacheServices {
   @override
   Future<String?> getData({required String key}) async {
     try {
+      final isKeyExist = await _secureStorage.containsKey(key: key);
+      if (!isKeyExist) {
+        getIt<Logger>()
+            .i('The key (\"$key\") does not exist in secure storage');
+        return null;
+      }
       return await _secureStorage.read(key: key);
     } catch (e) {
       getIt<Logger>().e(e.toString());

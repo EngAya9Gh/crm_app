@@ -229,7 +229,7 @@ class CustomDrawer extends StatelessWidget {
                 color: kMainColor,
               ),
               onTap: () async {
-                SharedPreferences preferences = getIt<SharedPreferences>();
+                final preferences = getIt<SharedPreferences>();
                 await preferences.clear();
                 if (context.mounted) {
                   Navigator.pushAndRemoveUntil(

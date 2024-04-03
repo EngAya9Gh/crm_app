@@ -1,8 +1,9 @@
-import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../../core/errors/base_app_exception.dart';
 import '../../../../../core/services/cache_services/cache_services.dart';
+import '../../../../../core/services/cache_services/secure_storage_consumer.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../domain/use_cases/cache_token_usecase.dart';
 import '../../domain/use_cases/get_token_usecase.dart';
@@ -17,7 +18,8 @@ abstract class LoginLocalDataSource {
 class LoginLocalDataSourceImpl extends LoginLocalDataSource {
   final CacheServices _cacheServices;
 
-  LoginLocalDataSourceImpl(this._cacheServices);
+  LoginLocalDataSourceImpl(
+      @Named.from(SecureStorageConsumer) this._cacheServices);
 
   @override
   Future<Either<String, dynamic>> cacheToken(
@@ -28,8 +30,10 @@ class LoginLocalDataSourceImpl extends LoginLocalDataSource {
         key: AppStrings.secureStorage.token,
         value: cacheTokenParams.token,
       );
+      print("saved token successfully ${getToken(GetTokenParams())} ");
       return Right(null);
     } on BaseAppException catch (e) {
+      print("error saving token ${e.message}");
       return Left(e.message);
     }
   }
@@ -41,8 +45,9 @@ class LoginLocalDataSourceImpl extends LoginLocalDataSource {
       final token =
           await _cacheServices.getData(key: AppStrings.secureStorage.token);
       return Right(token);
-    } catch (e) {
-      return Left(e.toString());
+    } on BaseAppException catch (e) {
+      print("error getting token ${e.message}");
+      return Left(e.message);
     }
   }
 }

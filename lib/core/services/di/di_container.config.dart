@@ -354,8 +354,9 @@ Future<_i1.GetIt> $initGetIt(
       () => _i37.LinkDatasource(gh<_i8.ApiServices>()));
   gh.factory<_i38.LinksImportantRepository>(
       () => _i39.LinkRepositoryImpl(gh<_i37.LinkDatasource>()));
-  gh.lazySingleton<_i40.LoginLocalDataSource>(
-      () => _i40.LoginLocalDataSourceImpl(gh<_i13.CacheServices>()));
+  gh.lazySingleton<_i40.LoginLocalDataSource>(() =>
+      _i40.LoginLocalDataSourceImpl(
+          gh<_i13.CacheServices>(instanceName: 'SecureStorageConsumer')));
   gh.lazySingleton<_i41.LoginRemoteDataSource>(
       () => _i41.LoginRemoteDataSourceImpl(gh<_i8.ApiServices>()));
   gh.lazySingleton<_i42.LoginRepo>(() => _i43.LoginRepoImpl(

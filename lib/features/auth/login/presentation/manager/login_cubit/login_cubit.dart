@@ -53,10 +53,8 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> cacheToken(String token) async {
     final result = await _cacheTokenUsecase(CacheTokenParams(token: token));
-    result.fold(
-      (error) => emit(LoginFailure(error)),
-      (_) => emit(LoginSuccess()),
-    );
+    result.fold((error) => print('Error caching token: $error'),
+        (_) => print('Token cached successfully'));
   }
 
   Future<String?> getToken() async {
