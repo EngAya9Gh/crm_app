@@ -4,11 +4,11 @@ import 'package:crm_smart/features/manage_participates/data/models/participatMod
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/api/api_services.dart';
-import '../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
 import '../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../core/services/api/api_services.dart';
+import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
 import '../models/participate_client_model.dart';
 
@@ -77,7 +77,7 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<List<ParticipateClientModel>>>
       getParticipateClientsList(String participateId) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
           endPoint:
               "${EndPoints.participate.allParticipateClients}/$participateId");
@@ -96,7 +96,7 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<List<ProfileInvoiceModel>>> getParticipateInvoicesList(
       String participateId) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
           endPoint:
               "${EndPoints.participate.allParticipateInvoices}/$participateId");
@@ -117,7 +117,8 @@ class ParticipatesListDatasource {
     fun() async {
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await api.get(
-          endPoint: EndPoints.participate.IvoiceByID, queryParameters: param);
+          endPoint: EndPoints.participate.getInvoiceById,
+          queryParameters: param);
 
       final invoice = InvoiceModel.fromJson(jsonDecode(response)['message'][0]);
       return ResponseWrapper(message: invoice, data: invoice);
@@ -141,7 +142,7 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<List<ProfileCommentModel>>> getParticipateCommentsList(
       String participateId) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
           endPoint:
               "${EndPoints.participate.allParticipateComments}/$participateId");
@@ -160,7 +161,7 @@ class ParticipatesListDatasource {
   Future<ResponseWrapper<ProfileCommentModel>> addComment(
       {required Map<String, dynamic> body}) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
           endPoint: EndPoints.participate.addParticipateComment, data: body);
 

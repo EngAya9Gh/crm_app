@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/api/api_utils.dart';
-import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
+import 'package:crm_smart/core/services/api/api_utils.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/clients_list/data/models/recommended_client.dart';
 import 'package:crm_smart/features/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';

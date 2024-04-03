@@ -1,11 +1,11 @@
 import 'package:crm_smart/api/api.dart';
-import 'package:crm_smart/core/api/api_services.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../core/di/di_container.dart';
+import '../core/services/di/di_container.dart';
 
 class MainCityProvider extends ChangeNotifier {
   List<MainCityModel> listmaincity = [];
@@ -222,7 +222,7 @@ class MainCityProvider extends ChangeNotifier {
   }
 
   Future _fetchCitiesFromApi(List<String> mainCitiesIds) async {
-    getIt<ApiServices>().changeBaseUrl(EndPoints.baseUrls.url_laravel);
+    getIt<ApiServices>().changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await getIt<ApiServices>().post(
         endPoint: EndPoints.city.getCitiesFromMainCitiesIds,
         data: {'mainCitiesIds': mainCitiesIds.toString()});

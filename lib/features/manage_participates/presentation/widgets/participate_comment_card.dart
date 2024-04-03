@@ -78,7 +78,7 @@ class ParticipateCommenttCard extends StatelessWidget {
                                             placeholder: (context, url) =>
                                                 const CircularProgressIndicator(),
                                             imageUrl: comment.imgImage != ''
-                                                ? EndPoints.baseUrls.urlimage +
+                                                ? EndPoints.baseUrls.urlImage +
                                                     comment.imgImage.toString()
                                                 : '',
                                           ),

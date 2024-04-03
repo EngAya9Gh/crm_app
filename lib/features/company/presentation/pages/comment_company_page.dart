@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/end_points.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/commentmodel.dart';
@@ -142,7 +142,7 @@ class _comment_companyState extends State<comment_company> {
                               content: comment.content.toString(),
                               nameUser: comment.nameUser.toString(),
                               imgImage: comment.imgImage != ''
-                                  ? EndPoints.baseUrls.urlimage +
+                                  ? EndPoints.baseUrls.urlImage +
                                       comment.imgImage.toString()
                                   : '',
                               nameEnterprise: '',

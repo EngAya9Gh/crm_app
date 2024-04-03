@@ -17,7 +17,7 @@ import 'package:path/path.dart' as pp;
 import '../../../../api/api.dart';
 import '../../../../constants.dart';
 import '../../../../core/common/models/page_state/result_builder.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/end_points.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/screen/client/profileclient.dart';
@@ -154,12 +154,12 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                                     onTap: () => AppFileViewer(
                                       imageSource: ImageSourceViewer.network,
                                       urls: [
-                                        EndPoints.baseUrls.urlfile +
+                                        EndPoints.baseUrls.urlFile +
                                             data.fileReject!
                                       ],
                                     ).show(context),
                                     child: FancyImageShimmerViewer(
-                                      imageUrl: EndPoints.baseUrls.urlfile +
+                                      imageUrl: EndPoints.baseUrls.urlFile +
                                           data.fileReject!,
                                       fit: BoxFit.cover,
                                     ),
@@ -291,7 +291,7 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
 
         File file;
         file = await Api().downloadFile(
-            EndPoints.baseUrls.urlfile + attachFile, pp.basename(attachFile));
+            EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
         if (file.existsSync()) {
           final result = await OpenFile.open(file.path);
 

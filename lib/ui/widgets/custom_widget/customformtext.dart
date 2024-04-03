@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-//import 'package:intl/intl.dart';
 
 import '../../../constants.dart';
 
 class CustomFormField extends StatelessWidget {
-  CustomFormField({
+  const CustomFormField({
     this.onChanged,
     this.hintText,
     this.icon,
@@ -22,19 +19,19 @@ class CustomFormField extends StatelessWidget {
     this.textdirehint,
   });
 
-  String? hintText;
-  TextDirection? textdirehint;
-  Function()? ontap;
-  Function(String)? onChanged;
-  Function(String?)? onsave;
-  String? Function(String?)? vaild;
-  IconData? icon;
-  TextEditingController? con;
-  String? label;
-  int? maxline;
-  TextInputType? inputType;
-  double radius;
-  bool read = false;
+  final String? hintText;
+  final TextDirection? textdirehint;
+  final Function()? ontap;
+  final Function(String)? onChanged;
+  final Function(String?)? onsave;
+  final String? Function(String?)? vaild;
+  final IconData? icon;
+  final TextEditingController? con;
+  final String? label;
+  final int? maxline;
+  final TextInputType? inputType;
+  final double radius;
+  final bool read;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +45,10 @@ class CustomFormField extends StatelessWidget {
       onSaved: onsave,
       readOnly: read,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15,
+        ),
         hintTextDirection: textdirehint,
         alignLabelWithHint: true,
         labelText: label,
@@ -55,10 +56,12 @@ class CustomFormField extends StatelessWidget {
           color: kMainColor,
         ),
         hintText: hintText,
-        prefixIcon: Icon(
-          icon,
-          color: kMainColor,
-        ),
+        prefixIcon: icon == null
+            ? null
+            : Icon(
+                icon,
+                color: kMainColor,
+              ),
         filled: true,
         fillColor: Colors.white,
         enabledBorder: OutlineInputBorder(
@@ -85,15 +88,7 @@ class CustomFormField extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        // hintStyle: const TextStyle(
-        //     color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
-        //filled: false,
-        //fillColor: Colors.white,
       ),
-      /*textDirection: TextDirection.rtl,
-      inputFormatters: <TextInputFormatter>[
-        FilteringTextInputFormatter.digitsOnly
-      ],*/
     );
   }
 }

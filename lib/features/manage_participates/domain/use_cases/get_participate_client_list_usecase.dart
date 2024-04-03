@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/manage_participates/data/models/participate_client_model.dart';
 import 'package:crm_smart/features/manage_participates/domain/repositories/participate_list_repository.dart';

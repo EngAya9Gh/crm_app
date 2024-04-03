@@ -11,7 +11,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';

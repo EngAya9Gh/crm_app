@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../features/manage_users/presentation/pages/manage_users_page.dart';
 import '../../../../features/manage_withdrawals/presentation/pages/manage_reject_reasons_page.dart';

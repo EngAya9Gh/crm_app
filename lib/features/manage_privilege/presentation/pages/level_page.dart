@@ -14,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/config/theme/theme.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../app/presentation/widgets/app_scaffold.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../data/models/level_model.dart';

@@ -2,9 +2,9 @@ import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/api/api_services.dart';
 import '../../../../../core/common/models/profile_invoice_model.dart';
 import '../../../../../core/common/widgets/profile_comments_model.dart';
+import '../../../../../core/services/api/api_services.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../model/invoiceModel.dart';
 import '../../../../clients_list/data/models/clients_list_response.dart';
@@ -56,7 +56,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final endPoint = EndPoints.agentDistributor.getAgentClients;
       final response = await dio.get(endPoint: "$endPoint$agentId");
 
@@ -81,7 +81,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final endPoint = EndPoints.agentDistributor.getAgentInvoicesList;
       final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];
@@ -103,7 +103,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final endPoint = EndPoints.agentDistributor.getAgentCommentsList;
       final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];
@@ -126,7 +126,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String content,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final endPoint = EndPoints.agentDistributor.addCommentAgent;
       final response = await dio.post(endPoint: endPoint, data: {
         "agent_id": agentId,
@@ -147,7 +147,7 @@ class AgentsDistributorsProfileDataSourceImpl
     required String agentId,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final endPoint = EndPoints.agentDistributor.getDateVisitAgent;
       final response = await dio.get(endPoint: "$endPoint$agentId");
       final data = response['data'];

@@ -1,6 +1,6 @@
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
-import 'package:crm_smart/core/api/api_utils.dart';
-import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/services/api/api_utils.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/manage_privilege/data/data_sources/privilege_datasource.dart';
 import 'package:crm_smart/features/manage_privilege/data/models/level_model.dart';
 import 'package:crm_smart/features/manage_privilege/data/models/privilege_model.dart';
@@ -24,12 +24,14 @@ class PrivilegeRepositoryImpl extends PrivilegeRepository {
   }
 
   @override
-  Future<Result<ResponseWrapper<List<PrivilegeModel>>>> getPrivilege(Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<List<PrivilegeModel>>>> getPrivilege(
+      Map<String, dynamic> body) {
     return toApiResult(() => _datasource.getPrivileges(body));
   }
 
   @override
-  Future<Result<ResponseWrapper<void>>> updatePrivilege(Map<String, dynamic> body) {
+  Future<Result<ResponseWrapper<void>>> updatePrivilege(
+      Map<String, dynamic> body) {
     return toApiResult(() => _datasource.updatePrivileges(body));
   }
 }

@@ -170,7 +170,7 @@ class _ParticipatesSupportInvoicesAttachmentsState
               child: fileAttach.fileAttach!.mimeType?.contains("image") == true
                   ? FancyImageShimmerViewer(
                       imageUrl:
-                          EndPoints.baseUrls.urlfile + fileAttach.fileAttach!,
+                          EndPoints.baseUrls.urlFile + fileAttach.fileAttach!,
                       fit: BoxFit.cover,
                     )
                   : InkWell(

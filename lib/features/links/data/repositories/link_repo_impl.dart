@@ -1,6 +1,6 @@
-import 'package:crm_smart/core/api/api_utils.dart';
-import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
+import 'package:crm_smart/core/services/api/api_utils.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/links/data/models/link_model.dart';
 import 'package:injectable/injectable.dart';
 

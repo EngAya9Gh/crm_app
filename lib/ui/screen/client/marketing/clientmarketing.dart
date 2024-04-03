@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../features/clients_list/presentation/pages/action_client_page.dart';
 import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../model/ActivityModel.dart';

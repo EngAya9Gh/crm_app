@@ -123,10 +123,10 @@ class UserModel {
       created_at: jsonData['created_at'],
       img_image: jsonData['img_image'] == null
           ? ''
-          : EndPoints.baseUrls.urlimage + jsonData['img_image'],
+          : EndPoints.baseUrls.urlImage + jsonData['img_image'],
       img_thumbnail: jsonData['img_thumbnail'] == null
           ? ''
-          : EndPoints.baseUrls.urlimage + jsonData['img_thumbnail'],
+          : EndPoints.baseUrls.urlImage + jsonData['img_thumbnail'],
       path: jsonData['path'],
       fkuserupdate: jsonData['fkuserupdate'],
       updated_at: jsonData['updated_at'],

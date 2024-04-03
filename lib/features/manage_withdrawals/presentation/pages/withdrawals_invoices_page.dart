@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../constants.dart';
 import '../../../../core/common/enums/invoice_status_enum.dart';
 import '../../../../core/common/models/page_state/result_builder.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../model/invoiceModel.dart';
 import '../../../../ui/widgets/custom_widget/RowWidget.dart';
 import '../../../../ui/widgets/invoice_widget/Card_invoice_client.dart';

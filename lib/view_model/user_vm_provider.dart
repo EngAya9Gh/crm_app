@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:crm_smart/core/di/di_container.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/UserService.dart';

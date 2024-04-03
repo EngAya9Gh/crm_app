@@ -43,7 +43,7 @@ class CustomNetworkImage extends StatelessWidget {
                         ))
                     : FancyImageShimmerViewer(
                         imageUrl:
-                            "${EndPoints.baseUrls.laravelUrl_Image}${fileAttach.fileAttach}",
+                            "${EndPoints.baseUrls.laravelUrlImage}${fileAttach.fileAttach}",
                         fit: BoxFit.cover,
                       ),
               ),

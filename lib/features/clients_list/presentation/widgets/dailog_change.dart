@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../view_model/datetime_vm.dart';
 import '../../../../view_model/typeclient.dart';
 import '../../../../view_model/user_vm_provider.dart';

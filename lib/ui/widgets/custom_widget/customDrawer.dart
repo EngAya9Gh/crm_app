@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/services/cache_services/cache_services.dart';
+import 'package:crm_smart/core/services/cache_services/secure_storage_consumer.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/ui/screen/login.dart';
-import 'package:crm_smart/ui/screen/user/usertest_view.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/login_page.dart';
 import 'package:crm_smart/ui/screen/user/userview.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/di/di_container.dart';
-import '../../../features/links/presentation/pages/manage_links_page.dart';
+import '../../../core/services/di/di_container.dart';
 import '../animated_dialog.dart';
 import '../delete_acconut_dialog.dart';
 
@@ -231,16 +232,13 @@ class CustomDrawer extends StatelessWidget {
                 color: kMainColor,
               ),
               onTap: () async {
-                SharedPreferences preferences = getIt<SharedPreferences>();
-                await preferences.clear();
-                if (context.mounted) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      CupertinoPageRoute(builder: (context) => login()),
-                      (route) => false);
-                }
-
-                // preferences.setBool(kKeepMeLoggedIn, false);
+                final secureStorage = getIt<CacheServices>(
+                  instanceName: SecureStorageConsumer.name,
+                );
+                await secureStorage.removeData(
+                  key: AppStrings.secureStorage.token,
+                );
+                AppNavigator.pushAndRemoveUntil(LoginPage());
               },
             ),
             ListTile(

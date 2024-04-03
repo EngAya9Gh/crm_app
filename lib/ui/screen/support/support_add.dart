@@ -31,7 +31,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/models/page_state/bloc_status.dart';
-import '../../../core/di/di_container.dart';
+import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_elvated_button.dart';
 import '../../../features/clients_list/data/models/client_support_file_model.dart';
@@ -140,8 +140,8 @@ class _SupportAddState extends State<SupportAdd> {
 
     final listDates = List<DateInstallationClient>.of(datesInstallation);
     listDates.sort((a, b) => a.dateClientVisit!.compareTo(b.dateClientVisit!));
-    final nextInstallation =
-        listDates.firstWhereOrNull((element) => element.isDone == "0"||element.isDone=='3');
+    final nextInstallation = listDates.firstWhereOrNull(
+        (element) => element.isDone == "0" || element.isDone == '3');
 
     Widget dialog = SimpleDialog(
         titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
@@ -1452,7 +1452,7 @@ class _SupportAddState extends State<SupportAdd> {
                 borderRadius: BorderRadius.circular(15),
                 child: FancyImageShimmerViewer(
                   imageUrl:
-                      "${EndPoints.baseUrls.laravelUrl_Image}${fileAttach.fileAttach}",
+                      "${EndPoints.baseUrls.laravelUrlImage}${fileAttach.fileAttach}",
                   fit: BoxFit.cover,
                 ),
                 // Image.network(

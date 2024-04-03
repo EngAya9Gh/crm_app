@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../errors/server_exceptions.dart';
 import '../api_services.dart';
-import '../exceptions.dart';
 
 @LazySingleton(as: ApiServices)
 class DioServices extends ApiServices {

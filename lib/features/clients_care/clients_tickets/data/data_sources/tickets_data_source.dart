@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/api/api_services.dart';
-import '../../../../../core/api/exceptions.dart';
 import '../../../../../core/common/helpers/api_data_handler.dart';
+import '../../../../../core/errors/server_exceptions.dart';
+import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../data/models/ticket_model.dart';
 import '../../domain/use_cases/add_ticket_usecase.dart';
@@ -33,14 +33,14 @@ class TicketsDataSourceImpl implements TicketsDataSource {
   @override
   Future<Either<String, TicketModel>> addTicket(AddTicketParams params) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
         endPoint: EndPoints.tickets.addTicket,
         data: params.toMap(),
       );
       final data = apiDataHandler(response);
       return Right(TicketModel.fromMap(data));
-    } on AppException catch (e) {
+    } on ServerException catch (e) {
       return Left(e.message);
     }
   }
@@ -49,14 +49,14 @@ class TicketsDataSourceImpl implements TicketsDataSource {
   Future<Either<String, TicketModel>> editTicketType(
       EditTicketTypeParams params) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.post(
         endPoint: "${EndPoints.tickets.editTicketType}${params.idTicket}",
         data: params.toMap(),
       );
       final data = apiDataHandler(response);
       return Right(TicketModel.fromMap(data));
-    } on AppException catch (e) {
+    } on ServerException catch (e) {
       return Left(e.message);
     }
   }
@@ -64,13 +64,13 @@ class TicketsDataSourceImpl implements TicketsDataSource {
   @override
   Future<Either<String, List<TicketModel>>> getTickets() async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
         endPoint: EndPoints.tickets.getTickets,
       );
       final data = apiDataHandler(response);
       return Right((data as List).map((e) => TicketModel.fromMap(e)).toList());
-    } on AppException catch (e) {
+    } on ServerException catch (e) {
       return Left(e.message);
     }
   }
@@ -79,13 +79,13 @@ class TicketsDataSourceImpl implements TicketsDataSource {
   Future<Either<String, TicketModel>> getTicketById(
       GetTicketByIdParams params) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await _api.get(
         endPoint: "${EndPoints.tickets.getTicketById}${params.id}",
       );
       final data = apiDataHandler(response);
       return Right(TicketModel.fromMap(data));
-    } on AppException catch (e) {
+    } on ServerException catch (e) {
       return Left(e.message);
     }
   }
@@ -94,13 +94,13 @@ class TicketsDataSourceImpl implements TicketsDataSource {
   Future<Either<String, dynamic>> transferTicket(
       TransferTicketParams params) async {
     try {
-      _api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      _api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
       return Right(_api.post(
         endPoint: "${EndPoints.tickets.transferTicket}${params.idTicket}",
         data: params.toMap(),
       ));
-    } on AppException catch (e) {
+    } on ServerException catch (e) {
       return Left(e.message);
     }
   }

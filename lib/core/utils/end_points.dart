@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
+
 import '../common/enums/enums.dart';
 
 abstract class EndPoints {
   EndPoints._();
 
   static final baseUrls = _BaseUrls();
+  static const auth = _Auth();
   static const care = _Care();
   static const client = _Client();
   static const users = _Users();
@@ -21,44 +24,44 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
-    print('AppMode: $appMode');
-    print('url: $url');
-    print('url_laravel: $url_laravel');
-    print('urlimage: $urlimage');
-    print('urlfile: $urlfile');
-    print('urlfilelogo: $urlfilelogo');
-    print('urlfileAgent: $urlfileAgent');
+    debugPrint('AppMode => $appMode');
+    debugPrint('url => $url');
+    debugPrint('url_laravel => $urlLaravel');
+    debugPrint('urlimage => $urlImage');
+    debugPrint('urlfile => $urlFile');
+    debugPrint('urlfilelogo => $urlFileLogo');
+    debugPrint('urlfileAgent => $urlfileAgent');
   }
 
   late final String url;
-  late final String url_laravel;
-  late final String urlimage;
-  late final String urlfile;
-  late final String urlfilelogo;
+  late final String urlLaravel;
+  late final String urlImage;
+  late final String urlFile;
+  late final String urlFileLogo;
   late final String urlfileAgent;
-  late final String laravelUrl_Image;
+  late final String laravelUrlImage;
 
   void init() {
     if (appMode == AppMode.production) {
       url = 'http://smartcrm.ws/crm/api/';
-      url_laravel = 'http://new.smartcrm.ws/api/';
-      urlimage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
-      urlfile = 'http://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
-      urlfilelogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
+      urlLaravel = 'http://new.smartcrm.ws/api/';
+      urlImage = 'http://smartcrm.ws/crm/api/imagesApp/profile/';
+      urlFile = 'http://smartcrm.ws/crm/api/imagesApp/filesinvoice/';
+      urlFileLogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/crm/api/imagesApp/agent/';
-      laravelUrl_Image = 'http://new.smartcrm.ws/storage/';
+      laravelUrlImage = 'http://new.smartcrm.ws/storage/';
     } else {
       url = 'http://smartcrm.ws/test/api/';
-      url_laravel = 'http://test.smartcrm.ws/api/';
-      urlimage = 'http://smartcrm.ws/test/api/imagesApp/profile/';
-      urlfile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
-      urlfilelogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
+      urlLaravel = 'http://test.smartcrm.ws/api/';
+      urlImage = 'http://smartcrm.ws/test/api/imagesApp/profile/';
+      urlFile = 'http://smartcrm.ws/test/api/imagesApp/filesinvoice/';
+      urlFileLogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/test/api/imagesApp/agent/';
-      laravelUrl_Image = 'http://test.smartcrm.ws/storage/';
+      laravelUrlImage = 'http://test.smartcrm.ws/storage/';
     }
   }
 }
@@ -67,6 +70,14 @@ class _App {
   const _App();
 
   final getVersion = 'VersionUpdated/get_version.php';
+}
+
+class _Auth {
+  const _Auth();
+
+  final login = "checkEmail";
+  final verifyOtp = "login";
+  final validateToken = "isTokenAuthenticated";
 }
 
 class _Users {
@@ -131,7 +142,7 @@ class _Client {
   final addClient = 'client/clientAdd.php';
   final editClient = "client/clientUpdate.php";
   final changeTypeClient = "editClientByTypeClient/";
-  final approveClient_reject_admin = "clientAppproveAdmin/";
+  final approveClientRejectAdmin = "clientAppproveAdmin/";
   final getRejectReasons =
       "client/reason_client_reject/Get_reasonRejectClient.php";
   final addRejectReasons =
@@ -160,7 +171,7 @@ class _Participate {
 
   final allParticipateClients = 'getParticipateClints';
   final allParticipateInvoices = 'getParticipateInvoices';
-  final IvoiceByID = 'client/invoice/getInvoiceID.php';
+  final getInvoiceById = 'client/invoice/getInvoiceID.php';
   final allParticipateComments = 'getParticipateComments';
   final addParticipateComment = 'addCommentParticipate';
 }

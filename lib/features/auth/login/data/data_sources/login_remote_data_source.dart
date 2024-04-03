@@ -1,0 +1,73 @@
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../../../../core/services/api/api_services.dart';
+import '../../../../../core/utils/end_points.dart';
+import '../../domain/use_cases/login_usecase.dart';
+import '../../domain/use_cases/validate_token_usecase.dart';
+import '../../domain/use_cases/verify_otp_usecase.dart';
+
+abstract class LoginRemoteDataSource {
+  Future<Either<String, dynamic>> login(LoginParams loginParams);
+
+  Future<Either<String, dynamic>> verifyOtp(VerifyOtpParams verifyOtpParams);
+
+  Future<Either<String, dynamic>> validateToken(
+    ValidateTokenParams validateTokenParams,
+  );
+}
+
+@LazySingleton(as: LoginRemoteDataSource)
+class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
+  final ApiServices _apiServices;
+
+  LoginRemoteDataSourceImpl(this._apiServices);
+
+  @override
+  Future<Either<String, dynamic>> login(LoginParams loginParams) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      await _apiServices.post(
+        endPoint: EndPoints.auth.login,
+        data: loginParams.toMap(),
+      );
+      return Right(null);
+    } on BaseAppException catch (e) {
+      return Left(e.message);
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> validateToken(
+      ValidateTokenParams validateTokenParams) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint: EndPoints.auth.validateToken,
+      );
+      final token = apiDataHandler(response);
+      return Right(token);
+    } on BaseAppException catch (e) {
+      return Left(e.message);
+    }
+  }
+
+  @override
+  Future<Either<String, dynamic>> verifyOtp(
+    VerifyOtpParams verifyOtpParams,
+  ) async {
+    _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    try {
+      final response = await _apiServices.post(
+        endPoint: EndPoints.auth.verifyOtp,
+        data: verifyOtpParams.toMap(),
+      );
+      final token = apiDataHandler(response);
+      return Right(token);
+    } on BaseAppException catch (e) {
+      return Left(e.message);
+    }
+  }
+}
