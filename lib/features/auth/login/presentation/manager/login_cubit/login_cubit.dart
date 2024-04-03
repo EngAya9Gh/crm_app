@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
 import '../../../domain/use_cases/cache_token_usecase.dart';
 import '../../../domain/use_cases/get_token_usecase.dart';
@@ -26,10 +26,13 @@ class LoginCubit extends Cubit<LoginState> {
     this._validateTokenUsecase,
   ) : super(LoginInitial());
 
-  Future<void> login(String email, String password) async {
+  final loginFormKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+
+  Future<void> login() async {
     emit(LoginLoading());
     final result = await _loginUsecase(
-      LoginParams(email: email),
+      LoginParams(email: emailController.text),
     );
     result.fold(
       (error) => emit(LoginFailure(error)),
@@ -53,8 +56,10 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> cacheToken(String token) async {
     final result = await _cacheTokenUsecase(CacheTokenParams(token: token));
-    result.fold((error) => print('Error caching token: $error'),
-        (_) => print('Token cached successfully'));
+    result.fold(
+      (error) => print('Error caching token: $error'),
+      (_) => print('Token cached successfully'),
+    );
   }
 
   Future<String?> getToken() async {

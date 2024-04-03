@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../features/auth/login/presentation/pages/login.dart';
+import '../../features/auth/login/presentation/pages/login_page.dart';
 
 class DeleteAccountDialog extends StatefulWidget {
   const DeleteAccountDialog({Key? key}) : super(key: key);

@@ -1,8 +1,7 @@
 import 'dart:io';
 
 import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/features/auth/login/presentation/pages/login.dart';
-import 'package:crm_smart/provider/authprovider.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/login_page.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
@@ -102,7 +101,6 @@ void main() async {
       ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
       ChangeNotifierProvider<navigatorProvider>(
           create: (_) => navigatorProvider()),
-      ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
       ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
       ChangeNotifierProvider<selected_button_provider>(
           create: (_) => selected_button_provider()),

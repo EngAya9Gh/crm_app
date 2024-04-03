@@ -13,6 +13,8 @@ class SecureStorageConsumer extends CacheServices {
 
   SecureStorageConsumer(this._secureStorage);
 
+  static const String name = 'SecureStorageConsumer';
+
   @override
   Future<void> saveData({
     String? boxName,
