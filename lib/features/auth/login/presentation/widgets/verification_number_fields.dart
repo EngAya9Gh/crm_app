@@ -29,16 +29,14 @@ class _VerificationNumberFieldsState extends State<VerificationNumberFields> {
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-      width: 65.r,
-      height: 65.r,
+      width: 50.r,
+      height: 50.r,
       textStyle: context.textTheme.headlineSmall?.r?.copyWith(
         color: context.colorScheme.onBackground,
-        decoration: TextDecoration.none,
-        decorationColor: AppColors.grey.shade100.withOpacity(0.3),
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15.r),
-        color: AppColors.grey.shade100.withOpacity(0.3),
+        color: AppColors.grey.shade100.withOpacity(0.7),
       ),
     );
 
