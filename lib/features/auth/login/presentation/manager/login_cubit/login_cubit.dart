@@ -54,9 +54,15 @@ class LoginCubit extends Cubit<LoginState> {
       (error) => emit(VerifyOtpFailure(error)),
       (token) {
         cacheToken(token);
+        _clearControllers();
         emit(VerifyOtpSuccess());
       },
     );
+  }
+
+  void _clearControllers() {
+    emailController.clear();
+    otpCodeController.clear();
   }
 
   Future<void> cacheToken(String token) async {
