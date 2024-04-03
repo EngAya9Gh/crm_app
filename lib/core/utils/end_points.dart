@@ -21,7 +21,7 @@ abstract class EndPoints {
 }
 
 class _BaseUrls {
-  static AppMode appMode = AppMode.production;
+  static AppMode appMode = AppMode.development;
 
   _BaseUrls() {
     init();
@@ -128,8 +128,8 @@ class _Client {
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final allClientsWithFilter = 'client/getclientAll_filter.php';
-  final addClient = 'client/clientAdd.php';
-  final editClient = "client/clientUpdate.php";
+  final addClient = 'addClient';//'''client/clientAdd.php';
+  final editClient ="updateClient/";// "client/clientUpdate.php";
   final changeTypeClient = "editClientByTypeClient/";
   final approveClient_reject_admin = "clientAppproveAdmin/";
   final getRejectReasons =
