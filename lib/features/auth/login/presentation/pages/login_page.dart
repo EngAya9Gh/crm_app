@@ -72,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
                       isLoading: state is LoginLoading,
                       text: AppStrings.textButtonCode,
                       onPressed: () async {
+                        FocusManager.instance.primaryFocus?.unfocus();
                         if (loginCubit.loginFormKey.currentState!.validate()) {
                           await loginCubit.login();
                         }
