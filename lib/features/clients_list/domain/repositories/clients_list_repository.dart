@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:dartz/dartz.dart';
 

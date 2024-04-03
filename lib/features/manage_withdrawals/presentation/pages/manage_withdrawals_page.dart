@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../../constants.dart';
 import '../../../../core/config/theme/theme.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
 class ManageWithdrawalsPage extends StatefulWidget {

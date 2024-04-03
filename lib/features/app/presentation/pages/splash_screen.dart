@@ -6,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../constants.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../ui/screen/home/home.dart';
-import '../../../../ui/screen/login.dart';
+import '../../../auth/login/presentation/pages/login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,7 +19,8 @@ class SplashScreen extends StatefulWidget {
 
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => isLoggedIn ? Home() : login()),
+      MaterialPageRoute(
+          builder: (context) => isLoggedIn ? Home() : LoginPage()),
       (route) => false,
     );
   }

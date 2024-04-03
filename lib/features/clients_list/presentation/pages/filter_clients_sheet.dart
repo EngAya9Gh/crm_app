@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../constantsList.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../model/ActivityModel.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/activity_vm.dart';
@@ -102,7 +102,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             _activityNotifier.value != null ||
                             _userNotifier.value != null ||
                             _recordTypeNotifier.value != null ||
-                        _classTypeNotifier.value != null ||
+                            _classTypeNotifier.value != null ||
                             _statusNotifier.value != null
                         ? () {
                             _regionNotifier.value = null;
@@ -149,7 +149,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
             20.verticalSpace,
             Row(
               children: [
-
                 // 10.horizontalSpace,
                 Consumer<ClientTypeProvider>(
                   builder: (context, clientTypeVm, child) {
@@ -180,13 +179,11 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                       child: ValueListenableBuilder<String?>(
                           valueListenable: _classTypeNotifier,
                           builder: (context, value, _) {
-                            return AppDropdownButtonFormField<String?,
-                                String?>(
+                            return AppDropdownButtonFormField<String?, String?>(
                               items: clientsClassificationList,
                               hint: "نوع التصنيف*",
                               itemAsValue: (String? item) => item!,
                               itemAsString: (item) => item!,
-
                               value: _classTypeNotifier.value,
                               onChange: (value) {
                                 // vm
@@ -195,7 +192,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                 if (value == null) return;
 
                                 _classTypeNotifier.value = value;
-
                               },
                             );
                           }),
@@ -408,7 +404,7 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                         typeClient_record:
                             Nullable.value(_recordTypeNotifier.value),
                         typeClassfication:
-                        Nullable.value(_classTypeNotifier.value),
+                            Nullable.value(_classTypeNotifier.value),
                         userId: Nullable.value(_userNotifier.value),
                       ),
                     );

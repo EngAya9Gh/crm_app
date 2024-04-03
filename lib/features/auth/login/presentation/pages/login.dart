@@ -12,22 +12,21 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../constants.dart';
-import '../../core/di/di_container.dart';
-import '../../core/utils/app_strings.dart';
-import '../../function_global.dart';
-import 'home/home.dart';
+import '../../../../../constants.dart';
+import '../../../../../core/services/di/di_container.dart';
+import '../../../../../core/utils/app_strings.dart';
+import '../../../../../function_global.dart';
+import '../../../../../ui/screen/home/home.dart';
 
-class login extends StatefulWidget {
-  login({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
 
   @override
-  _loginState createState() => _loginState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _loginState extends State<login> {
+class _LoginPageState extends State<LoginPage> {
   String? valueField;
-  String? textbutton = "send code";
   TextEditingController? _textcontroller = TextEditingController();
   TextEditingController? _code = TextEditingController();
   final _globalKey = GlobalKey<FormState>();

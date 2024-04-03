@@ -22,7 +22,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
 import '../../../../view_model/regoin_vm.dart';

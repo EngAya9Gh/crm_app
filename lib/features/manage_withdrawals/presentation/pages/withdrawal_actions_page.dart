@@ -17,7 +17,7 @@ import 'package:text_scroll/text_scroll.dart';
 import '../../../../constants.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
 import '../../../../core/common/models/page_state/result_builder.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../data/models/invoice_withdrawal_series_model.dart';

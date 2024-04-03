@@ -1,5 +1,5 @@
-import '../../../../../../core/api/result.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/result.dart';
 import '../../../../model/invoiceModel.dart';
 import '../../data/models/invoice_withdrawal_series_model.dart';
 import '../../data/models/reject_reason.dart';

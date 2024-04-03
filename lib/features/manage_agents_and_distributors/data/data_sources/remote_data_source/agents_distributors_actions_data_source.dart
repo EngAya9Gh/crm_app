@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../core/api/api_services.dart';
+import '../../../../../core/services/api/api_services.dart';
 import '../../../../../core/utils/end_points.dart';
 import '../../../../../model/maincitymodel.dart';
 import '../../../domain/use_cases/add_agent_usecase.dart';

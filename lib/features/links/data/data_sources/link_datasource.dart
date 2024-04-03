@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/api/api_services.dart';
-import '../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/api_services.dart';
+import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
 import '../models/link_model.dart';
 
@@ -14,7 +14,7 @@ class LinkDatasource {
 
   Future<ResponseWrapper<List<LinkImportantModel>>> getLink() async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(endPoint: EndPoints.link.getLink);
       api.changeBaseUrl(EndPoints.baseUrls.url);
       //
@@ -40,7 +40,7 @@ class LinkDatasource {
   Future<ResponseWrapper<LinkImportantModel>> addLink(
       {required Map<String, dynamic> body}) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response =
           await api.post(endPoint: EndPoints.link.addLink, data: body);
       api.changeBaseUrl(EndPoints.baseUrls.url);
@@ -58,7 +58,7 @@ class LinkDatasource {
     required String id,
   }) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response =
           await api.post(endPoint: EndPoints.link.updateLink + id, data: body);
       api.changeBaseUrl(EndPoints.baseUrls.url);

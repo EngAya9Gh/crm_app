@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:text_scroll/text_scroll.dart';
 
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../domain/use_cases/get_agent_client_list_usecase.dart';
 import '../../domain/use_cases/get_agent_invoice_list_usecase.dart';
 import 'profile_tabs/agent_client_list_page.dart';

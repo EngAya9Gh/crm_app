@@ -1,5 +1,5 @@
-import '../../../../core/api/result.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/result.dart';
 import '../../data/models/company_com_model.dart';
 
 abstract class CompanyRepository {

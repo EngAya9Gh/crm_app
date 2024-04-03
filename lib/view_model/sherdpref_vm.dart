@@ -2,7 +2,7 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/di/di_container.dart';
+import '../core/services/di/di_container.dart';
 
 class sherdpref extends ChangeNotifier {
   late SharedPreferences preferences;

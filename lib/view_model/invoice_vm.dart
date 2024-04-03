@@ -19,9 +19,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
 
-import '../core/api/api_services.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
-import '../core/di/di_container.dart';
+import '../core/services/api/api_services.dart';
+import '../core/services/di/di_container.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../helper/invoice_filter.dart';
 import '../model/agent_distributor_model.dart';
@@ -1179,7 +1179,7 @@ class invoice_vm extends ChangeNotifier {
     required FileAttach attachFile,
     String? baseUrl,
   }) async {
-    baseUrl ??= EndPoints.baseUrls.laravelUrl_Image;
+    baseUrl ??= EndPoints.baseUrls.laravelUrlImage;
     try {
       if (attachFile.file != null) {
         if (!(await checkStoragePermission())) return;

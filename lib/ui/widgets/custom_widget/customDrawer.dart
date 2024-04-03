@@ -1,8 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/ui/screen/login.dart';
-import 'package:crm_smart/ui/screen/user/usertest_view.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/login.dart';
 import 'package:crm_smart/ui/screen/user/userview.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,8 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../core/di/di_container.dart';
-import '../../../features/links/presentation/pages/manage_links_page.dart';
+import '../../../core/services/di/di_container.dart';
 import '../animated_dialog.dart';
 import '../delete_acconut_dialog.dart';
 
@@ -236,7 +234,7 @@ class CustomDrawer extends StatelessWidget {
                 if (context.mounted) {
                   Navigator.pushAndRemoveUntil(
                       context,
-                      CupertinoPageRoute(builder: (context) => login()),
+                      CupertinoPageRoute(builder: (context) => LoginPage()),
                       (route) => false);
                 }
 

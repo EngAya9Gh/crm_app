@@ -24,7 +24,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/helpers/helper_functions.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../function_global.dart';
 import '../../../../model/clientmodel.dart';
 import '../../../../view_model/datetime_vm.dart';
@@ -700,7 +700,7 @@ class _ClientSectionState extends State<ClientSection> {
                 if (clientModel1.reasonTransfer != null)
                   // context.read<PrivilegeCubit>().checkPrivilege('150') ==
                   //             true &&
-                          clientModel1.fkusertrasfer != null
+                  clientModel1.fkusertrasfer != null
                       ? cardRow(
                           title: 'قام بتحويل العميل',
                           value: getnameshort(
@@ -715,7 +715,7 @@ class _ClientSectionState extends State<ClientSection> {
                       : IgnorePointer(),
 
                 // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-                        (clientModel1.reasonTransfer != null) &&
+                (clientModel1.reasonTransfer != null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(
                         title: 'تحويل العميل إلى',
@@ -723,13 +723,13 @@ class _ClientSectionState extends State<ClientSection> {
                     : IgnorePointer(),
 
                 // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-                        (clientModel1.reasonTransfer == null) &&
+                (clientModel1.reasonTransfer == null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
                     : IgnorePointer(),
 
                 // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-                        (clientModel1.reasonTransfer != null) &&
+                (clientModel1.reasonTransfer != null) &&
                         clientModel1.fkusertrasfer != null
                     ? cardRow(title: 'حالة التحويل', value: 'معلق')
                     : IgnorePointer(),

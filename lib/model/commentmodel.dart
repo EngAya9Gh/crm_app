@@ -27,7 +27,7 @@ class CommentModel {
   CommentModel.fromJson(Map<String, dynamic> json) {
     final image = json['img_image'];
     if (image != null) {
-      imgImage = EndPoints.baseUrls.urlimage + image;
+      imgImage = EndPoints.baseUrls.urlImage + image;
     }
     idComment = json['id_comment'];
     fkUser = json['fk_user'];

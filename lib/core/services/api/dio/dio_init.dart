@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../utils/end_points.dart';
 import '../../di/di_container.dart';
-import '../../utils/end_points.dart';
 
 Dio dioInit() {
   final dio = Dio(
@@ -12,8 +12,6 @@ Dio dioInit() {
       // connectTimeout: const Duration(seconds: 10),
       // receiveTimeout: const Duration(seconds: 10),
       headers: {
-        'AuthToken':
-            'Bearer ${getIt<SharedPreferences>().getString('token_user')}',
         'accept': 'application/json',
       },
       contentType: "application/x-www-form-urlencoded; charset=utf-8",

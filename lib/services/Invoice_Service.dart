@@ -187,12 +187,12 @@ class Invoice_Service {
     required String fk_user,
   }) async {
     print(
-        "URL::${EndPoints.baseUrls.url_laravel}  + rescheduleOrCancelVisitClient/$scheduleId");
-    print(EndPoints.baseUrls.url_laravel +
+        "URL::${EndPoints.baseUrls.urlLaravel}  + rescheduleOrCancelVisitClient/$scheduleId");
+    print(EndPoints.baseUrls.urlLaravel +
         "rescheduleOrCancelVisitClient/" +
         scheduleId);
     var result = await Api().post(
-        url: EndPoints.baseUrls.url_laravel +
+        url: EndPoints.baseUrls.urlLaravel +
             "rescheduleOrCancelVisitClient/" +
             scheduleId,
         body: {
@@ -210,7 +210,7 @@ class Invoice_Service {
     required String scheduleId,
   }) async {
     var result = await Api().post(
-        url: EndPoints.baseUrls.url_laravel +
+        url: EndPoints.baseUrls.urlLaravel +
             "rescheduleOrCancelVisitClient/" +
             scheduleId,
         body: {'typeProcess': 'cancel'});

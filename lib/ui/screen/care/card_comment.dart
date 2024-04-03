@@ -140,7 +140,7 @@ class cardcomment extends StatelessWidget {
         height: 1000,
         fit: BoxFit.fill,
         placeholder: (context, url) => const CircularProgressIndicator(),
-        imageUrl: EndPoints.baseUrls.urlimage + imageUrl,
+        imageUrl: EndPoints.baseUrls.urlImage + imageUrl,
       ),
     );
   }
