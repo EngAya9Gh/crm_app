@@ -25,3 +25,16 @@ class VerifyOtpFailure extends LoginState {
 
   VerifyOtpFailure(this.message);
 }
+
+// validate token
+class ValidateTokenInitial extends LoginState {}
+
+class ValidateTokenLoading extends LoginState {}
+
+class ValidateTokenSuccess extends LoginState {}
+
+class ValidateTokenFailure extends LoginState {
+  final String error;
+
+  ValidateTokenFailure(this.error);
+}

@@ -41,13 +41,14 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
   }
 
   @override
-  Future<Either<String, void>> validateToken(
+  Future<Either<String, dynamic>> validateToken(
       ValidateTokenParams validateTokenParams) async {
     try {
-      await _apiServices.post(
+      final response = await _apiServices.post(
         endPoint: EndPoints.auth.validateToken,
       );
-      return Right(null);
+      final token = apiDataHandler(response);
+      return Right(token);
     } on ServerException catch (e) {
       return Left(e.message);
     }

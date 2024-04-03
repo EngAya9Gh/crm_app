@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import '../../../domain/use_cases/cache_token_usecase.dart';
 import '../../../domain/use_cases/get_token_usecase.dart';
 import '../../../domain/use_cases/login_usecase.dart';
+import '../../../domain/use_cases/validate_token_usecase.dart';
 import '../../../domain/use_cases/verify_otp_usecase.dart';
 
 part 'login_state.dart';
@@ -15,12 +16,14 @@ class LoginCubit extends Cubit<LoginState> {
   final VerifyOtpUsecase _verifyOtpUsecase;
   final CacheTokenUsecase _cacheTokenUsecase;
   final GetTokenUsecase _getTokenUsecase;
+  final ValidateTokenUsecase _validateTokenUsecase;
 
   LoginCubit(
     this._loginUsecase,
     this._verifyOtpUsecase,
     this._cacheTokenUsecase,
     this._getTokenUsecase,
+    this._validateTokenUsecase,
   ) : super(LoginInitial());
 
   Future<void> login(String email, String password) async {
@@ -35,7 +38,6 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> verifyOtp(String otp, String email) async {
-    print("objectobjectobjectobject");
     emit(VerifyOtpLoading());
     final result = await _verifyOtpUsecase(
       VerifyOtpParams(otp: otp, email: email),
@@ -57,11 +59,32 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  Future<void> getToken() async {
+  Future<String?> getToken() async {
     final result = await _getTokenUsecase(GetTokenParams());
-    result.fold(
-      (error) => emit(LoginFailure(error)),
-      (_) => emit(LoginSuccess()),
+    return result.fold(
+      (error) {
+        emit(LoginFailure(error));
+        return null;
+      },
+      (cachedToken) {
+        emit(LoginSuccess());
+        return cachedToken;
+      },
+    );
+  }
+
+  Future<bool?> validateToken() async {
+    emit(ValidateTokenLoading());
+    final result = await _validateTokenUsecase(ValidateTokenParams());
+    return result.fold(
+      (error) {
+        emit(ValidateTokenFailure(error));
+        return null;
+      },
+      (isValid) {
+        emit(ValidateTokenSuccess());
+        return isValid;
+      },
     );
   }
 }

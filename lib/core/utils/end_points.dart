@@ -77,7 +77,7 @@ class _Auth {
 
   final login = "checkEmail";
   final verifyOtp = "login";
-  final validateToken = "";
+  final validateToken = "isTokenAuthenticated";
 }
 
 class _Users {
