@@ -48,6 +48,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                 CustomLogo(),
                 SizedBox(height: 20),
                 CustomFormField(
+                  icon: Icons.lock,
                   textdirehint: TextDirection.ltr,
                   read: false,
                   radius: 10,

@@ -53,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   textdirehint: TextDirection.ltr,
                   read: false,
                   radius: 10,
+                  icon: Icons.email,
                   con: loginCubit.emailController,
                   maxline: 1,
                   inputType: TextInputType.emailAddress,
@@ -67,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 30),
                 BlocBuilder<LoginCubit, LoginState>(
                   builder: (context, state) {
-                    print("state is => $state");
                     return AppElevatedButton(
                       isLoading: state is LoginLoading,
                       text: AppStrings.textButtonCode,
