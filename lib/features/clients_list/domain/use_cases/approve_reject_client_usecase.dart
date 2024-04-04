@@ -16,7 +16,7 @@ class ApproveRejectClientUsecase extends UseCase<
   @override
   Future<Result<ResponseWrapper<ClientModel>>> call(
       ApproveRejectClientPararm params) {
-    return repository.approveClientReject_admin(
+    return repository.approveClientRejectAdmin(
         params.toMap, params.toParams, params.id_clients.toString());
   }
 }

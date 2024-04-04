@@ -476,7 +476,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                                 overflow: TextOverflow.ellipsis,
                                               )
                                             : Text(
-                                                "المدينة",
+                                                "المدينة *",
                                                 style: context
                                                     .textTheme.titleSmall
                                                     ?.copyWith(

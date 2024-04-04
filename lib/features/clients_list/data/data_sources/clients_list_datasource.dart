@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -14,6 +15,7 @@ import '../../../../core/utils/end_points.dart';
 import '../../../../model/similar_client.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
+import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../models/client_support_file_model.dart';
 import '../models/clients_list_response.dart';
 import '../models/recommended_client.dart';
@@ -301,5 +303,22 @@ class ClientsListDatasource {
       files.add(MapEntry('file_attach_invoice[$i]', multipartFiles[i]));
     }
     return files;
+  }
+
+  Future<Either<String, ClientModel>> transferClient(
+    TransferClientParams params,
+  ) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: "${EndPoints.client.transferClient}${params.idUser}",
+        data: params.toMap(),
+      );
+      final data = apiDataHandler(response);
+      final client = ClientModel.fromJson(data);
+      return right(client);
+    } on BaseAppException catch (e) {
+      return left(e.message);
+    }
   }
 }

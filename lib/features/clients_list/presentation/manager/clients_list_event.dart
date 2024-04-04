@@ -138,3 +138,13 @@ class CrudClientSupportFilesEvent extends ClientsListEvent {
   @override
   List<Object?> get props => [crudClientSupportFilesParams];
 }
+
+class TransferClientEvent extends ClientsListEvent {
+  final TransferClientParams transferClientParams;
+  final ValueChanged<ClientModel>? onSuccess;
+
+  TransferClientEvent(this.transferClientParams, {this.onSuccess});
+
+  @override
+  List<Object?> get props => [transferClientParams];
+}

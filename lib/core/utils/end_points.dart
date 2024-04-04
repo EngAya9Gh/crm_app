@@ -139,8 +139,8 @@ class _Client {
   final clientsByRegionList = 'client/getclientByRegoin.php';
   final clientsByUserList = 'client/getclientbyuser.php';
   final allClientsWithFilter = 'client/getclientAll_filter.php';
-  final addClient = 'addClient';//'''client/clientAdd.php';
-  final editClient ="updateClient/";// "client/clientUpdate.php";
+  final addClient = 'addClient'; //'''client/clientAdd.php';
+  final editClient = "updateClient/"; // "client/clientUpdate.php";
   final changeTypeClient = "editClientByTypeClient/";
   final approveClientRejectAdmin = "clientAppproveAdmin/";
   final getRejectReasons =
@@ -150,6 +150,8 @@ class _Client {
   final editRejectReasons =
       "client/reason_client_reject/Edit_reasonRejectClient.php";
   final distinctiveClient = "star_client/get_client_star.php";
+  final transferClient =
+      "transferClient/"; //"client/set_fkuser_transfer.php?id_clients=";
 }
 
 class _Task {
