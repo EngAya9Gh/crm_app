@@ -148,13 +148,19 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> addClient(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      // FormData formData = FormData();
+      //
+      // body.forEach((key, value) {
+      //   formData.fields.add(MapEntry(key, value));
+      // });
+
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.addClient,
         data: body,
       );
 
-      final client = ClientModel.fromJson(response['message'][0]);
+      final client = ClientModel.fromJson(response['message']);
       return ResponseWrapper(message: client, data: client);
     }
 
@@ -164,14 +170,14 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> editClient1(
       Map<String, dynamic> body, Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: EndPoints.client.editClient,
+        endPoint: EndPoints.client.editClient + params['id_clients'],
         data: body,
-        queryParameters: params,
+        // queryParameters: params,
       );
 
-      final client = ClientModel.fromJson(response['message'][0]);
+      final client = ClientModel.fromJson(response['message']);
       return ResponseWrapper(message: client, data: client);
     }
 
