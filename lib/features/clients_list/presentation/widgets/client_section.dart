@@ -833,7 +833,7 @@ class _ClientSectionState extends State<ClientSection> {
                               child: Text('تعديل بيانات العميل'),
                             ),
                           ),
-                          if (clientModel1.reasonTransfer != null) ...[
+                          if (clientModel1.reasonTransfer == null) ...[
                             const SizedBox(width: 8),
                             Expanded(
                               child: ElevatedButton(
