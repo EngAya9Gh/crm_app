@@ -931,7 +931,8 @@ class _ClientSectionState extends State<ClientSection> {
                 //     Provider.of<privilge_vm>(context,listen: true)
                 //         .checkprivlge('7')==true?
 
-                widget.clienttransfer == null ||
+                widget.clienttransfer == null
+                    ||
                         context.read<PrivilegeCubit>().checkPrivilege('150') ==
                             true
                     ? IgnorePointer()
