@@ -7,24 +7,6 @@ import '../../cache_services/cache_services.dart';
 import '../../cache_services/secure_storage_consumer.dart';
 import '../../di/di_container.dart';
 
-class DioInit {
-  static Dio dioInit() {
-    final dio = Dio(
-      BaseOptions(
-        baseUrl: EndPoints.baseUrls.url,
-        // connectTimeout: const Duration(seconds: 10),
-        // receiveTimeout: const Duration(seconds: 10),
-        headers: {
-          'accept': 'application/json',
-        },
-        contentType: "application/x-www-form-urlencoded; charset=utf-8",
-      ),
-    );
-    dio.interceptors.add(_ApiInterceptors());
-    return dio;
-  }
-}
-
 Dio dioInit() {
   final dio = Dio(
     BaseOptions(
