@@ -23,6 +23,7 @@ import '../../domain/use_cases/edit_client_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_recommended_cleints_usecase.dart';
 import '../../domain/use_cases/get_similar_cleints_usecase.dart';
+import '../../domain/use_cases/transfer_client_usecase.dart';
 
 part 'clients_list_event.dart';
 part 'clients_list_state.dart';
@@ -39,6 +40,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     this._approveRejectClientUsecase,
     this._crudClientSupportFilesUsecase,
     this._getClientSupportFilesUsecase,
+    this._transferClientUsecase,
   ) : super(ClientsListState()) {
     on<GetAllClientsListEvent>(_onGetAllClientsListEvent);
     on<UpdateGetClientsParamsEvent>(_onUpdateGetClientsParamsEvent);
@@ -53,6 +55,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
     on<ApproveRejectClientEvent>(_onApproveRejectClientEvent);
     on<CrudClientSupportFilesEvent>(_onCrudClientSupportFilesEvent);
     on<GetClientSupportFilesEvent>(_onGetClientSupportFilesEvent);
+    on<TransferClientEvent>(_onTransferClientEvent);
   }
 
   final GetClientsWithFilterUserUsecase _getClientsWithFilterUserUsecase;
@@ -64,6 +67,7 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
   final ApproveRejectClientUsecase _approveRejectClientUsecase;
   final CrudClientSupportFilesUsecase _crudClientSupportFilesUsecase;
   final GetClientSupportFilesUsecase _getClientSupportFilesUsecase;
+  final TransferClientUserUsecase _transferClientUsecase;
 
   FutureOr<void> _onGetAllClientsListEvent(
       GetAllClientsListEvent event, Emitter<ClientsListState> emit) async {
@@ -329,6 +333,23 @@ class ClientsListBloc extends Bloc<ClientsListEvent, ClientsListState> {
         clientSupportFilesList: r,
         clientSupportFilesBlocStatus: const BlocStatus.success(),
       ));
+      event.onSuccess?.call(r);
+    });
+  }
+
+  FutureOr<void> _onTransferClientEvent(
+    TransferClientEvent event,
+    Emitter<ClientsListState> emit,
+  ) async {
+    emit(state.copyWith(transferClientStatus: const BlocStatus.loading()));
+
+    final response = await _transferClientUsecase(event.transferClientParams);
+    response.fold((l) {
+      emit(state.copyWith(
+        transferClientStatus: BlocStatus.fail(error: l),
+      ));
+    }, (r) {
+      emit(state.copyWith(transferClientStatus: const BlocStatus.success()));
       event.onSuccess?.call(r);
     });
   }

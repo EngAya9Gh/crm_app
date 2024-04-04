@@ -18,7 +18,8 @@ class SplashScreen extends StatefulWidget {
   static Future<void> checkLogin(BuildContext context) async {
     final tokenCubit = context.read<LoginCubit>();
     final token = await tokenCubit.getToken();
-    if (token == null || !(await tokenCubit.validateToken() ?? false)) {
+    final isTokenValid = await tokenCubit.validateToken() ?? false;
+    if (token == null || !isTokenValid) {
       AppNavigator.pushAndRemoveUntil(LoginPage());
     } else {
       AppNavigator.pushAndRemoveUntil(Home());

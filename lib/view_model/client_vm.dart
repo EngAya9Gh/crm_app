@@ -44,7 +44,7 @@ class ClientProvider extends ChangeNotifier {
   bool isloading = false;
   bool isloading_marketing = false;
 
-  void setvalue(user) {
+  void setvalue(UserModel? user) {
     usercurrent = user;
     notifyListeners();
   }
@@ -535,23 +535,11 @@ class ClientProvider extends ChangeNotifier {
     try {
       currentClientModel = currentClientModel.changeToLoading;
       notifyListeners();
-
-      // inv = listClient.firstWhereOrNull((element) => element.idClients == idClient);
-
-      // if (inv == null) {
       inv = await ClientService().getclientid(idClient);
-      // currentClientModel = currentClientModel.changeToLoading;
-
-      // listClient.add(inv);
       currentClientModel = currentClientModel.changeToLoaded(inv);
       onData?.call(inv);
-      // } else {
-      //   currentClientModel = currentClientModel.changeToLoaded(inv);
-      // }
       notifyListeners();
-      // return inv;
-    } catch (e, st) {
-      print('st $st');
+    } catch (e) {
       currentClientModel = currentClientModel.changeToFailed;
       // return ClientModel();
     }
