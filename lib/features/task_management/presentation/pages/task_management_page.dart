@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import 'add_task_page.dart';
 
 class TaskManagementPage extends StatefulWidget {

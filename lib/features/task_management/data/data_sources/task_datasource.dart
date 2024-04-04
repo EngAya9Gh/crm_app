@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:crm_smart/core/api/api_services.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
 import '../models/user_region_department.dart';
 
@@ -28,7 +28,7 @@ class TaskDatasource {
         if (key != 'file_path') formData.fields.add(MapEntry(key, value));
       });
 
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response =
           await api.post(endPoint: EndPoints.task.addTask, data: formData);
       api.changeBaseUrl(EndPoints.baseUrls.url);
@@ -42,7 +42,7 @@ class TaskDatasource {
   Future<ResponseWrapper<List<TaskModel>>> filterTask(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response =
           await api.post(endPoint: EndPoints.task.filterTasksByAll, data: body);
       api.changeBaseUrl(EndPoints.baseUrls.url);
@@ -64,7 +64,7 @@ class TaskDatasource {
   Future<ResponseWrapper<void>> changeStatusTask(
       String taskId, Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
           endPoint: EndPoints.task.changeStatusTask + taskId, data: body);
       api.changeBaseUrl(EndPoints.baseUrls.url);
@@ -77,7 +77,7 @@ class TaskDatasource {
   Future<ResponseWrapper<List<UserRegionDepartment>>>
       getUsersByTypeAdministrationAndRegion(Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
           endPoint: EndPoints.task.getUsersByTypeAdministrationAndRegion,
           data: body);

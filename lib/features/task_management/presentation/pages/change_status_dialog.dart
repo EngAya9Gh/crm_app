@@ -5,7 +5,7 @@ import 'package:crm_smart/features/task_management/data/models/task_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../manager/task_cubit.dart';

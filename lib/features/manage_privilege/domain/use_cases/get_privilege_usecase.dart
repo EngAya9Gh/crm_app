@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/manage_privilege/data/models/privilege_model.dart';
 import 'package:crm_smart/features/manage_privilege/domain/repositories/privilege_repository.dart';

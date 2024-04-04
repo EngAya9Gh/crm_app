@@ -29,7 +29,7 @@ import 'package:provider/provider.dart';
 
 import '../../../api/api.dart';
 import '../../../constants.dart';
-import '../../../core/di/di_container.dart';
+import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -1152,7 +1152,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                                               .network,
                                                       urls: [
                                                         EndPoints.baseUrls
-                                                                .urlfile +
+                                                                .urlFile +
                                                             _invoice
                                                                 .file_reject!
                                                       ],
@@ -1161,7 +1161,7 @@ class _RejectDialogState extends State<RejectDialog> {
                                                         FancyImageShimmerViewer(
                                                       imageUrl: EndPoints
                                                               .baseUrls
-                                                              .urlfile +
+                                                              .urlFile +
                                                           _invoice.file_reject!,
                                                       fit: BoxFit.cover,
                                                     ),
@@ -1487,7 +1487,7 @@ class _RejectDialogState extends State<RejectDialog> {
 
         File file;
         file = await Api().downloadFile(
-            EndPoints.baseUrls.urlfile + attachFile, pp.basename(attachFile));
+            EndPoints.baseUrls.urlFile + attachFile, pp.basename(attachFile));
         if (file.existsSync()) {
           final result = await OpenFile.open(file.path);
 

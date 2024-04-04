@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
 import '../core/common/manager/cities_cubit/cities_cubit.dart';
-import '../core/di/di_container.dart';
+import '../core/services/di/di_container.dart';
 import '../features/app/presentation/bloc/app_manager_cubit.dart';
+import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
@@ -24,6 +25,7 @@ class ServiceProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => getIt<LoginCubit>()),
         BlocProvider(create: (context) => getIt<CommunicationListBloc>()),
         BlocProvider(create: (context) => getIt<ClientsListBloc>()),
         BlocProvider(create: (context) => getIt<AppManagerCubit>()),

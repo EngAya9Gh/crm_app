@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/config/theme/theme.dart';
-import '../../../core/di/di_container.dart';
+import '../../../core/services/di/di_container.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event_model.dart';
 import '../../../view_model/datetime_vm.dart';
@@ -350,7 +350,8 @@ class _calender_clientState extends State<calender_client> {
                                       description: 'description',
                                       from: temp,
                                       to: temp.add(Duration(hours: 2)),
-                                      idinvoice: null, typedate: '');
+                                      idinvoice: null,
+                                      typedate: '');
 
                                   Provider.of<EventProvider>(context,
                                       listen: false)

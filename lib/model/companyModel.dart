@@ -20,7 +20,7 @@ class CompanyModel {
     path_logo =
         json['path_logo'].toString().trim().isEmpty || json['path_logo'] == null
             ? json['path_logo']
-            : EndPoints.baseUrls.urlfilelogo + json['path_logo'];
+            : EndPoints.baseUrls.urlFileLogo + json['path_logo'];
     // type = json['type'];
   }
 

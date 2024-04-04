@@ -444,7 +444,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                       ? InkWell(
                           onTap: () => invoice_vm().openFile(
                               attachFile: fileAttach,
-                              baseUrl: EndPoints.baseUrls.urlfile),
+                              baseUrl: EndPoints.baseUrls.urlFile),
                           child: Container(
                               width: 110,
                               decoration: BoxDecoration(
@@ -513,7 +513,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
         (fileAttach.fileAttach?.endsWith('.pdf') ?? false)) {
       return InkWell(
         onTap: () => invoiceVm.openFile(
-            attachFile: fileAttach, baseUrl: EndPoints.baseUrls.urlfile),
+            attachFile: fileAttach, baseUrl: EndPoints.baseUrls.urlFile),
         child: Container(
             width: double.infinity,
             decoration: BoxDecoration(color: kMainColor.withOpacity(0.1)),
@@ -523,10 +523,10 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
       return InkWell(
         onTap: () => AppFileViewer(
           imageSource: ImageSourceViewer.network,
-          urls: [EndPoints.baseUrls.urlfile + fileAttach.fileAttach!],
+          urls: [EndPoints.baseUrls.urlFile + fileAttach.fileAttach!],
         ).show(context),
         child: FancyImageShimmerViewer(
-          imageUrl: EndPoints.baseUrls.urlfile + fileAttach.fileAttach!,
+          imageUrl: EndPoints.baseUrls.urlFile + fileAttach.fileAttach!,
           fit: BoxFit.cover,
         ),
       );
@@ -546,11 +546,11 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     onTap: () => AppFileViewer(
                       imageSource: ImageSourceViewer.network,
                       urls: [
-                        EndPoints.baseUrls.urlfile + fileAttach.fileAttach!
+                        EndPoints.baseUrls.urlFile + fileAttach.fileAttach!
                       ],
                     ).show(context),
                     child: FancyImageShimmerViewer(
-                      imageUrl: EndPoints.baseUrls.urlfile +
+                      imageUrl: EndPoints.baseUrls.urlFile +
                           (fileAttach.fileAttach ?? ""),
                       fit: BoxFit.cover,
                     ),

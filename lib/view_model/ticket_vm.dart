@@ -1,12 +1,12 @@
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/di/di_container.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_category_model.dart';
 import 'package:crm_smart/features/clients_care/clients_tickets/data/models/ticket_sub_category_model.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../core/api/api_services.dart';
+import '../core/services/api/api_services.dart';
 import '../core/utils/end_points.dart';
 import '../features/clients_care/clients_tickets/data/models/ticket_model.dart';
 
@@ -222,7 +222,7 @@ class ticket_vm extends ChangeNotifier {
   Future<void> getCategories() async {
     isloading = true;
     final ApiServices apiServices = getIt();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await apiServices.get(
       endPoint: EndPoints.tickets.getCategoriesTicket,
     );
@@ -237,7 +237,7 @@ class ticket_vm extends ChangeNotifier {
   Future<void> getSubCategories() async {
     isloading = true;
     final ApiServices apiServices = getIt();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await apiServices.get(
       endPoint: EndPoints.tickets.getSubCategoriesTicket,
     );

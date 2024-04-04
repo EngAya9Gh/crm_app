@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:crm_smart/core/di/di_container.dart';
-import 'package:crm_smart/provider/authprovider.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/features/auth/login/presentation/pages/login_page.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
@@ -9,7 +9,6 @@ import 'package:crm_smart/provider/manage_provider.dart';
 import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/provider/switch_provider.dart';
 import 'package:crm_smart/services/service_provider.dart';
-import 'package:crm_smart/ui/screen/login.dart';
 import 'package:crm_smart/view_model/activity_vm.dart';
 import 'package:crm_smart/view_model/agent_collaborators_invoices_vm.dart';
 import 'package:crm_smart/view_model/approve_vm.dart';
@@ -49,8 +48,6 @@ import 'core/config/theme/theme.dart';
 import 'core/utils/app_navigator.dart';
 import 'features/app/presentation/pages/splash_screen.dart';
 import 'features/app/presentation/widgets/app_loader_widget/app_loader.dart';
-
-//import 'package:firebase_core/firebase_core.dart';
 
 @pragma("entry-point")
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -104,7 +101,6 @@ void main() async {
       ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
       ChangeNotifierProvider<navigatorProvider>(
           create: (_) => navigatorProvider()),
-      ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
       ChangeNotifierProvider<switch_provider>(create: (_) => switch_provider()),
       ChangeNotifierProvider<selected_button_provider>(
           create: (_) => selected_button_provider()),
@@ -244,13 +240,17 @@ class _MyAppState extends State<MyApp> {
               );
             }
           }
-
-          return MaterialApp(
-            navigatorKey: AppNavigator.navigatorKey,
-            debugShowCheckedModeBanner: false,
-            title: 'Smart CRM',
-            theme: AppTheme.light(context),
-            home: homeWidget,
+          return GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            child: MaterialApp(
+              navigatorKey: AppNavigator.navigatorKey,
+              debugShowCheckedModeBanner: false,
+              title: 'Smart CRM',
+              theme: AppTheme.light(context),
+              home: homeWidget,
+            ),
           );
         },
       ),
@@ -270,7 +270,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return login();
+    return LoginPage();
     // This trailing comma makes auto-formatting nicer for build methods.
   }
 }

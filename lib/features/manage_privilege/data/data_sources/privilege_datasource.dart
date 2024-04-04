@@ -1,10 +1,10 @@
-import 'package:crm_smart/core/api/api_services.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/features/manage_privilege/data/models/level_model.dart';
 import 'package:crm_smart/features/manage_privilege/data/models/privilege_model.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
 
 @injectable
@@ -59,7 +59,7 @@ class PrivilegeDatasource {
   Future<ResponseWrapper<void>> updatePrivileges(
       Map<String, dynamic> body) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
           endPoint: EndPoints.privilege.updatePrivileges, data: body);
       api.changeBaseUrl(EndPoints.baseUrls.url);

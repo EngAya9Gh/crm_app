@@ -24,7 +24,7 @@ import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../constantsList.dart';
 import '../../../../core/common/enums/activity_type_size.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/ActivityModel.dart';
@@ -141,8 +141,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
         : widget.client?.type_classification == null
             ? null
             : widget.client?.type_classification!;
-  print('_selectedClientsClassification');
-  print(_selectedClientsClassification);
+    print('_selectedClientsClassification');
+    print(_selectedClientsClassification);
     selectedSourceClient = !isEdit
         ? null
         : widget.client?.sourceClient == null
@@ -476,7 +476,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                                 overflow: TextOverflow.ellipsis,
                                               )
                                             : Text(
-                                                "المدينة",
+                                                "المدينة *",
                                                 style: context
                                                     .textTheme.titleSmall
                                                     ?.copyWith(
@@ -580,7 +580,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             ),
                             15.verticalSpace,
                           },
-
                           AppDropdownButtonFormField<String, String>(
                             items: sourceClientsList,
                             onChange: (value) {
@@ -610,9 +609,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             itemAsString: (item) => item!,
                             value: selectedSourceClient,
                           ),
-
                           15.verticalSpace,
-
                           if (selectedSourceClient == 'عميل موصى به') ...{
                             BlocBuilder<ClientsListBloc, ClientsListState>(
                               builder: (context, state) {
@@ -766,7 +763,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 ? 15.verticalSpace
                                 : IgnorePointer();
                           }),
-
                           Consumer<CompanyProvider>(
                             builder: (context, company, _) {
                               if (company.isloading) {
@@ -783,8 +779,10 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                 isWithImage: true,
                                 onChange: (value) {
                                   company.changevalueOut(value.toString());
-                                  print('companyProvider.selectedValueOut.toString()');
-                                  print(companyProvider.selectedValueOut.toString());
+                                  print(
+                                      'companyProvider.selectedValueOut.toString()');
+                                  print(companyProvider.selectedValueOut
+                                      .toString());
                                 },
                                 hint: "نظام سابق",
                                 itemAsValue: (CompanyModel? item) =>
@@ -794,7 +792,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               );
                             },
                           ),
-
                         ],
                       ),
                     ),
@@ -812,8 +809,12 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             if (!_fromKey.currentState!.validate()) {
                               return;
                             }
-                            print('companyProvider.selectedValueOut.toString()');
-                            print(context.read<CompanyProvider>().selectedValueOut.toString());
+                            print(
+                                'companyProvider.selectedValueOut.toString()');
+                            print(context
+                                .read<CompanyProvider>()
+                                .selectedValueOut
+                                .toString());
                             if (isEdit) {
                               _onEditClient();
                               return;
@@ -930,7 +931,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
       type_classification:
           context.read<UserProvider>().selectedClientClassificationType,
       reason_class: reasonClassController.text,
-
     );
 
     Navigator.push(

@@ -29,7 +29,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../core/common/enums/activity_type_size.dart';
-import '../../../core/di/di_container.dart';
+import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_loader_widget/app_loader.dart';
 import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';

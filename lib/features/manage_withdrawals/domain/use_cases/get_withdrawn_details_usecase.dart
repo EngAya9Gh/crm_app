@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/withdrawn_details_model.dart';
 import 'package:injectable/injectable.dart';

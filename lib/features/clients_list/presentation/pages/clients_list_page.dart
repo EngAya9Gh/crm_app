@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants.dart';
 import '../../../../core/common/models/nullable.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../view_model/activity_vm.dart';
 import '../../../../view_model/user_vm_provider.dart';

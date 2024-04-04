@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:crm_smart/core/api/api_services.dart';
 import 'package:crm_smart/core/common/enums/invoice_status_enum.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/reject_reason.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
 import '../../../../model/invoiceModel.dart';
 import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';
@@ -83,7 +83,7 @@ class ManageWithdrawalsDatasource {
     GetFilteredWithdrawalsInvoicesParams params,
   ) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.get(
         endPoint: EndPoints.series.getSeriesInvoiceAll,
         queryParameters: {

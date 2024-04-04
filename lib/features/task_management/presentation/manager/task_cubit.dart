@@ -9,7 +9,7 @@ import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../model/managmodel.dart';
 import '../../../../model/regoin_model.dart';
 import '../../data/models/task_model.dart';

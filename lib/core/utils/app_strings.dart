@@ -1,4 +1,7 @@
 abstract class AppStrings {
+  // local storage
+  static const _SecureStorage secureStorage = _SecureStorage();
+
   /////label login page
   static const String messageEmpty = 'الحقل فارغ';
   static const String hintEmailText = "Enter your Email";
@@ -71,4 +74,10 @@ abstract class AppStrings {
   static const String labelAgentsAndDistributors = 'الوكلاء والموزعين';
   static const String agentSearchHint = "اسم الوكيل/الموزع .....";
   static const String agentSearchHintClient = "اسم المؤسسة...";
+}
+
+class _SecureStorage {
+  const _SecureStorage();
+
+  final String token = 'token';
 }

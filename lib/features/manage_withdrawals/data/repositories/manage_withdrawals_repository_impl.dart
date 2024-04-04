@@ -1,11 +1,11 @@
-import 'package:crm_smart/core/api/api_utils.dart';
-import 'package:crm_smart/core/api/result.dart';
 import 'package:crm_smart/core/common/models/response_wrapper/response_wrapper.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/invoice_withdrawal_series_model.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/reject_reason.dart';
 import 'package:crm_smart/features/manage_withdrawals/data/models/withdrawn_details_model.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/services/api/api_utils.dart';
+import '../../../../core/services/api/result.dart';
 import '../../../../model/invoiceModel.dart';
 import '../../domain/repositories/manage_withdrawals_repository.dart';
 import '../../domain/use_cases/get_filterd_withdrawals_invoices_usecase.dart';

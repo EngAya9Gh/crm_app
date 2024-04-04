@@ -1,8 +1,8 @@
 import 'package:async/async.dart';
 
-import '../core/api/api_services.dart';
 import '../core/common/helpers/api_data_handler.dart';
-import '../core/di/di_container.dart';
+import '../core/services/api/api_services.dart';
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/invoiceModel.dart';
 import '../model/maincitymodel.dart';

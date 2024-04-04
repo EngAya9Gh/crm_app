@@ -1,8 +1,8 @@
-import 'package:crm_smart/core/api/api_services.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
 import '../models/distinctive_client.dart';
 

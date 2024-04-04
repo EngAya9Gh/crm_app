@@ -25,7 +25,7 @@ class EmployeeReportModel {
         salary: json["salary"],
         img_image: json['img_image'].toString().trim().isEmpty
             ? json['img_image']
-            : EndPoints.baseUrls.urlimage + json['img_image'],
+            : EndPoints.baseUrls.urlImage + json['img_image'],
       );
 
   Map<String, dynamic> toJson() => {

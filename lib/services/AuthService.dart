@@ -10,7 +10,7 @@ class AuthServices {
     String? result;
     try {
       result = await Api().postNew(
-          url: EndPoints.baseUrls.url_laravel + "checkEmail",
+          url: EndPoints.baseUrls.urlLaravel + "checkEmail",
           body: {'email': email});
       //
       print(result);
@@ -28,7 +28,7 @@ class AuthServices {
 
       //
       result = await Api()
-          .postNew(url: EndPoints.baseUrls.url_laravel + "login", body: {
+          .postNew(url: EndPoints.baseUrls.urlLaravel + "login", body: {
         'email': email,
         'otp': otp,
         'token': fcm,

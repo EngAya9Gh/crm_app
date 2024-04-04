@@ -14,7 +14,7 @@ import '../../../../../../features/manage_users/domain/use_cases/get_allusers_us
 import '../../../../../../model/usermodel.dart';
 import '../../../../core/common/enums/invoice_status_enum.dart';
 import '../../../../core/common/models/page_state/bloc_status.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../model/reasonmodel.dart';
 import '../../../../services/Invoice_Service.dart';
 import '../../../../services/configService.dart';

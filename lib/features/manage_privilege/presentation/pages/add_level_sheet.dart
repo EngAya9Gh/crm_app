@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 
 class AddLevelSheet extends StatefulWidget {
   const AddLevelSheet({Key? key}) : super(key: key);

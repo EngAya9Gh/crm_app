@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../ui/widgets/custom_widget/custom_button_new.dart';
@@ -47,13 +47,18 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
     _linkCubit = getIt<LinkCubit>();
     _titleLinkController = ValueNotifier(linkModel?.title.toString());
     _linkController = TextEditingController(text: linkModel?.link.toString());
-    _notesController = TextEditingController(text: linkModel?.notes==null?'':linkModel?.notes.toString());
+    _notesController = TextEditingController(
+        text: linkModel?.notes == null ? '' : linkModel?.notes.toString());
 
-    _clauseController = TextEditingController(text: linkModel?.clause==null?'': linkModel?.clause.toString());
-    _addressController = TextEditingController(text: linkModel?.address==null?'':linkModel?.address.toString());
+    _clauseController = TextEditingController(
+        text: linkModel?.clause == null ? '' : linkModel?.clause.toString());
+    _addressController = TextEditingController(
+        text: linkModel?.address == null ? '' : linkModel?.address.toString());
 
-    _namelinkController =
-        TextEditingController(text: linkModel?.department==null?'':linkModel?.department.toString());
+    _namelinkController = TextEditingController(
+        text: linkModel?.department == null
+            ? ''
+            : linkModel?.department.toString());
     _formKey = GlobalKey<FormState>();
 
     super.initState();
@@ -119,9 +124,7 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                       ),
                     ],
                   ),
-
                   20.verticalSpace,
-
                   AppTextField(
                     labelText: "الاسم*",
                     validator: HelperFunctions.instance.requiredFiled,
@@ -130,7 +133,6 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                     contentPadding: HWEdgeInsets.all(15),
                   ),
                   20.verticalSpace,
-
                   AppTextField(
                     labelText: "البند*",
                     validator: HelperFunctions.instance.requiredFiled,
@@ -162,7 +164,6 @@ class _ActionLinkPageState extends State<ActionLinkPage> {
                     minLines: 5,
                     contentPadding: HWEdgeInsets.all(15),
                   ),
-
                   20.verticalSpace,
                   10.verticalSpace,
                   BlocBuilder<LinkCubit, LinksState>(

@@ -1,4 +1,4 @@
-import 'package:crm_smart/core/api/result.dart';
+import 'package:crm_smart/core/services/api/result.dart';
 import 'package:crm_smart/core/use_case/use_case.dart';
 import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/features/clients_list/domain/repositories/clients_list_repository.dart';

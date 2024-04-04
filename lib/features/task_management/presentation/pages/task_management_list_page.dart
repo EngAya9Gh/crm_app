@@ -17,7 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart' as Intl;
 
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../app/presentation/widgets/app_bottom_sheet.dart';
 import 'add_task_page.dart';

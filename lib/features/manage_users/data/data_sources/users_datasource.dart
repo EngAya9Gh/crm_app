@@ -1,9 +1,9 @@
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/api/api_services.dart';
-import '../../../../core/api/api_utils.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/api_services.dart';
+import '../../../../core/services/api/api_utils.dart';
 import '../../../../core/utils/end_points.dart';
 
 @injectable

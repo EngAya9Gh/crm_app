@@ -1,4 +1,5 @@
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
+import 'package:crm_smart/features/clients_list/domain/use_cases/transfer_client_usecase.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +15,7 @@ import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/ticket_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_elvated_button.dart';
+import '../../../../clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../domain/use_cases/transfer_ticket_usecase.dart';
 
 class TransferClientPage extends StatefulWidget {
@@ -35,15 +37,21 @@ class TransferClientPage extends StatefulWidget {
 }
 
 class _TransferClientPageState extends State<TransferClientPage> {
+  late final ClientsListBloc clientsListBloc;
   late String? idUser;
   TextEditingController _textReason = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final _globalKey = GlobalKey<FormState>();
+  late final bool isTicket;
+  late final ClientProvider clientProvider;
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
+    clientProvider = Provider.of<ClientProvider>(context, listen: false);
+    clientsListBloc = context.read<ClientsListBloc>();
+    isTicket = widget.type == "ticket";
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Provider.of<UserProvider>(context, listen: false).getUsersVm();
     });
     super.initState();
@@ -56,7 +64,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
       appBar: AppBar(
           leading: IconButton(
         icon: Icon(Icons.arrow_back, color: kWhiteColor),
-        onPressed: () => Navigator.of(context).pop(),
+        onPressed: () => AppNavigator.pop(),
       )),
       body: ModalProgressHUD(
         inAsyncCall:
@@ -97,38 +105,34 @@ class _TransferClientPageState extends State<TransferClientPage> {
                         );
                       },
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    widget.type == "ticket"
-                        ? EditTextFormField(
-                            maxline: 4,
-                            paddcustom: EdgeInsets.all(10),
-                            hintText: 'أسباب تحويل التذكرة ',
-                            obscureText: false,
-                            controller: _textReason,
-                            vaildator: (value) {
-                              if (value.toString().trim().isEmpty) {
-                                return 'الحقل فارغ';
-                              }
-                              return null;
-                            },
-                          )
-                        : Container(),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    BlocBuilder<EditTicketCubit, EditTicketState>(
-                      builder: (context, state) {
-                        return AppElevatedButton(
-                          isLoading: state is EditTicketLoading,
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(kMainColor)),
-                          onPressed: () async {
-                            if (_globalKey.currentState!.validate()) {
-                              _globalKey.currentState!.save();
-                              if (widget.type == "ticket") {
+                    SizedBox(height: 5),
+                    if (isTicket) ...[
+                      EditTextFormField(
+                        maxline: 4,
+                        paddcustom: EdgeInsets.all(10),
+                        hintText: 'أسباب تحويل التذكرة ',
+                        obscureText: false,
+                        controller: _textReason,
+                        vaildator: (value) {
+                          if (value.toString().trim().isEmpty) {
+                            return 'الحقل فارغ';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 5),
+                    ],
+                    if (isTicket) ...[
+                      BlocBuilder<EditTicketCubit, EditTicketState>(
+                        builder: (context, state) {
+                          return AppElevatedButton(
+                            isLoading: state is EditTicketLoading,
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(kMainColor)),
+                            onPressed: () async {
+                              if (_globalKey.currentState!.validate()) {
+                                _globalKey.currentState!.save();
                                 context
                                     .read<EditTicketCubit>()
                                     .transferTicket(TransferTicketParams(
@@ -137,38 +141,51 @@ class _TransferClientPageState extends State<TransferClientPage> {
                                       reasonTransfer: _textReason.text,
                                     ));
                                 AppNavigator.pop();
-                              } else {
-                                await Provider.of<ClientProvider>(context,
-                                        listen: false)
-                                    .setfkUserclient_vm({
-                                  'date_transfer': DateTime.now().toString(),
-                                  'reason_transfer': idUser,
-                                  'fkuser': idUser, //user reciept
-                                  'nameusertransfer': Provider.of<UserProvider>(
-                                          context,
-                                          listen: false)
-                                      .currentUser
-                                      .nameUser
-                                      .toString(), //الموظف الذي حول العميل
-                                  'name_enterprise': widget.nameEnterprise,
-                                  'fkusertrasfer': Provider.of<UserProvider>(
-                                          context,
-                                          listen: false)
-                                      .currentUser
-                                      .idUser
-                                      .toString(),
-                                }, widget.idClient);
-                                AppConstants.showSnakeBar(
-                                    context, 'تم تحويل العميل');
-                                AppNavigator.pop();
-                                AppNavigator.pop();
                               }
-                            }
-                          },
-                          child: Text('تأكيد العملية'),
-                        );
-                      },
-                    ),
+                            },
+                            child: Text('تأكيد العملية'),
+                          );
+                        },
+                      ),
+                    ] else ...[
+                      BlocConsumer<ClientsListBloc, ClientsListState>(
+                        listener: (context, state) {
+                          if (state.transferClientStatus.isFail()) {
+                            AppConstants.showSnakeBar(
+                                context, state.transferClientStatus.error!);
+                          } else if (state.transferClientStatus.isSuccess()) {
+                            AppConstants.showSnakeBar(
+                                context, 'تمت العملية بنجاح');
+                          }
+                        },
+                        builder: (context, state) {
+                          return AppElevatedButton(
+                            isLoading: state.transferClientStatus.isLoading(),
+                            style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(kMainColor)),
+                            onPressed: () async {
+                              if (_globalKey.currentState!.validate()) {
+                                _globalKey.currentState!.save();
+                                context
+                                    .read<ClientsListBloc>()
+                                    .add(TransferClientEvent(
+                                      TransferClientParams(
+                                          idUser: widget.idClient,
+                                          fkUserTo: idUser!),
+                                      onSuccess: (value) async {
+                                        await clientProvider
+                                            .get_byIdClient(widget.idClient);
+                                        AppNavigator.pop(result: value);
+                                      },
+                                    ));
+                              }
+                            },
+                            child: Text('تأكيد العملية'),
+                          );
+                        },
+                      ),
+                    ],
                   ],
                 ),
               ),

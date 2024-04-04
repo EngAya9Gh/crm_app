@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/api/result.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
+import '../../../../core/services/api/result.dart';
 import '../../../../core/use_case/use_case.dart';
 import '../../data/models/clients_list_response.dart';
 import '../repositories/clients_list_repository.dart';
@@ -16,7 +16,7 @@ class ApproveRejectClientUsecase extends UseCase<
   @override
   Future<Result<ResponseWrapper<ClientModel>>> call(
       ApproveRejectClientPararm params) {
-    return repository.approveClientReject_admin(
+    return repository.approveClientRejectAdmin(
         params.toMap, params.toParams, params.id_clients.toString());
   }
 }

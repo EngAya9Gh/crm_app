@@ -1,19 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../core/api/api_services.dart';
-import '../../../../core/api/api_utils.dart';
 import '../../../../core/common/helpers/api_data_handler.dart';
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../../../../core/di/di_container.dart';
+import '../../../../core/services/api/api_services.dart';
+import '../../../../core/services/api/api_utils.dart';
+import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/end_points.dart';
 import '../../../../model/similar_client.dart';
 import '../../domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../domain/use_cases/get_client_support_files_usecase.dart';
+import '../../domain/use_cases/transfer_client_usecase.dart';
 import '../models/client_support_file_model.dart';
 import '../models/clients_list_response.dart';
 import '../models/recommended_client.dart';
@@ -48,7 +50,7 @@ class ClientsListDatasource {
       Map<String, dynamic> body) async {
     fun() async {
       final dio = getIt<Dio>();
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
           endPoint: EndPoints.client.similarClientsList, data: body);
 
@@ -154,7 +156,7 @@ class ClientsListDatasource {
       //   formData.fields.add(MapEntry(key, value));
       // });
 
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.addClient,
         data: body,
@@ -170,7 +172,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> editClient1(
       Map<String, dynamic> body, Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.editClient + params['id_clients'],
         data: body,
@@ -188,7 +190,7 @@ class ClientsListDatasource {
       Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
     fun() async {
       final dio = getIt<Dio>();
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.changeTypeClient + id,
         data: body,
@@ -207,9 +209,9 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> approveClient_Reject(
       Map<String, dynamic> body, Map<String, dynamic> params, String id) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: EndPoints.client.approveClient_reject_admin + id,
+        endPoint: EndPoints.client.approveClientRejectAdmin + id,
         data: body,
         queryParameters: params,
       );
@@ -226,7 +228,7 @@ class ClientsListDatasource {
     GetClientSupportFilesParams params,
   ) async {
     try {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
       final response = await api.get(
           endPoint: EndPoints.invoice.getClientSupportFiles,
@@ -247,7 +249,7 @@ class ClientsListDatasource {
     CrudClientSupportFilesParams params,
   ) async {
     try {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       FormData formData = await _prepareBody(params);
       final response = await api.post(
         endPoint: EndPoints.invoice.crudClientSupportFiles,
@@ -301,5 +303,22 @@ class ClientsListDatasource {
       files.add(MapEntry('file_attach_invoice[$i]', multipartFiles[i]));
     }
     return files;
+  }
+
+  Future<Either<String, ClientModel>> transferClient(
+    TransferClientParams params,
+  ) async {
+    try {
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await api.post(
+        endPoint: "${EndPoints.client.transferClient}${params.idUser}",
+        data: params.toMap(),
+      );
+      final data = apiDataHandler(response);
+      final client = ClientModel.fromJson(data);
+      return right(client);
+    } on BaseAppException catch (e) {
+      return left(e.message);
+    }
   }
 }

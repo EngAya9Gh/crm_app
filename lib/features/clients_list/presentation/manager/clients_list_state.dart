@@ -13,6 +13,7 @@ class ClientsListState {
     this.clientSupportFilesList = const [],
     this.getClientSupportFilesStatus = const BlocStatus.initial(),
     this.crudClientSupportFilesStatus = const BlocStatus.initial(),
+    this.transferClientStatus = const BlocStatus.initial(),
   }) : clientsListController = clientsListController ??
             PagingController(firstPageKey: 1, invisibleItemsThreshold: 10);
 
@@ -28,6 +29,7 @@ class ClientsListState {
   final List<ClientSupportFileModel> clientSupportFilesList;
   final BlocStatus getClientSupportFilesStatus;
   final BlocStatus crudClientSupportFilesStatus;
+  final BlocStatus transferClientStatus;
 
   ClientsListState copyWith({
     PagingController<int, ClientModel>? clientsListController,
@@ -42,6 +44,7 @@ class ClientsListState {
     List<ClientSupportFileModel>? clientSupportFilesList,
     BlocStatus? clientSupportFilesBlocStatus,
     BlocStatus? crudClientSupportFilesStatus,
+    BlocStatus? transferClientStatus,
   }) {
     return ClientsListState(
       clientsListController:
@@ -66,6 +69,7 @@ class ClientsListState {
           clientSupportFilesBlocStatus ?? this.getClientSupportFilesStatus,
       crudClientSupportFilesStatus:
           crudClientSupportFilesStatus ?? this.crudClientSupportFilesStatus,
+      transferClientStatus: transferClientStatus ?? this.transferClientStatus,
     );
   }
 }
