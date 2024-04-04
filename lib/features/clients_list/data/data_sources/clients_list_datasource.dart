@@ -154,7 +154,7 @@ class ClientsListDatasource {
       //   formData.fields.add(MapEntry(key, value));
       // });
 
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.addClient,
         data: body,
@@ -170,7 +170,7 @@ class ClientsListDatasource {
   Future<ResponseWrapper<ClientModel>> editClient1(
       Map<String, dynamic> body, Map<String, dynamic> params) async {
     fun() async {
-      api.changeBaseUrl(EndPoints.baseUrls.url_laravel);
+      api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.editClient + params['id_clients'],
         data: body,
