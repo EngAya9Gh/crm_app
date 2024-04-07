@@ -1,12 +1,16 @@
+import 'package:crm_smart/model/usermodel.dart';
+import 'package:crm_smart/provider/config_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../core/utils/app_strings.dart';
 import '../../../../../ui/screen/home/home.dart';
 import '../../../../../ui/widgets/custom_widget/customlogo.dart';
+import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import '../manager/login_cubit/login_cubit.dart';
 import '../widgets/verification_number_fields.dart';
@@ -30,10 +34,12 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, LoginState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is VerifyOtpFailure) {
           AppConstants.showSnakeBar(context, state.message);
         } else if (state is VerifyOtpSuccess) {
+          // todo: uncomment this after implementing the "get current user" in the backend
+          // await _completeLogin(context);
           AppNavigator.pushReplacement(Home());
         }
       },
@@ -102,6 +108,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
         ),
       ),
     );
+  }
+
+  Future _completeLogin(BuildContext context) async {
+    final UserModel user =
+        await Provider.of<UserProvider>(context, listen: false)
+            .getCurrentUser();
+    Provider.of<config_vm>(context, listen: false).setvalue(user);
+    Provider.of<UserProvider>(context, listen: false).currentUser = user;
   }
 
   bool _isValidCode(String? code) =>

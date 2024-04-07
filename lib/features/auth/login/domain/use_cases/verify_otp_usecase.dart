@@ -20,16 +20,19 @@ class VerifyOtpUsecase
 class VerifyOtpParams {
   final String otp;
   final String email;
+  final String? token;
 
   VerifyOtpParams({
     required this.otp,
     required this.email,
+    this.token,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'otp': otp,
       'email': email,
+      'token': token,
     };
   }
 }

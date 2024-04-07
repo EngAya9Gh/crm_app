@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -130,6 +133,20 @@ class UserProvider extends ChangeNotifier {
     isLoading = false;
     listFilteredUser = List.from(allUsers);
     notifyListeners();
+  }
+
+  Future<UserModel> getCurrentUser() async {
+    try {
+      ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await apiServices.get(
+        endPoint: "",
+      );
+      final data = apiDataHandler(response);
+      return UserModel.fromJson(data);
+    } on BaseAppException catch (e) {
+      throw e;
+    }
   }
 
   void setImagePath(String path) {

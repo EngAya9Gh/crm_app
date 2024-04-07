@@ -7,9 +7,11 @@ import 'package:http_interceptor/http_interceptor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../core/services/cache_services/cache_services.dart';
+import '../core/services/cache_services/secure_storage_consumer.dart';
 import '../core/services/di/di_container.dart';
+import '../core/utils/app_strings.dart';
 import 'http_interceptors.dart';
 
 @lazySingleton
@@ -23,10 +25,11 @@ class Api {
     if (token == null) getToken();
   }
 
-  void getToken() {
-    final prefs = getIt<SharedPreferences>();
-    token = prefs.getString('token_user');
-    print('inside get_token () .... ');
+  Future<void> getToken() async {
+    final secureStorage = getIt<CacheServices>(
+      instanceName: SecureStorageConsumer.name,
+    );
+    token = await secureStorage.getData(key: AppStrings.secureStorage.token);
   }
 
   Future<dynamic> get({required String url}) async {
