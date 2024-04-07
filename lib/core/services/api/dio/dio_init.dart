@@ -56,7 +56,7 @@ class _ApiInterceptors extends Interceptor {
         .i("Response: ${response.statusCode} ${response.statusMessage}");
     getIt<Logger>()
         .i("Response url: ${response.requestOptions.uri.toString()}");
-    getIt<Logger>().i("Response data: ${response.data}");
+    // getIt<Logger>().i("Response data: ${response.data}");
 
     super.onResponse(response, handler);
   }

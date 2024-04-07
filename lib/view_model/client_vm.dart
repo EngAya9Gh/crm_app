@@ -682,27 +682,22 @@ class ClientProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> setfkUserApprove(
-      Map<String, dynamic?> body, String? idClient) async {
+  Future approveRefuseTransferClient({
+    required Map<String, dynamic> body,
+    required String idClient,
+  }) async {
     isapproved = true;
     notifyListeners();
-    await ClientService().setfkuserApprovetransfer(body, idClient!);
-    // int index= listClient.indexWhere((element) =>
-    // element.idClients==id_client);
-    // if(index!=-1)
-    // listClient[index]=data;
-    // // index= listClientfilter.indexWhere((element) =>
-    // // element.idClients==id_client);
-    // // if(index !=-1)
-    // //   listClientfilter[index]=data;
-    //
+
+    await ClientService().approveRefuseTransferClient(
+      body: body,
+      idClient: idClient,
+    );
+
     int index = listClientAprroveTransfer
         .indexWhere((element) => element.idClients == idClient);
-    // if(index !=-1)
-    //  {
-    //    listClientAccept[index]=data;
     listClientAprroveTransfer.removeAt(index);
-    // }
+
     isapproved = false;
     notifyListeners();
     return true;

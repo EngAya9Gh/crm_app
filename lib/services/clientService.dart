@@ -1,7 +1,9 @@
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:flutter/foundation.dart';
 
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 
 class ClientService {
@@ -39,14 +41,16 @@ class ClientService {
     // result=="done"? true:false;
   }
 
-  Future<bool> setfkuserApprovetransfer(
-      Map<String, dynamic> body, String idclient) async {
-    String result = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/set_transferApprove.php?id_clients=$idclient",
-        body: body);
-    //client/setApproveClient.php
-    return result == "done" ? true : false;
+  Future approveRefuseTransferClient({
+    required Map<String, dynamic> body,
+    required String idClient,
+  }) async {
+    ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final result = await apiServices.post(
+      endPoint: EndPoints.client.approveRefuseTransferClient,
+      data: body,
+    );
   }
 
   List<ClientModel1> convertToClients(List<dynamic> list) {

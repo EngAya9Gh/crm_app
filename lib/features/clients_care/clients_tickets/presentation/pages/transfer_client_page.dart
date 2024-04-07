@@ -171,7 +171,7 @@ class _TransferClientPageState extends State<TransferClientPage> {
                                     .read<ClientsListBloc>()
                                     .add(TransferClientEvent(
                                       TransferClientParams(
-                                          idUser: widget.idClient,
+                                          idClient: widget.idClient,
                                           fkUserTo: idUser!),
                                       onSuccess: (value) async {
                                         await clientProvider

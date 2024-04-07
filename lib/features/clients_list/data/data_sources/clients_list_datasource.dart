@@ -311,7 +311,7 @@ class ClientsListDatasource {
     try {
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
-        endPoint: "${EndPoints.client.transferClient}${params.idUser}",
+        endPoint: "${EndPoints.client.transferClient}${params.idClient}",
         data: params.toMap(),
       );
       final data = apiDataHandler(response);

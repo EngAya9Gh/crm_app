@@ -152,6 +152,7 @@ class _Client {
   final distinctiveClient = "star_client/get_client_star.php";
   final transferClient =
       "transferClient/"; //"client/set_fkuser_transfer.php?id_clients=";
+  final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
 }
 
 class _Task {
