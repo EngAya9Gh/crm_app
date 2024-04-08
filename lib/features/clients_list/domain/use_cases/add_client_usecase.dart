@@ -4,7 +4,6 @@ import 'package:crm_smart/features/clients_list/domain/repositories/clients_list
 import 'package:injectable/injectable.dart';
 
 import '../../../../core/common/models/response_wrapper/response_wrapper.dart';
-import '../../../../model/usermodel.dart';
 import '../../data/models/clients_list_response.dart';
 
 @injectable
@@ -36,10 +35,12 @@ class AddClientParams {
   final String isMarketing;
   final String sourceClient;
   final String descriptionActivity;
+
   // final UserModel user;
   final String? type_record;
   final String? type_classification;
   final String? reason_class;
+
   AddClientParams({
     this.email,
     this.selectedActivitySizeType,
@@ -67,7 +68,7 @@ class AddClientParams {
       'name_enterprise': nameEnterprise,
       "address_client": addressClient,
       "mobile": mobile,
-      'type_job': 'type',
+      // 'type_job': 'type',
       'city': city,
       'location': location,
       "phone": anotherPhoneNumber,

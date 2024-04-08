@@ -148,20 +148,14 @@ class ClientsListDatasource {
   }
 
   Future<ResponseWrapper<ClientModel>> addClient(
-      Map<String, dynamic> body) async {
+    Map<String, dynamic> body,
+  ) async {
     fun() async {
-      // FormData formData = FormData();
-      //
-      // body.forEach((key, value) {
-      //   formData.fields.add(MapEntry(key, value));
-      // });
-
       api.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await api.post(
         endPoint: EndPoints.client.addClient,
         data: body,
       );
-
       final client = ClientModel.fromJson(response['message']);
       return ResponseWrapper(message: client, data: client);
     }
