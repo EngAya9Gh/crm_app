@@ -33,10 +33,12 @@ class _ApprovePageState extends State<ApprovePage> {
       //        .getinvoices();
 ///////////////////////////////////////////////////////
       if (context.read<PrivilegeCubit>().checkPrivilege('2'))
-        Provider.of<invoice_vm>(context, listen: false).getinvoice_Local('مشترك', 'not approved', 'country');
+        Provider.of<invoice_vm>(context, listen: false)
+            .getinvoice_Local('مشترك', 'not approved', 'country');
       else {
         if (context.read<PrivilegeCubit>().checkPrivilege('7'))
-          Provider.of<invoice_vm>(context, listen: false).getinvoice_Local('مشترك', 'not approved', 'regoin');
+          Provider.of<invoice_vm>(context, listen: false)
+              .getinvoice_Local('مشترك', 'not approved', 'regoin');
       }
     });
     //Provider.of<notifyvm>(context,listen: false).getNotification();
@@ -81,17 +83,20 @@ class _ApprovePageState extends State<ApprovePage> {
                     context.read<PrivilegeCubit>().checkPrivilege('2')
                         ? Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0, right: 8),
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, right: 8),
                               child: Consumer<RegionProvider>(
                                 builder: (context, cart, child) {
                                   return DropdownButton(
                                     isExpanded: true,
                                     hint: Text("الفرع"),
-                                    items: cart.listRegionFilter.map((level_one) {
+                                    items:
+                                        cart.listRegionFilter.map((level_one) {
                                       return DropdownMenuItem(
                                         child: Text(level_one.regionName),
                                         //label of item
-                                        value: level_one.regionId, //value of item
+                                        value:
+                                            level_one.regionId, //value of item
                                       );
                                     }).toList(),
                                     value: cart.selectedRegionId,
@@ -124,13 +129,16 @@ class _ApprovePageState extends State<ApprovePage> {
                                     //flex: 1,
                                     child: ListView.builder(
                                         scrollDirection: Axis.vertical,
-                                        itemCount: value.listInvoicesAccept_admin.length,
+                                        itemCount: value
+                                            .listInvoicesAccept_admin.length,
                                         itemBuilder: (context, index) {
                                           return SingleChildScrollView(
                                               child: Padding(
                                             padding: const EdgeInsets.all(2),
                                             child: cardapprove1(
-                                              itemapprove: value.listInvoicesAccept_admin[index],
+                                              itemapprove: value
+                                                      .listInvoicesAccept_admin[
+                                                  index],
                                               type: '',
                                               //data: widget.data,
                                             ),
@@ -148,6 +156,7 @@ class _ApprovePageState extends State<ApprovePage> {
   }
 
   void filtershow() {
-    Provider.of<invoice_vm>(context, listen: false).getfilterview(regoin, 'not');
+    Provider.of<invoice_vm>(context, listen: false)
+        .getfilterview(regoin, 'not');
   }
 }

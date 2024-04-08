@@ -1,20 +1,15 @@
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
-import '../../../function_global.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/user_vm_provider.dart';
 import 'cardcommAlltype.dart';
-import 'install_add.dart';
 
 class View_welcomeClient extends StatefulWidget {
   const View_welcomeClient({Key? key}) : super(key: key);
@@ -36,9 +31,11 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
     user = context.read<UserProvider>().currentUser;
     userId = user.idUser!;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<ClientTypeProvider>(context, listen: false).changelisttype_welcome('الكل');
+      Provider.of<ClientTypeProvider>(context, listen: false)
+          .changelisttype_welcome('الكل');
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
-      await Provider.of<communication_vm>(context, listen: false).getCommunicationWelcome("");
+      await Provider.of<communication_vm>(context, listen: false)
+          .getCommunicationWelcome("");
     });
     super.initState();
   }
@@ -47,7 +44,9 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
 
   @override
   Widget build(BuildContext context) {
-    listCommunicationwelcome = Provider.of<communication_vm>(context, listen: true).listCommunicationWelcome;
+    listCommunicationwelcome =
+        Provider.of<communication_vm>(context, listen: true)
+            .listCommunicationWelcome;
     isload = Provider.of<communication_vm>(context, listen: true).isloading;
     return Scaffold(
       appBar: AppBar(
@@ -125,7 +124,8 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0, right: 8),
-                      child: Consumer<ClientTypeProvider>(builder: (context, cart, child) {
+                      child: Consumer<ClientTypeProvider>(
+                          builder: (context, cart, child) {
                         return DropdownButton(
                           isExpanded: true,
                           hint: Text('الحالة'),
@@ -141,8 +141,6 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                             //namemanage=value.toString();
                             cart.changelisttype_welcome(value.toString());
                             typeclientvalue = value.toString();
-
-
 
                             filtershow();
                           },
@@ -176,11 +174,15 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                   children: [
                     Text(
                       'عدد العملاء',
-                      style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontFamily: kfontfamily2,
+                          fontWeight: FontWeight.bold),
                     ),
                     Text(
                       listCommunicationwelcome.length.toString(),
-                      style: TextStyle(fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontFamily: kfontfamily2,
+                          fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -192,7 +194,8 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                 height: MediaQuery.of(context).size.height * 0.6,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Consumer<communication_vm>(builder: (context, value, child) {
+                  child: Consumer<communication_vm>(
+                      builder: (context, value, child) {
                     return value.isloading == true
                         ? Center(child: CircularProgressIndicator())
                         : value.listCommunicationWelcome.length == 0
@@ -202,14 +205,18 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
                                   Expanded(
                                     child: ListView.builder(
                                         scrollDirection: Axis.vertical,
-                                        itemCount: value.listCommunicationWelcome.length,
+                                        itemCount: value
+                                            .listCommunicationWelcome.length,
                                         itemBuilder: (context, index) {
                                           return SingleChildScrollView(
                                               child: Container(
                                                   child: Padding(
                                             padding: const EdgeInsets.all(2),
                                             child: cardcommalltype(
-                                                itemcom: value.listCommunicationWelcome[index], tabCareIndex: 0),
+                                                itemcom: value
+                                                        .listCommunicationWelcome[
+                                                    index],
+                                                tabCareIndex: 0),
                                             // child: Column(
                                             //   children: [
                                             //     ListTile(
@@ -327,10 +334,8 @@ class _View_welcomeClientState extends State<View_welcomeClient> {
   }
 
   void filtershow([String? myClientsParam]) {
-
-
-
-    Provider.of<communication_vm>(context, listen: false).getcommtype_filter(typeclientvalue, regoin, myClientsParam);
+    Provider.of<communication_vm>(context, listen: false)
+        .getcommtype_filter(typeclientvalue, regoin, myClientsParam);
 
     // }
   }

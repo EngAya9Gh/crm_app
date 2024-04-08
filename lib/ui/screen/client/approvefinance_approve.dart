@@ -168,8 +168,11 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
                                           itemBuilder: (context, index) {
                                             return SingleChildScrollView(
                                               child: Padding(
-                                                padding: const EdgeInsets.all(2),
-                                                child: cardapprove1(type: 'f', itemapprove: list[index]),
+                                                padding:
+                                                    const EdgeInsets.all(2),
+                                                child: cardapprove1(
+                                                    type: 'f',
+                                                    itemapprove: list[index]),
                                               ),
                                             );
                                           }),
@@ -186,6 +189,7 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
   }
 
   void filtershow() {
-    Provider.of<invoice_vm>(context, listen: false).getfilterview(regoin, 'not');
+    Provider.of<invoice_vm>(context, listen: false)
+        .getfilterview(regoin, 'not');
   }
 }

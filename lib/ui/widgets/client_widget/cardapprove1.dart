@@ -1,31 +1,25 @@
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/model/approvemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/model/notificationModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/client/clients.dart';
-import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/view_model/approve_vm.dart';
-import 'package:crm_smart/view_model/client_vm.dart';
-import 'package:crm_smart/view_model/notify_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class cardapprove1 extends StatelessWidget {
-  cardapprove1({Key? key, required this.itemapprove,required this.type}) : super(key: key);
+  cardapprove1({Key? key, required this.itemapprove, required this.type})
+      : super(key: key);
   late InvoiceModel itemapprove;
-   String type;
-  late UserModel current ;
+  String type;
+  late UserModel current;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     current = Provider.of<UserProvider>(context).currentUser;
-    return
-      Container(
-        decoration: BoxDecoration(
+    return Container(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.only(bottomRight: Radius.circular(30)),
         boxShadow: <BoxShadow>[
           BoxShadow(
@@ -38,14 +32,14 @@ class cardapprove1 extends StatelessWidget {
       ),
       child: Center(
         child: InkWell(
-          onTap: (){//pushReplacement
-            Navigator.push(context,
-                CupertinoPageRoute(builder:
-                    (context) =>
-                        client_dashboard(
+          onTap: () {
+            //pushReplacement
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => client_dashboard(
                           typeinvoice: type,
-                           invoiceModel: itemapprove,
-
+                          invoiceModel: itemapprove,
                         )));
           },
           child: Container(
@@ -62,12 +56,13 @@ class cardapprove1 extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                           type=='f'?
-                           itemapprove.name_regoin_invoice.toString():
-                           itemapprove.name_regoin_invoice.toString(),
+                            type == 'f'
+                                ? itemapprove.name_regoin_invoice.toString()
+                                : itemapprove.name_regoin_invoice.toString(),
                             style: TextStyle(
                                 //fontWeight: FontWeight.bold,
                                 fontSize: 12,
@@ -78,7 +73,7 @@ class cardapprove1 extends StatelessWidget {
                             itemapprove.dateCreate.toString(),
                             style: TextStyle(
                                 fontSize: 12,
-                               // fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                                 fontFamily: kfontfamily2,
                                 color: kMainColor),
                           ),
@@ -90,10 +85,10 @@ class cardapprove1 extends StatelessWidget {
                           Text(
                             itemapprove.name_enterprise.toString(),
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                fontFamily: kfontfamily2,
-                         ),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              fontFamily: kfontfamily2,
+                            ),
                           ),
                           // Text(
                           //   itemapprove.nameUser.toString(),

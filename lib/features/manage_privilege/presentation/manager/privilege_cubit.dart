@@ -118,11 +118,10 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     );
   }
 
-  Future<bool> getUserPrivileges(final String levelId) async {
+  Future<bool?> getUserPrivileges(final String levelId) async {
     emit(state.copyWith(userPrivilegesState: const PageState.loading()));
 
     final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
-    // return Future.value(true);
     return result.fold(
       (exception, message) {
         emit(state.copyWith(userPrivilegesState: const PageState.error()));

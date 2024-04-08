@@ -151,8 +151,7 @@ class _ProfileClientState extends State<ProfileClient>
                 child: Center(
                   child: Padding(
                       padding: const EdgeInsets.only(top: 5.0),
-                      child:
-                      TextScroll(
+                      child: TextScroll(
                         client!.nameEnterprise.toString() + "   ",
                         mode: TextScrollMode.endless,
                         velocity: Velocity(pixelsPerSecond: Offset(60, 0)),
@@ -249,7 +248,9 @@ class _ProfileClientState extends State<ProfileClient>
                                 itemClient: client,
                                 fkclient: client.idClients.toString(),
                                 fkuser: ''),
-                            commentView(client: client, ),//event: widget.event),
+                            commentView(
+                              client: client,
+                            ), //event: widget.event),
 
                             support_view_invoices(itemClient: client),
                             care_client_view(

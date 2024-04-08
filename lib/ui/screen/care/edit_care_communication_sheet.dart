@@ -1,9 +1,9 @@
-import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
+
 import '../../../constants.dart';
 import '../../../model/communication_modle.dart';
 import '../../../model/configmodel.dart';
@@ -11,15 +11,18 @@ import '../../../provider/config_vm.dart';
 import '../../../view_model/communication_vm.dart';
 
 class EditCareCommunicationSheet extends StatefulWidget {
-  EditCareCommunicationSheet({Key? key, required this.communicationModel}) : super(key: key);
+  EditCareCommunicationSheet({Key? key, required this.communicationModel})
+      : super(key: key);
 
   CommunicationModel communicationModel;
 
   @override
-  State<EditCareCommunicationSheet> createState() => _EditCareCommunicationSheetState();
+  State<EditCareCommunicationSheet> createState() =>
+      _EditCareCommunicationSheetState();
 }
 
-class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet> {
+class _EditCareCommunicationSheetState
+    extends State<EditCareCommunicationSheet> {
   double rate = 0.0;
   bool typepayController = false;
   bool numberwrong = false;
@@ -35,7 +38,8 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
     typepayController = widget.communicationModel.result.toString() == 'true';
     numberwrong = widget.communicationModel.number_wrong.toString() != 'false';
     repeat = widget.communicationModel.clientRepeat.toString() != 'false';
-    isRecommendation = widget.communicationModel.isRecommendation.toString() == 'true';
+    isRecommendation =
+        widget.communicationModel.isRecommendation.toString() == 'true';
     isVisit = widget.communicationModel.is_visit.toString() == 'true';
     isSuspend = widget.communicationModel.is_suspend.toString() == 'true';
     super.initState();
@@ -55,7 +59,9 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
               Container(
                 width: 75,
                 height: 5,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(25), color: Colors.grey),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    color: Colors.grey),
               ),
               SizedBox(height: 20),
               widget.communicationModel.typeCommuncation == 'دوري'
@@ -142,10 +148,8 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                             color: Colors.amber,
                           ),
                           onRatingUpdate: (rating) {
-
                             setState(() {
                               rate = rating;
-
                             });
                           },
                         ),
@@ -153,7 +157,8 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                     )
                   : Container(),
               SizedBox(height: 20),
-              Consumer<communication_vm>(builder: (context, communicationVm, _) {
+              Consumer<communication_vm>(
+                  builder: (context, communicationVm, _) {
                 if (communicationVm.isload) {
                   return Center(child: CircularProgressIndicator());
                 }
@@ -162,38 +167,49 @@ class _EditCareCommunicationSheetState extends State<EditCareCommunicationSheet>
                   width: 200,
                   height: 45,
                   child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(kMainColor)),
                       onPressed: () async {
                         final user = context.read<UserProvider>().currentUser;
                         final fkUser = user.idUser.toString();
                         final nameUser = user.nameUser.toString();
-                        final communicationVm = context.read<communication_vm>();
+                        final communicationVm =
+                            context.read<communication_vm>();
                         final configVm = context.read<config_vm>();
 
-                        if (widget.communicationModel.typeCommuncation != 'دوري') {
+                        if (widget.communicationModel.typeCommuncation !=
+                            'دوري') {
                           communicationVm.addcommmuncation(
                             {
                               'user_update': fkUser,
                               // 'date_communication': DateTime.now().toString(),
                               'result': '0',
                               'nameUser': nameUser,
-                              'type_install': widget.communicationModel.type_install.toString(),
-                              'id_invoice': widget.communicationModel.id_invoice.toString(),
+                              'type_install': widget
+                                  .communicationModel.type_install
+                                  .toString(),
+                              'id_invoice': widget.communicationModel.id_invoice
+                                  .toString(),
                               'rate': rate.toString(),
                               'updated': '1',
                             },
                             widget.communicationModel.idCommunication,
                             widget.communicationModel.type_install == null
                                 ? 1
-                                : int.parse(widget.communicationModel.type_install.toString()),
+                                : int.parse(widget
+                                    .communicationModel.type_install
+                                    .toString()),
                             onSuccess: () => Navigator.pop(context),
                           ).then((value) => clear(value));
                         } else {
                           communicationVm.isloadval(true);
-                          await Provider.of<config_vm>(context, listen: false).getAllConfig();
+                          await Provider.of<config_vm>(context, listen: false)
+                              .getAllConfig();
                           List<ConfigModel> _listConfig = configVm.listofconfig;
 
-                          peroid = _listConfig.firstWhere((element) => element.name_config == 'period_commincation3');
+                          peroid = _listConfig.firstWhere((element) =>
+                              element.name_config == 'period_commincation3');
 
                           DateTime dateNext = DateTime.now();
 

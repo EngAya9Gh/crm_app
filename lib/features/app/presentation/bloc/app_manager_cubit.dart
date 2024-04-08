@@ -9,7 +9,19 @@ import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tuple/tuple.dart';
 
+import '../../../../api/api.dart';
+import '../../../../core/services/cache_services/cache_services.dart';
+import '../../../../core/services/cache_services/secure_storage_consumer.dart';
+import '../../../../core/services/di/di_container.dart';
+import '../../../../core/utils/app_navigator.dart';
+import '../../../../core/utils/app_strings.dart';
+import '../../../../model/usermodel.dart';
+import '../../../../ui/screen/home/home.dart';
+import '../../../../view_model/user_vm_provider.dart';
+import '../../../auth/login/presentation/manager/login_cubit/login_cubit.dart';
+import '../../../auth/login/presentation/pages/login_page.dart';
 import '../../domain/use_cases/get_version_usecase.dart';
+import '../pages/not_allowed_page.dart';
 
 part 'app_manager_state.dart';
 
@@ -125,5 +137,40 @@ class AppManagerCubit extends Cubit<AppManagerState> {
     }
 
     return Tuple3(major, minor, patch);
+  }
+
+  Future checkRedirections(BuildContext context) async {
+    emit(state.copyWith(checkRedirectionsState: const PageState.loading()));
+
+    final userProvider = context.read<UserProvider>();
+    final UserModel? user = await userProvider.getCurrentUser();
+
+    if (user == null || (await _validateToken(context))) {
+      AppNavigator.pushReplacement(LoginPage());
+      _clearToken();
+      return;
+    }
+    if (user.isActive == '0') {
+      AppNavigator.pushReplacement(NotAllowedPage());
+      return;
+    }
+    AppNavigator.pushReplacement(Home());
+    emit(state.copyWith(
+        checkRedirectionsState: const PageState.loaded(data: null)));
+  }
+
+  Future<bool> _validateToken(BuildContext context) async {
+    final tokenCubit = context.read<LoginCubit>();
+    final token = await tokenCubit.getToken();
+    final isTokenValid = await tokenCubit.validateToken() ?? false;
+    return (token == null || !isTokenValid);
+  }
+
+  static Future<void> _clearToken() async {
+    final secureStorage = getIt<CacheServices>(
+      instanceName: SecureStorageConsumer.name,
+    );
+    await secureStorage.removeData(key: AppStrings.secureStorage.token);
+    Api.token = null;
   }
 }

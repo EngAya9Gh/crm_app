@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:crm_smart/model/regoin_model.dart';
 import 'package:crm_smart/view_model/vm.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 import 'package:tuple/tuple.dart';
+
 import '../../../../constants.dart';
 import '../../../../helper/get_month_name.dart';
 import '../../../../view_model/branch_race_viewmodel.dart';
@@ -20,7 +19,8 @@ class AddTargetPage extends StatefulWidget {
   State<AddTargetPage> createState() => _AddTargetPageState();
 }
 
-class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<AddTargetPage, BranchRaceViewmodel> {
+class _AddTargetPageState extends State<AddTargetPage>
+    with StateViewModelMixin<AddTargetPage, BranchRaceViewmodel> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController branchTarget = TextEditingController();
 
@@ -45,7 +45,9 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                     child: SizedBox(
                         height: 20,
                         width: 20,
-                        child: Center(child: CircularProgressIndicator(backgroundColor: Colors.white))),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                                backgroundColor: Colors.white))),
                   );
                 }
                 return TextButton(
@@ -79,13 +81,16 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                 selector: (p0, vm) => vm.selectedDateFilterAddTarget,
                 builder: (_, selectedDateFilterAddTarget, __) {
                   return GroupButton(
-                    controller: GroupButtonController(selectedIndex: selectedDateFilterAddTarget.index),
+                    controller: GroupButtonController(
+                        selectedIndex: selectedDateFilterAddTarget.index),
                     options: GroupButtonOptions(
                         selectedColor: kMainColor,
-                        buttonWidth: (MediaQuery.of(context).size.width - 60) / 3,
+                        buttonWidth:
+                            (MediaQuery.of(context).size.width - 60) / 3,
                         borderRadius: BorderRadius.circular(10)),
                     buttons: ["شهري", "ربعي", 'سنوي'],
-                    onSelected: (_, index, isselected) => viewmodel.onChangeSelectedFilterTypeAddTarget(index),
+                    onSelected: (_, index, isselected) =>
+                        viewmodel.onChangeSelectedFilterTypeAddTarget(index),
                   );
                 },
               ),
@@ -112,7 +117,8 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                             return "هذا الحقل مطلوب";
                           }
                         },
-                        icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                        icon: Icon(Icons.keyboard_arrow_down_rounded,
+                            color: Colors.grey),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey.shade200,
@@ -148,7 +154,8 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
               builder: (_, selectedDateFilterAddTarget, __) {
                 if (selectedDateFilterAddTarget == DateFilterType.yearly) {
                   return SizedBox();
-                } else if (selectedDateFilterAddTarget == DateFilterType.quarterly) {
+                } else if (selectedDateFilterAddTarget ==
+                    DateFilterType.quarterly) {
                   return buildQuarterDropDowns();
                 } else {
                   return buildMonthDropDowns();
@@ -169,8 +176,9 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                   borderRadius: BorderRadius.circular(10),
                   child: Consumer2<RegionProvider, BranchRaceViewmodel>(
                     builder: (_, regionVm, branchViewModel, __) {
-                      final listRegion =
-                          regionVm.listRegionFilter.where((element) => element.regionId != "0").toList();
+                      final listRegion = regionVm.listRegionFilter
+                          .where((element) => element.regionId != "0")
+                          .toList();
                       final selectedRegionId = branchViewModel.selectedRegionId;
 
                       return DropdownButtonFormField<String>(
@@ -180,7 +188,8 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                             return "هذا الحقل مطلوب";
                           }
                         },
-                        icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                        icon: Icon(Icons.keyboard_arrow_down_rounded,
+                            color: Colors.grey),
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.grey.shade200,
@@ -194,7 +203,8 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                         hint: Text("اختر الفرع"),
                         items: listRegion.map((RegionModel region) {
                           return DropdownMenuItem<String>(
-                            child: Text(region.regionName, textDirection: TextDirection.rtl),
+                            child: Text(region.regionName,
+                                textDirection: TextDirection.rtl),
                             value: region.regionId,
                           );
                         }).toList(),
@@ -237,18 +247,25 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(10),
-                    hintStyle: const TextStyle(color: Colors.black45, fontSize: 16, fontWeight: FontWeight.w500),
+                    hintStyle: const TextStyle(
+                        color: Colors.black45,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
                     hintText: '',
                     filled: true,
                     fillColor: Colors.grey.shade200,
                     enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.white)),
                     focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.white)),
                     errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.white)),
                     focusedErrorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(color: Colors.white)),
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(color: Colors.white)),
                   ),
                 ),
               ),
@@ -268,8 +285,10 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
           SizedBox(height: 5),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Selector<BranchRaceViewmodel, Tuple2<String?, DateFilterType>>(
-              selector: (p0, vm) => Tuple2(vm.selectedMonthAddTarget, vm.selectedDateFilterAddTarget),
+            child:
+                Selector<BranchRaceViewmodel, Tuple2<String?, DateFilterType>>(
+              selector: (p0, vm) => Tuple2(
+                  vm.selectedMonthAddTarget, vm.selectedDateFilterAddTarget),
               builder: (_, values, __) {
                 final selectedMonthAddTarget = values.item1;
                 final selectedDateFilterAddTarget = values.item2;
@@ -279,7 +298,8 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                   child: DropdownButtonFormField<String>(
                     isExpanded: true,
                     validator: (value) {
-                      if (selectedDateFilterAddTarget != DateFilterType.monthly) {
+                      if (selectedDateFilterAddTarget !=
+                          DateFilterType.monthly) {
                         return null;
                       }
 
@@ -289,7 +309,8 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
 
                       return null;
                     },
-                    icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                    icon: Icon(Icons.keyboard_arrow_down_rounded,
+                        color: Colors.grey),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey.shade200,
@@ -333,8 +354,10 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
           SizedBox(height: 5),
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Selector<BranchRaceViewmodel, Tuple2<String?, DateFilterType>>(
-              selector: (p0, vm) => Tuple2(vm.selectedQuarterAddTarget, vm.selectedDateFilterAddTarget),
+            child:
+                Selector<BranchRaceViewmodel, Tuple2<String?, DateFilterType>>(
+              selector: (p0, vm) => Tuple2(
+                  vm.selectedQuarterAddTarget, vm.selectedDateFilterAddTarget),
               builder: (_, values, __) {
                 final selectedQuarterAddTarget = values.item1;
                 final selectedDateFilterAddTarget = values.item2;
@@ -344,7 +367,8 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                   child: DropdownButtonFormField<String>(
                     isExpanded: true,
                     validator: (value) {
-                      if (selectedDateFilterAddTarget != DateFilterType.quarterly) {
+                      if (selectedDateFilterAddTarget !=
+                          DateFilterType.quarterly) {
                         return null;
                       }
 
@@ -353,7 +377,8 @@ class _AddTargetPageState extends State<AddTargetPage> with StateViewModelMixin<
                       }
                       return null;
                     },
-                    icon: Icon(Icons.keyboard_arrow_down_rounded, color: Colors.grey),
+                    icon: Icon(Icons.keyboard_arrow_down_rounded,
+                        color: Colors.grey),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.grey.shade200,

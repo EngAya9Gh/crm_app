@@ -1,10 +1,11 @@
 import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class ImageProfile extends StatelessWidget {
   File? pickedFile;
@@ -19,53 +20,70 @@ class ImageProfile extends StatelessWidget {
     return Center(
       child: Stack(
         children: [
-        //  Obx( () =>
-        CircleAvatar( //ClipOval(
+          //  Obx( () =>
+          CircleAvatar(
+              //ClipOval(
               //clipBehavior: Clip.hardEdge,
               radius: 85.0,
-              child:
-              Provider.of<UserProvider>(context,listen: true)
-                  .currentUser.path.toString()!.isNotEmpty
-                  ?
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                    child: Image.file(
-                    File(Provider.of<UserProvider>(context,listen: true)
-                    .currentUser.path.toString()!),width: 1000,height: 1000,fit: BoxFit.fill,
-                // fit: BoxFit.fill,
-              ),
-                  )
-                  : Provider.of<UserProvider>(context,listen: true)
-                  .currentUser.img_image.toString()!.isNotEmpty
+              child: Provider.of<UserProvider>(context, listen: true)
+                      .currentUser
+                      .path
+                      .toString()!
+                      .isNotEmpty
                   ? ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child:
-                CachedNetworkImage(
-                    width: 1000,height: 1000,fit: BoxFit.fill,
-                    progressIndicatorBuilder: (context, url, progress) => Center(
-                      child: CircularProgressIndicator(
-                        value: progress.progress,),),
-                    imageUrl: Provider.of<UserProvider>(context,listen: true)
-                        .currentUser.img_image!       ),
-              )
-                  :Text(Provider.of<UserProvider>(context,listen: true)
-                  .currentUser.nameUser
-                  .toString()
-                  .substring(0, 1))),
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.file(
+                        File(Provider.of<UserProvider>(context, listen: true)
+                            .currentUser
+                            .path
+                            .toString()!),
+                        width: 1000,
+                        height: 1000,
+                        fit: BoxFit.fill,
+                        // fit: BoxFit.fill,
+                      ),
+                    )
+                  : Provider.of<UserProvider>(context, listen: true)
+                          .currentUser
+                          .img_image
+                          .toString()!
+                          .isNotEmpty
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: CachedNetworkImage(
+                              width: 1000,
+                              height: 1000,
+                              fit: BoxFit.fill,
+                              progressIndicatorBuilder:
+                                  (context, url, progress) => Center(
+                                        child: CircularProgressIndicator(
+                                          value: progress.progress,
+                                        ),
+                                      ),
+                              imageUrl: Provider.of<UserProvider>(context,
+                                      listen: true)
+                                  .currentUser
+                                  .img_image!),
+                        )
+                      : Text(Provider.of<UserProvider>(context, listen: true)
+                          .currentUser
+                          .nameUser
+                          .toString()
+                          .substring(0, 1))),
 
-        Positioned(
+          Positioned(
             bottom: 20.0,
             right: 20.0,
             child: InkWell(
-              onTap: ()  {
+              onTap: () {
                 showModalBottomSheet(
                   backgroundColor: Colors.blue,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
-                      )),
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  )),
                   context: context,
                   builder: ((context) => bottomSheet(context)),
                 );
@@ -125,7 +143,7 @@ class ImageProfile extends StatelessWidget {
                   //controllerUser.takedPhoto(ImageSource.camera);
                   // controllerUser.openCamera();
                   //
-                  takePhoto(ImageSource.camera,context);
+                  takePhoto(ImageSource.camera, context);
                 },
                 icon: Icon(
                   Icons.camera,
@@ -143,7 +161,7 @@ class ImageProfile extends StatelessWidget {
                 onPressed: () {
                   //controllerUser.openGallery();
                   //
-                  takePhoto(ImageSource.gallery,context);
+                  takePhoto(ImageSource.gallery, context);
                 },
                 icon: Icon(
                   Icons.open_in_browser,
@@ -162,20 +180,17 @@ class ImageProfile extends StatelessWidget {
     );
   }
 
-  void takePhoto(ImageSource source,context) async {
-    final pickedImage =
-    await imagePicker.pickImage(
-        source: source, imageQuality: 100,maxHeight:1000,maxWidth: 1000 );
+  void takePhoto(ImageSource source, context) async {
+    final pickedImage = await imagePicker.pickImage(
+        source: source, imageQuality: 100, maxHeight: 1000, maxWidth: 1000);
     pickedFile = File(pickedImage!.path);
 
-    Provider.of<UserProvider>(context,listen: false)
+    Provider.of<UserProvider>(context, listen: false)
         .setImagePath(pickedFile!.path);
-        //.currentUser!.path=pickedFile!.path;
+    //.currentUser!.path=pickedFile!.path;
     // controllerUser.setProfileImagePath(pickedFile!.path);
     // Get.back();
 
-     Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 }
-
-

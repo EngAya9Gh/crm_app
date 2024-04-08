@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:photo_view/photo_view.dart';
 
-import '../../constants.dart';
-
 class photoviewcustom extends StatefulWidget {
   photoviewcustom({required this.urlimagecon, Key? key}) : super(key: key);
   String urlimagecon;
@@ -15,9 +13,8 @@ class _photoviewcustomState extends State<photoviewcustom> {
   Widget build(BuildContext context) {
     return Container(
       child: PhotoView(
-          imageProvider:
-          Image.network(
-          widget.urlimagecon,
+          imageProvider: Image.network(
+        widget.urlimagecon,
       ).image),
     );
   }

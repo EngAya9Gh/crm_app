@@ -1,7 +1,5 @@
 import 'package:crm_smart/ui/screen/search/search_container.dart';
-import 'package:crm_smart/ui/widgets/user_widget/card_user.dart';
 import 'package:crm_smart/ui/widgets/user_widget/carduserbuild.dart';
-import 'package:crm_smart/view_model/privilge_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +36,8 @@ class _AllUserScreenState extends State<AllUserScreen> {
           ? FloatingActionButton(
               backgroundColor: kMainColor,
               onPressed: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (context) => addUser()));
+                Navigator.push(context,
+                    CupertinoPageRoute(builder: (context) => addUser()));
               },
               tooltip: 'إضافة موظف',
               child: Icon(Icons.add, color: AppColors.white),
@@ -71,7 +70,8 @@ class _AllUserScreenState extends State<AllUserScreen> {
                       child: ListView.separated(
                         itemCount: controllerUsers.listFilteredUser.length,
                         itemBuilder: (context, index) {
-                          return Consumer<UserProvider>(builder: (context, cart, child) {
+                          return Consumer<UserProvider>(
+                              builder: (context, cart, child) {
                             return
                                 //   value.listClientfilter.length==0?
                                 // Center(
@@ -80,14 +80,16 @@ class _AllUserScreenState extends State<AllUserScreen> {
                                 Padding(
                               padding: const EdgeInsets.all(2),
                               child: buildCardUsers(
-                                usermodell: controllerUsers.listFilteredUser[index],
+                                usermodell:
+                                    controllerUsers.listFilteredUser[index],
                               ),
                             );
                           });
                         },
                         separatorBuilder: (context, index) {
                           return Padding(
-                            padding: EdgeInsets.only(right: 30, left: 20, bottom: 0),
+                            padding:
+                                EdgeInsets.only(right: 30, left: 20, bottom: 0),
                             child: Divider(
                               color: Colors.black12,
                               thickness: 1,

@@ -35,7 +35,8 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final isMyProfile = context.read<UserProvider>().currentUser.idUser == widget.userModel.idUser;
+    final isMyProfile = context.read<UserProvider>().currentUser.idUser ==
+        widget.userModel.idUser;
     return BlocBuilder<UsersCubit, UsersState>(
       builder: (context, state) {
         final user = state.currentUser!;
@@ -56,17 +57,25 @@ class _UserProfileState extends State<UserProfile> {
               //         ))
               //     :
               //180
-              (context.read<PrivilegeCubit>().checkPrivilege('50')
-              &&
-                  ( user.typeLevel==context.read<UserProvider>().currentUser.typeLevel &&
-                  int.parse(context.read<UserProvider>().currentUser.periorty.toString())==
-                  int.parse(user.periorty.toString())
-                  ))
-                  ||
-                  (context.read<PrivilegeCubit>().checkPrivilege('180')&&
-                      int.parse(context.read<UserProvider>().currentUser.periorty.toString()) <=
-                          int.parse(user.periorty.toString())
-                  )
+              (context.read<PrivilegeCubit>().checkPrivilege('50') &&
+                          (user.typeLevel ==
+                                  context
+                                      .read<UserProvider>()
+                                      .currentUser
+                                      .typeLevel &&
+                              int.parse(context
+                                      .read<UserProvider>()
+                                      .currentUser
+                                      .periorty
+                                      .toString()) ==
+                                  int.parse(user.periorty.toString()))) ||
+                      (context.read<PrivilegeCubit>().checkPrivilege('180') &&
+                          int.parse(context
+                                  .read<UserProvider>()
+                                  .currentUser
+                                  .periorty
+                                  .toString()) <=
+                              int.parse(user.periorty.toString()))
                   // ||
                   // (context.read<PrivilegeCubit>().checkPrivilege('50')&&
                   //     (user.typeLevel==context.read<UserProvider>().currentUser.typeLevel&&
@@ -91,8 +100,10 @@ class _UserProfileState extends State<UserProfile> {
                       ))
                   : IconButton(
                       onPressed: () {
-                        Navigator.push(context, CupertinoPageRoute(
-                        builder: (context) => edit_profile()));
+                        Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => edit_profile()));
                       },
                       icon: const Icon(
                         Icons.edit,
@@ -125,7 +136,8 @@ class _UserProfileState extends State<UserProfile> {
                                 width: 500,
                                 height: 500,
                                 fit: BoxFit.fill,
-                                progressIndicatorBuilder: (context, url, progress) => Center(
+                                progressIndicatorBuilder:
+                                    (context, url, progress) => Center(
                                   child: CircularProgressIndicator(
                                     value: progress.progress,
                                   ),
@@ -137,7 +149,8 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
                     child: Column(
                       children: [
                         ContainerShadows(
@@ -146,7 +159,9 @@ class _UserProfileState extends State<UserProfile> {
                             margin: EdgeInsets.zero,
                             child: Padding(
                               padding: REdgeInsets.only(left: 10, right: 10),
-                              child: RowEdit2(des: user.name_mange.toString(), name: 'الإدارات'),
+                              child: RowEdit2(
+                                  des: user.name_mange.toString(),
+                                  name: 'الإدارات'),
                             )),
                         10.verticalSpace,
                         ContainerShadows(
@@ -159,7 +174,9 @@ class _UserProfileState extends State<UserProfile> {
                               right: 10,
                             ),
                             child: RowEdit2(
-                              des: user.nameRegoin.toString() == "null" ? "" : user.nameRegoin.toString(),
+                              des: user.nameRegoin.toString() == "null"
+                                  ? ""
+                                  : user.nameRegoin.toString(),
                               name: 'الفرع',
                             ),
                           ),
@@ -200,7 +217,8 @@ class _UserProfileState extends State<UserProfile> {
                             child: Padding(
                               padding: REdgeInsets.only(left: 10, right: 10),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextUtilis(
                                     color: Colors.black,
@@ -215,7 +233,8 @@ class _UserProfileState extends State<UserProfile> {
                                       //     controllerUser.userall!index].email.toString());
                                       //
                                     },
-                                    icon: const Icon(Icons.email, size: 20, color: kMainColor),
+                                    icon: const Icon(Icons.email,
+                                        size: 20, color: kMainColor),
                                   ),
                                 ],
                               ),
@@ -228,7 +247,8 @@ class _UserProfileState extends State<UserProfile> {
                             child: Padding(
                               padding: REdgeInsets.only(left: 10, right: 10),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextUtilis(
                                     color: Colors.black,
@@ -239,7 +259,8 @@ class _UserProfileState extends State<UserProfile> {
                                   ),
                                   TextButton(
                                     onPressed: () async {
-                                      await FlutterPhoneDirectCaller.callNumber(user.mobile.toString());
+                                      await FlutterPhoneDirectCaller.callNumber(
+                                          user.mobile.toString());
                                     },
                                     child: Text(
                                       user.mobile.toString(),
@@ -282,9 +303,11 @@ class _UserProfileState extends State<UserProfile> {
                                 height: 50,
                                 margin: EdgeInsets.zero,
                                 child: Padding(
-                                  padding: REdgeInsets.only(left: 10, right: 10),
+                                  padding:
+                                      REdgeInsets.only(left: 10, right: 10),
                                   child: RowEdit2(
-                                    des: getnameshort(user.nameuserupdate.toString()),
+                                    des: getnameshort(
+                                        user.nameuserupdate.toString()),
                                     name: 'تم التعديل من قبل ',
                                   ),
                                 )),
@@ -296,7 +319,8 @@ class _UserProfileState extends State<UserProfile> {
                                 height: 50,
                                 margin: EdgeInsets.zero,
                                 child: Padding(
-                                  padding: REdgeInsets.only(left: 10, right: 10),
+                                  padding:
+                                      REdgeInsets.only(left: 10, right: 10),
                                   child: RowEdit2(
                                     des: user.updated_at.toString(),
                                     name: 'تاريخ التعديل',

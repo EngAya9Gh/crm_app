@@ -28,7 +28,8 @@ class _managviewState extends State<managview> {
 
   @override
   Widget build(BuildContext context) {
-    List<ManageModel> _listlevel = Provider.of<manage_provider>(context, listen: true).listtext;
+    List<ManageModel> _listlevel =
+        Provider.of<manage_provider>(context, listen: true).listtext;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -37,25 +38,26 @@ class _managviewState extends State<managview> {
         ),
         centerTitle: true,
       ),
-      floatingActionButton: context.read<PrivilegeCubit>().checkPrivilege('64') == true
-          ? FloatingActionButton(
-              child: Icon(Icons.add, color: AppColors.white),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  CupertinoPageRoute<void>(
-                    builder: (BuildContext context) => addmanage(
-                      fk_country: null,
-                      idmange: null,
-                      name_mange: null,
-                    ),
-                    fullscreenDialog: true,
-                  ),
-                );
-              },
-              backgroundColor: kMainColor,
-            )
-          : Container(),
+      floatingActionButton:
+          context.read<PrivilegeCubit>().checkPrivilege('64') == true
+              ? FloatingActionButton(
+                  child: Icon(Icons.add, color: AppColors.white),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute<void>(
+                        builder: (BuildContext context) => addmanage(
+                          fk_country: null,
+                          idmange: null,
+                          name_mange: null,
+                        ),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                  },
+                  backgroundColor: kMainColor,
+                )
+              : Container(),
       body: _listlevel.length == 0
           ? Center(child: CircularProgressIndicator())
           : Padding(
@@ -75,9 +77,12 @@ class _managviewState extends State<managview> {
                                       context,
                                       CupertinoPageRoute(
                                           builder: (context) => addmanage(
-                                                fk_country: _listlevel[index].fk_country,
-                                                name_mange: _listlevel[index].name_mange,
-                                                idmange: _listlevel[index].idmange,
+                                                fk_country: _listlevel[index]
+                                                    .fk_country,
+                                                name_mange: _listlevel[index]
+                                                    .name_mange,
+                                                idmange:
+                                                    _listlevel[index].idmange,
                                               )));
                                 },
                                 child: Container(
@@ -91,14 +96,16 @@ class _managviewState extends State<managview> {
                                         color: Colors.black87.withOpacity(0.2),
                                       ),
                                     ],
-                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4)),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(14.0),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
 
                                       //color: kMainColor,
@@ -107,7 +114,9 @@ class _managviewState extends State<managview> {
                                         child: Center(
                                           child: Text(
                                             _listlevel[index].name_mange,
-                                            style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: kfontfamily2),
                                           ),
                                         ),
                                       ),
