@@ -48,9 +48,14 @@ class _care_client_viewState extends State<care_client_view> {
       final carteClientState = communicationVm.careClientState;
       final isLoading = communicationVm.isLoadingCareClient;
 
-      final initialIndex = carteClientState.keys.toList().indexOf(tabsToIndex[widget.tabCareIndex]) == -1
+      final initialIndex = carteClientState.keys
+                  .toList()
+                  .indexOf(tabsToIndex[widget.tabCareIndex]) ==
+              -1
           ? 0
-          : carteClientState.keys.toList().indexOf(tabsToIndex[widget.tabCareIndex]);
+          : carteClientState.keys
+              .toList()
+              .indexOf(tabsToIndex[widget.tabCareIndex]);
       if (isLoading) {
         return Center(child: CircularProgressIndicator.adaptive());
       }
@@ -68,14 +73,17 @@ class _care_client_viewState extends State<care_client_view> {
                 controller: DefaultTabController.of(context),
                 padding: EdgeInsets.symmetric(horizontal: 28, vertical: 0),
                 indicator: _CustomIndicator(color: kMainColor),
-                unselectedLabelStyle:
-                    context.textTheme.titleMedium?.copyWith(color: Colors.grey.shade700, fontFamily: kfontfamily2),
-                labelStyle: context.textTheme.titleMedium
-                    ?.copyWith(color: kMainColor, fontWeight: FontWeight.w800, fontFamily: kfontfamily2),
+                unselectedLabelStyle: context.textTheme.titleMedium?.copyWith(
+                    color: Colors.grey.shade700, fontFamily: kfontfamily2),
+                labelStyle: context.textTheme.titleMedium?.copyWith(
+                    color: kMainColor,
+                    fontWeight: FontWeight.w800,
+                    fontFamily: kfontfamily2),
                 labelColor: kMainColor,
                 unselectedLabelColor: Colors.grey.shade700,
                 splashBorderRadius: BorderRadius.circular(15),
-                overlayColor: MaterialStateProperty.all(kMainColor.withOpacity(0.05)),
+                overlayColor:
+                    MaterialStateProperty.all(kMainColor.withOpacity(0.05)),
                 tabs: carteClientState.keys.map((e) => Tab(text: e)).toList(),
               ),
               Expanded(
@@ -86,9 +94,11 @@ class _care_client_viewState extends State<care_client_view> {
                     return ListView.separated(
                       itemBuilder: (context, index) => communcation_view_widget(
                         element: list[index],
-                        initiallyExpanded: list[index].idCommunication == widget.idCommunication,
+                        initiallyExpanded: list[index].idCommunication ==
+                            widget.idCommunication,
                       ),
-                      separatorBuilder: (context, index) => SizedBox(height: 10),
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 10),
                       itemCount: list.length,
                     );
                   }).toList(),
@@ -121,7 +131,8 @@ class _care_client_viewState extends State<care_client_view> {
             return '';
           },
           groupComparator: (value1, value2) => value2.compareTo(value1),
-          itemComparator: (item1, item2) => item1.idCommunication!.compareTo(item2.idCommunication),
+          itemComparator: (item1, item2) =>
+              item1.idCommunication!.compareTo(item2.idCommunication),
           order: GroupedListOrder.ASC,
           useStickyGroupSeparators: true,
           groupSeparatorBuilder: (String value) => Padding(
@@ -196,9 +207,11 @@ class _DotPainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    final Offset circleOffset = offset + Offset(configuration.size!.width / 2, configuration.size!.height);
+    final Offset circleOffset = offset +
+        Offset(configuration.size!.width / 2, configuration.size!.height);
 
-    final Rect rect = Rect.fromCenter(center: circleOffset, width: 70, height: 4);
+    final Rect rect =
+        Rect.fromCenter(center: circleOffset, width: 70, height: 4);
     canvas.drawRRect(
       RRect.fromRectAndRadius(rect, Radius.circular(radius)),
       _paint,

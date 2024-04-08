@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -27,10 +26,10 @@ class CustomButton extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-               if(icon != null) ...{
-                 Icon(icon,color: Colors.white),
-                 SizedBox(width: 10),
-               },
+                if (icon != null) ...{
+                  Icon(icon, color: Colors.white),
+                  SizedBox(width: 10),
+                },
                 Text(
                   text!,
                   style: TextStyle(color: kWhiteColor),

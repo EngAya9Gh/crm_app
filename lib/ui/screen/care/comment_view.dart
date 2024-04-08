@@ -7,11 +7,8 @@ import '../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../../model/calendar/event_model.dart';
 import '../../../model/clientmodel.dart';
 import '../../../view_model/comment.dart';
-import '../../../view_model/event_provider.dart';
-import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/text_form.dart';
 import 'card_comment.dart';
@@ -182,7 +179,9 @@ class _commentViewState extends State<commentView> {
                                   return IconButton(
                                       onPressed: () async {
                                         if (_globalKey.currentState!
-                                            .validate() && _selectedCommentType?.value!=null) {
+                                                .validate() &&
+                                            _selectedCommentType?.value !=
+                                                null) {
                                           _globalKey.currentState!.save();
 
                                           Provider.of<comment_vm>(context,
@@ -228,8 +227,11 @@ class _commentViewState extends State<commentView> {
                                                 .img_image,
                                           ).then((value) {
                                             if (value != "error") {
-                                              Provider.of<comment_vm>(context, listen: false)
-                                                  .getComment(widget.client!.idClients.toString());
+                                              Provider.of<comment_vm>(context,
+                                                      listen: false)
+                                                  .getComment(widget
+                                                      .client!.idClients
+                                                      .toString());
 
                                               // if (widget.event != null &&
                                               //     isFirstComment) {
@@ -249,10 +251,11 @@ class _commentViewState extends State<commentView> {
                                               _comment.text = '';
                                             }
                                           });
-                                        }
-                                        else
-                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                            content: Text('من فضلك اختر نوع التعليق ')));
+                                        } else
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      'من فضلك اختر نوع التعليق ')));
                                       },
                                       icon:
                                           Icon(Icons.send, color: kMainColor));

@@ -21,6 +21,7 @@ abstract class EndPoints {
   static const agentDistributor = _AgentDistributor();
   static const invoice = _Invoice();
   static const tickets = _Tickets();
+  static const events = _Events();
 }
 
 class _BaseUrls {
@@ -86,6 +87,7 @@ class _Users {
   final allUsers = 'users/getUser.php';
   final addUser = 'users/addUser.php';
   final updateUser = 'users/updateuser_patch.php';
+  final getCurrentUser = 'users/getCurrentUser.php';
 }
 
 class _Links {
@@ -152,6 +154,9 @@ class _Client {
   final distinctiveClient = "star_client/get_client_star.php";
   final transferClient =
       "transferClient/"; //"client/set_fkuser_transfer.php?id_clients=";
+  final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
+  final String getTransferClientsWithPrivileges =
+      "getTransferClientsWithPrivileges";
 }
 
 class _Task {
@@ -224,4 +229,10 @@ class _Tickets {
   final String editTicketType = 'editTicketType/';
   final String addTicket = 'addTicket';
   final String transferTicket = 'TransferTicket/';
+}
+
+class _Events {
+  const _Events();
+
+  final String updateStatusForVisit = 'updateStatusForVisit/';
 }

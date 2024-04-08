@@ -19,17 +19,17 @@ class TransferClientUserUsecase
 }
 
 class TransferClientParams {
-  final idUser;
+  final idClient;
   final String fkUserTo;
 
   TransferClientParams({
-    required this.idUser,
+    required this.idClient,
     required this.fkUserTo,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'id_user': idUser,
+      'id_user': idClient,
       'fk_user': fkUserTo,
     };
   }

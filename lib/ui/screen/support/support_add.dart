@@ -224,11 +224,10 @@ class _SupportAddState extends State<SupportAdd> {
                                     color: Colors.black45,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
-                                hintText: _invoice!.daterepaly == null &&
-                                        Provider.of<datetime_vm>(context,
-                                                    listen: true)
-                                                .selectedStartTime ==
-                                            null
+                                hintText: Provider.of<datetime_vm>(context,
+                                                listen: true)
+                                            .selectedStartTime ==
+                                        null
                                     ? 'بداية الزيارة'
                                     : Provider.of<datetime_vm>(context,
                                                 listen: true)
@@ -274,11 +273,10 @@ class _SupportAddState extends State<SupportAdd> {
                                     color: Colors.black45,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500),
-                                hintText: _invoice!.daterepaly == null &&
-                                        Provider.of<datetime_vm>(context,
-                                                    listen: true)
-                                                .selectedEndTime ==
-                                            null
+                                hintText: Provider.of<datetime_vm>(context,
+                                                listen: true)
+                                            .selectedEndTime ==
+                                        null
                                     ? 'نهاية الزيارة ' //_currentDate.toString()
                                     : Provider.of<datetime_vm>(context,
                                                 listen: true)

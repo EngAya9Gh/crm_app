@@ -24,7 +24,8 @@ class _main_pageState extends State<main_page> {
     return Scaffold(
         appBar: customAppbar(),
         drawer: CustomDrawer(),
-        bottomNavigationBar: Consumer<navigatorProvider>(builder: (context, indexProvider, child) {
+        bottomNavigationBar: Consumer<navigatorProvider>(
+            builder: (context, indexProvider, child) {
           return BottomNavigationBar(
             unselectedFontSize: 10,
             selectedFontSize: 12,
@@ -64,7 +65,8 @@ class _main_pageState extends State<main_page> {
             ],
           );
         }),
-        body: Consumer<navigatorProvider>(builder: (context, indexProvider, child) {
+        body: Consumer<navigatorProvider>(
+            builder: (context, indexProvider, child) {
           return IndexedStack(
             index: indexProvider.get(),
             children: indexProvider.pages, //New

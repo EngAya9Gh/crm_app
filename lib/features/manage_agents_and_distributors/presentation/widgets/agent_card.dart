@@ -2,6 +2,7 @@ import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart' as intl;
 
 import '../../../../constants.dart';
 import '../../../../core/utils/app_navigator.dart';
@@ -9,7 +10,6 @@ import '../../../../model/agent_distributor_model.dart';
 import '../manager/manage_agents_and_distributors_cubit/agents_distributors_cubit.dart';
 import '../pages/agent_distributor_profile_page.dart';
 import '../pages/agents_distributors_actions_page.dart';
-import 'package:intl/intl.dart' as intl;
 
 class AgentCard extends StatelessWidget {
   const AgentCard({
@@ -76,32 +76,36 @@ class AgentCard extends StatelessWidget {
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
-
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                           children: [
                             Expanded(
                               child: Text(
                                 agentModel.nameAgent,
-                                style:
-                                TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                                style: TextStyle(
+                                    fontSize: 14, fontFamily: kfontfamily2),
                               ),
                             ),
                             Text(
-                              agentModel.addDate!=null?
-                              DateTime.tryParse(agentModel.addDate.toString() ) != null
-                                  ? intl.DateFormat("dd MMMM yyyy, hh:mm a").format(DateTime.parse(agentModel.addDate!))
-                                  : agentModel.addDate.toString():'',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontFamily: kfontfamily2, color: kMainColor),
+                              agentModel.addDate != null
+                                  ? DateTime.tryParse(
+                                              agentModel.addDate.toString()) !=
+                                          null
+                                      ? intl.DateFormat("dd MMMM yyyy, hh:mm a")
+                                          .format(DateTime.parse(
+                                              agentModel.addDate!))
+                                      : agentModel.addDate.toString()
+                                  : '',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: kfontfamily2,
+                                  color: kMainColor),
                               textDirection: TextDirection.ltr,
                             ),
                           ],
                         ),
-
                       ],
-
                     ),
                   ),
                 ),

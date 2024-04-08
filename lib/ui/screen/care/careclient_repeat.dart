@@ -12,7 +12,12 @@ import '../../../constants.dart';
 import 'careAdd.dart';
 
 class careRepeat extends StatefulWidget {
-  careRepeat({required this.type, required this.comobj, required this.idclient, Key? key}) : super(key: key);
+  careRepeat(
+      {required this.type,
+      required this.comobj,
+      required this.idclient,
+      Key? key})
+      : super(key: key);
   ClientModel1 idclient;
   CommunicationModel comobj;
   String type;
@@ -31,7 +36,8 @@ class _careRepeatState extends State<careRepeat> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<comment_vm>(context, listen: false).getComment(widget.idclient.idClients.toString());
+      Provider.of<comment_vm>(context, listen: false)
+          .getComment(widget.idclient.idClients.toString());
 
       Provider.of<communication_vm>(context, listen: false)
           .getCommunicationclientrepeat(widget.idclient.idClients.toString());
@@ -41,7 +47,8 @@ class _careRepeatState extends State<careRepeat> {
 
   @override
   Widget build(BuildContext context) {
-    listCommunication = Provider.of<communication_vm>(context, listen: true).listCommunicationClient;
+    listCommunication = Provider.of<communication_vm>(context, listen: true)
+        .listCommunicationClient;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -63,7 +70,9 @@ class _careRepeatState extends State<careRepeat> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(kMainColor)),
                         onPressed: () async {
                           Navigator.push(
                               context,
@@ -81,12 +90,15 @@ class _careRepeatState extends State<careRepeat> {
                     20.horizontalSpace,
                     Expanded(
                       child: ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kMainColor)),
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(kMainColor)),
                           onPressed: () async {
                             Navigator.push(
                                 context,
                                 CupertinoPageRoute(
-                                  builder: (context) => careAdd(com: widget.comobj
+                                  builder: (context) => careAdd(
+                                      com: widget.comobj
                                       // listCommunication.firstWhere  (
                                       //         (element) => element.fkUser==null
                                       //        ,orElse: ()=>listCommunication[0]
@@ -103,7 +115,8 @@ class _careRepeatState extends State<careRepeat> {
               SizedBox(
                 height: 10,
               ),
-              Provider.of<communication_vm>(context, listen: true).isloading == true
+              Provider.of<communication_vm>(context, listen: true).isloading ==
+                      true
                   ? Center(child: CircularProgressIndicator())
                   : Container(),
               // for(int i=0;i<listCommunication.length;i++)

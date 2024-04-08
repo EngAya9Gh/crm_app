@@ -75,13 +75,13 @@ class CardRowDivided extends StatelessWidget {
             ),
           )
         : Flexible(
-          child: Text(
+            child: Text(
               value!,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontFamily: kfontfamily2,
               ),
             ),
-        );
+          );
   }
 }

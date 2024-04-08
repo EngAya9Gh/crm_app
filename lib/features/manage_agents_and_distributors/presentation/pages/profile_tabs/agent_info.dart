@@ -1,11 +1,9 @@
 import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../core/common/widgets/text_row.dart';
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../ui/widgets/custom_widget/RowWidget.dart';
 
@@ -30,7 +28,6 @@ class AgentInfo extends StatelessWidget {
       child: Column(children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
           children: [
             Container(
               height: 30,
@@ -38,8 +35,7 @@ class AgentInfo extends StatelessWidget {
               //color: kMainColor,
               decoration: BoxDecoration(
                   color: kMainColor,
-                  borderRadius:
-                  BorderRadius.all(Radius.circular(10))),
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
               child: IconButton(
                 onPressed: () async {
                   await FlutterPhoneDirectCaller.callNumber(
@@ -57,26 +53,34 @@ class AgentInfo extends StatelessWidget {
               },
               child: Text(
                 agent.mobileAgent.toString(),
-                style: TextStyle(
-                    fontFamily: kfontfamily2, color: kMainColor),
+                style: TextStyle(fontFamily: kfontfamily2, color: kMainColor),
               ),
             ),
           ],
         ),
         10.verticalSpace,
-
-
         cardRow(title: "الاسم", value: agent.nameAgent),
         cardRow(title: "البريد الالكتروني", value: agent.emailAgent),
-
-
         cardRow(title: "الوصف", value: agent.description),
         cardRow(title: "النوع", value: type),
-        agent.nameCity!=null?cardRow(title: "المدينة", value: agent.nameCity.toString()):Container(),
-        agent.nameUserAdd!=null? cardRow(title: "الموظف الذي أضاف", value: agent.nameUserAdd.toString()):Container(),
-        agent.addDate!=null?cardRow(title: "تاريخ الاضافة", value: agent.addDate.toString()):Container(),
-        agent.nameUserUpdate!=null?cardRow(title: "آخر من عدل", value: agent.nameUserUpdate.toString()):Container(),
-        agent.updateDate!=null?cardRow(title: "تاريخ التعديل", value: agent.updateDate.toString()):Container(),
+        agent.nameCity != null
+            ? cardRow(title: "المدينة", value: agent.nameCity.toString())
+            : Container(),
+        agent.nameUserAdd != null
+            ? cardRow(
+                title: "الموظف الذي أضاف", value: agent.nameUserAdd.toString())
+            : Container(),
+        agent.addDate != null
+            ? cardRow(title: "تاريخ الاضافة", value: agent.addDate.toString())
+            : Container(),
+        agent.nameUserUpdate != null
+            ? cardRow(
+                title: "آخر من عدل", value: agent.nameUserUpdate.toString())
+            : Container(),
+        agent.updateDate != null
+            ? cardRow(
+                title: "تاريخ التعديل", value: agent.updateDate.toString())
+            : Container(),
       ]),
     );
   }

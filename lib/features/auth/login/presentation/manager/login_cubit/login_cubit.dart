@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -44,10 +45,14 @@ class LoginCubit extends Cubit<LoginState> {
 
   Future<void> verifyOtp() async {
     emit(VerifyOtpLoading());
+
+    final fcm = await FirebaseMessaging.instance.getToken();
+
     final result = await _verifyOtpUsecase(
       VerifyOtpParams(
         otp: otpCodeController.text,
         email: emailController.text,
+        token: fcm,
       ),
     );
     result.fold(

@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -148,7 +151,8 @@ class UserProvider extends ChangeNotifier {
     ustemp.maincitylist_user = mainCityList;
     allUsers[index] = ustemp;
     updateUserList(ustemp);
-    getcurrentuser();
+    // getcurrentuser();
+    getCurrentUser();
     allUsers[index].path = "";
     listFilteredUser = List.from(allUsers);
     isUpdate = false;
@@ -204,6 +208,28 @@ class UserProvider extends ChangeNotifier {
     return false;
   }
 
+  Future<UserModel?> getCurrentUser() async {
+    try {
+      ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await apiServices.get(
+        endPoint: EndPoints.users.getCurrentUser,
+      );
+      final data = apiDataHandler(response);
+      if (data == null) return null;
+
+      currentUser = UserModel.fromJson(data);
+
+      await getIt<PrivilegeCubit>()
+          .getUserPrivileges(currentUser.typeLevel.toString());
+
+      notifyListeners();
+      return UserModel.fromJson(data);
+    } on BaseAppException catch (e) {
+      throw e;
+    }
+  }
+
   Future<SharedPreferences> getcurrentuser() async {
     prefs = getIt<SharedPreferences>();
     try {
@@ -217,7 +243,7 @@ class UserProvider extends ChangeNotifier {
           currentUser = allUsers[index];
           final response = await getIt<PrivilegeCubit>()
               .getUserPrivileges(currentUser.typeLevel.toString());
-          if (!response) {
+          if (!(response ?? true)) {
             prefs.setString("id_user1", '0');
             return prefs;
           }

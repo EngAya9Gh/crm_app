@@ -21,14 +21,16 @@ class _resoan_viewState extends State<resoan_view> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ClientTypeProvider>(context, listen: false).getreasons(widget.type);
+      await Provider.of<ClientTypeProvider>(context, listen: false)
+          .getreasons(widget.type);
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ReasonModel> _listlevel = Provider.of<ClientTypeProvider>(context, listen: true).type_of_out;
+    List<ReasonModel> _listlevel =
+        Provider.of<ClientTypeProvider>(context, listen: true).type_of_out;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -95,8 +97,10 @@ class _resoan_viewState extends State<resoan_view> {
                                       context,
                                       CupertinoPageRoute(
                                           builder: (context) => addresaon(
-                                                nameReason: _listlevel[index].nameReason,
-                                                idReason: _listlevel[index].idReason,
+                                                nameReason: _listlevel[index]
+                                                    .nameReason,
+                                                idReason:
+                                                    _listlevel[index].idReason,
                                                 type: widget.type,
                                               )));
                                 },
@@ -111,14 +115,16 @@ class _resoan_viewState extends State<resoan_view> {
                                         color: Colors.black87.withOpacity(0.2),
                                       ),
                                     ],
-                                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4)),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(14.0),
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5)),
                                       ),
 
                                       //color: kMainColor,
@@ -127,7 +133,9 @@ class _resoan_viewState extends State<resoan_view> {
                                         child: Center(
                                           child: Text(
                                             _listlevel[index].nameReason,
-                                            style: TextStyle(fontSize: 14, fontFamily: kfontfamily2),
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: kfontfamily2),
                                           ),
                                         ),
                                       ),

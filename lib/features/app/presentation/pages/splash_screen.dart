@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
-import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_navigator.dart';
 import '../../../../generated/assets.dart';
-import '../../../../ui/screen/home/home.dart';
-import '../../../auth/login/presentation/manager/login_cubit/login_cubit.dart';
-import '../../../auth/login/presentation/pages/login_page.dart';
 import '../bloc/app_manager_cubit.dart';
 import '../widgets/app_loader_widget/app_loader.dart';
 import 'update_app_page.dart';
@@ -15,34 +11,22 @@ import 'update_app_page.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
-  static Future<void> checkLogin(BuildContext context) async {
-    final tokenCubit = context.read<LoginCubit>();
-    final token = await tokenCubit.getToken();
-    final isTokenValid = await tokenCubit.validateToken() ?? false;
-    if (token == null || !isTokenValid) {
-      AppNavigator.pushAndRemoveUntil(LoginPage());
-    } else {
-      AppNavigator.pushAndRemoveUntil(Home());
-    }
-  }
-
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late final AppManagerCubit appCubit;
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      getIt<AppManagerCubit>().checkAppUpdate((hasUpdate) {
+    appCubit = context.read<AppManagerCubit>();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await appCubit.checkAppUpdate((hasUpdate) {
         if (hasUpdate) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => UpdateAppPage()),
-            (route) => false,
-          );
+          AppNavigator.pushAndRemoveUntil(UpdateAppPage());
         } else {
-          SplashScreen.checkLogin(context);
+          appCubit.checkRedirections(context);
         }
       });
     });

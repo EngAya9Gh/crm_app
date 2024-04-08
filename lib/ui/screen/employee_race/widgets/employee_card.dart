@@ -48,22 +48,30 @@ class EmployeeCard extends StatelessWidget {
                 // ),
                 CircleAvatar(
                   radius: 30,
-                  child: employeeReportModel.img_image.toString().trim().length == 0
+                  child: employeeReportModel.img_image
+                              .toString()
+                              .trim()
+                              .length ==
+                          0
                       // ||usermodell.img_thumbnail.toString().trim().isEmpty
-                      ? employeeReportModel.name.toString().isEmpty || employeeReportModel.name == null
+                      ? employeeReportModel.name.toString().isEmpty ||
+                              employeeReportModel.name == null
                           ? Icon(
                               Icons.person,
                               size: 50,
                               color: Colors.lightBlueAccent,
                             )
-                          : Text(employeeReportModel.name.toString().substring(0, 1))
+                          : Text(employeeReportModel.name
+                              .toString()
+                              .substring(0, 1))
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(45),
                           child: CachedNetworkImage(
                             width: 500,
                             height: 500,
                             fit: BoxFit.fill,
-                            placeholder: (context, url) => const CircularProgressIndicator(),
+                            placeholder: (context, url) =>
+                                const CircularProgressIndicator(),
                             imageUrl: employeeReportModel.img_image!,
                           ),
                         ),
@@ -87,9 +95,13 @@ class EmployeeCard extends StatelessWidget {
                     alignment: Alignment.topLeft,
                     child: Container(
                       margin: EdgeInsets.only(left: 10, top: 10),
-                      decoration: BoxDecoration(color: kMainColor, borderRadius: BorderRadius.circular(5)),
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Text("%" + employeeReportModel.percentage!, style: TextStyle(color: Colors.white)),
+                      decoration: BoxDecoration(
+                          color: kMainColor,
+                          borderRadius: BorderRadius.circular(5)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: Text("%" + employeeReportModel.percentage!,
+                          style: TextStyle(color: Colors.white)),
                     ),
                   ),
               ],
@@ -102,17 +114,14 @@ class EmployeeCard extends StatelessWidget {
                 children: [
                   Text(
                     date,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.blue.shade800, fontWeight: FontWeight.w500),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.blue.shade800,
+                        fontWeight: FontWeight.w500),
                   ),
                   Text(
                     employeeReportModel.name ?? '',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.black, fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.black, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
