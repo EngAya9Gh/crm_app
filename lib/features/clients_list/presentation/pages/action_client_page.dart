@@ -864,21 +864,21 @@ class _ActionClientPageState extends State<ActionClientPage> {
       selectedARecommendedClient: _selectedARecommendedClient,
       location: locationController.text,
       statusClient: context.read<CompanyProvider>().selectedValueOut,
-      typeClient: widget.client?.typeClient != "مشترك" &&
-              widget.client?.typeClient != "منسحب"
-          ? _clientTypeProvider.selectedValuemanag!
-          : widget.client!.typeClient!,
-      userActionID: _userProvider.currentUser.idUser!,
+      // typeClient: widget.client?.typeClient != "مشترك" &&
+      //         widget.client?.typeClient != "منسحب"
+      //     ? _clientTypeProvider.selectedValuemanag!
+      //     : widget.client!.typeClient!,
+      // userActionID: _userProvider.currentUser.idUser!,
       clientId: widget.client!.idClients!,
-      offerPrice: offerPriceController.text,
-      reason: reasonController.text,
-      dateChangeType: _clientTypeProvider.selectedValuemanag != null
-          ? formatter.format(DateTime.now())
-          : null,
-      datePrice: _clientTypeProvider.selectedValuemanag == "عرض سعر"
-          ? dateOfferPrice.toIso8601String()
-          : null,
-      rejectId: reasonReject.value,
+      // offerPrice: offerPriceController.text,
+      // reason: reasonController.text,
+      // dateChangeType: _clientTypeProvider.selectedValuemanag != null
+      //     ? formatter.format(DateTime.now())
+          // : null,
+      // datePrice: _clientTypeProvider.selectedValuemanag == "عرض سعر"
+      //     ? dateOfferPrice.toIso8601String()
+      //     : null,
+      // rejectId: reasonReject.value,
       type_record: context.read<UserProvider>().selectedClientRegistrationType,
       type_classification:
           context.read<UserProvider>().selectedClientRegistrationType == "خاطئ"
@@ -921,7 +921,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
           : '0',
       sourceClient: selectedSourceClient!,
       descriptionActivity: descriptionActivityController.text,
-      user: _userProvider.currentUser,
+      // user: _userProvider.currentUser,
       email: emailController.text,
       selectedActivitySizeType: _selectedActivitySizeType,
       selectedARecommendedClient: _selectedARecommendedClient,

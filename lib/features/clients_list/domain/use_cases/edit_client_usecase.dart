@@ -24,22 +24,22 @@ class EditClientParams {
   final String? selectedActivitySizeType;
   final String? selectedARecommendedClient;
   final String? location;
-  final String? offerPrice;
-  final String? reason;
+  // final String? offerPrice;
+  // final String? reason;
   final String? statusClient;
-  final String? datePrice;
-  final String? dateChangeType;
-  final String? rejectId;
+  // final String? datePrice;
+  // final String? dateChangeType;
+  // final String? rejectId;
   final String nameClient;
   final String nameEnterprise;
   final String city;
-  final String typeClient;
+  // final String typeClient;
   final String mobile;
   final String anotherPhoneNumber;
   final String addressClient;
   final String? selectedActivityIdType;
   final String isMarketing;
-  final String userActionID;
+  // final String userActionID;
   final String sourceClient;
   final String descriptionActivity;
   final String clientId;
@@ -51,22 +51,22 @@ class EditClientParams {
     this.selectedActivitySizeType,
     this.selectedARecommendedClient,
     this.location,
-    this.offerPrice,
-    this.reason,
+    // this.offerPrice,
+    // this.reason,
     this.statusClient,
-    this.datePrice,
-    this.dateChangeType,
-    this.rejectId,
+    // this.datePrice,
+    // this.dateChangeType,
+    // this.rejectId,
     required this.nameClient,
     required this.nameEnterprise,
     required this.city,
-    required this.typeClient,
+    // required this.typeClient,
     required this.mobile,
     required this.anotherPhoneNumber,
     required this.addressClient,
     required this.selectedActivityIdType,
     required this.isMarketing,
-    required this.userActionID,
+    // required this.userActionID,
     required this.sourceClient,
     required this.descriptionActivity,
     required this.clientId,
@@ -86,21 +86,21 @@ class EditClientParams {
       "phone": anotherPhoneNumber,
       'email': email,
       'descActivController': descriptionActivity,
-      "type_client": typeClient,
-      "user_do": userActionID,
+      // "type_client": typeClient,
+      // "user_do": userActionID,
       "ismarketing": isMarketing,
       "reason_class": reason_class,
       "type_classification": type_classification,
       "type_record": type_record,
       'fk_client_source': selectedARecommendedClient,
       'activity_type_fk': selectedActivityIdType,
-      "offer_price": offerPrice,
-      "reason_change": reason,
+      // "offer_price": offerPrice,
+      // "reason_change": reason,
       'presystem': statusClient,
       'sourcclient': sourceClient,
-      "date_changetype": dateChangeType,
-      "date_price": datePrice,
-      "fk_rejectClient": rejectId,
+      // "date_changetype": dateChangeType,
+      // "date_price": datePrice,
+      // "fk_rejectClient": rejectId,
     }..removeWhere((key, value) => value == null || value == "");
 
     params = params.map((key, value) => MapEntry(key, value.toString()));

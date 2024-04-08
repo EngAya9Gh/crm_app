@@ -870,7 +870,7 @@ class _ClientSectionState extends State<ClientSection> {
               ],
               SizedBox(height: 15),
               if (!(widget.clienttransfer == null ||
-                  context.read<PrivilegeCubit>().checkPrivilege('150') ==
+                  context.read<PrivilegeCubit>().checkPrivilege('183') ==
                       true)) ...[
                 if (clientModel1.reasonTransfer ==
                     Provider.of<UserProvider>(context, listen: false)

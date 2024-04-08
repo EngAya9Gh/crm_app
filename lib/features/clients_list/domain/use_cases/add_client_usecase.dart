@@ -36,7 +36,7 @@ class AddClientParams {
   final String isMarketing;
   final String sourceClient;
   final String descriptionActivity;
-  final UserModel user;
+  // final UserModel user;
   final String? type_record;
   final String? type_classification;
   final String? reason_class;
@@ -56,7 +56,7 @@ class AddClientParams {
     required this.isMarketing,
     required this.sourceClient,
     required this.descriptionActivity,
-    required this.user,
+    // required this.user,
     this.type_record,
     this.type_classification,
     this.reason_class,
@@ -74,7 +74,7 @@ class AddClientParams {
       'email': email,
       'size_activity': selectedActivitySizeType,
       'descActivController': descriptionActivity,
-      "fk_regoin": user.fkRegoin == null ? "null" : user.fkRegoin,
+      // "fk_regoin": user.fkRegoin == null ? "null" : user.fkRegoin,
       "type_client": "تفاوض",
       "ismarketing": isMarketing,
       "reason_class": reason_class,
@@ -84,10 +84,10 @@ class AddClientParams {
       'activity_type_fk': selectedActivityIdType,
       'presystem': statusClient,
       'sourcclient': sourceClient,
-      "date_create": DateTime.now().toIso8601String(),
-      "fk_user": user.idUser,
+      // "date_create": DateTime.now().toIso8601String(),
+      // "fk_user": user.idUser,
       'name_client': nameClient,
-      "user_add": user.idUser,
+      // "user_add": user.idUser,
     }..removeWhere((key, value) => value == null);
 
     params = params.map((key, value) => MapEntry(key, value.toString()));
