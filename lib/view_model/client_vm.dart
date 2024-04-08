@@ -413,20 +413,14 @@ class ClientProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getallclientTransfer(PrivilegeCubit privilegeCubit) async {
+  Future<void> getAllClientTransfer() async {
     isloading = true;
     notifyListeners();
-    String param = '';
-    bool res = privilegeCubit.checkPrivilege('150');
-    if (res)
-      param = 'id_regoin= ' + usercurrent!.fkRegoin.toString();
-    else
-      param = 'iduser=' + usercurrent!.idUser.toString();
-    listClient =
-        await ClientService().getTransfer(param); //=List.from(listClient);
-    listClientAprroveTransfer = List.from(listClient);
-    isloading = false;
 
+    listClient = await ClientService().getTransfer();
+    listClientAprroveTransfer = listClient;
+
+    isloading = false;
     notifyListeners();
   }
 
@@ -439,15 +433,17 @@ class ClientProvider extends ChangeNotifier {
       res = privilegeCubit.checkPrivilege('6');
       if (res) {
         listClientAccept.forEach((element) {
-          if (element.fkUser == usercurrent!.idUser.toString()) ;
-          listClient.add(element);
+          if (element.fkUser == usercurrent!.idUser.toString()) {
+            listClient.add(element);
+          }
         });
       } else {
         res = privilegeCubit.checkPrivilege('38');
         if (res) {
           listClientAccept.forEach((element) {
-            if (element.fkRegoin == usercurrent!.fkRegoin.toString()) ;
-            listClient.add(element);
+            if (element.fkRegoin == usercurrent!.fkRegoin.toString()) {
+              listClient.add(element);
+            }
           });
         }
       }

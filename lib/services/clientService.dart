@@ -1,4 +1,5 @@
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:flutter/foundation.dart';
@@ -201,18 +202,17 @@ class ClientService {
     return prodlist;
   }
 
-  Future<List<ClientModel1>> getTransfer(String param) async {
-    List<dynamic> data = [];
-    data = await Api().get(
-        url: EndPoints.baseUrls.url + 'client/get_approveTransfer.php?$param');
-
-    List<ClientModel1> prodlist = [];
-
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(ClientModel1.fromJson(data[i]));
-    }
-
-    return prodlist;
+  Future<List<ClientModel1>> getTransfer() async {
+    ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await apiServices.get(
+      endPoint: EndPoints.client.getTransferClientsWithPrivileges,
+    );
+    final data = apiDataHandler(response);
+    List<ClientModel1> clients = data.map<ClientModel1>((e) {
+      return ClientModel1.fromJson(e);
+    }).toList();
+    return clients;
   }
 
   Future<List<ClientModel1>> getClientbyuser(String? fk_user) async {

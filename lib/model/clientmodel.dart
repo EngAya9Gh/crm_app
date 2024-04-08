@@ -141,17 +141,19 @@ class ClientModel1 extends CacheRepository {
 
   ClientModel1.fromJson(Map<String, dynamic> json) {
     serialNumber = json['SerialNumber'];
-    idClients = json['id_clients'];
+    idClients = json['id_clients'].toString();
     NameReason_reject = json['NameReason_reject'];
     NameClient_recomand = json['NameClient_recomand'];
-    fk_rejectClient = json['fk_rejectClient'];
+    fk_rejectClient = json['fk_rejectClient'] == null
+        ? null
+        : json['fk_rejectClient'].toString();
     nameClient = json['name_client'];
     nameEnterprise = json['name_enterprise'];
     typeJob = json['type_job'];
     city = json['city'];
     location = json['location'];
     fkRegoin = json['fk_regoin'];
-    fkcountry = json['fk_country'];
+    fkcountry = json['fk_country'].toString();
     dateCreate = json['date_create'];
     typeClient = json['type_client'];
     fkUser = json['fk_user'];
@@ -169,7 +171,7 @@ class ClientModel1 extends CacheRepository {
     offer_price = json['offer_price'];
     date_price = json['date_price'];
 
-    user_do = json['user_do'];
+    user_do = json['user_do'] == null ? null : json['user_do'].toString();
     // desc_reason=json['desc_reason'];
     // value_back=json['value_back'];
     // iduser_approve=json['iduser_approve'];
@@ -186,7 +188,7 @@ class ClientModel1 extends CacheRepository {
     ismarketing = json['ismarketing'];
     name_city = json['name_city'];
     namemaincity = json['namemaincity'];
-    id_maincity = json['id_maincity'];
+    id_maincity = json['id_maincity'].toString();
     address_client = json['address_client'];
     descActivController = json['descActivController'];
     presystem = json['presystem'];
@@ -200,15 +202,17 @@ class ClientModel1 extends CacheRepository {
     date_visit_Client = json['date_visit_Client'];
     reason_change = json['reason_change'];
     tag = json['tag'] == "true";
-    fk_client_source = json['fk_client_source'] ;
-    size_activity = json['size_activity'] ;
+    fk_client_source = json['fk_client_source'] == null
+        ? null
+        : json['fk_client_source'].toString();
+    size_activity = json['size_activity'];
     email = json['email'];
-    nameTransferTo = json['nameTransferTo'] ;
-    type_record = json['type_record'] ;
-    type_classification = json['type_classification'] ;
-    reason_class = json['reason_class'] ;
-    nameUserApproveRreject = json['nameUserApproveRreject'] ;
-    date_approve_reject = json['date_approve_reject'] ;
+    nameTransferTo = json['nameTransferTo'];
+    type_record = json['type_record'];
+    type_classification = json['type_classification'];
+    reason_class = json['reason_class'];
+    nameUserApproveRreject = json['nameUserApproveRreject'];
+    date_approve_reject = json['date_approve_reject'];
   }
 
   Map<String, dynamic> toJson() {

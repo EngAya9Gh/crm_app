@@ -154,6 +154,8 @@ class _Client {
   final transferClient =
       "transferClient/"; //"client/set_fkuser_transfer.php?id_clients=";
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
+  final String getTransferClientsWithPrivileges =
+      "getTransferClientsWithPrivileges";
 }
 
 class _Task {
