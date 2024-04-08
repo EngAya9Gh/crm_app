@@ -21,6 +21,7 @@ abstract class EndPoints {
   static const agentDistributor = _AgentDistributor();
   static const invoice = _Invoice();
   static const tickets = _Tickets();
+  static const events = _Events();
 }
 
 class _BaseUrls {
@@ -228,4 +229,10 @@ class _Tickets {
   final String editTicketType = 'editTicketType/';
   final String addTicket = 'addTicket';
   final String transferTicket = 'TransferTicket/';
+}
+
+class _Events {
+  const _Events();
+
+  final String updateStatusForVisit = 'updateStatusForVisit/';
 }

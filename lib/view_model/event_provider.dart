@@ -1,8 +1,9 @@
 import 'dart:collection';
 import 'dart:developer';
 
-import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/services/date_installation_service.dart';
@@ -10,6 +11,7 @@ import 'package:crm_smart/services/date_installation_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/clientmodel.dart';
 import '../services/Invoice_Service.dart';
@@ -314,25 +316,18 @@ class EventProvider extends ChangeNotifier {
       notifyListeners();
 
       final isDone = IsDoneDateEnum.done.index.toString();
-      var body = {
-        "is_done": isDone,
-        "comment": event.comment,
+      Map<String, String?> body = _prepareBody(isDone, event);
 
-      } ;
-      if(event.agentName != null)
-      body.addAll({
-        "fk_agent":event.agent!.idAgent
-      });
-      else
-        body.addAll({
-          "fk_client":event.fkIdClient,
-        });
-      var data = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/invoice/update_date_install.php?idclients_date=${event.idClientsDate}",
-
-        body: body
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.post(
+        endPoint:
+            "${EndPoints.events.updateStatusForVisit}${event.idClientsDate}",
+        data: body,
       );
+      final data = apiDataHandler(response);
+      debugPrint("update status for visit => $data");
+
       final list = eventDataSource[event.from] ?? [];
       final index = list.map((e) => e.from).toList().indexOf(event.from);
       if (index == -1) {
@@ -352,8 +347,24 @@ class EventProvider extends ChangeNotifier {
       onSuccess();
     } catch (e) {
       log("error in changeEventToDone: $e");
+      isloadingDoneEvent = false;
+      notifyListeners();
       onFailure();
     }
+  }
+
+  Map<String, String?> _prepareBody(String isDone, EventModel event) {
+    var body = {
+      "is_done": isDone,
+      "comment": event.comment,
+    };
+    if (event.agentName != null)
+      body.addAll({"fk_agent": event.agent!.idAgent});
+    else
+      body.addAll({
+        "fk_client": event.fkIdClient,
+      });
+    return body;
   }
 
   addEvent(EventModel event) {
