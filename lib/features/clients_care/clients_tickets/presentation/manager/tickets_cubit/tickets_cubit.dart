@@ -12,6 +12,7 @@ import '../../../../../../core/utils/end_points.dart';
 import '../../../data/models/ticket_category_model.dart';
 import '../../../data/models/ticket_model.dart';
 import '../../../data/models/ticket_sub_category_model.dart';
+import '../../../domain/use_cases/get_client_ticket_usecase.dart';
 import '../../../domain/use_cases/get_ticket_by_id_usecase.dart';
 import '../../../domain/use_cases/get_tickets_usecase.dart';
 
@@ -21,10 +22,12 @@ part 'tickets_state.dart';
 class TicketsCubit extends Cubit<TicketsState> {
   final GetTicketsUseCase _getTicketsUseCase;
   final GetTicketByIdUseCase _getTicketByIdUseCase;
+  final GetClientTicketsUseCase _getClientTicketsUseCase;
 
   TicketsCubit(
     this._getTicketsUseCase,
     this._getTicketByIdUseCase,
+    this._getClientTicketsUseCase,
   ) : super(TicketsInitial());
 
   // controllers
@@ -75,17 +78,17 @@ class TicketsCubit extends Cubit<TicketsState> {
     );
   }
 
-  Future<void> getClientTicket(String fkIdClient) async {
+  Future<void> getClientTicket(String clientId) async {
     emit(ClientsTicketsLoading());
-    clientTicketsList = [];
-    print("sadfasdfasfdsafdsa");
-    await getTickets();
-    allTickets.forEach((element) {
-      if (element.fkClient == fkIdClient) {
-        clientTicketsList.add(element);
-      }
-    });
-    emit(ClientsTicketsLoaded());
+    final result =
+        await _getClientTicketsUseCase(GetClientTicketParams(clientId));
+    result.fold(
+      (error) => emit(ClientsTicketsError(error)),
+      (ticket) {
+        clientTicketsList.add(ticket);
+        emit(ClientsTicketsLoaded());
+      },
+    );
   }
 
   Future<void> getTicketById(GetTicketByIdParams params) async {
