@@ -7,7 +7,7 @@ import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/invoice/addInvoice.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/custombutton.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
@@ -170,43 +170,43 @@ class _InvoiceViewState extends State<InvoiceView> {
                       height: 10,
                     ),
 
-                    cardRow(
+                    CardRow(
                         title: 'اسم العميل',
                         value: invoice.nameClient.toString()),
-                    cardRow(
+                    CardRow(
                         title: 'اسم المؤسسة',
                         value: invoice.name_enterprise.toString()),
-                    cardRow(
+                    CardRow(
                         title: 'حالة الفاتورة',
                         value: invoice.stateclient.toString()),
-                    cardRow(
+                    CardRow(
                         title: 'فرع الفاتورة',
                         value: invoice.name_regoin_invoice.toString()),
 
                     invoice.invoice_source != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'مصدر الفاتورة',
                             value: invoice.invoice_source!.toString())
                         : Container(),
 
-                    cardRow(
+                    CardRow(
                         title: 'اسم الموظف',
                         value: invoice.nameUser.toString()),
-                    cardRow(
+                    CardRow(
                         title: 'فرع الموظف',
                         value: invoice.name_regoin_invoice.toString()),
                     //cardRow(title: 'حالة الفاتورة', value: invoice.amountPaid.toString()),
 
                     invoice.date_approve.toString() == null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'تاريخ عقد الإشتراك',
                             value: invoice.date_approve.toString())
                         : Container(),
 
-                    cardRow(
+                    CardRow(
                         title: 'المبلغ المدفوع',
                         value: invoice.amountPaid.toString()),
-                    cardRow(
+                    CardRow(
                         title: ' المبلغ المتبقي',
                         value:
                             ((num.tryParse(invoice.total?.toString() ?? "0") ??
@@ -218,12 +218,12 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 .toStringAsFixed(2)),
 
                     invoice.renewYear != '0' && invoice.renewYear != null
-                        ? cardRow(
+                        ? CardRow(
                             title: ' التجديد السنوي',
                             value: invoice.renewYear.toString())
                         : Container(),
                     invoice.renew2year != '0' && invoice.renew2year != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'تجديد الموارد البشرية',
                             value: invoice.renew2year.toString())
                         : Container(),
@@ -231,7 +231,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     invoice.renewPlus.toString() == '' ||
                             invoice.renewPlus == null
                         ? Container()
-                        : cardRow(
+                        : CardRow(
                             title: 'تجديد الفرع الإضافي',
                             value: invoice.renewPlus.toString()),
 
@@ -239,7 +239,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                             invoice.typeInstallation == null ||
                             invoice.typeInstallation.toString() == 'null'
                         ? Container()
-                        : cardRow(
+                        : CardRow(
                             title: 'نوع التركيب',
                             value: invoice.typeInstallation.toString() == '0'
                                 ? 'ميداني'
@@ -248,14 +248,14 @@ class _InvoiceViewState extends State<InvoiceView> {
                                     : 'اونلاين'),
                           ),
 
-                    cardRow(
+                    CardRow(
                         title: ' طريقة الدفع',
                         value: invoice.typePay.toString() == '0'
                             ? 'نقدا'
                             : 'تحويل'),
                     //nameuserApprove
 
-                    cardRow(
+                    CardRow(
                         title: ' العملة',
                         value: invoice.currency_name == null
                             ? 'SAR'
@@ -264,26 +264,26 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 : 'SAR'),
 
                     invoice.nameuserApprove != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'معتمد الفاتورة',
                             value: getnameshort(
                                 invoice.nameuserApprove.toString()))
                         : Container(),
 
                     invoice.nameuserApprove != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'تاريخ اعتماد الفاتورة',
                             value: invoice.date_approve.toString())
                         : Container(),
                     invoice.date_lastuserupdate != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'تاريخ آخر تعديل',
                             value: invoice.date_lastuserupdate != null
                                 ? invoice.date_lastuserupdate.toString()
                                 : '')
                         : Container(),
                     invoice.date_lastuserupdate != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'آخر تعديل من قبل',
                             value: invoice.date_lastuserupdate != null
                                 ? getnameshort(
@@ -292,23 +292,23 @@ class _InvoiceViewState extends State<InvoiceView> {
                         : Container(),
 
                     invoice.date_change_back != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'تاريخ الإنسحاب',
                             value: invoice.date_change_back.toString())
                         : Container(),
                     invoice.date_change_back != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'تم الإنسحاب عن طريق',
                             value:
                                 getnameshort(invoice.nameuserback.toString()))
                         : Container(),
                     invoice.fkuser_back != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'المبلغ المسترجع',
                             value: invoice.value_back.toString())
                         : Container(),
                     invoice.fkuser_back != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'سبب الإنسحاب',
                             value: invoice.desc_reason_back.toString(),
                             isExpanded: true,
@@ -316,25 +316,25 @@ class _InvoiceViewState extends State<InvoiceView> {
                         : Container(),
                     invoice.numbarnch.toString().trim().isNotEmpty &&
                             invoice.numbarnch != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'عدد الفروع',
                             value: invoice.numbarnch.toString())
                         : Container(),
                     //invoice!.nummostda != null||
                     invoice.nummostda.toString().trim().isNotEmpty &&
                             invoice.nummostda != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'عدد المستودعات ',
                             value: invoice.nummostda.toString())
                         : Container(),
                     invoice.numusers.toString().trim().isNotEmpty &&
                             invoice.numusers != null
-                        ? cardRow(
+                        ? CardRow(
                             title: 'عدد المستخدمين',
                             value: invoice.numusers.toString())
                         : Container(),
                     invoice.address_invoice.toString() == ''
-                        ? cardRow(
+                        ? CardRow(
                             title: 'عنوان الفاتورة',
                             value: invoice.address_invoice.toString())
                         : Container(),
@@ -342,7 +342,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     _privilegeCubit.checkPrivilege('76')
                         ? invoice.clientusername != null &&
                                 invoice.clientusername.toString().isNotEmpty
-                            ? cardRow(
+                            ? CardRow(
                                 title: 'يوزر العميل',
                                 value: invoice.clientusername == null
                                     ? ''
@@ -360,19 +360,19 @@ class _InvoiceViewState extends State<InvoiceView> {
                     invoice.participal != null
                         ? Column(
                             children: [
-                              cardRow(
+                              CardRow(
                                   value: invoice.participal!.name_participate
                                       .toString(),
                                   title: 'اسم المتعاون'),
-                              cardRow(
+                              CardRow(
                                   value: invoice.rate_participate.toString(),
                                   title: 'نسبة المتعاون'),
-                              cardRow(
+                              CardRow(
                                   value: invoice
                                       .participal!.numberbank_participate
                                       .toString(),
                                   title: 'رقم بنك المتعاون'),
-                              cardRow(
+                              CardRow(
                                   value: invoice.participal!.mobile_participate
                                       .toString(),
                                   title: 'رقم موبايل المتعاون'),
@@ -382,7 +382,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     invoice.agent_distibutor != null
                         ? Column(
                             children: [
-                              cardRow(
+                              CardRow(
                                   value: invoice.agent_distibutor!.nameAgent
                                       .toString(),
                                   title:
@@ -390,14 +390,14 @@ class _InvoiceViewState extends State<InvoiceView> {
                                           ? 'اسم الوكيل'
                                           : 'اسم الموزع'),
                               if (invoice.rate_participate != null)
-                                cardRow(
+                                CardRow(
                                     value: invoice.rate_participate.toString(),
                                     title:
                                         invoice.agent_distibutor!.typeAgent ==
                                                 '1'
                                             ? 'نسبة الوكيل'
                                             : 'نسبة الموزع'),
-                              cardRow(
+                              CardRow(
                                   value: invoice.agent_distibutor!.mobileAgent
                                       .toString(),
                                   title:
@@ -411,7 +411,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                     if (invoice.participal == null &&
                         invoice.agent_distibutor == null &&
                         invoice.type_seller == "3")
-                      cardRow(value: "موظف", title: "نوع البائع"),
+                      CardRow(value: "موظف", title: "نوع البائع"),
 
                     if (widget.showActions) ...{
                       Padding(

@@ -1,33 +1,30 @@
-import 'package:crm_smart/constants.dart';
 import 'package:flutter/material.dart';
 
-class cardRow extends StatelessWidget {
-  cardRow(
-      {this.alignment,
-      required this.value,
-      required this.title,
-      this.isExpanded = true,
-      Key? key,
-      this.withDivider = true})
-      : super(key: key);
-  var alignment;
-  String title;
-  String? value;
-  bool isExpanded;
+import '../../../constants.dart';
+
+class CardRow extends StatelessWidget {
+  CardRow({
+    this.alignment,
+    required this.value,
+    required this.title,
+    this.isExpanded = true,
+    Key? key,
+    this.withDivider = true,
+  }) : super(key: key);
+  final MainAxisAlignment? alignment;
+  final String title;
+  final String? value;
+  final bool isExpanded;
   final bool withDivider;
 
-  // bool? isrow=true;
   @override
   Widget build(BuildContext context) {
     if (value == null || value == "null" || value!.isEmpty)
       return SizedBox.shrink();
     return Column(
-      //mainAxisAlignment: MainAxisAlignment.start,
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment:
-              alignment == null ? MainAxisAlignment.spaceBetween : alignment,
+          mainAxisAlignment: alignment ?? MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           textDirection: TextDirection.rtl,
           children: [
@@ -41,10 +38,7 @@ class cardRow extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              width: 50,
-            ),
-            //Spacer(flex: 1,),
+            SizedBox(width: 50),
             isExpanded == true
                 ? Expanded(
                     flex: 1,
@@ -63,8 +57,6 @@ class cardRow extends StatelessWidget {
                   ),
           ],
         ),
-        //Spacer(),
-        //  isrow==true?
         if (withDivider) ...{
           Divider(
             thickness: 1,
@@ -79,25 +71,3 @@ class cardRow extends StatelessWidget {
     );
   }
 }
-
-// Widget cardRow(String title,String value){
-//   return Column(
-//
-//     children: [
-//       Row(
-//         mainAxisAlignment: alignment==null? MainAxisAlignment.spaceBetween:alignment,
-//         children: [
-//           Text(title,style: TextStyle(fontFamily: kfontfamily3),),
-//           Spacer(),
-//           Text(value,style: TextStyle(fontFamily: kfontfamily2),),
-//         ],
-//       ),
-//       //Spacer(),
-//       Divider(thickness: 2,color: Colors.amberAccent,),
-//       //const MySeparator(color: Colors.grey),
-//       SizedBox(height: 10,),
-//
-//     ],
-//   );
-//
-// }

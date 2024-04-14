@@ -10,8 +10,8 @@ import '../../../model/configmodel.dart';
 import '../../../provider/config_vm.dart';
 import '../../../view_model/communication_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/RowWidget.dart';
 import '../../widgets/custom_widget/card_expansion.dart';
+import '../../widgets/custom_widget/card_row.dart';
 import 'edit_care_communication_sheet.dart';
 
 class communcation_view_widget extends StatefulWidget {
@@ -52,14 +52,14 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                     child: Column(
                       children: [
                         widget.element.typeCommuncation == 'ترحيب'
-                            ? cardRow(
+                            ? CardRow(
                                 title: 'تم الترحيب من قبل',
                                 value: getnameshort(
                                     widget.element.nameUser.toString()),
                               )
                             : Container(),
                         widget.element.typeCommuncation == 'ترحيب'
-                            ? cardRow(
+                            ? CardRow(
                                 title: 'تاريخ الترحيب بالعميل',
                                 value:
                                     widget.element.dateCommunication.toString(),
@@ -83,7 +83,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
 
                         widget.element.typeCommuncation == 'دوري' ||
                                 widget.element.typeCommuncation == 'تركيب'
-                            ? cardRow(
+                            ? CardRow(
                                 title: 'موظف التقييم',
                                 value: getnameshort(
                                     widget.element.nameUser.toString()),
@@ -92,7 +92,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
 
                         widget.element.typeCommuncation == 'دوري' ||
                                 widget.element.typeCommuncation == 'تركيب'
-                            ? cardRow(
+                            ? CardRow(
                                 title: 'تاريخ التقييم',
                                 value:
                                     widget.element.dateCommunication.toString(),
@@ -101,7 +101,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
 
                         widget.element.typeCommuncation == 'دوري' &&
                                 widget.element.result.toString() == 'true'
-                            ? cardRow(
+                            ? CardRow(
                                 title: ' نتيجة التواصل',
                                 value:
                                     widget.element.result.toString() == 'true'
@@ -113,7 +113,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                         widget.element.typeCommuncation == 'دوري' &&
                                 widget.element.clientRepeat.toString() !=
                                     'false'
-                            ? cardRow(
+                            ? CardRow(
                                 title: ' نتيجة التواصل',
                                 value: widget.element.clientRepeat.toString() ==
                                         'false'
@@ -124,7 +124,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                         widget.element.typeCommuncation == 'دوري' &&
                                 widget.element.number_wrong.toString() !=
                                     'false'
-                            ? cardRow(
+                            ? CardRow(
                                 title: ' نتيجة التواصل',
                                 value: widget.element.number_wrong.toString() ==
                                         'false'
@@ -136,7 +136,7 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                         widget.element.typeCommuncation == 'دوري' &&
                                 widget.element.isRecommendation.toString() ==
                                     'true'
-                            ? cardRow(
+                            ? CardRow(
                                 title: ' نتيجة التواصل',
                                 value: 'وصى بالنظام',
                               )
@@ -144,20 +144,20 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
 
                         widget.element.typeCommuncation == 'دوري' &&
                                 widget.element.is_visit.toString() == 'true'
-                            ? cardRow(
+                            ? CardRow(
                                 title: ' نتيجة التواصل',
                                 value: 'يحتاج زيارة ميدانية',
                               )
                             : Container(),
                         widget.element.typeCommuncation == 'دوري' &&
                                 widget.element.is_suspend.toString() == 'true'
-                            ? cardRow(
+                            ? CardRow(
                                 title: ' نتيجة التواصل',
                                 value: 'معلق',
                               )
                             : Container(),
                         widget.element.typeCommuncation == 'تركيب'
-                            ? cardRow(
+                            ? CardRow(
                                 title: ' نوع التركيب',
                                 value: widget.element.type_install.toString() ==
                                         '1'

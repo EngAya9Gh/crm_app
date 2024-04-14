@@ -11,13 +11,13 @@ import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants.dart';
+import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
 import '../../../features/clients_list/presentation/widgets/client_section.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event_model.dart';
@@ -50,6 +50,7 @@ class ProfileClient extends StatefulWidget {
 
 class _ProfileClientState extends State<ProfileClient>
     with TickerProviderStateMixin {
+  late final TicketsCubit ticketsCubit;
   late UserModel current;
 
   // late ClientModel _clientModel = ClientModel();
@@ -59,6 +60,7 @@ class _ProfileClientState extends State<ProfileClient>
 
   @override
   void initState() {
+    ticketsCubit = context.read<TicketsCubit>();
     indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -78,8 +80,9 @@ class _ProfileClientState extends State<ProfileClient>
           .getCommunicationclient(
               widget.idClient.toString(), widget.idCommunication);
 
-      Provider.of<ticket_vm>(context, listen: false)
-          .getclient_ticket(widget.idClient.toString());
+      await ticketsCubit.getClientTicket(widget.idClient!);
+      // Provider.of<ticket_vm>(context, listen: false)
+      //     .getClientTicket(widget.idClient.toString());
     });
 
     super.initState();
@@ -107,18 +110,6 @@ class _ProfileClientState extends State<ProfileClient>
 
   @override
   Widget build(BuildContext context) {
-    // final list = Provider.of<client_vm>(context, listen: true).listClient;
-    // if (list.any((element) => element.idClients == widget.idClient))
-    //   _clientModel = list.firstWhereOrNull((element) => element.idClients == widget.idClient) ?? _clientModel;
-
-    // _clientModel = widget.client ??
-    //     Provider.of<client_vm>(context, listen: true)
-    //         .listClient.firstorNullWhere((element) //error
-    //         =>
-    //         element.idClients == widget.idClient);
-
-    // current = Provider.of<user_vm_provider>(context).currentUser;
-
     return Consumer<ClientProvider>(
       builder: (context, state, _) {
         if (state.currentClientModel.isLoading ||
@@ -161,24 +152,7 @@ class _ProfileClientState extends State<ProfileClient>
                             color: kWhiteColor, fontFamily: kfontfamily2),
                         textAlign: TextAlign.center,
                         textDirection: TextDirection.rtl,
-                      )
-                      // Marquee(
-                      //   key: _textKey,
-                      //   text: _clientModel.nameEnterprise.toString(),
-                      //   style: TextStyle(color: kWhiteColor, fontFamily: kfontfamily2),
-                      //   scrollAxis: Axis.horizontal,
-                      //   crossAxisAlignment: CrossAxisAlignment.start,
-                      //   blankSpace: 20.0,
-                      //   velocity: 30.0,
-                      //   pauseAfterRound: Duration(seconds: 2),
-                      //   startPadding: 0.0,
-                      //   accelerationDuration: Duration(seconds: 2),
-                      //   accelerationCurve: Curves.linear,
-                      //   decelerationDuration: Duration(milliseconds: 1000),
-                      //   decelerationCurve: Curves.easeOut,
-                      //   textDirection: TextDirection.rtl,
-                      // ),
-                      ),
+                      )),
                 ),
               );
             }),
@@ -258,7 +232,7 @@ class _ProfileClientState extends State<ProfileClient>
                               tabCareIndex: widget.tabCareIndex,
                               idCommunication: widget.idCommunication,
                             ),
-                            ticketprofile(itemClient: client),
+                            TicketProfile(itemClient: client),
                             //InvoiceView(invoice: _invoiceModel,),
                             //Icon(Icons.add),
                           ],

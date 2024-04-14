@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../constants.dart';
 import '../../../../../model/agent_distributor_model.dart';
-import '../../../../../ui/widgets/custom_widget/RowWidget.dart';
+import '../../../../../ui/widgets/custom_widget/card_row.dart';
 
 class AgentInfo extends StatelessWidget {
   const AgentInfo({
@@ -59,26 +59,26 @@ class AgentInfo extends StatelessWidget {
           ],
         ),
         10.verticalSpace,
-        cardRow(title: "الاسم", value: agent.nameAgent),
-        cardRow(title: "البريد الالكتروني", value: agent.emailAgent),
-        cardRow(title: "الوصف", value: agent.description),
-        cardRow(title: "النوع", value: type),
+        CardRow(title: "الاسم", value: agent.nameAgent),
+        CardRow(title: "البريد الالكتروني", value: agent.emailAgent),
+        CardRow(title: "الوصف", value: agent.description),
+        CardRow(title: "النوع", value: type),
         agent.nameCity != null
-            ? cardRow(title: "المدينة", value: agent.nameCity.toString())
+            ? CardRow(title: "المدينة", value: agent.nameCity.toString())
             : Container(),
         agent.nameUserAdd != null
-            ? cardRow(
+            ? CardRow(
                 title: "الموظف الذي أضاف", value: agent.nameUserAdd.toString())
             : Container(),
         agent.addDate != null
-            ? cardRow(title: "تاريخ الاضافة", value: agent.addDate.toString())
+            ? CardRow(title: "تاريخ الاضافة", value: agent.addDate.toString())
             : Container(),
         agent.nameUserUpdate != null
-            ? cardRow(
+            ? CardRow(
                 title: "آخر من عدل", value: agent.nameUserUpdate.toString())
             : Container(),
         agent.updateDate != null
-            ? cardRow(
+            ? CardRow(
                 title: "تاريخ التعديل", value: agent.updateDate.toString())
             : Container(),
       ]),

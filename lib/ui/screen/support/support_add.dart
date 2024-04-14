@@ -14,8 +14,8 @@ import 'package:crm_smart/model/configmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
@@ -538,7 +538,7 @@ class _SupportAddState extends State<SupportAdd> {
                       SizedBox(height: 20),
                       _invoice!.dateinstall_done == null
                           ? Container()
-                          : cardRow(
+                          : CardRow(
                               title: ' تاريخ التركيب ',
                               value: DateFormat('yyyy-MM-dd HH:mm').format(
                                   DateTime.parse(
@@ -546,7 +546,7 @@ class _SupportAddState extends State<SupportAdd> {
 
                       _invoice!.dateinstall_done == null
                           ? Container()
-                          : cardRow(
+                          : CardRow(
                               title: ' تم التركيب من قبل ',
                               value: getnameshort(
                                   _invoice!.nameuserinstall.toString())),
@@ -559,7 +559,7 @@ class _SupportAddState extends State<SupportAdd> {
                                 CupertinoPageRoute(
                                     builder: (context) => support_table()));
                           },
-                          child: cardRow(
+                          child: CardRow(
                               title: 'تاريخ الزيارة القادمة',
                               value: DateFormat('yyyy-MM-dd HH:mm')
                                   .format(nextInstallation!.dateClientVisit!)),
@@ -571,7 +571,7 @@ class _SupportAddState extends State<SupportAdd> {
                               CupertinoPageRoute(
                                   builder: (context) => support_table()));
                         },
-                        child: cardRow(
+                        child: CardRow(
                             title: 'عدد الزيارات التي تمت ',
                             value: datesInstallation
                                 .where((element) => element.isDone == "1")
@@ -585,7 +585,7 @@ class _SupportAddState extends State<SupportAdd> {
                               CupertinoPageRoute(
                                   builder: (context) => support_table()));
                         },
-                        child: cardRow(
+                        child: CardRow(
                             title: 'عدد الزيارات المتبقية',
                             value: datesInstallation
                                 .where((element) =>
@@ -601,7 +601,7 @@ class _SupportAddState extends State<SupportAdd> {
                               CupertinoPageRoute(
                                   builder: (context) => support_table()));
                         },
-                        child: cardRow(
+                        child: CardRow(
                             title: 'عدد الزيارات الملغية',
                             value: datesInstallation
                                 .where((element) => element.isDone == "2")
@@ -611,32 +611,32 @@ class _SupportAddState extends State<SupportAdd> {
 
                       _invoice!.clientusername == null
                           ? Container()
-                          : cardRow(
+                          : CardRow(
                               title: 'يوزر العميل ',
                               value: getnameshort(
                                   _invoice!.clientusername.toString())),
-                      cardRow(
+                      CardRow(
                           title: 'حالة الفاتورة',
                           value: _invoice!.stateclient.toString()),
-                      cardRow(
+                      CardRow(
                           title: 'عنوان الفاتورة ',
                           value: getnameshort(
                               _invoice!.address_invoice.toString())),
 //////////////////////////////////////////////////////////////////////////////////////////
                       _invoice!.daterepaly != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' تاريخ إعادة الجدولة',
                               value: DateFormat('yyyy-MM-dd HH:mm').format(
                                   DateTime.parse(
                                       _invoice!.daterepaly.toString())))
                           : Container(),
                       _invoice!.daterepaly != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' قام بإعادة الجدولة',
                               value: _invoice!.nameuserreplay.toString())
                           : Container(),
                       _invoice!.daterepaly != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' سبب إعادة الجدولة',
                               value: _invoice!.reason_date.toString(),
                               isExpanded: true,
@@ -644,7 +644,7 @@ class _SupportAddState extends State<SupportAdd> {
                           : Container(),
                       ///////////////////////////////////////////////
                       _invoice!.dateinstall_task != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' تاريخ جدولة التركيب ',
                               value: DateFormat('yyyy-MM-dd HH:mm').format(
                                   DateTime.parse(
@@ -654,12 +654,12 @@ class _SupportAddState extends State<SupportAdd> {
                               )
                           : Container(),
                       _invoice!.dateinstall_task != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' قام بجدولة التركيب ',
                               value: _invoice!.nameusertask.toString())
                           : Container(),
 
-                      cardRow(
+                      CardRow(
                           title: 'طريقة التركيب ',
                           value: _invoice!.typeInstallation.toString() == '0'
                               ? 'ميداني'
@@ -669,14 +669,14 @@ class _SupportAddState extends State<SupportAdd> {
 
                       _invoice!.ready_install == '0' &&
                               _invoice!.TypeReadyClient == 'suspend'
-                          ? cardRow(
+                          ? CardRow(
                               title: 'هل تم التركيب للعميل ', value: 'معلق')
                           : _invoice!.ready_install == '0' &&
                                   _invoice!.TypeReadyClient == 'notReady'
-                              ? cardRow(
+                              ? CardRow(
                                   title: 'هل تم التركيب للعميل ',
                                   value: 'غير جاهز')
-                              : cardRow(
+                              : CardRow(
                                   title: 'هل تم التركيب للعميل ',
                                   value: _invoice!.dateinstall_done == null
                                       ? 'بالانتظار'
@@ -684,46 +684,46 @@ class _SupportAddState extends State<SupportAdd> {
 
                       _invoice!.ready_install == '0' &&
                               _invoice!.dateinstall_done == null
-                          ? cardRow(
+                          ? CardRow(
                               title: 'ملاحظة التعليق',
                               value: _invoice!.notes_ready.toString())
                           : Container(),
 
                       _invoice!.ready_install == '0' &&
                               _invoice!.TypeReadyClient == 'notReady'
-                          ? cardRow(
+                          ? CardRow(
                               title: 'سبب تعليق العميل',
                               value: _invoice!.reason_notReady.toString())
                           : Container(),
                       _invoice!.ready_install == '0' &&
                               _invoice!.TypeReadyClient == 'suspend'
-                          ? cardRow(
+                          ? CardRow(
                               title: 'سبب تعليق العميل',
                               value: _invoice!.reason_suspend.toString())
                           : Container(),
 
                       _invoice!.date_readyinstall != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' تاريخ الغاء تعليق العميل ',
                               value: DateFormat('yyyy-MM-dd HH:mm').format(
                                   DateTime.parse(
                                       _invoice!.date_readyinstall.toString())))
                           : Container(),
                       _invoice!.date_readyinstall != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' قام بالغاء تعليق العميل ',
                               value:
                                   _invoice!.nameuser_ready_install.toString())
                           : Container(),
                       _invoice!.date_not_readyinstall != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' تاريخ تعليق العميل ',
                               value: DateFormat('yyyy-MM-dd HH:mm').format(
                                   DateTime.parse(_invoice!.date_not_readyinstall
                                       .toString())))
                           : Container(),
                       _invoice!.date_not_readyinstall != null
-                          ? cardRow(
+                          ? CardRow(
                               title: ' قام بتعليق العميل ',
                               value: _invoice!.nameuser_notready_install
                                   .toString())

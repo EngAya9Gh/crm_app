@@ -9,7 +9,7 @@ import '../../../../core/common/enums/invoice_status_enum.dart';
 import '../../../../core/common/models/page_state/result_builder.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../model/invoiceModel.dart';
-import '../../../../ui/widgets/custom_widget/RowWidget.dart';
+import '../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../ui/widgets/invoice_widget/Card_invoice_client.dart';
 import '../manager/manage_withdrawals_cubit.dart';
 
@@ -136,7 +136,7 @@ class _WithdrawalsInvoicesPageState extends State<WithdrawalsInvoicesPage> {
                   child: BlocBuilder<ManageWithdrawalsCubit,
                       ManageWithdrawalsState>(
                     builder: (context, state) {
-                      return cardRow(
+                      return CardRow(
                         value:
                             _manageWithdrawalsCubit.numberOfInvoices.toString(),
                         title: "عدد الفواتير المنسحبة",
