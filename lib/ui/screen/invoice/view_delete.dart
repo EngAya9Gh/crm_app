@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../function_global.dart';
 import '../../../model/invoiceModel.dart';
-import '../../widgets/custom_widget/RowWidget.dart';
+import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/widgetlogo.dart';
 
 class view_deleted extends StatelessWidget {
@@ -93,36 +93,36 @@ class view_deleted extends StatelessWidget {
                     height: 10,
                   ),
 
-                  cardRow(
+                  CardRow(
                       title: 'اسم العميل',
                       value: invoice.nameClient.toString()),
-                  cardRow(
+                  CardRow(
                       title: 'اسم المؤسسة',
                       value: invoice.name_enterprise.toString()),
-                  cardRow(
+                  CardRow(
                       title: 'حالة الفاتورة',
                       value: invoice.stateclient.toString()),
-                  cardRow(
+                  CardRow(
                       title: 'فرع الفاتورة',
                       value: invoice.name_regoin_invoice.toString()),
 
-                  cardRow(
+                  CardRow(
                       title: 'اسم الموظف', value: invoice.nameUser.toString()),
-                  cardRow(
+                  CardRow(
                       title: 'فرع الموظف',
                       value: invoice.name_regoin_invoice.toString()),
                   //cardRow(title: 'حالة الفاتورة', value: invoice.amountPaid.toString()),
 
                   invoice.date_approve.toString() == null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'تاريخ عقد الإشتراك',
                           value: invoice.date_approve.toString())
                       : Container(),
 
-                  cardRow(
+                  CardRow(
                       title: 'المبلغ المدفوع',
                       value: invoice.amountPaid.toString()),
-                  cardRow(
+                  CardRow(
                       title: ' المبلغ المتبقي',
                       value: ((num.tryParse(invoice.total?.toString() ?? "0") ??
                                   0) -
@@ -130,16 +130,16 @@ class view_deleted extends StatelessWidget {
                                       invoice.amountPaid?.toString() ?? "0") ??
                                   0))
                           .toStringAsFixed(2)),
-                  cardRow(
+                  CardRow(
                       title: ' التجديد السنوي',
                       value: invoice.renewYear.toString()),
-                  cardRow(
+                  CardRow(
                       title: ' طريقة الدفع',
                       value:
                           invoice.typePay.toString() == '0' ? 'نقدا' : 'تحويل'),
                   //nameuserApprove
 
-                  cardRow(
+                  CardRow(
                       title: ' العملة',
                       value: invoice.currency_name == null
                           ? 'SAR'
@@ -148,26 +148,26 @@ class view_deleted extends StatelessWidget {
                               : 'SAR'),
 
                   invoice.nameuserApprove != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'معتمد الفاتورة',
                           value:
                               getnameshort(invoice.nameuserApprove.toString()))
                       : Container(),
 
                   invoice.nameuserApprove != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'تاريخ اعتماد الفاتورة',
                           value: invoice.date_approve.toString())
                       : Container(),
                   invoice.date_lastuserupdate != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'تاريخ آخر تعديل',
                           value: invoice.date_lastuserupdate != null
                               ? invoice.date_lastuserupdate.toString()
                               : '')
                       : Container(),
                   invoice.date_lastuserupdate != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'آخر تعديل من قبل',
                           value: invoice.date_lastuserupdate != null
                               ? getnameshort(
@@ -176,22 +176,22 @@ class view_deleted extends StatelessWidget {
                       : Container(),
 
                   invoice.date_change_back != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'تاريخ الإنسحاب',
                           value: invoice.date_change_back.toString())
                       : Container(),
                   invoice.date_change_back != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'تم الإنسحاب عن طريق',
                           value: getnameshort(invoice.nameuserback.toString()))
                       : Container(),
                   invoice.fkuser_back != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'المبلغ المسترجع',
                           value: invoice.value_back.toString())
                       : Container(),
                   invoice.fkuser_back != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'سبب الإنسحاب',
                           value: invoice.desc_reason_back.toString(),
                           isExpanded: true,
@@ -199,25 +199,25 @@ class view_deleted extends StatelessWidget {
                       : Container(),
                   invoice.numbarnch.toString().trim().isNotEmpty &&
                           invoice.numbarnch != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'عدد الفروع',
                           value: invoice.numbarnch.toString())
                       : Container(),
                   //invoice!.nummostda != null||
                   invoice.nummostda.toString().trim().isNotEmpty &&
                           invoice.nummostda != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'عدد المستودعات ',
                           value: invoice.nummostda.toString())
                       : Container(),
                   invoice.numusers.toString().trim().isNotEmpty &&
                           invoice.numusers != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'عدد المستخدمين',
                           value: invoice.numusers.toString())
                       : Container(),
                   invoice.address_invoice.toString() == ''
-                      ? cardRow(
+                      ? CardRow(
                           title: 'عنوان الفاتورة',
                           value: invoice.address_invoice.toString())
                       : Container(),
@@ -225,7 +225,7 @@ class view_deleted extends StatelessWidget {
                   context.read<PrivilegeCubit>().checkPrivilege('76') == true
                       ? invoice.clientusername != null &&
                               invoice.clientusername.toString().isNotEmpty
-                          ? cardRow(
+                          ? CardRow(
                               title: 'يوزر العميل',
                               value: invoice.clientusername == null
                                   ? ''
@@ -243,19 +243,19 @@ class view_deleted extends StatelessWidget {
                   invoice.participal != null
                       ? Column(
                           children: [
-                            cardRow(
+                            CardRow(
                                 value: invoice.participal!.name_participate
                                     .toString(),
                                 title: 'اسم المتعاون'),
-                            cardRow(
+                            CardRow(
                                 value: invoice.rate_participate.toString(),
                                 title: 'نسبة المتعاون'),
-                            cardRow(
+                            CardRow(
                                 value: invoice
                                     .participal!.numberbank_participate
                                     .toString(),
                                 title: 'رقم بنك المتعاون'),
-                            cardRow(
+                            CardRow(
                                 value: invoice.participal!.mobile_participate
                                     .toString(),
                                 title: 'رقم موبايل المتعاون'),
@@ -265,7 +265,7 @@ class view_deleted extends StatelessWidget {
                   invoice.agent_distibutor != null
                       ? Column(
                           children: [
-                            cardRow(
+                            CardRow(
                                 value: invoice.agent_distibutor!.nameAgent
                                     .toString(),
                                 title:
@@ -273,13 +273,13 @@ class view_deleted extends StatelessWidget {
                                         ? 'اسم الوكيل'
                                         : 'اسم الموزع'),
                             if (invoice.rate_participate != null)
-                              cardRow(
+                              CardRow(
                                   value: invoice.rate_participate.toString(),
                                   title:
                                       invoice.agent_distibutor!.typeAgent == '1'
                                           ? 'نسبة الوكيل'
                                           : 'نسبة الموزع'),
-                            cardRow(
+                            CardRow(
                                 value: invoice.agent_distibutor!.mobileAgent
                                     .toString(),
                                 title:
@@ -293,7 +293,7 @@ class view_deleted extends StatelessWidget {
                   if (invoice.participal == null &&
                       invoice.agent_distibutor == null &&
                       invoice.type_seller == "3")
-                    cardRow(value: "موظف", title: "نوع البائع"),
+                    CardRow(value: "موظف", title: "نوع البائع"),
                 ],
               ),
             ),

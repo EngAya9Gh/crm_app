@@ -125,8 +125,8 @@ class ServiceProvider extends StatelessWidget {
           ChangeNotifierProvider<EventProvider>(
             create: (_) => EventProvider(),
           ),
-          ChangeNotifierProxyProvider<UserProvider, ticket_vm>(
-            create: (_) => ticket_vm(),
+          ChangeNotifierProxyProvider<UserProvider, TicketVM>(
+            create: (_) => TicketVM(),
             update: (ctx, value, prev) => prev!..setvalue(value.currentUser),
           ),
           ChangeNotifierProvider<comment_vm>(create: (_) => comment_vm()),

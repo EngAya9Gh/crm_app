@@ -1,6 +1,6 @@
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/comment.dart';
@@ -276,7 +276,7 @@ class _installAddState extends State<installAdd> {
                   height: 10,
                 ),
                 RowEdit(name: 'البيانات', des: ''),
-                cardRow(
+                CardRow(
                     title: 'تاريخ عقد الإشتراك',
                     value: widget.com.date_approve.toString()),
                 SizedBox(
@@ -285,7 +285,7 @@ class _installAddState extends State<installAdd> {
 
                 widget.com.typeCommuncation == 'تركيب' &&
                         widget.com.dateCommunication == null
-                    ? cardRow(
+                    ? CardRow(
                         title: 'تاريخ التركيب',
                         value: widget.com.dateinstall_done.toString())
                     : Container(),
@@ -295,14 +295,14 @@ class _installAddState extends State<installAdd> {
 
                 widget.com.typeCommuncation == 'تركيب' &&
                         widget.com.dateCommunication != null
-                    ? cardRow(
+                    ? CardRow(
                         title: 'تاريخ التركيب',
                         value: widget.com.dateCommunication.toString())
                     : Container(),
 
                 widget.com.typeCommuncation == 'ترحيب' &&
                         widget.com.dateCommunication != null
-                    ? cardRow(
+                    ? CardRow(
                         title: 'تاريخ الترحيب',
                         value: widget.com.dateCommunication.toString())
                     :
@@ -314,7 +314,7 @@ class _installAddState extends State<installAdd> {
                       ),
 
                 widget.com.nameUser != null
-                    ? cardRow(
+                    ? CardRow(
                         title: 'تم التواصل من قبل  ',
                         value: widget.com.nameUser.toString())
                     : Container(),

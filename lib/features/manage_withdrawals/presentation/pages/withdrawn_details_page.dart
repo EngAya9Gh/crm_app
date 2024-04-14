@@ -23,7 +23,7 @@ import '../../../../model/usermodel.dart';
 import '../../../../ui/screen/client/profileclient.dart';
 import '../../../../ui/screen/invoice/invoiceView.dart';
 import '../../../../ui/widgets/app_photo_viewer.dart';
-import '../../../../ui/widgets/custom_widget/RowWidget.dart';
+import '../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../ui/widgets/fancy_image_shimmer_viewer.dart';
 import '../../../../view_model/user_vm_provider.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -180,39 +180,39 @@ class _WithdrawnDetailsPageState extends State<WithdrawnDetailsPage> {
                       ),
                       SliverToBoxAdapter(child: 20.verticalSpacingRadius),
                       SliverToBoxAdapter(
-                        child: cardRow(
+                        child: CardRow(
                             title: 'اسم الموظف الذي قام بالانسحاب',
                             value: data.nameUser.toString()),
                       ),
                       SliverToBoxAdapter(
-                        child: cardRow(
+                        child: CardRow(
                             title: 'سبب الإنسحاب',
                             value: data.reasonBack.toString()),
                       ),
                       SliverToBoxAdapter(
-                        child: cardRow(
+                        child: CardRow(
                             title: 'وصف سبب الإنسحاب',
                             value: data.descReasonBack.toString()),
                       ),
                       SliverToBoxAdapter(
-                        child: cardRow(
+                        child: CardRow(
                             title: 'المبلغ المسترجع',
                             value: data.valueBack.toString()),
                       ),
                       SliverToBoxAdapter(
-                        child: cardRow(
+                        child: CardRow(
                             title: 'تاريخ الإنسحاب',
                             value:
                                 "${intl.DateFormat("dd").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat("MMMM").format(DateTime.parse(data.dateChangeBack!))} ${intl.DateFormat(" yyyy").format(DateTime.parse(data.dateChangeBack!))}"),
                       ),
                       SliverToBoxAdapter(
-                        child: cardRow(
+                        child: CardRow(
                             title: 'الحالة',
                             value: WithdrawalStatus
                                 .values[int.parse(data.approveBackDone!)].text),
                       ),
                       SliverToBoxAdapter(
-                        child: cardRow(
+                        child: CardRow(
                             title: 'تاريخ طلب انسحاب العميل',
                             value: data.dateBackNow,
                             withDivider: false),

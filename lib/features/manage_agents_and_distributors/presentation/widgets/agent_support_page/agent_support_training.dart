@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../../../constants.dart';
 import '../../../../../core/common/enums/enums.dart';
 import '../../../../../model/agent_distributor_model.dart';
-import '../../../../../ui/widgets/custom_widget/RowWidget.dart';
+import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../domain/use_cases/done_training_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
@@ -47,16 +47,16 @@ class _AgentSupportTrainingState extends State<AgentSupportTraining> {
         return Column(
           children: [
             if (trainer.nameusertraining != null)
-              cardRow(
+              CardRow(
                   title: "موظف التدريب",
                   value: trainer.nameusertraining.toString()),
-            cardRow(
+            CardRow(
                 title: "هل تم التدريب",
                 value: trainer.is_training == true
                     ? YesNoEnum.yes.name
                     : YesNoEnum.no.name),
             if (trainer.is_training == true)
-              cardRow(
+              CardRow(
                   title: "تاريخ التدريب", value: trainer.date_training ?? ""),
             if (trainer.is_training == false) ...[
               SizedBox(height: 20),

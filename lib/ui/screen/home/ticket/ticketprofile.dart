@@ -1,50 +1,29 @@
-import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
-import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/view_model/ticket_vm.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants.dart';
-import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
+import '../../../../core/common/widgets/custom_error_widget.dart';
+import '../../../../core/common/widgets/custom_loading_indicator.dart';
+import '../../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
+import '../../../../features/clients_care/clients_tickets/presentation/widgets/ticket_card.dart';
+import '../../../../features/task_management/presentation/manager/task_cubit.dart';
 import '../../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../widgethomeitem.dart';
-import 'ticket_card.dart';
+import '../../../../model/clientmodel.dart';
+import 'ticket_all.dart';
 
-class ticketprofile extends StatefulWidget {
-  ticketprofile({required this.itemClient, Key? key}) : super(key: key);
+class TicketProfile extends StatelessWidget {
+  const TicketProfile({
+    Key? key,
+    required this.itemClient,
+  });
 
-  ClientModel1 itemClient;
-
-  @override
-  ticketprofileState createState() => ticketprofileState();
-}
-
-class ticketprofileState extends State<ticketprofile> {
-  bool _isLoading = true;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  List<TicketModel> list_ticket = [];
-
-  @override
-  void initState() {
-    // List<InvoiceModel> list= Provider.of<invoice_vm>(context,listen: false)
-    //   .listinvoicebyregoin;
-    //get info from list client_invoice فواتير العميل
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Add Your Code here.
-      // Provider.of<invoice_vm>(context,listen: false)
-      //     .get_invoiceclientlocal(widget.itemClient.idClients,'مشترك');
-    });
-    super.initState();
-  }
+  final ClientModel1 itemClient;
 
   @override
   Widget build(BuildContext context) {
-    list_ticket =
-        Provider.of<ticket_vm>(context, listen: true).listticket_client;
-
+    final TicketsCubit ticketCubit = context.read<TicketsCubit>();
     return Scaffold(
-      key: _scaffoldKey,
       body: Padding(
         padding: const EdgeInsets.only(left: 2, right: 2, top: 10, bottom: 10),
         child: Directionality(
@@ -53,42 +32,76 @@ class ticketprofileState extends State<ticketprofile> {
             children: [
               AddManualTaskButton(
                 list: ticketPublicTypeList,
-                clientId: widget.itemClient.idClients,
+                clientId: itemClient.idClients,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  list_ticket.isNotEmpty
-                      ? SelectCategory(
-                          isicon: false,
-                          colorbag: kMainColor,
-                          colorarrow: kWhiteColor,
-                          colortitle: kWhiteColor,
-                          onTap: () async {
-                            // Navigator.push(context,
-                            //     CupertinoPageRoute(builder: (context)=>
-                            //         ticketall()));
+              BlocBuilder<TicketsCubit, TicketsState>(
+                builder: (context, state) {
+                  if (state is ClientsTicketsLoading ||
+                      state is GetTicketsLoading) {
+                    return CustomLoadingIndicator();
+                  } else if (state is ClientsTicketsError) {
+                    return CustomErrorWidget(
+                      message: state.message,
+                    );
+                  } else if (state is ClientsTicketsLoaded &&
+                      ticketCubit.clientTicketsList.isEmpty) {
+                    return CustomErrorWidget(
+                      message: 'لا يوجد تذاكر',
+                    );
+                  }
+                  // return SizedBox();
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            AppNavigator.push(TicketAll());
                           },
-                          title: 'عدد التذاكر التي فتحت للعميل   ' +
-                              list_ticket.length.toString(),
-                        )
-                      : Container(),
-                ],
-              ),
-              Container(
-                //height: MediaQuery.of(context).size.height * 1,
-                child: Expanded(
-                  child: ListView.builder(
-                    itemCount: list_ticket.length,
-                    itemBuilder: (BuildContext context, int index) => Builder(
-                        builder: (context) => Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TicketCard(
-                                ticketModel: list_ticket[index],
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: kMainColor,
+                            ),
+                            child: Text(
+                              'عدد التذاكر التي فتحت للعميل ${ticketCubit.clientTicketsList.length}',
+                              style: TextStyle(
+                                color: kWhiteColor,
+                                fontFamily: kfontfamily2,
+                                fontSize: 15,
                               ),
-                            )),
-                  ),
-                ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: ticketCubit.clientTicketsList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Builder(
+                                builder: (context) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TicketCard(
+                                    ticket:
+                                        ticketCubit.clientTicketsList[index],
+                                    details: ticketCubit
+                                                .clientTicketsList[index]
+                                                .dateClose ==
+                                            null
+                                        ? ticketCubit.clientTicketsList[index]
+                                            .detailsProblem
+                                        : ticketCubit.clientTicketsList[index]
+                                            .notesTicket,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),

@@ -1,6 +1,6 @@
 import 'package:crm_smart/model/communication_modle.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -18,25 +18,25 @@ Widget commview(CommunicationModel element, BuildContext context) {
           child: Column(
             children: [
               element.typeCommuncation == 'ترحيب'
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تم الترحيب من قبل',
                       value: getnameshort(element.nameUser.toString()),
                     )
                   : Container(),
               element.typeCommuncation == 'ترحيب'
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تاريخ الترحيب بالعميل',
                       value: element.dateCommunication.toString(),
                     )
                   : Container(),
               element.typeCommuncation == 'تركيب'
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تم التأكد من جودة التركيب من قبل',
                       value: getnameshort(element.nameUser.toString()),
                     )
                   : Container(),
               element.typeCommuncation == 'تركيب'
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تاريخ التأكد من التركيب للعميل',
                       value: element.dateCommunication.toString(),
                     )
@@ -47,7 +47,7 @@ Widget commview(CommunicationModel element, BuildContext context) {
 
               element.typeCommuncation == 'دوري' ||
                       element.typeCommuncation == 'تركيب'
-                  ? cardRow(
+                  ? CardRow(
                       title: 'موظف التقييم',
                       value: getnameshort(element.nameUser.toString()),
                     )
@@ -55,14 +55,14 @@ Widget commview(CommunicationModel element, BuildContext context) {
 
               element.typeCommuncation == 'دوري' ||
                       element.typeCommuncation == 'تركيب'
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تاريخ التقييم',
                       value: element.dateCommunication.toString(),
                     )
                   : Container(),
 
               element.typeCommuncation == 'دوري'
-                  ? cardRow(
+                  ? CardRow(
                       title: ' نتيجة التواصل',
                       value: element.result.toString() == 'true'
                           ? 'لايستخدم النظام'
@@ -71,7 +71,7 @@ Widget commview(CommunicationModel element, BuildContext context) {
                   : Container(),
               element.typeCommuncation == 'دوري' &&
                       element.clientRepeat.toString() != 'false'
-                  ? cardRow(
+                  ? CardRow(
                       title: ' نتيجة التواصل',
                       value: element.clientRepeat.toString() == 'false'
                           ? ''
@@ -80,7 +80,7 @@ Widget commview(CommunicationModel element, BuildContext context) {
                   : Container(),
               element.typeCommuncation == 'دوري' &&
                       element.number_wrong.toString() != 'false'
-                  ? cardRow(
+                  ? CardRow(
                       title: ' نتيجة التواصل',
                       value: element.number_wrong.toString() == 'false'
                           ? ''

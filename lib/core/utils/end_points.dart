@@ -225,6 +225,7 @@ class _Tickets {
   final String getSubCategoriesTicket = 'getSubCategoriesTicket';
 
   final String getTickets = 'getTickets';
+  final String getClientTicket = 'getTicketByIdClinet/';
   final String getTicketById = 'getTicketById/';
   final String editTicketType = 'editTicketType/';
   final String addTicket = 'addTicket';

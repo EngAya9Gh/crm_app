@@ -31,7 +31,7 @@ class TicketCloseDialog extends StatefulWidget {
 
 class _TicketCloseDialogState extends State<TicketCloseDialog> {
   late final TicketsCubit ticketsCubit;
-  late final ticket_vm ticketVm;
+  late final TicketVM ticketVm;
   final closeTicketFormKey = GlobalKey<FormState>();
   final notesController = TextEditingController();
   late final bool isClosedBefore;
