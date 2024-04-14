@@ -10,91 +10,90 @@ class TicketCard extends StatelessWidget {
   const TicketCard({
     Key? key,
     required this.ticket,
+    this.details,
   }) : super(key: key);
 
   final TicketModel ticket;
+  final String? details;
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: SingleChildScrollView(
-          child: Padding(
-              padding: const EdgeInsets.all(2),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius:
-                      BorderRadius.only(bottomRight: Radius.circular(0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      offset: Offset(1.0, 1.0),
-                      blurRadius: 8.0,
-                      color: Colors.black87.withOpacity(0.2),
-                    ),
-                  ],
-                  color: Colors.white30,
+        child: Padding(
+          padding: const EdgeInsets.all(2),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(bottomRight: Radius.circular(0)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 8.0,
+                  color: Colors.black87.withOpacity(0.2),
                 ),
-                child: Center(
-                  child: InkWell(
-                    onTap: () {
-                      AppNavigator.push(TicketDetailsPage(ticketModel: ticket));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(color: kWhiteColor),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+              ],
+              color: Colors.white30,
+            ),
+            child: Center(
+              child: InkWell(
+                onTap: () {
+                  AppNavigator.push(TicketDetailsPage(ticketModel: ticket));
+                },
+                child: Container(
+                  decoration: BoxDecoration(color: kWhiteColor),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "#${ticket.idTicket}",
-                                  style: TextStyle(
-                                      color: kMainColor,
-                                      fontFamily: kfontfamily2),
-                                ),
-                                Text(
-                                  ticket.status != null &&
-                                          ticket.status!.isNotEmpty
-                                      ? "التاريخ ${ticket.status?.first.dateState.toString()}"
-                                      : '',
-                                  style: TextStyle(
-                                      color: kMainColor,
-                                      fontFamily: kfontfamily2),
-                                ),
-                              ],
+                            Text(
+                              "#${ticket.idTicket}",
+                              style: TextStyle(
+                                  color: kMainColor, fontFamily: kfontfamily2),
                             ),
                             Text(
-                              ticket.nameEnterprise ?? '',
+                              ticket.status != null && ticket.status!.isNotEmpty
+                                  ? "التاريخ ${ticket.status?.first.dateState.toString()}"
+                                  : '',
                               style: TextStyle(
-                                  fontFamily: kfontfamily2,
-                                  fontWeight: FontWeight.bold),
+                                  color: kMainColor, fontFamily: kfontfamily2),
                             ),
-                            if (ticket.rate != null && ticket.rate != '')
-                              RatingBar.builder(
-                                initialRating: double.parse(ticket.rate ?? '0'),
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: false,
-                                ignoreGestures: true,
-                                itemCount: 5,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 4.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (double value) {},
-                              ),
                           ],
                         ),
-                      ),
+                        Text(
+                          details ?? ticket.nameEnterprise ?? '',
+                          style: TextStyle(
+                              fontFamily: kfontfamily2,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        if (ticket.rate != null && ticket.rate != '')
+                          RatingBar.builder(
+                            initialRating: double.parse(ticket.rate ?? '0'),
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: false,
+                            ignoreGestures: true,
+                            itemCount: 5,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (double value) {},
+                          ),
+                      ],
                     ),
                   ),
                 ),
-              ))),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

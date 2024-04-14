@@ -2,7 +2,7 @@ import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/configmodel.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
@@ -287,7 +287,7 @@ class _careAddState extends State<careAdd> {
                             widget.com.dateCommunication != null) ||
                         (widget.com.typeCommuncation == 'ترحيب' &&
                             widget.com.dateCommunication != null)
-                    ? cardRow(
+                    ? CardRow(
                         title: 'تاريخ عقد الإشتراك',
                         value: widget.com.date_approve.toString())
                     : Container(),
@@ -296,14 +296,14 @@ class _careAddState extends State<careAdd> {
                 ),
                 widget.com.typeCommuncation == 'تركيب' &&
                         widget.com.dateCommunication != null
-                    ? cardRow(
+                    ? CardRow(
                         title: 'تاريخ التركيب',
                         value: widget.com.dateinstall_done.toString())
                     : Container(),
 
                 widget.com.typeCommuncation == 'ترحيب' &&
                         widget.com.dateCommunication != null
-                    ? cardRow(
+                    ? CardRow(
                         title: 'تاريخ الترحيب',
                         value: widget.com.dateCommunication.toString())
                     :

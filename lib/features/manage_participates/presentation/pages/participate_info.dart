@@ -4,7 +4,7 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants.dart';
-import '../../../../ui/widgets/custom_widget/RowWidget.dart';
+import '../../../../ui/widgets/custom_widget/card_row.dart';
 import '../manager/participate_list_bloc.dart';
 import '../manager/participate_list_state.dart';
 
@@ -70,41 +70,41 @@ class _ParticipateInfoState extends State<ParticipateInfo> {
                   ],
                 ),
                 10.verticalSpace,
-                cardRow(
+                CardRow(
                     title: "الاسم",
                     value: state.currentPaticipate!.name_participate),
                 // cardRow(
                 //           title: "رقم الهاتف",
                 //           value: state.currentPaticipate!.mobile_participate),
-                cardRow(
+                CardRow(
                     title: "اسم البنك",
                     value: state.currentPaticipate!.namebank_participate),
-                cardRow(
+                CardRow(
                     title: "رقم البنك",
                     value: state.currentPaticipate!.numberbank_participate),
                 state.currentPaticipate!.nameUserAdd != null
-                    ? cardRow(
+                    ? CardRow(
                         title: "الموظف الذي أضاف",
                         value: state.currentPaticipate!.nameUserAdd.toString())
                     : Container(),
                 state.currentPaticipate!.addDate != null
-                    ? cardRow(
+                    ? CardRow(
                         title: "تاريخ الاضافة",
                         value: state.currentPaticipate!.addDate.toString())
                     : Container(),
                 state.currentPaticipate!.nameUserUpdate != null
-                    ? cardRow(
+                    ? CardRow(
                         title: "آخر من عدل",
                         value:
                             state.currentPaticipate!.nameUserUpdate.toString())
                     : Container(),
                 state.currentPaticipate!.updateDate != null
-                    ? cardRow(
+                    ? CardRow(
                         title: "تاريخ التعديل",
                         value: state.currentPaticipate!.updateDate.toString())
                     : Container(),
 
-                cardRow(
+                CardRow(
                     title: "المدينة", value: state.currentPaticipate!.nameCity),
               ])
             : Center(child: Text('حدث خطاء')),

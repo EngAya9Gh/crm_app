@@ -13,7 +13,7 @@ import '../../../view_model/datetime_vm.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/regoin_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/RowWidget.dart';
+import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 
@@ -265,17 +265,17 @@ class _edit_invoiceState extends State<edit_invoice> {
                     height: 40,
                   ),
 
-                  cardRow(
+                  CardRow(
                       title: 'تاريخ عقد الإشتراك',
                       value: widget.invoiceModel.dateCreate.toString()),
 
                   widget.invoiceModel.date_approve != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'تاريخ اعتماد الفاتورة',
                           value: widget.invoiceModel.date_approve.toString())
                       : Container(),
                   widget.invoiceModel.dateinstall_task != null
-                      ? cardRow(
+                      ? CardRow(
                           title: 'تاريخ التركيب',
                           value:
                               widget.invoiceModel.dateinstall_task.toString())

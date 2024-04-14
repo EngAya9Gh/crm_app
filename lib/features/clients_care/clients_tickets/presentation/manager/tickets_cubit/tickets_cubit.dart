@@ -50,6 +50,7 @@ class TicketsCubit extends Cubit<TicketsState> {
   List<TicketModel> allTickets = [];
   List<TicketModel> filteredTicketsByType = [];
   List<TicketModel> searchResultTickets = [];
+  List<TicketModel> clientTicketsList = [];
 
   // categories
   List<TicketCategoryModel> allCategoriesList = [];
@@ -72,6 +73,19 @@ class TicketsCubit extends Cubit<TicketsState> {
         filterTicketsByType();
       },
     );
+  }
+
+  Future<void> getClientTicket(String fkIdClient) async {
+    emit(ClientsTicketsLoading());
+    clientTicketsList = [];
+    print("sadfasdfasfdsafdsa");
+    await getTickets();
+    allTickets.forEach((element) {
+      if (element.fkClient == fkIdClient) {
+        clientTicketsList.add(element);
+      }
+    });
+    emit(ClientsTicketsLoaded());
   }
 
   Future<void> getTicketById(GetTicketByIdParams params) async {
