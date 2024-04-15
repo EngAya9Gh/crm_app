@@ -4,9 +4,10 @@ import 'package:crm_smart/ui/widgets/client_widget/clientAccept.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 
 class ClientAccept extends StatefulWidget {
   ClientAccept({Key? key}) : super(key: key);
@@ -91,18 +92,10 @@ class _ClientAcceptState extends State<ClientAccept> {
                           padding: const EdgeInsets.all(8.0),
                           child: Consumer<MainCityProvider>(
                             builder: (context, cart, child) {
-                              return DropdownSearch<
-                                  MainCityModel>.multiSelection(
-                                showFavoriteItems: true,
-                                mode: Mode.DIALOG,
-                                filterFn: (user, filter) =>
-                                    user!.getfilteruser(filter!),
-                                compareFn: (item, selectedItem) =>
-                                    item?.id_maincity ==
-                                    selectedItem?.id_maincity,
-                                // itemAsString: (UserModel u) => u.userAsStringByName(),
+                              return CustomMultiSelectionDropdown<
+                                  MainCityModel>(
+                                hint: 'المنطقة',
                                 items: cart.listmaincityfilter,
-                                // showSelectedItems: true,
                                 selectedItems: cart.selectedRegions,
                                 itemAsString: (u) => u!.userAsString(),
                                 onChanged: (data) {
@@ -121,29 +114,70 @@ class _ClientAcceptState extends State<ClientAccept> {
                                   cart.changeitemlist(data);
                                   filtershow();
                                 },
-                                //selectedItem: cart.selecteduser,
-                                showSearchBox: true,
                                 dropdownSearchDecoration: InputDecoration(
-                                  //filled: true,
                                   isCollapsed: true,
                                   hintText: 'المنطقة',
-                                  alignLabelWithHint: true,
                                   fillColor: Colors.grey.withOpacity(0.2),
-                                  //labelText: "choose a user",
                                   contentPadding: EdgeInsets.all(0),
-                                  //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                  // focusedBorder: OutlineInputBorder(
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //     borderSide: const BorderSide(color: Colors.white)),
                                   border: UnderlineInputBorder(
-                                      borderSide:
-                                          const BorderSide(color: Colors.grey)),
-                                  // OutlineInputBorder(
-                                  //     borderRadius: BorderRadius.circular(10),
-                                  //     borderSide: const BorderSide( color: Colors.white)),
+                                    borderSide:
+                                        const BorderSide(color: Colors.grey),
+                                  ),
                                 ),
-                                // InputDecoration(border: InputBorder.none),
                               );
+                              // return DropdownSearch<
+                              //     MainCityModel>.multiSelection(
+                              //   showFavoriteItems: true,
+                              //   mode: Mode.DIALOG,
+                              //   filterFn: (user, filter) =>
+                              //       user!.getfilteruser(filter!),
+                              //   compareFn: (item, selectedItem) =>
+                              //       item?.id_maincity ==
+                              //       selectedItem?.id_maincity,
+                              //   // itemAsString: (UserModel u) => u.userAsStringByName(),
+                              //   items: cart.listmaincityfilter,
+                              //   // showSelectedItems: true,
+                              //   selectedItems: cart.selectedRegions,
+                              //   itemAsString: (u) => u!.userAsString(),
+                              //   onChanged: (data) {
+                              //     // if contains all then check all cities
+                              //     if (data.any((element) =>
+                              //         element.namemaincity == 'الكل')) {
+                              //       data = cart.listmaincityfilter;
+                              //     }
+                              //     selecteditemmaincity = data;
+                              //     // remove the choice "all" only
+                              //     if (data.any((element) =>
+                              //         element.namemaincity == 'الكل')) {
+                              //       data.removeWhere((element) =>
+                              //           element.namemaincity == 'الكل');
+                              //     }
+                              //     cart.changeitemlist(data);
+                              //     filtershow();
+                              //   },
+                              //   //selectedItem: cart.selecteduser,
+                              //   showSearchBox: true,
+                              //   dropdownSearchDecoration: InputDecoration(
+                              //     //filled: true,
+                              //     isCollapsed: true,
+                              //     hintText: 'المنطقة',
+                              //     alignLabelWithHint: true,
+                              //     fillColor: Colors.grey.withOpacity(0.2),
+                              //     //labelText: "choose a user",
+                              //     contentPadding: EdgeInsets.all(0),
+                              //     //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                              //     // focusedBorder: OutlineInputBorder(
+                              //     //     borderRadius: BorderRadius.circular(10),
+                              //     //     borderSide: const BorderSide(color: Colors.white)),
+                              //     border: UnderlineInputBorder(
+                              //         borderSide:
+                              //             const BorderSide(color: Colors.grey)),
+                              //     // OutlineInputBorder(
+                              //     //     borderRadius: BorderRadius.circular(10),
+                              //     //     borderSide: const BorderSide( color: Colors.white)),
+                              //   ),
+                              //   // InputDecoration(border: InputBorder.none),
+                              // );
                             },
                           ),
                         ),

@@ -10,13 +10,13 @@ import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -323,12 +323,8 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                     SizedBox(width: 10),
                                   },
                                   Expanded(
-                                    child: DropdownSearch<UserModel>(
-                                      mode: Mode.DIALOG,
-                                      filterFn: (user, filter) =>
-                                          user!.getfilteruser(filter!),
-                                      compareFn: (item, selectedItem) =>
-                                          item?.idUser == selectedItem?.idUser,
+                                    child: CustomSearchableDropDown<UserModel>(
+                                      hint: 'الموظف',
                                       items: cart.usersSalesManagement,
                                       itemAsString: (u) => u!.userAsString(),
                                       onChanged: (data) {
@@ -339,18 +335,40 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                         //filtershow();
                                       },
                                       selectedItem: cart.selectedUser,
-                                      showSearchBox: true,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        isCollapsed: true,
-                                        hintText: 'الموظف',
-                                        alignLabelWithHint: true,
-                                        fillColor: Colors.grey.withOpacity(0.2),
-                                        contentPadding: EdgeInsets.all(0),
-                                        border: UnderlineInputBorder(
-                                            borderSide: const BorderSide(
-                                                color: Colors.grey)),
-                                      ),
+                                      filterFn: (user, filter) =>
+                                          user!.getfilteruser(filter!),
+                                      compareFn: (item, selectedItem) =>
+                                          item?.idUser == selectedItem?.idUser,
                                     ),
+
+                                    // DropdownSearch<UserModel>(
+                                    //         mode: Mode.DIALOG,
+                                    //         filterFn: (user, filter) =>
+                                    //             user!.getfilteruser(filter!),
+                                    //         compareFn: (item, selectedItem) =>
+                                    //             item?.idUser == selectedItem?.idUser,
+                                    //         items: cart.usersSalesManagement,
+                                    //         itemAsString: (u) => u!.userAsString(),
+                                    //         onChanged: (data) {
+                                    //           iduser = data!.idUser!;
+                                    //           idregoin = '';
+                                    //           cart.changevalueuser(data);
+                                    //           getData();
+                                    //           //filtershow();
+                                    //         },
+                                    //         selectedItem: cart.selectedUser,
+                                    //         showSearchBox: true,
+                                    //         dropdownSearchDecoration: InputDecoration(
+                                    //           isCollapsed: true,
+                                    //           hintText: 'الموظف',
+                                    //           alignLabelWithHint: true,
+                                    //           fillColor: Colors.grey.withOpacity(0.2),
+                                    //           contentPadding: EdgeInsets.all(0),
+                                    //           border: UnderlineInputBorder(
+                                    //               borderSide: const BorderSide(
+                                    //                   color: Colors.grey)),
+                                    //         ),
+                                    //       ),
                                   ),
                                 ],
                               );

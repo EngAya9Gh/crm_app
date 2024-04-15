@@ -8,7 +8,6 @@ import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +16,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../provider/manage_provider.dart';
@@ -259,8 +259,9 @@ class _EditUserState extends State<EditUser> {
           centerTitle: true,
         ),
         body: ModalProgressHUD(
-          inAsyncCall: Provider.of<UserProvider>(context, listen: true)
-              .isUpdate, //Provider.of<LoadProvider>(context).isLoadingUpdateUser,
+          inAsyncCall:
+              Provider.of<UserProvider>(context, listen: true).isUpdate,
+          //Provider.of<LoadProvider>(context).isLoadingUpdateUser,
           child: SingleChildScrollView(
             child: ContainerShadows(
               width: double.infinity,
@@ -305,7 +306,8 @@ class _EditUserState extends State<EditUser> {
                         hint: Text("حددالإدارة"),
                         items: mangelist.listtext.map((level_one) {
                           return DropdownMenuItem(
-                            child: Text(level_one.name_mange), //label of item
+                            child: Text(level_one.name_mange),
+                            //label of item
                             value: level_one.idmange, //value of item
                           );
                         }).toList(),
@@ -400,31 +402,41 @@ class _EditUserState extends State<EditUser> {
                     RowEdit(name: 'المناطق', des: ''),
                     Consumer<MainCityProvider>(
                       builder: (context, cart, child) {
-                        return DropdownSearch<MainCityModel>.multiSelection(
-                          mode: Mode.DIALOG,
-                          filterFn: (user, filter) =>
-                              user!.getfilteruser(filter!),
-                          compareFn: (item, selectedItem) =>
-                              item?.id_maincity == selectedItem?.id_maincity,
+                        return CustomMultiSelectionDropdown<MainCityModel>(
                           items: cart.listmaincityfilter,
-                          showSelectedItems: true,
                           selectedItems: cart.selectedRegions,
-                          itemAsString: (u) => u!.userAsString(),
+                          hint: 'المنطقة',
                           onChanged: (data) {
                             cart.changeitemlist(data);
                           },
-                          showSearchBox: true,
-                          dropdownSearchDecoration: InputDecoration(
-                            isCollapsed: true,
-                            hintText: 'المنطقة',
-                            alignLabelWithHint: true,
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            contentPadding: EdgeInsets.all(0),
-                            border: UnderlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.grey)),
-                          ),
+                          itemAsString: (u) => u!.userAsString(),
                         );
+
+                        // return DropdownSearch<MainCityModel>.multiSelection(
+                        //   mode: Mode.DIALOG,
+                        //   filterFn: (user, filter) =>
+                        //       user!.getfilteruser(filter!),
+                        //   compareFn: (item, selectedItem) =>
+                        //       item?.id_maincity == selectedItem?.id_maincity,
+                        //   items: cart.listmaincityfilter,
+                        //   showSelectedItems: true,
+                        //   selectedItems: cart.selectedRegions,
+                        //   itemAsString: (u) => u!.userAsString(),
+                        //   onChanged: (data) {
+                        //     cart.changeitemlist(data);
+                        //   },
+                        //   showSearchBox: true,
+                        //   dropdownSearchDecoration: InputDecoration(
+                        //     isCollapsed: true,
+                        //     hintText: 'المنطقة',
+                        //     alignLabelWithHint: true,
+                        //     fillColor: Colors.grey.withOpacity(0.2),
+                        //     contentPadding: EdgeInsets.all(0),
+                        //     border: UnderlineInputBorder(
+                        //         borderSide:
+                        //             const BorderSide(color: Colors.grey)),
+                        //   ),
+                        // );
                       },
                     ),
                     SizedBox(height: 20),

@@ -53,7 +53,7 @@ class _AddTargetPageState extends State<AddTargetPage>
                 return TextButton(
                   onPressed: onAddTarget,
                   child: Text("Submit"),
-                  style: TextButton.styleFrom(primary: Colors.white),
+                  style: TextButton.styleFrom(foregroundColor: Colors.white),
                 );
               },
             ),

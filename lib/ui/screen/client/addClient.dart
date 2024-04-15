@@ -15,7 +15,6 @@ import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/company_vm.dart';
 import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +25,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../core/common/enums/activity_type_size.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../model/ActivityModel.dart';
 
@@ -198,32 +198,44 @@ class _addClientState extends State<addClient> {
                       builder: (context, cart, child) {
                         return SizedBox(
                           //width: 240,
-                          child: DropdownSearch<ActivityModel>(
-                            mode: Mode.DIALOG,
-                            filterFn: (user, filter) =>
-                                user!.getFilterActivityType(filter!),
-                            compareFn: (item, selectedItem) =>
-                                item?.id_activity_type ==
-                                selectedItem?.id_activity_type,
+                          child: CustomSearchableDropDown<ActivityModel>(
+                            hint: 'نوع النشاط*',
                             items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
                               cart.onChangeSelectedActivity(data);
                             },
                             selectedItem: cart.selectedActivity,
-                            showSearchBox: true,
-                            dropdownSearchDecoration: InputDecoration(
-                              isCollapsed: true,
-                              hintText: 'النشاط',
-                              alignLabelWithHint: true,
-                              fillColor: Colors.grey.withOpacity(0.2),
-                              contentPadding: EdgeInsets.all(0),
-                              border: UnderlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.grey)),
-                            ),
-                            // InputDecoration(border: InputBorder.none),
+                            filterFn: (user, filter) =>
+                                user.getFilterActivityType(filter),
                           ),
+
+                          // DropdownSearch<ActivityModel>(
+                          //   mode: Mode.DIALOG,
+                          //   filterFn: (user, filter) =>
+                          //       user!.getFilterActivityType(filter!),
+                          //   compareFn: (item, selectedItem) =>
+                          //       item?.id_activity_type ==
+                          //       selectedItem?.id_activity_type,
+                          //   items: cart.activitiesList,
+                          //   itemAsString: (u) => u!.userAsString(),
+                          //   onChanged: (data) {
+                          //     cart.onChangeSelectedActivity(data);
+                          //   },
+                          //   selectedItem: cart.selectedActivity,
+                          //   showSearchBox: true,
+                          //   dropdownSearchDecoration: InputDecoration(
+                          //     isCollapsed: true,
+                          //     hintText: 'النشاط',
+                          //     alignLabelWithHint: true,
+                          //     fillColor: Colors.grey.withOpacity(0.2),
+                          //     contentPadding: EdgeInsets.all(0),
+                          //     border: UnderlineInputBorder(
+                          //         borderSide:
+                          //             const BorderSide(color: Colors.grey)),
+                          //   ),
+                          //   // InputDecoration(border: InputBorder.none),
+                          // ),
                         );
                       },
                     ),
@@ -277,24 +289,35 @@ class _addClientState extends State<addClient> {
                       padding: const EdgeInsets.all(8.0),
                       child: Consumer<MainCityProvider>(
                         builder: (context, cart, child) {
-                          return DropdownSearch<CityModel>(
-                            mode: Mode.DIALOG,
-                            label: "المدن",
-                            validator: (val) {
-                              if (val == null) return 'من فضلك حدد اسم مدينة';
-                            },
-                            filterFn: (user, filter) =>
-                                user!.getfilteruser(filter!),
+                          return CustomSearchableDropDown<CityModel>(
+                            hint: 'اختر المدينة',
                             items: cart.listcity,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) => cityController = data!.id_city,
-                            showSearchBox: true,
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: "حدد مدينة",
-                              contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
-                              border: OutlineInputBorder(),
-                            ),
+                            filterFn: (user, filter) =>
+                                user.getfilteruser(filter),
+                            validator: (val) {
+                              if (val == null) return 'من فضلك حدد اسم مدينة';
+                            },
                           );
+                          // return DropdownSearch<CityModel>(
+                          //   mode: Mode.DIALOG,
+                          //   label: "المدن",
+                          //   validator: (val) {
+                          //     if (val == null) return 'من فضلك حدد اسم مدينة';
+                          //   },
+                          //   filterFn: (user, filter) =>
+                          //       user!.getfilteruser(filter!),
+                          //   items: cart.listcity,
+                          //   itemAsString: (u) => u!.userAsString(),
+                          //   onChanged: (data) => cityController = data!.id_city,
+                          //   showSearchBox: true,
+                          //   dropdownSearchDecoration: InputDecoration(
+                          //     labelText: "حدد مدينة",
+                          //     contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
+                          //     border: OutlineInputBorder(),
+                          //   ),
+                          // );
                         },
                       ),
                     ),

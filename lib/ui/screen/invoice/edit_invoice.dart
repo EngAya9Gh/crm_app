@@ -1,12 +1,12 @@
 import 'dart:ui' as ii;
 
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../model/invoiceModel.dart';
 import '../../../model/usermodel.dart';
 import '../../../view_model/datetime_vm.dart';
@@ -127,10 +127,8 @@ class _edit_invoiceState extends State<edit_invoice> {
                     ),
                     child: Consumer<UserProvider>(
                       builder: (context, cart, child) {
-                        return DropdownSearch<UserModel>(
-                          mode: Mode.DIALOG,
-                          filterFn: (user, filter) =>
-                              user!.getfilteruser(filter!),
+                        return CustomSearchableDropDown<UserModel>(
+                          hint: 'الموظف',
                           items: cart.usersSalesManagement,
                           itemAsString: (u) => u!.userAsString(),
                           onChanged: (data) {
@@ -138,18 +136,33 @@ class _edit_invoiceState extends State<edit_invoice> {
                             cart.changeValUserID(data.idUser);
                           },
                           selectedItem: cart.selectedUser,
-                          showSearchBox: true,
-                          dropdownSearchDecoration: InputDecoration(
-                            isCollapsed: true,
-                            hintText: 'الموظف',
-                            alignLabelWithHint: true,
-                            fillColor: Colors.grey.withOpacity(0.2),
-                            contentPadding: EdgeInsets.all(0),
-                            border: UnderlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.grey)),
-                          ),
+                          filterFn: (user, filter) =>
+                              user!.getfilteruser(filter!),
                         );
+
+                        // return DropdownSearch<UserModel>(
+                        //   mode: Mode.DIALOG,
+                        //   filterFn: (user, filter) =>
+                        //       user!.getfilteruser(filter!),
+                        //   items: cart.usersSalesManagement,
+                        //   itemAsString: (u) => u!.userAsString(),
+                        //   onChanged: (data) {
+                        //     iduser = data!.idUser;
+                        //     cart.changeValUserID(data.idUser);
+                        //   },
+                        //   selectedItem: cart.selectedUser,
+                        //   showSearchBox: true,
+                        //   dropdownSearchDecoration: InputDecoration(
+                        //     isCollapsed: true,
+                        //     hintText: 'الموظف',
+                        //     alignLabelWithHint: true,
+                        //     fillColor: Colors.grey.withOpacity(0.2),
+                        //     contentPadding: EdgeInsets.all(0),
+                        //     border: UnderlineInputBorder(
+                        //         borderSide:
+                        //             const BorderSide(color: Colors.grey)),
+                        //   ),
+                        // );
                       },
                     ),
                   ),

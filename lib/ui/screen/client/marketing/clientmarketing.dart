@@ -8,12 +8,12 @@ import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../features/clients_list/presentation/pages/action_client_page.dart';
@@ -248,13 +248,9 @@ class _clientmarketingState extends State<clientmarketing> {
                                       SizedBox(width: 10),
                                     },
                                     Expanded(
-                                      child: DropdownSearch<UserModel>(
-                                        mode: Mode.DIALOG,
-                                        filterFn: (user, filter) =>
-                                            user!.getfilteruser(filter!),
-                                        compareFn: (item, selectedItem) =>
-                                            item?.idUser ==
-                                            selectedItem?.idUser,
+                                      child:
+                                          CustomSearchableDropDown<UserModel>(
+                                        hint: 'الموظف',
                                         items: cart.usersMarketingManagement,
                                         itemAsString: (u) => u!.userAsString(),
                                         onChanged: (data) {
@@ -263,20 +259,37 @@ class _clientmarketingState extends State<clientmarketing> {
                                           filtershow();
                                         },
                                         selectedItem: cart.selectedUser,
-                                        showSearchBox: true,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          isCollapsed: true,
-                                          hintText: 'الموظف',
-                                          alignLabelWithHint: true,
-                                          fillColor:
-                                              Colors.grey.withOpacity(0.2),
-                                          contentPadding: EdgeInsets.all(0),
-                                          border: UnderlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  color: Colors.grey)),
-                                        ),
                                       ),
+
+                                      // DropdownSearch<UserModel>(
+                                      //   mode: Mode.DIALOG,
+                                      //   filterFn: (user, filter) =>
+                                      //       user!.getfilteruser(filter!),
+                                      //   compareFn: (item, selectedItem) =>
+                                      //       item?.idUser ==
+                                      //       selectedItem?.idUser,
+                                      //   items: cart.usersMarketingManagement,
+                                      //   itemAsString: (u) => u!.userAsString(),
+                                      //   onChanged: (data) {
+                                      //     iduser = data!.idUser;
+                                      //     cart.changevalueuser(data);
+                                      //     filtershow();
+                                      //   },
+                                      //   selectedItem: cart.selectedUser,
+                                      //   showSearchBox: true,
+                                      //   dropdownSearchDecoration:
+                                      //       InputDecoration(
+                                      //     isCollapsed: true,
+                                      //     hintText: 'الموظف',
+                                      //     alignLabelWithHint: true,
+                                      //     fillColor:
+                                      //         Colors.grey.withOpacity(0.2),
+                                      //     contentPadding: EdgeInsets.all(0),
+                                      //     border: UnderlineInputBorder(
+                                      //         borderSide: const BorderSide(
+                                      //             color: Colors.grey)),
+                                      //   ),
+                                      // ),
                                     ),
                                   ],
                                 );
@@ -308,51 +321,48 @@ class _clientmarketingState extends State<clientmarketing> {
                                 SizedBox(width: 10),
                               },
                               Expanded(
-                                child: DropdownSearch<ActivityModel>(
-                                  mode: Mode.DIALOG,
-                                  filterFn: (user, filter) =>
-                                      user!.getFilterActivityType(filter!),
-                                  compareFn: (item, selectedItem) =>
-                                      item?.id_activity_type ==
-                                      selectedItem?.id_activity_type,
+                                child: CustomSearchableDropDown<ActivityModel>(
+                                  hint: 'النشاط',
                                   items: cart.activitiesList,
                                   itemAsString: (u) => u!.userAsString(),
                                   onChanged: (data) {
-                                    // iduser = data!.id_activity_type;
                                     cart.onChangeSelectedActivity(data);
                                     activity =
                                         data?.id_activity_type.toString();
                                     filtershow();
                                   },
                                   selectedItem: cart.selectedActivity,
-                                  showSearchBox: true,
-                                  dropdownSearchDecoration: InputDecoration(
-                                    isCollapsed: true,
-                                    hintText: 'النشاط',
-                                    alignLabelWithHint: true,
-                                    fillColor: Colors.grey.withOpacity(0.2),
-                                    contentPadding: EdgeInsets.all(0),
-                                    border: UnderlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.grey)),
-                                  ),
-                                  // InputDecoration(border: InputBorder.none),
                                 ),
-                                // DropdownButton(
-                                //   isExpanded: true,
-                                //   hint: Text("النشاط"),
-                                //   items: cart.list_activity.map((level_one) {
-                                //     return DropdownMenuItem(
-                                //       child: Text(level_one.name_activity_type), //label of item
-                                //       value: level_one.id_activity_type, //value of item
-                                //     );
-                                //   }).toList(),
-                                //   value: cart.selectedValueOut,
-                                //   onChanged: (value) {
-                                //     cart.changevalueOut(value.toString());
-                                //     activity = value.toString();
+
+                                // DropdownSearch<ActivityModel>(
+                                //   mode: Mode.DIALOG,
+                                //   filterFn: (user, filter) =>
+                                //       user!.getFilterActivityType(filter!),
+                                //   compareFn: (item, selectedItem) =>
+                                //       item?.id_activity_type ==
+                                //       selectedItem?.id_activity_type,
+                                //   items: cart.activitiesList,
+                                //   itemAsString: (u) => u!.userAsString(),
+                                //   onChanged: (data) {
+                                //     // iduser = data!.id_activity_type;
+                                //     cart.onChangeSelectedActivity(data);
+                                //     activity =
+                                //         data?.id_activity_type.toString();
                                 //     filtershow();
                                 //   },
+                                //   selectedItem: cart.selectedActivity,
+                                //   showSearchBox: true,
+                                //   dropdownSearchDecoration: InputDecoration(
+                                //     isCollapsed: true,
+                                //     hintText: 'النشاط',
+                                //     alignLabelWithHint: true,
+                                //     fillColor: Colors.grey.withOpacity(0.2),
+                                //     contentPadding: EdgeInsets.all(0),
+                                //     border: UnderlineInputBorder(
+                                //         borderSide: const BorderSide(
+                                //             color: Colors.grey)),
+                                //   ),
+                                //   // InputDecoration(border: InputBorder.none),
                                 // ),
                               ),
                             ],

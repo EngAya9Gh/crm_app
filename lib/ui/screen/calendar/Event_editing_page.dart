@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 class EventEditingPage extends StatefulWidget {
   final EventModel? event;
+
   const EventEditingPage({this.event, Key? key}) : super(key: key);
 
   @override
@@ -17,6 +18,7 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
   final titleController = TextEditingController();
   late DateTime fromDate;
   late DateTime toDate;
+
   @override
   void initState() {
     super.initState();
@@ -63,7 +65,7 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
   List<Widget> buildEditingActions() => [
         ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            primary: Colors.transparent,
+            backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
           ),
           onPressed: saveForm,
@@ -71,6 +73,7 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
           label: Text('SAVE'),
         )
       ];
+
   Widget buildTitle() => TextFormField(
         style: TextStyle(fontSize: 24),
         decoration: InputDecoration(
@@ -91,6 +94,7 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
           buildTo(),
         ],
       );
+
   Widget buildForm() => buildHeader(
         header: 'FROM',
         child: Row(
@@ -115,6 +119,7 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
           ],
         ),
       );
+
   Widget buildTo() => buildHeader(
         header: 'TO',
         child: Row(
@@ -139,6 +144,7 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
           ],
         ),
       );
+
   Future pickFromDateTime({required bool pickDate}) async {
     final date = await pickDateTime(
       context,
@@ -238,6 +244,7 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
           child
         ],
       );
+
   Future saveForm() async {
     final isValid = _formKey.currentState!.validate();
     if (isValid) {
@@ -248,7 +255,8 @@ class _EventEditingPAgeState extends State<EventEditingPage> {
           description: 'description',
           isAllDay: false,
           fkIdClient: '',
-          idinvoice: '', typedate: '');
+          idinvoice: '',
+          typedate: '');
       //for edit
       final isEditing = widget.event != null;
 

@@ -1,12 +1,12 @@
 import 'package:crm_smart/view_model/communication_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../model/usermodel.dart';
 import '../../../provider/selected_button_provider.dart';
 import '../../../view_model/user_vm_provider.dart';
@@ -159,14 +159,10 @@ class _View_installedClientState extends State<View_installedClient> {
                           SizedBox(width: 10),
                         },
                         Expanded(
-                          child: DropdownSearch<UserModel>(
-                            mode: Mode.DIALOG,
-                            filterFn: (user, filter) =>
-                                user!.getfilteruser(filter!),
-                            compareFn: (item, selectedItem) =>
-                                item?.idUser == selectedItem?.idUser,
-                            showSelectedItems: true,
+                          child: CustomSearchableDropDown<UserModel>(
+                            hint: 'الموظف',
                             items: user.usersSupportManagement,
+                            selectedItem: user.selectedUser,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
                               context
@@ -175,20 +171,40 @@ class _View_installedClientState extends State<View_installedClient> {
                               employeeId = data?.idUser;
                               filtershow();
                             },
-                            selectedItem: user.selectedUser,
-                            showSearchBox: true,
-                            dropdownSearchDecoration: InputDecoration(
-                              isCollapsed: true,
-                              hintText: 'الموظف',
-                              alignLabelWithHint: true,
-                              fillColor: Colors.grey.withOpacity(0.2),
-                              contentPadding: EdgeInsets.all(0),
-                              border: UnderlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.grey)),
-                            ),
-                            // InputDecoration(border: InputBorder.none),
+                            filterFn: (user, filter) =>
+                                user.getfilteruser(filter),
                           ),
+
+                          // DropdownSearch<UserModel>(
+                          //   mode: Mode.DIALOG,
+                          //   filterFn: (user, filter) =>
+                          //       user!.getfilteruser(filter!),
+                          //   compareFn: (item, selectedItem) =>
+                          //       item?.idUser == selectedItem?.idUser,
+                          //   showSelectedItems: true,
+                          //   items: user.usersSupportManagement,
+                          //   itemAsString: (u) => u!.userAsString(),
+                          //   onChanged: (data) {
+                          //     context
+                          //         .read<UserProvider>()
+                          //         .changevalueuser(data);
+                          //     employeeId = data?.idUser;
+                          //     filtershow();
+                          //   },
+                          //   selectedItem: user.selectedUser,
+                          //   showSearchBox: true,
+                          //   dropdownSearchDecoration: InputDecoration(
+                          //     isCollapsed: true,
+                          //     hintText: 'الموظف',
+                          //     alignLabelWithHint: true,
+                          //     fillColor: Colors.grey.withOpacity(0.2),
+                          //     contentPadding: EdgeInsets.all(0),
+                          //     border: UnderlineInputBorder(
+                          //         borderSide:
+                          //             const BorderSide(color: Colors.grey)),
+                          //   ),
+                          //   // InputDecoration(border: InputBorder.none),
+                          // ),
                         ),
                       ],
                     );

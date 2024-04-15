@@ -17,7 +17,6 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -33,6 +32,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../core/common/helpers/helper_functions.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -303,7 +303,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         onPressed: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               CupertinoPageRoute(
-                                builder: (context) => add_invoiceProduct(
+                                builder: (context) => AddInvoiceProduct(
                                     invoice: _invoice
                                     // Provider.of<invoice_vm>(context,listen: false)
                                     //     .listinvoiceClient[widget.indexinvoice],
@@ -2078,12 +2078,8 @@ class _AddInvoiceState extends State<AddInvoice> {
     required ParticipateModel? selectedValue,
     required SellerType selectedSellerType,
   }) {
-    return DropdownSearch<ParticipateModel>(
-      mode: Mode.DIALOG,
-      filterFn: (user, filter) => user!.getFilterParticipate(filter ?? ''),
-      compareFn: (item, selectedItem) =>
-          item?.id_participate == selectedItem?.id_participate,
-      showSelectedItems: true,
+    return CustomSearchableDropDown<ParticipateModel>(
+      hint: 'اختر المتعاون',
       items: participates,
       itemAsString: (u) => u!.name_participate,
       onChanged: (seller) {
@@ -2091,7 +2087,9 @@ class _AddInvoiceState extends State<AddInvoice> {
             .onChangeSelectedCollaborator(seller as ParticipateModel);
       },
       selectedItem: selectedValue,
-      showSearchBox: true,
+      filterFn: (user, filter) => user!.getFilterParticipate(filter ?? ''),
+      compareFn: (item, selectedItem) =>
+          item.id_participate == selectedItem.id_participate,
       validator: (text) {
         if (selectedSellerType == SellerType.employee) {
           return null;
@@ -2102,16 +2100,42 @@ class _AddInvoiceState extends State<AddInvoice> {
         }
         return null;
       },
-      dropdownSearchDecoration: InputDecoration(
-        isCollapsed: true,
-        hintText: 'اختر المتعاون',
-        alignLabelWithHint: true,
-        fillColor: Colors.grey.withOpacity(0.2),
-        contentPadding: EdgeInsets.all(0),
-        border: UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.grey)),
-      ),
     );
+
+    // return DropdownSearch<ParticipateModel>(
+    //   mode: Mode.DIALOG,
+    //   filterFn: (user, filter) => user!.getFilterParticipate(filter ?? ''),
+    //   compareFn: (item, selectedItem) =>
+    //       item?.id_participate == selectedItem?.id_participate,
+    //   showSelectedItems: true,
+    //   items: participates,
+    //   itemAsString: (u) => u!.name_participate,
+    //   onChanged: (seller) {
+    //     invoiceViewmodel
+    //         .onChangeSelectedCollaborator(seller as ParticipateModel);
+    //   },
+    //   selectedItem: selectedValue,
+    //   showSearchBox: true,
+    //   validator: (text) {
+    //     if (selectedSellerType == SellerType.employee) {
+    //       return null;
+    //     }
+    //
+    //     if (text == null) {
+    //       return 'هذا الحقل مطلوب';
+    //     }
+    //     return null;
+    //   },
+    //   dropdownSearchDecoration: InputDecoration(
+    //     isCollapsed: true,
+    //     hintText: 'اختر المتعاون',
+    //     alignLabelWithHint: true,
+    //     fillColor: Colors.grey.withOpacity(0.2),
+    //     contentPadding: EdgeInsets.all(0),
+    //     border: UnderlineInputBorder(
+    //         borderSide: const BorderSide(color: Colors.grey)),
+    //   ),
+    // );
   }
 
   Widget sellerDropdown<T>(

@@ -21,7 +21,6 @@ import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,6 +30,7 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common/models/page_state/bloc_status.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_elvated_button.dart';
@@ -2051,32 +2051,17 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
       builder: (context) {
         return Consumer2<UserProvider, EventProvider>(
           builder: (context, user, event, child) {
-            return DropdownSearch<UserModel>(
-              dropdownButtonBuilder: (context) => SizedBox.shrink(),
-              mode: Mode.DIALOG,
+            return CustomSearchableDropDown<UserModel>(
+              hint: 'موظف الدعم الفني',
+              items: user.usersSupportManagement,
+              itemAsString: (u) => u!.userAsString(),
+              onChanged: (selectedUser) {
+                onSelectUser(selectedUser);
+              },
+              selectedItem: user.selectedUser,
               filterFn: (user, filter) => user!.getfilteruser(filter!),
               compareFn: (item, selectedItem) =>
                   item?.idUser == selectedItem?.idUser,
-              showSelectedItems: true,
-              items: user.usersSupportManagement,
-              itemAsString: (u) => u!.userAsString(),
-              onChanged: (user) {
-                onSelectUser(user);
-              },
-              selectedItem: user.selectedUser,
-              showSearchBox: true,
-              dropdownSearchDecoration: InputDecoration(
-                isCollapsed: true,
-                hintText: 'موظف الدعم الفني',
-                alignLabelWithHint: true,
-                fillColor: Colors.grey.withOpacity(0.2),
-                border: UnderlineInputBorder(
-                    borderSide: const BorderSide(
-                  color: Colors.grey,
-                )),
-                contentPadding: EdgeInsets.zero,
-                suffix: Icon(Icons.arrow_drop_down),
-              ),
               validator: (value) {
                 if (value == null) {
                   return 'يرجى اختيار موظف الدعم الفني';
@@ -2084,6 +2069,40 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
                 return null;
               },
             );
+
+            //   DropdownSearch<UserModel>(
+            //   dropdownButtonBuilder: (context) => SizedBox.shrink(),
+            //   mode: Mode.DIALOG,
+            //   filterFn: (user, filter) => user!.getfilteruser(filter!),
+            //   compareFn: (item, selectedItem) =>
+            //       item?.idUser == selectedItem?.idUser,
+            //   showSelectedItems: true,
+            //   items: user.usersSupportManagement,
+            //   itemAsString: (u) => u!.userAsString(),
+            //   onChanged: (user) {
+            //     onSelectUser(user);
+            //   },
+            //   selectedItem: user.selectedUser,
+            //   showSearchBox: true,
+            //   dropdownSearchDecoration: InputDecoration(
+            //     isCollapsed: true,
+            //     hintText: 'موظف الدعم الفني',
+            //     alignLabelWithHint: true,
+            //     fillColor: Colors.grey.withOpacity(0.2),
+            //     border: UnderlineInputBorder(
+            //         borderSide: const BorderSide(
+            //       color: Colors.grey,
+            //     )),
+            //     contentPadding: EdgeInsets.zero,
+            //     suffix: Icon(Icons.arrow_drop_down),
+            //   ),
+            //   validator: (value) {
+            //     if (value == null) {
+            //       return 'يرجى اختيار موظف الدعم الفني';
+            //     }
+            //     return null;
+            //   },
+            // );
           },
         );
       },

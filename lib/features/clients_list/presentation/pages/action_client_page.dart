@@ -13,7 +13,6 @@ import 'package:crm_smart/features/manage_withdrawals/presentation/manager/manag
 import 'package:crm_smart/model/companyModel.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +23,7 @@ import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../constantsList.dart';
 import '../../../../core/common/enums/activity_type_size.dart';
+import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_styles.dart';
 import '../../../../core/utils/responsive_padding.dart';
@@ -320,80 +320,92 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               Expanded(
                                 child: Consumer<ActivityProvider>(
                                   builder: (context, cart, child) {
-                                    return DropdownSearch<ActivityModel>(
-                                      mode: Mode.DIALOG,
-                                      popupItemBuilder:
-                                          customPopupItemBuilderForActivityTypeList,
-                                      filterFn: (activity, filter) => activity!
-                                          .getFilterActivityType(filter!),
-                                      compareFn: (item, selectedItem) =>
-                                          item?.id_activity_type ==
-                                          selectedItem?.id_activity_type,
+                                    return CustomSearchableDropDown<
+                                        ActivityModel>(
+                                      hint: "نوع النشاط*",
                                       items: cart.activitiesList,
                                       itemAsString: (u) => u!.userAsString(),
+                                      selectedItem: cart.selectedActivity,
                                       onChanged: (data) {
                                         cart.onChangeSelectedActivity(data);
                                       },
-                                      selectedItem: cart.selectedActivity,
-                                      showSearchBox: true,
-                                      validator: (value) {
-                                        if (_selectedClientRegistrationTye ==
-                                            'خاطئ') return null;
-                                        if (value == null) {
-                                          return 'هذا الحقل مطلوب.';
-                                        }
-                                      },
-                                      dropdownSearchDecoration: InputDecoration(
-                                        isCollapsed: true,
-                                        hintText: 'نوع النشاط*',
-                                        hintStyle: context.textTheme.titleSmall
-                                            ?.copyWith(color: Colors.grey),
-                                        contentPadding:
-                                            HWEdgeInsetsDirectional.only(
-                                                start: 12, end: 12),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: context.colorScheme.error),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: context.colorScheme.error),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                      ),
-                                      // InputDecoration(border: InputBorder.none),
+                                      filterFn: (activity, filter) => activity
+                                          .getFilterActivityType(filter),
                                     );
+                                    // return DropdownSearch<ActivityModel>(
+                                    //   mode: Mode.DIALOG,
+                                    //   popupItemBuilder:
+                                    //       customPopupItemBuilderForActivityTypeList,
+                                    //   filterFn: (activity, filter) => activity!
+                                    //       .getFilterActivityType(filter!),
+                                    //   compareFn: (item, selectedItem) =>
+                                    //       item?.id_activity_type ==
+                                    //       selectedItem?.id_activity_type,
+                                    //   items: cart.activitiesList,
+                                    //   itemAsString: (u) => u!.userAsString(),
+                                    //   onChanged: (data) {
+                                    //     cart.onChangeSelectedActivity(data);
+                                    //   },
+                                    //   selectedItem: cart.selectedActivity,
+                                    //   showSearchBox: true,
+                                    //   validator: (value) {
+                                    //     if (_selectedClientRegistrationTye ==
+                                    //         'خاطئ') return null;
+                                    //     if (value == null) {
+                                    //       return 'هذا الحقل مطلوب.';
+                                    //     }
+                                    //   },
+                                    //   dropdownSearchDecoration: InputDecoration(
+                                    //     isCollapsed: true,
+                                    //     hintText: 'نوع النشاط*',
+                                    //     hintStyle: context.textTheme.titleSmall
+                                    //         ?.copyWith(color: Colors.grey),
+                                    //     contentPadding:
+                                    //         HWEdgeInsetsDirectional.only(
+                                    //             start: 12, end: 12),
+                                    //     border: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color:
+                                    //               context.colorScheme.primary),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     focusedBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color:
+                                    //               context.colorScheme.primary),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     enabledBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color:
+                                    //               context.colorScheme.primary),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     disabledBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color:
+                                    //               context.colorScheme.primary),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     errorBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color: context.colorScheme.error),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     focusedErrorBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color: context.colorScheme.error),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //   ),
+                                    //   // InputDecoration(border: InputBorder.none),
+                                    // );
                                   },
                                 ),
                               ),
@@ -448,13 +460,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
                               Expanded(
                                 child: Consumer<MainCityProvider>(
                                   builder: (context, cart, child) {
-                                    return DropdownSearch<CityModel>(
-                                      mode: Mode.DIALOG,
-                                      filterFn: (city, filter) =>
-                                          city!.getfilteruser(filter!),
+                                    return CustomSearchableDropDown<CityModel>(
+                                      hint: "المدينة*",
                                       items: cart.listcity,
-                                      popupItemBuilder:
-                                          _customPopupItemBuilderForCityList,
                                       itemAsString: (u) => u!.userAsString(),
                                       selectedItem: cart.listcity
                                           .firstWhereOrNull((element) =>
@@ -466,81 +474,103 @@ class _ActionClientPageState extends State<ActionClientPage> {
 
                                         selectedCity = data.id_city;
                                       },
-
-                                      dropdownBuilder: (context, u) {
-                                        return u != null
-                                            ? Text(
-                                                u.name_city!,
-                                                style: context
-                                                    .textTheme.titleSmall,
-                                                overflow: TextOverflow.ellipsis,
-                                              )
-                                            : Text(
-                                                "المدينة *",
-                                                style: context
-                                                    .textTheme.titleSmall
-                                                    ?.copyWith(
-                                                        color: Colors.grey),
-                                              );
-                                      },
-                                      showSearchBox: true,
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return 'هذا الحقل مطلوب.';
-                                        }
-                                        return null;
-                                      },
-                                      dropdownSearchDecoration: InputDecoration(
-                                        isCollapsed: true,
-                                        hintText: 'المدينة*',
-                                        hintStyle: context.textTheme.titleSmall
-                                            ?.copyWith(color: Colors.grey),
-                                        contentPadding:
-                                            HWEdgeInsetsDirectional.only(
-                                                start: 12, end: 12),
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        disabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color:
-                                                  context.colorScheme.primary),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        errorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: context.colorScheme.error),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                        focusedErrorBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: context.colorScheme.error),
-                                          borderRadius:
-                                              BorderRadius.circular(10).r,
-                                        ),
-                                      ),
-                                      // InputDecoration(border: InputBorder.none),
+                                      filterFn: (city, filter) =>
+                                          city.getfilteruser(filter),
                                     );
+
+                                    // return DropdownSearch<CityModel>(
+                                    //   mode: Mode.DIALOG,
+                                    //   filterFn: (city, filter) =>
+                                    //       city!.getfilteruser(filter!),
+                                    //   items: cart.listcity,
+                                    //   popupItemBuilder:
+                                    //       _customPopupItemBuilderForCityList,
+                                    //   itemAsString: (u) => u!.userAsString(),
+                                    //   selectedItem: cart.listcity
+                                    //       .firstWhereOrNull((element) =>
+                                    //           element.id_city == selectedCity),
+                                    //   onChanged: (data) {
+                                    //     if (data == null) {
+                                    //       return;
+                                    //     }
+                                    //
+                                    //     selectedCity = data.id_city;
+                                    //   },
+                                    //
+                                    //   dropdownBuilder: (context, u) {
+                                    //     return u != null
+                                    //         ? Text(
+                                    //             u.name_city!,
+                                    //             style: context
+                                    //                 .textTheme.titleSmall,
+                                    //             overflow: TextOverflow.ellipsis,
+                                    //           )
+                                    //         : Text(
+                                    //             "المدينة *",
+                                    //             style: context
+                                    //                 .textTheme.titleSmall
+                                    //                 ?.copyWith(
+                                    //                     color: Colors.grey),
+                                    //           );
+                                    //   },
+                                    //   showSearchBox: true,
+                                    //   validator: (value) {
+                                    //     if (value == null) {
+                                    //       return 'هذا الحقل مطلوب.';
+                                    //     }
+                                    //     return null;
+                                    //   },
+                                    //   dropdownSearchDecoration: InputDecoration(
+                                    //     isCollapsed: true,
+                                    //     hintText: 'المدينة*',
+                                    //     hintStyle: context.textTheme.titleSmall
+                                    //         ?.copyWith(color: Colors.grey),
+                                    //     contentPadding:
+                                    //         HWEdgeInsetsDirectional.only(
+                                    //             start: 12, end: 12),
+                                    //     border: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color:
+                                    //               context.colorScheme.primary),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     focusedBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color:
+                                    //               context.colorScheme.primary),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     enabledBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color:
+                                    //               context.colorScheme.primary),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     disabledBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color:
+                                    //               context.colorScheme.primary),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     errorBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color: context.colorScheme.error),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //     focusedErrorBorder: OutlineInputBorder(
+                                    //       borderSide: BorderSide(
+                                    //           color: context.colorScheme.error),
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(10).r,
+                                    //     ),
+                                    //   ),
+                                    //   // InputDecoration(border: InputBorder.none),
+                                    // );
                                   },
                                 ),
                               ),
@@ -874,7 +904,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
       // reason: reasonController.text,
       // dateChangeType: _clientTypeProvider.selectedValuemanag != null
       //     ? formatter.format(DateTime.now())
-          // : null,
+      // : null,
       // datePrice: _clientTypeProvider.selectedValuemanag == "عرض سعر"
       //     ? dateOfferPrice.toIso8601String()
       //     : null,

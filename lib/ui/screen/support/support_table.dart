@@ -1,5 +1,6 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/common/widgets/custom_multi_selection_dropdown.dart';
 import 'package:crm_smart/model/appointment_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -10,9 +11,11 @@ import 'package:crm_smart/view_model/maincity_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
+import '../../../core/utils/app_strings.dart';
 
 class support_table extends StatefulWidget {
   const support_table({Key? key}) : super(key: key);
@@ -121,59 +124,94 @@ class _support_tableState extends State<support_table> {
                       // ),
                       Consumer<MainCityProvider>(
                     builder: (context, cart, child) {
-                      return DropdownSearch<MainCityModel>.multiSelection(
-                        mode: Mode.DIALOG,
-                        filterFn: (user, filter) =>
-                            user!.getfilteruser(filter!),
-                        compareFn: (item, selectedItem) =>
-                            item?.id_maincity == selectedItem?.id_maincity,
-                        // itemAsString: (UserModel u) => u.userAsStringByName(),
+                      return CustomMultiSelectionDropdown<MainCityModel>(
                         items: cart.listmaincityfilter,
-                        showSelectedItems: true,
                         selectedItems: cart.selectedRegions,
-                        itemAsString: (u) => u!.userAsString(),
+                        hint: 'المنطقة',
                         onChanged: (data) {
-                          for (int i = 0; i < data.length; i++)
-
-                            // selecteditemmaincity=data;
-
+                          for (int i = 0; i < data.length; i++) {
                             cart.changeitemlist(data);
+                          }
 
                           if (data
                               .any((element) => element.id_maincity == '0')) {
-                            _eventProvider.onChangeFkMainCity(cart
-                                .listmaincityfilter
-                                .where((element) => element.id_maincity != "0")
-                                .map((e) => e.id_maincity)
-                                .toList());
+                            _eventProvider.onChangeFkMainCity(
+                              cart.listmaincityfilter
+                                  .where(
+                                      (element) => element.id_maincity != "0")
+                                  .map((e) => e.id_maincity)
+                                  .toList(),
+                            );
                           } else {
                             _eventProvider.onChangeFkMainCity(
-                                data.map((e) => e.id_maincity).toList());
+                              data.map((e) => e.id_maincity).toList(),
+                            );
                           }
-                          // Provider.of<EventProvider>(context, listen: false).getevents('', data, "regoin");
                         },
-                        //selectedItem: cart.selecteduser,
-                        showSearchBox: true,
-                        dropdownSearchDecoration: InputDecoration(
-                          //filled: true,
-                          isCollapsed: true,
-                          hintText: 'المنطقة',
-                          alignLabelWithHint: true,
-                          fillColor: Colors.grey.withOpacity(0.2),
-                          //labelText: "choose a user",
-                          contentPadding: EdgeInsets.all(0),
-                          //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                          // focusedBorder: OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: const BorderSide(color: Colors.white)),
-                          border: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.grey)),
-                          // OutlineInputBorder(
-                          //     borderRadius: BorderRadius.circular(10),
-                          //     borderSide: const BorderSide( color: Colors.white)),
-                        ),
-                        // InputDecoration(border: InputBorder.none),
+                        itemAsString: (u) => u!.userAsString(),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return AppStrings.messageEmpty;
+                          }
+                          return null;
+                        },
+                        border: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey)),
                       );
+
+                      // return DropdownSearch<MainCityModel>.multiSelection(
+                      //   mode: Mode.DIALOG,
+                      //   filterFn: (user, filter) =>
+                      //       user!.getfilteruser(filter!),
+                      //   compareFn: (item, selectedItem) =>
+                      //       item?.id_maincity == selectedItem?.id_maincity,
+                      //   // itemAsString: (UserModel u) => u.userAsStringByName(),
+                      //   items: cart.listmaincityfilter,
+                      //   showSelectedItems: true,
+                      //   selectedItems: cart.selectedRegions,
+                      //   itemAsString: (u) => u!.userAsString(),
+                      //   onChanged: (data) {
+                      //     for (int i = 0; i < data.length; i++)
+                      //
+                      //       // selecteditemmaincity=data;
+                      //
+                      //       cart.changeitemlist(data);
+                      //
+                      //     if (data
+                      //         .any((element) => element.id_maincity == '0')) {
+                      //       _eventProvider.onChangeFkMainCity(cart
+                      //           .listmaincityfilter
+                      //           .where((element) => element.id_maincity != "0")
+                      //           .map((e) => e.id_maincity)
+                      //           .toList());
+                      //     } else {
+                      //       _eventProvider.onChangeFkMainCity(
+                      //           data.map((e) => e.id_maincity).toList());
+                      //     }
+                      //     // Provider.of<EventProvider>(context, listen: false).getevents('', data, "regoin");
+                      //   },
+                      //   //selectedItem: cart.selecteduser,
+                      //   showSearchBox: true,
+                      //   dropdownSearchDecoration: InputDecoration(
+                      //     //filled: true,
+                      //     isCollapsed: true,
+                      //     hintText: 'المنطقة',
+                      //     alignLabelWithHint: true,
+                      //     fillColor: Colors.grey.withOpacity(0.2),
+                      //     //labelText: "choose a user",
+                      //     contentPadding: EdgeInsets.all(0),
+                      //     //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      //     // focusedBorder: OutlineInputBorder(
+                      //     //     borderRadius: BorderRadius.circular(10),
+                      //     //     borderSide: const BorderSide(color: Colors.white)),
+                      //     border: UnderlineInputBorder(
+                      //         borderSide: const BorderSide(color: Colors.grey)),
+                      //     // OutlineInputBorder(
+                      //     //     borderRadius: BorderRadius.circular(10),
+                      //     //     borderSide: const BorderSide( color: Colors.white)),
+                      //   ),
+                      //   // InputDecoration(border: InputBorder.none),
+                      // );
                     },
                   ),
                 ),
@@ -197,17 +235,8 @@ class _support_tableState extends State<support_table> {
                             SizedBox(width: 10),
                           },
                           Expanded(
-                            child: DropdownSearch<UserModel>(
-                              mode: Mode.DIALOG,
-                              // label: " الموظف ",
-                              //hint: 'الموظف',
-                              //onFind: (String filter) => cart.getfilteruser(filter),
-                              filterFn: (user, filter) =>
-                                  user!.getfilteruser(filter!),
-                              compareFn: (item, selectedItem) =>
-                                  item?.idUser == selectedItem?.idUser,
-                              showSelectedItems: true,
-                              // itemAsString: (UserModel u) => u.userAsStringByName(),
+                            child: CustomSearchableDropDown<UserModel>(
+                              hint: 'الموظف',
                               items: user.usersSupportManagement,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
@@ -216,34 +245,67 @@ class _support_tableState extends State<support_table> {
                                     .read<UserProvider>()
                                     .changevalueuser(data);
                                 _eventProvider.onChangeFkUser(iduser);
-                                // Provider.of<EventProvider>(context, listen: false).getevents(iduser, [], "user");
-
-                                // Provider.of<client_vm>(context, listen: false)
-                                //     .getclientfilter_Local(iduser!,"user");
                               },
                               selectedItem: user.selectedUser,
-                              showSearchBox: true,
-                              dropdownSearchDecoration: InputDecoration(
-                                //filled: true,
-                                isCollapsed: true,
-                                hintText: 'الموظف',
-                                alignLabelWithHint: true,
-                                fillColor: Colors.grey.withOpacity(0.2),
-                                //labelText: "choose a user",
-                                contentPadding: EdgeInsets.all(0),
-                                //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                // focusedBorder: OutlineInputBorder(
-                                //     borderRadius: BorderRadius.circular(10),
-                                //     borderSide: const BorderSide(color: Colors.white)),
-                                border: UnderlineInputBorder(
-                                    borderSide:
-                                        const BorderSide(color: Colors.grey)),
-                                // OutlineInputBorder(
-                                //     borderRadius: BorderRadius.circular(10),
-                                //     borderSide: const BorderSide( color: Colors.white)),
-                              ),
-                              // InputDecoration(border: InputBorder.none),
+                              filterFn: (user, filter) =>
+                                  user!.getfilteruser(filter!),
+                              compareFn: (item, selectedItem) =>
+                                  item?.idUser == selectedItem?.idUser,
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'يرجى اختيار الموظف';
+                                }
+                                return null;
+                              },
                             ),
+
+                            // DropdownSearch<UserModel>(
+                            //   mode: Mode.DIALOG,
+                            //   // label: " الموظف ",
+                            //   //hint: 'الموظف',
+                            //   //onFind: (String filter) => cart.getfilteruser(filter),
+                            //   filterFn: (user, filter) =>
+                            //       user!.getfilteruser(filter!),
+                            //   compareFn: (item, selectedItem) =>
+                            //       item?.idUser == selectedItem?.idUser,
+                            //   showSelectedItems: true,
+                            //   // itemAsString: (UserModel u) => u.userAsStringByName(),
+                            //   items: user.usersSupportManagement,
+                            //   itemAsString: (u) => u!.userAsString(),
+                            //   onChanged: (data) {
+                            //     iduser = data!.idUser!;
+                            //     context
+                            //         .read<UserProvider>()
+                            //         .changevalueuser(data);
+                            //     _eventProvider.onChangeFkUser(iduser);
+                            //     // Provider.of<EventProvider>(context, listen: false).getevents(iduser, [], "user");
+                            //
+                            //     // Provider.of<client_vm>(context, listen: false)
+                            //     //     .getclientfilter_Local(iduser!,"user");
+                            //   },
+                            //   selectedItem: user.selectedUser,
+                            //   showSearchBox: true,
+                            //   dropdownSearchDecoration: InputDecoration(
+                            //     //filled: true,
+                            //     isCollapsed: true,
+                            //     hintText: 'الموظف',
+                            //     alignLabelWithHint: true,
+                            //     fillColor: Colors.grey.withOpacity(0.2),
+                            //     //labelText: "choose a user",
+                            //     contentPadding: EdgeInsets.all(0),
+                            //     //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                            //     // focusedBorder: OutlineInputBorder(
+                            //     //     borderRadius: BorderRadius.circular(10),
+                            //     //     borderSide: const BorderSide(color: Colors.white)),
+                            //     border: UnderlineInputBorder(
+                            //         borderSide:
+                            //             const BorderSide(color: Colors.grey)),
+                            //     // OutlineInputBorder(
+                            //     //     borderRadius: BorderRadius.circular(10),
+                            //     //     borderSide: const BorderSide( color: Colors.white)),
+                            //   ),
+                            //   // InputDecoration(border: InputBorder.none),
+                            // ),
                           ),
                         ],
                       );

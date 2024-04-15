@@ -7,57 +7,52 @@ import 'package:crm_smart/ui/widgets/invoice_widget/CardProduct_Invoice.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/product_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_button/group_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 
 enum ProductType { device, program }
 
-class add_invoiceProduct extends StatefulWidget {
-  add_invoiceProduct(
-      {required this.invoice,
-      // required this.indexinvoic,
-      Key? key})
-      : super(key: key);
-  InvoiceModel? invoice;
+class AddInvoiceProduct extends StatefulWidget {
+  const AddInvoiceProduct({
+    super.key,
+    required this.invoice,
+  });
+
+  final InvoiceModel? invoice;
 
   // int indexinvoic;
   @override
-  _add_invoiceProductState createState() => _add_invoiceProductState();
+  _AddInvoiceProductState createState() => _AddInvoiceProductState();
 }
 
-class _add_invoiceProductState extends State<add_invoiceProduct> {
+class _AddInvoiceProductState extends State<AddInvoiceProduct> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<ProductModel> listProduct = [];
   List<ProductsInvoice> listAdded = [];
   String? selectedvalue = null;
   ProductModel? selectedProduct = null;
   TextEditingController _taxuser = TextEditingController();
-  late String _taxuser_value;
 
   TextEditingController _textprice = TextEditingController();
 
   TextEditingController _taxadmin = TextEditingController();
-  late String _taxadmin_value;
   TextEditingController _amount = TextEditingController();
-  late String _amount_value;
+
   // late int index = 0;
   String? taxCountry = null;
 
   @override
   void initState() {
     _taxuser.text = '';
-    _taxuser_value = '';
     _taxadmin.text = '';
-    _taxadmin_value = '';
     _textprice.text = '';
     _amount.text = '';
-    _amount_value = '1';
     _taxuser.addListener(() {
       if (_taxuser.text.trim().isNotEmpty && _taxadmin.text.trim().isNotEmpty) {
         final userTax = num.tryParse(_taxuser.text.trim()) ?? 0;
@@ -273,24 +268,10 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                             ),
                           ),
                           SizedBox(height: 10),
-                          DropdownSearch<ProductModel>(
+                          CustomSearchableDropDown<ProductModel>(
+                            hint: "اختر منتج",
                             items: listProduct,
-                            dropdownSearchDecoration: InputDecoration(
-                                hintText: "اختر منتج",
-                                isCollapsed: true,
-                                isDense: true),
                             itemAsString: (item) => item?.nameProduct ?? '',
-                            searchFieldProps: TextFieldProps(
-                                textDirection: TextDirection.rtl,
-                                textAlign: TextAlign.start,
-                                textAlignVertical: TextAlignVertical.center,
-                                decoration: InputDecoration(
-                                  hintText: "ابحث هنا...",
-                                )),
-                            dropDownButton: Icon(Icons.arrow_drop_down_rounded),
-                            showSearchBox: true,
-                            popupShape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15)),
                             selectedItem: selectedProduct,
                             onChanged: (value) {
                               setState(() {
@@ -303,27 +284,36 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                             },
                           ),
 
-                          // DropdownButton(
-                          //   isExpanded: true,
-                          //   hint: Text("اختر منتج"),
-                          //   items: listProduct.map((level_one) {
-                          //     return DropdownMenuItem(
-                          //       child: Text(level_one.nameProduct), //label of item
-                          //       value: level_one.idProduct, //value of item
-                          //     );
-                          //   }).toList(),
-                          //   value:
-                          //   selectedvalue, //select_dataItem!.idCountry ,
+                          // DropdownSearch<ProductModel>(
+                          //   items: listProduct,
+                          //   dropdownSearchDecoration: InputDecoration(
+                          //       hintText: "اختر منتج",
+                          //       isCollapsed: true,
+                          //       isDense: true),
+                          //   itemAsString: (item) => item?.nameProduct ?? '',
+                          //   searchFieldProps: TextFieldProps(
+                          //       textDirection: TextDirection.rtl,
+                          //       textAlign: TextAlign.start,
+                          //       textAlignVertical: TextAlignVertical.center,
+                          //       decoration: InputDecoration(
+                          //         hintText: "ابحث هنا...",
+                          //       )),
+                          //   dropDownButton: Icon(Icons.arrow_drop_down_rounded),
+                          //   showSearchBox: true,
+                          //   popupShape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(15)),
+                          //   selectedItem: selectedProduct,
                           //   onChanged: (value) {
                           //     setState(() {
-                          //       selectedvalue = value.toString();
-                          //       index=listProduct.indexWhere(
-                          //               (element) => element.idProduct==selectedvalue);
+                          //       selectedProduct = value;
+                          //       selectedvalue =
+                          //           selectedProduct?.idProduct.toString();
+                          //       // index = listProduct.indexWhere((element) => element.idProduct == selectedvalue);
                           //       calculate();
                           //     });
-                          //     //Provider.of<regoin_vm>(context,listen: false).changeVal(value.toString());
                           //   },
                           // ),
+
                           SizedBox(height: 10),
                           Row(
                             children: [
@@ -334,9 +324,7 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                   EditTextFormField(
                                     //read: false,
                                     onChanged: (val) {
-                                      if (val == null) _amount_value = '';
-                                      _amount_value = val;
-                                      calculate();
+                                      if (val.isEmpty) calculate();
                                     },
                                     inputType: TextInputType.number,
                                     label: 'الكمية',
@@ -361,12 +349,12 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                     vaildator: (value) {
                                       if (value.toString().trim().isEmpty) {
                                         return AppStrings.labelEmpty;
+                                      } else if (double.tryParse(
+                                              value.toString()) ==
+                                          null) {
+                                        return 'من فضلك ادخل عدد';
                                       }
-                                      if (double.tryParse(value.toString()) ==
-                                          null) return 'من فضلك ادخل عدد';
-                                      // else if(value.characters){
-                                      //   return ;
-                                      // }
+                                      return null;
                                     },
                                     //ontap: calculate,
                                     //read: false,
@@ -398,7 +386,6 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                     RowEdit(name: ' الخصم للموظف', des: ' '),
                                     EditTextFormField(
                                       onChanged: (val) {
-                                        _taxuser_value = val;
                                         calculate();
                                       },
                                       inputType: TextInputType.number,
@@ -421,7 +408,6 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                     RowEdit(name: ' الخصم للمشرف', des: ' '),
                                     EditTextFormField(
                                       onChanged: (val) {
-                                        _taxadmin_value = val;
                                         calculate();
                                       },
                                       inputType: TextInputType.number,
@@ -507,12 +493,9 @@ class _add_invoiceProductState extends State<add_invoiceProduct> {
                                         }
                                         setState(() {
                                           _taxuser.text = '';
-                                          _taxuser_value = '';
                                           _taxadmin.text = '';
-                                          _taxadmin_value = '';
                                           _textprice.text = '';
                                           _amount.text = '';
-                                          _amount_value = '1';
                                           selectedvalue = null;
                                           selectedProduct = null;
                                         });

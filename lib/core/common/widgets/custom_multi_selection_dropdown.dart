@@ -13,6 +13,7 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final String? Function(List<T>?)? validator;
   final bool isRequired;
   final InputBorder? border;
+  final InputDecoration? dropdownSearchDecoration;
 
   CustomMultiSelectionDropdown({
     required this.items,
@@ -23,6 +24,7 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
     this.validator,
     this.isRequired = false,
     this.border,
+    this.dropdownSearchDecoration,
   });
 
   @override
@@ -35,7 +37,26 @@ class _CustomMultiSelectionDropdownState<T>
   @override
   Widget build(BuildContext context) {
     return DropdownSearch<T>.multiSelection(
-      // button
+      popupProps: PopupPropsMultiSelection.dialog(
+        showSearchBox: true,
+        searchDelay: Duration(milliseconds: 500),
+        itemBuilder: (context, item, isSelected) {
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? Colors.grey.withOpacity(0.2)
+                  : Colors.transparent,
+            ),
+            child: Text(
+              widget.itemAsString!(item),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontSize: 14.0.sp,
+                  ),
+            ),
+          );
+        },
+      ),
       dropdownBuilder: (context, selectedItems) {
         return Container(
           padding: EdgeInsets.all(8),
@@ -59,39 +80,21 @@ class _CustomMultiSelectionDropdownState<T>
           ),
         );
       },
-      // search
-      searchDelay: Duration(milliseconds: 500),
-      dropdownSearchDecoration: InputDecoration(
-        isCollapsed: true,
-        alignLabelWithHint: true,
-        fillColor: Colors.grey.withOpacity(0.2),
-        contentPadding: EdgeInsets.zero,
-        border: widget.border ?? InputBorder.none,
-        hintText: widget.hint,
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
+            InputDecoration(
+              isCollapsed: true,
+              alignLabelWithHint: true,
+              fillColor: Colors.grey.withOpacity(0.2),
+              contentPadding: EdgeInsets.zero,
+              border: widget.border ?? InputBorder.none,
+              hintText: widget.hint,
+            ),
       ),
-      // popup
-      popupItemBuilder: (context, item, isSelected) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-          decoration: BoxDecoration(
-            color:
-                isSelected ? Colors.grey.withOpacity(0.2) : Colors.transparent,
-          ),
-          child: Text(
-            widget.itemAsString!(item),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontSize: 14.0.sp,
-                ),
-          ),
-        );
-      },
-      // others
-      mode: Mode.DIALOG,
       items: widget.items,
       selectedItems: widget.selectedItems,
       itemAsString: widget.itemAsString,
       onChanged: widget.onChanged,
-      showSearchBox: true,
       validator: widget.validator ??
           (widget.isRequired
               ? (value) => value == null || value.isEmpty

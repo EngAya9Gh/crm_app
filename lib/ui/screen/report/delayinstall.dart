@@ -10,12 +10,12 @@ import 'package:crm_smart/provider/selected_button_provider.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/end_points.dart';
 
 class delayinstall extends StatefulWidget {
@@ -147,12 +147,8 @@ class _delayinstallState extends State<delayinstall> {
                           SizedBox(width: 10),
                         },
                         Expanded(
-                          child: DropdownSearch<UserModel>(
-                            mode: Mode.DIALOG,
-                            filterFn: (user, filter) =>
-                                user!.getfilteruser(filter!),
-                            compareFn: (item, selectedItem) =>
-                                item?.idUser == selectedItem?.idUser,
+                          child: CustomSearchableDropDown<UserModel>(
+                            hint: 'الموظف',
                             items: cart.usersSupportManagement,
                             itemAsString: (u) => u!.userAsString(),
                             onChanged: (data) {
@@ -161,19 +157,39 @@ class _delayinstallState extends State<delayinstall> {
                               getData();
                             },
                             selectedItem: cart.selectedUser,
-                            showSearchBox: true,
-                            dropdownSearchDecoration: InputDecoration(
-                              isCollapsed: true,
-                              hintText: 'الموظف',
-                              alignLabelWithHint: true,
-                              fillColor: Colors.grey.withOpacity(0.2),
-                              //labelText: "choose a user",
-                              contentPadding: EdgeInsets.all(0),
-                              border: UnderlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: Colors.grey)),
-                            ),
+                            filterFn: (user, filter) =>
+                                user!.getfilteruser(filter!),
+                            compareFn: (item, selectedItem) =>
+                                item?.idUser == selectedItem?.idUser,
                           ),
+
+                          // DropdownSearch<UserModel>(
+                          //   mode: Mode.DIALOG,
+                          //   filterFn: (user, filter) =>
+                          //       user!.getfilteruser(filter!),
+                          //   compareFn: (item, selectedItem) =>
+                          //       item?.idUser == selectedItem?.idUser,
+                          //   items: cart.usersSupportManagement,
+                          //   itemAsString: (u) => u!.userAsString(),
+                          //   onChanged: (data) {
+                          //     iduser = data!.idUser!;
+                          //     cart.changevalueuser(data);
+                          //     getData();
+                          //   },
+                          //   selectedItem: cart.selectedUser,
+                          //   showSearchBox: true,
+                          //   dropdownSearchDecoration: InputDecoration(
+                          //     isCollapsed: true,
+                          //     hintText: 'الموظف',
+                          //     alignLabelWithHint: true,
+                          //     fillColor: Colors.grey.withOpacity(0.2),
+                          //     //labelText: "choose a user",
+                          //     contentPadding: EdgeInsets.all(0),
+                          //     border: UnderlineInputBorder(
+                          //         borderSide:
+                          //             const BorderSide(color: Colors.grey)),
+                          //   ),
+                          // ),
                         ),
                       ],
                     );
