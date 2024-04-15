@@ -1,9 +1,9 @@
-import 'package:crm_smart/core/use_case/use_case.dart';
-import 'package:crm_smart/features/clients_list/domain/repositories/clients_list_repository.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../../core/use_case/use_case.dart';
 import '../../data/models/clients_list_response.dart';
+import '../repositories/clients_list_repository.dart';
 
 @injectable
 class TransferClientUserUsecase

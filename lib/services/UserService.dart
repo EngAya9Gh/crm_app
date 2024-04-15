@@ -45,17 +45,12 @@ class UserService {
     for (int i = 0; i < data.length; i++) {
       usersList.add(UserModel.fromJson(data[i]));
     }
-    // if(usersList.isNotEmpty)
     return usersList[0];
-    // else
-    //  return
-    //      UserModel(created_at: '',isActive: '0',
-    //      fkuserAdd: '', nameuserAdd: '',idUser: '0');
   }
 
   Future<List<UserModel>> usersServices() async {
     List<dynamic> data =
-        await Api().get(url: EndPoints.baseUrls.url + 'users/getUser.php');
+        await Api().get(url: EndPoints.baseUrls.url + EndPoints.users.allUsers);
     List<UserModel> usersList = [];
 
     for (int i = 0; i < data.length; i++) {

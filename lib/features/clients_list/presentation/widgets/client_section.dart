@@ -7,7 +7,7 @@ import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart';
 import 'package:crm_smart/features/clients_list/domain/use_cases/change_type_client_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/ui/widgets/custom_widget/RowWidget.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
@@ -571,105 +571,105 @@ class _ClientSectionState extends State<ClientSection> {
                               textDirection: TextDirection.rtl,
                             ))));
                   },
-                  child: cardRow(
+                  child: CardRow(
                       title: 'الرقم المرجعي',
                       value: clientModel1.serialNumber.toString())),
-              cardRow(
+              CardRow(
                   title: 'تاريخ الاضافة',
                   value: clientModel1.dateCreate.toString()),
-              cardRow(
+              CardRow(
                 title: 'المؤسسة',
                 value: clientModel1.nameEnterprise.toString(),
                 isExpanded: true,
               ),
-              cardRow(
+              CardRow(
                 title: 'اسم العميل',
                 value: clientModel1.nameClient.toString(),
                 isExpanded: true,
               ),
-              cardRow(
+              CardRow(
                   title: ' الفرع', value: clientModel1.name_regoin.toString()),
 
-              cardRow(
+              CardRow(
                   title: ' نوع النشاط',
                   value: clientModel1.activity_type_title?.toString() ??
                       "لا يوجد"),
               clientModel1.size_activity != null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'حجم النشاط',
                       value: clientModel1.size_activity.toString())
                   : IgnorePointer(),
               clientModel1.email != null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'البريد الالكتروني',
                       value: clientModel1.email.toString())
                   : IgnorePointer(),
 
-              cardRow(
+              CardRow(
                   title: ' مدينة العميل',
                   value: clientModel1.name_city.toString()),
-              cardRow(
+              CardRow(
                   title: ' المنطقة',
                   value: clientModel1.namemaincity.toString()),
 
               clientModel1.phone == '' || clientModel1.phone == null
                   ? IgnorePointer()
-                  : cardRow(
+                  : CardRow(
                       title: ' رقم آخر', value: clientModel1.phone.toString()),
 
-              cardRow(
+              CardRow(
                   title: 'حالة العميل',
                   value: clientModel1.typeClient.toString()),
               clientModel1.typeClient == 'مستبعد'
-                  ? cardRow(
+                  ? CardRow(
                       value: clientModel1.nameUserApproveRreject.toString(),
                       //nameuserdoning
                       title: 'قام بتحويل حالة العميل')
                   : IgnorePointer(),
 
               clientModel1.typeClient == 'مستبعد'
-                  ? cardRow(
+                  ? CardRow(
                       value: clientModel1.date_approve_reject.toString(),
                       //clientModel1.dateChangetype.toString(),
                       title: 'تاريخ تحويل حالة العميل')
                   : IgnorePointer(),
               clientModel1.typeClient == 'مستبعد'
-                  ? cardRow(
+                  ? CardRow(
                       value: clientModel1.reasonChange.toString(),
                       title: 'تفاصيل الاستبعاد')
                   : IgnorePointer(),
               clientModel1.typeClient == 'مستبعد'
-                  ? cardRow(
+                  ? CardRow(
                       value: clientModel1.NameReason_reject.toString(),
                       title: 'سبب الاستبعاد')
                   : IgnorePointer(),
 
               clientModel1.typeClient == 'عرض سعر'
-                  ? cardRow(
+                  ? CardRow(
                       title: 'مبلغ عرض السعر',
                       value: clientModel1.offer_price.toString())
                   : IgnorePointer(),
 
               clientModel1.typeClient == 'عرض سعر'
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تاريخ عرض السعر',
                       value: clientModel1.date_price.toString())
                   : IgnorePointer(),
 
               clientModel1.user_do != null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'الموظف الذي قام بتغيير حالة العميل',
                       value: clientModel1.nameuserdoning.toString())
                   : IgnorePointer(),
 
-              cardRow(
+              CardRow(
                   title: 'الموظف الذي أضاف العميل',
                   value: getnameshort(clientModel1.nameAdduser.toString())),
-              cardRow(
+              CardRow(
                   title: 'الموظف',
                   value: getnameshort(clientModel1.nameUser.toString())),
 
-              cardRow(
+              CardRow(
                   title: 'رقم الموظف',
                   value: clientModel1.mobileuser.toString()),
 
@@ -677,14 +677,14 @@ class _ClientSectionState extends State<ClientSection> {
                 // context.read<PrivilegeCubit>().checkPrivilege('150') ==
                 //             true &&
                 clientModel1.fkusertrasfer != null
-                    ? cardRow(
+                    ? CardRow(
                         title: 'قام بتحويل العميل',
                         value: getnameshort(
                             clientModel1.nameusertransfer.toString()))
                     : IgnorePointer()
               else
                 clientModel1.fkusertrasfer != null
-                    ? cardRow(
+                    ? CardRow(
                         title: 'قام بتحويل العميل',
                         value: getnameshort(
                             clientModel1.nameusertransfer.toString()))
@@ -693,7 +693,7 @@ class _ClientSectionState extends State<ClientSection> {
               // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
               (clientModel1.reasonTransfer != null) &&
                       clientModel1.fkusertrasfer != null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'تحويل العميل إلى',
                       value: clientModel1.nameTransferTo.toString())
                   : IgnorePointer(),
@@ -701,22 +701,22 @@ class _ClientSectionState extends State<ClientSection> {
               // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
               (clientModel1.reasonTransfer == null) &&
                       clientModel1.fkusertrasfer != null
-                  ? cardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
+                  ? CardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
                   : IgnorePointer(),
 
               // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
               (clientModel1.reasonTransfer != null) &&
                       clientModel1.fkusertrasfer != null
-                  ? cardRow(title: 'حالة التحويل', value: 'معلق')
+                  ? CardRow(title: 'حالة التحويل', value: 'معلق')
                   : IgnorePointer(),
 
               if (clientModel1.dateTransfer != null) ...[
-                cardRow(
+                CardRow(
                     title: 'تاريخ التحويل',
                     value: clientModel1.dateTransfer.toString()),
               ],
               if (clientModel1.nameTransferTo != null) ...[
-                cardRow(
+                CardRow(
                   title: 'تم تحويل العميل إلى',
                   value: clientModel1.nameTransferTo,
                 ),
@@ -724,19 +724,19 @@ class _ClientSectionState extends State<ClientSection> {
 
               clientModel1.location.toString() == ''
                   ? IgnorePointer()
-                  : cardRow(
+                  : CardRow(
                       title: ' الموقع',
                       value: clientModel1.location.toString()),
 
               clientModel1.ismarketing == '1'
-                  ? cardRow(
+                  ? CardRow(
                       title: ' عميل تسويق الكتروني',
                       value: clientModel1.ismarketing == '1' ? 'نعم' : '')
                   : IgnorePointer(),
               clientModel1.type_record != null &&
                       clientModel1.type_record.toString().trim().isNotEmpty &&
                       clientModel1.type_record != ""
-                  ? cardRow(
+                  ? CardRow(
                       title: 'نوع التسجيل',
                       value: clientModel1.type_record.toString())
                   : IgnorePointer(),
@@ -747,18 +747,18 @@ class _ClientSectionState extends State<ClientSection> {
                           .trim()
                           .isNotEmpty &&
                       clientModel1.type_classification != "null"
-                  ? cardRow(
+                  ? CardRow(
                       title: 'نوع التصنيف',
                       value: clientModel1.type_classification.toString())
                   : IgnorePointer(),
               clientModel1.reason_class != null &&
                       clientModel1.reason_class.toString().trim().isNotEmpty &&
                       clientModel1.reason_class != "null"
-                  ? cardRow(
+                  ? CardRow(
                       title: 'سبب الإدخال',
                       value: clientModel1.reason_class.toString())
                   : IgnorePointer(),
-              cardRow(
+              CardRow(
                   title: 'عنوان العميل',
                   value: clientModel1.address_client == null
                       ? ''
@@ -767,32 +767,32 @@ class _ClientSectionState extends State<ClientSection> {
               clientModel1.presystem == null ||
                       clientModel1.presystem.toString().trim().isEmpty
                   ? IgnorePointer()
-                  : cardRow(
+                  : CardRow(
                       title: 'نظام سابق',
                       value: clientModel1.presystemtitle == null
                           ? ''
                           : clientModel1.presystemtitle.toString()),
 
-              cardRow(
+              CardRow(
                   title: 'مصدر العميل',
                   value: clientModel1.sourcclient == null
                       ? ''
                       : clientModel1.sourcclient.toString()),
               if (clientModel1.sourcclient == 'عميل موصى به')
-                cardRow(
+                CardRow(
                     title: 'تمت التوصية من:',
                     value: clientModel1.NameClient_recomand == null
                         ? ''
                         : clientModel1.NameClient_recomand.toString()),
 
               clientModel1.activity_type_fk == null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'نوع النشاط',
                       value: clientModel1.activity_type_title.toString())
                   : IgnorePointer(),
 
               clientModel1.activity_type_fk == null
-                  ? cardRow(
+                  ? CardRow(
                       title: 'وصف النشاط',
                       value: clientModel1.descActivController.toString())
                   : IgnorePointer(),

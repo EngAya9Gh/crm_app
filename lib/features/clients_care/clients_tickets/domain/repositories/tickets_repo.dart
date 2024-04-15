@@ -3,11 +3,15 @@ import 'package:dartz/dartz.dart';
 import '../../data/models/ticket_model.dart';
 import '../use_cases/add_ticket_usecase.dart';
 import '../use_cases/edit_ticket_type_usecase.dart';
+import '../use_cases/get_client_ticket_usecase.dart';
 import '../use_cases/get_ticket_by_id_usecase.dart';
 import '../use_cases/transfer_ticket_usecase.dart';
 
 abstract class TicketsRepo {
   Future<Either<String, List<TicketModel>>> getTickets();
+
+  Future<Either<String, TicketModel>> getClientTicket(
+      GetClientTicketParams params);
 
   Future<Either<String, TicketModel>> getTicketById(GetTicketByIdParams params);
 

@@ -8,7 +8,7 @@ import '../../../features/manage_agents_and_distributors/presentation/widgets/ag
 import '../../../model/invoiceModel.dart';
 import '../../../view_model/invoice_vm.dart';
 import '../../../view_model/user_vm_provider.dart';
-import '../../widgets/custom_widget/RowWidget.dart';
+import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_form.dart';
@@ -36,13 +36,13 @@ class add_payement extends StatelessWidget {
                   'اضافة دفعة',
                   style: TextStyle(fontFamily: kfontfamily2),
                 ),
-                cardRow(
+                CardRow(
                     title: 'اجمالي فاتورة العميل ',
                     value: invoiceModel.total.toString()),
-                cardRow(
+                CardRow(
                     title: 'المبلغ المدفوع ',
                     value: invoiceModel.amountPaid.toString()),
-                cardRow(
+                CardRow(
                     title: 'المبلغ المتبقي ',
                     value: (double.parse(invoiceModel.total.toString()) -
                             double.parse(invoiceModel.amountPaid.toString()))

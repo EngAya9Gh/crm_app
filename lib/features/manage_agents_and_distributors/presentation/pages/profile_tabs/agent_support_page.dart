@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../model/agent_distributor_model.dart';
 import '../../../../../ui/screen/support/support_table.dart';
-import '../../../../../ui/widgets/custom_widget/RowWidget.dart';
+import '../../../../../ui/widgets/custom_widget/card_row.dart';
 import '../../../domain/use_cases/get_agent_dates_list_usecase.dart';
 import '../../manager/agents_distributors_profile_bloc/agents_distributors_profile_bloc.dart';
 import '../../widgets/agent_support_page/add_date_button.dart';
@@ -56,7 +56,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                         CupertinoPageRoute(
                             builder: (context) => support_table()));
                   },
-                  child: cardRow(
+                  child: CardRow(
                     title: 'عدد الزيارات التي تمت',
                     value: bloc.finishedVisits.length.toString(),
                   ),
@@ -68,7 +68,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                         CupertinoPageRoute(
                             builder: (context) => support_table()));
                   },
-                  child: cardRow(
+                  child: CardRow(
                     title: 'عدد الزيارات المتبقية',
                     value: bloc.unfinishedVisits.length.toString(),
                   ),
@@ -80,7 +80,7 @@ class _AgentSupportPageState extends State<AgentSupportPage> {
                         CupertinoPageRoute(
                             builder: (context) => support_table()));
                   },
-                  child: cardRow(
+                  child: CardRow(
                     title: 'عدد الزيارات الملغية',
                     value: bloc.canceledVisits.length.toString(),
                   ),
