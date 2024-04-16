@@ -871,38 +871,36 @@ class _SupportAddState extends State<SupportAdd> {
                                                                             context,
                                                                             listen:
                                                                                 false)
-                                                                        .setdatedone_vm(
-                                                                            {
-                                                                          'clientusername':
-                                                                              _textnameuserclient.text,
-                                                                          'datanext':
-                                                                              datanext.toString(),
-                                                                          'datanext_install':
-                                                                              datanext_install.toString(),
-                                                                          'dateinstall_done':
-                                                                              DateTime.now().toString(),
-                                                                          'userinstall': Provider.of<UserProvider>(context, listen: false)
-                                                                              .currentUser
-                                                                              .idUser
-                                                                              .toString(),
-                                                                          'isdoneinstall':
-                                                                              '1',
-                                                                          'fkIdClient':
-                                                                              _invoice!.fkIdClient,
-                                                                          'nameuserinstall': Provider.of<UserProvider>(context, listen: false)
-                                                                              .currentUser
-                                                                              .nameUser
-                                                                              .toString(),
-                                                                          'name_enterprise':
-                                                                              _invoice!.name_enterprise,
-                                                                          'fkcountry':
-                                                                              _invoice!.fk_country,
-                                                                          'fk_regoin':
-                                                                              _invoice!.fk_regoin
-                                                                        },
-                                                                            _invoice!
-                                                                                .idInvoice).then(
-                                                                            (value) {
+                                                                        .setDateDoneVm({
+                                                                      'clientusername':
+                                                                          _textnameuserclient
+                                                                              .text,
+                                                                      /*old api body*/
+                                                                      // 'datanext':
+                                                                      //     datanext.toString(),
+                                                                      // 'datanext_install':
+                                                                      //     datanext_install.toString(),
+                                                                      // 'dateinstall_done':
+                                                                      //     DateTime.now().toString(),
+                                                                      // 'userinstall': Provider.of<UserProvider>(context, listen: false)
+                                                                      //     .currentUser
+                                                                      //     .idUser
+                                                                      //     .toString(),
+                                                                      // 'isdoneinstall':
+                                                                      //     '1',
+                                                                      // 'fkIdClient':
+                                                                      //     _invoice!.fkIdClient,
+                                                                      // 'nameuserinstall': Provider.of<UserProvider>(context, listen: false)
+                                                                      //     .currentUser
+                                                                      //     .nameUser
+                                                                      //     .toString(),
+                                                                      // 'name_enterprise':
+                                                                      //     _invoice!.name_enterprise,
+                                                                      // 'fkcountry':
+                                                                      //     _invoice!.fk_country,
+                                                                      // 'fk_regoin':
+                                                                      //     _invoice!.fk_regoin
+                                                                    }, _invoice!.idInvoice).then((value) {
                                                                       if (value) {
                                                                         clear();
                                                                         Navigator.of(context,

@@ -58,6 +58,7 @@ class invoice_vm extends ChangeNotifier {
   bool _isloading = false;
 
   bool get isloading => _isloading;
+
   set isloading(bool value) {
     _isloading = value;
     notifyListeners();
@@ -1552,8 +1553,10 @@ class invoice_vm extends ChangeNotifier {
   bool isloadingdone = false;
   bool isloadingRescheduleOrCancel = false;
 
-  Future<bool> setdatedone_vm(
-      Map<String, dynamic?> body, String? id_invoice) async {
+  Future<bool> setDateDoneVm(
+    Map<String, dynamic> body,
+    String? id_invoice,
+  ) async {
     try {
       isloadingdone = true;
       notifyListeners();
@@ -1561,7 +1564,7 @@ class invoice_vm extends ChangeNotifier {
           listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
       int index1 = listinvoiceClientSupport
           .indexWhere((element) => element.idInvoice == id_invoice);
-      InvoiceModel inv = await Invoice_Service().setdatedone(body, id_invoice!);
+      InvoiceModel inv = await Invoice_Service().setDateDone(body, id_invoice!);
       if (index != -1) listinvoices[index] = inv;
       if (index1 != -1) listinvoiceClientSupport[index1] = inv;
       isloadingdone = false;

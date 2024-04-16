@@ -230,40 +230,6 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  Future<SharedPreferences> getcurrentuser() async {
-    prefs = getIt<SharedPreferences>();
-    try {
-      await _getUsersVm();
-      String? id = prefs.getString('id_user');
-      print(id.toString());
-      if (id != null) {
-        final index = allUsers.indexWhere(
-            (element) => element.idUser == id && element.isActive == '1');
-        if (index >= 0) {
-          currentUser = allUsers[index];
-          final response = await getIt<PrivilegeCubit>()
-              .getUserPrivileges(currentUser.typeLevel.toString());
-          if (!(response ?? true)) {
-            prefs.setString("id_user1", '0');
-            return prefs;
-          }
-          currentUser.path = "";
-          notifyListeners();
-          prefs.setString("id_user1", '-1');
-          return prefs;
-        } else {
-          SharedPreferences preferences = getIt<SharedPreferences>();
-          prefs.setString("id_user1", '0');
-          return preferences;
-        }
-      } else {
-        return prefs;
-      }
-    } catch (e) {}
-    notifyListeners();
-    return prefs;
-  }
-
   bool isDeletingAccount = false;
 
   deleteAccount(
