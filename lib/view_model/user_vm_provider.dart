@@ -220,8 +220,11 @@ class UserProvider extends ChangeNotifier {
 
       currentUser = UserModel.fromJson(data);
 
-      await getIt<PrivilegeCubit>()
-          .getUserPrivileges(currentUser.typeLevel.toString());
+      getIt<PrivilegeCubit>()
+          .setUserPrivileges(privilegeList: currentUser.privilegesList);
+
+      // await getIt<PrivilegeCubit>()
+      //     .getUserPrivileges(currentUser.typeLevel.toString());
 
       notifyListeners();
       return UserModel.fromJson(data);
