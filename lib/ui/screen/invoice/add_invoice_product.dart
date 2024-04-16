@@ -288,37 +288,6 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                               });
                             },
                           ),
-
-                          // DropdownSearch<ProductModel>(
-                          //   items: listProduct,
-                          //   dropdownSearchDecoration: InputDecoration(
-                          //       hintText: "اختر منتج",
-                          //       isCollapsed: true,
-                          //       isDense: true),
-                          //   itemAsString: (item) => item?.nameProduct ?? '',
-                          //   searchFieldProps: TextFieldProps(
-                          //       textDirection: TextDirection.rtl,
-                          //       textAlign: TextAlign.start,
-                          //       textAlignVertical: TextAlignVertical.center,
-                          //       decoration: InputDecoration(
-                          //         hintText: "ابحث هنا...",
-                          //       )),
-                          //   dropDownButton: Icon(Icons.arrow_drop_down_rounded),
-                          //   showSearchBox: true,
-                          //   popupShape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.circular(15)),
-                          //   selectedItem: selectedProduct,
-                          //   onChanged: (value) {
-                          //     setState(() {
-                          //       selectedProduct = value;
-                          //       selectedvalue =
-                          //           selectedProduct?.idProduct.toString();
-                          //       // index = listProduct.indexWhere((element) => element.idProduct == selectedvalue);
-                          //       calculate();
-                          //     });
-                          //   },
-                          // ),
-
                           SizedBox(height: 10),
                           Row(
                             children: [
@@ -429,7 +398,6 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                               //   //TextBox.fromLTRBD(20, 20, 20, 20,TextDirection.rtl),
                             ],
                           ),
-
                           SizedBox(
                             height: 5,
                           ),

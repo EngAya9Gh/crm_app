@@ -33,19 +33,10 @@ class _ClientAcceptState extends State<ClientAccept> {
     _searchTextField.addListener(onSearch);
     context.read<MainCityProvider>().changeitemlist([], isInit: true);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await   Provider.of<invoice_vm>(context, listen: false).getinvoices();
-      // Add Your Code here.
-      // only
       clientProvider.clear();
-      //Provider.of<typeclient>(context,listen: false).changelisttype_install(null);
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
       clientProvider.listClientAccept = [];
-      // Provider.of<client_vm>(context, listen: false)
-      //   .getallclient();
-      // Provider.of<client_vm>(context, listen: false). getclient_Local('مشترك');
 
-      //  Provider.of<client_vm>(context,listen: false)
-      //     .getallclientAccept();
       if (mainCityProvider.selectedRegions.isEmpty) {
         mainCityProvider.selectedRegions = mainCityProvider.listmaincityfilter;
       }
@@ -98,6 +89,12 @@ class _ClientAcceptState extends State<ClientAccept> {
                                 items: cart.listmaincityfilter,
                                 selectedItems: cart.selectedRegions,
                                 itemAsString: (u) => u!.userAsString(),
+                                filterFn: (user, filter) =>
+                                    user.getfilteruser(filter),
+                                compareFn: (item, selectedItem) =>
+                                    item.id_maincity ==
+                                    selectedItem.id_maincity,
+                                // itemAsString: (UserModel u) => u.userAsStringByName(),
                                 onChanged: (data) {
                                   // if contains all then check all cities
                                   if (data.any((element) =>
@@ -112,7 +109,7 @@ class _ClientAcceptState extends State<ClientAccept> {
                                         element.namemaincity == 'الكل');
                                   }
                                   cart.changeitemlist(data);
-                                  filtershow();
+                                  filterShow();
                                 },
                                 dropdownSearchDecoration: InputDecoration(
                                   isCollapsed: true,
@@ -125,59 +122,6 @@ class _ClientAcceptState extends State<ClientAccept> {
                                   ),
                                 ),
                               );
-                              // return DropdownSearch<
-                              //     MainCityModel>.multiSelection(
-                              //   showFavoriteItems: true,
-                              //   mode: Mode.DIALOG,
-                              //   filterFn: (user, filter) =>
-                              //       user!.getfilteruser(filter!),
-                              //   compareFn: (item, selectedItem) =>
-                              //       item?.id_maincity ==
-                              //       selectedItem?.id_maincity,
-                              //   // itemAsString: (UserModel u) => u.userAsStringByName(),
-                              //   items: cart.listmaincityfilter,
-                              //   // showSelectedItems: true,
-                              //   selectedItems: cart.selectedRegions,
-                              //   itemAsString: (u) => u!.userAsString(),
-                              //   onChanged: (data) {
-                              //     // if contains all then check all cities
-                              //     if (data.any((element) =>
-                              //         element.namemaincity == 'الكل')) {
-                              //       data = cart.listmaincityfilter;
-                              //     }
-                              //     selecteditemmaincity = data;
-                              //     // remove the choice "all" only
-                              //     if (data.any((element) =>
-                              //         element.namemaincity == 'الكل')) {
-                              //       data.removeWhere((element) =>
-                              //           element.namemaincity == 'الكل');
-                              //     }
-                              //     cart.changeitemlist(data);
-                              //     filtershow();
-                              //   },
-                              //   //selectedItem: cart.selecteduser,
-                              //   showSearchBox: true,
-                              //   dropdownSearchDecoration: InputDecoration(
-                              //     //filled: true,
-                              //     isCollapsed: true,
-                              //     hintText: 'المنطقة',
-                              //     alignLabelWithHint: true,
-                              //     fillColor: Colors.grey.withOpacity(0.2),
-                              //     //labelText: "choose a user",
-                              //     contentPadding: EdgeInsets.all(0),
-                              //     //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                              //     // focusedBorder: OutlineInputBorder(
-                              //     //     borderRadius: BorderRadius.circular(10),
-                              //     //     borderSide: const BorderSide(color: Colors.white)),
-                              //     border: UnderlineInputBorder(
-                              //         borderSide:
-                              //             const BorderSide(color: Colors.grey)),
-                              //     // OutlineInputBorder(
-                              //     //     borderRadius: BorderRadius.circular(10),
-                              //     //     borderSide: const BorderSide( color: Colors.white)),
-                              //   ),
-                              //   // InputDecoration(border: InputBorder.none),
-                              // );
                             },
                           ),
                         ),
@@ -286,17 +230,7 @@ class _ClientAcceptState extends State<ClientAccept> {
     );
   }
 
-  void filtershow() {
-    //
-    //   Provider.of<invoice_vm>(context,listen: false)
-    //       .getclienttype_filter(typeclientvalue!,regoin,'only');
+  void filterShow() {
     clientProvider.getfilterviewSupport(selecteditemmaincity);
-    //   if(regoin==null)
-    //  Provider.of<invoice_vm>(context,listen: false).getclienttype_filter(typepayController,regoin);
-    // else {
-    //
-    //   Provider.of<invoice_vm>(context,listen: false).getclienttype_filter(typepayController,regoin);
-    //
-    // }
   }
 }

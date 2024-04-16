@@ -152,7 +152,7 @@ class _supportpageState extends State<supportpage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => delayinstall()));
+                              builder: (context) => DelayInstall()));
                     },
                     title: 'تقرير التأخير عن الجدولة للعملاء')
                 : Container(),
@@ -166,7 +166,7 @@ class _supportpageState extends State<supportpage> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => delayafterinstall()));
+                              builder: (context) => DelayAfterInstall()));
                     },
                     title: 'تقرير التأخير عن التركيب للعملاء')
                 : Container(),

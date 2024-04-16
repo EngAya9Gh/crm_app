@@ -1,6 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/model/ActivityModel.dart';
@@ -36,21 +37,22 @@ import '../../../features/clients_list/presentation/manager/clients_list_bloc.da
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../view_model/datetime_vm.dart';
 
-class editclient extends StatefulWidget {
-  editclient(
-      {required this.client,
-      required this.fkclient,
-      required this.fkuser,
-      Key? key})
-      : super(key: key);
-  String fkclient, fkuser;
-  ClientModel1 client;
+class EditClient extends StatefulWidget {
+  const EditClient({
+    Key? key,
+    required this.client,
+    required this.fkclient,
+    required this.fkuser,
+  }) : super(key: key);
+  final String fkclient;
+  final String fkuser;
+  final ClientModel1 client;
 
   @override
-  _editclientState createState() => _editclientState();
+  _EditClientState createState() => _EditClientState();
 }
 
-class _editclientState extends State<editclient> {
+class _EditClientState extends State<EditClient> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _globalKey = GlobalKey<FormState>();
 
@@ -114,7 +116,7 @@ class _editclientState extends State<editclient> {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    String output = formatter.format(currentDate);
+    formatter.format(currentDate);
 
     final DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -128,7 +130,7 @@ class _editclientState extends State<editclient> {
         dateprice = pickedDate;
       });
       Provider.of<datetime_vm>(context, listen: false)
-          .setdatetimevalue1(dateprice!);
+          .setdatetimevalue1(dateprice);
     }
   }
 
@@ -241,12 +243,6 @@ class _editclientState extends State<editclient> {
                       null) {
                     Provider.of<LoadProvider>(context, listen: false)
                         .changebooladdclient(true);
-                    String ismarket =
-                        Provider.of<switch_provider>(context, listen: false)
-                                    .isSwitched ==
-                                true
-                            ? '1'
-                            : '0';
 
                     Map<String, dynamic> body = {};
                     if (typeclient_provider.selectedValuemanag == "عرض سعر")
@@ -353,11 +349,7 @@ class _editclientState extends State<editclient> {
                     EditTextFormField(
                       obscureText: false,
                       hintText: AppStrings.labelClientEnterprise,
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       controller: nameEnterpriseController,
                       //اسم المؤسسة
                       //label: label_client,
@@ -371,11 +363,7 @@ class _editclientState extends State<editclient> {
 
                     RowEdit(name: AppStrings.labelClientName, des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       hintText: AppStrings.labelClientName,
                       obscureText: false,
                       controller: nameclientController,
@@ -383,11 +371,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(height: 5),
                     RowEdit(name: AppStrings.labelClientMobile, des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       hintText: '+966000000000',
                       obscureText: false,
                       controller: mobileController,
@@ -427,11 +411,7 @@ class _editclientState extends State<editclient> {
                         : EditTextFormField(
                             hintText: AppStrings.labelClientTypeJob,
                             obscureText: false,
-                            vaildator: (value) {
-                              if (value!.isEmpty) {
-                                return AppStrings.labelEmpty;
-                              }
-                            },
+                            vaildator: HelperFunctions.instance.requiredFiled,
                             controller: desctypejobController,
                             //اسم المؤسسة
                             label: AppStrings.labelClientTypeJob,
@@ -448,42 +428,16 @@ class _editclientState extends State<editclient> {
                             hint: 'النشاط',
                             items: cart.activitiesList,
                             itemAsString: (u) => u!.userAsString(),
+                            filterFn: (user, filter) =>
+                                user.getFilterActivityType(filter),
+                            compareFn: (item, selectedItem) =>
+                                item.id_activity_type ==
+                                selectedItem.id_activity_type,
                             selectedItem: cart.selectedActivity,
                             onChanged: (data) {
                               cart.onChangeSelectedActivity(data);
                             },
-                            filterFn: (user, filter) =>
-                                user.getFilterActivityType(filter),
                           ),
-
-                          // DropdownSearch<ActivityModel>(
-                          //   mode: Mode.DIALOG,
-                          //   filterFn: (user, filter) =>
-                          //       user!.getFilterActivityType(filter!),
-                          //   compareFn: (item, selectedItem) =>
-                          //       item?.id_activity_type ==
-                          //       selectedItem?.id_activity_type,
-                          //   items: cart.activitiesList,
-                          //   itemAsString: (u) => u!.userAsString(),
-                          //   onChanged: (data) {
-                          //     // iduser = data!.id_activity_type;
-                          //     cart.onChangeSelectedActivity(data);
-                          //     // filtershow();
-                          //   },
-                          //   selectedItem: cart.selectedActivity,
-                          //   showSearchBox: true,
-                          //   dropdownSearchDecoration: InputDecoration(
-                          //     isCollapsed: true,
-                          //     hintText: 'النشاط',
-                          //     alignLabelWithHint: true,
-                          //     fillColor: Colors.grey.withOpacity(0.2),
-                          //     contentPadding: EdgeInsets.all(0),
-                          //     border: UnderlineInputBorder(
-                          //         borderSide:
-                          //             const BorderSide(color: Colors.grey)),
-                          //   ),
-                          //   // InputDecoration(border: InputBorder.none),
-                          // ),
                         );
                       },
                     ),
@@ -521,11 +475,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(height: 15),
                     RowEdit(name: 'وصف النشاط', des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       hintText: AppStrings.labelDescActivity,
                       obscureText: false,
                       controller: descActivController,
@@ -548,31 +498,12 @@ class _editclientState extends State<editclient> {
                             selectedItem: citymodel,
                             onChanged: (data) => cityController = data!.id_city,
                             filterFn: (user, filter) =>
-                                user!.getfilteruser(filter!),
+                                user.getfilteruser(filter),
                             validator: (val) {
                               if (val == null) return 'من فضلك حدد اسم مدينة';
+                              return null;
                             },
                           );
-
-                          // return DropdownSearch<CityModel>(
-                          //   mode: Mode.DIALOG,
-                          //   label: "المدن",
-                          //   validator: (val) {
-                          //     if (val == null) return 'من فضلك حدد اسم مدينة';
-                          //   },
-                          //   selectedItem: citymodel,
-                          //   filterFn: (user, filter) =>
-                          //       user!.getfilteruser(filter!),
-                          //   items: cart.listcity,
-                          //   itemAsString: (u) => u!.userAsString(),
-                          //   onChanged: (data) => cityController = data!.id_city,
-                          //   showSearchBox: true,
-                          //   dropdownSearchDecoration: InputDecoration(
-                          //     labelText: "حدد مدينة",
-                          //     contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
-                          //     border: OutlineInputBorder(),
-                          //   ),
-                          // );
                         },
                       ),
                     ),
@@ -582,11 +513,7 @@ class _editclientState extends State<editclient> {
                     RowEdit(name: AppStrings.labelUsernameClient, des: '*'),
                     EditTextFormField(
                       maxline: 3,
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       hintText: AppStrings.labelUsernameClient,
                       obscureText: false,
                       controller: usernameclientController,
@@ -744,37 +671,7 @@ class _editclientState extends State<editclient> {
                     SizedBox(
                       height: 15,
                     ),
-                    // Provider.of<privilge_vm>(context, listen: true)
-                    //             .checkprivlge('37') ==
-                    //         true
-                    //     ? Center(
-                    //         child: Consumer<switch_provider>(
-                    //           builder: (context, isSwitched, child) {
-                    //             return Row(
-                    //               mainAxisAlignment: MainAxisAlignment.center,
-                    //               children: [
-                    //                 Switch(
-                    //                     activeTrackColor:
-                    //                         kMainColor.withAlpha(90),
-                    //                     activeColor: kMainColor,
-                    //                     value: isSwitched.isSwitched,
-                    //                     onChanged: (value) {
-                    //
-                    //
-                    //
-                    //                       //valtaxrate = value;
-                    //                       isSwitched.changeboolValue(value);
-                    //                     }),
-                    //                 Text(AppStrings.marketlabel),
-                    //               ],
-                    //             );
-                    //           },
-                    //         ),
-                    //       )
-                    //     : Container(),
-                    // SizedBox(
-                    //   height: 15,
-                    // ),
+
                     _privilegeCubit.checkPrivilege('27')
                         ? widget.client.typeClient != "مشترك" &&
                                 widget.client.typeClient != "منسحب"
@@ -849,11 +746,8 @@ class _editclientState extends State<editclient> {
                                   Expanded(
                                     flex: 5,
                                     child: TextFormField(
-                                      validator: (value) {
-                                        if (dateprice == DateTime(1, 1, 1)) {
-                                          return 'يرجى تعيين التاريخ ';
-                                        }
-                                      },
+                                      validator: HelperFunctions
+                                          .instance.requiredFiled,
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(
                                           Icons.date_range,
@@ -889,33 +783,6 @@ class _editclientState extends State<editclient> {
                                         controller: resaonController,
                                       )
                                     : Container(),
-                    //:Container(),
-                    // Provider.of<privilge_vm>(context,listen: true)
-                    //     .checkprivlge('27')==true||  Provider.of<privilge_vm>(context,listen: true)
-                    //     .checkprivlge('28')==true ?
-                    // typeclient_provider.selectedValuemanag=="عرض سعر"
-                    //     || typeclient_provider.selectedValuemanag=="تفاوض"?
-                    // Padding(
-                    //   padding: const EdgeInsets.all(6.0),
-                    //   child: Center(
-                    //     child:   ElevatedButton(
-                    //       style: ButtonStyle(
-                    //           backgroundColor: MaterialStateProperty.all(
-                    //               kMainColor)),
-                    //       onPressed: () {
-                    //
-                    //         Navigator.push(context,CupertinoPageRoute(
-                    //             builder: (context)=>transferClient(
-                    //            name_enterprise:  widget.itemClient.nameEnterprise.toString(),
-                    //              idclient:   widget.itemClient.idClients.toString(),
-                    //             type: "client",),fullscreenDialog: true
-                    //
-                    //         ));
-                    //       },
-                    //       child: Text('تحويل العميل'),
-                    //     ),
-                    //   ),
-                    // ):Text(""):Container(),
                   ],
                 ),
               ),
@@ -944,19 +811,4 @@ class _editclientState extends State<editclient> {
 
   DateTime _currentDate = DateTime.now();
   final DateFormat formatter1 = DateFormat('yyyy-MM-dd hh:mm:ss');
-
-  Future<void> _selectDate1(BuildContext context, DateTime currentDate) async {
-    String output = formatter1.format(currentDate);
-
-    final DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(2080));
-    if (pickedDate != null) //&& pickedDate != currentDate)
-      setState(() {
-        _currentDate = pickedDate;
-      });
-  }
 }

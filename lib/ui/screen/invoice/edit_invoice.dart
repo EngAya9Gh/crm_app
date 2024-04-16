@@ -17,15 +17,18 @@ import '../../widgets/custom_widget/card_row.dart';
 import '../../widgets/custom_widget/custombutton.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 
-class edit_invoice extends StatefulWidget {
-  edit_invoice({required this.invoiceModel, Key? key}) : super(key: key);
-  InvoiceModel invoiceModel;
+class EditInvoice extends StatefulWidget {
+  const EditInvoice({
+    required this.invoiceModel,
+    Key? key,
+  }) : super(key: key);
+  final InvoiceModel invoiceModel;
 
   @override
-  State<edit_invoice> createState() => _edit_invoiceState();
+  State<EditInvoice> createState() => _EditInvoiceState();
 }
 
-class _edit_invoiceState extends State<edit_invoice> {
+class _EditInvoiceState extends State<EditInvoice> {
   String? iduser;
 
   String? regoin;
@@ -35,7 +38,7 @@ class _edit_invoiceState extends State<edit_invoice> {
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
 
   Future<void> _selectDate(BuildContext context, DateTime currentDate) async {
-    String output = formatter.format(currentDate);
+    formatter.format(currentDate);
 
     final DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -54,7 +57,7 @@ class _edit_invoiceState extends State<edit_invoice> {
   }
 
   Future<void> _selectDate2(BuildContext context, DateTime currentDate) async {
-    String output = formatter.format(currentDate);
+    formatter.format(currentDate);
 
     final DateTime? pickedDate = await showDatePicker(
         context: context,
@@ -137,7 +140,7 @@ class _edit_invoiceState extends State<edit_invoice> {
                           },
                           selectedItem: cart.selectedUser,
                           filterFn: (user, filter) =>
-                              user!.getfilteruser(filter!),
+                              user.getfilteruser(filter),
                         );
 
                         // return DropdownSearch<UserModel>(

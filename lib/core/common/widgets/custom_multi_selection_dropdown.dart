@@ -44,6 +44,34 @@ class _CustomMultiSelectionDropdownState<T>
       popupProps: PopupPropsMultiSelection.dialog(
         showSearchBox: true,
         searchDelay: Duration(milliseconds: 500),
+        searchFieldProps: TextFieldProps(
+          textDirection: TextDirection.rtl,
+          decoration: InputDecoration(
+            hintText: "بحث",
+            hintTextDirection: TextDirection.rtl,
+            contentPadding: EdgeInsets.symmetric(horizontal: 15),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        containerBuilder: (context, child) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: child,
+          );
+        },
+        dialogProps: DialogProps(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 10,
+          ),
+        ),
         itemBuilder: (context, item, isSelected) {
           return Container(
             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -61,14 +89,20 @@ class _CustomMultiSelectionDropdownState<T>
           );
         },
       ),
+      dropdownDecoratorProps: DropDownDecoratorProps(
+        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
+            InputDecoration(
+              isCollapsed: true,
+              alignLabelWithHint: true,
+              fillColor: Colors.grey.withOpacity(0.2),
+              contentPadding: EdgeInsets.zero,
+              border: widget.border ?? InputBorder.none,
+              hintText: widget.hint,
+            ),
+      ),
       dropdownBuilder: (context, selectedItems) {
-        return Container(
+        return Padding(
           padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.2),
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(5),
-          ),
           child: Text(
             selectedItems.isEmpty
                 ? widget.hint ?? ''
@@ -84,17 +118,6 @@ class _CustomMultiSelectionDropdownState<T>
           ),
         );
       },
-      dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: widget.dropdownSearchDecoration ??
-            InputDecoration(
-              isCollapsed: true,
-              alignLabelWithHint: true,
-              fillColor: Colors.grey.withOpacity(0.2),
-              contentPadding: EdgeInsets.zero,
-              border: widget.border ?? InputBorder.none,
-              hintText: widget.hint,
-            ),
-      ),
       items: widget.items,
       selectedItems: widget.selectedItems,
       itemAsString: widget.itemAsString,

@@ -23,23 +23,19 @@ import '../../../provider/manage_provider.dart';
 import '../../../view_model/maincity_vm.dart';
 
 class EditUser extends StatefulWidget {
-  UserModel userModel;
+  final UserModel userModel;
 
   //final int index;
-  EditUser(
-      {
-      //required this.index,
-      required this.userModel,
-      Key? key})
-      : super(key: key);
+  const EditUser({
+    required this.userModel,
+    super.key,
+  });
 
   @override
   _EditUserState createState() => _EditUserState();
 }
 
 class _EditUserState extends State<EditUser> {
-  //final controllerUsers = Get.find<AllUserVMController>();
-
   final TextEditingController descriptionController = TextEditingController();
 
   final TextEditingController mobileController = TextEditingController();
@@ -79,15 +75,6 @@ class _EditUserState extends State<EditUser> {
 
   @override
   void initState() {
-    // Provider.of<level_vm>(context,listen: false).getlevel();
-    //
-    // Provider.of<level_vm>(context,listen: false).listoflevel;
-    //  WidgetsBinding.instance.addPostFrameCallback((_) {
-    //
-    // });
-    // Provider.of<regoin_vm>(context,listen: false).getregoin();
-    //
-    // Provider.of<level_vm>(context,listen: false).getlevel();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
       namemanage = widget.userModel.typeAdministration.toString();
@@ -119,10 +106,6 @@ class _EditUserState extends State<EditUser> {
 
   @override
   Widget build(BuildContext context) {
-    //   controllerUsers= Provider.of<user_vm_provider>
-    // (context,listen: true).userall;
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -190,15 +173,9 @@ class _EditUserState extends State<EditUser> {
 
                     if (levelname != null &&
                         emailController.text.toString().trim().isNotEmpty) {
-                      // Provider.of<LoadProvider>(context, listen: false)
-                      //     .changeboolUpdateUser(true);
                       Map<String, String?> body = {
-                        'email': emailController.text != null
-                            ? emailController.text
-                            : "",
-                        'mobile': mobileController.text != null
-                            ? mobileController.text
-                            : "",
+                        'email': emailController.text,
+                        'mobile': mobileController.text,
                         //'fk_country': id_country,
                         'type_administration':
                             namemanage, //!= null ? namemanage : "",
@@ -406,47 +383,20 @@ class _EditUserState extends State<EditUser> {
                           items: cart.listmaincityfilter,
                           selectedItems: cart.selectedRegions,
                           hint: 'المنطقة',
+                          filterFn: (user, filter) =>
+                              user.getfilteruser(filter),
+                          compareFn: (item, selectedItem) =>
+                              item.id_maincity == selectedItem.id_maincity,
                           onChanged: (data) {
                             cart.changeitemlist(data);
                           },
                           itemAsString: (u) => u!.userAsString(),
                         );
-
-                        // return DropdownSearch<MainCityModel>.multiSelection(
-                        //   mode: Mode.DIALOG,
-                        //   filterFn: (user, filter) =>
-                        //       user!.getfilteruser(filter!),
-                        //   compareFn: (item, selectedItem) =>
-                        //       item?.id_maincity == selectedItem?.id_maincity,
-                        //   items: cart.listmaincityfilter,
-                        //   showSelectedItems: true,
-                        //   selectedItems: cart.selectedRegions,
-                        //   itemAsString: (u) => u!.userAsString(),
-                        //   onChanged: (data) {
-                        //     cart.changeitemlist(data);
-                        //   },
-                        //   showSearchBox: true,
-                        //   dropdownSearchDecoration: InputDecoration(
-                        //     isCollapsed: true,
-                        //     hintText: 'المنطقة',
-                        //     alignLabelWithHint: true,
-                        //     fillColor: Colors.grey.withOpacity(0.2),
-                        //     contentPadding: EdgeInsets.all(0),
-                        //     border: UnderlineInputBorder(
-                        //         borderSide:
-                        //             const BorderSide(color: Colors.grey)),
-                        //   ),
-                        // );
                       },
                     ),
                     SizedBox(height: 20),
-                    // RegoinCombox(
-                    //   selected: regoin,
-                    // ),
-                    //manage
-                    SizedBox(
-                      height: 20,
-                    ),
+
+                    SizedBox(height: 20),
                     RowEdit(name: AppStrings.labelMobile, des: '*'),
                     EditTextFormField(
                       hintText: '00966000000000',
@@ -488,20 +438,6 @@ class _EditUserState extends State<EditUser> {
                             //selectedProvider.selectValuetypeinstall(index);
                           });
                         }),
-                    // }),
-                    //show chose image
-
-                    // Center(
-                    //   child: TextButton(
-                    //       // style: ButtonStyle(backgroundColor:Color(Colors.lightBlue)),
-                    //       onPressed: () {
-                    //
-                    //       },
-                    //       child: Text(
-                    //         'تعديل ',
-                    //         style: TextStyle(color: kMainColor),
-                    //       )),
-                    // )
                   ],
                 ),
               ),
@@ -514,18 +450,6 @@ class _EditUserState extends State<EditUser> {
   }
 
   clear(body) {
-    //AppStrings.label_Edituser
-    // Provider.of<LoadProvider>(context, listen: false)
-    //     .changeboolUpdateUser(false);
-//     final index = Provider.of<user_vm_provider>(context, listen: false)
-//         .userall.indexWhere(
-//             (element) =>
-//         element.idUser ==widget.userModel.idUser );
-// widget.userModel=Provider.of<user_vm_provider>(context, listen: false)
-//     .userall[index];
-    // descriptionController.text = "";
-    // mobileController.text = "";
-    // emailController.text = "";
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text(AppStrings.labelEditUser)));
     Navigator.pop(context);
@@ -538,16 +462,4 @@ class _EditUserState extends State<EditUser> {
     });
     return stringBuffer.toString();
   }
-
-  error() {
-    // Provider.of<LoadProvider>(context, listen: false)
-    //     .changeboolUpdateUser(false);
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(AppStrings.labelErrorAddProd)));
-    Navigator.pop(context);
-  }
-
-  bool validateEmail(String email) => RegExp(
-          r'''(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])''')
-      .hasMatch(email);
 }

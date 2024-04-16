@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_scaffold.dart';
@@ -250,73 +251,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             }
                             return null;
                           },
+                          dropdownSearchDecoration:
+                              AppStyles.roundedDropdownButtonDecoration(
+                            context: context,
+                            hintText: 'المشاركين*',
+                          ),
                         );
-
-                        //   DropdownSearch<UserModel>.multiSelection(
-                        //   mode: Mode.DIALOG,
-                        //   filterFn: (user, filter) =>
-                        //       user!.nameUser!.contains(filter!),
-                        //   compareFn: (item, selectedItem) =>
-                        //       item?.idUser == selectedItem?.idUser,
-                        //   items: state.allUsersList.getDataWhenSuccess ?? [],
-                        //   itemAsString: (u) => u!.userAsString(),
-                        //   onChanged: _taskCubit.onChangeParticipants,
-                        //   selectedItems: taskState.selectedParticipant ?? [],
-                        //   showSearchBox: true,
-                        //   // validator: (value) {
-                        //   //   if (value?.isEmpty ?? true) {
-                        //   //     return 'هذا الحقل مطلوب.';
-                        //   //   }
-                        //   //   return null;
-                        //   // },
-                        //   dropdownSearchDecoration: InputDecoration(
-                        //     isCollapsed: true,
-                        //     hintText: 'المشاركين*',
-                        //     hintStyle: context.textTheme.titleSmall
-                        //         ?.copyWith(color: Colors.grey),
-                        //     contentPadding: HWEdgeInsetsDirectional.only(
-                        //         start: 12, end: 12, top: 10, bottom: 15),
-                        //     border: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //           color: context.colorScheme.primary),
-                        //       borderRadius: BorderRadius.circular(10).r,
-                        //     ),
-                        //     focusedBorder: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //           color: context.colorScheme.primary),
-                        //       borderRadius: BorderRadius.circular(10).r,
-                        //     ),
-                        //     enabledBorder: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //           color: context.colorScheme.primary),
-                        //       borderRadius: BorderRadius.circular(10).r,
-                        //     ),
-                        //     disabledBorder: OutlineInputBorder(
-                        //       borderSide: BorderSide(
-                        //           color: context.colorScheme.primary),
-                        //       borderRadius: BorderRadius.circular(10).r,
-                        //     ),
-                        //     errorBorder: OutlineInputBorder(
-                        //       borderSide:
-                        //           BorderSide(color: context.colorScheme.error),
-                        //       borderRadius: BorderRadius.circular(10).r,
-                        //     ),
-                        //     focusedErrorBorder: OutlineInputBorder(
-                        //       borderSide:
-                        //           BorderSide(color: context.colorScheme.error),
-                        //       borderRadius: BorderRadius.circular(10).r,
-                        //     ),
-                        //     suffixIcon: state.allUsersList.isLoading
-                        //         ? CupertinoActivityIndicator()
-                        //         : state.allUsersList.isError
-                        //             ? IconButton(
-                        //                 onPressed: () =>
-                        //                     _usersCubit.getAllUsers(),
-                        //                 icon: Icon(Icons.refresh))
-                        //             : null,
-                        //   ),
-                        //   // InputDecoration(border: InputBorder.none),
-                        // );
                       },
                     ),
                     20.verticalSpace,
@@ -473,58 +413,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   filterFn: (user, filter) =>
                                       user.contains(filter),
                                 ),
-
-                                // DropdownSearch<String>(
-                                //   mode: Mode.DIALOG,
-                                //   filterFn: (user, filter) =>
-                                //       user!.contains(filter!),
-                                //   compareFn: (item, selectedItem) =>
-                                //       item == selectedItem,
-                                //   items: [],
-                                //   itemAsString: (u) => u!,
-                                //   onChanged: (data) {},
-                                //   selectedItem: null,
-                                //   showSearchBox: true,
-                                //   dropdownSearchDecoration: InputDecoration(
-                                //     isCollapsed: true,
-                                //     hintText: 'الفاتورة',
-                                //     hintStyle: context.textTheme.titleSmall
-                                //         ?.copyWith(color: Colors.grey),
-                                //     contentPadding:
-                                //         HWEdgeInsetsDirectional.only(
-                                //             start: 12, end: 12),
-                                //     border: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.primary),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     focusedBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.primary),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     enabledBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.primary),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     disabledBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.primary),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     errorBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.error),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     focusedErrorBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.error),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //   ),
-                                // ),
                               ),
                               10.horizontalSpace,
                               Expanded(
@@ -537,58 +425,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   filterFn: (user, filter) =>
                                       user.contains(filter),
                                 ),
-
-                                // DropdownSearch<String>(
-                                //   mode: Mode.DIALOG,
-                                //   filterFn: (user, filter) =>
-                                //       user!.contains(filter!),
-                                //   compareFn: (item, selectedItem) =>
-                                //       item == selectedItem,
-                                //   items: [],
-                                //   itemAsString: (u) => u!,
-                                //   onChanged: (data) {},
-                                //   selectedItem: null,
-                                //   showSearchBox: true,
-                                //   dropdownSearchDecoration: InputDecoration(
-                                //     isCollapsed: true,
-                                //     hintText: 'المجموعة',
-                                //     hintStyle: context.textTheme.titleSmall
-                                //         ?.copyWith(color: Colors.grey),
-                                //     contentPadding:
-                                //         HWEdgeInsetsDirectional.only(
-                                //             start: 12, end: 12),
-                                //     border: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.primary),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     focusedBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.primary),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     enabledBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.primary),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     disabledBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.primary),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     errorBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.error),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //     focusedErrorBorder: OutlineInputBorder(
-                                //       borderSide: BorderSide(
-                                //           color: context.colorScheme.error),
-                                //       borderRadius: BorderRadius.circular(10).r,
-                                //     ),
-                                //   ),
-                                // ),
                               ),
                             ],
                           ),
@@ -662,71 +498,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
               return null;
             },
           );
-
-          // return DropdownSearch<UserRegionDepartment>(
-          //   mode: Mode.DIALOG,
-          //   filterFn: (user, filter) => user!.nameUser!.contains(filter!),
-          //   compareFn: (item, selectedItem) =>
-          //       item?.idUser == selectedItem?.idUser,
-          //   items: state.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
-          //   itemAsString: (u) => u!.nameUser!,
-          //   onChanged: (data) {
-          //     _taskCubit.onChangeAssignTo(data);
-          //   },
-          //   selectedItem: taskState.selectedAssignTo,
-          //   showSearchBox: true,
-          //   validator: (value) {
-          //     if (taskState.selectedAssignedToType != AssignedToType.employee) {
-          //       return null;
-          //     }
-          //     if (value == null) {
-          //       return 'هذا الحقل مطلوب.';
-          //     }
-          //     return null;
-          //   },
-          //   dropdownSearchDecoration: InputDecoration(
-          //     isCollapsed: true,
-          //     hintText: 'الموظف',
-          //     hintStyle:
-          //         context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-          //     contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
-          //     border: OutlineInputBorder(
-          //       borderSide: BorderSide(color: context.colorScheme.primary),
-          //       borderRadius: BorderRadius.circular(10).r,
-          //     ),
-          //     focusedBorder: OutlineInputBorder(
-          //       borderSide: BorderSide(color: context.colorScheme.primary),
-          //       borderRadius: BorderRadius.circular(10).r,
-          //     ),
-          //     enabledBorder: OutlineInputBorder(
-          //       borderSide: BorderSide(color: context.colorScheme.primary),
-          //       borderRadius: BorderRadius.circular(10).r,
-          //     ),
-          //     disabledBorder: OutlineInputBorder(
-          //       borderSide: BorderSide(color: context.colorScheme.primary),
-          //       borderRadius: BorderRadius.circular(10).r,
-          //     ),
-          //     errorBorder: OutlineInputBorder(
-          //       borderSide: BorderSide(color: context.colorScheme.error),
-          //       borderRadius: BorderRadius.circular(10).r,
-          //     ),
-          //     focusedErrorBorder: OutlineInputBorder(
-          //       borderSide: BorderSide(color: context.colorScheme.error),
-          //       borderRadius: BorderRadius.circular(10).r,
-          //     ),
-          //     suffixIcon: state.usersByDepartmentAndRegion.isLoading
-          //         ? CupertinoActivityIndicator()
-          //         : state.usersByDepartmentAndRegion.isError
-          //             ? IconButton(
-          //                 onPressed: () =>
-          //                     _usersCubit.getUsersByDepartmentAndRegion(
-          //                         regionId: regionId,
-          //                         departmentId: departmentId),
-          //                 icon: Icon(Icons.refresh))
-          //             : null,
-          //   ),
-          //   // InputDecoration(border: InputBorder.none),
-          // );
         },
       );
     return SizedBox.shrink();

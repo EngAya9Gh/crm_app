@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -301,80 +302,6 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                     filterFn: (user, filter) =>
                                         user.nameUser!.contains(filter),
                                   );
-                                  // return DropdownSearch<UserRegionDepartment>(
-                                  //   mode: Mode.DIALOG,
-                                  //   filterFn: (user, filter) =>
-                                  //       user!.nameUser!.contains(filter!),
-                                  //   compareFn: (item, selectedItem) =>
-                                  //       item?.idUser == selectedItem?.idUser,
-                                  //   items: userState.usersByDepartmentAndRegion
-                                  //           .getDataWhenSuccess ??
-                                  //       [],
-                                  //   itemAsString: (u) => u!.nameUser!,
-                                  //   onChanged: (data) {
-                                  //     _taskCubit.onChangeFilterAssignFrom(data);
-                                  //   },
-                                  //   selectedItem: state.filterAssignFrom,
-                                  //   showSearchBox: true,
-                                  //   dropdownSearchDecoration: InputDecoration(
-                                  //     isCollapsed: true,
-                                  //     hintText: 'اسناد من',
-                                  //     hintStyle: context.textTheme.titleSmall
-                                  //         ?.copyWith(color: Colors.grey),
-                                  //     contentPadding:
-                                  //         HWEdgeInsetsDirectional.only(
-                                  //             start: 12, end: 12),
-                                  //     border: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.primary),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     focusedBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.primary),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     enabledBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.primary),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     disabledBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.primary),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     errorBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.error),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     focusedErrorBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.error),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     suffixIcon: userState
-                                  //             .allUsersList.isLoading
-                                  //         ? CupertinoActivityIndicator()
-                                  //         : userState.allUsersList.isError
-                                  //             ? IconButton(
-                                  //                 onPressed: () => _usersCubit
-                                  //                     .getUsersByDepartmentAndRegion(
-                                  //                         regionId: regionId,
-                                  //                         departmentId:
-                                  //                             departmentId),
-                                  //                 icon: Icon(Icons.refresh))
-                                  //             : null,
-                                  //   ),
-                                  //   // InputDecoration(border: InputBorder.none),
-                                  // );
                                 },
                               ),
                             ),
@@ -395,96 +322,19 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                     selectedItem: state.filterAssignTo,
                                     filterFn: (user, filter) =>
                                         user.nameUser!.contains(filter),
+                                    compareFn: (item, selectedItem) =>
+                                        item.idUser == selectedItem.idUser,
+                                    buttonDecoration: AppStyles
+                                        .roundedDropdownButtonDecoration(
+                                      context: context,
+                                      hintText: 'اسناد إلى',
+                                    ),
                                   );
-
-                                  // return DropdownSearch<UserRegionDepartment>(
-                                  //   mode: Mode.DIALOG,
-                                  //   filterFn: (user, filter) =>
-                                  //       user!.nameUser!.contains(filter!),
-                                  //   compareFn: (item, selectedItem) =>
-                                  //       item?.idUser == selectedItem?.idUser,
-                                  //   items: userState.usersByDepartmentAndRegion
-                                  //           .getDataWhenSuccess ??
-                                  //       [],
-                                  //   itemAsString: (u) => u!.nameUser!,
-                                  //   onChanged: (data) {
-                                  //     _taskCubit.onChangeFilterAssignTo(data);
-                                  //   },
-                                  //   selectedItem: state.filterAssignTo,
-                                  //   showSearchBox: true,
-                                  //   dropdownSearchDecoration: InputDecoration(
-                                  //     isCollapsed: true,
-                                  //     hintText: 'اسناد إلى',
-                                  //     hintStyle: context.textTheme.titleSmall
-                                  //         ?.copyWith(color: Colors.grey),
-                                  //     contentPadding:
-                                  //         HWEdgeInsetsDirectional.only(
-                                  //             start: 12, end: 12),
-                                  //     border: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.primary),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     focusedBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.primary),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     enabledBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.primary),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     disabledBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.primary),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     errorBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.error),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     focusedErrorBorder: OutlineInputBorder(
-                                  //       borderSide: BorderSide(
-                                  //           color: context.colorScheme.error),
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(10).r,
-                                  //     ),
-                                  //     suffixIcon: userState
-                                  //             .allUsersList.isLoading
-                                  //         ? CupertinoActivityIndicator()
-                                  //         : userState.allUsersList.isError
-                                  //             ? IconButton(
-                                  //                 onPressed: () => _usersCubit
-                                  //                     .getUsersByDepartmentAndRegion(
-                                  //                         regionId: regionId,
-                                  //                         departmentId:
-                                  //                             departmentId),
-                                  //                 icon: Icon(Icons.refresh))
-                                  //             : null,
-                                  //   ),
-                                  //   // InputDecoration(border: InputBorder.none),
-                                  // );
                                 },
                               ),
                             ),
                           ],
                         ),
-                        // 20.verticalSpace,
-                        // AppDropdownButtonFormField<TaskStatus, TaskStatus>(
-                        //   items: TaskStatus.values,
-                        //   onChange: (value) {},
-                        //   hint: "الحالة",
-                        //   itemAsValue: (TaskStatus? item) => item,
-                        //   itemAsString: (item) => item!.name,
-                        //   value: null,
-                        // ),
                         20.verticalSpace,
 
                         SizedBox(

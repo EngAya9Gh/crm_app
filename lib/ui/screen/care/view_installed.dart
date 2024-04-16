@@ -164,6 +164,10 @@ class _View_installedClientState extends State<View_installedClient> {
                             items: user.usersSupportManagement,
                             selectedItem: user.selectedUser,
                             itemAsString: (u) => u!.userAsString(),
+                            filterFn: (user, filter) =>
+                                user.getfilteruser(filter),
+                            compareFn: (item, selectedItem) =>
+                                item.idUser == selectedItem.idUser,
                             onChanged: (data) {
                               context
                                   .read<UserProvider>()
@@ -171,40 +175,7 @@ class _View_installedClientState extends State<View_installedClient> {
                               employeeId = data?.idUser;
                               filtershow();
                             },
-                            filterFn: (user, filter) =>
-                                user.getfilteruser(filter),
                           ),
-
-                          // DropdownSearch<UserModel>(
-                          //   mode: Mode.DIALOG,
-                          //   filterFn: (user, filter) =>
-                          //       user!.getfilteruser(filter!),
-                          //   compareFn: (item, selectedItem) =>
-                          //       item?.idUser == selectedItem?.idUser,
-                          //   showSelectedItems: true,
-                          //   items: user.usersSupportManagement,
-                          //   itemAsString: (u) => u!.userAsString(),
-                          //   onChanged: (data) {
-                          //     context
-                          //         .read<UserProvider>()
-                          //         .changevalueuser(data);
-                          //     employeeId = data?.idUser;
-                          //     filtershow();
-                          //   },
-                          //   selectedItem: user.selectedUser,
-                          //   showSearchBox: true,
-                          //   dropdownSearchDecoration: InputDecoration(
-                          //     isCollapsed: true,
-                          //     hintText: 'الموظف',
-                          //     alignLabelWithHint: true,
-                          //     fillColor: Colors.grey.withOpacity(0.2),
-                          //     contentPadding: EdgeInsets.all(0),
-                          //     border: UnderlineInputBorder(
-                          //         borderSide:
-                          //             const BorderSide(color: Colors.grey)),
-                          //   ),
-                          //   // InputDecoration(border: InputBorder.none),
-                          // ),
                         ),
                       ],
                     );

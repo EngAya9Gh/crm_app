@@ -180,7 +180,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                           //  setState(() {
                                           cart.changeVal(value.toString());
                                           regoin = value.toString();
-                                          filtershow();
+                                          filterShow();
                                         },
                                       );
                                       //);
@@ -211,7 +211,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                 onChanged: (value) {
                                   cart.changevaluefilter(value.toString());
                                   typeclientvalue = value.toString();
-                                  filtershow();
+                                  filterShow();
                                 },
                               );
                             }),
@@ -242,7 +242,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                           onPressed: () {
                                             iduser = null;
                                             cart.changevalueuser(null);
-                                            filtershow();
+                                            filterShow();
                                           },
                                           icon: Icon(Icons.highlight_off)),
                                       SizedBox(width: 10),
@@ -256,43 +256,15 @@ class _clientmarketingState extends State<clientmarketing> {
                                         filterFn: (user, filter) {
                                           return user.getfilteruser(filter);
                                         },
+                                        compareFn: (item, selectedItem) =>
+                                            item.idUser == selectedItem.idUser,
                                         onChanged: (data) {
                                           iduser = data!.idUser;
                                           cart.changevalueuser(data);
-                                          filtershow();
+                                          filterShow();
                                         },
                                         selectedItem: cart.selectedUser,
                                       ),
-
-                                      // DropdownSearch<UserModel>(
-                                      //   mode: Mode.DIALOG,
-                                      //   filterFn: (user, filter) =>
-                                      //       user!.getfilteruser(filter!),
-                                      //   compareFn: (item, selectedItem) =>
-                                      //       item?.idUser ==
-                                      //       selectedItem?.idUser,
-                                      //   items: cart.usersMarketingManagement,
-                                      //   itemAsString: (u) => u!.userAsString(),
-                                      //   onChanged: (data) {
-                                      //     iduser = data!.idUser;
-                                      //     cart.changevalueuser(data);
-                                      //     filtershow();
-                                      //   },
-                                      //   selectedItem: cart.selectedUser,
-                                      //   showSearchBox: true,
-                                      //   dropdownSearchDecoration:
-                                      //       InputDecoration(
-                                      //     isCollapsed: true,
-                                      //     hintText: 'الموظف',
-                                      //     alignLabelWithHint: true,
-                                      //     fillColor:
-                                      //         Colors.grey.withOpacity(0.2),
-                                      //     contentPadding: EdgeInsets.all(0),
-                                      //     border: UnderlineInputBorder(
-                                      //         borderSide: const BorderSide(
-                                      //             color: Colors.grey)),
-                                      //   ),
-                                      // ),
                                     ),
                                   ],
                                 );
@@ -318,7 +290,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                     onPressed: () {
                                       activity = '';
                                       cart.onChangeSelectedActivity(null);
-                                      filtershow();
+                                      filterShow();
                                     },
                                     icon: Icon(Icons.highlight_off)),
                                 SizedBox(width: 10),
@@ -335,7 +307,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                     cart.onChangeSelectedActivity(data);
                                     activity =
                                         data?.id_activity_type.toString();
-                                    filtershow();
+                                    filterShow();
                                   },
                                   selectedItem: cart.selectedActivity,
                                 ),
@@ -450,41 +422,12 @@ class _clientmarketingState extends State<clientmarketing> {
         );
   }
 
-  void filtershow() {
+  void filterShow() {
     context.read<ClientProvider>().filterClientMarketingSalesList(
           activity: activity,
           idUser: iduser,
           region: regoin,
           typeClient: typeclientvalue,
         );
-
-    //
-    // if(typeclientvalue=='الكل'){
-    //   Provider.of<client_vm>(context, listen: false) .resetlist();
-    // }
-    // else{
-    //   if( Provider.of<regoin_vm>(context,listen: false).selectedValueLevel!=null&&
-    //       iduser!=null){
-    //     Provider.of<client_vm>(context, listen: false)
-    //         .getclientfilter_Local(iduser ,"3", typeclientvalue, regoin,activity);
-    //   }else{
-    //     if(Provider.of<regoin_vm>(context,listen: false).selectedValueLevel==null&&
-    //         iduser==null){
-    //       Provider.of<client_vm>(context, listen: false)
-    //           .getclientfilter_Local(typeclientvalue,"type",null,null,activity );
-    //     }
-    //     else{
-    //       if(iduser==null) {
-    //         Provider.of<client_vm>(context, listen: false)
-    //             .getclientfilter_Local(
-    //             regoin, "regoin",
-    //             typeclientvalue,null,activity);
-    //       }else{
-    //
-    //         Provider.of<client_vm>(context, listen: false)
-    //             .getclientfilter_Local(iduser,"user",typeclientvalue,null,activity);
-    //       }
-    //     }}
-    // }
   }
 }

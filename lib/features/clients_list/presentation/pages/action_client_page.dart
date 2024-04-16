@@ -205,9 +205,9 @@ class _ActionClientPageState extends State<ActionClientPage> {
         _clientTypeProvider.selectedValuemanag = null;
       }
       _clientTypeProvider.changevalue(_clientTypeProvider.selectedValuemanag);
+      reasonReject = ValueNotifier(widget.client?.rejectId);
     });
     // _userProvider.changeClientRegistrationTypeStatus(_selectedClientsClassification.toString());
-    reasonReject = ValueNotifier(widget.client?.rejectId);
     super.initState();
   }
 
@@ -235,11 +235,14 @@ class _ActionClientPageState extends State<ActionClientPage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => _manageWithdrawalsCubit,
-      child: WillPopScope(
-        onWillPop: () async {
-          context.read<UserProvider>().changeClientClassificationTypeStatus('');
-          context.read<UserProvider>().changeClientRegistrationTypeStatus('');
-          return true;
+      child: PopScope(
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            context
+                .read<UserProvider>()
+                .changeClientClassificationTypeStatus('');
+            context.read<UserProvider>().changeClientRegistrationTypeStatus('');
+          }
         },
         child: AppScaffold(
           appBar: PreferredSize(
@@ -331,6 +334,12 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                       },
                                       filterFn: (activity, filter) => activity
                                           .getFilterActivityType(filter),
+                                      validator: (val) {
+                                        if (val == null) {
+                                          return 'هذا الحقل مطلوب.';
+                                        }
+                                        return null;
+                                      },
                                     );
                                   },
                                 ),
@@ -347,9 +356,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                   validator: (value) {
                                     if (_selectedClientRegistrationTye ==
                                         'خاطئ') return null;
-                                    if (value?.trim().isEmpty ?? true) {
-                                      return 'هذا الحقل مطلوب.';
-                                    }
+                                    return HelperFunctions.instance
+                                        .requiredFiled(value);
                                   },
                                   // HelperFunctions.instance.requiredFiled,
                                   value: _selectedActivitySizeType,
@@ -372,9 +380,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                             validator: (value) {
                               if (_selectedClientRegistrationTye == 'خاطئ')
                                 return null;
-                              if (value?.trim().isEmpty ?? true) {
-                                return 'هذا الحقل مطلوب.';
-                              }
+                              return HelperFunctions.instance
+                                  .requiredFiled(value);
                             },
                             contentPadding: HWEdgeInsetsDirectional.only(
                                 start: 16, end: 10, top: 10, bottom: 10),
@@ -397,106 +404,17 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                         if (data == null) {
                                           return;
                                         }
-
                                         selectedCity = data.id_city;
                                       },
                                       filterFn: (city, filter) =>
                                           city.getfilteruser(filter),
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'هذا الحقل مطلوب.';
+                                        }
+                                        return null;
+                                      },
                                     );
-
-                                    // return DropdownSearch<CityModel>(
-                                    //   mode: Mode.DIALOG,
-                                    //   filterFn: (city, filter) =>
-                                    //       city!.getfilteruser(filter!),
-                                    //   items: cart.listcity,
-                                    //   popupItemBuilder:
-                                    //       _customPopupItemBuilderForCityList,
-                                    //   itemAsString: (u) => u!.userAsString(),
-                                    //   selectedItem: cart.listcity
-                                    //       .firstWhereOrNull((element) =>
-                                    //           element.id_city == selectedCity),
-                                    //   onChanged: (data) {
-                                    //     if (data == null) {
-                                    //       return;
-                                    //     }
-                                    //
-                                    //     selectedCity = data.id_city;
-                                    //   },
-                                    //
-                                    //   dropdownBuilder: (context, u) {
-                                    //     return u != null
-                                    //         ? Text(
-                                    //             u.name_city!,
-                                    //             style: context
-                                    //                 .textTheme.titleSmall,
-                                    //             overflow: TextOverflow.ellipsis,
-                                    //           )
-                                    //         : Text(
-                                    //             "المدينة *",
-                                    //             style: context
-                                    //                 .textTheme.titleSmall
-                                    //                 ?.copyWith(
-                                    //                     color: Colors.grey),
-                                    //           );
-                                    //   },
-                                    //   showSearchBox: true,
-                                    //   validator: (value) {
-                                    //     if (value == null) {
-                                    //       return 'هذا الحقل مطلوب.';
-                                    //     }
-                                    //     return null;
-                                    //   },
-                                    //   dropdownSearchDecoration: InputDecoration(
-                                    //     isCollapsed: true,
-                                    //     hintText: 'المدينة*',
-                                    //     hintStyle: context.textTheme.titleSmall
-                                    //         ?.copyWith(color: Colors.grey),
-                                    //     contentPadding:
-                                    //         HWEdgeInsetsDirectional.only(
-                                    //             start: 12, end: 12),
-                                    //     border: OutlineInputBorder(
-                                    //       borderSide: BorderSide(
-                                    //           color:
-                                    //               context.colorScheme.primary),
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(10).r,
-                                    //     ),
-                                    //     focusedBorder: OutlineInputBorder(
-                                    //       borderSide: BorderSide(
-                                    //           color:
-                                    //               context.colorScheme.primary),
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(10).r,
-                                    //     ),
-                                    //     enabledBorder: OutlineInputBorder(
-                                    //       borderSide: BorderSide(
-                                    //           color:
-                                    //               context.colorScheme.primary),
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(10).r,
-                                    //     ),
-                                    //     disabledBorder: OutlineInputBorder(
-                                    //       borderSide: BorderSide(
-                                    //           color:
-                                    //               context.colorScheme.primary),
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(10).r,
-                                    //     ),
-                                    //     errorBorder: OutlineInputBorder(
-                                    //       borderSide: BorderSide(
-                                    //           color: context.colorScheme.error),
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(10).r,
-                                    //     ),
-                                    //     focusedErrorBorder: OutlineInputBorder(
-                                    //       borderSide: BorderSide(
-                                    //           color: context.colorScheme.error),
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(10).r,
-                                    //     ),
-                                    //   ),
-                                    //   // InputDecoration(border: InputBorder.none),
-                                    // );
                                   },
                                 ),
                               ),
@@ -508,9 +426,8 @@ class _ActionClientPageState extends State<ActionClientPage> {
                                   validator: (value) {
                                     if (_selectedClientRegistrationTye ==
                                         'خاطئ') return null;
-                                    if (value?.trim().isEmpty ?? true) {
-                                      return 'هذا الحقل مطلوب.';
-                                    }
+                                    return HelperFunctions.instance
+                                        .requiredFiled(value);
                                   },
                                   controller: addressClientController,
                                 ),
@@ -798,8 +715,6 @@ class _ActionClientPageState extends State<ActionClientPage> {
   bool get isEdit => widget.client != null;
 
   void _onEditClient() {
-    print(
-        "context.read<UserProvider>().selectedClientRegistrationType ${context.read<UserProvider>().selectedClientRegistrationType}");
     final EditClientParams editClientParams = EditClientParams(
       nameClient: nameClientController.text,
       nameEnterprise: nameEnterpriseController.text,
@@ -892,7 +807,7 @@ class _ActionClientPageState extends State<ActionClientPage> {
     Navigator.push(
         context,
         CupertinoPageRoute(
-          builder: (context) => similar_dailog(
+          builder: (context) => SimilarDialog(
             phone: mobileController.text,
             name_enterprise: nameEnterpriseController.text,
             nameClient: nameClientController.text,
@@ -900,40 +815,24 @@ class _ActionClientPageState extends State<ActionClientPage> {
           ),
         ));
   }
-
-  Widget _customPopupItemBuilderForCityList(
-      BuildContext context, CityModel item, bool isSelected) {
-    return Container(
-        margin: const EdgeInsetsDirectional.only(
-            start: 2, end: 2, top: 2, bottom: 2),
-        decoration: AppStyles.customBoxDecoration,
-        child: ListTile(
-          selected: isSelected,
-          trailing: Text(
-            item.name_city,
-            style: context.textTheme.titleSmall,
-            textDirection: TextDirection.rtl,
-          ),
-        ));
-  }
 }
 
-class similar_dailog extends StatefulWidget {
-  similar_dailog(
-      {Key? key,
-      required this.nameClient,
-      required this.name_enterprise,
-      required this.phone,
-      required this.addClientParams})
-      : super(key: key);
-  String nameClient, name_enterprise, phone;
-  AddClientParams addClientParams;
+class SimilarDialog extends StatefulWidget {
+  const SimilarDialog({
+    Key? key,
+    required this.nameClient,
+    required this.name_enterprise,
+    required this.phone,
+    required this.addClientParams,
+  }) : super(key: key);
+  final String nameClient, name_enterprise, phone;
+  final AddClientParams addClientParams;
 
   @override
-  State<similar_dailog> createState() => _similar_dailogState();
+  State<SimilarDialog> createState() => _SimilarDialogState();
 }
 
-class _similar_dailogState extends State<similar_dailog> {
+class _SimilarDialogState extends State<SimilarDialog> {
   late final ClientsListBloc _clientsListBloc;
 
   @override
@@ -1080,8 +979,8 @@ class _similar_dailogState extends State<similar_dailog> {
 }
 
 class CardSimilar extends StatelessWidget {
-  CardSimilar({Key? key, required this.smClient}) : super(key: key);
-  SimilarClient smClient;
+  const CardSimilar({Key? key, required this.smClient}) : super(key: key);
+  final SimilarClient smClient;
 
   @override
   Widget build(BuildContext context) {
@@ -1162,7 +1061,7 @@ Widget customPopupItemBuilderForActivityTypeList(
       child: ListTile(
         selected: isSelected,
         trailing: Text(
-          item.name_activity_type!,
+          item.name_activity_type,
           style: context.textTheme.titleSmall,
           textDirection: TextDirection.rtl,
         ),

@@ -18,15 +18,14 @@ import '../../../constants.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/end_points.dart';
 
-class delayinstall extends StatefulWidget {
-  const delayinstall({Key? key}) : super(key: key);
+class DelayInstall extends StatefulWidget {
+  const DelayInstall({Key? key}) : super(key: key);
 
   @override
-  State<delayinstall> createState() => _delayinstallState();
+  State<DelayInstall> createState() => _DelayInstallState();
 }
 
-class _delayinstallState extends State<delayinstall> {
-  static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
+class _DelayInstallState extends State<DelayInstall> {
   List<InvoiceModel> listInvoicesAccept = [];
   List<BarModel> salesresult = [];
   List<BarModel> salestempdataclientresult = [];
@@ -36,10 +35,6 @@ class _delayinstallState extends State<delayinstall> {
   String type = 'userSum';
   String typeproduct = 'الكل';
   double totalval = 0;
-  DateTime _selectedDate = DateTime(1, 1, 1);
-  DateTime _selectedDatemonth = DateTime(1, 1, 1);
-  DateTime _selectedDatefrom = DateTime.now();
-  DateTime _selectedDateto = DateTime.now();
 
   @override
   void initState() {
@@ -73,18 +68,7 @@ class _delayinstallState extends State<delayinstall> {
 
     String paramprivilge = '';
     if (iduser != '') paramprivilge = '&id_user=${iduser}';
-    // if(Provider.of<privilge_vm>(context,listen: false)
-    //     .checkprivlge('80')==true )
-    //   paramprivilge='&id_user=${iduser}';
-    // else {
-    //   if(Provider.of<privilge_vm>(context,listen: false)
-    //       .checkprivlge('81')==true )
-    //     paramprivilge='&id_regoin=${idregoin}';
-    // }
-    // if(Provider.of<privilge_vm>(context,listen: false).checkprivlge('82')==true ||
-    //     Provider.of<privilge_vm>(context,listen: false)
-    //         .checkprivlge('80')==true||Provider.of<privilge_vm>(context,listen: false)
-    //     .checkprivlge('81')==true){
+
     var data;
 
     switch (type) {
@@ -97,7 +81,6 @@ class _delayinstallState extends State<delayinstall> {
     }
 
     //userSum
-    //List<BarModel> tempdata = genderModelFromJson(data);
     List<BarModel> tempdataclient = [];
     totalval = 0;
     listInvoicesAccept = [];
@@ -107,7 +90,6 @@ class _delayinstallState extends State<delayinstall> {
       listInvoicesAccept.add(InvoiceModel.fromJson(data[i]));
     }
 
-    // for(int i=0;i<salesresult.length;i++)
     setState(() {
       salesresult = tempdata;
       // salestempdataclientresult = tempdataclient;
@@ -158,38 +140,10 @@ class _delayinstallState extends State<delayinstall> {
                             },
                             selectedItem: cart.selectedUser,
                             filterFn: (user, filter) =>
-                                user!.getfilteruser(filter!),
+                                user.getfilteruser(filter),
                             compareFn: (item, selectedItem) =>
-                                item?.idUser == selectedItem?.idUser,
+                                item.idUser == selectedItem.idUser,
                           ),
-
-                          // DropdownSearch<UserModel>(
-                          //   mode: Mode.DIALOG,
-                          //   filterFn: (user, filter) =>
-                          //       user!.getfilteruser(filter!),
-                          //   compareFn: (item, selectedItem) =>
-                          //       item?.idUser == selectedItem?.idUser,
-                          //   items: cart.usersSupportManagement,
-                          //   itemAsString: (u) => u!.userAsString(),
-                          //   onChanged: (data) {
-                          //     iduser = data!.idUser!;
-                          //     cart.changevalueuser(data);
-                          //     getData();
-                          //   },
-                          //   selectedItem: cart.selectedUser,
-                          //   showSearchBox: true,
-                          //   dropdownSearchDecoration: InputDecoration(
-                          //     isCollapsed: true,
-                          //     hintText: 'الموظف',
-                          //     alignLabelWithHint: true,
-                          //     fillColor: Colors.grey.withOpacity(0.2),
-                          //     //labelText: "choose a user",
-                          //     contentPadding: EdgeInsets.all(0),
-                          //     border: UnderlineInputBorder(
-                          //         borderSide:
-                          //             const BorderSide(color: Colors.grey)),
-                          //   ),
-                          // ),
                         ),
                       ],
                     );
@@ -400,36 +354,5 @@ class _delayinstallState extends State<delayinstall> {
         ),
       ),
     );
-  }
-
-  Future<void> _selectDatefrom(
-      BuildContext context, DateTime currentDate) async {
-    DateTime? pickedDate = await showDatePicker(
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3010));
-    if (pickedDate != null)
-      setState(() {
-        // Navigator.pop(context);
-        _selectedDatefrom = pickedDate;
-      });
-  }
-
-  Future<void> _selectDateto(BuildContext context, DateTime currentDate) async {
-    DateTime? pickedDate = await showDatePicker(
-        // initialEntryMode: DatePickerEntryMode.calendarOnly,
-        // initialDatePickerMode: DatePickerMode.year,
-        context: context,
-        currentDate: currentDate,
-        initialDate: currentDate,
-        firstDate: DateTime(2015),
-        lastDate: DateTime(3010));
-    if (pickedDate != null)
-      setState(() {
-        // Navigator.pop(context);
-        _selectedDateto = pickedDate;
-      });
   }
 }

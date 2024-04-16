@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../core/common/enums/activity_type_size.dart';
+import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../model/ActivityModel.dart';
@@ -132,22 +133,14 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       obscureText: false,
                       hintText: AppStrings.labelClientEnterprise,
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       controller: nameEnterpriseController,
                     ),
                     SizedBox(height: 15),
                     RowEdit(name: AppStrings.labelClientName, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       hintText: AppStrings.labelClientName,
                       obscureText: false,
                       controller: nameclientController,
@@ -156,11 +149,7 @@ class _addClientState extends State<addClient> {
                     RowEdit(name: AppStrings.labelClientMobile, des: '*'),
                     SizedBox(height: 5),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       hintText: '00966000000000',
                       obscureText: false,
                       controller: mobileController,
@@ -209,33 +198,6 @@ class _addClientState extends State<addClient> {
                             filterFn: (user, filter) =>
                                 user.getFilterActivityType(filter),
                           ),
-
-                          // DropdownSearch<ActivityModel>(
-                          //   mode: Mode.DIALOG,
-                          //   filterFn: (user, filter) =>
-                          //       user!.getFilterActivityType(filter!),
-                          //   compareFn: (item, selectedItem) =>
-                          //       item?.id_activity_type ==
-                          //       selectedItem?.id_activity_type,
-                          //   items: cart.activitiesList,
-                          //   itemAsString: (u) => u!.userAsString(),
-                          //   onChanged: (data) {
-                          //     cart.onChangeSelectedActivity(data);
-                          //   },
-                          //   selectedItem: cart.selectedActivity,
-                          //   showSearchBox: true,
-                          //   dropdownSearchDecoration: InputDecoration(
-                          //     isCollapsed: true,
-                          //     hintText: 'النشاط',
-                          //     alignLabelWithHint: true,
-                          //     fillColor: Colors.grey.withOpacity(0.2),
-                          //     contentPadding: EdgeInsets.all(0),
-                          //     border: UnderlineInputBorder(
-                          //         borderSide:
-                          //             const BorderSide(color: Colors.grey)),
-                          //   ),
-                          //   // InputDecoration(border: InputBorder.none),
-                          // ),
                         );
                       },
                     ),
@@ -273,11 +235,7 @@ class _addClientState extends State<addClient> {
                     SizedBox(height: 15),
                     RowEdit(name: 'وصف النشاط', des: '*'),
                     EditTextFormField(
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       hintText: AppStrings.labelDescActivity,
                       obscureText: false,
                       controller: descActivController,
@@ -298,26 +256,9 @@ class _addClientState extends State<addClient> {
                                 user.getfilteruser(filter),
                             validator: (val) {
                               if (val == null) return 'من فضلك حدد اسم مدينة';
+                              return null;
                             },
                           );
-                          // return DropdownSearch<CityModel>(
-                          //   mode: Mode.DIALOG,
-                          //   label: "المدن",
-                          //   validator: (val) {
-                          //     if (val == null) return 'من فضلك حدد اسم مدينة';
-                          //   },
-                          //   filterFn: (user, filter) =>
-                          //       user!.getfilteruser(filter!),
-                          //   items: cart.listcity,
-                          //   itemAsString: (u) => u!.userAsString(),
-                          //   onChanged: (data) => cityController = data!.id_city,
-                          //   showSearchBox: true,
-                          //   dropdownSearchDecoration: InputDecoration(
-                          //     labelText: "حدد مدينة",
-                          //     contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
-                          //     border: OutlineInputBorder(),
-                          //   ),
-                          // );
                         },
                       ),
                     ),
@@ -326,11 +267,7 @@ class _addClientState extends State<addClient> {
                     EditTextFormField(
                       hintText: AppStrings.labelUsernameClient,
                       obscureText: false,
-                      vaildator: (value) {
-                        if (value!.toString().trim().isEmpty) {
-                          return AppStrings.labelEmpty;
-                        }
-                      },
+                      vaildator: HelperFunctions.instance.requiredFiled,
                       controller: address_client,
                       //اسم المؤسسة
                       label: AppStrings.labelUsernameClient,

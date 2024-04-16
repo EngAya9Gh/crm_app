@@ -22,16 +22,14 @@ import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
-class salesproduct extends StatefulWidget {
-  const salesproduct({Key? key}) : super(key: key);
+class SalesProduct extends StatefulWidget {
+  const SalesProduct({Key? key}) : super(key: key);
 
   @override
-  State<salesproduct> createState() => _salesproductState();
+  State<SalesProduct> createState() => _SalesProductState();
 }
 
-class _salesproductState extends State<salesproduct> {
-  static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
-
+class _SalesProductState extends State<SalesProduct> {
   List<BarModel> salesresult = [];
   List<BarModel> salestempdataclientresult = [];
   List<DataRow> rowsdata = [];
@@ -137,13 +135,12 @@ class _salesproductState extends State<salesproduct> {
           url: EndPoints.baseUrls.url + endPoint,
           body: {'type': type},
         );
-      } catch (e, st) {
+      } catch (e) {
         setState(() {
           hasErrorWhenLoadReport = true;
           loading = false;
         });
       }
-      List<BarModel> tempdataclient = [];
       totalval = 0;
       rowsdata = [];
       for (int i = 0; i < data.length; i++) {
@@ -355,37 +352,10 @@ class _salesproductState extends State<salesproduct> {
                                       },
                                       selectedItem: cart.selectedUser,
                                       filterFn: (user, filter) =>
-                                          user!.getfilteruser(filter!),
+                                          user.getfilteruser(filter),
                                       compareFn: (item, selectedItem) =>
-                                          item?.idUser == selectedItem?.idUser,
+                                          item.idUser == selectedItem.idUser,
                                     ),
-
-                                    // DropdownSearch<UserModel>(
-                                    //         mode: Mode.DIALOG,
-                                    //         filterFn: (user, filter) =>
-                                    //             user!.getfilteruser(filter!),
-                                    //         compareFn: (item, selectedItem) =>
-                                    //             item?.idUser == selectedItem?.idUser,
-                                    //         items: cart.usersSalesManagement,
-                                    //         itemAsString: (u) => u!.userAsString(),
-                                    //         onChanged: (data) {
-                                    //           iduser = data!.idUser!;
-                                    //           cart.changevalueuser(data);
-                                    //           getData();
-                                    //         },
-                                    //         selectedItem: cart.selectedUser,
-                                    //         showSearchBox: true,
-                                    //         dropdownSearchDecoration: InputDecoration(
-                                    //           isCollapsed: true,
-                                    //           hintText: 'الموظف',
-                                    //           alignLabelWithHint: true,
-                                    //           fillColor: Colors.grey.withOpacity(0.2),
-                                    //           contentPadding: EdgeInsets.all(0),
-                                    //           border: UnderlineInputBorder(
-                                    //               borderSide: const BorderSide(
-                                    //                   color: Colors.grey)),
-                                    //         ),
-                                    //       ),
                                   ),
                                 ],
                               );
@@ -410,6 +380,7 @@ class _salesproductState extends State<salesproduct> {
                       if (_selectedDate == DateTime(1, 1, 1)) {
                         return 'يرجى تعيين التاريخ ';
                       }
+                      return null;
                     },
                     decoration: InputDecoration(
                       prefixIcon: Icon(
@@ -442,7 +413,7 @@ class _salesproductState extends State<salesproduct> {
                                 firstDate: DateTime(DateTime.now().year - 3, 1),
                                 lastDate:
                                     DateTime(DateTime.now().year + 100, 1),
-                                initialDate: DateTime.now(),
+                                currentDate: DateTime.now(),
                                 // save the selected date to _selectedDate DateTime variable.
                                 // It's used to set the previous selected date when
                                 // re-showing the dialog.
@@ -479,6 +450,7 @@ class _salesproductState extends State<salesproduct> {
                                 if (_selectedDatemonth == DateTime(1, 1, 1)) {
                                   return 'يرجى تعيين التاريخ ';
                                 }
+                                return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -564,6 +536,7 @@ class _salesproductState extends State<salesproduct> {
                                             DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
+                                        return null;
                                       },
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(
@@ -604,6 +577,7 @@ class _salesproductState extends State<salesproduct> {
                                             DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
+                                        return null;
                                       },
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(

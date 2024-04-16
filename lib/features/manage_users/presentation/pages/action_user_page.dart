@@ -268,23 +268,6 @@ class _ActionUserPageState extends State<ActionUserPage> {
                             .toList();
                         cart.changeitemlist(list);
                       },
-                      //                         dropdownHintText: 'ابحث هنا... ',
-                      //                       showLabelInMenu: true,
-                      //                       primaryColor: kMainColor,
-                      //                       labelStyle: TextStyle(
-                      //                           color: Colors.white, fontWeight: FontWeight.bold),
-                      //                       items: items,
-                      //                       multiSelectValuesAsWidget: true,
-                      //                       label: 'اختر المناطق',
-                      //                       initialValue: selectedItems,
-                      //                       prefixIcon: Padding(
-                      //                         padding: const EdgeInsets.all(0.0),
-                      //                         child: Icon(Icons.search),
-                      //                       ),
-                      //                       dropDownMenuItems: items.map((item) {
-                      //                         return item['namemaincity'];
-                      //                       }).toList(),
-                      //                       multiSelect: true,
                     );
                   },
                 ),

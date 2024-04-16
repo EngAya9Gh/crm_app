@@ -155,37 +155,9 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                               },
                               filterFn: (user, filter) =>
                                   user.getfilteruser(filter),
+                              compareFn: (item, selectedItem) =>
+                                  item.idUser == selectedItem.idUser,
                             ),
-
-                            // DropdownSearch<UserModel>(
-                            //   mode: Mode.DIALOG,
-                            //   filterFn: (user, filter) =>
-                            //       user!.getfilteruser(filter!),
-                            //   compareFn: (item, selectedItem) =>
-                            //       item?.idUser == selectedItem?.idUser,
-                            //   items: cart.usersMarketingManagement,
-                            //   itemAsString: (u) => u!.userAsString(),
-                            //   onChanged: (data) {
-                            //     idUser = data!.idUser;
-                            //     cart.changevalueuser(data);
-                            //     Provider.of<lastcommentclient_vm>(context,
-                            //             listen: false)
-                            //         .getData(type, idUser);
-                            //   },
-                            //   selectedItem: cart.selectedUser,
-                            //   showSearchBox: true,
-                            //   dropdownSearchDecoration: InputDecoration(
-                            //     isCollapsed: true,
-                            //     hintText: 'الموظف',
-                            //     alignLabelWithHint: true,
-                            //     fillColor: Colors.grey.withOpacity(0.2),
-                            //     contentPadding: EdgeInsets.all(0),
-                            //     border: UnderlineInputBorder(
-                            //         borderSide:
-                            //             const BorderSide(color: Colors.grey)),
-                            //   ),
-                            //   // InputDecoration(border: InputBorder.none),
-                            // ),
                           ),
                         ],
                       );
@@ -286,15 +258,6 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                             index]
                                                         .client_obj
                                                         .idClients)));
-                                        // Navigator.push(
-                                        //     context,
-                                        //     CupertinoPageRoute(
-                                        //         builder: (context) =>
-                                        //         lastcomment_page(
-                                        //           LastcommentClient:
-                                        //             Provider.of<lastcommentclient_vm>(context,listen: false)
-                                        //             .list_LastcommentClientModel[index])
-                                        //     ));
                                       },
                                       child: Directionality(
                                         textDirection: TextDirection.rtl,
@@ -402,27 +365,6 @@ class _getLastCommentClientState extends State<getLastCommentClient> {
                                                         ),
                                                       ],
                                                     ),
-                                                    // type=='wait'?
-                                                    // Row(
-                                                    //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    //   children: [
-                                                    //     Text(
-                                                    //       'تاريخ التواصل القادم',
-                                                    //       style: TextStyle(
-                                                    //         fontWeight: FontWeight.bold,
-                                                    //         fontSize: 12,
-                                                    //         fontFamily: kfontfamily2,
-                                                    //       ),
-                                                    //     ), Text(
-                                                    //       listCommunication[index].dateNext.toString(),
-                                                    //       style: TextStyle(
-                                                    //         fontWeight: FontWeight.bold,
-                                                    //         fontSize: 12,
-                                                    //         fontFamily: kfontfamily2,
-                                                    //       ),
-                                                    //     ),
-                                                    //   ],
-                                                    // ):Container(),
                                                   ],
                                                 )
                                               ],

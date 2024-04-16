@@ -37,7 +37,7 @@ class cardClient extends StatelessWidget {
             Navigator.push(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => editclient(
+                    builder: (context) => EditClient(
                           client: itemClient,
                           fkclient: itemClient.idClients.toString(),
                           fkuser: itemClient.fkUser.toString(),

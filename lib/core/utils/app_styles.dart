@@ -14,6 +14,7 @@ abstract class AppStyles {
   static InputDecoration roundedDropdownButtonDecoration({
     required BuildContext context,
     required String hintText,
+    Widget? suffixIcon,
   }) {
     return InputDecoration(
       hintText: hintText,
@@ -43,6 +44,7 @@ abstract class AppStyles {
         borderSide: BorderSide(color: context.colorScheme.error),
         borderRadius: BorderRadius.circular(12),
       ),
+      suffixIconColor: context.colorScheme.primary,
     );
   }
 

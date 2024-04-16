@@ -2,6 +2,7 @@ import 'dart:ui' as myui;
 
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/helper/number_formatter.dart';
 import 'package:crm_smart/model/chartmodel.dart';
@@ -22,16 +23,14 @@ import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
-class sales_reportstate extends StatefulWidget {
-  const sales_reportstate({Key? key}) : super(key: key);
+class SalesReportState extends StatefulWidget {
+  const SalesReportState({Key? key}) : super(key: key);
 
   @override
-  State<sales_reportstate> createState() => _sales_reportstateState();
+  State<SalesReportState> createState() => _SalesReportStateState();
 }
 
-class _sales_reportstateState extends State<sales_reportstate> {
-  static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
-
+class _SalesReportStateState extends State<SalesReportState> {
   List<BarModel> salesresult = [];
   List<BarModel> salestempdataclientresult = [];
   List<DataRow> rowsdata = [];
@@ -61,17 +60,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
       Provider.of<UserProvider>(context, listen: false).changevalueuser(null);
     });
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_)async {
-    // if(  Provider.of<privilge_vm>(context,listen: false)
-    //       .checkprivlge('89')==true)
-    //    type='userSum';
-    // if(  Provider.of<privilge_vm>(context,listen: false)
-    //       .checkprivlge('90')==true)
-    //    type='userSum';
-    // if(  Provider.of<privilge_vm>(context,listen: false)
-    //       .checkprivlge('89')==true)
-    //    type='userSum';
-    // });
+
     if (!haveMarketingPrivilege) getData();
   }
 
@@ -139,7 +128,6 @@ class _sales_reportstateState extends State<sales_reportstate> {
               body: {'type': type});
           break;
       }
-      List<BarModel> tempdataclient = [];
       totalval = 0;
       rowsdata = [];
       for (int i = 0; i < data.length; i++) {
@@ -332,43 +320,13 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                         idregoin = '';
                                         cart.changevalueuser(data);
                                         getData();
-                                        //filtershow();
                                       },
                                       selectedItem: cart.selectedUser,
                                       filterFn: (user, filter) =>
-                                          user!.getfilteruser(filter!),
+                                          user.getfilteruser(filter),
                                       compareFn: (item, selectedItem) =>
-                                          item?.idUser == selectedItem?.idUser,
+                                          item.idUser == selectedItem.idUser,
                                     ),
-
-                                    // DropdownSearch<UserModel>(
-                                    //         mode: Mode.DIALOG,
-                                    //         filterFn: (user, filter) =>
-                                    //             user!.getfilteruser(filter!),
-                                    //         compareFn: (item, selectedItem) =>
-                                    //             item?.idUser == selectedItem?.idUser,
-                                    //         items: cart.usersSalesManagement,
-                                    //         itemAsString: (u) => u!.userAsString(),
-                                    //         onChanged: (data) {
-                                    //           iduser = data!.idUser!;
-                                    //           idregoin = '';
-                                    //           cart.changevalueuser(data);
-                                    //           getData();
-                                    //           //filtershow();
-                                    //         },
-                                    //         selectedItem: cart.selectedUser,
-                                    //         showSearchBox: true,
-                                    //         dropdownSearchDecoration: InputDecoration(
-                                    //           isCollapsed: true,
-                                    //           hintText: 'الموظف',
-                                    //           alignLabelWithHint: true,
-                                    //           fillColor: Colors.grey.withOpacity(0.2),
-                                    //           contentPadding: EdgeInsets.all(0),
-                                    //           border: UnderlineInputBorder(
-                                    //               borderSide: const BorderSide(
-                                    //                   color: Colors.grey)),
-                                    //         ),
-                                    //       ),
                                   ),
                                 ],
                               );
@@ -393,6 +351,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                       if (_selectedDate == DateTime(1, 1, 1)) {
                         return 'يرجى تعيين التاريخ ';
                       }
+                      return null;
                     },
                     decoration: InputDecoration(
                       prefixIcon: Icon(
@@ -425,7 +384,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                 firstDate: DateTime(DateTime.now().year - 3, 1),
                                 lastDate:
                                     DateTime(DateTime.now().year + 100, 1),
-                                initialDate: DateTime.now(),
+                                currentDate: DateTime.now(),
                                 // save the selected date to _selectedDate DateTime variable.
                                 // It's used to set the previous selected date when
                                 // re-showing the dialog.
@@ -458,11 +417,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                         children: [
                           Flexible(
                             child: TextFormField(
-                              validator: (value) {
-                                if (_selectedDatemonth == DateTime(1, 1, 1)) {
-                                  return 'يرجى تعيين التاريخ ';
-                                }
-                              },
+                              validator: HelperFunctions.instance.requiredFiled,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
                                   Icons.date_range,
@@ -547,6 +502,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                             DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
+                                        return null;
                                       },
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(
@@ -587,6 +543,7 @@ class _sales_reportstateState extends State<sales_reportstate> {
                                             DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
+                                        return null;
                                       },
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(

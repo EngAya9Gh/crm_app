@@ -26,10 +26,14 @@ import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
 
 class FilterClientsSheet extends StatefulWidget {
-  FilterClientsSheet({Key? key, required this.onFilter, required this.val});
+  const FilterClientsSheet({
+    Key? key,
+    required this.onFilter,
+    required this.val,
+  });
 
   final ValueChanged<GetClientsWithFilterParams> onFilter;
-  bool val = false;
+  final bool val;
 
   @override
   State<FilterClientsSheet> createState() => _FilterClientsSheetState();

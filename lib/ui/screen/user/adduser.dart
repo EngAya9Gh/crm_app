@@ -298,37 +298,15 @@ class _addUserState extends State<addUser> {
                           items: cart.listmaincityfilter,
                           selectedItems: cart.selectedRegions,
                           hint: 'المنطقة',
+                          filterFn: (user, filter) =>
+                              user.getfilteruser(filter),
+                          compareFn: (item, selectedItem) =>
+                              item.id_maincity == selectedItem.id_maincity,
                           onChanged: (data) {
                             cart.changeitemlist(data);
                           },
                           itemAsString: (u) => u!.userAsString(),
                         );
-
-                        // return DropdownSearch<MainCityModel>.multiSelection(
-                        //   mode: Mode.DIALOG,
-                        //   filterFn: (user, filter) =>
-                        //       user!.getfilteruser(filter!),
-                        //   compareFn: (item, selectedItem) =>
-                        //       item?.id_maincity == selectedItem?.id_maincity,
-                        //   items: cart.listmaincityfilter,
-                        //   showSelectedItems: true,
-                        //   selectedItems: cart.selectedRegions,
-                        //   itemAsString: (u) => u!.userAsString(),
-                        //   onChanged: (data) {
-                        //     cart.changeitemlist(data);
-                        //   },
-                        //   showSearchBox: true,
-                        //   dropdownSearchDecoration: InputDecoration(
-                        //     isCollapsed: true,
-                        //     hintText: 'المنطقة',
-                        //     alignLabelWithHint: true,
-                        //     fillColor: Colors.grey.withOpacity(0.2),
-                        //     contentPadding: EdgeInsets.all(0),
-                        //     border: UnderlineInputBorder(
-                        //         borderSide:
-                        //             const BorderSide(color: Colors.grey)),
-                        //   ),
-                        // );
                       },
                     ),
                     SizedBox(height: 20),
@@ -427,12 +405,8 @@ class _addUserState extends State<addUser> {
                                     .changeboolValueUser(true);
                                 Map<String, String?> body = {
                                   "nameUser": nameController.text,
-                                  'email': emailController.text != null
-                                      ? emailController.text
-                                      : "",
-                                  'mobile': mobileController.text != null
-                                      ? mobileController.text
-                                      : "",
+                                  'email': emailController.text,
+                                  'mobile': mobileController.text,
                                   'fk_country': id_country,
                                   'type_administration': namemanage,
                                   // != null
