@@ -17,8 +17,6 @@ import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +31,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../constantsList.dart';
 import '../../../core/common/helpers/helper_functions.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_drop_down.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -48,17 +47,12 @@ class AddInvoice extends StatefulWidget {
   const AddInvoice({
     required this.itemClient,
     this.invoice,
-    // required this.iduser,
-    // required this.idClient,
-    // required this.indexinvoice,
     Key? key,
   }) : super(key: key);
   final ClientModel1 itemClient;
 
-  // String? idClient,iduser;
   final InvoiceModel? invoice;
 
-  // late int indexinvoice;
   @override
   _AddInvoiceState createState() => _AddInvoiceState();
 }
@@ -95,10 +89,6 @@ class _AddInvoiceState extends State<AddInvoice> {
   final TextEditingController renew2Controller = TextEditingController();
   final TextEditingController sellerCommissionRate = TextEditingController();
   final TextEditingController comment = TextEditingController();
-  List<PlatformFile>? _paths;
-  String? _extension;
-  bool _multiPick = false;
-  FileType _pickingType = FileType.any;
   ValueNotifier<File?> companyLogoNotifier = ValueNotifier(null);
   ValueNotifier<File?> recordCommercialImageNotifier = ValueNotifier(null);
   InvoiceModel? _invoice = null;
@@ -123,9 +113,16 @@ class _AddInvoiceState extends State<AddInvoice> {
     userclientController.dispose();
     addressController.dispose();
     comment.dispose();
+    renewAdditionalOfBranchesController.dispose();
+    renewAgentController.dispose();
+    renew2Controller.dispose();
+    sellerCommissionRate.dispose();
+    companyLogoNotifier.dispose();
+    recordCommercialImageNotifier.dispose();
+    isDeleteCompanyLogoNetworkImage.dispose();
+    isDeleteRecordCommercialImageNetworkImage.dispose();
+    isNumberOfBranchesBiggerThanOne.dispose();
 
-    //_resetState();
-    //await FilePicker.platform.clearTemporaryFiles();
     super.dispose();
   }
 
@@ -303,7 +300,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         onPressed: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               CupertinoPageRoute(
-                                builder: (context) => add_invoiceProduct(
+                                builder: (context) => AddInvoiceProduct(
                                     invoice: _invoice
                                     // Provider.of<invoice_vm>(context,listen: false)
                                     //     .listinvoiceClient[widget.indexinvoice],
@@ -642,54 +639,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                         );
                       }),
                     ),
-                    //RowEdit(name: 'Image', des: ''),
-
-                    SizedBox(
-                      height: 15,
-                    ),
-                    // _invoice!.idInvoice == null ? RowEdit(name: label_readyinstall, des: '*') : Container(),
-                    // _invoice!.idInvoice == null
-                    //     ?
-                    // Container(
-                    //         padding: EdgeInsets.only(left: 2, right: 2),
-                    //         decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.all(Radius.circular(12)),
-                    //           boxShadow: <BoxShadow>[
-                    //             BoxShadow(
-                    //               offset: Offset(1.0, 1.0),
-                    //               blurRadius: 8.0,
-                    //               color: Colors.black87.withOpacity(0.2),
-                    //             ),
-                    //           ],
-                    //           color: Colors.white,
-                    //         ),
-                    //         child: Consumer<selected_button_provider>(builder: (context, selectedProvider, child) {
-                    //           return Directionality(
-                    //             textDirection: TextDirection.ltr,
-                    //             child: GroupButton(
-                    //                 controller: GroupButtonController(
-                    //                   selectedIndex: selectedProvider.isSelectedreadyinstall,
-                    //                   // typeinstallController==null
-                    //                   //     ? 0 :
-                    //                   // int.tryParse( typeinstallController!)
-                    //                 ),
-                    //                 options:
-                    //                     GroupButtonOptions(buttonWidth: 110, borderRadius: BorderRadius.circular(10)),
-                    //                 buttons: ['غير جاهز للتركيب', 'جاهز للتركيب'],
-                    //                 onSelected: (_, index, isselected) {
-                    //
-                    //                   //setState(() {
-                    //                   readyinstallController = index.toString();
-                    //                   selectedProvider.selectValuereadyinstall(index);
-                    //                   //  });
-                    //                 }),
-                    //           );
-                    //         }),
-                    //       )
-                    //     : Container(),
-                    SizedBox(
-                      height: 15,
-                    ),
+                    SizedBox(height: 15),
                     RowEdit(name: 'العملة', des: '*'),
                     Container(
                       padding: EdgeInsets.only(left: 2, right: 2),
@@ -712,9 +662,6 @@ class _AddInvoiceState extends State<AddInvoice> {
                               controller: GroupButtonController(
                                 selectedIndex:
                                     selectedProvider.isSelectCurrency,
-                                // typeinstallController==null
-                                //     ? 0 :
-                                // int.tryParse( typeinstallController!)
                               ),
                               options: GroupButtonOptions(
                                   buttonWidth: 110,
@@ -1995,10 +1942,7 @@ class _AddInvoiceState extends State<AddInvoice> {
       else {
         //update product in invoice
 
-        Map<String, dynamic> body = _products[i].toJson();
-
-        bool res = await invoiceViewmodel.update_invoiceProduct_vm(
-            body, _products[i].idInvoiceProduct.toString());
+        _products[i].toJson();
       }
     }
 
@@ -2006,14 +1950,6 @@ class _AddInvoiceState extends State<AddInvoice> {
     int index1 = invoiceViewmodel.listinvoices
         .indexWhere((element) => element.idInvoice == value);
 
-    // _invoice=Provider.of<invoice_vm>(context,listen: false)
-    //     .listinvoices[index1];
-    // _invoice!.idInvoice=value;
-    //  _invoice!.products
-    //    = Provider
-    //        .of<invoice_vm>(context, listen: false)
-    //        .listproductinvoic;
-    // //
     if (index1 != -1) {
       invoiceViewmodel.listinvoices[index1].products = _invoice!.products;
     }
@@ -2078,12 +2014,8 @@ class _AddInvoiceState extends State<AddInvoice> {
     required ParticipateModel? selectedValue,
     required SellerType selectedSellerType,
   }) {
-    return DropdownSearch<ParticipateModel>(
-      mode: Mode.DIALOG,
-      filterFn: (user, filter) => user!.getFilterParticipate(filter ?? ''),
-      compareFn: (item, selectedItem) =>
-          item?.id_participate == selectedItem?.id_participate,
-      showSelectedItems: true,
+    return CustomSearchableDropDown<ParticipateModel>(
+      hint: 'اختر المتعاون',
       items: participates,
       itemAsString: (u) => u!.name_participate,
       onChanged: (seller) {
@@ -2091,7 +2023,9 @@ class _AddInvoiceState extends State<AddInvoice> {
             .onChangeSelectedCollaborator(seller as ParticipateModel);
       },
       selectedItem: selectedValue,
-      showSearchBox: true,
+      filterFn: (user, filter) => user.getFilterParticipate(filter),
+      compareFn: (item, selectedItem) =>
+          item.id_participate == selectedItem.id_participate,
       validator: (text) {
         if (selectedSellerType == SellerType.employee) {
           return null;
@@ -2102,15 +2036,6 @@ class _AddInvoiceState extends State<AddInvoice> {
         }
         return null;
       },
-      dropdownSearchDecoration: InputDecoration(
-        isCollapsed: true,
-        hintText: 'اختر المتعاون',
-        alignLabelWithHint: true,
-        fillColor: Colors.grey.withOpacity(0.2),
-        contentPadding: EdgeInsets.all(0),
-        border: UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.grey)),
-      ),
     );
   }
 

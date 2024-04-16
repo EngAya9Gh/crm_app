@@ -6,13 +6,13 @@ import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.d
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/clients_list/presentation/manager/clients_list_bloc.dart';
 import 'package:crm_smart/model/regoin_model.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../core/utils/responsive_padding.dart';
 import '../../../../constantsList.dart';
+import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../model/ActivityModel.dart';
 import '../../../../model/usermodel.dart';
@@ -24,13 +24,16 @@ import '../../../app/presentation/widgets/app_drop_down.dart';
 import '../../../app/presentation/widgets/app_text.dart';
 import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../domain/use_cases/get_clients_with_filter_usecase.dart';
-import 'action_client_page.dart';
 
 class FilterClientsSheet extends StatefulWidget {
-  FilterClientsSheet({Key? key, required this.onFilter, required this.val});
+  const FilterClientsSheet({
+    Key? key,
+    required this.onFilter,
+    required this.val,
+  });
 
   final ValueChanged<GetClientsWithFilterParams> onFilter;
-  bool val = false;
+  final bool val;
 
   @override
   State<FilterClientsSheet> createState() => _FilterClientsSheetState();
@@ -254,16 +257,10 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               SizedBox(width: 10),
                             },
                             Expanded(
-                              child: DropdownSearch<UserModel>(
-                                mode: Mode.DIALOG,
-                                filterFn: (user, filter) =>
-                                    user!.getfilteruser(filter!),
-                                compareFn: (item, selectedItem) =>
-                                    item?.idUser == selectedItem?.idUser,
+                              child: CustomSearchableDropDown<UserModel>(
+                                hint: 'الموظف',
                                 items: userVm.usersSalesManagement,
-                                popupItemBuilder:
-                                    _customPopupItemBuilderForEmployeeList,
-                                itemAsString: (u) => '${u!.userAsString()}',
+                                itemAsString: (u) => u!.userAsString(),
                                 onChanged: (data) {
                                   if (data == null) return;
 
@@ -273,28 +270,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                     .firstWhereOrNull((element) =>
                                         int.parse(element.idUser!) ==
                                         selectedUserId),
-                                showSearchBox: true,
-                                dropdownSearchDecoration: InputDecoration(
-                                  isCollapsed: true,
-                                  hintText: '   الموظف',
-                                  hintStyle: context.textTheme.titleSmall
-                                      ?.copyWith(color: Colors.grey),
-                                  alignLabelWithHint: true,
-                                  fillColor: Colors.grey.withOpacity(0.2),
-                                  contentPadding: EdgeInsets.only(right: 10),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: kMainColor),
-                                    borderRadius: BorderRadius.circular(10).r,
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: kMainColor),
-                                    borderRadius: BorderRadius.circular(10).r,
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: kMainColor),
-                                    borderRadius: BorderRadius.circular(10).r,
-                                  ),
-                                ),
+                                filterFn: (user, filter) =>
+                                    user.getfilteruser(filter),
                               ),
                             ),
                           ],
@@ -321,13 +298,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                             SizedBox(width: 10),
                           },
                           Expanded(
-                            child: DropdownSearch<ActivityModel>(
-                              mode: Mode.DIALOG,
-                              filterFn: (user, filter) =>
-                                  user!.getFilterActivityType(filter!),
-                              compareFn: (item, selectedItem) =>
-                                  item?.id_activity_type ==
-                                  selectedItem?.id_activity_type,
+                            child: CustomSearchableDropDown<ActivityModel>(
+                              hint: 'النشاط',
                               items: activityVm.activitiesList,
                               itemAsString: (u) => u!.userAsString(),
                               onChanged: (data) {
@@ -339,31 +311,8 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                   .firstWhereOrNull((element) =>
                                       int.parse(element.id_activity_type) ==
                                       selectedActivity),
-                              showSearchBox: true,
-                              popupItemBuilder:
-                                  customPopupItemBuilderForActivityTypeList,
-                              dropdownSearchDecoration: InputDecoration(
-                                isCollapsed: true,
-                                hintText: 'النشاط',
-                                alignLabelWithHint: true,
-                                hintStyle: context.textTheme.titleSmall
-                                    ?.copyWith(color: Colors.grey),
-                                fillColor: Colors.grey.withOpacity(0.2),
-                                contentPadding: EdgeInsets.only(right: 10),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: kMainColor),
-                                  borderRadius: BorderRadius.circular(10).r,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: kMainColor),
-                                  borderRadius: BorderRadius.circular(10).r,
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: kMainColor),
-                                  borderRadius: BorderRadius.circular(10).r,
-                                ),
-                              ),
-                              // InputDecoration(border: InputBorder.none),
+                              filterFn: (user, filter) =>
+                                  user.getFilterActivityType(filter),
                             ),
                           ),
                         ],
@@ -417,33 +366,5 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
         ),
       ),
     );
-  }
-
-  Widget _customPopupItemBuilderForEmployeeList(
-      BuildContext context, UserModel item, bool isSelected) {
-    return Container(
-        margin: const EdgeInsetsDirectional.only(
-            start: 2, end: 2, top: 2, bottom: 2),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
-        ),
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(7.r),
-            child: Container(
-              padding: EdgeInsets.all(10.r),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom:
-                      BorderSide(color: context.colorScheme.primary, width: 1),
-                ),
-              ),
-              child: Text(
-                item.nameUser!,
-                style: context.textTheme.titleSmall,
-                textDirection: TextDirection.rtl,
-              ),
-            )));
   }
 }

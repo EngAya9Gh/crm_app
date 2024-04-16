@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_scaffold.dart';
@@ -10,18 +11,17 @@ import 'package:crm_smart/features/task_management/presentation/manager/task_cub
 import 'package:crm_smart/model/managmodel.dart';
 import 'package:crm_smart/model/regoin_model.dart';
 import 'package:crm_smart/ui/screen/invoice/invoice_images_file.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/common/widgets/custom_multi_selection_dropdown.dart';
+import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../model/usermodel.dart';
 import '../../../../provider/manage_provider.dart';
@@ -96,7 +96,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late TextEditingController _numberOfRecurringController;
   late GlobalKey<FormState> _formKey;
   late TaskCubit _taskCubit;
-  late GroupButtonController _groupButtonController;
   late PrivilegeCubit privilegeBloc;
   String? regionId;
   String? departmentId;
@@ -130,7 +129,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _taskDescriptionController = TextEditingController();
     _formKey = GlobalKey<FormState>();
     _taskCubit = getIt<TaskCubit>();
-    _groupButtonController = GroupButtonController();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
         ..changeValuser(null, true)
@@ -175,17 +173,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       onPressed: () {
                         final isValid = _formKey.currentState!.validate();
                         if (!isValid) return;
-                        // if (state.attachmentFile == null) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        //     content: AppText(
-                        //       "من فضلك قم باختيار مرفق",
-                        //       style: context.textTheme.bodyMedium!.sb!.copyWith(color: context.colorScheme.white),
-                        //     ),
-                        //     backgroundColor: context.colorScheme.error,
-                        //   ));
-                        //   return;
-                        // }
-
                         if (state.selectedAssignedToType == null) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: AppText(
@@ -249,70 +236,26 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     20.verticalSpace,
                     BlocBuilder<UsersCubit, UsersState>(
                       builder: (context, state) {
-                        return DropdownSearch<UserModel>.multiSelection(
-                          mode: Mode.DIALOG,
-                          filterFn: (user, filter) =>
-                              user!.nameUser!.contains(filter!),
-                          compareFn: (item, selectedItem) =>
-                              item?.idUser == selectedItem?.idUser,
+                        return CustomMultiSelectionDropdown<UserModel>(
                           items: state.allUsersList.getDataWhenSuccess ?? [],
-                          itemAsString: (u) => u!.userAsString(),
-                          onChanged: _taskCubit.onChangeParticipants,
                           selectedItems: taskState.selectedParticipant ?? [],
-                          showSearchBox: true,
-                          // validator: (value) {
-                          //   if (value?.isEmpty ?? true) {
-                          //     return 'هذا الحقل مطلوب.';
-                          //   }
-                          //   return null;
-                          // },
-                          dropdownSearchDecoration: InputDecoration(
-                            isCollapsed: true,
+                          onChanged: _taskCubit.onChangeParticipants,
+                          itemAsString: (u) => u!.userAsString(),
+                          filterFn: (user, filter) =>
+                              user.nameUser!.contains(filter),
+                          compareFn: (item, selectedItem) =>
+                              item.idUser == selectedItem.idUser,
+                          validator: (value) {
+                            if (value?.isEmpty ?? true) {
+                              return 'هذا الحقل مطلوب.';
+                            }
+                            return null;
+                          },
+                          dropdownSearchDecoration:
+                              AppStyles.roundedDropdownButtonDecoration(
+                            context: context,
                             hintText: 'المشاركين*',
-                            hintStyle: context.textTheme.titleSmall
-                                ?.copyWith(color: Colors.grey),
-                            contentPadding: HWEdgeInsetsDirectional.only(
-                                start: 12, end: 12, top: 10, bottom: 15),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: context.colorScheme.primary),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: context.colorScheme.primary),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: context.colorScheme.primary),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            disabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: context.colorScheme.primary),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            errorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: context.colorScheme.error),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: context.colorScheme.error),
-                              borderRadius: BorderRadius.circular(10).r,
-                            ),
-                            suffixIcon: state.allUsersList.isLoading
-                                ? CupertinoActivityIndicator()
-                                : state.allUsersList.isError
-                                    ? IconButton(
-                                        onPressed: () =>
-                                            _usersCubit.getAllUsers(),
-                                        icon: Icon(Icons.refresh))
-                                    : null,
                           ),
-                          // InputDecoration(border: InputBorder.none),
                         );
                       },
                     ),
@@ -461,110 +404,26 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           Row(
                             children: [
                               Expanded(
-                                child: DropdownSearch<String>(
-                                  mode: Mode.DIALOG,
-                                  filterFn: (user, filter) =>
-                                      user!.contains(filter!),
-                                  compareFn: (item, selectedItem) =>
-                                      item == selectedItem,
+                                child: CustomSearchableDropDown<String>(
+                                  hint: 'الفاتورة',
                                   items: [],
                                   itemAsString: (u) => u!,
                                   onChanged: (data) {},
                                   selectedItem: null,
-                                  showSearchBox: true,
-                                  dropdownSearchDecoration: InputDecoration(
-                                    isCollapsed: true,
-                                    hintText: 'الفاتورة',
-                                    hintStyle: context.textTheme.titleSmall
-                                        ?.copyWith(color: Colors.grey),
-                                    contentPadding:
-                                        HWEdgeInsetsDirectional.only(
-                                            start: 12, end: 12),
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.error),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.error),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                  ),
+                                  filterFn: (user, filter) =>
+                                      user.contains(filter),
                                 ),
                               ),
                               10.horizontalSpace,
                               Expanded(
-                                child: DropdownSearch<String>(
-                                  mode: Mode.DIALOG,
-                                  filterFn: (user, filter) =>
-                                      user!.contains(filter!),
-                                  compareFn: (item, selectedItem) =>
-                                      item == selectedItem,
+                                child: CustomSearchableDropDown<String>(
+                                  hint: 'المجموعة',
                                   items: [],
                                   itemAsString: (u) => u!,
                                   onChanged: (data) {},
                                   selectedItem: null,
-                                  showSearchBox: true,
-                                  dropdownSearchDecoration: InputDecoration(
-                                    isCollapsed: true,
-                                    hintText: 'المجموعة',
-                                    hintStyle: context.textTheme.titleSmall
-                                        ?.copyWith(color: Colors.grey),
-                                    contentPadding:
-                                        HWEdgeInsetsDirectional.only(
-                                            start: 12, end: 12),
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    disabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.primary),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.error),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: context.colorScheme.error),
-                                      borderRadius: BorderRadius.circular(10).r,
-                                    ),
-                                  ),
+                                  filterFn: (user, filter) =>
+                                      user.contains(filter),
                                 ),
                               ),
                             ],
@@ -622,18 +481,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if (taskState.selectedAssignedToType == AssignedToType.employee)
       return BlocBuilder<UsersCubit, UsersState>(
         builder: (context, state) {
-          return DropdownSearch<UserRegionDepartment>(
-            mode: Mode.DIALOG,
-            filterFn: (user, filter) => user!.nameUser!.contains(filter!),
-            compareFn: (item, selectedItem) =>
-                item?.idUser == selectedItem?.idUser,
+          return CustomSearchableDropDown<UserRegionDepartment>(
+            hint: 'الموظف',
             items: state.usersByDepartmentAndRegion.getDataWhenSuccess ?? [],
             itemAsString: (u) => u!.nameUser!,
-            onChanged: (data) {
-              _taskCubit.onChangeAssignTo(data);
-            },
+            onChanged: _taskCubit.onChangeAssignTo,
             selectedItem: taskState.selectedAssignTo,
-            showSearchBox: true,
+            filterFn: (user, filter) => user.nameUser!.contains(filter),
             validator: (value) {
               if (taskState.selectedAssignedToType != AssignedToType.employee) {
                 return null;
@@ -643,48 +497,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
               }
               return null;
             },
-            dropdownSearchDecoration: InputDecoration(
-              isCollapsed: true,
-              hintText: 'الموظف',
-              hintStyle:
-                  context.textTheme.titleSmall?.copyWith(color: Colors.grey),
-              contentPadding: HWEdgeInsetsDirectional.only(start: 12, end: 12),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(10).r,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(10).r,
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(10).r,
-              ),
-              disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.primary),
-                borderRadius: BorderRadius.circular(10).r,
-              ),
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.error),
-                borderRadius: BorderRadius.circular(10).r,
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: context.colorScheme.error),
-                borderRadius: BorderRadius.circular(10).r,
-              ),
-              suffixIcon: state.usersByDepartmentAndRegion.isLoading
-                  ? CupertinoActivityIndicator()
-                  : state.usersByDepartmentAndRegion.isError
-                      ? IconButton(
-                          onPressed: () =>
-                              _usersCubit.getUsersByDepartmentAndRegion(
-                                  regionId: regionId,
-                                  departmentId: departmentId),
-                          icon: Icon(Icons.refresh))
-                      : null,
-            ),
-            // InputDecoration(border: InputBorder.none),
           );
         },
       );

@@ -75,7 +75,7 @@ class _reports_pageState extends State<reports_page> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => salesproduct()));
+                              builder: (context) => SalesProduct()));
                     },
                     title: ' تقارير مبيعات المنتجات ',
                     colorbag: Colors.white,
@@ -89,7 +89,7 @@ class _reports_pageState extends State<reports_page> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => deptsales()));
+                              builder: (context) => DeptSales()));
                     },
                     title: ' تقارير ديون العملاء ',
                     colorbag: Colors.white,
@@ -103,7 +103,7 @@ class _reports_pageState extends State<reports_page> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => sales_reportstate()));
+                              builder: (context) => SalesReportState()));
                     },
                     title: ' تقارير حالات العملاء ',
                     colorbag: Colors.white,

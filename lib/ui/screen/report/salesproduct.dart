@@ -11,27 +11,25 @@ import 'package:crm_smart/ui/screen/report/is_marketing_chekbox.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_uitil.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/end_points.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
-class salesproduct extends StatefulWidget {
-  const salesproduct({Key? key}) : super(key: key);
+class SalesProduct extends StatefulWidget {
+  const SalesProduct({Key? key}) : super(key: key);
 
   @override
-  State<salesproduct> createState() => _salesproductState();
+  State<SalesProduct> createState() => _SalesProductState();
 }
 
-class _salesproductState extends State<salesproduct> {
-  static const secondaryMeasureAxisId = 'secondaryMeasureAxisId';
-
+class _SalesProductState extends State<SalesProduct> {
   List<BarModel> salesresult = [];
   List<BarModel> salestempdataclientresult = [];
   List<DataRow> rowsdata = [];
@@ -137,13 +135,12 @@ class _salesproductState extends State<salesproduct> {
           url: EndPoints.baseUrls.url + endPoint,
           body: {'type': type},
         );
-      } catch (e, st) {
+      } catch (e) {
         setState(() {
           hasErrorWhenLoadReport = true;
           loading = false;
         });
       }
-      List<BarModel> tempdataclient = [];
       totalval = 0;
       rowsdata = [];
       for (int i = 0; i < data.length; i++) {
@@ -344,12 +341,8 @@ class _salesproductState extends State<salesproduct> {
                                     SizedBox(width: 10),
                                   },
                                   Expanded(
-                                    child: DropdownSearch<UserModel>(
-                                      mode: Mode.DIALOG,
-                                      filterFn: (user, filter) =>
-                                          user!.getfilteruser(filter!),
-                                      compareFn: (item, selectedItem) =>
-                                          item?.idUser == selectedItem?.idUser,
+                                    child: CustomSearchableDropDown<UserModel>(
+                                      hint: 'الموظف',
                                       items: cart.usersSalesManagement,
                                       itemAsString: (u) => u!.userAsString(),
                                       onChanged: (data) {
@@ -358,17 +351,10 @@ class _salesproductState extends State<salesproduct> {
                                         getData();
                                       },
                                       selectedItem: cart.selectedUser,
-                                      showSearchBox: true,
-                                      dropdownSearchDecoration: InputDecoration(
-                                        isCollapsed: true,
-                                        hintText: 'الموظف',
-                                        alignLabelWithHint: true,
-                                        fillColor: Colors.grey.withOpacity(0.2),
-                                        contentPadding: EdgeInsets.all(0),
-                                        border: UnderlineInputBorder(
-                                            borderSide: const BorderSide(
-                                                color: Colors.grey)),
-                                      ),
+                                      filterFn: (user, filter) =>
+                                          user.getfilteruser(filter),
+                                      compareFn: (item, selectedItem) =>
+                                          item.idUser == selectedItem.idUser,
                                     ),
                                   ),
                                 ],
@@ -394,6 +380,7 @@ class _salesproductState extends State<salesproduct> {
                       if (_selectedDate == DateTime(1, 1, 1)) {
                         return 'يرجى تعيين التاريخ ';
                       }
+                      return null;
                     },
                     decoration: InputDecoration(
                       prefixIcon: Icon(
@@ -426,7 +413,7 @@ class _salesproductState extends State<salesproduct> {
                                 firstDate: DateTime(DateTime.now().year - 3, 1),
                                 lastDate:
                                     DateTime(DateTime.now().year + 100, 1),
-                                initialDate: DateTime.now(),
+                                currentDate: DateTime.now(),
                                 // save the selected date to _selectedDate DateTime variable.
                                 // It's used to set the previous selected date when
                                 // re-showing the dialog.
@@ -463,6 +450,7 @@ class _salesproductState extends State<salesproduct> {
                                 if (_selectedDatemonth == DateTime(1, 1, 1)) {
                                   return 'يرجى تعيين التاريخ ';
                                 }
+                                return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: Icon(
@@ -548,6 +536,7 @@ class _salesproductState extends State<salesproduct> {
                                             DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
+                                        return null;
                                       },
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(
@@ -588,6 +577,7 @@ class _salesproductState extends State<salesproduct> {
                                             DateTime(1, 1, 1)) {
                                           return 'يرجى تعيين التاريخ ';
                                         }
+                                        return null;
                                       },
                                       decoration: InputDecoration(
                                         prefixIcon: Icon(

@@ -3,7 +3,6 @@ import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
@@ -21,7 +20,6 @@ import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,12 +28,11 @@ import 'package:jiffy/jiffy.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/common/models/page_state/bloc_status.dart';
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/app/presentation/widgets/app_elvated_button.dart';
 import '../../../features/clients_list/data/models/client_support_file_model.dart';
-import '../../../features/clients_list/domain/use_cases/crud_client_support_files_usecase.dart';
 import '../../../features/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
 import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -123,8 +120,6 @@ class _SupportAddState extends State<SupportAdd> {
 
   @override
   Widget build(BuildContext context) {
-    _height = MediaQuery.of(context).size.height;
-    _width = MediaQuery.of(context).size.width;
     _invoice = Provider.of<invoice_vm>(context, listen: true)
         .listinvoiceClientSupport
         .firstWhere((element) => element.idInvoice == widget.idInvoice);
@@ -323,7 +318,7 @@ class _SupportAddState extends State<SupportAdd> {
                             Value_installation_type = value.toString();
                           });
                           Provider.of<datetime_vm>(context, listen: false)
-                              .notifyListeners();
+                              .refresh();
                         },
                       ),
                       SizedBox(height: 10),
@@ -355,7 +350,7 @@ class _SupportAddState extends State<SupportAdd> {
 
                             Provider.of<invoice_vm>(context, listen: false)
                                 .setisload();
-                            final startDate = _currentDate ?? DateTime.now();
+                            final startDate = _currentDate;
                             DateTime datetask = DateTime(
                                 startDate.year,
                                 startDate.month,
@@ -1073,7 +1068,7 @@ class _SupportAddState extends State<SupportAdd> {
                                                       await showDialog(
                                                         context: context,
                                                         builder: (context) =>
-                                                            dialog_ready(
+                                                            DialogReady(
                                                           type_ready: 'suspend',
                                                           invoice: _invoice!,
                                                         ),
@@ -1099,22 +1094,22 @@ class _SupportAddState extends State<SupportAdd> {
                                                         context
                                                             .colorScheme.white),
                                               ),
-                                              onPressed:
-                                                  _invoice!.ready_install == '0'
-                                                      ? null
-                                                      : () async {
-                                                          await showDialog(
-                                                            context: context,
-                                                            builder: (context) =>
-                                                                dialog_ready(
-                                                              type_ready:
-                                                                  'notReady',
-                                                              invoice:
-                                                                  _invoice!,
-                                                            ),
-                                                          );
-                                                          //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
-                                                        },
+                                              onPressed: _invoice!
+                                                          .ready_install ==
+                                                      '0'
+                                                  ? null
+                                                  : () async {
+                                                      await showDialog(
+                                                        context: context,
+                                                        builder: (context) =>
+                                                            DialogReady(
+                                                          type_ready:
+                                                              'notReady',
+                                                          invoice: _invoice!,
+                                                        ),
+                                                      );
+                                                      //Navigator.push(context, CupertinoPageRoute(builder: (context)=> second()));
+                                                    },
                                               child: Text('غير جاهز')),
                                         ),
                                       )
@@ -1258,131 +1253,6 @@ class _SupportAddState extends State<SupportAdd> {
     );
   }
 
-  Widget _attachmentWidget({required BlocStatus crudClientSupportFilesStatus}) {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      alignment: Alignment.center,
-      child: selectedFile != null
-          ? Stack(
-              children: [
-                // selected file
-                Positioned.fill(
-                    child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.file(selectedFile!, fit: BoxFit.cover),
-                )),
-                // icon buttons
-                Positioned.fill(
-                    child: Align(
-                  alignment: Alignment.topRight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // upload icon
-                      Container(
-                        height: 40,
-                        width: 40,
-                        margin: EdgeInsets.only(top: 10, right: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade50,
-                          shape: BoxShape.circle,
-                        ),
-                        alignment: Alignment.center,
-                        child: Builder(
-                          builder: (context) {
-                            if (crudClientSupportFilesStatus.isLoading()) {
-                              return CustomLoadingIndicator();
-                            } else if (crudClientSupportFilesStatus.isFail()) {
-                              return CustomErrorWidget(
-                                color: Colors.red,
-                                onPressed: () {
-                                  _uploadFile();
-                                },
-                              );
-                            }
-                            return InkWell(
-                              onTap: () {
-                                _uploadFile();
-                              },
-                              child: Icon(
-                                Icons.done,
-                                color: kMainColor,
-                                size: 20,
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      // delete icon
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedFile = null;
-                          });
-                        },
-                        borderRadius: BorderRadius.circular(90),
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          margin: EdgeInsets.only(top: 10, left: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade50,
-                            shape: BoxShape.circle,
-                          ),
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.delete_rounded,
-                            color: Colors.red,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )),
-              ],
-            )
-          : InkWell(
-              borderRadius: BorderRadius.circular(15),
-              onTap: () => pickImage(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.attachment_rounded,
-                      color: Colors.grey.shade700, size: 35),
-                  SizedBox(height: 0),
-                  Text(
-                    'Attach file',
-                    style: context.textTheme.titleMedium?.copyWith(
-                        fontFamily: kfontfamily2,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.grey.shade600),
-                  )
-                ],
-              ),
-            ),
-    );
-  }
-
-  void _uploadFile() {
-    clientsListBloc.add(CrudClientSupportFilesEvent(
-      CrudClientSupportFilesParams(
-        invoiceId: widget.idInvoice!,
-        deletedFiles: [],
-        addedFiles: [selectedFile!],
-      ),
-      onSuccess: (value) {
-        setState(() {
-          selectedFile = null;
-        });
-      },
-    ));
-  }
-
   Widget fileImage(ClientSupportFileModel file, VoidCallback onDelete) {
     return SizedBox(
       height: 125,
@@ -1492,13 +1362,10 @@ class _SupportAddState extends State<SupportAdd> {
   }
 
   DateTime _currentDate = DateTime.now();
-  DateTime? _EndDate;
 
   // final DateFormat formatter = DateFormat('yyyy-MM-dd');
   TimeOfDay selectedTime = TimeOfDay(hour: -1, minute: 00);
   TimeOfDay endTime = TimeOfDay(hour: -1, minute: 00);
-  late double _height;
-  late double _width;
 
   late String _hour, _minute, _time;
 
@@ -1613,7 +1480,6 @@ class _SupportAddState extends State<SupportAdd> {
 
   clear() {
     _currentDate = DateTime.now();
-    _EndDate = null;
 
     endTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
@@ -1627,7 +1493,6 @@ class _SupportAddState extends State<SupportAdd> {
   clear2() {
     Navigator.of(context, rootNavigator: true).pop(false);
     _currentDate = DateTime(1, 1, 1);
-    _EndDate = null;
     selectedTime = TimeOfDay(hour: -1, minute: 00);
     endTime = TimeOfDay(hour: -1, minute: 00);
     Provider.of<datetime_vm>(context, listen: false)
@@ -1702,17 +1567,20 @@ class _SupportAddState extends State<SupportAdd> {
   }
 }
 
-class dialog_ready extends StatefulWidget {
-  dialog_ready({required this.invoice, required this.type_ready, Key? key})
-      : super(key: key);
-  String type_ready;
-  InvoiceModel invoice;
+class DialogReady extends StatefulWidget {
+  const DialogReady({
+    required this.invoice,
+    required this.type_ready,
+    Key? key,
+  }) : super(key: key);
+  final String type_ready;
+  final InvoiceModel invoice;
 
   @override
-  State<dialog_ready> createState() => _dialog_readyState();
+  State<DialogReady> createState() => _DialogReadyState();
 }
 
-class _dialog_readyState extends State<dialog_ready> {
+class _DialogReadyState extends State<DialogReady> {
   String title = '';
   String Value_sales = '';
 
@@ -2051,32 +1919,17 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
       builder: (context) {
         return Consumer2<UserProvider, EventProvider>(
           builder: (context, user, event, child) {
-            return DropdownSearch<UserModel>(
-              dropdownButtonBuilder: (context) => SizedBox.shrink(),
-              mode: Mode.DIALOG,
-              filterFn: (user, filter) => user!.getfilteruser(filter!),
-              compareFn: (item, selectedItem) =>
-                  item?.idUser == selectedItem?.idUser,
-              showSelectedItems: true,
+            return CustomSearchableDropDown<UserModel>(
+              hint: 'موظف الدعم الفني',
               items: user.usersSupportManagement,
               itemAsString: (u) => u!.userAsString(),
-              onChanged: (user) {
-                onSelectUser(user);
+              onChanged: (selectedUser) {
+                onSelectUser(selectedUser);
               },
               selectedItem: user.selectedUser,
-              showSearchBox: true,
-              dropdownSearchDecoration: InputDecoration(
-                isCollapsed: true,
-                hintText: 'موظف الدعم الفني',
-                alignLabelWithHint: true,
-                fillColor: Colors.grey.withOpacity(0.2),
-                border: UnderlineInputBorder(
-                    borderSide: const BorderSide(
-                  color: Colors.grey,
-                )),
-                contentPadding: EdgeInsets.zero,
-                suffix: Icon(Icons.arrow_drop_down),
-              ),
+              filterFn: (user, filter) => user.getfilteruser(filter),
+              compareFn: (item, selectedItem) =>
+                  item.idUser == selectedItem.idUser,
               validator: (value) {
                 if (value == null) {
                   return 'يرجى اختيار موظف الدعم الفني';

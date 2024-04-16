@@ -8,12 +8,12 @@ import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/typeclient.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
+import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../features/clients_list/presentation/pages/action_client_page.dart';
@@ -180,7 +180,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                           //  setState(() {
                                           cart.changeVal(value.toString());
                                           regoin = value.toString();
-                                          filtershow();
+                                          filterShow();
                                         },
                                       );
                                       //);
@@ -211,7 +211,7 @@ class _clientmarketingState extends State<clientmarketing> {
                                 onChanged: (value) {
                                   cart.changevaluefilter(value.toString());
                                   typeclientvalue = value.toString();
-                                  filtershow();
+                                  filterShow();
                                 },
                               );
                             }),
@@ -242,40 +242,28 @@ class _clientmarketingState extends State<clientmarketing> {
                                           onPressed: () {
                                             iduser = null;
                                             cart.changevalueuser(null);
-                                            filtershow();
+                                            filterShow();
                                           },
                                           icon: Icon(Icons.highlight_off)),
                                       SizedBox(width: 10),
                                     },
                                     Expanded(
-                                      child: DropdownSearch<UserModel>(
-                                        mode: Mode.DIALOG,
-                                        filterFn: (user, filter) =>
-                                            user!.getfilteruser(filter!),
-                                        compareFn: (item, selectedItem) =>
-                                            item?.idUser ==
-                                            selectedItem?.idUser,
+                                      child:
+                                          CustomSearchableDropDown<UserModel>(
+                                        hint: 'الموظف',
                                         items: cart.usersMarketingManagement,
                                         itemAsString: (u) => u!.userAsString(),
+                                        filterFn: (user, filter) {
+                                          return user.getfilteruser(filter);
+                                        },
+                                        compareFn: (item, selectedItem) =>
+                                            item.idUser == selectedItem.idUser,
                                         onChanged: (data) {
                                           iduser = data!.idUser;
                                           cart.changevalueuser(data);
-                                          filtershow();
+                                          filterShow();
                                         },
                                         selectedItem: cart.selectedUser,
-                                        showSearchBox: true,
-                                        dropdownSearchDecoration:
-                                            InputDecoration(
-                                          isCollapsed: true,
-                                          hintText: 'الموظف',
-                                          alignLabelWithHint: true,
-                                          fillColor:
-                                              Colors.grey.withOpacity(0.2),
-                                          contentPadding: EdgeInsets.all(0),
-                                          border: UnderlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  color: Colors.grey)),
-                                        ),
                                       ),
                                     ),
                                   ],
@@ -302,57 +290,57 @@ class _clientmarketingState extends State<clientmarketing> {
                                     onPressed: () {
                                       activity = '';
                                       cart.onChangeSelectedActivity(null);
-                                      filtershow();
+                                      filterShow();
                                     },
                                     icon: Icon(Icons.highlight_off)),
                                 SizedBox(width: 10),
                               },
                               Expanded(
-                                child: DropdownSearch<ActivityModel>(
-                                  mode: Mode.DIALOG,
-                                  filterFn: (user, filter) =>
-                                      user!.getFilterActivityType(filter!),
-                                  compareFn: (item, selectedItem) =>
-                                      item?.id_activity_type ==
-                                      selectedItem?.id_activity_type,
+                                child: CustomSearchableDropDown<ActivityModel>(
+                                  hint: 'النشاط',
                                   items: cart.activitiesList,
                                   itemAsString: (u) => u!.userAsString(),
+                                  filterFn: (user, filter) {
+                                    return user.getFilterActivityType(filter);
+                                  },
                                   onChanged: (data) {
-                                    // iduser = data!.id_activity_type;
                                     cart.onChangeSelectedActivity(data);
                                     activity =
                                         data?.id_activity_type.toString();
-                                    filtershow();
+                                    filterShow();
                                   },
                                   selectedItem: cart.selectedActivity,
-                                  showSearchBox: true,
-                                  dropdownSearchDecoration: InputDecoration(
-                                    isCollapsed: true,
-                                    hintText: 'النشاط',
-                                    alignLabelWithHint: true,
-                                    fillColor: Colors.grey.withOpacity(0.2),
-                                    contentPadding: EdgeInsets.all(0),
-                                    border: UnderlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.grey)),
-                                  ),
-                                  // InputDecoration(border: InputBorder.none),
                                 ),
-                                // DropdownButton(
-                                //   isExpanded: true,
-                                //   hint: Text("النشاط"),
-                                //   items: cart.list_activity.map((level_one) {
-                                //     return DropdownMenuItem(
-                                //       child: Text(level_one.name_activity_type), //label of item
-                                //       value: level_one.id_activity_type, //value of item
-                                //     );
-                                //   }).toList(),
-                                //   value: cart.selectedValueOut,
-                                //   onChanged: (value) {
-                                //     cart.changevalueOut(value.toString());
-                                //     activity = value.toString();
+
+                                // DropdownSearch<ActivityModel>(
+                                //   mode: Mode.DIALOG,
+                                //   filterFn: (user, filter) =>
+                                //       user!.getFilterActivityType(filter!),
+                                //   compareFn: (item, selectedItem) =>
+                                //       item?.id_activity_type ==
+                                //       selectedItem?.id_activity_type,
+                                //   items: cart.activitiesList,
+                                //   itemAsString: (u) => u!.userAsString(),
+                                //   onChanged: (data) {
+                                //     // iduser = data!.id_activity_type;
+                                //     cart.onChangeSelectedActivity(data);
+                                //     activity =
+                                //         data?.id_activity_type.toString();
                                 //     filtershow();
                                 //   },
+                                //   selectedItem: cart.selectedActivity,
+                                //   showSearchBox: true,
+                                //   dropdownSearchDecoration: InputDecoration(
+                                //     isCollapsed: true,
+                                //     hintText: 'النشاط',
+                                //     alignLabelWithHint: true,
+                                //     fillColor: Colors.grey.withOpacity(0.2),
+                                //     contentPadding: EdgeInsets.all(0),
+                                //     border: UnderlineInputBorder(
+                                //         borderSide: const BorderSide(
+                                //             color: Colors.grey)),
+                                //   ),
+                                //   // InputDecoration(border: InputBorder.none),
                                 // ),
                               ),
                             ],
@@ -434,41 +422,12 @@ class _clientmarketingState extends State<clientmarketing> {
         );
   }
 
-  void filtershow() {
+  void filterShow() {
     context.read<ClientProvider>().filterClientMarketingSalesList(
           activity: activity,
           idUser: iduser,
           region: regoin,
           typeClient: typeclientvalue,
         );
-
-    //
-    // if(typeclientvalue=='الكل'){
-    //   Provider.of<client_vm>(context, listen: false) .resetlist();
-    // }
-    // else{
-    //   if( Provider.of<regoin_vm>(context,listen: false).selectedValueLevel!=null&&
-    //       iduser!=null){
-    //     Provider.of<client_vm>(context, listen: false)
-    //         .getclientfilter_Local(iduser ,"3", typeclientvalue, regoin,activity);
-    //   }else{
-    //     if(Provider.of<regoin_vm>(context,listen: false).selectedValueLevel==null&&
-    //         iduser==null){
-    //       Provider.of<client_vm>(context, listen: false)
-    //           .getclientfilter_Local(typeclientvalue,"type",null,null,activity );
-    //     }
-    //     else{
-    //       if(iduser==null) {
-    //         Provider.of<client_vm>(context, listen: false)
-    //             .getclientfilter_Local(
-    //             regoin, "regoin",
-    //             typeclientvalue,null,activity);
-    //       }else{
-    //
-    //         Provider.of<client_vm>(context, listen: false)
-    //             .getclientfilter_Local(iduser,"user",typeclientvalue,null,activity);
-    //       }
-    //     }}
-    // }
   }
 }

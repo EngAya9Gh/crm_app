@@ -6,10 +6,10 @@ import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/regoin_vm.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
@@ -116,22 +116,11 @@ class _calender_clientState extends State<calender_client> {
                                 SizedBox(width: 10),
                               },
                               Expanded(
-                                child: DropdownSearch<ClientModel1>(
-                                  mode: Mode.DIALOG,
-                                  // label: " الموظف ",
-                                  //hint: 'الموظف',
-                                  //onFind: (String filter) => cart.getfilteruser(filter),
-                                  filterFn: (user, filter) =>
-                                      user!.getfilteruser(filter!),
-                                  //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                                  // itemAsString: (UserModel u) => u.userAsStringByName(),
+                                child: CustomSearchableDropDown<ClientModel1>(
+                                  hint: "الموظف",
                                   items: cart.listClientAccept,
-                                  // items: cart.listClient,
-                                  compareFn: (item, selectedItem) =>
-                                      item?.idClients ==
-                                      selectedItem?.idClients,
-                                  showSelectedItems: true,
                                   itemAsString: (u) => u!.userAsString(),
+                                  selectedItem: cart.selectedclient,
                                   onChanged: (data) {
                                     setState(() {
                                       clientModel = data!;
@@ -143,31 +132,11 @@ class _calender_clientState extends State<calender_client> {
                                     Provider.of<EventProvider>(context,
                                             listen: false)
                                         .getevent_Client(idclient);
-                                    // Provider.of<client_vm>(context, listen: false)
-                                    //     .getclientfilter_Local(iduser!,"user");
                                   },
-                                  selectedItem: cart.selectedclient,
-                                  showSearchBox: true,
-                                  dropdownSearchDecoration: InputDecoration(
-                                    //filled: true,
-                                    isCollapsed: true,
-                                    hintText: 'العميل',
-                                    alignLabelWithHint: true,
-                                    fillColor: Colors.grey.withOpacity(0.2),
-                                    //labelText: "choose a user",
-                                    contentPadding: EdgeInsets.all(0),
-                                    //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                                    // focusedBorder: OutlineInputBorder(
-                                    //     borderRadius: BorderRadius.circular(10),
-                                    //     borderSide: const BorderSide(color: Colors.white)),
-                                    border: UnderlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.grey)),
-                                    // OutlineInputBorder(
-                                    //     borderRadius: BorderRadius.circular(10),
-                                    //     borderSide: const BorderSide( color: Colors.white)),
-                                  ),
-                                  // InputDecoration(border: InputBorder.none),
+                                  filterFn: (user, filter) =>
+                                      user.getFilterUser(filter),
+                                  compareFn: (item, selectedItem) =>
+                                      item.idClients == selectedItem.idClients,
                                 ),
                               ),
                             ],
@@ -175,68 +144,6 @@ class _calender_clientState extends State<calender_client> {
                         },
                       ),
                     ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    //   children: [
-                    //
-                    //
-                    //
-                    //     // Expanded(
-                    //     //   child: Padding(
-                    //     //     padding: const EdgeInsets.only(left: 20.0,right: 8),
-                    //     //     child: Consumer<user_vm_provider>(
-                    //     //       builder: (context, cart, child){
-                    //     //         return  DropdownSearch<UserModel>(
-                    //     //           mode: Mode.DIALOG,
-                    //     //           // label: " الموظف ",
-                    //     //           //hint: 'الموظف',
-                    //     //           //onFind: (String filter) => cart.getfilteruser(filter),
-                    //     //           filterFn: (user, filter) => user!.getfilteruser(filter!),
-                    //     //           //compareFn: (item, selectedItem) => item?.id == selectedItem?.id,
-                    //     //           // itemAsString: (UserModel u) => u.userAsStringByName(),
-                    //     //           items: cart.userall,
-                    //     //           itemAsString: (u) => u!.userAsString(),
-                    //     //           onChanged: (data) {
-                    //     //             iduser=data!.idUser!;
-                    //     //             Provider.of<EventProvider>(context, listen: false)
-                    //     //                 .getevents(iduser,[],"user");
-                    //     //             // Provider.of<client_vm>(context, listen: false)
-                    //     //             //     .getclientfilter_Local(iduser!,"user");
-                    //     //
-                    //     //           } ,
-                    //     //           selectedItem: cart.selecteduser,
-                    //     //           showSearchBox: true,
-                    //     //           dropdownSearchDecoration:
-                    //     //           InputDecoration(
-                    //     //             //filled: true,
-                    //     //             isCollapsed: true,
-                    //     //             hintText: 'الموظف',
-                    //     //             alignLabelWithHint: true,
-                    //     //             fillColor:  Colors.grey.withOpacity(0.2),
-                    //     //             //labelText: "choose a user",
-                    //     //             contentPadding: EdgeInsets.all(0),
-                    //     //             //contentPadding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                    //     //             // focusedBorder: OutlineInputBorder(
-                    //     //             //     borderRadius: BorderRadius.circular(10),
-                    //     //             //     borderSide: const BorderSide(color: Colors.white)),
-                    //     //             border:
-                    //     //             UnderlineInputBorder(
-                    //     //                 borderSide: const BorderSide(  color: Colors.grey)
-                    //     //             ),
-                    //     //             // OutlineInputBorder(
-                    //     //             //     borderRadius: BorderRadius.circular(10),
-                    //     //             //     borderSide: const BorderSide( color: Colors.white)),
-                    //     //           ),
-                    //     //           // InputDecoration(border: InputBorder.none),
-                    //     //
-                    //     //         );
-                    //     //
-                    //     //       },
-                    //     //     ),
-                    //     //   ),
-                    //     // ),
-                    //   ],
-                    // ),
                     SizedBox(height: 25),
                     Expanded(child: CalendarOfCustomerVisitSchedule()),
                     // CalendarWidget(type: 'client', clientModel: clientModel),
@@ -328,8 +235,8 @@ class _calender_clientState extends State<calender_client> {
                                       listen: false)
                                   .updateclient_vm(
                                 {
-                                  "date_visit_Client": _currentDate
-                                      .toString(), //DateTime.now().toString(),
+                                  "date_visit_Client": _currentDate.toString(),
+                                  //DateTime.now().toString(),
                                 },
                                 client.idClients.toString(),
                                 onSuccess: (value) {

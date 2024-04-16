@@ -1,11 +1,9 @@
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/core/utils/app_styles.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_text_button.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/features/task_management/presentation/manager/task_cubit.dart';
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +11,7 @@ import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/helpers/helper_functions.dart';
+import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/responsive_padding.dart';
 import '../../../../model/managmodel.dart';
@@ -150,22 +149,6 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                           ),
                           20.verticalSpace,
                         },
-                        // if (_privilegeCubit.checkPrivilege('160'))
-                        //   Consumer<manage_provider>(
-                        //     builder: (context, manageList, child) {
-                        //       final list = manageList.listtext;
-                        //       return AppDropdownButtonFormField<ManageModel, String>(
-                        //         items: list,
-                        //         onChange: (value) => manageList.changevalue(value ?? ''),
-                        //         hint: "القسم",
-                        //         itemAsValue: (ManageModel? item) => item!.idmange,
-                        //         itemAsString: (item) => item!.name_mange,
-                        //         value: manageList.selectedValuemanag,
-                        //         validator: HelperFunctions.instance.requiredFiled,
-                        //       );
-                        //     },
-                        //   ),
-                        // 20.verticalSpace,
                         if (privilegeBloc.checkPrivilege('161')) ...{
                           Row(
                             children: [
@@ -305,12 +288,9 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                             Expanded(
                               child: BlocBuilder<UsersCubit, UsersState>(
                                 builder: (context, userState) {
-                                  return DropdownSearch<UserRegionDepartment>(
-                                    mode: Mode.DIALOG,
-                                    filterFn: (user, filter) =>
-                                        user!.nameUser!.contains(filter!),
-                                    compareFn: (item, selectedItem) =>
-                                        item?.idUser == selectedItem?.idUser,
+                                  return CustomSearchableDropDown<
+                                      UserRegionDepartment>(
+                                    hint: 'اسناد من',
                                     items: userState.usersByDepartmentAndRegion
                                             .getDataWhenSuccess ??
                                         [],
@@ -319,65 +299,8 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                       _taskCubit.onChangeFilterAssignFrom(data);
                                     },
                                     selectedItem: state.filterAssignFrom,
-                                    showSearchBox: true,
-                                    dropdownSearchDecoration: InputDecoration(
-                                      isCollapsed: true,
-                                      hintText: 'اسناد من',
-                                      hintStyle: context.textTheme.titleSmall
-                                          ?.copyWith(color: Colors.grey),
-                                      contentPadding:
-                                          HWEdgeInsetsDirectional.only(
-                                              start: 12, end: 12),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.error),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.error),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      suffixIcon: userState
-                                              .allUsersList.isLoading
-                                          ? CupertinoActivityIndicator()
-                                          : userState.allUsersList.isError
-                                              ? IconButton(
-                                                  onPressed: () => _usersCubit
-                                                      .getUsersByDepartmentAndRegion(
-                                                          regionId: regionId,
-                                                          departmentId:
-                                                              departmentId),
-                                                  icon: Icon(Icons.refresh))
-                                              : null,
-                                    ),
-                                    // InputDecoration(border: InputBorder.none),
+                                    filterFn: (user, filter) =>
+                                        user.nameUser!.contains(filter),
                                   );
                                 },
                               ),
@@ -386,12 +309,9 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                             Expanded(
                               child: BlocBuilder<UsersCubit, UsersState>(
                                 builder: (context, userState) {
-                                  return DropdownSearch<UserRegionDepartment>(
-                                    mode: Mode.DIALOG,
-                                    filterFn: (user, filter) =>
-                                        user!.nameUser!.contains(filter!),
-                                    compareFn: (item, selectedItem) =>
-                                        item?.idUser == selectedItem?.idUser,
+                                  return CustomSearchableDropDown<
+                                      UserRegionDepartment>(
+                                    hint: 'اسناد إلى',
                                     items: userState.usersByDepartmentAndRegion
                                             .getDataWhenSuccess ??
                                         [],
@@ -400,80 +320,21 @@ class _FilterTaskSheetState extends State<FilterTaskSheet> {
                                       _taskCubit.onChangeFilterAssignTo(data);
                                     },
                                     selectedItem: state.filterAssignTo,
-                                    showSearchBox: true,
-                                    dropdownSearchDecoration: InputDecoration(
-                                      isCollapsed: true,
+                                    filterFn: (user, filter) =>
+                                        user.nameUser!.contains(filter),
+                                    compareFn: (item, selectedItem) =>
+                                        item.idUser == selectedItem.idUser,
+                                    buttonDecoration: AppStyles
+                                        .roundedDropdownButtonDecoration(
+                                      context: context,
                                       hintText: 'اسناد إلى',
-                                      hintStyle: context.textTheme.titleSmall
-                                          ?.copyWith(color: Colors.grey),
-                                      contentPadding:
-                                          HWEdgeInsetsDirectional.only(
-                                              start: 12, end: 12),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      disabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.primary),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.error),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: context.colorScheme.error),
-                                        borderRadius:
-                                            BorderRadius.circular(10).r,
-                                      ),
-                                      suffixIcon: userState
-                                              .allUsersList.isLoading
-                                          ? CupertinoActivityIndicator()
-                                          : userState.allUsersList.isError
-                                              ? IconButton(
-                                                  onPressed: () => _usersCubit
-                                                      .getUsersByDepartmentAndRegion(
-                                                          regionId: regionId,
-                                                          departmentId:
-                                                              departmentId),
-                                                  icon: Icon(Icons.refresh))
-                                              : null,
                                     ),
-                                    // InputDecoration(border: InputBorder.none),
                                   );
                                 },
                               ),
                             ),
                           ],
                         ),
-                        // 20.verticalSpace,
-                        // AppDropdownButtonFormField<TaskStatus, TaskStatus>(
-                        //   items: TaskStatus.values,
-                        //   onChange: (value) {},
-                        //   hint: "الحالة",
-                        //   itemAsValue: (TaskStatus? item) => item,
-                        //   itemAsString: (item) => item!.name,
-                        //   value: null,
-                        // ),
                         20.verticalSpace,
 
                         SizedBox(

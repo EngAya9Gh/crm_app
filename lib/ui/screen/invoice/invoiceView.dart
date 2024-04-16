@@ -20,8 +20,8 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/intl.dart' as rt;
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path/path.dart' as pp;
@@ -582,7 +582,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                 Navigator.push(
                                     context,
                                     CupertinoPageRoute(
-                                        builder: (context) => edit_invoice(
+                                        builder: (context) => EditInvoice(
                                               invoiceModel: invoice,
                                             ) // support_view(type: 'only',)
                                         ));

@@ -140,9 +140,9 @@ class _BranchManagementDetailsPageState
                   style: ElevatedButton.styleFrom(
                       minimumSize:
                           Size(MediaQuery.of(context).size.width - 60, 40),
+                      backgroundColor: kMainColor,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
-                      primary: kMainColor),
+                          borderRadius: BorderRadius.circular(10))),
                 );
               },
             ),

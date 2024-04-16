@@ -1,9 +1,9 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../model/usermodel.dart';
@@ -76,23 +76,17 @@ class _TransferClientPageState extends State<TransferClientPage> {
                 SizedBox(height: 10),
                 Consumer<UserProvider>(
                   builder: (context, cart, child) {
-                    return DropdownSearch<UserModel>(
-                      mode: Mode.DIALOG,
+                    return CustomSearchableDropDown<UserModel>(
+                      hint: 'اختر اسم الموظف',
+                      items: cart.allUsers,
+                      itemAsString: (u) => u!.userAsString(),
+                      selectedItem: cart.currentUser,
+                      onChanged: (data) => idUser = data!.idUser!,
+                      filterFn: (user, filter) => user.getfilteruser(filter),
                       validator: (val) {
                         if (val == null) return 'من فضلك حدد اسم موظف';
                         return null;
                       },
-                      filterFn: (user, filter) => user!.getfilteruser(filter!),
-                      items: cart.allUsers,
-                      itemAsString: (u) => u!.userAsString(),
-                      // selectedItem: cart.currentUser,
-                      onChanged: (data) => idUser = data!.idUser!,
-                      showSearchBox: true,
-                      dropdownSearchDecoration: InputDecoration(
-                        labelText: "choose a user",
-                        contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
-                        border: OutlineInputBorder(),
-                      ),
                     );
                   },
                 ),
