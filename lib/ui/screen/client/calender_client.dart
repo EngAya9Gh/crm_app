@@ -134,7 +134,7 @@ class _calender_clientState extends State<calender_client> {
                                         .getevent_Client(idclient);
                                   },
                                   filterFn: (user, filter) =>
-                                      user.getfilteruser(filter),
+                                      user.getFilterUser(filter),
                                 ),
 
                                 // DropdownSearch<ClientModel1>(

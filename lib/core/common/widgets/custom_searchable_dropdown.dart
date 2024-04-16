@@ -1,5 +1,8 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../utils/app_styles.dart';
 
 class CustomSearchableDropDown<T> extends StatelessWidget {
   const CustomSearchableDropDown({
@@ -9,9 +12,10 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
     this.itemAsString,
     this.onChanged,
     this.selectedItem,
-    this.filterFn,
+    required this.filterFn,
     this.compareFn,
     this.validator,
+    this.buttonDecoration,
   });
 
   final String hint;
@@ -22,6 +26,7 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
   final bool Function(T, String)? filterFn;
   final bool Function(T, T)? compareFn;
   final String? Function(T?)? validator;
+  final InputDecoration? buttonDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -29,89 +34,60 @@ class CustomSearchableDropDown<T> extends StatelessWidget {
       popupProps: PopupPropsMultiSelection.dialog(
         showSearchBox: true,
         searchDelay: Duration(milliseconds: 500),
-        /*deco1*/
-        // itemBuilder: (context, item, isSelected) {
-        //   return Container(
-        //     padding: EdgeInsets.symmetric(
-        //         horizontal: 15, vertical: 8),
-        //     decoration: BoxDecoration(
-        //       color: isSelected
-        //           ? Colors.grey.withOpacity(0.2)
-        //           : Colors.transparent,
-        //     ),
-        //     child: Text(
-        //       cart.itemAsString(item),
-        //       style: Theme.of(context)
-        //           .textTheme
-        //           .titleSmall
-        //           ?.copyWith(
-        //             fontSize: 14.0,
-        //           ),
-        //     ),
-        //   );
-        // },
-
-        /* deco2 */
-        // dropdownSearchDecoration: InputDecoration(
-        //   isCollapsed: true,
-        //   hintText: 'نوع النشاط*',
-        //   hintStyle: context.textTheme.titleSmall
-        //       ?.copyWith(color: Colors.grey),
-        //   contentPadding:
-        //   HWEdgeInsetsDirectional.only(
-        //       start: 12, end: 12),
-        //   border: OutlineInputBorder(
-        //     borderSide: BorderSide(
-        //         color:
-        //         context.colorScheme.primary),
-        //     borderRadius:
-        //     BorderRadius.circular(10).r,
-        //   ),
-        //   focusedBorder: OutlineInputBorder(
-        //     borderSide: BorderSide(
-        //         color:
-        //         context.colorScheme.primary),
-        //     borderRadius:
-        //     BorderRadius.circular(10).r,
-        //   ),
-        //   enabledBorder: OutlineInputBorder(
-        //     borderSide: BorderSide(
-        //         color:
-        //         context.colorScheme.primary),
-        //     borderRadius:
-        //     BorderRadius.circular(10).r,
-        //   ),
-        //   disabledBorder: OutlineInputBorder(
-        //     borderSide: BorderSide(
-        //         color:
-        //         context.colorScheme.primary),
-        //     borderRadius:
-        //     BorderRadius.circular(10).r,
-        //   ),
-        //   errorBorder: OutlineInputBorder(
-        //     borderSide: BorderSide(
-        //         color: context.colorScheme.error),
-        //     borderRadius:
-        //     BorderRadius.circular(10).r,
-        //   ),
-        //   focusedErrorBorder: OutlineInputBorder(
-        //     borderSide: BorderSide(
-        //         color: context.colorScheme.error),
-        //     borderRadius:
-        //     BorderRadius.circular(10).r,
-        //   ),
-        // ),
+        searchFieldProps: TextFieldProps(
+          textDirection: TextDirection.rtl,
+          decoration: InputDecoration(
+            hintText: "بحث",
+            hintTextDirection: TextDirection.rtl,
+            contentPadding: EdgeInsets.symmetric(horizontal: 15),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+        ),
+        containerBuilder: (context, child) {
+          return SizedBox(
+            height: MediaQuery.of(context).size.height * 0.6,
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: child,
+          );
+        },
+        dialogProps: DialogProps(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 10,
+          ),
+        ),
+        itemBuilder: (context, item, isSelected) {
+          return Directionality(
+            textDirection: TextDirection.rtl,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+              decoration: BoxDecoration(
+                color: isSelected ? Colors.grey : Colors.transparent,
+              ),
+              child: Text(
+                itemAsString!(item),
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      fontSize: 12.sp,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+              ),
+            ),
+          );
+        },
       ),
       dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
-            isCollapsed: true,
-            hintText: 'العميل',
-            alignLabelWithHint: true,
-            fillColor: Colors.grey.withOpacity(0.2),
-            contentPadding: EdgeInsets.all(0),
-            border: UnderlineInputBorder(
-              borderSide: const BorderSide(color: Colors.grey),
-            )),
+        textAlignVertical: TextAlignVertical.center,
+        dropdownSearchDecoration: buttonDecoration ??
+            AppStyles.roundedDropdownButtonDecoration(
+              context: context,
+              hintText: hint,
+            ),
       ),
       filterFn: filterFn,
       compareFn: compareFn,

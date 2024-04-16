@@ -272,6 +272,11 @@ class _AddInvoiceProductState extends State<AddInvoiceProduct> {
                             hint: "اختر منتج",
                             items: listProduct,
                             itemAsString: (item) => item?.nameProduct ?? '',
+                            filterFn: (item, filter) {
+                              return item.nameProduct
+                                  .toLowerCase()
+                                  .contains(filter.toLowerCase());
+                            },
                             selectedItem: selectedProduct,
                             onChanged: (value) {
                               setState(() {

@@ -287,7 +287,7 @@ class ClientModel1 extends CacheRepository {
   }
 
   ///this method will prevent the override of toString
-  bool getfilteruser(String filter) {
+  bool getFilterUser(String filter) {
     return this.nameEnterprise.toString().contains(filter);
   }
 

@@ -269,49 +269,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                                 filterFn: (user, filter) =>
                                     user.getfilteruser(filter),
                               ),
-
-                              // DropdownSearch<UserModel>(
-                              //   mode: Mode.DIALOG,
-                              //   filterFn: (user, filter) =>
-                              //       user!.getfilteruser(filter!),
-                              //   compareFn: (item, selectedItem) =>
-                              //       item?.idUser == selectedItem?.idUser,
-                              //   items: userVm.usersSalesManagement,
-                              //   popupItemBuilder:
-                              //       _customPopupItemBuilderForEmployeeList,
-                              //   itemAsString: (u) => '${u!.userAsString()}',
-                              //   onChanged: (data) {
-                              //     if (data == null) return;
-                              //
-                              //     _userNotifier.value = int.parse(data.idUser!);
-                              //   },
-                              //   selectedItem: userVm.usersSalesManagement
-                              //       .firstWhereOrNull((element) =>
-                              //           int.parse(element.idUser!) ==
-                              //           selectedUserId),
-                              //   showSearchBox: true,
-                              //   dropdownSearchDecoration: InputDecoration(
-                              //     isCollapsed: true,
-                              //     hintText: '   الموظف',
-                              //     hintStyle: context.textTheme.titleSmall
-                              //         ?.copyWith(color: Colors.grey),
-                              //     alignLabelWithHint: true,
-                              //     fillColor: Colors.grey.withOpacity(0.2),
-                              //     contentPadding: EdgeInsets.only(right: 10),
-                              //     border: OutlineInputBorder(
-                              //       borderSide: BorderSide(color: kMainColor),
-                              //       borderRadius: BorderRadius.circular(10).r,
-                              //     ),
-                              //     enabledBorder: OutlineInputBorder(
-                              //       borderSide: BorderSide(color: kMainColor),
-                              //       borderRadius: BorderRadius.circular(10).r,
-                              //     ),
-                              //     focusedBorder: OutlineInputBorder(
-                              //       borderSide: BorderSide(color: kMainColor),
-                              //       borderRadius: BorderRadius.circular(10).r,
-                              //     ),
-                              //   ),
-                              // ),
                             ),
                           ],
                         );
@@ -353,51 +310,6 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
                               filterFn: (user, filter) =>
                                   user.getFilterActivityType(filter),
                             ),
-
-                            // DropdownSearch<ActivityModel>(
-                            //   mode: Mode.DIALOG,
-                            //   filterFn: (user, filter) =>
-                            //       user!.getFilterActivityType(filter!),
-                            //   compareFn: (item, selectedItem) =>
-                            //       item?.id_activity_type ==
-                            //       selectedItem?.id_activity_type,
-                            //   items: activityVm.activitiesList,
-                            //   itemAsString: (u) => u!.userAsString(),
-                            //   onChanged: (data) {
-                            //     if (data == null) return;
-                            //     _activityNotifier.value =
-                            //         int.parse(data.id_activity_type);
-                            //   },
-                            //   selectedItem: activityVm.activitiesList
-                            //       .firstWhereOrNull((element) =>
-                            //           int.parse(element.id_activity_type) ==
-                            //           selectedActivity),
-                            //   showSearchBox: true,
-                            //   popupItemBuilder:
-                            //       customPopupItemBuilderForActivityTypeList,
-                            //   dropdownSearchDecoration: InputDecoration(
-                            //     isCollapsed: true,
-                            //     hintText: 'النشاط',
-                            //     alignLabelWithHint: true,
-                            //     hintStyle: context.textTheme.titleSmall
-                            //         ?.copyWith(color: Colors.grey),
-                            //     fillColor: Colors.grey.withOpacity(0.2),
-                            //     contentPadding: EdgeInsets.only(right: 10),
-                            //     border: OutlineInputBorder(
-                            //       borderSide: BorderSide(color: kMainColor),
-                            //       borderRadius: BorderRadius.circular(10).r,
-                            //     ),
-                            //     enabledBorder: OutlineInputBorder(
-                            //       borderSide: BorderSide(color: kMainColor),
-                            //       borderRadius: BorderRadius.circular(10).r,
-                            //     ),
-                            //     focusedBorder: OutlineInputBorder(
-                            //       borderSide: BorderSide(color: kMainColor),
-                            //       borderRadius: BorderRadius.circular(10).r,
-                            //     ),
-                            //   ),
-                            //   // InputDecoration(border: InputBorder.none),
-                            // ),
                           ),
                         ],
                       );
@@ -450,33 +362,5 @@ class _FilterClientsSheetState extends State<FilterClientsSheet> {
         ),
       ),
     );
-  }
-
-  Widget _customPopupItemBuilderForEmployeeList(
-      BuildContext context, UserModel item, bool isSelected) {
-    return Container(
-        margin: const EdgeInsetsDirectional.only(
-            start: 2, end: 2, top: 2, bottom: 2),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
-        ),
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(7.r),
-            child: Container(
-              padding: EdgeInsets.all(10.r),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom:
-                      BorderSide(color: context.colorScheme.primary, width: 1),
-                ),
-              ),
-              child: Text(
-                item.nameUser!,
-                style: context.textTheme.titleSmall,
-                textDirection: TextDirection.rtl,
-              ),
-            )));
   }
 }

@@ -7,6 +7,7 @@ import '../../../../../core/common/enums/ticket_source_enum.dart';
 import '../../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../../core/utils/app_constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
+import '../../../../../core/utils/app_styles.dart';
 import '../../../../../model/clientmodel.dart';
 import '../../../../../ui/screen/client/profileclient.dart';
 import '../../../../../ui/widgets/container_boxShadows.dart';
@@ -100,61 +101,14 @@ class _AddTicketPageState extends State<AddTicketPage> {
                                 name_country = data.nameCountry!;
                               },
                               filterFn: (user, filter) {
-                                return user.getfilteruser(filter);
+                                return user.getFilterUser(filter);
                               },
+                              buttonDecoration:
+                                  AppStyles.underlinedDropdownButtonDecoration(
+                                context: context,
+                                hintText: 'العميل',
+                              ),
                             );
-
-                            // DropdownSearch<ClientModel1>(
-                            //   popupProps: PopupPropsMultiSelection.dialog(
-                            //     showSearchBox: true,
-                            //     searchDelay: Duration(milliseconds: 500),
-                            //     // itemBuilder: (context, item, isSelected) {
-                            //     //   return Container(
-                            //     //     padding: EdgeInsets.symmetric(
-                            //     //         horizontal: 15, vertical: 8),
-                            //     //     decoration: BoxDecoration(
-                            //     //       color: isSelected
-                            //     //           ? Colors.grey.withOpacity(0.2)
-                            //     //           : Colors.transparent,
-                            //     //     ),
-                            //     //     child: Text(
-                            //     //       cart.itemAsString(item),
-                            //     //       style: Theme.of(context)
-                            //     //           .textTheme
-                            //     //           .titleSmall
-                            //     //           ?.copyWith(
-                            //     //             fontSize: 14.0,
-                            //     //           ),
-                            //     //     ),
-                            //     //   );
-                            //     // },
-                            //   ),
-                            //   dropdownDecoratorProps: DropDownDecoratorProps(
-                            //     dropdownSearchDecoration: InputDecoration(
-                            //         isCollapsed: true,
-                            //         hintText: 'العميل',
-                            //         alignLabelWithHint: true,
-                            //         fillColor: Colors.grey.withOpacity(0.2),
-                            //         contentPadding: EdgeInsets.all(0),
-                            //         border: UnderlineInputBorder(
-                            //           borderSide:
-                            //               const BorderSide(color: Colors.grey),
-                            //         )),
-                            //   ),
-                            //   filterFn: (user, filter) {
-                            //     return user.getfilteruser(filter);
-                            //   },
-                            //   items: cart.listClientAccept,
-                            //   itemAsString: (u) => u!.userAsString(),
-                            //   onChanged: (data) {
-                            //     fkClient = data!.idClients;
-                            //     cart.changevalueclient(data);
-                            //     name_enterprise = data.nameEnterprise!;
-                            //     name_regoin = data.name_regoin!;
-                            //     name_country = data.nameCountry!;
-                            //   },
-                            //   selectedItem: cart.selectedclient,
-                            // );
                           },
                         ),
                       ),

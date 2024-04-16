@@ -14,8 +14,10 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
   final bool isRequired;
   final InputBorder? border;
   final InputDecoration? dropdownSearchDecoration;
+  final bool Function(T, String)? filterFn;
+  final bool Function(T, T)? compareFn;
 
-  CustomMultiSelectionDropdown({
+  const CustomMultiSelectionDropdown({
     required this.items,
     required this.selectedItems,
     this.hint,
@@ -25,6 +27,8 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
     this.isRequired = false,
     this.border,
     this.dropdownSearchDecoration,
+    this.filterFn,
+    this.compareFn,
   });
 
   @override
@@ -94,6 +98,8 @@ class _CustomMultiSelectionDropdownState<T>
       items: widget.items,
       selectedItems: widget.selectedItems,
       itemAsString: widget.itemAsString,
+      filterFn: widget.filterFn,
+      compareFn: widget.compareFn,
       onChanged: widget.onChanged,
       validator: widget.validator ??
           (widget.isRequired

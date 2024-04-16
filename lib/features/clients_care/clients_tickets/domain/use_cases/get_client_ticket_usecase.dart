@@ -7,13 +7,14 @@ import '../repositories/tickets_repo.dart';
 
 @lazySingleton
 class GetClientTicketsUseCase
-    extends UseCase<Either<String, TicketModel>, GetClientTicketParams> {
+    extends UseCase<Either<String, TicketModel?>, GetClientTicketParams> {
   GetClientTicketsUseCase(this._repository);
 
   final TicketsRepo _repository;
 
   @override
-  Future<Either<String, TicketModel>> call(GetClientTicketParams params) async {
+  Future<Either<String, TicketModel?>> call(
+      GetClientTicketParams params) async {
     return await _repository.getClientTicket(params);
   }
 }

@@ -88,25 +88,6 @@ class _TransferClientPageState extends State<TransferClientPage> {
                         return null;
                       },
                     );
-
-                    // DropdownSearch<UserModel>(
-                    //   mode: Mode.DIALOG,
-                    //   validator: (val) {
-                    //     if (val == null) return 'من فضلك حدد اسم موظف';
-                    //     return null;
-                    //   },
-                    //   filterFn: (user, filter) => user!.getfilteruser(filter!),
-                    //   items: cart.allUsers,
-                    //   itemAsString: (u) => u!.userAsString(),
-                    //   // selectedItem: cart.currentUser,
-                    //   onChanged: (data) => idUser = data!.idUser!,
-                    //   showSearchBox: true,
-                    //   dropdownSearchDecoration: InputDecoration(
-                    //     labelText: "choose a user",
-                    //     contentPadding: EdgeInsets.fromLTRB(12, 12, 5, 5),
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // );
                   },
                 ),
                 SizedBox(height: 5),

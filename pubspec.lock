@@ -257,14 +257,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
-  custom_searchable_dropdown:
-    dependency: "direct main"
-    description:
-      name: custom_searchable_dropdown
-      sha256: c2676b1ee55f0b71a7cd890ae473cf97651f018b2695b3bf57c8c28a14e2fa95
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.1"
   dart_style:
     dependency: transitive
     description:
@@ -373,10 +365,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: d1d0ac3966b36dc3e66eeefb40280c17feb87fa2099c6e22e6a1fc959327bd03
+      sha256: be325344c1f3070354a1d84a231a1ba75ea85d413774ec4bdf444c023342e030
       url: "https://pub.dev"
     source: hosted
-    version: "8.0.0+1"
+    version: "5.5.0"
   file_selector_linux:
     dependency: transitive
     description:
@@ -418,13 +410,13 @@ packages:
     source: hosted
     version: "2.29.0"
   firebase_core_platform_interface:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       name: firebase_core_platform_interface
-      sha256: b51257a8b4388565cd66062d727d3e60067b5f5cc3390eb0ecd20b8f97741bdb
+      sha256: c437ae5d17e6b5cc7981cf6fd458a5db4d12979905f9aafd1fea930428a9fe63
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.1"
+    version: "5.0.0"
   firebase_core_web:
     dependency: transitive
     description:

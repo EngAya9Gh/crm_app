@@ -253,6 +253,9 @@ class _clientmarketingState extends State<clientmarketing> {
                                         hint: 'الموظف',
                                         items: cart.usersMarketingManagement,
                                         itemAsString: (u) => u!.userAsString(),
+                                        filterFn: (user, filter) {
+                                          return user.getfilteruser(filter);
+                                        },
                                         onChanged: (data) {
                                           iduser = data!.idUser;
                                           cart.changevalueuser(data);
@@ -325,6 +328,9 @@ class _clientmarketingState extends State<clientmarketing> {
                                   hint: 'النشاط',
                                   items: cart.activitiesList,
                                   itemAsString: (u) => u!.userAsString(),
+                                  filterFn: (user, filter) {
+                                    return user.getFilterActivityType(filter);
+                                  },
                                   onChanged: (data) {
                                     cart.onChangeSelectedActivity(data);
                                     activity =

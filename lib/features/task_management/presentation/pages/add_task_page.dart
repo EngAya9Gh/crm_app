@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart' as Intl;
 import 'package:provider/provider.dart';
 
@@ -96,7 +95,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   late TextEditingController _numberOfRecurringController;
   late GlobalKey<FormState> _formKey;
   late TaskCubit _taskCubit;
-  late GroupButtonController _groupButtonController;
   late PrivilegeCubit privilegeBloc;
   String? regionId;
   String? departmentId;
@@ -130,7 +128,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
     _taskDescriptionController = TextEditingController();
     _formKey = GlobalKey<FormState>();
     _taskCubit = getIt<TaskCubit>();
-    _groupButtonController = GroupButtonController();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<RegionProvider>()
         ..changeValuser(null, true)
@@ -175,17 +172,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       onPressed: () {
                         final isValid = _formKey.currentState!.validate();
                         if (!isValid) return;
-                        // if (state.attachmentFile == null) {
-                        //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        //     content: AppText(
-                        //       "من فضلك قم باختيار مرفق",
-                        //       style: context.textTheme.bodyMedium!.sb!.copyWith(color: context.colorScheme.white),
-                        //     ),
-                        //     backgroundColor: context.colorScheme.error,
-                        //   ));
-                        //   return;
-                        // }
-
                         if (state.selectedAssignedToType == null) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: AppText(
@@ -254,6 +240,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           selectedItems: taskState.selectedParticipant ?? [],
                           onChanged: _taskCubit.onChangeParticipants,
                           itemAsString: (u) => u!.userAsString(),
+                          filterFn: (user, filter) =>
+                              user.nameUser!.contains(filter),
+                          compareFn: (item, selectedItem) =>
+                              item.idUser == selectedItem.idUser,
                           validator: (value) {
                             if (value?.isEmpty ?? true) {
                               return 'هذا الحقل مطلوب.';

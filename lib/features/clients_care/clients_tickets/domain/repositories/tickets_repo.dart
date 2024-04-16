@@ -10,7 +10,7 @@ import '../use_cases/transfer_ticket_usecase.dart';
 abstract class TicketsRepo {
   Future<Either<String, List<TicketModel>>> getTickets();
 
-  Future<Either<String, TicketModel>> getClientTicket(
+  Future<Either<String, TicketModel?>> getClientTicket(
       GetClientTicketParams params);
 
   Future<Either<String, TicketModel>> getTicketById(GetTicketByIdParams params);

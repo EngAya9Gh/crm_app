@@ -80,11 +80,16 @@ class TicketsCubit extends Cubit<TicketsState> {
 
   Future<void> getClientTicket(String clientId) async {
     emit(ClientsTicketsLoading());
+    clientTicketsList.clear();
     final result =
         await _getClientTicketsUseCase(GetClientTicketParams(clientId));
     result.fold(
       (error) => emit(ClientsTicketsError(error)),
       (ticket) {
+        if (ticket == null) {
+          emit(ClientsTicketsError('لا يوجد تذاكر لهذا العميل'));
+          return;
+        }
         clientTicketsList.add(ticket);
         emit(ClientsTicketsLoaded());
       },

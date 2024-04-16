@@ -21,7 +21,7 @@ class TicketsRepoImpl implements TicketsRepo {
   }
 
   @override
-  Future<Either<String, TicketModel>> getClientTicket(
+  Future<Either<String, TicketModel?>> getClientTicket(
       GetClientTicketParams params) {
     return _dataSource.getClientTicket(params);
   }
