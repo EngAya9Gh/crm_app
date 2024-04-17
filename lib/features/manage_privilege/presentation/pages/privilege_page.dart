@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 
 import '../../../../core/services/di/di_container.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import '../../data/models/privilege_model.dart';
 
 class PrivilegePage extends StatefulWidget {
@@ -52,10 +51,8 @@ class _PrivilegePageState extends State<PrivilegePage> {
                 return AppTextButton(
                   text: 'حفظ',
                   isLoading: state.updatePrivilegeStatus.isLoading(),
-                  onPressed: isEqual
-                      ? null
-                      : () => _privilegeCubit.updatePrivilege(
-                          context.read<UserProvider>().currentUser.idUser!),
+                  onPressed:
+                      isEqual ? null : () => _privilegeCubit.updatePrivilege(),
                   appButtonStyle: AppButtonStyle.secondary,
                 );
               },
@@ -160,7 +157,6 @@ class PrivilegeCard extends StatelessWidget {
             return;
           }
           privilegeCubit.changePrivilege(
-            context: context,
             privilegeModel: privilegeModel,
           );
           // privilegeCubit.onChangePrivilege(privilegeModel);

@@ -9,10 +9,8 @@ import 'package:crm_smart/features/manage_privilege/domain/use_cases/update_priv
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../core/common/models/nullable.dart';
-import '../../../../view_model/user_vm_provider.dart';
 import '../../data/models/level_model.dart';
 import '../../data/models/privilege_model.dart';
 
@@ -125,27 +123,24 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
   }
 
   changePrivilege({
-    required BuildContext context,
     required PrivilegeModel privilegeModel,
   }) {
     if (state.updatePrivilegeStatus.isLoading()) {
       return;
     }
-    final userProvider = context.read<UserProvider>();
-    userProvider.currentUser.privilegesList = state.privilegesOfLevelTemp.data
-        .map((e) => e.idPrivilegeUser == privilegeModel.idPrivilegeUser
-            ? e.copyWith(isCheck: !e.isCheck!)
-            : e)
-        .toList();
 
     emit(state.copyWith(
       privilegesOfLevelTemp: PageState.loaded(
-        data: userProvider.currentUser.privilegesList,
+        data: state.privilegesOfLevelTemp.data
+            .map((e) => e.idPrivilegeUser == privilegeModel.idPrivilegeUser
+                ? e.copyWith(isCheck: !e.isCheck!)
+                : e)
+            .toList(),
       ),
     ));
   }
 
-  updatePrivilege(String userId) async {
+  updatePrivilege() async {
     final difference = state.privilegesOfLevelTemp.data
         .toSet()
         .difference(state.privilegesOfLevel.data.toSet())
@@ -154,7 +149,6 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     emit(state.copyWith(updatePrivilegeStatus: const BlocStatus.loading()));
 
     final result = await _updatePrivilegeUsecase(UpdatePrivilegeParams(
-      userId,
       isCheckList: difference.map((e) => e.isCheck! ? 1 : 0).toList(),
       privilegeUserIdList:
           difference.map((e) => int.parse(e.idPrivilegeUser!)).toList(),
@@ -185,7 +179,6 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     final privilege = state.userPrivilegesState.data
         .firstWhereOrNull((element) => element.fkPrivilege == privilegeId);
     return privilege?.isCheck! ?? false;
-    // return true;
   }
 
   List<LevelModel> _filterPriorityLevels(
