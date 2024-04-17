@@ -1,4 +1,5 @@
 import 'package:crm_smart/Repository/cache_repo.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
 import 'package:crm_smart/model/participatModel.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -331,12 +332,7 @@ class InvoiceModel extends CacheRepository {
         ? null
         : getAgentDistributorModel(jsondata['agent_distibutor_info']);
     products = getproud(jsondata['products']);
-    datesInstallationClient = List.from(jsondata['dates_install_client'] ?? [])
-        .map((e) => DateInstallationClient.fromJson(e))
-        .toList();
-    filesAttach = List.from(jsondata['files_attach'] ?? [])
-        .map((e) => FileAttach.fromMap(e))
-        .toList();
+
     fileAttach = jsondata['file_attach']?.toString();
     file_reject = jsondata['file_reject']?.toString();
     approveBackDone = jsondata['approve_back_done']?.toString();
@@ -351,6 +347,12 @@ class InvoiceModel extends CacheRepository {
     deleteAttachFileStatus = AttachFileStatus.init;
     invoice_source = jsondata['invoice_source']?.toString();
     dateBackNow = jsondata['date_back_now']?.toString();
+    datesInstallationClient = List.from(jsondata['dates_install_client'] ?? [])
+        .map((e) => DateInstallationClient.fromJson(e))
+        .toList();
+    filesAttach = List.from(jsondata['files_attach'] ?? [])
+        .map((e) => FileAttach.fromMap(e))
+        .toList();
     //  json.decode(
     // jsondata['products']
     // )//  jsondata['products']
@@ -755,21 +757,21 @@ class ProductsInvoice extends CacheRepository {
 
   //region Json converters
   ProductsInvoice.fromJson(Map<String, dynamic> json) {
-    idInvoiceProduct = json['id_invoice_product'];
-    fkIdInvoice = json['fk_id_invoice'];
-    fkProduct = json['fk_product'];
-    amount = json['amount'];
-    price = json['price'];
-    taxtotal = json['taxtotal'];
+    idInvoiceProduct = json['id_invoice_product'].toString();
+    fkIdInvoice = json['fk_id_invoice'].toString();
+    fkProduct = json['fk_product'].toString();
+    amount = json['amount'].toString();
+    price = json['price'].toString();
+    taxtotal = json['taxtotal'].toString();
     ;
-    rateAdmin = json['rate_admin'];
-    rateUser = json['rateUser'];
-    idProduct = json['id_product'];
-    nameProduct = json['nameProduct'];
-    priceProduct = json['priceProduct'];
-    type = json['type'];
-    fkCountry = json['fk_country'];
-    fkConfig = json['fk_config'];
+    rateAdmin = json['rate_admin'].toString();
+    rateUser = json['rateUser'].toString();
+    idProduct = json['id_product'].toString();
+    nameProduct = json['nameProduct'].toString();
+    priceProduct = json['priceProduct'].toString();
+    type = HelperFunctions.JsonStringNullHandler(json['type']);
+    fkCountry = json['fk_country'].toString();
+    fkConfig = json['fk_config'].toString();
   }
 
   Map<String, dynamic> toJson() {
@@ -820,8 +822,9 @@ class FileAttach {
 
   factory FileAttach.fromMap(Map<String, dynamic> map) {
     return FileAttach(
-      fileAttach: map['file_attach_invoice'] as String,
-      id: map['id'] as String,
+      fileAttach:
+          HelperFunctions.JsonStringNullHandler(map['file_attach_invoice']),
+      id: HelperFunctions.JsonStringNullHandler(map['id']),
     );
   }
 
@@ -880,8 +883,8 @@ class DateInstallationClient {
       dateClientVisit: DateTime.tryParse(map['date_client_visit'] ?? ''),
       fkUser: map['fk_user']?.toString(),
       isDone: map['is_done']?.toString(),
-      fkClient: map['fk_client'] ?? '',
-      fkInvoice: map['fk_invoice'] ?? '',
+      fkClient: HelperFunctions.JsonStringNullHandler(map['fk_client']),
+      fkInvoice: HelperFunctions.JsonStringNullHandler(map['fk_invoice']),
       typeDate: map['type_date'] == InstallationTypeEnum.field.name
           ? InstallationTypeEnum.field
           : InstallationTypeEnum.online,

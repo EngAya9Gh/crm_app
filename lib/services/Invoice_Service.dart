@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -217,16 +218,24 @@ class Invoice_Service {
 
   Future<InvoiceModel> setDateDone(
       Map<String, dynamic> body, String id_invoice) async {
-    final ApiServices apiServices = getIt<ApiServices>();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    final response = await apiServices.post(
-      endPoint: "${EndPoints.invoice.setDateInstall}$id_invoice",
-      data: body,
-    );
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.post(
+        endPoint: "${EndPoints.invoice.setDateInstall}$id_invoice",
+        data: body,
+      );
 
-    final data = apiDataHandler(response);
+      final data = apiDataHandler(response);
 
-    return InvoiceModel.fromJson(data); //=="done"? true:false;
+      return InvoiceModel.fromJson(data); //=="done"? true:false;
+    } on BaseAppException catch (e) {
+      print("error is => ${e.message}");
+      rethrow;
+    } catch (e) {
+      print("error is => $e");
+      rethrow;
+    }
   }
 
   Future<InvoiceModel> set_ready_install(

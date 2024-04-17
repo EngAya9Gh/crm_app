@@ -97,7 +97,7 @@ class AgentDistributorModel {
 
   factory AgentDistributorModel.fromJson(Map<String, dynamic> json) {
     return AgentDistributorModel(
-      idAgent: json["id_agent"],
+      idAgent: json["id_agent"].toString(),
       nameAgent: json["name_agent"],
       typeAgent: json["type_agent"].toString(),
       emailAgent: json["email_egent"],
