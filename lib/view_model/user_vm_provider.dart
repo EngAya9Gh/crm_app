@@ -223,9 +223,6 @@ class UserProvider extends ChangeNotifier {
       getIt<PrivilegeCubit>()
           .setUserPrivileges(privilegeList: currentUser.privilegesList);
 
-      // await getIt<PrivilegeCubit>()
-      //     .getUserPrivileges(currentUser.typeLevel.toString());
-
       notifyListeners();
       return UserModel.fromJson(data);
     } on BaseAppException catch (e) {

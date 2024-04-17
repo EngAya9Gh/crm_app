@@ -31,7 +31,7 @@ class UserModel {
   String? img_thumbnail = '';
   String? path = '';
   List<UserRegion>? maincitylist_user;
-  final List<PrivilegeModel> privilegesList;
+  List<PrivilegeModel> privilegesList;
 
   // List<> maincitylist_user;
 
