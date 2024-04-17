@@ -1,3 +1,4 @@
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,22 +15,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
+    return ConnectivityAppWrapper(
+        app: ScreenUtilInit(
       useInheritedMediaQuery: true,
       child: Builder(builder: (context) {
-        return GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: MaterialApp(
-            navigatorKey: AppNavigator.navigatorKey,
-            debugShowCheckedModeBanner: false,
-            title: 'Smart CRM',
-            theme: AppTheme.light(context),
-            home: SplashScreen(),
-          ),
+        return MaterialApp(
+          navigatorKey: AppNavigator.navigatorKey,
+          debugShowCheckedModeBanner: false,
+          title: 'Smart CRM',
+          theme: AppTheme.light(context),
+          home: SplashScreen(),
         );
       }),
-    );
+    ));
   }
 }

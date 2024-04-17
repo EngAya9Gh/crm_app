@@ -1,3 +1,4 @@
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -36,15 +37,24 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(Assets.imagesLogoCrmLong),
-            20.verticalSpace,
-            AppLoader(),
-          ],
+      body: ConnectivityWidgetWrapper(
+        disableInteraction: true,
+        message: 'لا يوجد اتصال بالإنترنت',
+        child: GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(Assets.imagesLogoCrmLong),
+                20.verticalSpace,
+                AppLoader(),
+              ],
+            ),
+          ),
         ),
       ),
     );
