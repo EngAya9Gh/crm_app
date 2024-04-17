@@ -31,6 +31,7 @@ class UserModel {
   String? img_thumbnail = '';
   String? path = '';
   List<UserRegion>? maincitylist_user;
+  final List<PrivilegeModel> privilegesList;
 
   // List<> maincitylist_user;
 
@@ -63,6 +64,7 @@ class UserModel {
     this.img_thumbnail,
     this.path,
     this.maincitylist_user,
+    this.privilegesList = const [],
     // this.privilgelist,
   });
 
@@ -103,7 +105,6 @@ class UserModel {
     return UserModel(
       idUser: jsonData['id_user'],
       nameUser: jsonData['nameUser'],
-
       email: jsonData['email'],
       mobile: jsonData['mobile'],
       codeVerfiy: jsonData!['code_verfiy'],
@@ -134,7 +135,9 @@ class UserModel {
       maincitylist_user: List.of(jsonData['maincitylist_user'] ?? [])
           .map((e) => UserRegion.fromMap(e))
           .toList(),
-      // privilgelist: getproud(jsonData['privilgelist'])
+      privilegesList: List.of(jsonData['privilgelist'] ?? [])
+          .map((e) => PrivilegeModel.fromJson(e))
+          .toList(),
     );
   }
 
@@ -164,6 +167,10 @@ class UserModel {
     _data['img_image'] = img_image;
     _data['img_thumbnail'] = img_thumbnail;
     _data['path'] = path;
+    _data['maincitylist_user'] =
+        maincitylist_user?.map((e) => e.toMap()).toList();
+    _data['privilgelist'] = privilegesList.map((e) => e.toJson()).toList();
+
     return _data;
   }
 

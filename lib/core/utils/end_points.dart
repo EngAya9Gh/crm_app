@@ -216,6 +216,9 @@ class _Invoice {
 
   final String getClientSupportFiles = 'getFilesInvoices';
   final String crudClientSupportFiles = 'InvoiceFiles';
+
+  //client/invoice/setdateinstall.php?id_invoice=
+  final String setDateInstall = 'setDateInstall/';
 }
 
 class _Tickets {

@@ -118,6 +118,12 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     );
   }
 
+  setUserPrivileges({required List<PrivilegeModel> privilegeList}) {
+    emit(state.copyWith(
+      userPrivilegesState: PageState.loaded(data: privilegeList),
+    ));
+  }
+
   Future<bool?> getUserPrivileges(final String levelId) async {
     emit(state.copyWith(userPrivilegesState: const PageState.loading()));
 

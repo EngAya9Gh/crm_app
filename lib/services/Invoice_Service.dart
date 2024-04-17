@@ -1,10 +1,14 @@
 import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/foundation.dart';
 
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../model/attachement_invoice_files.dart';
 import '../model/participatModel.dart';
@@ -186,11 +190,6 @@ class Invoice_Service {
     required String typeSchedule,
     required String fk_user,
   }) async {
-    print(
-        "URL::${EndPoints.baseUrls.urlLaravel}  + rescheduleOrCancelVisitClient/$scheduleId");
-    print(EndPoints.baseUrls.urlLaravel +
-        "rescheduleOrCancelVisitClient/" +
-        scheduleId);
     var result = await Api().post(
         url: EndPoints.baseUrls.urlLaravel +
             "rescheduleOrCancelVisitClient/" +
@@ -217,14 +216,26 @@ class Invoice_Service {
     return result;
   }
 
-  Future<InvoiceModel> setdatedone(
+  Future<InvoiceModel> setDateDone(
       Map<String, dynamic> body, String id_invoice) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/invoice/setdateinstall.php?id_invoice=$id_invoice",
-        body: body);
-    //client/setApproveClient.php
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.post(
+        endPoint: "${EndPoints.invoice.setDateInstall}$id_invoice",
+        data: body,
+      );
+
+      final data = apiDataHandler(response);
+
+      return InvoiceModel.fromJson(data); //=="done"? true:false;
+    } on BaseAppException catch (e) {
+      print("error is => ${e.message}");
+      rethrow;
+    } catch (e) {
+      print("error is => $e");
+      rethrow;
+    }
   }
 
   Future<InvoiceModel> set_ready_install(

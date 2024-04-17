@@ -14,8 +14,8 @@ class ParticipateModel {
   late final String numberbank_participate;
 
   ParticipateModel.fromJson(Map<String, dynamic> json) {
-    id_participate = json['id_participate'];
-    name_participate = json['name_participate'];
+    id_participate = json['id_participate'].toString();
+    name_participate = json['name_participate'].toString();
     mobile_participate = json['mobile_participate'];
     namebank_participate = json['namebank_participate'];
     numberbank_participate = json['numberbank_participate'];
@@ -32,6 +32,9 @@ class ParticipateModel {
   }
 
   bool getFilterParticipate(String query) {
-    return name_participate.toLowerCase().toString().contains(query.toLowerCase());
+    return name_participate
+        .toLowerCase()
+        .toString()
+        .contains(query.toLowerCase());
   }
 }
