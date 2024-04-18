@@ -22,10 +22,8 @@ class UpdatePrivilegeUsecase
 class UpdatePrivilegeParams {
   final List<int> privilegeUserIdList;
   final List<int> isCheckList;
-  final String userId;
 
-  UpdatePrivilegeParams(
-    this.userId, {
+  UpdatePrivilegeParams({
     required this.isCheckList,
     required this.privilegeUserIdList,
   });
@@ -41,7 +39,6 @@ class UpdatePrivilegeParams {
     return {
       ...privilegeUserIdMap,
       ...isCheckMap,
-      'fk_user': userId,
     };
   }
 }
