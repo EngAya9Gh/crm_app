@@ -151,7 +151,6 @@ class UserProvider extends ChangeNotifier {
     ustemp.maincitylist_user = mainCityList;
     allUsers[index] = ustemp;
     updateUserList(ustemp);
-    // getcurrentuser();
     getCurrentUser();
     allUsers[index].path = "";
     listFilteredUser = List.from(allUsers);

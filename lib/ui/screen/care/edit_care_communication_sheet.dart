@@ -21,7 +21,7 @@ class EditCareCommunicationSheet extends StatefulWidget {
 
 class _EditCareCommunicationSheetState
     extends State<EditCareCommunicationSheet> {
-  late final CommunicationModel communicationModel;
+  late CommunicationModel communicationModel;
   double rate = 0.0;
   bool typepayController = false;
   bool numberwrong = false;
