@@ -460,13 +460,17 @@ class Invoice_Service {
     return result == "done" ? true : false;
   }
 
-  Future<String> deleteInvoiceById(Map<String, dynamic> body) async {
+  Future<String> deleteInvoiceById(String idInvoice) async {
     try {
-      String res = await Api().post(
-          url: EndPoints.baseUrls.url + 'client/invoice/deleteinvoice.php',
-          body: body);
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.post(
+        endPoint: "${EndPoints.invoice.deleteInvoice}${idInvoice}",
+      );
 
-      return res;
+      final data = apiDataHandler(response);
+
+      return data;
     } catch (e) {
       return "res";
     }

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as myui;
 
 import 'package:collection/collection.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -20,7 +21,6 @@ import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart' as rt;
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:open_file/open_file.dart';
@@ -464,7 +464,7 @@ class _InvoiceViewState extends State<InvoiceView> {
                                   //width: MediaQuery.of(context).size.width * 0.2,
                                   text: 'حذف الفاتورة',
                                   onTap: () async {
-                                    bool result = await showDialog(
+                                    bool? result = await showDialog(
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
@@ -472,75 +472,18 @@ class _InvoiceViewState extends State<InvoiceView> {
                                           content: Text('هل تريد حذف الفاتورة'),
                                           actions: <Widget>[
                                             new TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(
-                                                        false); // dismisses only the dialog and returns false
-                                              },
+                                              onPressed: () =>
+                                                  AppNavigator.pop(),
                                               child: Text('لا'),
                                             ),
                                             TextButton(
                                               onPressed: () async {
-                                                Navigator.of(context,
-                                                        rootNavigator: true)
-                                                    .pop(true);
-                                                // dismisses only the dialog and returns true
-                                                // if(itemProd.idInvoice!=null)
-
-                                                DateTime _currentDate =
-                                                    DateTime.now();
-                                                final rt.DateFormat formatter =
-                                                    rt.DateFormat('yyyy-MM-dd');
-                                                // Provider.of<invoice_vm>(context, listen: false)
-                                                //     .addlistinvoicedeleted(DeletedinvoiceModel(
-                                                //   fkClient: invoice.fkIdClient.toString(),
-                                                //   fkUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                //       .currentUser
-                                                //       .idUser,
-                                                //   //cuerrent user
-                                                //   dateDelete: formatter.format(_currentDate),
-                                                //   //city:itemProd.
-                                                //   nameClient: invoice.nameClient.toString(),
-                                                //   nameEnterprise: clientmodel.nameEnterprise,
-                                                //   mobileclient: clientmodel.mobile,
-                                                //   //mobileuser:widget.itemClient. ,
-                                                //   // nameUser: widget.itemProd
-                                                //   //     .nameUser, //موظف المبيعات
-                                                //   nameUser: Provider.of<user_vm_provider>(context, listen: false)
-                                                //       .currentUser
-                                                //       .nameUser, //name user that doing delete
-                                                // ));
+                                                AppNavigator.pop();
                                                 Provider.of<invoice_vm>(context,
                                                         listen: false)
-                                                    .delete_invoice({
-                                                  "id_invoice": invoice
-                                                      .idInvoice
-                                                      .toString(),
-                                                  'fk_regoin': invoice.fk_regoin
-                                                      .toString(),
-                                                  'fkcountry': invoice
-                                                      .fk_country
-                                                      .toString(),
-                                                  "fkUserdo":
-                                                      Provider.of<UserProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .currentUser
-                                                          .idUser
-                                                          .toString(),
-                                                  "name_enterprise": clientmodel
-                                                      ?.nameEnterprise
-                                                      .toString(),
-                                                  "nameUserdo":
-                                                      Provider.of<UserProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .currentUser
-                                                          .nameUser
-                                                          .toString(),
-                                                }, invoice.idInvoice);
-                                                Navigator.pop(context);
+                                                    .deleteInvoice(
+                                                        invoice.idInvoice!);
+                                                AppNavigator.pop();
                                               },
                                               child: Text('نعم'),
                                             ),
