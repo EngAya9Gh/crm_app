@@ -53,7 +53,7 @@ class comment_vm extends ChangeNotifier {
   }
 
   Future<String> addComment_vm(
-      Map<String, dynamic?> body, String? imageurl) async {
+      Map<String, dynamic> body, String? imageurl) async {
     try {
       isloadadd = true;
       final DateFormat formatter = DateFormat('yyyy-MM-dd h-m-s');

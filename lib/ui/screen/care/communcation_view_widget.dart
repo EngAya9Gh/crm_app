@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../function_global.dart';
 import '../../../model/communication_modle.dart';
 import '../../../model/configmodel.dart';
-import '../../../provider/config_vm.dart';
 import '../../../view_model/communication_vm.dart';
-import '../../../view_model/user_vm_provider.dart';
 import '../../widgets/custom_widget/card_expansion.dart';
 import '../../widgets/custom_widget/card_row.dart';
 import 'edit_care_communication_sheet.dart';
@@ -342,7 +339,6 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                             MaterialStateProperty.all(
                                                 kMainColor)),
                                     onPressed: () async {
-                                      // Provider.of<communication_vm>(context,listen: false).setload(true);
                                       Provider.of<communication_vm>(context,
                                               listen: false)
                                           .isloadval(true);
@@ -351,34 +347,16 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                           'دوري') {
                                         Provider.of<communication_vm>(context,
                                                 listen: false)
-                                            .addcommmuncation(
+                                            .addCommunication(
                                                 {
-                                              //'fk_client':widget.com.fkClient.toString(),
-                                              'fk_user':
-                                                  Provider.of<UserProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .currentUser
-                                                      .idUser
-                                                      .toString(),
-                                              'date_communication':
-                                                  DateTime.now().toString(),
+                                              'rate': rate.toString(),
                                               'result': '0',
-                                              //
-                                              'nameUser':
-                                                  Provider.of<UserProvider>(
-                                                          context,
-                                                          listen: false)
-                                                      .currentUser
-                                                      .nameUser
-                                                      .toString(),
                                               'type_install': widget
                                                   .element.type_install
                                                   .toString(),
                                               'id_invoice': widget
                                                   .element.id_invoice
                                                   .toString(),
-                                              'rate': rate.toString(),
                                             },
                                                 widget.element.idCommunication,
                                                 widget.element.type_install ==
@@ -389,67 +367,33 @@ class _communcation_view_widgetState extends State<communcation_view_widget> {
                                                         .toString())).then(
                                                 (value) => clear(value));
                                       } else {
-                                        // Provider.of<communication_vm>(context, listen: false).isloadval(true);
-                                        await Provider.of<config_vm>(context,
-                                                listen: false)
-                                            .getAllConfig();
-                                        List<ConfigModel> _listconfg =
-                                            Provider.of<config_vm>(context,
-                                                    listen: false)
-                                                .listofconfig;
-
-                                        peroid = _listconfg.firstWhere(
-                                            (element) =>
-                                                element.name_config ==
-                                                'period_commincation3');
-
-                                        DateTime datanext = DateTime.now();
-
-                                        int peroidtime =
-                                            int.parse(peroid.value_config);
-                                        datanext = Jiffy()
-                                            .add(days: peroidtime)
-                                            .dateTime;
-
-                                        // datanext.add(Duration(days: peroidtime));
-
                                         if (widget.element.dateCommunication ==
                                             null) {
-                                          //datanext.add( Duration(days: day+ pp));
-                                          // int peroidtime= int.parse(peroid.value_config);
-                                          // datanext=Jiffy().add(days: peroidtime).dateTime;
-                                          //
-                                          // datanext.add(Duration(days: peroidtime));
-                                          //
                                           if (isSuspend.toString() == 'true')
                                             rate = 0.0;
 
                                           await Provider.of<communication_vm>(
                                                   context,
                                                   listen: false)
-                                              .updatecarecommuncation({
-                                            'type': 'دوري',
-                                            'fk_user':
-                                                Provider.of<UserProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .currentUser
-                                                    .idUser
-                                                    .toString(),
-                                            'date_communication':
-                                                DateTime.now().toString(),
-                                            'result': typepayController
-                                                .toString(), //use or not using
-                                            'rate': rate.toString(),
-                                            'number_wrong':
-                                                numberwrong.toString(),
-                                            'client_repeat': repeat.toString(),
-                                            'date_next': datanext.toString(),
-                                            'isRecommendation':
-                                                isRecommendation.toString(),
-                                            'is_visit': isVisit.toString(),
-                                            'is_suspend': isSuspend.toString(),
-                                          }, widget.element.idCommunication);
+                                              .updateCareCommunication(
+                                            body: {
+                                              'rate': rate.toString(),
+                                              'number_wrong':
+                                                  numberwrong.toString(),
+                                              'client_repeat':
+                                                  repeat.toString(),
+                                              'type': 'دوري',
+                                              'result': typepayController
+                                                  .toString(), //use or not using
+                                              'isRecommendation':
+                                                  isRecommendation.toString(),
+                                              'is_visit': isVisit.toString(),
+                                              'is_suspend':
+                                                  isSuspend.toString(),
+                                            },
+                                            id_communication:
+                                                widget.element.idCommunication,
+                                          );
                                           // clear(val);
                                         }
                                       }

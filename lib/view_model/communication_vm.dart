@@ -1,10 +1,14 @@
 import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
+import 'package:crm_smart/core/errors/base_app_exception.dart';
+import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
 
@@ -506,7 +510,7 @@ class communication_vm extends ChangeNotifier {
 
   bool isload = false;
 
-  void setload(bool val) {
+  void setIsLoad(bool val) {
     isload = val;
     notifyListeners();
   }
@@ -575,24 +579,29 @@ class communication_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updatecarecommuncation(
-      Map<String, dynamic?> body, String id_communication,
-      {VoidCallback? onSuccess}) async {
+  Future<void> updateCareCommunication({
+    required Map<String, dynamic> body,
+    required String id_communication,
+    VoidCallback? onSuccess,
+  }) async {
     try {
-      isload = true;
-      notifyListeners();
-      var result = await Api().post(
-          url: EndPoints.baseUrls.url +
-              'care/updateCommunication.php?id_communication=$id_communication',
-          body: body);
-      //CommunicationModel data = CommunicationModel.fromJson(result[0]);
+      setIsLoad(true);
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.post(
+        endPoint: EndPoints.invoice.updateCommunication,
+        queryParameters: {'id_communication': id_communication},
+        data: body,
+      );
+
+      final result = apiDataHandler(response);
+
       if (listCommunicationrepeat.isNotEmpty) {
         int index = listCommunicationrepeat.indexWhere(
             (element) => element.idCommunication == id_communication);
         if (index != -1) {
           listCommunicationrepeat.removeAt(index);
         }
-        // listCommunicationrepeat[index] = data;
       }
 
       if (listCommunicationrepeatTemp.isNotEmpty) {
@@ -601,152 +610,171 @@ class communication_vm extends ChangeNotifier {
         if (index != -1) {
           listCommunicationrepeatTemp.removeAt(index);
         }
-        // listCommunicationrepeat[index] = data;
       }
       isload = false;
-      final communication = CommunicationModel.fromJson(result[0]);
+      final communication = CommunicationModel.fromJson(result);
       var list = careClientState['دوري'] ?? [];
       list = list
           .map((e) => communication.idCommunication == e.idCommunication
               ? communication
               : e)
           .toList();
+      print("communication => ${communication.typeCommuncation}");
       careClientState['دوري'] = list;
       notifyListeners();
       onSuccess?.call();
     } catch (e) {
+      print("error => $e");
       isload = false;
       notifyListeners();
     }
   }
 
-  //addcommuncation
-  Future<CommunicationModel> addcommmuncation(
-      Map<String, dynamic?> body, String id_communication, int type,
-      {VoidCallback? onSuccess}) async {
-    isload = true;
-    notifyListeners();
-    var result = await Api().post(
-        url: EndPoints.baseUrls.url +
-            'care/updateCommunication.php?id_communication=$id_communication',
-        body: body);
-    CommunicationModel data = CommunicationModel.fromJson(result[0]);
-    if (listCommunication.isNotEmpty) {
-      int i = listCommunication
-          .indexWhere((element) => element.idCommunication == id_communication);
-      if (i != -1) {
-        listCommunication[i] = data;
+  Future<CommunicationModel?> addCommunication(
+    Map<String, dynamic> body,
+    String id_communication,
+    int type, {
+    VoidCallback? onSuccess,
+  }) async {
+    setIsLoad(true);
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.post(
+        endPoint: EndPoints.invoice.updateCommunication,
+        queryParameters: {'id_communication': id_communication},
+        data: body,
+      );
+
+      final result = apiDataHandler(response);
+
+      CommunicationModel data = CommunicationModel.fromJson(result);
+      if (listCommunication.isNotEmpty) {
+        int i = listCommunication.indexWhere(
+            (element) => element.idCommunication == id_communication);
+        if (i != -1) {
+          listCommunication[i] = data;
+        }
       }
+
+      int index;
+      String value = data.typeCommuncation.toString();
+      switch (value) {
+        case 'تركيب':
+          if (type == 1) {
+            if (listCommunicationInstall_temp.isNotEmpty) {
+              index = listCommunicationInstall_temp.indexWhere(
+                  (element) => element.idCommunication == id_communication);
+              if (index != -1) listCommunicationInstall_temp[index] = data;
+            }
+
+            if (listCommunicationInstall.isNotEmpty) {
+              index = listCommunicationInstall.indexWhere(
+                  (element) => element.idCommunication == id_communication);
+              if (index != -1) listCommunicationInstall.removeAt(index);
+            }
+          }
+          if (type == 2) {
+            if (listCommunicationInstall2_temp.isNotEmpty) {
+              index = listCommunicationInstall2_temp.indexWhere(
+                  (element) => element.idCommunication == id_communication);
+              if (index != -1) listCommunicationInstall2_temp[index] = data;
+            }
+
+            if (listCommunicationInstall.isNotEmpty) {
+              index = listCommunicationInstall.indexWhere(
+                  (element) => element.idCommunication == id_communication);
+              if (index != -1) listCommunicationInstall.removeAt(index);
+            }
+            // listCommunicationInstall[index]= data;
+          }
+          var list = careClientState['تركيب'] ?? [];
+          list = list
+              .map((e) => data.idCommunication == e.idCommunication ? data : e)
+              .toList();
+          careClientState['تركيب'] = list;
+          // getCommunicationInstall(type);
+          break;
+        case 'ترحيب':
+          if (listCommunicationWelcome_temp.isNotEmpty) {
+            index = listCommunicationWelcome_temp.indexWhere(
+                (element) => element.idCommunication == id_communication);
+            if (index != -1) listCommunicationWelcome_temp[index] = data;
+          }
+
+          if (listCommunicationWelcome.isNotEmpty) {
+            index = listCommunicationWelcome.indexWhere(
+                (element) => element.idCommunication == id_communication);
+            if (index != -1) listCommunicationWelcome.removeAt(index);
+          }
+
+          // listCommunicationWelcome[index] = data;
+          // getCommunicationWelcome();
+
+          var list = careClientState['ترحيب'] ?? [];
+          list = list
+              .map((e) => data.idCommunication == e.idCommunication ? data : e)
+              .toList();
+          careClientState['ترحيب'] = list;
+          break;
+        case 'دوري':
+          getCommunicationclientrepeat(data.fkClient);
+          if (listCommunicationrepeat.isNotEmpty) {
+            index = listCommunicationrepeat.indexWhere(
+                (element) => element.idCommunication == id_communication);
+            if (index != -1) listCommunicationrepeat.removeAt(index);
+
+            // listCommunicationrepeat[index] = data;
+          }
+          if (listCommunicationrepeatTemp.isNotEmpty) {
+            index = listCommunicationrepeatTemp.indexWhere(
+                (element) => element.idCommunication == id_communication);
+            if (index != -1) listCommunicationrepeatTemp.removeAt(index);
+
+            // listCommunicationrepeat[index] = data;
+          }
+
+          var list = careClientState['دوري'] ?? [];
+          list = list
+              .map((e) => data.idCommunication == e.idCommunication ? data : e)
+              .toList();
+          careClientState['دوري'] = list;
+          // index= listCommunicationClient.indexWhere(
+          //         (element) =>
+          // element.idCommunication==id_communication);
+          // listCommunicationClient[index]=data;
+          // listCommunicationClient.insert(0, data);
+          //notifyListeners();
+          valuebutton = true;
+          notifyListeners();
+          break;
+      }
+      isload = false;
+      notifyListeners();
+      onSuccess?.call();
+      // if(listCommunication[index].typeCommuncation=='تركيب')
+      // getCommunicationInstall();
+      //
+      // if(listCommunication[index].typeCommuncation=='ترحيب')
+      //   getCommunicationWelcome();
+      //
+      // if(listCommunication[index].typeCommuncation=='دوري'){
+      //  index= listCommunicationClient.indexWhere((element) =>
+      // element.idCommunication==id_communication);
+      // listCommunicationClient[index]=data;
+      // notifyListeners();
+      // }
+      return data;
+    } on BaseAppException catch (e) {
+      print("error => ${e.message}");
+      isload = false;
+      notifyListeners();
+    } catch (e) {
+      print("error => $e");
+      isload = false;
+      notifyListeners();
     }
-
-    int index;
-    String value = data.typeCommuncation.toString();
-    switch (value) {
-      case 'تركيب':
-        if (type == 1) {
-          if (listCommunicationInstall_temp.isNotEmpty) {
-            index = listCommunicationInstall_temp.indexWhere(
-                (element) => element.idCommunication == id_communication);
-            if (index != -1) listCommunicationInstall_temp[index] = data;
-          }
-
-          if (listCommunicationInstall.isNotEmpty) {
-            index = listCommunicationInstall.indexWhere(
-                (element) => element.idCommunication == id_communication);
-            if (index != -1) listCommunicationInstall.removeAt(index);
-          }
-        }
-        if (type == 2) {
-          if (listCommunicationInstall2_temp.isNotEmpty) {
-            index = listCommunicationInstall2_temp.indexWhere(
-                (element) => element.idCommunication == id_communication);
-            if (index != -1) listCommunicationInstall2_temp[index] = data;
-          }
-
-          if (listCommunicationInstall.isNotEmpty) {
-            index = listCommunicationInstall.indexWhere(
-                (element) => element.idCommunication == id_communication);
-            if (index != -1) listCommunicationInstall.removeAt(index);
-          }
-          // listCommunicationInstall[index]= data;
-        }
-        var list = careClientState['تركيب'] ?? [];
-        list = list
-            .map((e) => data.idCommunication == e.idCommunication ? data : e)
-            .toList();
-        careClientState['تركيب'] = list;
-        // getCommunicationInstall(type);
-        break;
-      case 'ترحيب':
-        if (listCommunicationWelcome_temp.isNotEmpty) {
-          index = listCommunicationWelcome_temp.indexWhere(
-              (element) => element.idCommunication == id_communication);
-          if (index != -1) listCommunicationWelcome_temp[index] = data;
-        }
-
-        if (listCommunicationWelcome.isNotEmpty) {
-          index = listCommunicationWelcome.indexWhere(
-              (element) => element.idCommunication == id_communication);
-          if (index != -1) listCommunicationWelcome.removeAt(index);
-        }
-
-        // listCommunicationWelcome[index] = data;
-        // getCommunicationWelcome();
-
-        var list = careClientState['ترحيب'] ?? [];
-        list = list
-            .map((e) => data.idCommunication == e.idCommunication ? data : e)
-            .toList();
-        careClientState['ترحيب'] = list;
-        break;
-      case 'دوري':
-        getCommunicationclientrepeat(data.fkClient);
-        if (listCommunicationrepeat.isNotEmpty) {
-          index = listCommunicationrepeat.indexWhere(
-              (element) => element.idCommunication == id_communication);
-          if (index != -1) listCommunicationrepeat.removeAt(index);
-
-          // listCommunicationrepeat[index] = data;
-        }
-        if (listCommunicationrepeatTemp.isNotEmpty) {
-          index = listCommunicationrepeatTemp.indexWhere(
-              (element) => element.idCommunication == id_communication);
-          if (index != -1) listCommunicationrepeatTemp.removeAt(index);
-
-          // listCommunicationrepeat[index] = data;
-        }
-
-        var list = careClientState['دوري'] ?? [];
-        list = list
-            .map((e) => data.idCommunication == e.idCommunication ? data : e)
-            .toList();
-        careClientState['دوري'] = list;
-        // index= listCommunicationClient.indexWhere(
-        //         (element) =>
-        // element.idCommunication==id_communication);
-        // listCommunicationClient[index]=data;
-        // listCommunicationClient.insert(0, data);
-        //notifyListeners();
-        valuebutton = true;
-        notifyListeners();
-        break;
-    }
-    isload = false;
-    notifyListeners();
-    onSuccess?.call();
-    // if(listCommunication[index].typeCommuncation=='تركيب')
-    // getCommunicationInstall();
-    //
-    // if(listCommunication[index].typeCommuncation=='ترحيب')
-    //   getCommunicationWelcome();
-    //
-    // if(listCommunication[index].typeCommuncation=='دوري'){
-    //  index= listCommunicationClient.indexWhere((element) =>
-    // element.idCommunication==id_communication);
-    // listCommunicationClient[index]=data;
-    // notifyListeners();
-    // }
-    return data;
+    return null;
   }
 
   CancelableOperation<dynamic>? _cancelableWelcomeFuture;

@@ -219,6 +219,7 @@ class _Invoice {
 
   //client/invoice/setdateinstall.php?id_invoice=
   final String setDateInstall = 'setDateInstall/';
+  final String updateCommunication = 'updateCommunication';
 }
 
 class _Tickets {

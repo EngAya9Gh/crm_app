@@ -9,9 +9,7 @@ import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
-import 'package:crm_smart/model/configmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
-import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
@@ -24,7 +22,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -822,50 +819,6 @@ class _SupportAddState extends State<SupportAdd> {
                                                                             listen:
                                                                                 false)
                                                                         .setisload();
-                                                                    await Provider.of<config_vm>(
-                                                                            context,
-                                                                            listen:
-                                                                                false)
-                                                                        .getAllConfig();
-                                                                    List<ConfigModel>
-                                                                        _listconfg =
-                                                                        Provider.of<config_vm>(context,
-                                                                                listen: false)
-                                                                            .listofconfig;
-                                                                    ConfigModel
-                                                                        peroid =
-                                                                        _listconfg.firstWhere((element) =>
-                                                                            element.name_config ==
-                                                                            'period_commincation3'); //تواصل دوري
-                                                                    DateTime
-                                                                        datanext =
-                                                                        DateTime
-                                                                            .now();
-                                                                    int peroidtime =
-                                                                        int.parse(
-                                                                            peroid.value_config);
-                                                                    datanext = Jiffy()
-                                                                        .add(
-                                                                            days:
-                                                                                peroidtime)
-                                                                        .dateTime;
-
-                                                                    peroid = _listconfg.firstWhere((element) =>
-                                                                        element
-                                                                            .name_config ==
-                                                                        'period_commincation2'); //تواصل دوري
-                                                                    DateTime
-                                                                        datanext_install =
-                                                                        DateTime
-                                                                            .now();
-                                                                    peroidtime =
-                                                                        int.parse(
-                                                                            peroid.value_config);
-                                                                    datanext_install = Jiffy()
-                                                                        .add(
-                                                                            days:
-                                                                                peroidtime)
-                                                                        .dateTime;
 
                                                                     await Provider.of<invoice_vm>(
                                                                             context,
@@ -875,31 +828,6 @@ class _SupportAddState extends State<SupportAdd> {
                                                                       'clientusername':
                                                                           _textnameuserclient
                                                                               .text,
-                                                                      /*old api body*/
-                                                                      // 'datanext':
-                                                                      //     datanext.toString(),
-                                                                      // 'datanext_install':
-                                                                      //     datanext_install.toString(),
-                                                                      // 'dateinstall_done':
-                                                                      //     DateTime.now().toString(),
-                                                                      // 'userinstall': Provider.of<UserProvider>(context, listen: false)
-                                                                      //     .currentUser
-                                                                      //     .idUser
-                                                                      //     .toString(),
-                                                                      // 'isdoneinstall':
-                                                                      //     '1',
-                                                                      // 'fkIdClient':
-                                                                      //     _invoice!.fkIdClient,
-                                                                      // 'nameuserinstall': Provider.of<UserProvider>(context, listen: false)
-                                                                      //     .currentUser
-                                                                      //     .nameUser
-                                                                      //     .toString(),
-                                                                      // 'name_enterprise':
-                                                                      //     _invoice!.name_enterprise,
-                                                                      // 'fkcountry':
-                                                                      //     _invoice!.fk_country,
-                                                                      // 'fk_regoin':
-                                                                      //     _invoice!.fk_regoin
                                                                     }, _invoice!.idInvoice).then((value) {
                                                                       if (value) {
                                                                         clear();
