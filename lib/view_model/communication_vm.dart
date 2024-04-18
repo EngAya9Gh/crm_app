@@ -619,7 +619,6 @@ class communication_vm extends ChangeNotifier {
               ? communication
               : e)
           .toList();
-      print("communication => ${communication.typeCommuncation}");
       careClientState['دوري'] = list;
       notifyListeners();
       onSuccess?.call();
