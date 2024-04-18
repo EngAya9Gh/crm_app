@@ -10,6 +10,8 @@ import 'package:crm_smart/core/common/models/profile_invoice_model.dart' as _i7;
 import 'package:crm_smart/core/common/widgets/profile_comments_model.dart'
     as _i8;
 import 'package:crm_smart/core/services/api/api_services.dart' as _i10;
+import 'package:crm_smart/core/services/cache_services/cache_services.dart'
+    as _i12;
 import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart'
     as _i5;
 import 'package:crm_smart/features/manage_agents_and_distributors/domain/repositories/agents_distributors_profile_repo.dart'
@@ -17,8 +19,8 @@ import 'package:crm_smart/features/manage_agents_and_distributors/domain/reposit
 import 'package:crm_smart/model/agent_distributor_model.dart' as _i6;
 import 'package:crm_smart/model/invoiceModel.dart' as _i9;
 import 'package:dartz/dartz.dart' as _i2;
-import 'package:http/http.dart' as _i13;
-import 'package:mockito/annotations.dart' as _i12;
+import 'package:http/http.dart' as _i14;
+import 'package:mockito/annotations.dart' as _i13;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -363,10 +365,67 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
       );
 }
 
+/// A class which mocks [CacheServices].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCacheServices extends _i1.Mock implements _i12.CacheServices {
+  MockCacheServices() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<dynamic> saveData({
+    String? boxName,
+    required String? key,
+    required dynamic value,
+  }) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveData,
+          [],
+          {
+            #boxName: boxName,
+            #key: key,
+            #value: value,
+          },
+        ),
+        returnValue: _i4.Future<dynamic>.value(),
+      ) as _i4.Future<dynamic>);
+
+  @override
+  dynamic getData({required String? key}) =>
+      super.noSuchMethod(Invocation.method(
+        #getData,
+        [],
+        {#key: key},
+      ));
+
+  @override
+  _i4.Future<void> removeData({required String? key}) => (super.noSuchMethod(
+        Invocation.method(
+          #removeData,
+          [],
+          {#key: key},
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> clearData() => (super.noSuchMethod(
+        Invocation.method(
+          #clearData,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+}
+
 /// A class which mocks [MockSpec].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class HttpClientMock extends _i1.Mock implements _i12.MockSpec<_i13.Client> {
+class HttpClientMock extends _i1.Mock implements _i13.MockSpec<_i14.Client> {
   HttpClientMock() {
     _i1.throwOnMissingStub(this);
   }
