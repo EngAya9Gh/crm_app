@@ -1,6 +1,8 @@
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../model/usermodel.dart';
 import '../../view_model/user_vm_provider.dart';
 
 abstract class AppConstants {
@@ -8,8 +10,11 @@ abstract class AppConstants {
 
   static const int kPerPage = 20;
 
-  static String? currentUserId(BuildContext context) =>
-      Provider.of<UserProvider>(context, listen: false).currentUser.idUser;
+  static Future<bool> isInternetConnected() async =>
+      await ConnectivityWrapper.instance.isConnected;
+
+  static UserModel? currentUser(BuildContext context) =>
+      Provider.of<UserProvider>(context, listen: false).currentUser;
 
   static String? currentCountry(BuildContext context) =>
       Provider.of<UserProvider>(context, listen: false).currentUser.fkCountry;

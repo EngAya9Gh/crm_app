@@ -22,7 +22,7 @@ class CustomMultiSelectionDropdown<T> extends StatefulWidget {
     required this.selectedItems,
     this.hint,
     this.onChanged,
-    this.itemAsString,
+    required this.itemAsString,
     this.validator,
     this.isRequired = false,
     this.border,

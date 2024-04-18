@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/core/common/models/page_state/bloc_status.dart';
@@ -9,10 +7,12 @@ import 'package:crm_smart/features/manage_privilege/domain/use_cases/get_levels_
 import 'package:crm_smart/features/manage_privilege/domain/use_cases/get_privilege_usecase.dart';
 import 'package:crm_smart/features/manage_privilege/domain/use_cases/update_privilege_usecase.dart';
 import 'package:crm_smart/model/usermodel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/common/models/nullable.dart';
+import '../../../../view_model/user_vm_provider.dart';
 import '../../data/models/level_model.dart';
 import '../../data/models/privilege_model.dart';
 
@@ -20,17 +20,17 @@ part 'privilege_state.dart';
 
 @lazySingleton
 class PrivilegeCubit extends Cubit<PrivilegeState> {
+  final GetLevelsUsecase _getLevelsUsecase;
+  final GetPrivilegesUsecase _getPrivilegesUsecase;
+  final UpdatePrivilegeUsecase _updatePrivilegeUsecase;
+  final AddLevelUsecase _addLevelUsecase;
+
   PrivilegeCubit(
     this._getLevelsUsecase,
     this._getPrivilegesUsecase,
     this._updatePrivilegeUsecase,
     this._addLevelUsecase,
   ) : super(PrivilegeState());
-
-  final GetLevelsUsecase _getLevelsUsecase;
-  final GetPrivilegesUsecase _getPrivilegesUsecase;
-  final UpdatePrivilegeUsecase _updatePrivilegeUsecase;
-  final AddLevelUsecase _addLevelUsecase;
 
   getLevels(UserModel user, {bool isRefresh = false}) async {
     if (state.levelsState.getDataWhenSuccess != null && !isRefresh) {
@@ -124,37 +124,25 @@ class PrivilegeCubit extends Cubit<PrivilegeState> {
     ));
   }
 
-  Future<bool?> getUserPrivileges(final String levelId) async {
-    emit(state.copyWith(userPrivilegesState: const PageState.loading()));
-
-    final result = await _getPrivilegesUsecase(GetPrivilegesParams(levelId));
-    return result.fold(
-      (exception, message) {
-        emit(state.copyWith(userPrivilegesState: const PageState.error()));
-        return false;
-      },
-      (value) {
-        emit(state.copyWith(
-            userPrivilegesState:
-                PageState.loaded(data: value.message ?? value.data ?? [])));
-        return true;
-      },
-    );
-  }
-
-  onChangePrivilege(PrivilegeModel privilegeModel) {
+  changePrivilege({
+    required BuildContext context,
+    required PrivilegeModel privilegeModel,
+  }) {
     if (state.updatePrivilegeStatus.isLoading()) {
       return;
     }
+    final userProvider = context.read<UserProvider>();
+    userProvider.currentUser.privilegesList = state.privilegesOfLevelTemp.data
+        .map((e) => e.idPrivilegeUser == privilegeModel.idPrivilegeUser
+            ? e.copyWith(isCheck: !e.isCheck!)
+            : e)
+        .toList();
 
     emit(state.copyWith(
-        privilegesOfLevelTemp: PageState.loaded(
-      data: state.privilegesOfLevelTemp.data
-          .map((e) => e.idPrivilegeUser == privilegeModel.idPrivilegeUser
-              ? e.copyWith(isCheck: !e.isCheck!)
-              : e)
-          .toList(),
-    )));
+      privilegesOfLevelTemp: PageState.loaded(
+        data: userProvider.currentUser.privilegesList,
+      ),
+    ));
   }
 
   updatePrivilege(String userId) async {

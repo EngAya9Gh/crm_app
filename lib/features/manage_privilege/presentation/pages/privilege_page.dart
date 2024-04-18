@@ -64,84 +64,107 @@ class _PrivilegePageState extends State<PrivilegePage> {
         ),
       ),
       body: BlocBuilder<PrivilegeCubit, PrivilegeState>(
-        builder: (context, state) => state.privilegesOfLevelTemp.when(
-          init: () => Center(child: AppLoader()),
-          loading: () => Center(child: AppLoader()),
-          loaded: (data) {
-            return Directionality(
-              textDirection: TextDirection.rtl,
-              child: GroupedListView<PrivilegeModel, String>(
-                elements: data,
-                groupBy: (element) {
-                  switch (element.typePrv) {
-                    case 'sales':
-                      return 'المبيعات';
+        buildWhen: (previous, current) => true,
+        builder: (context, state) {
+          return state.privilegesOfLevelTemp.when(
+            init: () => Center(child: AppLoader()),
+            loading: () => Center(child: AppLoader()),
+            loaded: (data) {
+              return Directionality(
+                textDirection: TextDirection.rtl,
+                child: GroupedListView<PrivilegeModel, String>(
+                  elements: data,
+                  groupBy: (element) {
+                    switch (element.typePrv) {
+                      case 'sales':
+                        return 'المبيعات';
 
-                    case 'manage':
-                      return 'الإدارة';
+                      case 'manage':
+                        return 'الإدارة';
 
-                    case 'care':
-                      return 'العناية بالعملاء';
+                      case 'care':
+                        return 'العناية بالعملاء';
 
-                    case 'support':
-                      return 'الدعم الفني';
+                      case 'support':
+                        return 'الدعم الفني';
 
-                    case 'market':
-                      return 'التسويق الالكتروني';
+                      case 'market':
+                        return 'التسويق الالكتروني';
 
-                    case 'other':
-                      return 'آخرى';
+                      case 'other':
+                        return 'آخرى';
 
-                    case 'notify':
-                      return 'الإشعارات';
-                    case 'report':
-                      return 'التقارير';
-                    case 'tasks':
-                      return 'إدارة المهام';
-                  }
-                  return '';
-                },
-                groupComparator: (value1, value2) => value2.compareTo(value1),
-                itemComparator: (item1, item2) =>
-                    item1.priority?.compareTo(item2.priority ?? '0') ?? 0,
-                order: GroupedListOrder.ASC,
-                useStickyGroupSeparators: true,
-                groupSeparatorBuilder: (String value) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    value,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                itemBuilder: (c, element) {
-                  return Container(
-                    child: SwitchListTile(
-                      title: Text(element.namePrivilege!),
-                      value: element.isCheck!,
-                      activeColor: AppColors.white,
-                      activeTrackColor: AppColors.green,
-                      onChanged: (bool? value) {
-                        if (value == null) {
-                          return;
-                        }
-                        _privilegeCubit.onChangePrivilege(element);
-                      },
+                      case 'notify':
+                        return 'الإشعارات';
+                      case 'report':
+                        return 'التقارير';
+                      case 'tasks':
+                        return 'إدارة المهام';
+                    }
+                    return '';
+                  },
+                  groupComparator: (value1, value2) => value2.compareTo(value1),
+                  itemComparator: (item1, item2) =>
+                      item1.priority?.compareTo(item2.priority ?? '0') ?? 0,
+                  order: GroupedListOrder.ASC,
+                  useStickyGroupSeparators: true,
+                  groupSeparatorBuilder: (String value) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      value,
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                  );
-                },
+                  ),
+                  itemBuilder: (c, element) {
+                    return PrivilegeCard(privilegeModel: element);
+                  },
+                ),
+              );
+            },
+            empty: () => Center(child: AppLoader()),
+            error: (e) => Center(
+              child: IconButton(
+                onPressed: () => _privilegeCubit
+                    .getPrivilegesLevel(widget.levelModel.idLevel!),
+                icon: Icon(Icons.refresh),
               ),
-            );
-          },
-          empty: () => Center(child: AppLoader()),
-          error: (e) => Center(
-            child: IconButton(
-              onPressed: () => _privilegeCubit
-                  .getPrivilegesLevel(widget.levelModel.idLevel!),
-              icon: Icon(Icons.refresh),
             ),
-          ),
-        ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class PrivilegeCard extends StatelessWidget {
+  const PrivilegeCard({
+    super.key,
+    required this.privilegeModel,
+  });
+
+  final PrivilegeModel privilegeModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final privilegeCubit = context.read<PrivilegeCubit>();
+    return Container(
+      child: SwitchListTile(
+        title: Text(privilegeModel.namePrivilege!),
+        value: privilegeModel.isCheck!,
+        activeColor: AppColors.white,
+        activeTrackColor: AppColors.green,
+        onChanged: (bool? value) {
+          if (value == null) {
+            return;
+          }
+          privilegeCubit.changePrivilege(
+            context: context,
+            privilegeModel: privilegeModel,
+          );
+          // privilegeCubit.onChangePrivilege(privilegeModel);
+        },
       ),
     );
   }

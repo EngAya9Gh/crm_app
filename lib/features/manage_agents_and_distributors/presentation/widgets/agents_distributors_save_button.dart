@@ -22,7 +22,7 @@ class SaveButton extends StatelessWidget {
       width: double.infinity,
       text: 'حفظ',
       onTap: () async {
-        final String? currentUser = AppConstants.currentUserId(context);
+        final String? currentUser = AppConstants.currentUser(context)?.idUser;
 
         cubit.formKey.currentState!.save();
         if (cubit.formKey.currentState!.validate()) {

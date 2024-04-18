@@ -1,10 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
-import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
+import 'package:crm_smart/core/common/widgets/custom_multi_selection_dropdown.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/features/manage_users/domain/use_cases/action_user_usecase.dart';
 import 'package:crm_smart/features/manage_users/presentation/manager/users_cubit.dart';
@@ -245,27 +244,25 @@ class _ActionUserPageState extends State<ActionUserPage> {
                       selectedItems[index]['parameter'] = 'id_maincity';
                     });
 
-                    // todo: check this
-                    return CustomSearchableDropDown<dynamic>(
-                      hint: 'ابحث هنا...',
+                    return CustomMultiSelectionDropdown<Map<String, dynamic>>(
                       items: items,
-                      selectedItem: selectedItems,
-                      itemAsString: (e) => e['namemaincity'],
+                      selectedItems: selectedItems,
+                      itemAsString: (item) => item!['namemaincity'],
                       filterFn: (item, filter) {
                         return item['namemaincity']
                             .toString()
                             .toLowerCase()
                             .contains(filter.toLowerCase());
                       },
+                      compareFn: (item, selected) {
+                        return item['id_maincity'] == selected['id_maincity'];
+                      },
                       onChanged: (value) {
-                        if (value == null) {
-                          return;
-                        }
-
-                        final list = jsonDecode(value)
+                        final List<MainCityModel> list = value
                             .map<MainCityModel>(
                                 (e) => MainCityModel.fromJson(e))
                             .toList();
+
                         cart.changeitemlist(list);
                       },
                     );

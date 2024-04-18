@@ -209,7 +209,7 @@ class _AddDateButtonState extends State<AddDateButton> {
     required InstallationTypeEnum typeDate,
     VoidCallback? onSuccess,
   }) {
-    final String currentUserId = AppConstants.currentUserId(context)!;
+    final String currentUserId = AppConstants.currentUser(context)!.idUser!;
     final DateInstallationClient dateModel = DateInstallationClient(
       dateClientVisit: dateClientVisit,
       fkUser: currentUserId,

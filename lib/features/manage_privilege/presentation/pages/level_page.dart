@@ -1,4 +1,5 @@
 import 'package:crm_smart/core/common/models/page_state/result_builder.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/core/utils/responsive_padding.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_bottom_sheet.dart';
@@ -8,7 +9,6 @@ import 'package:crm_smart/features/manage_privilege/presentation/manager/privile
 import 'package:crm_smart/features/manage_privilege/presentation/pages/add_level_sheet.dart';
 import 'package:crm_smart/features/manage_privilege/presentation/pages/privilege_page.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,7 +66,7 @@ class _LevelPageState extends State<LevelPage> {
                   itemCount: data.length,
                   padding: HWEdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   itemBuilder: (BuildContext context, int index) =>
-                      levelCard(data[index]),
+                      LevelCard(levelModel: data[index]),
                   separatorBuilder: (BuildContext context, int index) =>
                       15.verticalSpace,
                 ),
@@ -84,29 +84,34 @@ class _LevelPageState extends State<LevelPage> {
       ),
     );
   }
+}
 
-  Widget levelCard(LevelModel levelModel) => InkWell(
-        onTap: () => Navigator.push(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => PrivilegePage(levelModel: levelModel),
-            )),
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                offset: Offset(1.0, 1.0),
-                blurRadius: 8.0,
-                color: Colors.black87.withOpacity(0.2),
-              ),
-            ],
-            borderRadius: BorderRadius.all(Radius.circular(8).r),
-            color: context.colorScheme.background,
-          ),
-          padding: HWEdgeInsets.symmetric(vertical: 15),
-          alignment: Alignment.center,
-          child: AppText(levelModel.nameLevel ?? ''),
+class LevelCard extends StatelessWidget {
+  const LevelCard({super.key, required this.levelModel});
+
+  final LevelModel levelModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => AppNavigator.push(PrivilegePage(levelModel: levelModel)),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              offset: Offset(1.0, 1.0),
+              blurRadius: 8.0,
+              color: Colors.black87.withOpacity(0.2),
+            ),
+          ],
+          borderRadius: BorderRadius.all(Radius.circular(8).r),
+          color: context.colorScheme.background,
         ),
-      );
+        padding: HWEdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        child: AppText(levelModel.nameLevel ?? ''),
+      ),
+    );
+  }
 }
