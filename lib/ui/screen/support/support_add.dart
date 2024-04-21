@@ -362,44 +362,45 @@ class _SupportAddState extends State<SupportAdd> {
                                 endTime.minute);
 
                             Provider.of<invoice_vm>(context, listen: false)
-                                .setdate_vm(
-                              id_invoice: _invoice!.idInvoice!,
-                              fk_client: widget.idClient!,
-                              fk_user: iduser,
-                              date_client_visit: datetask.toString(),
-                              date_end: date_end.toString(),
-                              type_date: Value_installation_type!,
-                              onSuccess: (value) {
-                                DateTime temp = datetask.hour >= 21
-                                    ? datetask.subtract(Duration(hours: 3))
-                                    : datetask;
+                                .addDateInstall(
+                                  id_invoice: _invoice!.idInvoice!,
+                                  fk_client: widget.idClient!,
+                                  fk_user: iduser,
+                                  date_client_visit: datetask.toString(),
+                                  date_end: date_end.toString(),
+                                  type_date: Value_installation_type!,
+                                  onSuccess: (value) {
+                                    DateTime temp = datetask.hour >= 21
+                                        ? datetask.subtract(Duration(hours: 3))
+                                        : datetask;
 
-                                final event = EventModel(
-                                  fkIdClient: widget.idClient!,
-                                  idinvoice: _invoice!.idInvoice!,
-                                  title: _invoice!.name_enterprise!,
-                                  description: "description",
-                                  from: temp,
-                                  to: temp.add(Duration(hours: 2)),
-                                  typedate: '',
-                                );
+                                    final event = EventModel(
+                                      fkIdClient: widget.idClient!,
+                                      idinvoice: _invoice!.idInvoice!,
+                                      title: _invoice!.name_enterprise!,
+                                      description: "description",
+                                      from: temp,
+                                      to: temp.add(Duration(hours: 2)),
+                                      typedate: '',
+                                    );
 
-                                _eventProvider.addEvent(event);
-                              },
-                            )
-                                .then((value) {
-                              clear();
+                                    _eventProvider.addEvent(event);
 
-                              datesInstallation.add(DateInstallationClient(
-                                dateClientVisit: datetask,
-                                fkUser: iduser,
-                                fkClient: widget.idClient,
-                                isDone: '0',
-                                fkInvoice: _invoice!.idInvoice,
-                              ));
+                                    clear();
 
-                              setState(() {});
-                            });
+                                    datesInstallation
+                                        .add(DateInstallationClient(
+                                      dateClientVisit: datetask,
+                                      fkUser: iduser,
+                                      fkClient: widget.idClient,
+                                      isDone: '0',
+                                      fkInvoice: _invoice!.idInvoice,
+                                    ));
+
+                                    setState(() {});
+                                  },
+                                )
+                                .then((value) {});
                             _currentDate = DateTime(1, 1, 1);
                             selectedTime = TimeOfDay(hour: -1, minute: 00);
                           }

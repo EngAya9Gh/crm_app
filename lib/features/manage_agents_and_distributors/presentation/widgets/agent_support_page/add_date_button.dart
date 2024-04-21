@@ -211,8 +211,8 @@ class _AddDateButtonState extends State<AddDateButton> {
   }) {
     final String currentUserId = AppConstants.currentUser(context)!.idUser!;
     final DateInstallationClient dateModel = DateInstallationClient(
-      dateClientVisit: dateClientVisit,
       fkUser: currentUserId,
+      dateClientVisit: dateClientVisit,
       isDone: '0',
       fkAgent: fkAgent,
       typeDate: typeDate,

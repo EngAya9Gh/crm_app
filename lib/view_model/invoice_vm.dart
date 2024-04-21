@@ -1398,21 +1398,17 @@ class invoice_vm extends ChangeNotifier {
     return res;
   }
 
-  Future<void> setdate_vm({
+  Future<void> addDateInstall({
     required String id_invoice,
     required String date_client_visit,
     required String date_end,
     required String fk_user,
     required String fk_client,
     required String type_date,
-    required ValueChanged<String> onSuccess,
+    required ValueChanged<dynamic> onSuccess,
   }) async {
     isloadingdone = true;
     notifyListeners();
-    // int index = listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-
-    // int index1 = listinvoiceClientSupport.indexWhere((element) => element.idInvoice == id_invoice);
-    // InvoiceModel te = await Invoice_Service().setdate(body, id_invoice!);
 
     final data = await Invoice_Service().addDateInstall(
       id_invoice: id_invoice,
@@ -1424,15 +1420,7 @@ class invoice_vm extends ChangeNotifier {
     );
 
     onSuccess.call(data);
-    // if (index != -1) listinvoices[index] = te;
-    // //
-    // listinvoiceClientSupport[index1] = te;
 
-    // listinvoiceClientSupport
-    // body.addAll(
-    //     InvoiceModel.fromJson(listinvoices[index]));
-    // listinvoices[index]= InvoiceModel.fromJson(body);
-    // //listClient.removeAt(index);
     isloadingdone = false;
     notifyListeners();
   }
