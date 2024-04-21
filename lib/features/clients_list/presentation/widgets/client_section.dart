@@ -869,14 +869,14 @@ class _ClientSectionState extends State<ClientSection> {
                 ),
               ],
               SizedBox(height: 15),
-              if (!(widget.clienttransfer == null ||
+              if (((widget.clienttransfer == null ||
                   context.read<PrivilegeCubit>().checkPrivilege('183') ==
-                      true)) ...[
-                if (clientModel1.reasonTransfer ==
+                      true))  ||
+                 (clientModel1.reasonTransfer ==
                     Provider.of<UserProvider>(context, listen: false)
                         .currentUser
                         .idUser
-                        .toString()) ...[
+                        .toString())  )
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -899,8 +899,7 @@ class _ClientSectionState extends State<ClientSection> {
                       ],
                     ),
                   )
-                ],
-              ],
+             ,
 
               widget.invoice != null
                   ? widget.invoice!.isApprove == null
