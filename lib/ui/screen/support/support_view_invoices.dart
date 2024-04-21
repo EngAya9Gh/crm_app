@@ -5,16 +5,16 @@ import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class support_view_invoices extends StatefulWidget {
-  support_view_invoices({required this.itemClient, Key? key}) : super(key: key);
+class SupportViewInvoices extends StatefulWidget {
+  SupportViewInvoices({required this.itemClient, Key? key}) : super(key: key);
 
   ClientModel1 itemClient;
 
   @override
-  support_view_invoicesState createState() => support_view_invoicesState();
+  SupportViewInvoicesState createState() => SupportViewInvoicesState();
 }
 
-class support_view_invoicesState extends State<support_view_invoices> {
+class SupportViewInvoicesState extends State<SupportViewInvoices> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

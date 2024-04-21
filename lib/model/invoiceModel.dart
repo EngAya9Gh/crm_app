@@ -902,6 +902,8 @@ class DateInstallationClient {
       'date_client_visit': dateClientVisit?.toIso8601String(),
       'fk_user': fkUser,
       'is_done': isDone,
+      // 'fk_client': fkClient,
+      'fk_invoice': fkInvoice,
       'type_date': typeDate?.name,
       'processReason': processReason,
       'user_id_process': userIdProcess,

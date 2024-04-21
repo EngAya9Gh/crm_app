@@ -4,20 +4,29 @@ import 'dart:ui' as myui;
 import 'package:collection/collection.dart';
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/common/widgets/custom_searchable_dropdown.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
+import 'package:crm_smart/core/services/di/di_container.dart';
+import 'package:crm_smart/core/utils/app_strings.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import 'package:crm_smart/features/clients_list/data/models/client_support_file_model.dart';
+import 'package:crm_smart/features/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
+import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_expansion.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
+import 'package:crm_smart/ui/widgets/fancy_image_shimmer_viewer.dart';
+import 'package:crm_smart/ui/widgets/pick_image_bottom_sheet.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
+import 'package:crm_smart/view_model/reason_suspend.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,22 +35,12 @@ import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/common/widgets/custom_searchable_dropdown.dart';
-import '../../../core/services/di/di_container.dart';
-import '../../../core/utils/app_strings.dart';
-import '../../../features/app/presentation/widgets/app_elvated_button.dart';
-import '../../../features/clients_list/data/models/client_support_file_model.dart';
-import '../../../features/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
-import '../../../features/clients_list/presentation/manager/clients_list_bloc.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../features/task_management/presentation/manager/task_cubit.dart';
-import '../../../features/task_management/presentation/widgets/add_manual_task_button.dart';
-import '../../../model/usermodel.dart';
-import '../../../view_model/reason_suspend.dart';
-import '../../widgets/custom_widget/row_edit.dart';
-import '../../widgets/fancy_image_shimmer_viewer.dart';
-import '../../widgets/pick_image_bottom_sheet.dart';
-import '../../widgets/support_attachments_row.dart';
+import '../../../../../ui/widgets/custom_widget/row_edit.dart';
+import '../../../../../ui/widgets/support_attachments_row.dart';
+import '../../../../app/presentation/widgets/app_elvated_button.dart';
+import '../../../../clients_list/presentation/manager/clients_list_bloc.dart';
+import '../../../../task_management/presentation/manager/task_cubit.dart';
+import '../../../../task_management/presentation/widgets/add_manual_task_button.dart';
 
 class SupportAdd extends StatefulWidget {
   const SupportAdd({
@@ -105,6 +104,11 @@ class _SupportAddState extends State<SupportAdd> {
     super.initState();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
   bool isInit = true;
   List<DateInstallationClient> datesInstallation = [];
 
@@ -113,9 +117,7 @@ class _SupportAddState extends State<SupportAdd> {
 
   @override
   Widget build(BuildContext context) {
-    // return Text("id is => ${widget.idInvoice}");
-    _invoice = context
-        .read<SupportTabCubit>()
+    _invoice = Provider.of<invoice_vm>(context, listen: true)
         .listinvoiceClientSupport
         .firstWhere((element) => element.idInvoice == widget.idInvoice);
 

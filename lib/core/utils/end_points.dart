@@ -157,6 +157,11 @@ class _Client {
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
   final String getTransferClientsWithPrivileges =
       "getTransferClientsWithPrivileges";
+
+  final String getInvoiceByIdClient =
+      "client/invoice/get_invoice_ByIdClient.php";
+
+  final String setReadyInstall = "client/invoice/set_ready_install.php";
 }
 
 class _Task {
