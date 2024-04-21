@@ -30,7 +30,6 @@ class LoginLocalDataSourceImpl extends LoginLocalDataSource {
         key: AppStrings.secureStorage.token,
         value: cacheTokenParams.token,
       );
-      print("saved token successfully ${getToken(GetTokenParams())} ");
       return Right(null);
     } on BaseAppException catch (e) {
       print("error saving token ${e.message}");

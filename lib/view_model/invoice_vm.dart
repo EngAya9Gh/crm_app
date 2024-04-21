@@ -1377,24 +1377,10 @@ class invoice_vm extends ChangeNotifier {
     return true;
   }
 
-  Future<String> delete_invoice(
-      Map<String, dynamic> body, String? id_invoice) async {
-    int index = listinvoiceClient
-        .indexWhere((element) => element.idInvoice == id_invoice);
-    listinvoiceClient.removeAt(index);
+  Future<String> deleteInvoice(String idInvoice) async {
+    listinvoiceClient.removeWhere((element) => element.idInvoice == idInvoice);
     notifyListeners();
-    String res = await Invoice_Service().deleteInvoiceById(body);
-
-    //if(res=="done"){
-    index =
-        listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-    listinvoices.removeAt(index);
-
-    index = listInvoicesAccept
-        .indexWhere((element) => element.idInvoice == id_invoice);
-    listInvoicesAccept.removeAt(index);
-    notifyListeners();
-    //}
+    String res = await Invoice_Service().deleteInvoiceById(idInvoice);
     return res;
   }
 

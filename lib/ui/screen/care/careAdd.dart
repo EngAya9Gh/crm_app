@@ -1,16 +1,13 @@
 import 'package:crm_smart/model/communication_modle.dart';
 import 'package:crm_smart/model/configmodel.dart';
-import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:jiffy/jiffy.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
 
@@ -31,6 +28,7 @@ class _careAddState extends State<careAdd> {
   bool isdone = false;
   double rate = 0.0;
   late ConfigModel peroid;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -199,53 +197,22 @@ class _careAddState extends State<careAdd> {
                                   Provider.of<communication_vm>(context,
                                           listen: false)
                                       .isloadval(true);
-                                  await Provider.of<config_vm>(context,
-                                          listen: false)
-                                      .getAllConfig();
-                                  List<ConfigModel> _listconfg =
-                                      Provider.of<config_vm>(context,
-                                              listen: false)
-                                          .listofconfig;
-
-                                  peroid = _listconfg.firstWhere((element) =>
-                                      element.name_config ==
-                                      'period_commincation3');
-
-                                  DateTime datanext = DateTime.now();
-
-                                  int peroidtime =
-                                      int.parse(peroid.value_config);
-                                  datanext =
-                                      Jiffy().add(days: peroidtime).dateTime;
-
-                                  // datanext.add(Duration(days: peroidtime));
-
                                   if (widget.com.dateCommunication == null) {
-                                    //datanext.add( Duration(days: day+ pp));
-                                    // int peroidtime= int.parse(peroid.value_config);
-                                    // datanext=Jiffy().add(days: peroidtime).dateTime;
-                                    //
-                                    // datanext.add(Duration(days: peroidtime));
-                                    //
-
                                     await Provider.of<communication_vm>(context,
                                             listen: false)
-                                        .updatecarecommuncation({
-                                      'type': 'دوري',
-                                      'fk_user': Provider.of<UserProvider>(
-                                              context,
-                                              listen: false)
-                                          .currentUser
-                                          .idUser
-                                          .toString(),
-                                      'date_communication':
-                                          DateTime.now().toString(),
-                                      'result': typepayController.toString(), //
-                                      'rate': rate.toString(),
-                                      'number_wrong': numberwrong.toString(),
-                                      'client_repeat': repeat.toString(),
-                                      'date_next': datanext.toString(),
-                                    }, widget.com.idCommunication);
+                                        .updateCareCommunication(
+                                      body: {
+                                        'rate': rate.toString(),
+                                        'number_wrong': numberwrong.toString(),
+                                        'client_repeat': repeat.toString(),
+                                        'type': 'دوري',
+                                        'result':
+                                            typepayController.toString(), //
+                                      },
+                                      id_communication:
+                                          widget.com.idCommunication,
+                                    );
+
                                     clear();
                                   }
                                 },
