@@ -241,4 +241,5 @@ class _Events {
   const _Events();
 
   final String updateStatusForVisit = 'updateStatusForVisit/';
+  final String addDateInstall = "addDateInstall";
 }

@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
@@ -169,12 +170,13 @@ class AgentsDistributorsProfileDataSourceImpl
     required DateInstallationClient agentDateModel,
   }) async {
     try {
-      dio.changeBaseUrl(EndPoints.baseUrls.url);
-      final endPoint = EndPoints.agentDistributor.addAgentDate;
+      dio.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final endPoint = EndPoints.events.addDateInstall;
       final response = await dio.post(
         endPoint: endPoint,
         data: agentDateModel.toMap(),
       );
+      final data = apiDataHandler(response);
       return Right(null);
     } catch (e) {
       print("Error in addAgentDate: $e");
