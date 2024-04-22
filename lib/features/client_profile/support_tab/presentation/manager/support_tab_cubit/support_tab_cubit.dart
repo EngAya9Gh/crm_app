@@ -1,8 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
-import 'package:meta/meta.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/participate_enum.dart';
@@ -27,11 +26,11 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     this._addDateInstallUsecase,
     this._setDateDoneUsecase,
     this._setReadyInstallUsecase,
-  ) : super(SupportTabInitial());
+  ) : super(SupportTabState());
 
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listinvoiceClient = [];
-  final listinvoices = [];
+  List<InvoiceModel> listinvoices = [];
 
   /* Methods */
 
@@ -39,52 +38,62 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     required GetInvoiceByClientParams getInvoiceByClientParams,
     required ParticipateEnum type,
   }) async {
-    emit(SupportTabLoading());
+    emit(state.copyWith(getInvoiceByClientStatus: StateStatus.loading));
 
     bool isParticipate = type == ParticipateEnum.participate;
     listinvoiceClientSupport = [];
     if (!isParticipate) {
-      emit(SupportTabLoaded());
+      emit(state.copyWith(getInvoiceByClientStatus: StateStatus.success));
       return;
     }
     try {
       final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
       result.fold((l) {
-        emit(SupportTabError(l));
+        emit(state.copyWith(
+          getInvoiceByClientStatus: StateStatus.failure,
+          getInvoiceByClientMessage: l,
+        ));
       }, (r) {
         listinvoiceClientSupport = r.where((element) {
           return element.fkIdClient == getInvoiceByClientParams.idClient &&
               element.isApprove != null;
         }).toList();
-        emit(SupportTabLoaded());
+        emit(state.copyWith(getInvoiceByClientStatus: StateStatus.success));
       });
     } catch (e) {
-      emit(SupportTabError(e.toString()));
+      emit(state.copyWith(
+        getInvoiceByClientStatus: StateStatus.failure,
+        getInvoiceByClientMessage: e.toString(),
+      ));
     }
   }
 
   Future<void> addDateInstall(AddDateInstallParams addDateInstallParams) async {
-    emit(SupportTabLoading());
+    emit(state.copyWith(addDateInstallStatus: StateStatus.loading));
 
     final result = await _addDateInstallUsecase(addDateInstallParams);
 
     result.fold((l) {
-      emit(SupportTabError(l));
+      emit(state.copyWith(
+        addDateInstallStatus: StateStatus.failure,
+        addDateInstallMessage: l,
+      ));
     }, (r) {
-      emit(SupportTabLoaded());
+      emit(state.copyWith(addDateInstallStatus: StateStatus.success));
     });
-
-    emit(SupportTabLoaded());
   }
 
   updateListInvoiceAfterMarkEventIsDone(EventModel event) {
-    emit(SupportTabLoading());
+    emit(state.copyWith(setDateDoneStatus: StateStatus.loading));
     final invoice = listinvoiceClientSupport.firstWhereOrNull((element) {
       return element.idInvoice == event.idinvoice;
     });
 
     if (invoice == null) {
-      emit(SupportTabError('Invoice not found'));
+      emit(state.copyWith(
+        setDateDoneStatus: StateStatus.failure,
+        setDateDoneMessage: 'Invoice not found',
+      ));
       return;
     }
 
@@ -100,33 +109,31 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         .map((e) => e.idInvoice == invoice.idInvoice ? invoice : e)
         .toList();
 
-    emit(SupportTabLoaded());
+    emit(state.copyWith(setDateDoneStatus: StateStatus.success));
   }
 
-  Future<bool> setDateDoneVm(
+  Future<bool> setDateDone(
     SetDateDoneParams setDateDoneParams,
   ) async {
-    try {
-      emit(SupportTabLoading());
-
-      int index = listinvoices.indexWhere(
-          (element) => element.idInvoice == setDateDoneParams.id_invoice);
-      int index1 = listinvoiceClientSupport.indexWhere(
-          (element) => element.idInvoice == setDateDoneParams.id_invoice);
-      InvoiceModel inv = await setDateDone(setDateDoneParams);
-      if (index != -1) listinvoices[index] = inv;
-      if (index1 != -1) listinvoiceClientSupport[index1] = inv;
-      emit(SupportTabLoaded());
-      return true;
-    } catch (e) {
-      emit(SupportTabError(e.toString()));
+    final result = await _setDateDoneUsecase(setDateDoneParams);
+    return result.fold((l) {
+      emit(state.copyWith(
+        setDateDoneStatus: StateStatus.failure,
+        setDateDoneMessage: l,
+      ));
       return false;
-    }
+    }, (r) {
+      listinvoiceClientSupport = listinvoiceClientSupport
+          .map((e) => e.idInvoice == r.idInvoice ? r : e)
+          .toList();
+      emit(state.copyWith(setDateDoneStatus: StateStatus.success));
+      return true;
+    });
   }
 
   Future<void> set_ready_install(
       SetReadyInstallParams setReadyInstallParams) async {
-    emit(SupportTabLoading());
+    emit(state.copyWith(setDateDoneStatus: StateStatus.loading));
     int index = listinvoices.indexWhere(
         (element) => element.idInvoice == setReadyInstallParams.id_invoice);
     int index1 = listinvoiceClientSupport.indexWhere(
@@ -135,24 +142,13 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     InvoiceModel inv = await setReady_install(setReadyInstallParams);
     if (index != -1) listinvoices[index] = inv;
     if (index1 != -1) listinvoiceClientSupport[index1] = inv;
-    emit(SupportTabLoaded());
+    emit(state.copyWith(setDateDoneStatus: StateStatus.success));
   }
 
   Future<List<InvoiceModel>> getinvoicebyclient(
     GetInvoiceByClientParams getInvoiceByClientParams,
   ) async {
     final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
-    return result.fold((l) {
-      throw l;
-    }, (r) {
-      return r;
-    });
-  }
-
-  Future<InvoiceModel> setDateDone(
-    SetDateDoneParams setDateDoneParams,
-  ) async {
-    final result = await _setDateDoneUsecase(setDateDoneParams);
     return result.fold((l) {
       throw l;
     }, (r) {

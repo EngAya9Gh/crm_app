@@ -1,11 +1,13 @@
 import 'package:crm_smart/core/common/widgets/custom_error_widget.dart';
 import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
 import 'package:crm_smart/model/clientmodel.dart';
-import 'package:crm_smart/ui/screen/support/support_add.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../core/common/enums/enums.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
+import 'support_add.dart';
 
 class NewSupportViewInvoices extends StatelessWidget {
   final ClientModel1 itemClient;
@@ -15,13 +17,22 @@ class NewSupportViewInvoices extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final SupportTabCubit supportTabCubit = context.read<SupportTabCubit>();
-    return BlocBuilder<SupportTabCubit, SupportTabState>(
+    return BlocConsumer<SupportTabCubit, SupportTabState>(
+      listener: (context, state) {
+        if (state.getInvoiceByClientStatus == StateStatus.failure) {
+          AppConstants.showSnakeBar(context, state.getInvoiceByClientMessage);
+        } else if (state.addDateInstallStatus == StateStatus.failure) {
+          AppConstants.showSnakeBar(context, state.addDateInstallMessage);
+        } else if (state.setDateDoneStatus == StateStatus.failure) {
+          AppConstants.showSnakeBar(context, state.setDateDoneMessage);
+        }
+      },
       builder: (context, state) {
-        if (state is SupportTabLoading) {
+        if (state.getInvoiceByClientStatus == StateStatus.loading) {
           return CustomLoadingIndicator();
-        } else if (state is SupportTabError) {
-          return CustomErrorWidget(message: state.message);
-        } else if (state is SupportTabLoaded &&
+        } else if (state.getInvoiceByClientStatus == StateStatus.failure) {
+          return CustomErrorWidget(message: state.getInvoiceByClientMessage);
+        } else if (state.getInvoiceByClientStatus == StateStatus.success &&
             supportTabCubit.listinvoiceClientSupport.isEmpty) {
           return Center(child: Text('العميل غير مشترك'));
         }
@@ -29,7 +40,7 @@ class NewSupportViewInvoices extends StatelessWidget {
           body: ListView.builder(
             itemCount: supportTabCubit.listinvoiceClientSupport.length,
             itemBuilder: (context, index) {
-              return SupportAdd(
+              return NewSupportAdd(
                 idInvoice:
                     supportTabCubit.listinvoiceClientSupport[index].idInvoice,
                 idClient: itemClient.idClients,

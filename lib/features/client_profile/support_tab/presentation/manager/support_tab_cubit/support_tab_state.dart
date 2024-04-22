@@ -1,16 +1,53 @@
 part of 'support_tab_cubit.dart';
 
-@immutable
-sealed class SupportTabState {}
+class SupportTabState extends Equatable {
+  final StateStatus getInvoiceByClientStatus;
+  final String getInvoiceByClientMessage;
 
-final class SupportTabInitial extends SupportTabState {}
+  final StateStatus addDateInstallStatus;
 
-final class SupportTabLoading extends SupportTabState {}
+  final String addDateInstallMessage;
 
-final class SupportTabLoaded extends SupportTabState {}
+  final StateStatus setDateDoneStatus;
+  final String setDateDoneMessage;
 
-final class SupportTabError extends SupportTabState {
-  final String message;
+  const SupportTabState({
+    this.getInvoiceByClientStatus = StateStatus.success,
+    this.getInvoiceByClientMessage = '',
+    this.addDateInstallStatus = StateStatus.success,
+    this.addDateInstallMessage = '',
+    this.setDateDoneStatus = StateStatus.success,
+    this.setDateDoneMessage = '',
+  });
 
-  SupportTabError(this.message);
+  SupportTabState copyWith({
+    StateStatus? getInvoiceByClientStatus,
+    String? getInvoiceByClientMessage,
+    StateStatus? addDateInstallStatus,
+    String? addDateInstallMessage,
+    StateStatus? setDateDoneStatus,
+    String? setDateDoneMessage,
+  }) {
+    return SupportTabState(
+      getInvoiceByClientStatus:
+          getInvoiceByClientStatus ?? this.getInvoiceByClientStatus,
+      getInvoiceByClientMessage:
+          getInvoiceByClientMessage ?? this.getInvoiceByClientMessage,
+      addDateInstallStatus: addDateInstallStatus ?? this.addDateInstallStatus,
+      addDateInstallMessage:
+          addDateInstallMessage ?? this.addDateInstallMessage,
+      setDateDoneStatus: setDateDoneStatus ?? this.setDateDoneStatus,
+      setDateDoneMessage: setDateDoneMessage ?? this.setDateDoneMessage,
+    );
+  }
+
+  @override
+  List<Object> get props => [
+        getInvoiceByClientStatus,
+        getInvoiceByClientMessage,
+        addDateInstallStatus,
+        addDateInstallMessage,
+        setDateDoneStatus,
+        setDateDoneMessage,
+      ];
 }

@@ -58,6 +58,24 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
   }
 
   @override
+  Future<Either<String, dynamic>> addDateInstall(
+      AddDateInstallParams params) async {
+    try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await _apiServices.post(
+        endPoint: EndPoints.events.addDateInstall,
+        data: params.toMap(),
+      );
+
+      final data = apiDataHandler(response);
+
+      return Right(data);
+    } on BaseAppException catch (e) {
+      return Left(e.message);
+    }
+  }
+
+  @override
   Future<Either<String, InvoiceModel>> setDateDone(
       SetDateDoneParams params) async {
     try {
@@ -91,24 +109,6 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
       final InvoiceModel invoiceModel = InvoiceModel.fromJson(data);
 
       return Right(invoiceModel);
-    } on BaseAppException catch (e) {
-      return Left(e.message);
-    }
-  }
-
-  @override
-  Future<Either<String, dynamic>> addDateInstall(
-      AddDateInstallParams params) async {
-    try {
-      _apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await _apiServices.post(
-        endPoint: EndPoints.events.addDateInstall,
-        data: params.toMap(),
-      );
-
-      final data = apiDataHandler(response);
-
-      return Right(data);
     } on BaseAppException catch (e) {
       return Left(e.message);
     }
