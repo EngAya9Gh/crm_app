@@ -25,6 +25,8 @@ class NewSupportViewInvoices extends StatelessWidget {
           AppConstants.showSnakeBar(context, state.addDateInstallMessage);
         } else if (state.setDateDoneStatus.isFailed) {
           AppConstants.showSnakeBar(context, state.setDateDoneMessage);
+        } else if (state.setReadyInstallStatus.isFailed) {
+          AppConstants.showSnakeBar(context, state.setReadyInstallMessage);
         }
       },
       builder: (context, state) {

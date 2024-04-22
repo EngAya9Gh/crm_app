@@ -1,15 +1,16 @@
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
+import 'package:crm_smart/features/client_profile/support_tab/domain/use_cases/set_ready_install_usecase.dart';
+import 'package:crm_smart/features/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/view_model/user_vm_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-
-import '../../../../../view_model/invoice_vm.dart';
 
 class SetReadyInstallDateButton extends StatelessWidget {
   const SetReadyInstallDateButton({
@@ -62,38 +63,41 @@ class SetReadyInstallDateButton extends StatelessWidget {
                                     ),
                                     20.horizontalSpace,
                                     Expanded(
-                                      child: AppElevatedButton(
-                                        onPressed: () async {
-                                          Provider.of<invoice_vm>(context,
-                                                  listen: false)
-                                              .setisload();
+                                      child: BlocBuilder<SupportTabCubit,
+                                          SupportTabState>(
+                                        builder: (context, state) {
+                                          return AppElevatedButton(
+                                            isLoading: state
+                                                .setReadyInstallStatus
+                                                .isLoading,
+                                            onPressed: () async {
+                                              await context
+                                                  .read<SupportTabCubit>()
+                                                  .setReadyInstall(
+                                                      SetReadyInstallParams(
+                                                    id_invoice:
+                                                        "${invoiceModel.idInvoice}",
+                                                    date_temp: invoiceModel
+                                                        .date_not_readyinstall,
+                                                    date_ready_prev:
+                                                        invoiceModel
+                                                            .date_readyinstall,
+                                                    date_readyinstall:
+                                                        DateTime.now()
+                                                            .toString(),
+                                                    user_ready_install: context
+                                                        .read<UserProvider>()
+                                                        .currentUser
+                                                        .idUser
+                                                        .toString(),
+                                                    ready_install: '1',
+                                                  ));
 
-                                          await Provider.of<invoice_vm>(context,
-                                                  listen: false)
-                                              .set_ready_install({
-                                            'date_temp': invoiceModel
-                                                .date_not_readyinstall
-                                                .toString(),
-                                            'date_ready_prev': invoiceModel
-                                                .date_readyinstall
-                                                .toString(),
-                                            'date_readyinstall':
-                                                DateTime.now().toString(),
-                                            'user_ready_install':
-                                                Provider.of<UserProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .currentUser
-                                                    .idUser
-                                                    .toString(),
-                                            'ready_install': '1',
-                                          }, invoiceModel.idInvoice).then(
-                                                  (value) {
-                                            // return clear();
-                                          });
-                                          AppNavigator.pop();
+                                              AppNavigator.pop();
+                                            },
+                                            child: Text('نعم'),
+                                          );
                                         },
-                                        child: Text('نعم'),
                                       ),
                                     ),
                                   ],

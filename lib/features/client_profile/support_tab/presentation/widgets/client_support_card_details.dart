@@ -31,10 +31,12 @@ class ClientSupportCardDetails extends StatelessWidget {
       buildWhen: (previous, current) {
         return current.setDateDoneStatus.isSuccess ||
             current.addDateInstallStatus.isSuccess ||
-            current.getInvoiceByClientStatus.isSuccess;
+            current.getInvoiceByClientStatus.isSuccess ||
+            (current.refreshUi != previous.refreshUi);
       },
       builder: (context, state) {
         return Column(
+          key: UniqueKey(),
           children: [
             if (invoiceModel!.dateinstall_done != null) ...[
               CardRow(

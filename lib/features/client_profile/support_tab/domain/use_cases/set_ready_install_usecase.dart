@@ -21,7 +21,7 @@ class SetReadyInstallUsecase
 }
 
 class SetReadyInstallParams {
-  final String? id_invoice;
+  final String id_invoice;
   final String? TypeReadyClient;
   final String? notes_ready;
   final String? reason_suspend;
@@ -36,7 +36,7 @@ class SetReadyInstallParams {
   final String? date_readyinstall;
 
   SetReadyInstallParams({
-    this.id_invoice,
+    required this.id_invoice,
     this.TypeReadyClient,
     this.notes_ready,
     this.reason_suspend,

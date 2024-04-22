@@ -9,7 +9,6 @@ import 'package:crm_smart/ui/screen/invoice/invoces.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,8 +71,6 @@ class _ProfileClientState extends State<ProfileClient>
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.idClient.toString());
 
-      supportTabCubit.listinvoiceClient =
-          Provider.of<invoice_vm>(context, listen: false).listinvoiceClient;
       supportTabCubit.getClientInvoice(
         getInvoiceByClientParams: GetInvoiceByClientParams(
           idClient: widget.idClient.toString(),

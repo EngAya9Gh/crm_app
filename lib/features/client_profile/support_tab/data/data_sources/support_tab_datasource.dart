@@ -99,14 +99,15 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
   Future<Either<String, InvoiceModel>> setReadyInstall(
       SetReadyInstallParams params) async {
     try {
+      _apiServices.changeBaseUrl(EndPoints.baseUrls.url);
       final response = await _apiServices.post(
-        endPoint: "${EndPoints.client.setReadyInstall}${params.id_invoice}",
-        data: params.toMap(),
-      );
+          endPoint: EndPoints.client.setReadyInstall,
+          data: params.toMap(),
+          queryParameters: {'id_invoice': params.id_invoice});
 
       final data = apiDataHandler(response);
 
-      final InvoiceModel invoiceModel = InvoiceModel.fromJson(data);
+      final InvoiceModel invoiceModel = InvoiceModel.fromJson(data[0]);
 
       return Right(invoiceModel);
     } on BaseAppException catch (e) {

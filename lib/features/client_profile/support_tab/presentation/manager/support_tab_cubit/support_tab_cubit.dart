@@ -1,11 +1,11 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/participate_enum.dart';
-import '../../../../../../model/calendar/event_model.dart';
 import '../../../../../../model/invoiceModel.dart';
 import '../../../domain/use_cases/add_date_install_usecase.dart';
 import '../../../domain/use_cases/get_invoice_by_client_usecase.dart';
@@ -29,7 +29,6 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   ) : super(SupportTabState());
 
   List<InvoiceModel> listinvoiceClientSupport = [];
-  List<InvoiceModel> listinvoiceClient = [];
   List<InvoiceModel> listinvoices = [];
 
   /* Methods */
@@ -83,35 +82,6 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     });
   }
 
-  updateListInvoiceAfterMarkEventIsDone(EventModel event) {
-    emit(state.copyWith(setDateDoneStatus: StateStatus.loading));
-    final invoice = listinvoiceClientSupport.firstWhereOrNull((element) {
-      return element.idInvoice == event.idinvoice;
-    });
-
-    if (invoice == null) {
-      emit(state.copyWith(
-        setDateDoneStatus: StateStatus.failure,
-        setDateDoneMessage: 'Invoice not found',
-      ));
-      return;
-    }
-
-    List<DateInstallationClient> list = invoice.datesInstallationClient ?? [];
-    list
-        .map((date) => date.idClientsDate == event.idClientsDate
-            ? date.copyWith(isDone: IsDoneDateEnum.done.index.toString())
-            : date)
-        .toList();
-
-    invoice.datesInstallationClient = list;
-    listinvoiceClientSupport = listinvoiceClientSupport
-        .map((e) => e.idInvoice == invoice.idInvoice ? invoice : e)
-        .toList();
-
-    emit(state.copyWith(setDateDoneStatus: StateStatus.success));
-  }
-
   Future<bool> setDateDone(
     SetDateDoneParams setDateDoneParams,
   ) async {
@@ -124,53 +94,34 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       ));
       return false;
     }, (r) {
-      _updateInvoicesList(setDateDoneParams, r);
+      _updateInvoicesList(setDateDoneParams.id_invoice, r);
 
       emit(state.copyWith(setDateDoneStatus: StateStatus.success));
       return true;
     });
   }
 
-  void _updateInvoicesList(
-      SetDateDoneParams setDateDoneParams, InvoiceModel r) {
-    int index1 = listinvoiceClientSupport.indexWhere(
-        (element) => element.idInvoice == setDateDoneParams.id_invoice);
-    if (index1 != -1) listinvoiceClientSupport[index1] = r;
-  }
-
-  Future<void> set_ready_install(
-      SetReadyInstallParams setReadyInstallParams) async {
-    emit(state.copyWith(setDateDoneStatus: StateStatus.loading));
-    int index = listinvoices.indexWhere(
-        (element) => element.idInvoice == setReadyInstallParams.id_invoice);
-    int index1 = listinvoiceClientSupport.indexWhere(
-        (element) => element.idInvoice == setReadyInstallParams.id_invoice);
-
-    InvoiceModel inv = await setReady_install(setReadyInstallParams);
-    if (index != -1) listinvoices[index] = inv;
-    if (index1 != -1) listinvoiceClientSupport[index1] = inv;
-    emit(state.copyWith(setDateDoneStatus: StateStatus.success));
-  }
-
-  Future<List<InvoiceModel>> getinvoicebyclient(
-    GetInvoiceByClientParams getInvoiceByClientParams,
-  ) async {
-    final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
-    return result.fold((l) {
-      throw l;
-    }, (r) {
-      return r;
-    });
-  }
-
-  Future<InvoiceModel> setReady_install(
+  Future<void> setReadyInstall(
     SetReadyInstallParams setReadyInstallParams,
   ) async {
+    emit(state.copyWith(setReadyInstallStatus: StateStatus.loading));
+
     final result = await _setReadyInstallUsecase(setReadyInstallParams);
-    return result.fold((l) {
-      throw l;
+    result.fold((l) {
+      emit(state.copyWith(
+        setReadyInstallStatus: StateStatus.failure,
+        setReadyInstallMessage: l,
+      ));
     }, (r) {
-      return r;
+      _updateInvoicesList(setReadyInstallParams.id_invoice, r);
+
+      emit(state.copyWith(setReadyInstallStatus: StateStatus.success));
     });
+  }
+
+  void _updateInvoicesList(String idInvoice, InvoiceModel r) {
+    int index1 = listinvoiceClientSupport
+        .indexWhere((element) => element.idInvoice == idInvoice);
+    if (index1 != -1) listinvoiceClientSupport[index1] = r;
   }
 }
