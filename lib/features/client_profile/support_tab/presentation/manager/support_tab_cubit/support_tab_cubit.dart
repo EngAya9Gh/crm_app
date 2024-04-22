@@ -8,6 +8,7 @@ import '../../../../../../core/common/enums/enums.dart';
 import '../../../../../../core/common/enums/participate_enum.dart';
 import '../../../../../../model/calendar/event_model.dart';
 import '../../../../../../model/invoiceModel.dart';
+import '../../../domain/use_cases/add_date_install_usecase.dart';
 import '../../../domain/use_cases/get_invoice_by_client_usecase.dart';
 import '../../../domain/use_cases/set_date_done_usecase.dart';
 import '../../../domain/use_cases/set_ready_install_usecase.dart';
@@ -17,11 +18,13 @@ part 'support_tab_state.dart';
 @injectable
 class SupportTabCubit extends Cubit<SupportTabState> {
   final GetInvoiceByClientUsecase _getInvoiceByClientUsecase;
+  final AddDateInstallUsecase _addDateInstallUsecase;
   final SetDateDoneUsecase _setDateDoneUsecase;
   final SetReadyInstallUsecase _setReadyInstallUsecase;
 
   SupportTabCubit(
     this._getInvoiceByClientUsecase,
+    this._addDateInstallUsecase,
     this._setDateDoneUsecase,
     this._setReadyInstallUsecase,
   ) : super(SupportTabInitial());
@@ -60,32 +63,19 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     }
   }
 
-  // Future<void> addDateInstall({
-  //   required String id_invoice,
-  //   required String date_client_visit,
-  //   required String date_end,
-  //   required String fk_user,
-  //   required String fk_client,
-  //   required String type_date,
-  //   required ValueChanged<dynamic> onSuccess,
-  // }) async {
-  //   isloadingdone = true;
-  //   notifyListeners();
-  //
-  //   final data = await Invoice_Service().addDateInstall(
-  //     id_invoice: id_invoice,
-  //     date_client_visit: date_client_visit,
-  //     date_end: date_end,
-  //     fk_user: fk_user,
-  //     fk_client: fk_client,
-  //     type_date: type_date,
-  //   );
-  //
-  //   onSuccess.call(data);
-  //
-  //   isloadingdone = false;
-  //   notifyListeners();
-  // }
+  Future<void> addDateInstall(AddDateInstallParams addDateInstallParams) async {
+    emit(SupportTabLoading());
+
+    final result = await _addDateInstallUsecase(addDateInstallParams);
+
+    result.fold((l) {
+      emit(SupportTabError(l));
+    }, (r) {
+      emit(SupportTabLoaded());
+    });
+
+    emit(SupportTabLoaded());
+  }
 
   updateListInvoiceAfterMarkEventIsDone(EventModel event) {
     emit(SupportTabLoading());

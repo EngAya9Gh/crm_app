@@ -29,9 +29,6 @@ class NewSupportViewInvoices extends StatelessWidget {
           body: ListView.builder(
             itemCount: supportTabCubit.listinvoiceClientSupport.length,
             itemBuilder: (context, index) {
-              print(
-                  "id => ${supportTabCubit.listinvoiceClientSupport[index].idInvoice}");
-              print("item client => ${itemClient.idClients}");
               return SupportAdd(
                 idInvoice:
                     supportTabCubit.listinvoiceClientSupport[index].idInvoice,

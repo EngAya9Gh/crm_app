@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import 'package:crm_smart/features/client_profile/support_tab/domain/use_cases/set_date_done_usecase.dart';
 import 'package:crm_smart/features/client_profile/support_tab/domain/use_cases/set_ready_install_usecase.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -30,5 +31,10 @@ class SupportTabRepoImpl implements SupportTabRepo {
   Future<Either<String, InvoiceModel>> setReadyInstall(
       SetReadyInstallParams params) {
     return _supportTabDataSource.setReadyInstall(params);
+  }
+
+  @override
+  Future<Either<String, dynamic>> addDateInstall(AddDateInstallParams params) {
+    return _supportTabDataSource.addDateInstall(params);
   }
 }

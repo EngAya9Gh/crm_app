@@ -7,6 +7,7 @@ import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
 import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
+import 'package:crm_smart/features/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import 'package:crm_smart/features/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/calendar/event_model.dart';
@@ -63,6 +64,7 @@ class _SupportAddState extends State<SupportAdd> {
   TextEditingController _timeController = TextEditingController();
   TextEditingController _endtimeController = TextEditingController();
   late PrivilegeCubit _privilegeCubit;
+  late final SupportTabCubit supportTabCubit;
 
   late InvoiceModel? _invoice = null;
   String? fk_client;
@@ -90,6 +92,7 @@ class _SupportAddState extends State<SupportAdd> {
 
   @override
   void initState() {
+    supportTabCubit = context.read<SupportTabCubit>();
     _eventProvider = context.read<EventProvider>();
     _privilegeCubit = getIt<PrivilegeCubit>();
     clientsListBloc = context.read<ClientsListBloc>();
@@ -359,46 +362,83 @@ class _SupportAddState extends State<SupportAdd> {
                                 endTime.hour,
                                 endTime.minute);
 
-                            Provider.of<invoice_vm>(context, listen: false)
-                                .addDateInstall(
-                                  id_invoice: _invoice!.idInvoice!,
-                                  fk_client: widget.idClient!,
-                                  fk_user: iduser,
-                                  date_client_visit: datetask.toString(),
-                                  date_end: date_end.toString(),
-                                  type_date: Value_installation_type!,
-                                  onSuccess: (value) {
-                                    DateTime temp = datetask.hour >= 21
-                                        ? datetask.subtract(Duration(hours: 3))
-                                        : datetask;
+                            await supportTabCubit
+                                .addDateInstall(AddDateInstallParams(
+                              idInvoice: _invoice!.idInvoice,
+                              fkUser: iduser,
+                              dateClientVisit: datetask.toString(),
+                              dateEnd: date_end.toString(),
+                              typeDate: Value_installation_type!,
+                            ));
 
-                                    final event = EventModel(
-                                      fkIdClient: widget.idClient!,
-                                      idinvoice: _invoice!.idInvoice!,
-                                      title: _invoice!.name_enterprise!,
-                                      description: "description",
-                                      from: temp,
-                                      to: temp.add(Duration(hours: 2)),
-                                      typedate: '',
-                                    );
+                            DateTime temp = datetask.hour >= 21
+                                ? datetask.subtract(Duration(hours: 3))
+                                : datetask;
 
-                                    _eventProvider.addEvent(event);
+                            final event = EventModel(
+                              fkIdClient: widget.idClient!,
+                              idinvoice: _invoice!.idInvoice!,
+                              title: _invoice!.name_enterprise!,
+                              description: "description",
+                              from: temp,
+                              to: temp.add(Duration(hours: 2)),
+                              typedate: '',
+                            );
 
-                                    clear();
+                            _eventProvider.addEvent(event);
 
-                                    datesInstallation
-                                        .add(DateInstallationClient(
-                                      dateClientVisit: datetask,
-                                      fkUser: iduser,
-                                      fkClient: widget.idClient,
-                                      isDone: '0',
-                                      fkInvoice: _invoice!.idInvoice,
-                                    ));
+                            clear();
 
-                                    setState(() {});
-                                  },
-                                )
-                                .then((value) {});
+                            datesInstallation.add(DateInstallationClient(
+                              dateClientVisit: datetask,
+                              fkUser: iduser,
+                              fkClient: widget.idClient,
+                              isDone: '0',
+                              fkInvoice: _invoice!.idInvoice,
+                            ));
+
+                            setState(() {});
+
+                            // Provider.of<invoice_vm>(context, listen: false)
+                            //     .addDateInstall(
+                            //       id_invoice: _invoice!.idInvoice!,
+                            //       fk_client: widget.idClient!,
+                            //       fk_user: iduser,
+                            //       date_client_visit: datetask.toString(),
+                            //       date_end: date_end.toString(),
+                            //       type_date: Value_installation_type!,
+                            //       onSuccess: (value) {
+                            //         DateTime temp = datetask.hour >= 21
+                            //             ? datetask.subtract(Duration(hours: 3))
+                            //             : datetask;
+                            //
+                            //         final event = EventModel(
+                            //           fkIdClient: widget.idClient!,
+                            //           idinvoice: _invoice!.idInvoice!,
+                            //           title: _invoice!.name_enterprise!,
+                            //           description: "description",
+                            //           from: temp,
+                            //           to: temp.add(Duration(hours: 2)),
+                            //           typedate: '',
+                            //         );
+                            //
+                            //         _eventProvider.addEvent(event);
+                            //
+                            //         clear();
+                            //
+                            //         datesInstallation
+                            //             .add(DateInstallationClient(
+                            //           dateClientVisit: datetask,
+                            //           fkUser: iduser,
+                            //           fkClient: widget.idClient,
+                            //           isDone: '0',
+                            //           fkInvoice: _invoice!.idInvoice,
+                            //         ));
+                            //
+                            //         setState(() {});
+                            //       },
+                            //     )
+                            //     .then((value) {});
                             _currentDate = DateTime(1, 1, 1);
                             selectedTime = TimeOfDay(hour: -1, minute: 00);
                           }
@@ -1407,12 +1447,11 @@ class _SupportAddState extends State<SupportAdd> {
     _currentDate = DateTime.now();
 
     endTime = TimeOfDay(hour: -1, minute: 00);
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
+    if (context.mounted)
+      Provider.of<datetime_vm>(context, listen: false)
+          .setdatetimevalue(DateTime(1, 1, 1), TimeOfDay(hour: -1, minute: 00));
     selectInstallationType = null;
     Value_installation_type = null;
-    // setState(() {
-    //  });
   }
 
   clear2() {
