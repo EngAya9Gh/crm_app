@@ -52,6 +52,7 @@ class _NewSupportAddState extends State<NewSupportAdd> {
   String? Value_installation_type = null;
   late final invoice_vm invoiceVm;
   late final ClientsListBloc clientsListBloc;
+  DateInstallationClient? nextInstallation;
 
   @override
   void dispose() {
@@ -76,6 +77,11 @@ class _NewSupportAddState extends State<NewSupportAdd> {
     datesInstallation = List<DateInstallationClient>.of(
         _invoice?.datesInstallationClient ?? []);
 
+    final listDates = List<DateInstallationClient>.of(datesInstallation);
+    listDates.sort((a, b) => a.dateClientVisit!.compareTo(b.dateClientVisit!));
+    nextInstallation = listDates.firstWhereOrNull(
+        (element) => element.isDone == "0" || element.isDone == '3');
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       clientsListBloc
           .add(GetClientSupportFilesEvent(GetClientSupportFilesParams(
@@ -90,11 +96,6 @@ class _NewSupportAddState extends State<NewSupportAdd> {
 
   @override
   Widget build(BuildContext context) {
-    final listDates = List<DateInstallationClient>.of(datesInstallation);
-    listDates.sort((a, b) => a.dateClientVisit!.compareTo(b.dateClientVisit!));
-    final nextInstallation = listDates.firstWhereOrNull(
-        (element) => element.isDone == "0" || element.isDone == '3');
-
     return SafeArea(
       child: Directionality(
         textDirection: TextDirection.rtl,

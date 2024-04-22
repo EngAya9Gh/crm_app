@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -45,26 +43,21 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       emit(state.copyWith(getInvoiceByClientStatus: StateStatus.success));
       return;
     }
-    try {
-      final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
-      result.fold((l) {
-        emit(state.copyWith(
-          getInvoiceByClientStatus: StateStatus.failure,
-          getInvoiceByClientMessage: l,
-        ));
-      }, (r) {
-        listinvoiceClientSupport = r.where((element) {
-          return element.fkIdClient == getInvoiceByClientParams.idClient &&
-              element.isApprove != null;
-        }).toList();
-        emit(state.copyWith(getInvoiceByClientStatus: StateStatus.success));
-      });
-    } catch (e) {
+    final result = await _getInvoiceByClientUsecase(getInvoiceByClientParams);
+    result.fold((l) {
       emit(state.copyWith(
         getInvoiceByClientStatus: StateStatus.failure,
-        getInvoiceByClientMessage: e.toString(),
+        getInvoiceByClientMessage: l,
       ));
-    }
+    }, (r) {
+      listinvoiceClientSupport = r.where((element) {
+        return element.fkIdClient == getInvoiceByClientParams.idClient &&
+            element.isApprove != null;
+      }).toList();
+      emit(state.copyWith(
+        getInvoiceByClientStatus: StateStatus.success,
+      ));
+    });
   }
 
   Future<void> addDateInstall(AddDateInstallParams addDateInstallParams) async {
@@ -78,7 +71,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         addDateInstallMessage: l,
       ));
     }, (r) {
-      emit(state.copyWith(addDateInstallStatus: StateStatus.success));
+      emit(state.copyWith(
+        addDateInstallStatus: StateStatus.success,
+      ));
     });
   }
 
@@ -96,7 +91,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     }, (r) {
       _updateInvoicesList(setDateDoneParams.id_invoice, r);
 
-      emit(state.copyWith(setDateDoneStatus: StateStatus.success));
+      emit(state.copyWith(
+        setDateDoneStatus: StateStatus.success,
+      ));
       return true;
     });
   }
@@ -115,7 +112,9 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     }, (r) {
       _updateInvoicesList(setReadyInstallParams.id_invoice, r);
 
-      emit(state.copyWith(setReadyInstallStatus: StateStatus.success));
+      emit(state.copyWith(
+        setReadyInstallStatus: StateStatus.success,
+      ));
     });
   }
 
@@ -123,5 +122,6 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     int index1 = listinvoiceClientSupport
         .indexWhere((element) => element.idInvoice == idInvoice);
     if (index1 != -1) listinvoiceClientSupport[index1] = r;
+    emit(state.copyWith(refreshUi: state.refreshUi + 1));
   }
 }

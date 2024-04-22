@@ -40,88 +40,90 @@ class _CustomDoneInstallButtonState extends State<CustomDoneInstallButton> {
   Widget build(BuildContext context) {
     final supportTabCubit = context.read<SupportTabCubit>();
     return AppElevatedButton(
-        onPressed: () async {
-          if (widget.invoiceModel!.ready_install == '0') {
-            AppConstants.showSnakeBar(context, 'العميل غير جاهز للتركيب');
-          }
-          await showDialog(
-            context: context,
-            builder: (context) {
-              return Directionality(
-                textDirection: TextDirection.rtl,
-                child: AlertDialog(
-                  title: Text('التأكيد'),
-                  content: Text('هل تريد تأكيد عملية التركيب'),
-                  actions: <Widget>[
-                    ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width * 0.8,
-                      ),
-                      child: Form(
-                        key: formKey,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              width: 600,
-                            ),
-                            EditTextFormField(
-                              maxline: 4,
-                              paddcustom: EdgeInsets.all(10),
-                              hintText: ' يوزر العميل',
-                              obscureText: false,
-                              controller: nameUserClient,
-                              vaildator: HelperFunctions.instance.requiredFiled,
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: AppElevatedButton(
-                                    onPressed: () => AppNavigator.pop(),
-                                    child: Text('لا'),
-                                  ),
+      isDisabled: widget.invoiceModel!.ready_install == '0',
+      text: 'تم التركيب للعميل',
+      onPressed: () async {
+        if (widget.invoiceModel!.ready_install == '0') {
+          AppConstants.showSnakeBar(context, 'العميل غير جاهز للتركيب');
+          return;
+        }
+        await showDialog(
+          context: context,
+          builder: (context) {
+            return Directionality(
+              textDirection: TextDirection.rtl,
+              child: AlertDialog(
+                title: Text('التأكيد'),
+                content: Text('هل تريد تأكيد عملية التركيب'),
+                actions: <Widget>[
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width * 0.8,
+                    ),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 600,
+                          ),
+                          EditTextFormField(
+                            maxline: 4,
+                            paddcustom: EdgeInsets.all(10),
+                            hintText: ' يوزر العميل',
+                            obscureText: false,
+                            controller: nameUserClient,
+                            vaildator: HelperFunctions.instance.requiredFiled,
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Expanded(
+                                child: AppElevatedButton(
+                                  onPressed: () => AppNavigator.pop(),
+                                  child: Text('لا'),
                                 ),
-                                10.horizontalSpace,
-                                Expanded(
-                                  child: BlocBuilder<SupportTabCubit,
-                                      SupportTabState>(
-                                    builder: (context, state) {
-                                      return AppElevatedButton(
-                                        isLoading:
-                                            state.setDateDoneStatus.isLoading,
-                                        onPressed: () async {
-                                          if (!formKey.currentState!
-                                              .validate()) {
-                                            return;
-                                          }
-                                          await supportTabCubit
-                                              .setDateDone(SetDateDoneParams(
-                                            id_invoice:
-                                                widget.invoiceModel!.idInvoice!,
-                                            clientusername: nameUserClient.text,
-                                          ));
-                                          nameUserClient.clear();
-                                          AppNavigator.pop();
-                                        },
-                                        child: Text('نعم'),
-                                      );
-                                    },
-                                  ),
+                              ),
+                              10.horizontalSpace,
+                              Expanded(
+                                child: BlocBuilder<SupportTabCubit,
+                                    SupportTabState>(
+                                  builder: (context, state) {
+                                    return AppElevatedButton(
+                                      isLoading:
+                                          state.setDateDoneStatus.isLoading,
+                                      onPressed: () async {
+                                        if (!formKey.currentState!.validate()) {
+                                          return;
+                                        }
+                                        await supportTabCubit
+                                            .setDateDone(SetDateDoneParams(
+                                          id_invoice:
+                                              widget.invoiceModel!.idInvoice!,
+                                          clientusername: nameUserClient.text,
+                                        ));
+                                        nameUserClient.clear();
+                                        AppNavigator.pop();
+                                      },
+                                      child: Text('نعم'),
+                                    );
+                                  },
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-        child: Text('تم التركيب للعميل'));
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
   @override

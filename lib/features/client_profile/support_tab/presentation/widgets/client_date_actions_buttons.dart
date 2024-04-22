@@ -9,6 +9,7 @@ import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../app/presentation/widgets/app_elvated_button.dart';
 import 'custom_done_install_button.dart';
 
 class ClientDateActionsButtons extends StatelessWidget {
@@ -23,16 +24,13 @@ class ClientDateActionsButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     final PrivilegeCubit _privilegeCubit = context.read<PrivilegeCubit>();
     return BlocBuilder<SupportTabCubit, SupportTabState>(
-      buildWhen: (previous, current) => previous.refreshUi != current.refreshUi,
       builder: (context, state) {
         return Column(
           key: UniqueKey(),
           children: [
             if (context.read<PrivilegeCubit>().checkPrivilege('43') &&
                 invoiceModel.dateinstall_done == null) ...[
-              CustomDoneInstallButton(
-                invoiceModel: invoiceModel,
-              )
+              CustomDoneInstallButton(invoiceModel: invoiceModel)
             ],
             if (invoiceModel.dateinstall_done == null) ...[
               Row(
@@ -42,13 +40,8 @@ class ClientDateActionsButtons extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 3.0),
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(kMainColor),
-                              foregroundColor: MaterialStateProperty.all(
-                                  context.colorScheme.white),
-                            ),
+                        child: AppElevatedButton(
+                            isDisabled: invoiceModel.ready_install == '0',
                             onPressed: invoiceModel.ready_install == '0'
                                 ? null
                                 : () async {

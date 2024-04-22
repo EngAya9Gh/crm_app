@@ -29,6 +29,9 @@ class NewSupportViewInvoices extends StatelessWidget {
           AppConstants.showSnakeBar(context, state.setReadyInstallMessage);
         }
       },
+      buildWhen: (previous, current) {
+        return current.refreshUi != previous.refreshUi;
+      },
       builder: (context, state) {
         if (state.getInvoiceByClientStatus == StateStatus.loading) {
           return CustomLoadingIndicator();
@@ -40,6 +43,7 @@ class NewSupportViewInvoices extends StatelessWidget {
         }
         return Scaffold(
           body: ListView.builder(
+            key: UniqueKey(),
             itemCount: supportTabCubit.listinvoiceClientSupport.length,
             itemBuilder: (context, index) {
               return NewSupportAdd(

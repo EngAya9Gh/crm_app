@@ -1,8 +1,6 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
-import 'package:crm_smart/core/config/theme/theme.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/client_profile/support_tab/domain/use_cases/set_ready_install_usecase.dart';
 import 'package:crm_smart/features/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
@@ -24,12 +22,8 @@ class SetReadyInstallDateButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 3),
-      child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(kMainColor),
-            foregroundColor:
-                MaterialStateProperty.all(context.colorScheme.white),
-          ),
+      child: AppElevatedButton(
+          isDisabled: invoiceModel.ready_install == '1',
           onPressed: invoiceModel.ready_install == '1'
               ? null
               : () async {

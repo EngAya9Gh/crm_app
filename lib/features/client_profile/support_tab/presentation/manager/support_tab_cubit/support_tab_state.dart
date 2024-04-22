@@ -39,7 +39,7 @@ class SupportTabState extends Equatable {
     String? setReadyInstallMessage,
   }) {
     return SupportTabState(
-      refreshUi: (this.refreshUi + 1) % 99999,
+      refreshUi: (refreshUi ?? this.refreshUi) % 99999,
       getInvoiceByClientStatus:
           getInvoiceByClientStatus ?? this.getInvoiceByClientStatus,
       getInvoiceByClientMessage:

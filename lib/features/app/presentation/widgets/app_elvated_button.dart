@@ -5,6 +5,7 @@ import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/ap
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../constants.dart';
 import '../../../../core/utils/theme_state.dart';
 import 'app_text.dart';
 
@@ -25,6 +26,7 @@ class AppElevatedButton extends StatefulWidget {
     this.appButtonStyle,
     this.textStyle,
     this.style,
+    this.isDisabled,
   }) : super(key: key);
 
   final Function()? onPressed;
@@ -36,6 +38,7 @@ class AppElevatedButton extends StatefulWidget {
   final ButtonStyle? style;
   final bool sensitiveNetwork;
   final TextStyle? textStyle;
+  final bool? isDisabled;
 
   @override
   State<AppElevatedButton> createState() => _AppElevatedButtonState();
@@ -46,9 +49,11 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
 
   bool get absorbing => widget.onDisabled != null ? false : widget.isLoading;
 
-  CrossFadeState get crossFadeState => widget.isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst;
+  CrossFadeState get crossFadeState =>
+      widget.isLoading ? CrossFadeState.showSecond : CrossFadeState.showFirst;
 
-  Function()? get onTap => widget.isLoading ? widget.onDisabled?.call() ?? () {} : widget.onPressed;
+  Function()? get onTap =>
+      widget.isLoading ? widget.onDisabled?.call() ?? () {} : widget.onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +69,26 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
 
     setButtonStyle();
 
+    ButtonStyle? finalTheme = (widget.style ?? _buttonTheme?.style);
+    if (widget.isDisabled == true) {
+      finalTheme = finalTheme?.copyWith(
+        backgroundColor: MaterialStateProperty.all(Colors.grey),
+      );
+    }
+
+    if (!widget.isLoading) {
+      finalTheme = finalTheme?.copyWith(
+        backgroundColor: MaterialStateProperty.all(kMainColor),
+        foregroundColor: MaterialStateProperty.all(context.colorScheme.white),
+      );
+    }
+
     final child = ElevatedButton(
       onPressed: onTap,
-      style: widget.style ?? _buttonTheme?.style,
+      style: widget.isDisabled != true
+          ? finalTheme
+          : finalTheme?.copyWith(
+              backgroundColor: MaterialStateProperty.all(Colors.grey)),
       child: AnimatedCrossFade(
         firstChild: firstChild,
         secondChild: secondChild,
@@ -74,10 +96,6 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
         crossFadeState: crossFadeState,
       ),
     );
-
-    // if (widget.sensitiveNetwork) {
-    //   return NetworkBlocSensitive(child: child);
-    // }
 
     return child;
   }
@@ -130,8 +148,8 @@ class _AppElevatedButtonState extends ThemeState<AppElevatedButton> {
 
     _buttonTheme = widget.isLoading
         ? loadingElevatedTheme
-        : widget.appButtonStyle == AppButtonStyle.secondary
+        : (widget.appButtonStyle == AppButtonStyle.secondary
             ? secondaryElevatedTheme
-            : defaultElevatedTheme;
+            : defaultElevatedTheme);
   }
 }
