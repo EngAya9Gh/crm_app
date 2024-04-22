@@ -422,12 +422,6 @@ class _NewSupportAddState extends State<NewSupportAdd> {
                                   .toString())
                           : Container(),
 
-                      // ///////
-                      CustomDoneInstallButton(
-                        invoiceModel: _invoice,
-                      ),
-
-                      //////////
                       if (_privilegeCubit.checkPrivilege('43') &&
                           _invoice!.dateinstall_done == null) ...[
                         CustomDoneInstallButton(
