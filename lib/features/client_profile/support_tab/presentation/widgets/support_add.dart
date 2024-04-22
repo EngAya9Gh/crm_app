@@ -210,27 +210,25 @@ class _NewSupportAddState extends State<NewSupportAdd> {
                       //   onDeleteFileAttach: (FileAttach value) {},
                       // ),
                       SizedBox(height: 20),
-                      _privilegeCubit.checkPrivilege('42')
-                          // ? _invoice!.dateinstall_task != null && _invoice!.dateinstall_done == null
-                          ? ElevatedButton(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(kMainColor)),
-                              onPressed: () async {
-                                await showDialog<void>(
-                                    context: context,
-                                    builder: (context) => AddDateDialog(
-                                          list_installation_type:
-                                              list_installation_type,
-                                          invoiceModel: _invoice!,
-                                          idClient: widget.idClient!,
-                                          datesInstallation: datesInstallation,
-                                        ));
-                              },
-                              child: Text('إضافة موعد التركيب والتدريب'),
-                            )
-                          // : Container()
-                          : Container(),
+                      if (_privilegeCubit.checkPrivilege('42')) ...[
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(kMainColor)),
+                          onPressed: () async {
+                            await showDialog<void>(
+                                context: context,
+                                builder: (context) => AddDateDialog(
+                                      list_installation_type:
+                                          list_installation_type,
+                                      invoiceModel: _invoice!,
+                                      idClient: widget.idClient!,
+                                      datesInstallation: datesInstallation,
+                                    ));
+                          },
+                          child: Text('إضافة موعد التركيب والتدريب'),
+                        )
+                      ],
 
                       SizedBox(height: 20),
                       _invoice!.dateinstall_done == null

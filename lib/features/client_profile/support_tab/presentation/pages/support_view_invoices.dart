@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/common/enums/enums.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
-import 'support_add.dart';
+import '../widgets/support_add.dart';
 
 class NewSupportViewInvoices extends StatelessWidget {
   final ClientModel1 itemClient;

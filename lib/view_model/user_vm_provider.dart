@@ -99,13 +99,16 @@ class UserProvider extends ChangeNotifier {
 
   late String? selectedValueUser = null;
 
-  void changeValUserID(String? val) {
+  void changeValUserID(String? val, [bool? isInit]) {
     if (val == null || val == "null") {
       selectedValueUser = null;
     } else {
       selectedValueUser = val;
     }
     changevalueuser(allUsers.firstWhere((element) => element.idUser == val));
+    if (isInit == true) {
+      return;
+    }
     notifyListeners();
   }
 

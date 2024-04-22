@@ -1,6 +1,8 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
 import 'package:crm_smart/features/client_profile/support_tab/domain/use_cases/add_date_install_usecase.dart';
 import 'package:crm_smart/features/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
@@ -9,13 +11,13 @@ import 'package:crm_smart/model/calendar/event_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
-import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../view_model/invoice_vm.dart';
+import '../../../../../core/common/enums/enums.dart';
 
 class AddDateDialog extends StatefulWidget {
   const AddDateDialog({
@@ -45,6 +47,9 @@ class _AddDateDialogState extends State<AddDateDialog> {
   String? Value_installation_type;
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _endtimeController = TextEditingController();
+  DateTime valuedateTime = DateTime(1, 1, 1);
+  TimeOfDay? selectedStartTime;
+  TimeOfDay? selectedEndTime;
 
   @override
   void initState() {
@@ -56,268 +61,243 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
   @override
   Widget build(BuildContext context) {
+    // the box that receive min width is >>
     return SimpleDialog(
-        titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
+        titlePadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        contentPadding: EdgeInsets.all(15),
         title: Center(
             child: Text('إضافة موعد جديد',
-                style: TextStyle(fontFamily: kfontfamily2))),
+                style: TextStyle(
+                  fontFamily: kfontfamily2,
+                ))),
         children: [
           StatefulBuilder(
-            builder:
-                (BuildContext context, void Function(void Function()) refresh) {
+            builder: (context, refresh) {
               selectedTime == TimeOfDay(hour: -1, minute: 00);
               endTime == TimeOfDay(hour: -1, minute: 00);
               return Directionality(
                 textDirection: myui.TextDirection.rtl,
-                child: Form(
-                  key: _globalKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.date_range,
-                            color: kMainColor,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width * 0.7,
+                  ),
+                  child: Form(
+                    key: _globalKey,
+                    child: Column(
+                      children: [
+                        TextFormField(
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range,
+                              color: kMainColor,
+                            ),
+                            hintStyle: const TextStyle(
+                                color: Colors.black45,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                            hintText: valuedateTime == DateTime(1, 1, 1)
+                                ? 'تعيين التاريخ'
+                                : DateFormat('yyyy-MM-dd')
+                                    .format(valuedateTime),
+                            filled: true,
+                            fillColor: Colors.grey.shade200,
                           ),
-                          hintStyle: const TextStyle(
-                              color: Colors.black45,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                          hintText:
-                              Provider.of<datetime_vm>(context, listen: true)
-                                          .valuedateTime ==
-                                      DateTime(1, 1, 1)
-                                  ? 'تعيين التاريخ' //_currentDate.toString()
-                                  : DateFormat('yyyy-MM-dd').format(
-                                      Provider.of<datetime_vm>(context,
-                                              listen: true)
-                                          .valuedateTime,
-                                    ),
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
+                          readOnly: true,
+                          onTap: () async {
+                            await _selectDate(context);
+                            if (context.mounted) refresh(() {});
+                          },
+                          validator: (value) {
+                            if (_currentDate == DateTime(1, 1, 1)) {
+                              return 'يرجى تعيين التاريخ ';
+                            }
+                            return null;
+                          },
                         ),
-                        readOnly: true,
-                        onTap: () {
-                          refresh(() {
-                            _selectDate(context);
-                          });
-                        },
-                        validator: (value) {
-                          if (_currentDate == DateTime(1, 1, 1)) {
-                            return 'يرجى تعيين التاريخ ';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Flexible(
-                            child: TextFormField(
-                              validator: (value) {
-                                if (selectedTime ==
-                                    TimeOfDay(hour: -1, minute: 00)) {
-                                  return 'يرجى تعيين الوقت ';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                  color: kMainColor,
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (selectedTime ==
+                                      TimeOfDay(hour: -1, minute: 00)) {
+                                    return 'يرجى تعيين الوقت ';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.date_range,
+                                    color: kMainColor,
+                                  ),
+                                  hintStyle: const TextStyle(
+                                      color: Colors.black45,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  hintText: selectedStartTime == null
+                                      ? 'بداية الزيارة'
+                                      : selectedStartTime!.minute.toString() +
+                                          ' : ' +
+                                          selectedStartTime!.hour
+                                              .toInt()
+                                              .toString(),
+                                  //_invoice!.dateinstall_task.toString(),
+                                  filled: true,
+                                  fillColor: Colors.grey.shade200,
                                 ),
-                                hintStyle: const TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                hintText: Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedStartTime ==
-                                        null
-                                    ? 'بداية الزيارة'
-                                    : Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedStartTime!
-                                            .minute
-                                            .toString() +
-                                        ' : ' +
-                                        Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedStartTime!
-                                            .hour
-                                            .toInt()
-                                            .toString(),
-                                //_invoice!.dateinstall_task.toString(),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
+                                readOnly: true,
+                                onTap: () {
+                                  refresh(() {
+                                    _selectStartTime(context);
+                                  });
+                                },
                               ),
-                              readOnly: true,
-                              onTap: () {
-                                refresh(() {
-                                  _selectStartTime(context);
-                                });
-                              },
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: TextFormField(
-                              validator: (value) {
-                                if (endTime ==
-                                    TimeOfDay(hour: -1, minute: 00)) {
-                                  return 'يرجى تعيين الوقت ';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                  color: kMainColor,
+                            SizedBox(width: 10),
+                            Flexible(
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (endTime ==
+                                      TimeOfDay(hour: -1, minute: 00)) {
+                                    return 'يرجى تعيين الوقت ';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(
+                                    Icons.date_range,
+                                    color: kMainColor,
+                                  ),
+                                  hintStyle: const TextStyle(
+                                      color: Colors.black45,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
+                                  hintText: selectedEndTime == null
+                                      ? 'نهاية الزيارة ' //_currentDate.toString()
+                                      : selectedEndTime!.minute.toString() +
+                                          ' : ' +
+                                          selectedEndTime!.hour
+                                              .toInt()
+                                              .toString(),
+                                  //_invoice!.dateinstall_task.toString(),
+                                  filled: true,
+                                  fillColor: Colors.grey.shade200,
                                 ),
-                                hintStyle: const TextStyle(
-                                    color: Colors.black45,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                                hintText: Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedEndTime ==
-                                        null
-                                    ? 'نهاية الزيارة ' //_currentDate.toString()
-                                    : Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedEndTime!
-                                            .minute
-                                            .toString() +
-                                        ' : ' +
-                                        Provider.of<datetime_vm>(context,
-                                                listen: true)
-                                            .selectedEndTime!
-                                            .hour
-                                            .toInt()
-                                            .toString(),
-                                //_invoice!.dateinstall_task.toString(),
-                                filled: true,
-                                fillColor: Colors.grey.shade200,
+                                // / controller: _timeController,
+                                readOnly: true,
+                                onTap: () {
+                                  refresh(() {
+                                    _selectEndTime(context);
+                                  });
+                                },
                               ),
-                              // / controller: _timeController,
-                              readOnly: true,
-                              onTap: () {
-                                refresh(() {
-                                  _selectEndTime(context);
-                                });
-                              },
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      RowEdit(name: "نوع التركيب", des: '*'),
-                      DropdownButton<String>(
-                        isExpanded: true,
-                        hint: Text('نوع التركيب'),
-                        items: widget.list_installation_type.map((level_one) {
-                          return DropdownMenuItem(
-                            child: Text(level_one),
-                            value: level_one,
-                          );
-                        }).toList(),
-                        value: selectInstallationType,
-                        onChanged: (value) {
-                          setState(() {
+                          ],
+                        ),
+                        SizedBox(height: 15),
+                        RowEdit(name: "نوع التركيب", des: '*'),
+                        DropdownButton<String>(
+                          isExpanded: true,
+                          hint: Text('نوع التركيب'),
+                          items: widget.list_installation_type.map((level_one) {
+                            return DropdownMenuItem(
+                              child: Text(level_one),
+                              value: level_one,
+                            );
+                          }).toList(),
+                          value: selectInstallationType,
+                          onChanged: (value) {
                             selectInstallationType = value.toString();
                             Value_installation_type = value.toString();
-                          });
-                          Provider.of<datetime_vm>(context, listen: false)
-                              .refresh();
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      // Assign to
-                      RowEdit(name: "اسناد الي", des: '*'),
-                      TechSupportUsersDropDown(),
-                      SizedBox(height: 15),
-                      // save button
-                      AppElevatedButton(
-                        isLoading:
-                            Provider.of<invoice_vm>(context, listen: true)
-                                .isloadingdone,
-                        text: "حفظ",
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0)),
-                        ),
-                        onPressed: () async {
-                          if (Value_installation_type == null ||
-                              Value_installation_type!.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text('من فضلك اختر نوع التركيب ')));
-                            return;
-                          }
-                          if (_globalKey.currentState!.validate()) {
-                            Navigator.of(context, rootNavigator: true)
-                                .pop(false);
-                            _globalKey.currentState!.save();
-
-                            Provider.of<invoice_vm>(context, listen: false)
-                                .setisload();
-                            final startDate = _currentDate;
-                            DateTime datetask = DateTime(
-                                startDate.year,
-                                startDate.month,
-                                startDate.day,
-                                selectedTime.hour,
-                                selectedTime.minute);
-                            DateTime date_end = DateTime(
-                                startDate.year,
-                                startDate.month,
-                                startDate.day,
-                                endTime.hour,
-                                endTime.minute);
-
-                            await supportTabCubit
-                                .addDateInstall(AddDateInstallParams(
-                              idInvoice: widget.invoiceModel.idInvoice,
-                              fkUser: iduser,
-                              dateClientVisit: datetask.toString(),
-                              dateEnd: date_end.toString(),
-                              typeDate: Value_installation_type!,
-                            ));
-
-                            DateTime temp = datetask.hour >= 21
-                                ? datetask.subtract(Duration(hours: 3))
-                                : datetask;
-
-                            final event = EventModel(
-                              fkIdClient: widget.idClient,
-                              idinvoice: widget.invoiceModel.idInvoice!,
-                              title: widget.invoiceModel.name_enterprise!,
-                              description: "description",
-                              from: temp,
-                              to: temp.add(Duration(hours: 2)),
-                              typedate: '',
-                            );
-
-                            Provider.of<EventProvider>(context, listen: false)
-                                .addEvent(event);
-
-                            widget.datesInstallation.add(DateInstallationClient(
-                              dateClientVisit: datetask,
-                              fkUser: iduser,
-                              fkClient: widget.idClient,
-                              isDone: '0',
-                              fkInvoice: widget.invoiceModel.idInvoice,
-                            ));
-
                             setState(() {});
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        RowEdit(name: "اسناد الي", des: '*'),
+                        SizedBox(height: 10),
+                        TechSupportUsersDropDown(clear: true),
+                        SizedBox(height: 15),
+                        // save button
+                        BlocBuilder<SupportTabCubit, SupportTabState>(
+                          builder: (context, state) {
+                            return AppElevatedButton(
+                              isLoading: state.addDateInstallStatus.isLoading,
+                              text: "حفظ",
+                              onPressed: () async {
+                                if (Value_installation_type == null ||
+                                    Value_installation_type!.isEmpty) {
+                                  AppConstants.showSnakeBar(
+                                      context, 'من فضلك اختر نوع التركيب ');
+                                }
+                                if (_globalKey.currentState!.validate()) {
+                                  _globalKey.currentState!.save();
+                                  final startDate = _currentDate;
+                                  DateTime datetask = DateTime(
+                                      startDate.year,
+                                      startDate.month,
+                                      startDate.day,
+                                      selectedTime.hour,
+                                      selectedTime.minute);
+                                  DateTime date_end = DateTime(
+                                      startDate.year,
+                                      startDate.month,
+                                      startDate.day,
+                                      endTime.hour,
+                                      endTime.minute);
 
-                            _currentDate = DateTime(1, 1, 1);
-                            selectedTime = TimeOfDay(hour: -1, minute: 00);
-                          }
-                        },
-                      ),
-                    ],
+                                  await supportTabCubit
+                                      .addDateInstall(AddDateInstallParams(
+                                    idInvoice: widget.invoiceModel.idInvoice,
+                                    fkUser: iduser,
+                                    dateClientVisit: datetask.toString(),
+                                    dateEnd: date_end.toString(),
+                                    typeDate: Value_installation_type!,
+                                  ));
+
+                                  DateTime temp = datetask.hour >= 21
+                                      ? datetask.subtract(Duration(hours: 3))
+                                      : datetask;
+
+                                  final event = EventModel(
+                                    fkIdClient: widget.idClient,
+                                    idinvoice: widget.invoiceModel.idInvoice!,
+                                    title: widget.invoiceModel.name_enterprise!,
+                                    description: "description",
+                                    from: temp,
+                                    to: temp.add(Duration(hours: 2)),
+                                    typedate: '',
+                                  );
+
+                                  if (context.mounted) {
+                                    Provider.of<EventProvider>(context,
+                                            listen: false)
+                                        .addEvent(event);
+                                  }
+
+                                  widget.datesInstallation
+                                      .add(DateInstallationClient(
+                                    dateClientVisit: datetask,
+                                    fkUser: iduser,
+                                    fkClient: widget.idClient,
+                                    isDone: '0',
+                                    fkInvoice: widget.invoiceModel.idInvoice,
+                                  ));
+
+                                  setState(() {});
+
+                                  _currentDate = DateTime(1, 1, 1);
+                                  selectedTime =
+                                      TimeOfDay(hour: -1, minute: 00);
+                                  AppNavigator.pop();
+                                }
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -334,7 +314,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
     if (picked == null) return;
 
-    if (context.read<datetime_vm>().selectedEndTime != null) {
+    if (selectedEndTime != null) {
       final startTime = DateTime(
         _currentDate.year,
         _currentDate.month,
@@ -348,8 +328,8 @@ class _AddDateDialogState extends State<AddDateDialog> {
         _currentDate.year,
         _currentDate.month,
         _currentDate.day,
-        context.read<datetime_vm>().selectedEndTime!.hour,
-        context.read<datetime_vm>().selectedEndTime!.minute,
+        selectedEndTime!.hour,
+        selectedEndTime!.minute,
       );
 
       if (startTime.isAfter(endTime)) {
@@ -368,8 +348,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
       _timeController.text = _time;
       _timeController.text = selectedTime.toString();
     });
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(_currentDate, selectedTime);
+    setdatetimevalue(_currentDate, selectedTime);
   }
 
   Future<Null> _selectEndTime(BuildContext context) async {
@@ -380,7 +359,7 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
     if (picked == null) return;
 
-    if (context.read<datetime_vm>().selectedStartTime != null) {
+    if (selectedStartTime != null) {
       final endDate = DateTime(
         _currentDate.year,
         _currentDate.month,
@@ -393,8 +372,8 @@ class _AddDateDialogState extends State<AddDateDialog> {
         _currentDate.year,
         _currentDate.month,
         _currentDate.day,
-        context.read<datetime_vm>().selectedStartTime!.hour,
-        context.read<datetime_vm>().selectedStartTime!.minute,
+        selectedStartTime!.hour,
+        selectedStartTime!.minute,
       );
 
       if (startTime.isAfter(endDate)) {
@@ -412,9 +391,8 @@ class _AddDateDialogState extends State<AddDateDialog> {
       final _time = _hour + ' : ' + _minute;
       _endtimeController.text = _time;
       _endtimeController.text = endTime.toString();
+      selectedEndTime = endTime;
     });
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalueEnd(_currentDate, endTime);
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -431,14 +409,25 @@ class _AddDateDialogState extends State<AddDateDialog> {
 
       _currentDate.add(Duration(hours: DateTime.now().hour));
     });
-    Provider.of<datetime_vm>(context, listen: false)
-        .setdatetimevalue(_currentDate, null);
+    setdatetimevalue(_currentDate, null);
+  }
+
+  void setdatetimevalue(DateTime val, TimeOfDay? timeday) {
+    valuedateTime = val;
+    selectedStartTime = timeday;
+    setState(() {});
   }
 
   @override
   void dispose() {
     _timeController.dispose();
     _endtimeController.dispose();
+    valuedateTime = DateTime(1, 1, 1);
+    selectedTime = TimeOfDay(hour: -1, minute: 00);
+    selectedStartTime = null;
+    selectedEndTime = null;
+    selectInstallationType = widget.list_installation_type.first;
+    Value_installation_type = null;
     super.dispose();
   }
 }

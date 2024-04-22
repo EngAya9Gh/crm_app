@@ -42,31 +42,39 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        return Consumer2<UserProvider, EventProvider>(
-          builder: (context, user, event, child) {
-            return CustomSearchableDropDown<UserModel>(
-              hint: 'موظف الدعم الفني',
-              items: user.usersSupportManagement,
-              itemAsString: (u) => u!.userAsString(),
-              onChanged: (selectedUser) {
-                onSelectUser(selectedUser);
-              },
-              selectedItem: user.selectedUser,
-              filterFn: (user, filter) => user.getfilteruser(filter),
-              compareFn: (item, selectedItem) =>
-                  item.idUser == selectedItem.idUser,
-              validator: (value) {
-                if (value == null) {
-                  return 'يرجى اختيار موظف الدعم الفني';
-                }
-                return null;
-              },
-            );
-          },
-        );
+    return PopScope(
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          _clearUser(context);
+        }
       },
+      child: Builder(
+        builder: (context) {
+          return Consumer2<UserProvider, EventProvider>(
+            builder: (context, user, event, child) {
+              return CustomSearchableDropDown<UserModel>(
+                hint: 'موظف الدعم الفني',
+                items: user.usersSupportManagement,
+                itemAsString: (u) => u!.userAsString(),
+                onChanged: (selectedUser) {
+                  onSelectUser(selectedUser);
+                },
+                selectedItem: Provider.of<UserProvider>(context, listen: false)
+                    .selectedUser,
+                filterFn: (user, filter) => user.getfilteruser(filter),
+                compareFn: (item, selectedItem) =>
+                    item.idUser == selectedItem.idUser,
+                validator: (value) {
+                  if (value == null) {
+                    return 'يرجى اختيار موظف الدعم الفني';
+                  }
+                  return null;
+                },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -83,8 +91,6 @@ class _TechSupportUsersDropDownState extends State<TechSupportUsersDropDown> {
   }
 
   void _clearUser(BuildContext context) {
-    iduser = "";
-    eventProvider.onChangeFkUser(iduser, true);
     context.read<UserProvider>().changevalueuser(null, true);
   }
 }
