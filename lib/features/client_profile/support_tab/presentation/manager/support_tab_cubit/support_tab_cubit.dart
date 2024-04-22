@@ -124,12 +124,18 @@ class SupportTabCubit extends Cubit<SupportTabState> {
       ));
       return false;
     }, (r) {
-      listinvoiceClientSupport = listinvoiceClientSupport
-          .map((e) => e.idInvoice == r.idInvoice ? r : e)
-          .toList();
+      _updateInvoicesList(setDateDoneParams, r);
+
       emit(state.copyWith(setDateDoneStatus: StateStatus.success));
       return true;
     });
+  }
+
+  void _updateInvoicesList(
+      SetDateDoneParams setDateDoneParams, InvoiceModel r) {
+    int index1 = listinvoiceClientSupport.indexWhere(
+        (element) => element.idInvoice == setDateDoneParams.id_invoice);
+    if (index1 != -1) listinvoiceClientSupport[index1] = r;
   }
 
   Future<void> set_ready_install(

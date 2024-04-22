@@ -1,7 +1,6 @@
 import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/features/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/function_global.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/ui/screen/support/support_table.dart';
@@ -9,8 +8,6 @@ import 'package:crm_smart/ui/widgets/custom_widget/card_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
-import 'custom_done_install_button.dart';
 
 class ClientSupportCardDetails extends StatelessWidget {
   const ClientSupportCardDetails({
@@ -39,7 +36,7 @@ class ClientSupportCardDetails extends StatelessWidget {
       builder: (context, state) {
         return Column(
           children: [
-            if (invoiceModel!.dateinstall_done == null) ...[
+            if (invoiceModel!.dateinstall_done != null) ...[
               CardRow(
                   title: ' تاريخ التركيب ',
                   value: DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(
@@ -196,13 +193,6 @@ class ClientSupportCardDetails extends StatelessWidget {
                     title: ' قام بتعليق العميل ',
                     value: invoiceModel!.nameuser_notready_install.toString())
                 : Container(),
-
-            if (context.read<PrivilegeCubit>().checkPrivilege('43') &&
-                invoiceModel!.dateinstall_done == null) ...[
-              CustomDoneInstallButton(
-                invoiceModel: invoiceModel,
-              )
-            ],
           ],
         );
       },
