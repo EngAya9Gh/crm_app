@@ -115,6 +115,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
   Future<bool> setDateDone(
     SetDateDoneParams setDateDoneParams,
   ) async {
+    emit(state.copyWith(setDateDoneStatus: StateStatus.loading));
     final result = await _setDateDoneUsecase(setDateDoneParams);
     return result.fold((l) {
       emit(state.copyWith(

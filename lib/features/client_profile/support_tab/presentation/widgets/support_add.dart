@@ -48,7 +48,6 @@ class NewSupportAdd extends StatefulWidget {
 
 class _NewSupportAddState extends State<NewSupportAdd> {
   TextEditingController _textsupport = TextEditingController();
-  TextEditingController _textnameuserclient = TextEditingController();
   TextEditingController _timeController = TextEditingController();
   TextEditingController _endtimeController = TextEditingController();
   late PrivilegeCubit _privilegeCubit;
@@ -70,7 +69,6 @@ class _NewSupportAddState extends State<NewSupportAdd> {
   @override
   void dispose() {
     _textsupport.dispose();
-    _textnameuserclient.dispose();
     _timeController.dispose();
     _endtimeController.dispose();
     super.dispose();
@@ -426,7 +424,6 @@ class _NewSupportAddState extends State<NewSupportAdd> {
 
                       // ///////
                       CustomDoneInstallButton(
-                        nameUserClient: _textnameuserclient,
                         invoiceModel: _invoice,
                       ),
 
@@ -434,7 +431,6 @@ class _NewSupportAddState extends State<NewSupportAdd> {
                       if (_privilegeCubit.checkPrivilege('43') &&
                           _invoice!.dateinstall_done == null) ...[
                         CustomDoneInstallButton(
-                          nameUserClient: _textnameuserclient,
                           invoiceModel: _invoice,
                         )
                       ],

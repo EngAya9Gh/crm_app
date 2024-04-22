@@ -19,11 +19,11 @@ class NewSupportViewInvoices extends StatelessWidget {
     final SupportTabCubit supportTabCubit = context.read<SupportTabCubit>();
     return BlocConsumer<SupportTabCubit, SupportTabState>(
       listener: (context, state) {
-        if (state.getInvoiceByClientStatus == StateStatus.failure) {
+        if (state.getInvoiceByClientStatus.isFailed) {
           AppConstants.showSnakeBar(context, state.getInvoiceByClientMessage);
-        } else if (state.addDateInstallStatus == StateStatus.failure) {
+        } else if (state.addDateInstallStatus.isFailed) {
           AppConstants.showSnakeBar(context, state.addDateInstallMessage);
-        } else if (state.setDateDoneStatus == StateStatus.failure) {
+        } else if (state.setDateDoneStatus.isFailed) {
           AppConstants.showSnakeBar(context, state.setDateDoneMessage);
         }
       },
