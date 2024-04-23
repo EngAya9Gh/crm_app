@@ -34,6 +34,7 @@ class SetReadyInstallParams {
   final String? reason_notReady;
   final String? user_ready_install;
   final String? date_readyinstall;
+  final String? count_delay_ready;
 
   SetReadyInstallParams({
     required this.id_invoice,
@@ -49,6 +50,7 @@ class SetReadyInstallParams {
     this.reason_notReady,
     this.user_ready_install,
     this.date_readyinstall,
+    this.count_delay_ready,
   });
 
   Map<String, dynamic> toMap() {
@@ -68,6 +70,7 @@ class SetReadyInstallParams {
       if (reason_notReady != null) 'reason_notReady': reason_notReady,
       if (user_ready_install != null) 'user_ready_install': user_ready_install,
       if (date_readyinstall != null) 'date_readyinstall': date_readyinstall,
+      if (count_delay_ready != null) 'count_delay_ready': count_delay_ready,
     };
   }
 }
