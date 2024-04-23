@@ -87,7 +87,7 @@ class _Users {
   final allUsers = 'users/getUser.php';
   final addUser = 'users/addUser.php';
   final updateUser = 'users/updateuser_patch.php';
-  final getCurrentUser = 'users/getCurrentUser.php';
+  final getCurrentUser = 'returnCurrentUser';
 }
 
 class _Links {

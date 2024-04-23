@@ -213,7 +213,7 @@ class UserProvider extends ChangeNotifier {
   Future<UserModel?> getCurrentUser() async {
     try {
       ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.users.getCurrentUser,
       );
