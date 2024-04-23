@@ -1,4 +1,4 @@
-import '../core/common/enums/comment_type.dart';
+import '../core/common/enums/comment_type_enum.dart';
 import '../core/utils/end_points.dart';
 
 class CommentModel {
@@ -37,7 +37,7 @@ class CommentModel {
     imgImage = image;
     nameEnterprise = json['name_enterprise'];
     date_comment = json['date_comment'];
-    type_comment = json['type_comment'] ?? CommmentType.all.value;
+    type_comment = json['type_comment'] ?? CommentTypeEnum.all.value;
   }
 
   Map<String, dynamic> toJson() {

@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../core/services/di/di_container.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../helper/number_formatter.dart';
 import 'is_marketing_chekbox.dart';
 

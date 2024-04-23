@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/services/di/di_container.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class invoicesAcceptclient extends StatefulWidget {
   invoicesAcceptclient({Key? key}) : super(key: key);

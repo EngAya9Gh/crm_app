@@ -1,0 +1,126 @@
+import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/utils/app_constants.dart';
+import 'package:crm_smart/core/utils/app_navigator.dart';
+import 'package:crm_smart/features/app/presentation/widgets/app_elvated_button.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/domain/use_cases/set_ready_install_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/view_model/reason_suspend.dart';
+import 'package:crm_smart/view_model/user_vm_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
+
+class NotReadyAlertDialog extends StatefulWidget {
+  const NotReadyAlertDialog({
+    super.key,
+    required this.invoiceModel,
+    required this.typeReady,
+    required this.formKey,
+    required this.notesController,
+  });
+
+  final InvoiceModel invoiceModel;
+  final String typeReady;
+  final GlobalKey<FormState> formKey;
+  final TextEditingController notesController;
+
+  @override
+  State<NotReadyAlertDialog> createState() => _NotReadyAlertDialogState();
+}
+
+class _NotReadyAlertDialogState extends State<NotReadyAlertDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: AlertDialog(
+        title: Text('التأكيد'),
+        content: Text('هل تريد تحويل العميل إلى غير جاهز للتركيب '),
+        actions: <Widget>[
+          Column(
+            children: [
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => AppNavigator.pop(),
+                      child: Text('لا'),
+                    ),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: BlocBuilder<SupportTabCubit, SupportTabState>(
+                      buildWhen: (previous, current) =>
+                          previous.setReadyInstallStatus !=
+                          current.setReadyInstallStatus,
+                      builder: (context, state) {
+                        return AppElevatedButton(
+                          isLoading: state.setReadyInstallStatus.isLoading,
+                          onPressed: () async {
+                            final reason = Provider.of<reason_suspend>(
+                              context,
+                              listen: false,
+                            ).selectedValue_sales;
+
+                            if (reason?.isEmpty ?? true) {
+                              AppConstants.showSnakeBar(
+                                context,
+                                'من فضلك اختر سبب من القائمة ',
+                              );
+                              return;
+                            }
+
+                            if (!widget.formKey.currentState!.validate())
+                              return;
+
+                            final currentUser =
+                                context.read<UserProvider>().currentUser;
+
+                            final setReadyInstallParams = SetReadyInstallParams(
+                              id_invoice:
+                                  widget.invoiceModel.idInvoice.toString(),
+                              TypeReadyClient: 'notReady',
+                              notes_ready: widget.notesController.text,
+                              reason_notReady: reason,
+                              nameUser: currentUser.nameUser,
+                              date_temp:
+                                  widget.invoiceModel.date_not_readyinstall,
+                              date_ready_prev:
+                                  widget.invoiceModel.date_readyinstall,
+                              date_not_readyinstall: DateTime.now().toString(),
+                              user_not_ready_install: currentUser.idUser,
+                              ready_install: '0',
+                              count_delay_ready:
+                                  widget.invoiceModel.count_delay_ready,
+                            );
+
+                            await context
+                                .read<SupportTabCubit>()
+                                .setReadyInstall(setReadyInstallParams);
+
+                            widget.notesController.clear();
+                            AppNavigator.pop();
+                          },
+                          child: Text('نعم'),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    widget.notesController.dispose();
+    super.dispose();
+  }
+}

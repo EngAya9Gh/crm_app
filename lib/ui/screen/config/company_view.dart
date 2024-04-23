@@ -9,7 +9,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/config/theme/theme.dart';
-import '../../../features/company/presentation/pages/comment_company_page.dart';
+import '../../../features/sales/company/presentation/pages/comment_company_page.dart';
 import '../../../model/companyModel.dart';
 
 class company_view extends StatefulWidget {

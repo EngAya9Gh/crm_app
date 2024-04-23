@@ -20,7 +20,7 @@ import '../../../constants.dart';
 import '../../../core/common/helpers/check_sorage_permission.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/invoiceModel.dart';
 import '../../widgets/custom_widget/row_edit.dart';
 import '../../widgets/custom_widget/text_uitil.dart';

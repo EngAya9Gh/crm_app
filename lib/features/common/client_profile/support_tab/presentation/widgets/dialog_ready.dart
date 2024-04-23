@@ -1,0 +1,144 @@
+import 'package:crm_smart/constants.dart';
+import 'package:crm_smart/core/common/helpers/helper_functions.dart';
+import 'package:crm_smart/core/common/widgets/custom_loading_indicator.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/not_ready_alert_dialog.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/suspend_alert_dialog.dart';
+import 'package:crm_smart/model/invoiceModel.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/row_edit.dart';
+import 'package:crm_smart/ui/widgets/custom_widget/text_form.dart';
+import 'package:crm_smart/view_model/invoice_vm.dart';
+import 'package:crm_smart/view_model/reason_suspend.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+class DialogReady extends StatefulWidget {
+  const DialogReady({
+    required this.invoice,
+    required this.type_ready,
+    Key? key,
+  }) : super(key: key);
+  final String type_ready;
+  final InvoiceModel invoice;
+
+  @override
+  State<DialogReady> createState() => _DialogReadyState();
+}
+
+class _DialogReadyState extends State<DialogReady> {
+  String title = '';
+  String Value_sales = '';
+  bool isSuspend = false;
+
+  // late InvoiceModel _invoice;
+
+  @override
+  void initState() {
+    isSuspend = widget.type_ready == 'suspend';
+    super.initState();
+  }
+
+  final _globalKey = GlobalKey<FormState>();
+  final TextEditingController notesController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialog(
+      elevation: 0,
+      titlePadding: const EdgeInsets.fromLTRB(24.0, 1.0, 24.0, 10.0),
+      insetPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      contentPadding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      title: Center(
+          child: Text(title, style: TextStyle(fontFamily: kfontfamily2))),
+      children: [
+        Directionality(
+          textDirection: TextDirection.rtl,
+          child: StatefulBuilder(
+            builder: (BuildContext context,
+                void Function(void Function()) setState) {
+              return Form(
+                key: _globalKey,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: MediaQuery.of(context).size.width * 0.8,
+                  ),
+                  child: Column(
+                    children: [
+                      RowEdit(name: "تحديد الأسباب", des: '*'),
+                      isSuspend
+                          ? Consumer<reason_suspend>(
+                              builder: (context, cart, child) {
+                                return DropdownButton(
+                                  isExpanded: true,
+                                  hint: Text(''),
+                                  items:
+                                      cart.list_reason_suspend.map((level_one) {
+                                    return DropdownMenuItem(
+                                      child: Text(level_one),
+                                      value: level_one,
+                                    );
+                                  }).toList(),
+                                  value: cart.selectedValuemanag,
+                                  onChanged: (value) {
+                                    cart.changevalue(value.toString());
+                                    Value_sales = value.toString();
+                                  },
+                                );
+                              },
+                            )
+                          : Consumer<reason_suspend>(
+                              builder: (context, cart, child) {
+                                return DropdownButton(
+                                  isExpanded: true,
+                                  hint: Text(''),
+                                  items:
+                                      cart.list_reason_sales.map((level_one) {
+                                    return DropdownMenuItem(
+                                      child: Text(level_one),
+                                      value: level_one,
+                                    );
+                                  }).toList(),
+                                  value: cart.selectedValue_sales,
+                                  onChanged: (value) {
+                                    cart.changevalue_sales(value.toString());
+                                    Value_sales = value.toString();
+                                  },
+                                );
+                              },
+                            ),
+                      SizedBox(height: 3),
+                      EditTextFormField(
+                        controller: notesController,
+                        vaildator: HelperFunctions.instance.requiredFiled,
+                        hintText: "الملاحظات*",
+                        paddcustom: EdgeInsets.all(8),
+                        maxline: 5,
+                      ),
+                      Consumer<invoice_vm>(
+                        builder: (context, value, child) {
+                          if (value.isloading) return CustomLoadingIndicator();
+                          return isSuspend
+                              ? SuspendAlertDialog(
+                                  invoiceModel: widget.invoice,
+                                  typeReady: widget.type_ready,
+                                  formKey: _globalKey,
+                                  notesController: notesController,
+                                )
+                              : NotReadyAlertDialog(
+                                  invoiceModel: widget.invoice,
+                                  typeReady: widget.type_ready,
+                                  formKey: _globalKey,
+                                  notesController: notesController,
+                                );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        )
+      ],
+    );
+  }
+}

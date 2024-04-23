@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/end_points.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'is_marketing_chekbox.dart';
 
 class DeptSales extends StatefulWidget {

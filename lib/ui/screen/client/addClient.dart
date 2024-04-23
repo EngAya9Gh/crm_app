@@ -3,7 +3,7 @@ import 'dart:ui' as myui;
 import 'package:crm_smart/core/common/models/page_state/page_state.dart';
 import 'package:crm_smart/core/utils/extensions/email_validation_ext.dart';
 import 'package:crm_smart/features/app/presentation/widgets/app_loader_widget/app_loader.dart';
-import 'package:crm_smart/features/clients_list/presentation/manager/clients_list_bloc.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
@@ -24,7 +24,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../constantsList.dart';
-import '../../../core/common/enums/activity_type_size.dart';
+import '../../../core/common/enums/activity_type_size_enum.dart';
 import '../../../core/common/helpers/helper_functions.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
@@ -67,7 +67,7 @@ class _addClientState extends State<addClient> {
 
   final TextEditingController regoinController = TextEditingController();
 
-  ActivitySizeType? _selectedActivitySizeType;
+  ActivitySizeTypeEnum? _selectedActivitySizeType;
   String? _selectedARecommendedClient;
   late final ClientsListBloc _clientsListBloc;
 
@@ -203,14 +203,14 @@ class _addClientState extends State<addClient> {
                     ),
                     SizedBox(height: 15),
                     RowEdit(name: 'حجم النشاط', des: '*'),
-                    DropdownButtonFormField<ActivitySizeType>(
+                    DropdownButtonFormField<ActivitySizeTypeEnum>(
                       decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide:
                                   BorderSide(width: 2, color: Colors.grey))),
                       isExpanded: true,
-                      items: ActivitySizeType.values.map((activitySize) {
+                      items: ActivitySizeTypeEnum.values.map((activitySize) {
                         return DropdownMenuItem(
                           child: Text(activitySize.value),
                           value: activitySize,

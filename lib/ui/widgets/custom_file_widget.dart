@@ -6,7 +6,7 @@ import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
-import '../../features/clients_list/data/models/client_support_file_model.dart';
+import '../../features/sales/clients_list/data/models/client_support_file_model.dart';
 
 class CustomFileWidget extends StatelessWidget {
   const CustomFileWidget({

@@ -1,5 +1,5 @@
 import 'package:crm_smart/features/clients_care/clients_tickets/presentation/pages/clients_tickets_page.dart';
-import 'package:crm_smart/features/communication_list/presentation/pages/communication_list_page.dart';
+import 'package:crm_smart/features/clients_care/communication_list/presentation/pages/communication_list_page.dart';
 import 'package:crm_smart/ui/screen/care/care_clientaccept.dart';
 import 'package:crm_smart/ui/screen/care/care_page_view.dart';
 import 'package:crm_smart/ui/screen/care/view_installed.dart';
@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 import '../../../../constants.dart';
 import '../../../../core/services/di/di_container.dart';
 import '../../../../core/utils/app_strings.dart';
-import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../widgethomeitem.dart';
 
 class carepage extends StatefulWidget {

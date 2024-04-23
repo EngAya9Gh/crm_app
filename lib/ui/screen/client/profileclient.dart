@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -17,11 +17,11 @@ import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants.dart';
 import '../../../core/common/enums/participate_enum.dart';
-import '../../../features/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
-import '../../../features/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
-import '../../../features/clients_list/presentation/widgets/client_section.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
 import '../../../model/calendar/event_model.dart';
 
 class ProfileClient extends StatefulWidget {

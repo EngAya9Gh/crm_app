@@ -10,7 +10,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
-import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 
 class communication_vm extends ChangeNotifier {
   List<CommunicationModel> listCommunication = [];

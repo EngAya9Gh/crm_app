@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'adduser.dart';
 
 class AllUserScreen extends StatefulWidget {

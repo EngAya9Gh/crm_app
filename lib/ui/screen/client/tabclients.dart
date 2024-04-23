@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import '../../../constants.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../core/services/di/di_container.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'addClient.dart';
 
 class tabclients extends StatefulWidget {

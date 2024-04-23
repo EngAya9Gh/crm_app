@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import '../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../core/config/theme/theme.dart';
 import '../../../core/services/di/di_container.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/calendar/event_model.dart';
 import '../../../view_model/datetime_vm.dart';
 import '../../widgets/custom_widget/row_edit.dart';

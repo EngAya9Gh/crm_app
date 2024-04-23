@@ -4,7 +4,7 @@ import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/UserService.dart';
 // import 'package:dartz/dartz.dart';

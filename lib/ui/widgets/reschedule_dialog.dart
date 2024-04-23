@@ -1,7 +1,7 @@
 import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/utils/app_navigator.dart';
-import 'package:crm_smart/features/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/widgets/tech_support_users_dropdown.dart';
 import 'package:crm_smart/view_model/datetime_vm.dart';
 import 'package:crm_smart/view_model/event_provider.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';

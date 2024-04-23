@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
-import '../../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../../../features/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
+import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../../features/mangement/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
 import '../../../client/agents_distributors_invoices_view.dart';
 
 class All_invoice_page extends StatefulWidget {

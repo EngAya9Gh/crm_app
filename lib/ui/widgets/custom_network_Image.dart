@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../constants.dart';
 import '../../core/utils/end_points.dart';
-import '../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../model/invoiceModel.dart';
 import '../../view_model/invoice_vm.dart';
 import 'fancy_image_shimmer_viewer.dart';

@@ -22,7 +22,7 @@ import 'package:open_file/open_file.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
-import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../helper/invoice_filter.dart';
 import '../model/agent_distributor_model.dart';
 import '../model/calendar/event_model.dart';

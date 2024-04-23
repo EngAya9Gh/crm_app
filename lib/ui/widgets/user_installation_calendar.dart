@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../core/utils/app_navigator.dart';
-import '../../features/manage_agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
+import '../../features/sales/public_relations/agents_and_distributors/presentation/pages/agent_distributor_profile_page.dart';
 import '../../view_model/invoice_vm.dart';
 import 'date_actions_buttons.dart';
 

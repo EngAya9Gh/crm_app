@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 import '../api/api.dart';
 import '../core/utils/end_points.dart';
-import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../model/lastCommentClientModel.dart';
 import '../model/usermodel.dart';
 
