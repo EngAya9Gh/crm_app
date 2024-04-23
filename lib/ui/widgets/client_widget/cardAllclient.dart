@@ -1,6 +1,6 @@
 import 'package:crm_smart/constants.dart';
 import 'package:crm_smart/core/utils/extensions/build_context.dart';
-import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart'
+import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart'
     as cl;
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/ui/screen/client/profileclient.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart' as intl;
 
-import '../../../features/clients_list/presentation/pages/action_client_page.dart';
+import '../../../features/sales/clients_list/presentation/pages/action_client_page.dart';
 import '../../../view_model/client_vm.dart';
 
 class CardAllClient extends StatelessWidget {

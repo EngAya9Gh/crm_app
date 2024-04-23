@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
-import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
@@ -14,20 +13,24 @@ import '../model/attachement_invoice_files.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
-  Future<List<InvoiceModel>> getinvoice(String fk_country) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/invoice/getinvoice.php?fk_country=$fk_country');
+  Future<List<InvoiceModel>> getInvoices(String fk_country) async {
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: EndPoints.invoice.getInvoices,
+      );
 
-    List<InvoiceModel> prodlist = [];
-    // final json = "[" + data[i] + "]";
-    for (int i = 0; i < data.length; i++) {
-      prodlist.add(InvoiceModel.fromJson(data[i]));
+      final data = apiDataHandler(response);
+
+      final List<InvoiceModel> invoices = List<InvoiceModel>.from(
+          (data ?? []).map((element) => InvoiceModel.fromJson(element)));
+
+      return invoices;
+    } catch (e) {
+      print("error is => $e");
+      rethrow;
     }
-    // List<InvoiceModel> invoices =
-    // await compute<List<dynamic>,
-    //     List<InvoiceModel>>(convertToInvoices, data);
-    return prodlist;
   }
 
   Future<List<InvoiceModel>> getinvoice_debt(
@@ -216,38 +219,6 @@ class Invoice_Service {
     return result;
   }
 
-  Future<InvoiceModel> setDateDone(
-      Map<String, dynamic> body, String id_invoice) async {
-    try {
-      final ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-      final response = await apiServices.post(
-        endPoint: "${EndPoints.invoice.setDateInstall}$id_invoice",
-        data: body,
-      );
-
-      final data = apiDataHandler(response);
-
-      return InvoiceModel.fromJson(data); //=="done"? true:false;
-    } on BaseAppException catch (e) {
-      print("error is => ${e.message}");
-      rethrow;
-    } catch (e) {
-      print("error is => $e");
-      rethrow;
-    }
-  }
-
-  Future<InvoiceModel> set_ready_install(
-      Map<String, dynamic> body, String id_invoice) async {
-    var result = await Api().post(
-        url: EndPoints.baseUrls.url +
-            "client/invoice/set_ready_install.php?id_invoice=$id_invoice",
-        body: body);
-    //client/setApproveClient.php
-    return InvoiceModel.fromJson(result[0]); //=="done"? true:false;
-  }
-
   Future<InvoiceModel> setstate(
       Map<String, dynamic> body, String id_invoice, File? file) async {
     var result = await Api().postRequestWithFile(
@@ -360,7 +331,7 @@ class Invoice_Service {
     return prodlist;
   }
 
-  Future<InvoiceModel> addInvoice(Map<String, dynamic?> body, File? file,
+  Future<InvoiceModel> addInvoice(Map<String, dynamic> body, File? file,
       File? filelogo, List<File> files) async {
     try {
       var data = await Api().postRequestWithFile(
@@ -411,14 +382,14 @@ class Invoice_Service {
     }
   }
 
-  Future<String> addInvoiceProduct(Map<String, dynamic?> body) async {
+  Future<String> addInvoiceProduct(Map<String, dynamic> body) async {
     try {
       String result = await Api().post(
           url: EndPoints.baseUrls.url + "client/invoice/addinvoice_product.php",
           body: body);
 
       return result != "error" ? result : "false";
-    } catch (e, st) {
+    } catch (e) {
       return "false";
     }
   }

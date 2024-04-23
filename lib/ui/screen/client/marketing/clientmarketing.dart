@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/clients_list/data/models/clients_list_response.dart'
+import 'package:crm_smart/features/sales/clients_list/data/models/clients_list_response.dart'
     as cl;
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/ui/screen/search/search_container.dart';
@@ -16,8 +16,8 @@ import '../../../../constants.dart';
 import '../../../../core/common/widgets/custom_searchable_dropdown.dart';
 import '../../../../core/config/theme/theme.dart';
 import '../../../../core/services/di/di_container.dart';
-import '../../../../features/clients_list/presentation/pages/action_client_page.dart';
-import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/sales/clients_list/presentation/pages/action_client_page.dart';
 import '../../../../model/ActivityModel.dart';
 import '../../../../model/clientmodel.dart';
 

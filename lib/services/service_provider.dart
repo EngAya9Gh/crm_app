@@ -41,10 +41,11 @@ import '../features/auth/login/presentation/manager/login_cubit/login_cubit.dart
 import '../features/clients_care/clients_tickets/presentation/manager/add_ticket_cubit/add_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 import '../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
-import '../features/clients_list/presentation/manager/clients_list_bloc.dart';
-import '../features/communication_list/presentation/manager/communication_list_bloc.dart';
-import '../features/manage_participates/presentation/manager/participate_list_bloc.dart';
-import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/clients_care/communication_list/presentation/manager/communication_list_bloc.dart';
+import '../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/sales/clients_list/presentation/manager/clients_list_bloc.dart';
+import '../features/sales/public_relations/participates/presentation/manager/participate_list_bloc.dart';
 import '../features/task_management/presentation/manager/task_cubit.dart';
 
 class ServiceProvider extends StatelessWidget {
@@ -67,6 +68,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<TicketsCubit>()),
         BlocProvider(create: (context) => getIt<AddTicketCubit>()),
         BlocProvider(create: (context) => getIt<EditTicketCubit>()),
+        BlocProvider(create: (context) => getIt<SupportTabCubit>()),
       ],
       /* Providers */
       child: MultiProvider(

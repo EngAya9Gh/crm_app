@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -5,11 +6,9 @@ import 'package:crm_smart/ui/screen/care/care_client_view.dart';
 import 'package:crm_smart/ui/screen/care/comment_view.dart';
 import 'package:crm_smart/ui/screen/home/ticket/ticketprofile.dart';
 import 'package:crm_smart/ui/screen/invoice/invoces.dart';
-import 'package:crm_smart/ui/screen/support/support_view_invoices.dart';
 import 'package:crm_smart/view_model/client_vm.dart';
 import 'package:crm_smart/view_model/comment.dart';
 import 'package:crm_smart/view_model/communication_vm.dart';
-import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +16,12 @@ import 'package:provider/provider.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 import '../../../constants.dart';
+import '../../../core/common/enums/participate_enum.dart';
 import '../../../features/clients_care/clients_tickets/presentation/manager/tickets_cubit/tickets_cubit.dart';
-import '../../../features/clients_list/presentation/widgets/client_section.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/common/client_profile/support_tab/domain/use_cases/get_invoice_by_client_usecase.dart';
+import '../../../features/common/client_profile/support_tab/presentation/pages/support_view_invoices.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/sales/clients_list/presentation/widgets/client_section.dart';
 import '../../../model/calendar/event_model.dart';
 
 class ProfileClient extends StatefulWidget {
@@ -51,6 +53,7 @@ class ProfileClient extends StatefulWidget {
 class _ProfileClientState extends State<ProfileClient>
     with TickerProviderStateMixin {
   late final TicketsCubit ticketsCubit;
+  late final SupportTabCubit supportTabCubit;
   late UserModel current;
 
   // late ClientModel _clientModel = ClientModel();
@@ -61,15 +64,22 @@ class _ProfileClientState extends State<ProfileClient>
   @override
   void initState() {
     ticketsCubit = context.read<TicketsCubit>();
+    supportTabCubit = context.read<SupportTabCubit>();
     indexTab = (widget.tabIndex == null ? 0 : widget.tabIndex)!;
     _currentTabIndex = ValueNotifier(0);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       Provider.of<comment_vm>(context, listen: false)
           .getComment(widget.idClient.toString());
 
-      Provider.of<invoice_vm>(context, listen: false)
-        ..get_invoiceclientlocal(widget.idClient, '')
-        ..get_invoiceclientlocal(widget.idClient, 'مشترك');
+      supportTabCubit.getClientInvoice(
+        getInvoiceByClientParams: GetInvoiceByClientParams(
+          idClient: widget.idClient.toString(),
+        ),
+        type: ParticipateEnum.participate,
+      );
+      // Provider.of<invoice_vm>(context, listen: false)
+      //   ..get_invoiceclientlocal(widget.idClient, '')
+      //   ..get_invoiceclientlocal(widget.idClient, 'مشترك');
 
       // Provider.of<communication_vm>(context, listen: false).getCommunicationall('');
 
@@ -227,7 +237,8 @@ class _ProfileClientState extends State<ProfileClient>
                               client: client,
                             ), //event: widget.event),
 
-                            support_view_invoices(itemClient: client),
+                            // SupportViewInvoices(itemClient: client),
+                            SupportViewInvoices(itemClient: client),
                             care_client_view(
                               fk_client: client.idClients.toString(),
                               tabCareIndex: widget.tabCareIndex,

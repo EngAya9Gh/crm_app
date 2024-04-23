@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../function_global.dart';
 
 class EditProduct extends StatefulWidget {

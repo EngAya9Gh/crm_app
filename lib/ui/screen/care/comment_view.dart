@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
-import '../../../core/common/enums/comment_type.dart';
+import '../../../core/common/enums/comment_type_enum.dart';
 import '../../../core/common/widgets/custom_loading_indicator.dart';
 import '../../../core/utils/app_strings.dart';
 import '../../../features/task_management/presentation/manager/task_cubit.dart';
@@ -31,9 +31,9 @@ class _commentViewState extends State<commentView> {
   final _globalKey = GlobalKey<FormState>();
 
   TextEditingController _comment = TextEditingController();
-  CommmentType? _previousSelectedCommentType;
-  CommmentType? _selectedCommentType;
-  CommmentType? _filterCommentType = CommmentType.all;
+  CommentTypeEnum? _previousSelectedCommentType;
+  CommentTypeEnum? _selectedCommentType;
+  CommentTypeEnum? _filterCommentType = CommentTypeEnum.all;
 
   @override
   void dispose() {
@@ -101,10 +101,10 @@ class _commentViewState extends State<commentView> {
                                       return AlertDialog(
                                         title: Text('نوع التعليق'),
                                         content: DropdownButtonFormField<
-                                            CommmentType>(
+                                            CommentTypeEnum>(
                                           decoration: InputDecoration(
                                               labelText: 'نوع التعليق'),
-                                          items: CommmentType.values
+                                          items: CommentTypeEnum.values
                                               .where((element) {
                                             return excludedTypes(element);
                                           }).map((activitySize) {
@@ -272,10 +272,10 @@ class _commentViewState extends State<commentView> {
 
               // comments filter
               SliverToBoxAdapter(
-                child: DropdownButtonFormField<CommmentType>(
+                child: DropdownButtonFormField<CommentTypeEnum>(
                   icon: Icon(Icons.filter_list),
                   decoration: InputDecoration(labelText: 'نوع التعليق'),
-                  items: CommmentType.values.map((activitySize) {
+                  items: CommentTypeEnum.values.map((activitySize) {
                     return DropdownMenuItem(
                       child: Text(activitySize.value),
                       value: activitySize,
@@ -338,11 +338,11 @@ class _commentViewState extends State<commentView> {
     );
   }
 
-  bool excludedTypes(CommmentType element) {
-    return element != CommmentType.all &&
-        element != CommmentType.notReady &&
-        element != CommmentType.suspend &&
-        element != CommmentType.excludeClient &&
-        element != CommmentType.reschedule;
+  bool excludedTypes(CommentTypeEnum element) {
+    return element != CommentTypeEnum.all &&
+        element != CommentTypeEnum.notReady &&
+        element != CommentTypeEnum.suspend &&
+        element != CommentTypeEnum.excludeClient &&
+        element != CommentTypeEnum.reschedule;
   }
 }

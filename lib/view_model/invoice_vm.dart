@@ -22,7 +22,7 @@ import 'package:open_file/open_file.dart';
 import '../core/common/helpers/check_sorage_permission.dart';
 import '../core/services/api/api_services.dart';
 import '../core/services/di/di_container.dart';
-import '../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../helper/invoice_filter.dart';
 import '../model/agent_distributor_model.dart';
 import '../model/calendar/event_model.dart';
@@ -350,7 +350,7 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'بالإنتظار') {
           if (regoin != '0') {
             listforme.forEach((element) {
-              if (element.isdoneinstall.toString() == null &&
+              if (element.isdoneinstall == null &&
                   element.fk_regoin == regoin &&
                   DateTime.parse(element.date_approve.toString())
                       .isAfter(from) &&
@@ -361,7 +361,7 @@ class invoice_vm extends ChangeNotifier {
             });
           } else {
             listforme.forEach((element) {
-              if (element.isdoneinstall.toString() == null &&
+              if (element.isdoneinstall == null &&
                   DateTime.parse(element.date_approve.toString())
                       .isAfter(from) &&
                   DateTime.parse(element.date_approve.toString())
@@ -437,7 +437,6 @@ class invoice_vm extends ChangeNotifier {
 
   Future<void> getinvoice_waiting() async {
     isloading = true;
-    String? state = null;
     listInvoicesAccept = await Invoice_Service().getinvoicemaincity(
         'client/invoice/getinvoicemaincity.php?fk_country=${usercurrent!.fkCountry.toString()}',
         {'allmaincity': 'allmaincity'});
@@ -514,14 +513,14 @@ class invoice_vm extends ChangeNotifier {
         if (filter == 'بالإنتظار') {
           if (regoin != '0') {
             listInvoicesAccept.forEach((element) {
-              if (element.isdoneinstall.toString() == null &&
+              if (element.isdoneinstall == null &&
                   element.id_maincity == regoin) {
                 _listInvoicesAccept.add(element);
               }
             });
           } else {
             listInvoicesAccept.forEach((element) {
-              if (element.isdoneinstall.toString() == null) {
+              if (element.isdoneinstall == null) {
                 _listInvoicesAccept.add(element);
               }
             });
@@ -736,7 +735,6 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<void> getinvoice_Debt(PrivilegeCubit privilegeCubit) async {
-    List<InvoiceModel> list = [];
     listInvoicesAccept = [];
     isloading = true;
     bool res = privilegeCubit.checkPrivilege('94');
@@ -850,7 +848,7 @@ class invoice_vm extends ChangeNotifier {
   bool isapproved = false;
 
   Future<bool> setApproveclient_vm(
-      Map<String, dynamic?> body, String? idInvoice) async {
+      Map<String, dynamic> body, String? idInvoice) async {
     isapproved = true;
     notifyListeners();
     InvoiceModel? data =
@@ -877,7 +875,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<bool> setApproveFclient_vm(
-      Map<String, dynamic?> body, String? idInvoice) async {
+      Map<String, dynamic> body, String? idInvoice) async {
     isapproved = true;
     notifyListeners();
     InvoiceModel? data =
@@ -991,7 +989,7 @@ class invoice_vm extends ChangeNotifier {
 
   Future<void> getinvoices() async {
     listinvoices =
-        await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
+        await Invoice_Service().getInvoices(usercurrent!.fkCountry.toString());
     listInvoicesAccept = List.from(listinvoices);
     notifyListeners();
   }
@@ -1025,8 +1023,8 @@ class invoice_vm extends ChangeNotifier {
     //main list
     bool res = privilegeCubit.checkPrivilege('1');
     if (res) {
-      listinvoices =
-          await Invoice_Service().getinvoice(usercurrent!.fkCountry.toString());
+      listinvoices = await Invoice_Service()
+          .getInvoices(usercurrent!.fkCountry.toString());
     } else {
       if (privilegeCubit.checkPrivilege('38') &&
           privilegeCubit.checkPrivilege('6'))
@@ -1126,7 +1124,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<String> add_invoiceclient_vm(
-    Map<String, dynamic?> body,
+    Map<String, dynamic> body,
     File? file,
     File? myfilelogo,
     List<File> files, {
@@ -1138,12 +1136,6 @@ class invoice_vm extends ChangeNotifier {
         await Invoice_Service().addInvoice(body, file, myfilelogo, []);
 
     // upload files and record image
-    final res1 = await _uploadFiles(
-      invoiceId: data.idInvoice!,
-      body: body,
-      file: file,
-      files: files,
-    );
 
     // fetch updated invoice
     final InvoiceModel newInvoice = await Invoice_Service()
@@ -1184,7 +1176,6 @@ class invoice_vm extends ChangeNotifier {
     try {
       if (attachFile.file != null) {
         if (!(await checkStoragePermission())) return;
-        final result = await OpenFile.open(attachFile.file!.path);
 
         return;
       }
@@ -1233,7 +1224,7 @@ class invoice_vm extends ChangeNotifier {
     }
   }
 
-  Future<String> add_invoiceProduct_vm(Map<String, dynamic?>? body) async {
+  Future<String> add_invoiceProduct_vm(Map<String, dynamic>? body) async {
     String res = await Invoice_Service().addInvoiceProduct(body!);
 
     if (res != "false") {
@@ -1247,7 +1238,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<bool> update_invoiceProduct_vm(
-      Map<String, dynamic?>? body, String idInvoiceProduct) async {
+      Map<String, dynamic>? body, String idInvoiceProduct) async {
     bool res =
         await Invoice_Service().updateProductInvoice(body!, idInvoiceProduct);
     //listproductinvoic.insert(0, ProductsInvoice.fromJson(body));
@@ -1256,7 +1247,7 @@ class invoice_vm extends ChangeNotifier {
     return res;
   }
 
-  Future<bool> update_invoiceclient_vm(Map<String, dynamic?> body,
+  Future<bool> update_invoiceclient_vm(Map<String, dynamic> body,
       String? idInvoice, File? file, File? myfilelogo, List<File> files) async {
     isloadingdone = true;
     notifyListeners();
@@ -1312,7 +1303,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   Future<bool> edit_invoice(
-      Map<String, dynamic?> body, String? idInvoice) async {
+      Map<String, dynamic> body, String? idInvoice) async {
     isloadingdone = true;
     notifyListeners();
     InvoiceModel data =
@@ -1344,8 +1335,7 @@ class invoice_vm extends ChangeNotifier {
     return true;
   }
 
-  Future<bool> add_payment(
-      Map<String, dynamic?> body, String? idInvoice) async {
+  Future<bool> add_payment(Map<String, dynamic> body, String? idInvoice) async {
     isloadingdone = true;
     notifyListeners();
     InvoiceModel data =
@@ -1396,33 +1386,6 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
     }
     return res;
-  }
-
-  Future<void> addDateInstall({
-    required String id_invoice,
-    required String date_client_visit,
-    required String date_end,
-    required String fk_user,
-    required String fk_client,
-    required String type_date,
-    required ValueChanged<dynamic> onSuccess,
-  }) async {
-    isloadingdone = true;
-    notifyListeners();
-
-    final data = await Invoice_Service().addDateInstall(
-      id_invoice: id_invoice,
-      date_client_visit: date_client_visit,
-      date_end: date_end,
-      fk_user: fk_user,
-      fk_client: fk_client,
-      type_date: type_date,
-    );
-
-    onSuccess.call(data);
-
-    isloadingdone = false;
-    notifyListeners();
   }
 
   Future<void> editSchedule_vm({
@@ -1527,46 +1490,6 @@ class invoice_vm extends ChangeNotifier {
   bool isloadingdone = false;
   bool isloadingRescheduleOrCancel = false;
 
-  Future<bool> setDateDoneVm(
-    Map<String, dynamic> body,
-    String? id_invoice,
-  ) async {
-    try {
-      isloadingdone = true;
-      notifyListeners();
-      int index =
-          listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-      int index1 = listinvoiceClientSupport
-          .indexWhere((element) => element.idInvoice == id_invoice);
-      InvoiceModel inv = await Invoice_Service().setDateDone(body, id_invoice!);
-      if (index != -1) listinvoices[index] = inv;
-      if (index1 != -1) listinvoiceClientSupport[index1] = inv;
-      isloadingdone = false;
-      notifyListeners();
-      return true;
-    } catch (e) {
-      isloadingdone = false;
-      notifyListeners();
-      return false;
-    }
-  }
-
-  Future<void> set_ready_install(
-      Map<String, dynamic?> body, String? id_invoice) async {
-    isloadingdone = true;
-    notifyListeners();
-    int index =
-        listinvoices.indexWhere((element) => element.idInvoice == id_invoice);
-    int index1 = listinvoiceClientSupport
-        .indexWhere((element) => element.idInvoice == id_invoice);
-    InvoiceModel inv =
-        await Invoice_Service().set_ready_install(body, id_invoice!);
-    if (index != -1) listinvoices[index] = inv;
-    if (index1 != -1) listinvoiceClientSupport[index1] = inv;
-    isloadingdone = false;
-    notifyListeners();
-  }
-
   Future<void> get_invoice_deleted() async {
     if (listdeletedinvoice.isEmpty)
       listdeletedinvoice = await Invoice_Service()
@@ -1592,7 +1515,7 @@ class invoice_vm extends ChangeNotifier {
       }
 
       final list = await Invoice_Service.getAgentsAndDistributors();
-      agentDistributorsState = agentDistributorsState.changeToLoaded(list!);
+      agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       notifyListeners();
       return;
     } catch (e) {
@@ -1655,7 +1578,6 @@ class invoice_vm extends ChangeNotifier {
       sellerStatus = SellerStatus.loading;
       notifyListeners();
 
-      final result = await getAgentsAndDistributors();
       if (agentDistributorsState.isSuccess) {
         sellerStatus = SellerStatus.loaded;
 
@@ -1688,7 +1610,6 @@ class invoice_vm extends ChangeNotifier {
     sellerStatus = SellerStatus.loading;
     notifyListeners();
 
-    final result = await getCollaborators();
     if (collaboratorsState.isSuccess) {
       sellerStatus = SellerStatus.loaded;
       if (invoice != null) {
@@ -1735,50 +1656,6 @@ class invoice_vm extends ChangeNotifier {
     selectedSellerType = SellerType.employee;
     agentDistributorsState = PageState();
     collaboratorsState = PageState();
-  }
-
-  uploadAttachedFile({
-    required String idInvoice,
-    required File file,
-    required VoidCallback onLoading,
-    required ValueChanged<String> onSuccess,
-    required VoidCallback onFailure,
-  }) async {
-    try {
-      onLoading();
-      var data = await Api().postRequestWithFile(
-          'array',
-          EndPoints.baseUrls.url + "client/invoice/add_attach_invoice.php",
-          {"id_invoice": idInvoice},
-          file,
-          null);
-
-      final invoice = InvoiceModel.fromJson(data[0]);
-      onSuccess(invoice.fileAttach ?? "");
-    } catch (e) {
-      onFailure();
-      notifyListeners();
-    }
-  }
-
-  deleteFile({
-    required String idInvoice,
-    required VoidCallback onLoading,
-    required VoidCallback onSuccess,
-    required VoidCallback onFailure,
-  }) async {
-    try {
-      onLoading();
-      var data = await Api().post(
-        url: EndPoints.baseUrls.url + "FilesInvoice/delete_file_attach.php",
-        body: {'id_invoice': idInvoice},
-      );
-
-      onSuccess();
-    } catch (e) {
-      onFailure();
-      notifyListeners();
-    }
   }
 
   List<InvoiceModel> listApproveFinanceFilter = [];
@@ -1897,7 +1774,7 @@ class invoice_vm extends ChangeNotifier {
             await Invoice_Service().getinvoicebyidInvoice(invoiceId);
         isLoadingCrudFiles = false;
         notifyListeners();
-        onFail?.call('error from backend  ' + data.error);
+        onFail.call('error from backend  ' + data.error);
       }
     } on Exception catch (e) {
       currentInvoice = await Invoice_Service().getinvoicebyidInvoice(invoiceId);
@@ -1906,7 +1783,7 @@ class invoice_vm extends ChangeNotifier {
       notifyListeners();
       print('exp  ' + e.runtimeType.toString());
 
-      onFail?.call('error from app  ' + e.runtimeType.toString());
+      onFail.call('error from app  ' + e.runtimeType.toString());
     }
   }
 }

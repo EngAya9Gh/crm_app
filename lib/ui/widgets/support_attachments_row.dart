@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/common/manager/attachments_row_cubit/attachments_row_cubit.dart';
 import '../../core/common/widgets/custom_error_widget.dart';
 import '../../core/common/widgets/custom_loading_indicator.dart';
-import '../../features/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
+import '../../features/sales/clients_list/domain/use_cases/get_client_support_files_usecase.dart';
 import '../../model/invoiceModel.dart';
 import 'custom_file_widget.dart';
 import 'custom_network_Image.dart';

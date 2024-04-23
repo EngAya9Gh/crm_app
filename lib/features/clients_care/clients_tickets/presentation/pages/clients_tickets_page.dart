@@ -6,7 +6,7 @@ import '../../../../../constants.dart';
 import '../../../../../core/utils/app_navigator.dart';
 import '../../../../../ui/screen/search/search_container.dart';
 import '../../../../../view_model/typeclient.dart';
-import '../../../../manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../manager/tickets_cubit/tickets_cubit.dart';
 import '../widgets/tickets_list.dart';
 import 'add_ticket_page.dart';

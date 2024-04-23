@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/common/widgets/custom_multi_selection_dropdown.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../model/maincitymodel.dart';
 import '../../../view_model/maincity_vm.dart';
 

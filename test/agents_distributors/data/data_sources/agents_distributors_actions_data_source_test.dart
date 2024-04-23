@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/data/models/agent_distributor_action_model.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/add_agent_usecase.dart';
-import 'package:crm_smart/features/manage_agents_and_distributors/domain/use_cases/update_agent_usecase.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/data_sources/remote_data_source/agents_distributors_actions_data_source.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/data/models/agent_distributor_action_model.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/add_agent_usecase.dart';
+import 'package:crm_smart/features/sales/public_relations/agents_and_distributors/domain/use_cases/update_agent_usecase.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';

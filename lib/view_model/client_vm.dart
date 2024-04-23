@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
 import 'package:crm_smart/model/usermodel.dart';
@@ -531,7 +531,7 @@ class ClientProvider extends ChangeNotifier {
     try {
       currentClientModel = currentClientModel.changeToLoading;
       notifyListeners();
-      inv = await ClientService().getclientid(idClient);
+      inv = await ClientService().getClientById(idClient);
       currentClientModel = currentClientModel.changeToLoaded(inv);
       onData?.call(inv);
       notifyListeners();
@@ -661,7 +661,7 @@ class ClientProvider extends ChangeNotifier {
       if (index != -1) listClientAccept[index] = data;
 
       // get_byIdClient(idClient.toString());
-      data = await ClientService().getclientid(idClient);
+      data = await ClientService().getClientById(idClient);
       // currentClientModel = currentClientModel.changeToLoading;
 
       // listClient.add(inv);

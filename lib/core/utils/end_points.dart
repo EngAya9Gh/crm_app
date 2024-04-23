@@ -87,7 +87,7 @@ class _Users {
   final allUsers = 'users/getUser.php';
   final addUser = 'users/addUser.php';
   final updateUser = 'users/updateuser_patch.php';
-  final getCurrentUser = 'users/getCurrentUser.php';
+  final getCurrentUser = 'returnCurrentUser';
 }
 
 class _Links {
@@ -152,11 +152,16 @@ class _Client {
   final editRejectReasons =
       "client/reason_client_reject/Edit_reasonRejectClient.php";
   final distinctiveClient = "star_client/get_client_star.php";
-  final transferClient =
-      "transferClient/"; //"client/set_fkuser_transfer.php?id_clients=";
+  final transferClient = "transferClient/";
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
   final String getTransferClientsWithPrivileges =
       "getTransferClientsWithPrivileges";
+
+  final String getInvoiceByIdClient =
+      "client/invoice/get_invoice_ByIdClient.php";
+
+  final String setReadyInstall = "client/invoice/set_ready_install.php";
+  final String getClientById = "getClientByID/";
 }
 
 class _Task {
@@ -209,6 +214,7 @@ class _AgentDistributor {
 class _Invoice {
   const _Invoice();
 
+  final String getInvoices = 'getInvoicesByPrivilages';
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
   final String crudFilesInvoice =
@@ -217,7 +223,6 @@ class _Invoice {
   final String getClientSupportFiles = 'getFilesInvoices';
   final String crudClientSupportFiles = 'InvoiceFiles';
 
-  //client/invoice/setdateinstall.php?id_invoice=
   final String setDateInstall = 'setDateInstall/';
   final String updateCommunication = 'updateCommunication';
   final String deleteInvoice = 'deleteInvoice/';

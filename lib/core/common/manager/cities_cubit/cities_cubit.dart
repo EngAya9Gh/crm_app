@@ -3,7 +3,7 @@ import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
 
-import '../../../../features/manage_agents_and_distributors/domain/use_cases/get_all_cities_usecase.dart';
+import '../../../../features/sales/public_relations/agents_and_distributors/domain/use_cases/get_all_cities_usecase.dart';
 import '../../../../model/maincitymodel.dart';
 
 part 'cities_state.dart';

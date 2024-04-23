@@ -32,8 +32,8 @@ import '../../../app/presentation/widgets/app_elvated_button.dart';
 import '../../../app/presentation/widgets/app_text_button.dart';
 import '../../../app/presentation/widgets/app_text_field.dart.dart';
 import '../../../app/presentation/widgets/smart_crm_app_bar/smart_crm_appbar.dart';
-import '../../../manage_privilege/presentation/manager/privilege_cubit.dart';
-import '../../../manage_users/presentation/manager/users_cubit.dart';
+import '../../../mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../mangement/manage_users/presentation/manager/users_cubit.dart';
 import '../../data/models/user_region_department.dart';
 import '../widgets/grouped_button.dart';
 

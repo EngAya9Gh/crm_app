@@ -4,7 +4,7 @@ import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
 import 'package:crm_smart/core/services/di/di_container.dart';
-import 'package:crm_smart/features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import 'package:crm_smart/features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:crm_smart/services/UserService.dart';
 // import 'package:dartz/dartz.dart';
@@ -99,13 +99,16 @@ class UserProvider extends ChangeNotifier {
 
   late String? selectedValueUser = null;
 
-  void changeValUserID(String? val) {
+  void changeValUserID(String? val, [bool? isInit]) {
     if (val == null || val == "null") {
       selectedValueUser = null;
     } else {
       selectedValueUser = val;
     }
     changevalueuser(allUsers.firstWhere((element) => element.idUser == val));
+    if (isInit == true) {
+      return;
+    }
     notifyListeners();
   }
 
@@ -210,7 +213,7 @@ class UserProvider extends ChangeNotifier {
   Future<UserModel?> getCurrentUser() async {
     try {
       ApiServices apiServices = getIt<ApiServices>();
-      apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
         endPoint: EndPoints.users.getCurrentUser,
       );

@@ -11,8 +11,8 @@ import '../../../../../ui/widgets/custom_widget/text_form.dart';
 import '../../../../../view_model/client_vm.dart';
 import '../../../../../view_model/user_vm_provider.dart';
 import '../../../../app/presentation/widgets/app_elvated_button.dart';
-import '../../../../clients_list/domain/use_cases/transfer_client_usecase.dart';
-import '../../../../clients_list/presentation/manager/clients_list_bloc.dart';
+import '../../../../sales/clients_list/domain/use_cases/transfer_client_usecase.dart';
+import '../../../../sales/clients_list/presentation/manager/clients_list_bloc.dart';
 import '../../domain/use_cases/transfer_ticket_usecase.dart';
 import '../manager/edit_ticket_cubit/edit_ticket_cubit.dart';
 

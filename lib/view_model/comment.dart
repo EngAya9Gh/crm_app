@@ -3,13 +3,13 @@ import 'package:crm_smart/model/commentmodel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
-import '../core/common/enums/comment_type.dart';
+import '../core/common/enums/comment_type_enum.dart';
 import '../core/utils/end_points.dart';
 
 class comment_vm extends ChangeNotifier {
   List<CommentModel> _allCommentsList = [];
   List<CommentModel> filteredComments = [];
-  CommmentType filterCommentType = CommmentType.all;
+  CommentTypeEnum filterCommentType = CommentTypeEnum.all;
   bool isloadadd = false;
   bool isLoading = false;
 
@@ -41,7 +41,7 @@ class comment_vm extends ChangeNotifier {
   }
 
   void filterCommentsByType(String type) {
-    if (type == CommmentType.all.value) {
+    if (type == CommentTypeEnum.all.value) {
       filteredComments = _allCommentsList;
       notifyListeners();
       return;

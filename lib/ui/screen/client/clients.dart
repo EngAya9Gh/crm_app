@@ -1,4 +1,4 @@
-import 'package:crm_smart/features/clients_list/presentation/widgets/client_section.dart';
+import 'package:crm_smart/features/sales/clients_list/presentation/widgets/client_section.dart';
 import 'package:crm_smart/model/clientmodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants.dart';
 import '../../../../features/clients_care/clients_tickets/data/models/ticket_model.dart';
-import '../../../../features/manage_privilege/presentation/manager/privilege_cubit.dart';
+import '../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../function_global.dart';
 
 class TicketView extends StatefulWidget {

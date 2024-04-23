@@ -1,8 +1,8 @@
 import 'package:crm_smart/model/maincitymodel.dart';
 
 import '../core/utils/end_points.dart';
-import '../features/manage_privilege/data/models/privilege_model.dart';
-import '../features/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
+import '../features/mangement/manage_privilege/data/models/privilege_model.dart';
+import '../features/mangement/manage_withdrawals/presentation/manager/manage_withdrawals_cubit.dart';
 
 class UserModel {
   String? idUser;
