@@ -19,8 +19,8 @@ import 'package:provider/provider.dart';
 import '../../../../../view_model/invoice_vm.dart';
 import 'add_date_dialog.dart';
 
-class NewSupportAdd extends StatefulWidget {
-  const NewSupportAdd({
+class SupportAdd extends StatefulWidget {
+  const SupportAdd({
     super.key,
     required this.idInvoice,
     required this.idClient,
@@ -30,10 +30,10 @@ class NewSupportAdd extends StatefulWidget {
   final String? idClient;
 
   @override
-  State<NewSupportAdd> createState() => _NewSupportAddState();
+  State<SupportAdd> createState() => _SupportAddState();
 }
 
-class _NewSupportAddState extends State<NewSupportAdd> {
+class _SupportAddState extends State<SupportAdd> {
   TextEditingController _textsupport = TextEditingController();
   TextEditingController _timeController = TextEditingController();
   TextEditingController _endtimeController = TextEditingController();

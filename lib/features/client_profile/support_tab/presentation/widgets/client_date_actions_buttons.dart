@@ -1,6 +1,3 @@
-import 'package:crm_smart/constants.dart';
-import 'package:crm_smart/core/config/theme/theme.dart';
-import 'package:crm_smart/core/utils/extensions/build_context.dart';
 import 'package:crm_smart/features/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
 import 'package:crm_smart/features/client_profile/support_tab/presentation/widgets/dialog_ready.dart';
 import 'package:crm_smart/features/client_profile/support_tab/presentation/widgets/set_ready_install_date_button.dart';
@@ -61,13 +58,8 @@ class ClientDateActionsButtons extends StatelessWidget {
                     Expanded(
                       child: Padding(
                         padding: const EdgeInsets.only(left: 3.0, right: 3),
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(kMainColor),
-                              foregroundColor: MaterialStateProperty.all(
-                                  context.colorScheme.white),
-                            ),
+                        child: AppElevatedButton(
+                            isDisabled: invoiceModel.ready_install == '0',
                             onPressed: invoiceModel.ready_install == '0'
                                 ? null
                                 : () async {

@@ -9,10 +9,10 @@ import '../../../../../core/common/enums/enums.dart';
 import '../manager/support_tab_cubit/support_tab_cubit.dart';
 import '../widgets/support_add.dart';
 
-class NewSupportViewInvoices extends StatelessWidget {
+class SupportViewInvoices extends StatelessWidget {
   final ClientModel1 itemClient;
 
-  const NewSupportViewInvoices({required this.itemClient});
+  const SupportViewInvoices({required this.itemClient});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class NewSupportViewInvoices extends StatelessWidget {
             key: UniqueKey(),
             itemCount: supportTabCubit.listinvoiceClientSupport.length,
             itemBuilder: (context, index) {
-              return NewSupportAdd(
+              return SupportAdd(
                 idInvoice:
                     supportTabCubit.listinvoiceClientSupport[index].idInvoice,
                 idClient: itemClient.idClients,
