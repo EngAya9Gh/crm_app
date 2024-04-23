@@ -325,14 +325,10 @@ class InvoiceModel extends CacheRepository {
     name_regoin_invoice = jsondata['name_regoin_invoice']?.toString();
     renew_agent = jsondata['renew_agent']?.toString();
 
-    participal = jsondata['participal_info'] == null
-        ? null
-        : getParticipateModel(jsondata['participal_info']);
-    agent_distibutor = jsondata['agent_distibutor_info'] == null
-        ? null
-        : getAgentDistributorModel(jsondata['agent_distibutor_info']);
+    participal = getParticipateModel(jsondata['participal_info']);
+    agent_distibutor =
+        getAgentDistributorModel(jsondata['agent_distibutor_info']);
     products = getproud(jsondata['products']);
-
     fileAttach = jsondata['file_attach']?.toString();
     file_reject = jsondata['file_reject']?.toString();
     approveBackDone = jsondata['approve_back_done']?.toString();
@@ -485,24 +481,22 @@ class InvoiceModel extends CacheRepository {
     return prodlist;
   }
 
-  ParticipateModel getParticipateModel(data) {
-    List<ParticipateModel> prodlist = [];
-    if (data != null) {
-      for (int i = 0; i < data.length; i++) {
-        prodlist.add(ParticipateModel.fromJson(data[i]));
-      }
+  ParticipateModel? getParticipateModel(data) {
+    if (data == null) return null;
+    if (data is List) {
+      return ParticipateModel.fromJson(data[0]);
     }
-    return prodlist[0];
+
+    return ParticipateModel.fromJson(data);
   }
 
-  AgentDistributorModel getAgentDistributorModel(data) {
-    List<AgentDistributorModel> prodlist = [];
-    if (data != null) {
-      for (int i = 0; i < data.length; i++) {
-        prodlist.add(AgentDistributorModel.fromJson(data[i]));
-      }
+  AgentDistributorModel? getAgentDistributorModel(data) {
+    if (data == null) return null;
+    if (data is List) {
+      return AgentDistributorModel.fromJson(data[0]);
     }
-    return prodlist[0];
+
+    return AgentDistributorModel.fromJson(data);
   }
 
   InvoiceModel copyWith({

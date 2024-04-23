@@ -152,8 +152,7 @@ class _Client {
   final editRejectReasons =
       "client/reason_client_reject/Edit_reasonRejectClient.php";
   final distinctiveClient = "star_client/get_client_star.php";
-  final transferClient =
-      "transferClient/"; //"client/set_fkuser_transfer.php?id_clients=";
+  final transferClient = "transferClient/";
   final String approveRefuseTransferClient = "approveOrRefuseTransferClient/";
   final String getTransferClientsWithPrivileges =
       "getTransferClientsWithPrivileges";
@@ -214,6 +213,7 @@ class _AgentDistributor {
 class _Invoice {
   const _Invoice();
 
+  final String getInvoices = 'getInvoicesByPrivilages';
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
   final String crudFilesInvoice =
@@ -222,7 +222,6 @@ class _Invoice {
   final String getClientSupportFiles = 'getFilesInvoices';
   final String crudClientSupportFiles = 'InvoiceFiles';
 
-  //client/invoice/setdateinstall.php?id_invoice=
   final String setDateInstall = 'setDateInstall/';
   final String updateCommunication = 'updateCommunication';
   final String deleteInvoice = 'deleteInvoice/';
