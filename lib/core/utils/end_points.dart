@@ -161,6 +161,7 @@ class _Client {
       "client/invoice/get_invoice_ByIdClient.php";
 
   final String setReadyInstall = "client/invoice/set_ready_install.php";
+  final String getClientById = "getClientByID/";
 }
 
 class _Task {

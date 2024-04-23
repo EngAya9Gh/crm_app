@@ -8,7 +8,7 @@ import '../core/services/di/di_container.dart';
 import '../core/utils/end_points.dart';
 
 class ClientService {
-  Future<ClientModel1> addClient(Map<String, dynamic?> body) async {
+  Future<ClientModel1> addClient(Map<String, dynamic> body) async {
     // try{
     var result = await Api()
         .post(url: EndPoints.baseUrls.url + "client/clientAdd.php", body: body);
@@ -48,7 +48,7 @@ class ClientService {
   }) async {
     ApiServices apiServices = getIt<ApiServices>();
     apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
-    final result = await apiServices.post(
+    await apiServices.post(
       endPoint: EndPoints.client.approveRefuseTransferClient,
       data: body,
     );
@@ -179,12 +179,19 @@ class ClientService {
     return prodlist;
   }
 
-  Future<ClientModel1> getclientid(String? id_clients) async {
-    var data = await Api().get(
-        url: EndPoints.baseUrls.url +
-            'client/getclientid.php?id_clients=$id_clients');
-
-    return ClientModel1.fromJson(data[0]);
+  Future<ClientModel1> getClientById(String? id_clients) async {
+    try {
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+      final response = await apiServices.get(
+        endPoint: "${EndPoints.client.getClientById}$id_clients",
+      );
+      final data = apiDataHandler(response);
+      return ClientModel1.fromJson(data);
+    } catch (e) {
+      print("error in getClientById is => $e");
+      rethrow;
+    }
   }
 
   Future<List<ClientModel1>> getAcceptClient(String? fkcountry) async {
