@@ -241,12 +241,12 @@ class InvoiceModel extends CacheRepository {
     imageRecord = jsondata['image_record'].toString().trim().isEmpty ||
             jsondata['image_record'] == null
         ? jsondata['image_record']
-        : EndPoints.baseUrls.urlFile + jsondata['image_record'];
+        : EndPoints.baseUrls.laravelInvoiceFiles + jsondata['image_record'];
 
     imagelogo = jsondata['imagelogo'].toString().trim().isEmpty ||
             jsondata['imagelogo'] == null
         ? jsondata['imagelogo']
-        : EndPoints.baseUrls.urlFileLogo + jsondata['imagelogo'];
+        : EndPoints.baseUrls.laravelInvoiceFiles + jsondata['imagelogo'];
 
     fkIdClient = jsondata['fk_idClient']?.toString();
     fkIdUser = jsondata['fk_idUser']?.toString();
@@ -483,20 +483,12 @@ class InvoiceModel extends CacheRepository {
 
   ParticipateModel? getParticipateModel(data) {
     if (data == null) return null;
-    if (data is List) {
-      return ParticipateModel.fromJson(data[0]);
-    }
-
-    return ParticipateModel.fromJson(data);
+    return ParticipateModel.fromJson(data[0]);
   }
 
   AgentDistributorModel? getAgentDistributorModel(data) {
     if (data == null) return null;
-    if (data is List) {
-      return AgentDistributorModel.fromJson(data[0]);
-    }
-
-    return AgentDistributorModel.fromJson(data);
+    return AgentDistributorModel.fromJson(data[0]);
   }
 
   InvoiceModel copyWith({
@@ -757,7 +749,6 @@ class ProductsInvoice extends CacheRepository {
     amount = json['amount'].toString();
     price = json['price'].toString();
     taxtotal = json['taxtotal'].toString();
-    ;
     rateAdmin = json['rate_admin'].toString();
     rateUser = json['rateUser'].toString();
     idProduct = json['id_product'].toString();

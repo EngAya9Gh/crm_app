@@ -45,6 +45,7 @@ class _BaseUrls {
   late final String urlFileLogo;
   late final String urlfileAgent;
   late final String laravelUrlImage;
+  late final String laravelInvoiceFiles;
 
   void init() {
     if (appMode == AppMode.production) {
@@ -55,6 +56,7 @@ class _BaseUrls {
       urlFileLogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/crm/api/imagesApp/agent/';
       laravelUrlImage = 'http://new.smartcrm.ws/storage/';
+      laravelInvoiceFiles = 'http://new.smartcrm.ws/storage/invoices/';
     } else {
       url = 'http://smartcrm.ws/test/api/';
       urlLaravel = 'http://test.smartcrm.ws/api/';
@@ -63,6 +65,7 @@ class _BaseUrls {
       urlFileLogo = 'http://smartcrm.ws/test/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/test/api/imagesApp/agent/';
       laravelUrlImage = 'http://test.smartcrm.ws/storage/';
+      laravelInvoiceFiles = 'http://test.smartcrm.ws/storage/';
     }
   }
 }
@@ -214,7 +217,8 @@ class _AgentDistributor {
 class _Invoice {
   const _Invoice();
 
-  final String getInvoices = 'getInvoicesByPrivilages';
+  final String getInvoices =
+      'getInvoicesByPrivilages?type_seller=1&fk_regoin_invoice=11&TypeReadyClient&from&to&search_query&fk_agent&participate_fk&fk_idUser';
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
   final String crudFilesInvoice =
@@ -226,6 +230,7 @@ class _Invoice {
   final String setDateInstall = 'setDateInstall/';
   final String updateCommunication = 'updateCommunication';
   final String deleteInvoice = 'deleteInvoice/';
+  final String addInvoice = 'addInvoice';
 }
 
 class _Tickets {

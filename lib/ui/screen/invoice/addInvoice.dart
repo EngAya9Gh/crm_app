@@ -1221,6 +1221,7 @@ class _AddInvoiceState extends State<AddInvoice> {
                     SizedBox(width: 20),
                     InvoiceImagesFiles(
                       onDeleteFileAttach: (value) {
+                        if (value.id == null) return;
                         deletedFiles.add(value.id!);
                       },
                     ),
@@ -1718,149 +1719,18 @@ class _AddInvoiceState extends State<AddInvoice> {
                                                 invoiceID.toString(), _products)
                                             : error(context));
                                   } else {
-                                    var body = {
-                                      "name_enterprise":
-                                          widget.itemClient.nameEnterprise,
-                                      "name_client": widget
-                                          .itemClient.nameClient
-                                          .toString(),
-                                      "nameUser": user.currentUser.nameUser,
-                                      "comment": comment.text,
-                                      //widget.itemClient.nameUser,
-                                      "renew_year":
-                                          renewController.text.toString(),
-                                      "renew2year":
-                                          renew2Controller.text.toString(),
-                                      "type_pay": typepayController,
-                                      "date_create": DateTime.now().toString(),
-                                      //formatter.format(_currentDate),
-                                      "type_installation":
-                                          typeinstallController.toString(),
-                                      "ready_install":
-                                          readyinstallController.toString(),
-                                      "currency_name":
-                                          currencyController.toString(),
+                                    Map<String, dynamic> body = _addInvoiceBody(
+                                      context: context,
+                                      deleteFilesMap: deleteFilesMap,
+                                      user: user,
+                                    );
 
-                                      "amount_paid":
-                                          amount_paidController.text.toString(),
-                                      "image_record":
-                                          recordCommercialImageNotifier
-                                                  .value?.path
-                                                  .toString() ??
-                                              '',
-                                      "fk_idClient": widget.itemClient.idClients
-                                          .toString(),
-                                      "fk_idUser": user.currentUser.idUser,
-                                      //the same user that create a client not current user
-                                      "total": totalController.toString(),
-                                      "notes": noteController.text.toString(),
-                                      'fk_regoin':
-                                          widget.itemClient.fkRegoin.toString(),
-                                      'fk_regoin_invoice':
-                                          user.currentUser.fkRegoin,
-                                      'region_invoice_name':
-                                          user.currentUser.nameRegoin,
-                                      'fkcountry': widget.itemClient.fkcountry
-                                          .toString(),
-                                      'numbarnch':
-                                          numbranchController.text.toString(),
-                                      'renew_pluse':
-                                          renewAdditionalOfBranchesController
-                                              .text
-                                              .toString(),
-                                      'nummostda':
-                                          nummostawdaController.text.toString(),
-                                      'numusers':
-                                          numuserController.text.toString(),
-                                      'address_invoice':
-                                          addressController.text.toString(),
-                                      'invoice_source': selectedInvoiceSource,
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                              SellerType.collaborator &&
-                                          invoiceViewmodel.selectedCollaborator
-                                                  ?.id_participate !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else if (invoiceViewmodel.selectedSellerType ==
-                                              SellerType.agent &&
-                                          invoiceViewmodel.selectedAgent !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else if (invoiceViewmodel
-                                                  .selectedSellerType ==
-                                              SellerType.distributor &&
-                                          invoiceViewmodel
-                                                  .selectedDistributor !=
-                                              null)
-                                        'type_seller': invoiceViewmodel
-                                            .selectedSellerType?.index
-                                            .toString()
-                                      else
-                                        'type_seller': '3',
-                                      // type seller is employee,
-
-                                      if (sellerCommissionRate
-                                              .text.isNotEmpty &&
-                                          invoiceViewmodel.selectedSellerType !=
-                                              SellerType.employee)
-                                        'rate_participate':
-                                            sellerCommissionRate.text,
-
-                                      if (renewAgentController
-                                              .text.isNotEmpty &&
-                                          invoiceViewmodel.selectedSellerType ==
-                                              SellerType.agent)
-                                        'renew_agent':
-                                            renewAgentController.text,
-
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                          SellerType.agent)
-                                        'fk_agent': invoiceViewmodel
-                                            .selectedAgent?.idAgent
-                                            .toString()
-                                      else if (invoiceViewmodel
-                                              .selectedSellerType ==
-                                          SellerType.distributor)
-                                        'fk_agent': invoiceViewmodel
-                                            .selectedDistributor?.idAgent
-                                            .toString(),
-
-                                      if (invoiceViewmodel.selectedSellerType ==
-                                          SellerType.collaborator)
-                                        'participate_fk': invoiceViewmodel
-                                            .selectedCollaborator
-                                            ?.id_participate
-                                            .toString(),
-                                      ...deleteFilesMap,
-                                    };
-                                    if (readyinstallController == '0')
-                                      body.addAll({
-                                        'date_not_readyinstall':
-                                            DateTime.now().toString(),
-                                        'user_not_ready_install':
-                                            Provider.of<UserProvider>(context,
-                                                    listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                      });
-                                    else
-                                      body.addAll({
-                                        'date_readyinstall':
-                                            DateTime.now().toString(),
-                                        'user_ready_install':
-                                            Provider.of<UserProvider>(context,
-                                                    listen: false)
-                                                .currentUser
-                                                .idUser
-                                                .toString(),
-                                      });
-                                    log(body.toString());
-                                    invoiceViewmodel.add_invoiceclient_vm(
+                                    if (_products?.isNotEmpty ?? false) {
+                                      body.addAll(_prepareProducts(_products!));
+                                    }
+                                    log("body for add invoice => $body");
+                                    //: add invoice
+                                    invoiceViewmodel.AddInvoiceClientVm(
                                       body,
                                       recordCommercialImageNotifier.value,
                                       companyLogoNotifier.value,
@@ -1917,49 +1787,154 @@ class _AddInvoiceState extends State<AddInvoice> {
     );
   }
 
+  Map<String, dynamic> _addInvoiceBody({
+    required BuildContext context,
+    required Map<String, String> deleteFilesMap,
+    required UserProvider user,
+  }) {
+    Map<String, dynamic> body = {
+      "name_enterprise": widget.itemClient.nameEnterprise,
+      "name_client": widget.itemClient.nameClient.toString(),
+      "nameUser": user.currentUser.nameUser,
+      "comment": comment.text,
+      "renew_year": renewController.text.toString(),
+      "renew2year": renew2Controller.text.toString(),
+      "type_pay": typepayController,
+      "date_create": DateTime.now().toString(),
+      //formatter.format(_currentDate),
+      "type_installation": typeinstallController.toString(),
+      "ready_install": readyinstallController.toString(),
+      "currency_name": currencyController.toString(),
+
+      "amount_paid": amount_paidController.text.toString(),
+      "image_record": recordCommercialImageNotifier.value?.path ?? '',
+      "fk_idClient": widget.itemClient.idClients.toString(),
+      "fk_idUser": user.currentUser.idUser,
+      //the same user that create a client not current user
+      "total": totalController,
+      "notes": noteController.text.toString(),
+      'fk_regoin': widget.itemClient.fkRegoin.toString(),
+      'fk_regoin_invoice': user.currentUser.fkRegoin,
+      'region_invoice_name': user.currentUser.nameRegoin,
+      'fk_country': widget.itemClient.fkcountry.toString(),
+      'numbarnch': numbranchController.text.toString(),
+      'renew_pluse': renewAdditionalOfBranchesController.text.toString(),
+      'nummostda': nummostawdaController.text.toString(),
+      'numusers': numuserController.text.toString(),
+      'address_invoice': addressController.text.toString(),
+      'invoice_source': selectedInvoiceSource,
+      if (invoiceViewmodel.selectedSellerType == SellerType.collaborator &&
+          invoiceViewmodel.selectedCollaborator?.id_participate != null)
+        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+      else if (invoiceViewmodel.selectedSellerType == SellerType.agent &&
+          invoiceViewmodel.selectedAgent != null)
+        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+      else if (invoiceViewmodel.selectedSellerType == SellerType.distributor &&
+          invoiceViewmodel.selectedDistributor != null)
+        'type_seller': invoiceViewmodel.selectedSellerType?.index.toString()
+      else
+        'type_seller': '3',
+      // type seller is employee,
+
+      if (sellerCommissionRate.text.isNotEmpty &&
+          invoiceViewmodel.selectedSellerType != SellerType.employee)
+        'rate_participate': sellerCommissionRate.text,
+
+      if (renewAgentController.text.isNotEmpty &&
+          invoiceViewmodel.selectedSellerType == SellerType.agent)
+        'renew_agent': renewAgentController.text,
+
+      if (invoiceViewmodel.selectedSellerType == SellerType.agent)
+        'fk_agent': invoiceViewmodel.selectedAgent?.idAgent.toString()
+      else if (invoiceViewmodel.selectedSellerType == SellerType.distributor)
+        'fk_agent': invoiceViewmodel.selectedDistributor?.idAgent.toString(),
+      'numTax': numTaxController.text.toString(),
+
+      if (invoiceViewmodel.selectedSellerType == SellerType.collaborator)
+        'participate_fk':
+            invoiceViewmodel.selectedCollaborator?.id_participate.toString(),
+      ...deleteFilesMap,
+    };
+    if (readyinstallController == '0')
+      body.addAll({
+        'date_not_readyinstall': DateTime.now().toString(),
+        'user_not_ready_install':
+            Provider.of<UserProvider>(context, listen: false)
+                .currentUser
+                .idUser
+                .toString(),
+      });
+    else
+      body.addAll({
+        'date_readyinstall': DateTime.now().toString(),
+        'user_ready_install': Provider.of<UserProvider>(context, listen: false)
+            .currentUser
+            .idUser
+            .toString(),
+      });
+
+    return body;
+  }
+
+  Map<String, dynamic> _prepareProducts(List<ProductsInvoice> products) {
+    final Map<String, dynamic> body = {};
+
+    final List<Map<String, dynamic>> productsJson =
+        products.map((e) => e.toJson()).toList();
+
+    for (int i = 0; i < productsJson.length; i++) {
+      final Map<String, dynamic> product = productsJson[i];
+      body.addAll({
+        'products[$i]': product,
+      });
+    }
+
+    return body;
+  }
+
   clear(BuildContext context, String value,
       List<ProductsInvoice>? _products) async {
-    _products = _invoice!.products ?? [];
-
-    for (int i = 0; i < _products.length; i++) {
-      if (_products[i].idInvoiceProduct == null ||
-          _products[i].idInvoiceProduct == "null") {
-        Map<String, dynamic> body = _products[i].toJson();
-        // if(value!="")//update
-        // {}
-        body.addAll({
-          'fk_id_invoice': value,
-        });
-        String res = await invoiceViewmodel.add_invoiceProduct_vm(body);
-
-        if (res != "false") {
-          body.addAll({
-            'idInvoiceProduct': res,
-          });
-          invoiceViewmodel.listproductinvoic[i].idInvoiceProduct = res;
-        }
-      } //if
-      else {
-        //update product in invoice
-
-        _products[i].toJson();
-      }
-    }
-
-    //for loop
-    int index1 = invoiceViewmodel.listinvoices
-        .indexWhere((element) => element.idInvoice == value);
-
-    if (index1 != -1) {
-      invoiceViewmodel.listinvoices[index1].products = _invoice!.products;
-    }
-
-    if (invoiceViewmodel.currentInvoice != null) {
-      final invoiceTemp = invoiceViewmodel.currentInvoice!;
-      invoiceTemp.products = _invoice!.products;
-      invoiceViewmodel.setCurrentInvoice(invoiceTemp, needRefresh: true);
-    }
-    invoiceViewmodel.updatelistproducetInvoice();
+    // _products = _invoice!.products ?? [];
+    //
+    // for (int i = 0; i < _products.length; i++) {
+    //   if (_products[i].idInvoiceProduct == null ||
+    //       _products[i].idInvoiceProduct == "null") {
+    //     Map<String, dynamic> body = _products[i].toJson();
+    //     // if(value!="")//update
+    //     // {}
+    //     body.addAll({
+    //       'fk_id_invoice': value,
+    //     });
+    //     String res = await invoiceViewmodel.add_invoiceProduct_vm(body);
+    //
+    //     if (res != "false") {
+    //       body.addAll({
+    //         'idInvoiceProduct': res,
+    //       });
+    //       invoiceViewmodel.listproductinvoic[i].idInvoiceProduct = res;
+    //     }
+    //   } //if
+    //   else {
+    //     //update product in invoice
+    //
+    //     _products[i].toJson();
+    //   }
+    // }
+    //
+    // //for loop
+    // int index1 = invoiceViewmodel.listinvoices
+    //     .indexWhere((element) => element.idInvoice == value);
+    //
+    // if (index1 != -1) {
+    //   invoiceViewmodel.listinvoices[index1].products = _invoice!.products;
+    // }
+    //
+    // if (invoiceViewmodel.currentInvoice != null) {
+    //   final invoiceTemp = invoiceViewmodel.currentInvoice!;
+    //   invoiceTemp.products = _invoice!.products;
+    //   invoiceViewmodel.setCurrentInvoice(invoiceTemp, needRefresh: true);
+    // }
+    // invoiceViewmodel.updatelistproducetInvoice();
     Provider.of<LoadProvider>(context, listen: false)
         .changebooladdinvoice(false);
     Navigator.pop(context);

@@ -4,6 +4,7 @@ import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
 import 'package:crm_smart/core/utils/end_points.dart';
@@ -51,6 +52,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   void set_total(val) {
+    if (val == null || val == "null") return;
     total = val;
     notifyListeners();
   }
@@ -1123,32 +1125,34 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> add_invoiceclient_vm(
+  Future<String> AddInvoiceClientVm(
     Map<String, dynamic> body,
     File? file,
     File? myfilelogo,
     List<File> files, {
     required ValueChanged<InvoiceModel> onAddInvoiceSuccess,
   }) async {
-    String res = 'done';
-    // upload logo
-    InvoiceModel data =
-        await Invoice_Service().addInvoice(body, file, myfilelogo, []);
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await apiServices.postRequestWithFile(
+      EndPoints.invoice.addInvoice,
+      body,
+      file,
+      myfilelogo,
+      files: files,
+    );
+    final data = apiDataHandler(response);
 
-    // upload files and record image
-
-    // fetch updated invoice
-    final InvoiceModel newInvoice = await Invoice_Service()
-        .getinvoicebyidInvoice(data.idInvoice.toString());
+    final InvoiceModel newInvoice = InvoiceModel.fromJson(data);
 
     listinvoices.insert(0, newInvoice);
     listinvoiceClient.insert(0, newInvoice);
     listInvoicesAccept.insert(0, newInvoice);
-    res = newInvoice.idInvoice.toString();
+
     onAddInvoiceSuccess(newInvoice);
-    // } else res='false';
     notifyListeners();
-    return res;
+
+    return newInvoice.idInvoice.toString();
   }
 
   Future<dynamic> _uploadFiles({
@@ -1771,13 +1775,13 @@ class invoice_vm extends ChangeNotifier {
         onSucess?.call();
       } else {
         currentInvoice =
-            await Invoice_Service().getinvoicebyidInvoice(invoiceId);
+            await Invoice_Service().getInvoiceByIdInvoice(invoiceId);
         isLoadingCrudFiles = false;
         notifyListeners();
         onFail.call('error from backend  ' + data.error);
       }
     } on Exception catch (e) {
-      currentInvoice = await Invoice_Service().getinvoicebyidInvoice(invoiceId);
+      currentInvoice = await Invoice_Service().getInvoiceByIdInvoice(invoiceId);
 
       isLoadingCrudFiles = false;
       notifyListeners();

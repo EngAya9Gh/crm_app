@@ -146,8 +146,10 @@ class Invoice_Service {
         prodlist.add(InvoiceModel.fromJson(data[i]));
       }
 
+      print("invoices length => ${prodlist.length}");
       return prodlist;
     } catch (e) {
+      print("error in getinvoicebyclient $e");
       return [];
     }
   }
@@ -348,10 +350,10 @@ class Invoice_Service {
     }
   }
 
-  Future<InvoiceModel> getinvoicebyidInvoice(String idinvoice) async {
+  Future<InvoiceModel> getInvoiceByIdInvoice(String idInvoice) async {
     var data = await Api().get(
         url: EndPoints.baseUrls.url +
-            'client/invoice/getInvoiceID.php?id_invoice=$idinvoice');
+            'client/invoice/getInvoiceID.php?id_invoice=$idInvoice');
 
     List<InvoiceModel> prodlist =
         await compute<List<dynamic>, List<InvoiceModel>>(

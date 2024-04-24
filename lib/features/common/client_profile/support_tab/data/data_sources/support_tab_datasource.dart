@@ -53,6 +53,7 @@ class SupportTabDataSourceImpl implements SupportTabDataSource {
 
       return Right(prodList);
     } on BaseAppException catch (e) {
+      print("error in getInvoiceByClient => ${e.message}");
       return Left(e.message);
     }
   }

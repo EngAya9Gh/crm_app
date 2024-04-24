@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../features/common/client_profile/support_tab/presentation/manager/support_tab_cubit/support_tab_cubit.dart';
+
 class invoices extends StatefulWidget {
   invoices({
     required this.itemClient,
@@ -43,7 +45,10 @@ class _InvoicesState extends State<invoices> {
             Expanded(
               child: Consumer<invoice_vm>(
                 builder: (context, value, child) {
-                  final listInvoice = value.listinvoiceClient;
+                  // todo: handle this
+                  // final listInvoice = value.listinvoiceClient;
+                  final listInvoice =
+                      context.watch<SupportTabCubit>().clientInvoicesList;
                   final isLoading = value.isLoadingInvoicesClientLocal;
 
                   if (isLoading) {
