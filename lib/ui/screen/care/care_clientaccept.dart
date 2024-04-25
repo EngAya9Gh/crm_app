@@ -234,7 +234,7 @@ class _ClientAcceptState extends State<Care_ClientAccept> {
   void filtershow() {
     //
     Provider.of<invoice_vm>(context, listen: false)
-        .getclienttype_filter(typeclientvalue!, regoin, 'only');
+        .getclienttype_filter(context, typeclientvalue!, regoin, 'only');
     // Provider.of<client_vm>(context,listen: false)
     //     .getfilterviewSupport(regoin);
     //   if(regoin==null)

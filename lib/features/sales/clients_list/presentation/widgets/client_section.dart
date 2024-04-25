@@ -673,7 +673,7 @@ class _ClientSectionState extends State<ClientSection> {
                   title: 'رقم الموظف',
                   value: clientModel1.mobileuser.toString()),
 
-              if (clientModel1.reasonTransfer != null)
+              if (clientModel1.transferTo != null)
                 // context.read<PrivilegeCubit>().checkPrivilege('150') ==
                 //             true &&
                 clientModel1.fkusertrasfer != null
@@ -691,7 +691,7 @@ class _ClientSectionState extends State<ClientSection> {
                     : IgnorePointer(),
 
               // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-              (clientModel1.reasonTransfer != null) &&
+              (clientModel1.transferTo != null) &&
                       clientModel1.fkusertrasfer != null
                   ? CardRow(
                       title: 'تحويل العميل إلى',
@@ -699,13 +699,13 @@ class _ClientSectionState extends State<ClientSection> {
                   : IgnorePointer(),
 
               // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-              (clientModel1.reasonTransfer == null) &&
+              (clientModel1.transferTo == null) &&
                       clientModel1.fkusertrasfer != null
                   ? CardRow(title: 'حالة التحويل', value: 'تم قبول التحويل')
                   : IgnorePointer(),
 
               // context.read<PrivilegeCubit>().checkPrivilege('150') == true &&
-              (clientModel1.reasonTransfer != null) &&
+              (clientModel1.transferTo != null) &&
                       clientModel1.fkusertrasfer != null
                   ? CardRow(title: 'حالة التحويل', value: 'معلق')
                   : IgnorePointer(),
@@ -834,7 +834,7 @@ class _ClientSectionState extends State<ClientSection> {
                               child: Text('تعديل بيانات العميل'),
                             ),
                           ),
-                          if (clientModel1.reasonTransfer == null) ...[
+                          if (clientModel1.transferTo == null) ...[
                             const SizedBox(width: 8),
                             Expanded(
                               child: ElevatedButton(
@@ -869,14 +869,7 @@ class _ClientSectionState extends State<ClientSection> {
                 ),
               ],
               SizedBox(height: 15),
-              if (((widget.clienttransfer == null ||
-                      context.read<PrivilegeCubit>().checkPrivilege('183') ==
-                          true)) ||
-                  (clientModel1.reasonTransfer ==
-                      Provider.of<UserProvider>(context, listen: false)
-                          .currentUser
-                          .idUser
-                          .toString()))
+              if (_isAllowedTransfer(context))
                 Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1305,6 +1298,17 @@ class _ClientSectionState extends State<ClientSection> {
     });
   }
 
+  bool _isAllowedTransfer(BuildContext context) {
+    return ((widget.clienttransfer != null &&
+            context.read<PrivilegeCubit>().checkPrivilege('183') == true)) ||
+        (clientModel1.transferTo ==
+                Provider.of<UserProvider>(context, listen: false)
+                    .currentUser
+                    .idUser
+                    .toString() &&
+            widget.clienttransfer != null);
+  }
+
   _onPressedUpdate(BuildContext context) async {
     isUpdate = true;
     ClientModel result = await Navigator.push(
@@ -1350,7 +1354,7 @@ extension ClientModelExtension on ClientModel1 {
       mobile: mobile,
       dateChangeType: dateChangetype,
       reasonChange: reasonChange,
-      reasonTransfer: reasonTransfer,
+      reasonTransfer: transferTo,
       nameCountry: nameCountry,
       nameUser: nameUser,
       nameRegion: name_regoin,
@@ -1418,7 +1422,7 @@ extension ClientModel1Extension on ClientModel {
       mobile: mobile,
       dateChangetype: dateChangeType,
       reasonChange: reasonChange,
-      reasonTransfer: reasonTransfer,
+      transferTo: reasonTransfer,
       nameCountry: nameCountry,
       nameUser: nameUser,
       name_regoin: nameRegion,

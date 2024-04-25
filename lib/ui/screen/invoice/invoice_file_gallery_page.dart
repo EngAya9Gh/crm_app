@@ -444,7 +444,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                       ? InkWell(
                           onTap: () => invoice_vm().openFile(
                               attachFile: fileAttach,
-                              baseUrl: EndPoints.baseUrls.urlFile),
+                              baseUrl: EndPoints.baseUrls.laravelInvoiceFiles),
                           child: Container(
                               width: 110,
                               decoration: BoxDecoration(
@@ -546,11 +546,12 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                     onTap: () => AppFileViewer(
                       imageSource: ImageSourceViewer.network,
                       urls: [
-                        EndPoints.baseUrls.urlFile + fileAttach.fileAttach!
+                        EndPoints.baseUrls.laravelInvoiceFiles +
+                            fileAttach.fileAttach!
                       ],
                     ).show(context),
                     child: FancyImageShimmerViewer(
-                      imageUrl: EndPoints.baseUrls.urlFile +
+                      imageUrl: EndPoints.baseUrls.laravelInvoiceFiles +
                           (fileAttach.fileAttach ?? ""),
                       fit: BoxFit.cover,
                     ),

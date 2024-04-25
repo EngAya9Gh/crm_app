@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/utils/app_navigator.dart';
 import 'package:crm_smart/ui/screen/client/outClient.dart';
 import 'package:crm_smart/ui/screen/home/widgethomeitem.dart';
 import 'package:crm_smart/ui/screen/invoice/get_deleted_invoice.dart';
@@ -6,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../constants.dart';
+import '../../../../../features/common/client_profile/invoices_tab/presentation/pages/clients_invoices_page.dart';
 import '../../../../../features/mangement/manage_privilege/presentation/manager/privilege_cubit.dart';
 import '../../../../../features/mangement/manage_withdrawals/presentation/pages/withdrawals_invoices_page.dart';
-import '../../../client/agents_distributors_invoices_view.dart';
 
 class All_invoice_page extends StatefulWidget {
   const All_invoice_page({Key? key}) : super(key: key);
@@ -39,20 +40,13 @@ class _All_invoice_pageState extends State<All_invoice_page> {
         padding: EdgeInsets.only(top: 20),
         child: Column(
           children: [
-            context.read<PrivilegeCubit>().checkPrivilege('39') == true
-                ? SelectCategory(
-                    colorbag: Colors.white,
-                    colortitle: Colors.black,
-                    colorarrow: Colors.black,
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  AgentsDistributorsInvoicesView()));
-                    },
-                    title: 'فواتير العملاء')
-                : Container(),
+            if (context.read<PrivilegeCubit>().checkPrivilege('39') == true)
+              SelectCategory(
+                  colorbag: Colors.white,
+                  colortitle: Colors.black,
+                  colorarrow: Colors.black,
+                  onTap: () => AppNavigator.push(ClientsInvoicesPage()),
+                  title: 'فواتير العملاء'),
 
             context.read<PrivilegeCubit>().checkPrivilege('14') == true
                 ? SelectCategory(

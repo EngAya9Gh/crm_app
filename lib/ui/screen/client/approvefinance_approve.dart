@@ -37,7 +37,8 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
       //        .getinvoices();
 ///////////////////////////////////////////////////////
       if (context.read<PrivilegeCubit>().checkPrivilege('111') == true)
-        _invoiceViewModel.getinvoice_Local('مشترك', 'not approved', 'finance');
+        _invoiceViewModel.getinvoice_Local(
+            context, 'مشترك', 'not approved', 'finance');
       // else{
       //   if( Provider.of<privilge_vm>(context,listen: false)
       //       .checkprivlge('7')==true)
@@ -190,6 +191,6 @@ class _ApproveFinancePageState extends State<ApproveFinancePage> {
 
   void filtershow() {
     Provider.of<invoice_vm>(context, listen: false)
-        .getfilterview(regoin, 'not');
+        .getfilterview(context, regoin, 'not');
   }
 }

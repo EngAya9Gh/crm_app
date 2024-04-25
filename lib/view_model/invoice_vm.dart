@@ -4,9 +4,12 @@ import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
 import 'package:crm_smart/core/utils/end_points.dart';
+import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
 import 'package:crm_smart/model/deleteinvoicemodel.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/maincitymodel.dart';
@@ -17,6 +20,7 @@ import 'package:crm_smart/ui/screen/support/support_table.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_file/open_file.dart';
 
 import '../core/common/helpers/check_sorage_permission.dart';
@@ -51,6 +55,7 @@ class invoice_vm extends ChangeNotifier {
   }
 
   void set_total(val) {
+    if (val == null || val == "null") return;
     total = val;
     notifyListeners();
   }
@@ -116,8 +121,8 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchwait(
-      String productName, PrivilegeCubit privilegeCubit) async {
+  Future<void> searchwait(BuildContext context, String productName,
+      PrivilegeCubit privilegeCubit) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
@@ -136,12 +141,12 @@ class invoice_vm extends ChangeNotifier {
               .firstWhereOrNull((element) => element.fkPrivilege == '2')
               ?.isCheck! ??
           false)
-        getinvoice_Local('مشترك', 'not approved', 'country');
+        getinvoice_Local(context, 'مشترك', 'not approved', 'country');
       else {
         if (privilegeCubit.state.userPrivilegesState.data
                 .firstWhereOrNull((element) => element.fkPrivilege == '7')
                 ?.isCheck! ??
-            false) getinvoice_Local('مشترك', 'not approved', 'regoin');
+            false) getinvoice_Local(context, 'مشترك', 'not approved', 'regoin');
       }
     }
     //getinvoice_Local("مشترك",'approved client',null);
@@ -192,7 +197,7 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> searchwaitout(String productName) async {
+  Future<void> searchwaitout(BuildContext context, String productName) async {
     List<InvoiceModel> _listInvoicesAccept = [];
     // code to convert the first character to uppercase
     String searchKey = productName; //
@@ -207,7 +212,7 @@ class invoice_vm extends ChangeNotifier {
         listInvoicesAccept = _listInvoicesAccept;
       }
     } else
-      getinvoice_Local("منسحب", 'out', null);
+      getinvoice_Local(context, "منسحب", 'out', null);
     notifyListeners();
   }
 
@@ -468,14 +473,16 @@ class invoice_vm extends ChangeNotifier {
     isloading = false;
   }
 
-  Future<void> getclienttype_filter(
-      String? filter, String? regoin, String tyype) async {
+  Future<void> getclienttype_filter(BuildContext context, String? filter,
+      String? regoin, String tyype) async {
     // listInvoicesAccept=[];
-    if (tyype == 'only') await getinvoice_Local("مشترك", 'approved only', null);
+    if (tyype == 'only')
+      await getinvoice_Local(context, "مشترك", 'approved only', null);
     if (tyype == 'client')
-      await getinvoice_Local("مشترك", 'approved client', null);
-    if (tyype == 'not') await getinvoice_Local("مشترك", 'not approved', null);
-    if (tyype == 'out') await getinvoice_Local("مستبعد", 'out', null);
+      await getinvoice_Local(context, "مشترك", 'approved client', null);
+    if (tyype == 'not')
+      await getinvoice_Local(context, "مشترك", 'not approved', null);
+    if (tyype == 'out') await getinvoice_Local(context, "مستبعد", 'out', null);
 
     List<InvoiceModel> _listInvoicesAccept = [];
     if (regoin == null) {
@@ -690,15 +697,17 @@ class invoice_vm extends ChangeNotifier {
         ;
   }
 
-  Future<void> getfilterview(String? regoin, String tyype) async {
+  Future<void> getfilterview(
+      BuildContext context, String? regoin, String tyype) async {
     listInvoicesAccept_admin = [];
     notifyListeners();
-    if (tyype == 'only') await getinvoice_Local("مشترك", 'approved only', null);
+    if (tyype == 'only')
+      await getinvoice_Local(context, "مشترك", 'approved only', null);
     if (tyype == 'client')
-      await getinvoice_Local("مشترك", 'approved client', null);
+      await getinvoice_Local(context, "مشترك", 'approved client', null);
     if (tyype == 'not')
       await getinvoice_Local(
-          "مشترك", 'not approved', null); //طلبات الموافقة الفلتر
+          context, "مشترك", 'not approved', null); //طلبات الموافقة الفلتر
     List<InvoiceModel> _listInvoicesAccept = [];
     if (regoin != '0')
       listInvoicesAccept_admin.forEach((element) {
@@ -774,8 +783,8 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getinvoice_Local(
-      String searchfilter, String type, String? approvetype
+  Future<void> getinvoice_Local(BuildContext context, String searchfilter,
+      String type, String? approvetype
       // , List<ClientModel> list
       ) async {
     List<InvoiceModel> list = [];
@@ -784,7 +793,9 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
 
     if (approvetype == null) {
-      await getinvoices();
+      await context
+          .read<InvoicesTabCubit>()
+          .getInvoicesByPrivileges(isNewFilter: true);
       if (listinvoices.isNotEmpty) {
         if (type == 'approved only')
           listinvoices.forEach((element) {
@@ -987,9 +998,10 @@ class invoice_vm extends ChangeNotifier {
     }
   }
 
-  Future<void> getinvoices() async {
-    listinvoices =
-        await Invoice_Service().getInvoices(usercurrent!.fkCountry.toString());
+  Future<void> getinvoices(BuildContext context,
+      [GetInvoicesByPrivilegesParams? filters]) async {
+    // usercurrent!.fkCountry.toString()
+    listinvoices = context.read<InvoicesTabCubit>().invoicesList;
     listInvoicesAccept = List.from(listinvoices);
     notifyListeners();
   }
@@ -1023,8 +1035,8 @@ class invoice_vm extends ChangeNotifier {
     //main list
     bool res = privilegeCubit.checkPrivilege('1');
     if (res) {
-      listinvoices = await Invoice_Service()
-          .getInvoices(usercurrent!.fkCountry.toString());
+      listinvoices =
+          await Invoice_Service().getInvoices(GetInvoicesByPrivilegesParams());
     } else {
       if (privilegeCubit.checkPrivilege('38') &&
           privilegeCubit.checkPrivilege('6'))
@@ -1046,40 +1058,6 @@ class invoice_vm extends ChangeNotifier {
     }
     listInvoicesAccept = List.from(listinvoices);
     notifyListeners();
-  }
-
-  Future<void> get_invoicesbyIduser(List<InvoiceModel> list) async {
-    listinvoicebyregoin = [];
-    //cahe_data_source_invoice().clearCache();
-    if (list.isNotEmpty) {
-      list.forEach((element) {
-        if (element.fkIdUser == usercurrent!.idUser)
-          listinvoicebyregoin.add(element);
-      });
-    } else {
-      listinvoices =
-          await Invoice_Service().getinvoicebyiduser(usercurrent!.idUser!);
-      listinvoices = listinvoicebyregoin;
-    }
-
-    notifyListeners();
-  }
-
-  InvoiceModel? get_byIdInvoice(String id_invoice) {
-    InvoiceModel? inv;
-    listinvoices.forEach((element) {
-      if (element.idInvoice == id_invoice) inv = element;
-    });
-    if (inv == null) getinvoices();
-
-    return inv; //InvoiceModel(products: []);
-    // else{
-    //   listinvoices = await Invoice_Service()
-    //       .getinvoicebyiduser(usercurrent!.idUser!);
-    //   listinvoices=listinvoicebyregoin;
-    // }
-
-    //notifyListeners();
   }
 
   //getinvoaicebyregoin_accept_requst
@@ -1123,32 +1101,34 @@ class invoice_vm extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<String> add_invoiceclient_vm(
+  Future<String> AddInvoiceClientVm(
     Map<String, dynamic> body,
     File? file,
     File? myfilelogo,
     List<File> files, {
     required ValueChanged<InvoiceModel> onAddInvoiceSuccess,
   }) async {
-    String res = 'done';
-    // upload logo
-    InvoiceModel data =
-        await Invoice_Service().addInvoice(body, file, myfilelogo, []);
+    final ApiServices apiServices = getIt<ApiServices>();
+    apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
+    final response = await apiServices.postRequestWithFile(
+      EndPoints.invoice.addInvoice,
+      body,
+      file,
+      myfilelogo,
+      files: files,
+    );
+    final data = apiDataHandler(response);
 
-    // upload files and record image
-
-    // fetch updated invoice
-    final InvoiceModel newInvoice = await Invoice_Service()
-        .getinvoicebyidInvoice(data.idInvoice.toString());
+    final InvoiceModel newInvoice = InvoiceModel.fromJson(data);
 
     listinvoices.insert(0, newInvoice);
     listinvoiceClient.insert(0, newInvoice);
     listInvoicesAccept.insert(0, newInvoice);
-    res = newInvoice.idInvoice.toString();
+
     onAddInvoiceSuccess(newInvoice);
-    // } else res='false';
     notifyListeners();
-    return res;
+
+    return newInvoice.idInvoice.toString();
   }
 
   Future<dynamic> _uploadFiles({
@@ -1771,13 +1751,13 @@ class invoice_vm extends ChangeNotifier {
         onSucess?.call();
       } else {
         currentInvoice =
-            await Invoice_Service().getinvoicebyidInvoice(invoiceId);
+            await Invoice_Service().getInvoiceByIdInvoice(invoiceId);
         isLoadingCrudFiles = false;
         notifyListeners();
         onFail.call('error from backend  ' + data.error);
       }
     } on Exception catch (e) {
-      currentInvoice = await Invoice_Service().getinvoicebyidInvoice(invoiceId);
+      currentInvoice = await Invoice_Service().getInvoiceByIdInvoice(invoiceId);
 
       isLoadingCrudFiles = false;
       notifyListeners();

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:crm_smart/api/api.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/services/api/api_services.dart';
+import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:crm_smart/model/agent_distributor_model.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:flutter/foundation.dart';
@@ -13,12 +14,15 @@ import '../model/attachement_invoice_files.dart';
 import '../model/participatModel.dart';
 
 class Invoice_Service {
-  Future<List<InvoiceModel>> getInvoices(String fk_country) async {
+  Future<List<InvoiceModel>> getInvoices(
+    GetInvoicesByPrivilegesParams? filters,
+  ) async {
     try {
       final ApiServices apiServices = getIt<ApiServices>();
       apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
       final response = await apiServices.get(
-        endPoint: EndPoints.invoice.getInvoices,
+        endPoint: EndPoints.invoice.getInvoicesByPrivileges,
+        queryParameters: filters?.toMap(),
       );
 
       final data = apiDataHandler(response);
@@ -146,8 +150,10 @@ class Invoice_Service {
         prodlist.add(InvoiceModel.fromJson(data[i]));
       }
 
+      print("invoices length => ${prodlist.length}");
       return prodlist;
     } catch (e) {
+      print("error in getinvoicebyclient $e");
       return [];
     }
   }
@@ -348,10 +354,10 @@ class Invoice_Service {
     }
   }
 
-  Future<InvoiceModel> getinvoicebyidInvoice(String idinvoice) async {
+  Future<InvoiceModel> getInvoiceByIdInvoice(String idInvoice) async {
     var data = await Api().get(
         url: EndPoints.baseUrls.url +
-            'client/invoice/getInvoiceID.php?id_invoice=$idinvoice');
+            'client/invoice/getInvoiceID.php?id_invoice=$idInvoice');
 
     List<InvoiceModel> prodlist =
         await compute<List<dynamic>, List<InvoiceModel>>(

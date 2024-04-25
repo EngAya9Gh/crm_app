@@ -132,7 +132,7 @@ ${itemClient.nameEnterprise.toString().substring(45, itemClient.nameEnterprise.t
                               Navigator.push(
                                   context,
                                   CupertinoPageRoute(
-                                      builder: (context) => invoices(
+                                      builder: (context) => InvoicesTab(
                                             itemClient: itemClient,
                                             fkclient:
                                                 itemClient.idClients.toString(),

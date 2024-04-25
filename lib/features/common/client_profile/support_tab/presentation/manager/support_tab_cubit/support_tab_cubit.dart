@@ -26,6 +26,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
     this._setReadyInstallUsecase,
   ) : super(SupportTabState());
 
+  List<InvoiceModel> clientInvoicesList = [];
   List<InvoiceModel> listinvoiceClientSupport = [];
   List<InvoiceModel> listinvoices = [];
 
@@ -50,6 +51,7 @@ class SupportTabCubit extends Cubit<SupportTabState> {
         getInvoiceByClientMessage: l,
       ));
     }, (r) {
+      clientInvoicesList = r;
       listinvoiceClientSupport = r.where((element) {
         return element.fkIdClient == getInvoiceByClientParams.idClient &&
             element.isApprove != null;
