@@ -1,6 +1,6 @@
+import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/model/invoiceModel.dart';
 import 'package:crm_smart/model/usermodel.dart';
-import 'package:crm_smart/ui/screen/client/agents_distributors_invoices_view.dart';
 import 'package:crm_smart/view_model/invoice_vm.dart';
 import 'package:crm_smart/view_model/page_state.dart';
 import 'package:flutter/material.dart';
@@ -19,29 +19,29 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   PageState<List<ParticipateModel>> collaboratorsEmployeeState = PageState();
   SellerStatus sellerStatus = SellerStatus.init;
 
-  SellerTypeFilter selectedSellerTypeFilter = SellerTypeFilter.all;
+  SellerTypeEnum selectedSellerTypeFilter = SellerTypeEnum.all;
   ParticipateModel? selectedCollaborator;
   UserModel? selectedEmployee;
   AgentDistributorModel? selectedAgentDistributor;
   String? selectedRegion;
   String? selectednotReady;
 
-  DateTime from=DateTime(1,1,1);
-  DateTime to=DateTime(1,1,1) ;
+  DateTime from = DateTime(1, 1, 1);
+  DateTime to = DateTime(1, 1, 1);
   init() {
     invoicesList = [];
     invoicesFiltered = [];
     agentDistributorsState = PageState();
     collaboratorsEmployeeState = PageState();
     sellerStatus = SellerStatus.init;
-    selectedSellerTypeFilter = SellerTypeFilter.all;
+    selectedSellerTypeFilter = SellerTypeEnum.all;
     selectedCollaborator = null;
     selectedEmployee = null;
     selectedAgentDistributor = null;
     selectedRegion = null;
     selectednotReady = null;
-     from=DateTime(1,1,1);
-     to=DateTime(1,1,1) ;
+    from = DateTime(1, 1, 1);
+    to = DateTime(1, 1, 1);
     notifyListeners();
   }
 
@@ -77,7 +77,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
       }
 
       final list = await Invoice_Service.getCollaborators();
-      collaboratorsEmployeeState = collaboratorsEmployeeState.changeToLoaded(list);
+      collaboratorsEmployeeState =
+          collaboratorsEmployeeState.changeToLoaded(list);
       notifyListeners();
       return;
     } catch (e) {
@@ -87,22 +88,23 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     }
   }
 
-  Future<void> onChangeSellerTypeFilter(SellerTypeFilter sellerType) async {
+  Future<void> onChangeSellerTypeFilter(SellerTypeEnum sellerType) async {
     selectedSellerTypeFilter = sellerType;
     notifyListeners();
-    if (selectedSellerTypeFilter == SellerTypeFilter.all) {
+    if (selectedSellerTypeFilter == SellerTypeEnum.all) {
       onFilter();
       return;
     }
 
-    if (selectedSellerTypeFilter == SellerTypeFilter.employee) {
+    if (selectedSellerTypeFilter == SellerTypeEnum.employee) {
       selectedEmployee = null;
       notifyListeners();
       onFilter();
       return;
     }
 
-    if ([SellerTypeFilter.agent, SellerTypeFilter.distributor].contains(selectedSellerTypeFilter)) {
+    if ([SellerTypeEnum.agent, SellerTypeEnum.distributor]
+        .contains(selectedSellerTypeFilter)) {
       if (agentDistributorsState.data != null) {
         selectedAgentDistributor = null;
         notifyListeners();
@@ -152,7 +154,8 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  onChangeSelectedAgentDistributor(AgentDistributorModel agentDistributorModel) {
+  onChangeSelectedAgentDistributor(
+      AgentDistributorModel agentDistributorModel) {
     selectedAgentDistributor = agentDistributorModel;
     onFilter();
     notifyListeners();
@@ -162,6 +165,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     selectedRegion = region;
     onFilter();
   }
+
   onChangeNotReady(String notReady) {
     selectednotReady = notReady;
     onFilter();
@@ -169,10 +173,9 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
   onChange_date(DateTime from_param, DateTime to_param) {
     // selectedRegion = region;
-    from=from_param;
-    to=to_param;
+    from = from_param;
+    to = to_param;
     notifyListeners();
-
 
     onFilter();
   }
@@ -180,18 +183,23 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   onSearch(String query) {
     final list = List<InvoiceModel>.from(invoicesList);
     invoicesFiltered = list.where((element) {
-      return (element.name_enterprise?.toLowerCase().contains(query.toLowerCase()) ?? false)
-          ||
-          (element.name_regoin_invoice?.toLowerCase().contains(query.toLowerCase()) ?? false)
-          ||
-          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ?? false);
+      return (element.name_enterprise
+                  ?.toLowerCase()
+                  .contains(query.toLowerCase()) ??
+              false) ||
+          (element.name_regoin_invoice
+                  ?.toLowerCase()
+                  .contains(query.toLowerCase()) ??
+              false) ||
+          (element.mobile?.toLowerCase().contains(query.toLowerCase()) ??
+              false);
     }).toList();
     notifyListeners();
   }
 
   onFilter() {
     final list = List<InvoiceModel>.from(invoicesList);
-    invoicesFiltered=[];
+    invoicesFiltered = [];
     invoicesFiltered = list.where((element) {
       if (isSelectedSellerTypeFilterEqualAll) {
         if (isSelectedRegionEqualAll) {
@@ -199,100 +207,111 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
         }
         return isSelectedRegionEqualInvoice(element);
       } else if (isSelectedSellerTypeFilterEqualAgentOrDistributor) {
-        if (isSelectedAgentDistributorEqualNull && isSelectedRegionNotEqualAll) {
-          return isSelectedRegionEqualInvoice(element) && isSelectedSellerTypeFilterEqualInvoice(element);
-        } else if (!isSelectedAgentDistributorEqualNull && isSelectedRegionEqualAll) {
+        if (isSelectedAgentDistributorEqualNull &&
+            isSelectedRegionNotEqualAll) {
+          return isSelectedRegionEqualInvoice(element) &&
+              isSelectedSellerTypeFilterEqualInvoice(element);
+        } else if (!isSelectedAgentDistributorEqualNull &&
+            isSelectedRegionEqualAll) {
           return isSelectedAgentDistributorEqualInvoice(element);
-        } else if (!isSelectedAgentDistributorEqualNull && isSelectedRegionNotEqualAll) {
-          return isSelectedAgentDistributorEqualInvoice(element) && isSelectedRegionEqualInvoice(element);
+        } else if (!isSelectedAgentDistributorEqualNull &&
+            isSelectedRegionNotEqualAll) {
+          return isSelectedAgentDistributorEqualInvoice(element) &&
+              isSelectedRegionEqualInvoice(element);
         }
 
         return isSelectedSellerTypeFilterEqualInvoice(element);
       } else if (isSelectedTypeEqualCollaborator) {
         if (isSelectedCollaboratorEqualNull && isSelectedRegionNotEqualAll) {
-          return isSelectedRegionEqualInvoice(element) && isSelectedSellerTypeFilterEqualInvoice(element);
-        } else if (!isSelectedCollaboratorEqualNull && isSelectedRegionEqualAll) {
+          return isSelectedRegionEqualInvoice(element) &&
+              isSelectedSellerTypeFilterEqualInvoice(element);
+        } else if (!isSelectedCollaboratorEqualNull &&
+            isSelectedRegionEqualAll) {
           return isSelectedCollaborateEqualInvoice(element);
-        } else if (!isSelectedCollaboratorEqualNull && isSelectedRegionNotEqualAll) {
-          return isSelectedCollaborateEqualInvoice(element) && isSelectedRegionEqualInvoice(element);
+        } else if (!isSelectedCollaboratorEqualNull &&
+            isSelectedRegionNotEqualAll) {
+          return isSelectedCollaborateEqualInvoice(element) &&
+              isSelectedRegionEqualInvoice(element);
         }
 
         return isSelectedSellerTypeFilterEqualInvoice(element);
       } else {
         if (isSelectedEmployeeEqualNull && isSelectedRegionNotEqualAll) {
           return isSelectedRegionEqualInvoice(element) &&
-              (isSelectedSellerTypeFilterEqualInvoice(element) || element.type_seller == null);
+              (isSelectedSellerTypeFilterEqualInvoice(element) ||
+                  element.type_seller == null);
         } else if (!isSelectedEmployeeEqualNull && isSelectedRegionEqualAll) {
           return isSelectedEmployeeEqualInvoice(element);
-        } else if (!isSelectedEmployeeEqualNull && isSelectedRegionNotEqualAll) {
-          return isSelectedEmployeeEqualInvoice(element) && isSelectedRegionEqualInvoice(element);
+        } else if (!isSelectedEmployeeEqualNull &&
+            isSelectedRegionNotEqualAll) {
+          return isSelectedEmployeeEqualInvoice(element) &&
+              isSelectedRegionEqualInvoice(element);
         }
 
-        return isSelectedSellerTypeFilterEqualInvoice(element) || element.type_seller == null ;
+        return isSelectedSellerTypeFilterEqualInvoice(element) ||
+            element.type_seller == null;
       }
     }).toList();
     // isSelectedNotReadyInvoice(el)
     List<InvoiceModel> invoicesFiltered_temp = [];
 
-
-    if(selectednotReady == 'غير جاهز'){
-     if(invoicesFiltered.isEmpty)
-      list.forEach((element) {
-
-      if ( element.isdoneinstall == null
-                && element.ready_install == '0' &&
-                element.TypeReadyClient == 'notReady'&&
-                DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-          DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-        invoicesFiltered_temp.add(element);
-      }
-    });
-     else
-       invoicesFiltered.forEach((element) {
-       if ( element.isdoneinstall == null
-           && element.ready_install == '0' &&
-           element.TypeReadyClient == 'notReady'&&
-           DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-           DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-         invoicesFiltered_temp.add(element);
-       }
-     });
-     }
-    else{
-       if(invoicesFiltered.isEmpty)
-         list.forEach((element) {
-
-           if (  DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-               DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-             invoicesFiltered_temp.add(element);
-           }
-         });
-       else
-    invoicesFiltered.forEach((element) {
-      if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-          DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-        invoicesFiltered_temp.add(element);
-      }
-    });
+    if (selectednotReady == 'غير جاهز') {
+      if (invoicesFiltered.isEmpty)
+        list.forEach((element) {
+          if (element.isdoneinstall == null &&
+              element.ready_install == '0' &&
+              element.TypeReadyClient == 'notReady' &&
+              DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+              DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+            invoicesFiltered_temp.add(element);
+          }
+        });
+      else
+        invoicesFiltered.forEach((element) {
+          if (element.isdoneinstall == null &&
+              element.ready_install == '0' &&
+              element.TypeReadyClient == 'notReady' &&
+              DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+              DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+            invoicesFiltered_temp.add(element);
+          }
+        });
+    } else {
+      if (invoicesFiltered.isEmpty)
+        list.forEach((element) {
+          if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+              DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+            invoicesFiltered_temp.add(element);
+          }
+        });
+      else
+        invoicesFiltered.forEach((element) {
+          if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
+              DateTime.parse(element.date_approve.toString()).isBefore(to)) {
+            invoicesFiltered_temp.add(element);
+          }
+        });
     }
 
-    invoicesFiltered=List.from(invoicesFiltered_temp);
+    invoicesFiltered = List.from(invoicesFiltered_temp);
 
     notifyListeners();
-
-
   }
 
-  bool get isSelectedRegionNotEqualAll => selectedRegion != "0" && selectedRegion != null;
+  bool get isSelectedRegionNotEqualAll =>
+      selectedRegion != "0" && selectedRegion != null;
 
-  bool get isSelectedRegionEqualAll => selectedRegion == "0" || selectedRegion == null;
+  bool get isSelectedRegionEqualAll =>
+      selectedRegion == "0" || selectedRegion == null;
 
   bool get isSelectedRegionEqualNull => selectedRegion == null;
 
-  bool isSelectedRegionEqualInvoice(InvoiceModel element) => element.fk_regoin_invoice == selectedRegion;
+  bool isSelectedRegionEqualInvoice(InvoiceModel element) =>
+      element.fk_regoin_invoice == selectedRegion;
   bool isSelectedNotReadyInvoice(InvoiceModel element) =>
-      element.isdoneinstall == null
-      && element.ready_install =='0'  && element.TypeReadyClient=='notReady';
+      element.isdoneinstall == null &&
+      element.ready_install == '0' &&
+      element.TypeReadyClient == 'notReady';
 
   bool isSelectedSellerTypeFilterEqualInvoice(InvoiceModel element) =>
       element.type_seller == selectedSellerTypeFilter.index.toString();
@@ -303,18 +322,24 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
   bool isSelectedCollaborateEqualInvoice(InvoiceModel element) =>
       selectedCollaborator?.id_participate == element.participate_fk;
 
-  bool isSelectedEmployeeEqualInvoice(InvoiceModel element) => selectedEmployee?.idUser == element.fkIdUser;
+  bool isSelectedEmployeeEqualInvoice(InvoiceModel element) =>
+      selectedEmployee?.idUser == element.fkIdUser;
 
-  bool get isSelectedSellerTypeFilterEqualAgentOrDistributor =>
-      [SellerTypeFilter.distributor, SellerTypeFilter.agent].contains(selectedSellerTypeFilter);
+  bool get isSelectedSellerTypeFilterEqualAgentOrDistributor => [
+        SellerTypeEnum.distributor,
+        SellerTypeEnum.agent
+      ].contains(selectedSellerTypeFilter);
 
-  bool get isSelectedSellerTypeFilterEqualAll => selectedSellerTypeFilter == SellerTypeFilter.all;
+  bool get isSelectedSellerTypeFilterEqualAll =>
+      selectedSellerTypeFilter == SellerTypeEnum.all;
 
-  bool get isSelectedTypeEqualCollaborator => selectedSellerTypeFilter == SellerTypeFilter.collaborator;
+  bool get isSelectedTypeEqualCollaborator =>
+      selectedSellerTypeFilter == SellerTypeEnum.collaborator;
 
   bool get isSelectedTypeFilterEqualNull => selectedAgentDistributor == null;
 
-  bool get isSelectedAgentDistributorEqualNull => selectedAgentDistributor == null;
+  bool get isSelectedAgentDistributorEqualNull =>
+      selectedAgentDistributor == null;
 
   bool get isSelectedCollaboratorEqualNull => selectedCollaborator == null;
 

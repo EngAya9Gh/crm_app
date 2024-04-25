@@ -105,7 +105,7 @@ class search_widget extends StatelessWidget {
                   //   break;
                   case 'wait':
                     Provider.of<invoice_vm>(context, listen: false)
-                        .searchwait(pattern, getIt<PrivilegeCubit>());
+                        .searchwait(context, pattern, getIt<PrivilegeCubit>());
                     break;
                   case 'waitcare':
                     Provider.of<communication_vm>(context, listen: false)
@@ -113,7 +113,7 @@ class search_widget extends StatelessWidget {
                     break;
                   case 'waitout':
                     Provider.of<invoice_vm>(context, listen: false)
-                        .searchwaitout(pattern);
+                        .searchwaitout(context, pattern);
                     break;
                   case 'withprev':
                     Provider.of<invoice_vm>(context, listen: false)

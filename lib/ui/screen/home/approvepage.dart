@@ -34,11 +34,11 @@ class _ApprovePageState extends State<ApprovePage> {
 ///////////////////////////////////////////////////////
       if (context.read<PrivilegeCubit>().checkPrivilege('2'))
         Provider.of<invoice_vm>(context, listen: false)
-            .getinvoice_Local('مشترك', 'not approved', 'country');
+            .getinvoice_Local(context, 'مشترك', 'not approved', 'country');
       else {
         if (context.read<PrivilegeCubit>().checkPrivilege('7'))
           Provider.of<invoice_vm>(context, listen: false)
-              .getinvoice_Local('مشترك', 'not approved', 'regoin');
+              .getinvoice_Local(context, 'مشترك', 'not approved', 'regoin');
       }
     });
     //Provider.of<notifyvm>(context,listen: false).getNotification();
@@ -157,6 +157,6 @@ class _ApprovePageState extends State<ApprovePage> {
 
   void filtershow() {
     Provider.of<invoice_vm>(context, listen: false)
-        .getfilterview(regoin, 'not');
+        .getfilterview(context, regoin, 'not');
   }
 }

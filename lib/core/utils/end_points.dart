@@ -217,8 +217,9 @@ class _AgentDistributor {
 class _Invoice {
   const _Invoice();
 
-  final String getInvoices =
-      'getInvoicesByPrivilages?type_seller=1&fk_regoin_invoice=11&TypeReadyClient&from&to&search_query&fk_agent&participate_fk&fk_idUser';
+  // ?type_seller=1&fk_regoin_invoice=11&TypeReadyClient&from&to&search_query&fk_agent&participate_fk&fk_idUser
+  final String getInvoicesByPrivileges = 'getInvoicesByPrivilages';
+
   final String clientUpdateInvoice = 'client/invoice/updateinvoice.php';
 
   final String crudFilesInvoice =

@@ -41,7 +41,7 @@ class _OutClientState extends State<OutClient> {
       Provider.of<RegionProvider>(context, listen: false).changeVal(null);
 
       Provider.of<invoice_vm>(context, listen: false)
-          .getinvoice_Local("منسحب", 'out', null);
+          .getinvoice_Local(context, "منسحب", 'out', null);
     });
 
     super.initState();
@@ -176,7 +176,7 @@ class _OutClientState extends State<OutClient> {
     //      break;
     //  }
     Provider.of<invoice_vm>(context, listen: false)
-        .getclienttype_filter('مستبعد', regoin, 'out');
+        .getclienttype_filter(context, 'مستبعد', regoin, 'out');
 
     // }
   }

@@ -1,3 +1,4 @@
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
 import 'package:crm_smart/provider/bottomNav.dart';
 import 'package:crm_smart/provider/config_vm.dart';
 import 'package:crm_smart/provider/loadingprovider.dart';
@@ -69,6 +70,7 @@ class ServiceProvider extends StatelessWidget {
         BlocProvider(create: (context) => getIt<AddTicketCubit>()),
         BlocProvider(create: (context) => getIt<EditTicketCubit>()),
         BlocProvider(create: (context) => getIt<SupportTabCubit>()),
+        BlocProvider(create: (context) => getIt<InvoicesTabCubit>()),
       ],
       /* Providers */
       child: MultiProvider(
