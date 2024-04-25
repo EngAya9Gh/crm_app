@@ -27,6 +27,15 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
 
   bool hasReachedEnd = false;
 
+  void init() {
+    searchController.clear();
+    dateFrom = DateTime(1, 1, 1);
+    dateTo = DateTime(1, 1, 1);
+    getInvoicesParams = GetInvoicesByPrivilegesParams();
+    invoicesList.clear();
+    hasReachedEnd = false;
+  }
+
   Future<void> getInvoicesByPrivileges({
     bool isNewFilter = true,
   }) async {

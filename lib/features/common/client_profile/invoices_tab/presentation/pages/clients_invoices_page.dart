@@ -42,6 +42,7 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
     super.initState();
     _privilegeCubit = context.read<PrivilegeCubit>();
     invoicesTabCubit = context.read<InvoicesTabCubit>();
+    invoicesTabCubit.init();
     invoicesTabCubit.getInvoicesByPrivileges();
     viewmodel = Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,
         listen: false);
