@@ -1,16 +1,27 @@
 part of 'invoices_tab_cubit.dart';
 
-@immutable
-sealed class InvoicesTabState {}
+class InvoicesTabState extends Equatable {
+  final StateStatus getInvoicesStatus;
+  final String getInvoicesMessage;
 
-final class InvoicesTabInitial extends InvoicesTabState {}
+  const InvoicesTabState({
+    this.getInvoicesStatus = StateStatus.initial,
+    this.getInvoicesMessage = '',
+  });
 
-final class InvoicesTabLoading extends InvoicesTabState {}
+  InvoicesTabState copyWith({
+    StateStatus? getInvoicesStatus,
+    String? getInvoicesMessage,
+  }) {
+    return InvoicesTabState(
+      getInvoicesStatus: getInvoicesStatus ?? this.getInvoicesStatus,
+      getInvoicesMessage: getInvoicesMessage ?? this.getInvoicesMessage,
+    );
+  }
 
-final class InvoicesTabLoaded extends InvoicesTabState {}
-
-class InvoicesTabError extends InvoicesTabState {
-  final String message;
-
-  InvoicesTabError(this.message);
+  @override
+  List<Object> get props => [
+        getInvoicesStatus,
+        getInvoicesMessage,
+      ];
 }

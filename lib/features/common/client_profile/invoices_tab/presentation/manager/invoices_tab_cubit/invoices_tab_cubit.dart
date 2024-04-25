@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:crm_smart/core/common/enums/enums.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,7 +15,7 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
 
   InvoicesTabCubit(
     this._getInvoicesByPrivilegesUsecase,
-  ) : super(InvoicesTabInitial());
+  ) : super(InvoicesTabState());
 
   final TextEditingController searchController = TextEditingController();
   DateTime dateFrom = DateTime.now();
@@ -23,20 +25,34 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
       GetInvoicesByPrivilegesParams();
   final List<InvoiceModel> invoicesList = [];
 
+  bool hasReachedEnd = false;
+
   Future<void> getInvoicesByPrivileges({
-    bool? isNewFilter = false,
+    bool isNewFilter = true,
   }) async {
-    emit(InvoicesTabLoading());
-    if (isNewFilter!) {
+    if (isNewFilter) {
       invoicesList.clear();
+      getInvoicesParams = GetInvoicesByPrivilegesParams();
+      hasReachedEnd = false;
     }
+    if (hasReachedEnd) return;
+    emit(state.copyWith(getInvoicesStatus: StateStatus.loading));
 
     final result = await _getInvoicesByPrivilegesUsecase(getInvoicesParams);
     result.fold((l) {
-      emit(InvoicesTabError(l));
+      emit(state.copyWith(
+        getInvoicesStatus: StateStatus.failure,
+        getInvoicesMessage: l,
+      ));
     }, (r) {
+      if (r.isEmpty) {
+        hasReachedEnd = true;
+        return;
+      }
       invoicesList.addAll(r);
-      emit(InvoicesTabLoaded());
+      emit(state.copyWith(
+        getInvoicesStatus: StateStatus.success,
+      ));
     });
   }
 }

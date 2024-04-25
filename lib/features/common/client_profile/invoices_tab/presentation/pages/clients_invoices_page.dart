@@ -3,6 +3,7 @@ import 'dart:ui' as myui;
 
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
+import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/pages/invoices_paginated_list.dart';
 import 'package:crm_smart/model/usermodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +14,6 @@ import '../../../../../../constants.dart';
 import '../../../../../../core/services/di/di_container.dart';
 import '../../../../../../model/agent_distributor_model.dart';
 import '../../../../../../model/participatModel.dart';
-import '../../../../../../ui/widgets/invoice_widget/Card_invoice_client.dart';
 import '../../../../../../view_model/agent_collaborators_invoices_vm.dart';
 import '../../../../../../view_model/invoice_vm.dart';
 import '../../../../../../view_model/regoin_vm.dart';
@@ -38,8 +38,9 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
   @override
   void initState() {
     super.initState();
-    _privilegeCubit = getIt<PrivilegeCubit>();
-    invoicesTabCubit = getIt<InvoicesTabCubit>()..getInvoicesByPrivileges();
+    _privilegeCubit = context.read<PrivilegeCubit>();
+    invoicesTabCubit = context.read<InvoicesTabCubit>()
+      ..getInvoicesByPrivileges();
     viewmodel = Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,
         listen: false);
 
@@ -67,285 +68,249 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
       ),
       body: Directionality(
         textDirection: myui.TextDirection.rtl,
-        child: BlocBuilder<InvoicesTabCubit, InvoicesTabState>(
-          builder: (context, state) {
-            return Column(
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            Row(
               children: [
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    SizedBox(width: 15),
-                    Selector<AgentsCollaboratorsInvoicesViewmodel,
-                            SellerTypeEnum>(
-                        selector: (_, vm) => vm.selectedSellerTypeFilter,
-                        builder: (context, selectedSellerTypeFilter, _) {
-                          return Expanded(
-                            flex: 3,
-                            child: DropdownButton<SellerTypeEnum>(
-                              isExpanded: true,
-                              hint: Text("النوع"),
-                              items: (SellerTypeEnum.values).map((type) {
-                                return DropdownMenuItem<SellerTypeEnum>(
-                                  child: Text(
-                                    type.name,
-                                    textDirection: myui.TextDirection.rtl,
-                                  ),
-                                  value: type,
-                                );
-                              }).toList(),
-                              value: selectedSellerTypeFilter,
-                              onChanged: (value) {
-                                if (value == null) return;
-                                invoicesTabCubit.getInvoicesParams =
-                                    invoicesTabCubit.getInvoicesParams.copyWith(
-                                  typeSeller: value,
-                                );
-                                invoicesTabCubit.getInvoicesByPrivileges();
-                              },
-                            ),
-                          );
-                        }),
-                    Consumer<AgentsCollaboratorsInvoicesViewmodel>(
-                      builder: (context, vm, child) {
-                        return getSellerNameChild(vm);
-                      },
-                    ),
-                    SizedBox(width: 15),
-                  ],
-                ),
-                SizedBox(height: 10),
-                if (_privilegeCubit.checkPrivilege('1'))
-                  Padding(
-                    padding: const EdgeInsets.only(left: 15.0, right: 15),
-                    child: Consumer<RegionProvider>(
-                      builder: (context, cart, child) {
-                        return DropdownButton<String?>(
+                SizedBox(width: 15),
+                Selector<AgentsCollaboratorsInvoicesViewmodel, SellerTypeEnum>(
+                    selector: (_, vm) => vm.selectedSellerTypeFilter,
+                    builder: (context, selectedSellerTypeFilter, _) {
+                      return Expanded(
+                        flex: 3,
+                        child: DropdownButton<SellerTypeEnum>(
                           isExpanded: true,
-                          hint: Text("الفرع"),
-                          items: cart.listRegionFilter.map((level_one) {
-                            return DropdownMenuItem(
-                              child: Text(level_one.regionName),
-                              value: level_one.regionId,
+                          hint: Text("النوع"),
+                          items: (SellerTypeEnum.values).map((type) {
+                            return DropdownMenuItem<SellerTypeEnum>(
+                              child: Text(
+                                type.name,
+                                textDirection: myui.TextDirection.rtl,
+                              ),
+                              value: type,
                             );
                           }).toList(),
-                          value: cart.selectedRegionId,
+                          value: selectedSellerTypeFilter,
                           onChanged: (value) {
-                            if (value == null) {
-                              return;
-                            }
+                            if (value == null) return;
                             invoicesTabCubit.getInvoicesParams =
                                 invoicesTabCubit.getInvoicesParams.copyWith(
-                              fkRegionInvoice: value,
+                              typeSeller: value,
                             );
                             invoicesTabCubit.getInvoicesByPrivileges();
-                            cart.changeVal(value.toString());
                           },
+                        ),
+                      );
+                    }),
+                Consumer<AgentsCollaboratorsInvoicesViewmodel>(
+                  builder: (context, vm, child) {
+                    return getSellerNameChild(vm);
+                  },
+                ),
+                SizedBox(width: 15),
+              ],
+            ),
+            SizedBox(height: 10),
+            if (_privilegeCubit.checkPrivilege('1'))
+              Padding(
+                padding: const EdgeInsets.only(left: 15.0, right: 15),
+                child: Consumer<RegionProvider>(
+                  builder: (context, cart, child) {
+                    return DropdownButton<String?>(
+                      isExpanded: true,
+                      hint: Text("الفرع"),
+                      items: cart.listRegionFilter.map((level_one) {
+                        return DropdownMenuItem(
+                          child: Text(level_one.regionName),
+                          value: level_one.regionId,
                         );
+                      }).toList(),
+                      value: cart.selectedRegionId,
+                      onChanged: (value) {
+                        if (value == null) {
+                          return;
+                        }
+                        invoicesTabCubit.getInvoicesParams =
+                            invoicesTabCubit.getInvoicesParams.copyWith(
+                          fkRegionInvoice: value,
+                        );
+                        invoicesTabCubit.getInvoicesByPrivileges();
+                        cart.changeVal(value.toString());
                       },
-                    ),
-                  ),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('from'),
-                          TextFormField(
-                            validator: (value) {
-                              if (selectedDatefrom == DateTime(1, 1, 1)) {
-                                return 'يرجى تعيين التاريخ ';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                                color: kMainColor,
-                              ),
-                              hintStyle: const TextStyle(
-                                  color: Colors.black45,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              hintText: selectedDatefrom == DateTime(1, 1, 1)
-                                  ? 'from' //_currentDate.toString()
-                                  : DateFormat('yyyy-MM-dd')
-                                      .format(selectedDatefrom),
-                              //_invoice!.dateinstall_task.toString(),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-                            ),
-                            readOnly: true,
-                            onTap: () {
-                              setState(() async {
-                                final date =
-                                    await selectDate(context, DateTime.now());
-                                if (date != null)
-                                  setState(() {
-                                    invoicesTabCubit.dateFrom = date;
-                                    invoicesTabCubit.getInvoicesParams =
-                                        invoicesTabCubit.getInvoicesParams
-                                            .copyWith(
-                                      from: DateFormat('yyyy-MM-dd')
-                                          .format(selectedDatefrom),
-                                    );
-                                    invoicesTabCubit.getInvoicesByPrivileges();
-                                  });
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      child: Column(
-                        children: [
-                          Text('to'),
-                          TextFormField(
-                            validator: (value) {
-                              if (invoicesTabCubit.dateTo ==
-                                  DateTime(1, 1, 1)) {
-                                return 'يرجى تعيين التاريخ ';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.date_range,
-                                color: kMainColor,
-                              ),
-                              hintStyle: const TextStyle(
-                                  color: Colors.black45,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                              hintText:
-                                  invoicesTabCubit.dateTo == DateTime(1, 1, 1)
-                                      ? 'to' //_currentDate.toString()
-                                      : DateFormat('yyyy-MM-dd')
-                                          .format(invoicesTabCubit.dateTo),
-                              //_invoice!.dateinstall_task.toString(),
-                              filled: true,
-                              fillColor: Colors.grey.shade200,
-                            ),
-                            readOnly: true,
-                            onTap: () {
-                              setState(() async {
-                                final date =
-                                    await selectDate(context, DateTime.now());
-                                if (date != null) {
-                                  setState(() {
-                                    invoicesTabCubit.dateTo = date;
-                                    invoicesTabCubit.getInvoicesParams =
-                                        invoicesTabCubit.getInvoicesParams
-                                            .copyWith(
-                                      to: DateFormat('yyyy-MM-dd')
-                                          .format(invoicesTabCubit.dateTo),
-                                    );
-                                    invoicesTabCubit.getInvoicesByPrivileges();
-                                  });
-                                }
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                _privilegeCubit.checkPrivilege('156') == true
-                    ? Padding(
-                        padding: const EdgeInsets.only(left: 20.0, right: 8),
-                        child: Consumer<ClientTypeProvider>(
-                            builder: (context, cart, child) {
-                          return DropdownButton(
-                            isExpanded: true,
-                            hint: Text('حالة الفاتورة'),
-                            items: cart.listtype_notReady.map((level_one) {
-                              return DropdownMenuItem(
-                                child: Text(level_one),
-                                value: level_one,
-                              );
-                            }).toList(),
-                            value: cart.selectedValufilter_NotReady,
-                            onChanged: (value) {
-                              invoicesTabCubit.getInvoicesParams =
-                                  invoicesTabCubit.getInvoicesParams.copyWith(
-                                typeReadyClient: value,
-                              );
-                              cart.changevalueNotReady(value.toString());
-                              invoicesTabCubit.getInvoicesByPrivileges();
-                            },
-                          );
-                        }),
-                      )
-                    : Container(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: TextField(
-                    controller: invoicesTabCubit.searchController,
-                    decoration: InputDecoration(
-                      isDense: true,
-                      hintText: "ابحث هنا...",
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30.0, right: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'عدد الفواتير',
-                        style: TextStyle(
-                            fontFamily: kfontfamily2,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Consumer2<invoice_vm,
-                              AgentsCollaboratorsInvoicesViewmodel>(
-                          builder:
-                              (context, value, agentCollaboratorsVm, child) {
-                        final list = invoicesTabCubit.invoicesList;
-
-                        return Text(
-                          list.length.toString(),
-                          style: TextStyle(
-                              fontFamily: kfontfamily2,
-                              fontWeight: FontWeight.bold),
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10),
-                Consumer2<invoice_vm, AgentsCollaboratorsInvoicesViewmodel>(
-                  builder: (context, value, agentCollaboratorsVm, child) {
-                    final list = invoicesTabCubit.invoicesList;
-
-                    if (value.isloading) {
-                      return loadingWidget;
-                    } else if (list.length == 0) {
-                      return Center(child: Text(messageNoData));
-                    }
-
-                    return Expanded(
-                      child: ListView.separated(
-                        itemCount: list.length,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        separatorBuilder: (_, __) => const SizedBox.shrink(),
-                        itemBuilder: (context, index) {
-                          return CardInvoiceClient(
-                            type: 'profile',
-                            invoice: list[index],
-                          );
-                        },
-                      ),
                     );
                   },
                 ),
+              ),
+            Row(
+              children: [
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('from'),
+                      TextFormField(
+                        validator: (value) {
+                          if (selectedDatefrom == DateTime(1, 1, 1)) {
+                            return 'يرجى تعيين التاريخ ';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: kMainColor,
+                          ),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          hintText: selectedDatefrom == DateTime(1, 1, 1)
+                              ? 'from' //_currentDate.toString()
+                              : DateFormat('yyyy-MM-dd')
+                                  .format(selectedDatefrom),
+                          //_invoice!.dateinstall_task.toString(),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          setState(() async {
+                            final date =
+                                await selectDate(context, DateTime.now());
+                            if (date != null)
+                              setState(() {
+                                invoicesTabCubit.dateFrom = date;
+                                invoicesTabCubit.getInvoicesParams =
+                                    invoicesTabCubit.getInvoicesParams.copyWith(
+                                  from: DateFormat('yyyy-MM-dd')
+                                      .format(selectedDatefrom),
+                                );
+                                invoicesTabCubit.getInvoicesByPrivileges();
+                              });
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Flexible(
+                  child: Column(
+                    children: [
+                      Text('to'),
+                      TextFormField(
+                        validator: (value) {
+                          if (invoicesTabCubit.dateTo == DateTime(1, 1, 1)) {
+                            return 'يرجى تعيين التاريخ ';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.date_range,
+                            color: kMainColor,
+                          ),
+                          hintStyle: const TextStyle(
+                              color: Colors.black45,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500),
+                          hintText: invoicesTabCubit.dateTo == DateTime(1, 1, 1)
+                              ? 'to' //_currentDate.toString()
+                              : DateFormat('yyyy-MM-dd')
+                                  .format(invoicesTabCubit.dateTo),
+                          //_invoice!.dateinstall_task.toString(),
+                          filled: true,
+                          fillColor: Colors.grey.shade200,
+                        ),
+                        readOnly: true,
+                        onTap: () {
+                          setState(() async {
+                            final date =
+                                await selectDate(context, DateTime.now());
+                            if (date != null) {
+                              setState(() {
+                                invoicesTabCubit.dateTo = date;
+                                invoicesTabCubit.getInvoicesParams =
+                                    invoicesTabCubit.getInvoicesParams.copyWith(
+                                  to: DateFormat('yyyy-MM-dd')
+                                      .format(invoicesTabCubit.dateTo),
+                                );
+                                invoicesTabCubit.getInvoicesByPrivileges();
+                              });
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ],
-            );
-          },
+            ),
+            _privilegeCubit.checkPrivilege('156') == true
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 8),
+                    child: Consumer<ClientTypeProvider>(
+                        builder: (context, cart, child) {
+                      return DropdownButton(
+                        isExpanded: true,
+                        hint: Text('حالة الفاتورة'),
+                        items: cart.listtype_notReady.map((level_one) {
+                          return DropdownMenuItem(
+                            child: Text(level_one),
+                            value: level_one,
+                          );
+                        }).toList(),
+                        value: cart.selectedValufilter_NotReady,
+                        onChanged: (value) {
+                          invoicesTabCubit.getInvoicesParams =
+                              invoicesTabCubit.getInvoicesParams.copyWith(
+                            typeReadyClient: value,
+                          );
+                          cart.changevalueNotReady(value.toString());
+                          invoicesTabCubit.getInvoicesByPrivileges();
+                        },
+                      );
+                    }),
+                  )
+                : Container(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: TextField(
+                controller: invoicesTabCubit.searchController,
+                decoration: InputDecoration(
+                  isDense: true,
+                  hintText: "ابحث هنا...",
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.only(left: 30.0, right: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'عدد الفواتير',
+                    style: TextStyle(
+                        fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
+                  ),
+                  BlocBuilder<InvoicesTabCubit, InvoicesTabState>(
+                    buildWhen: (previous, current) => true,
+                    builder: (context, state) {
+                      return Text(
+                        invoicesTabCubit.invoicesList.length.toString(),
+                        style: TextStyle(
+                            fontFamily: kfontfamily2,
+                            fontWeight: FontWeight.bold),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            InvoicesPaginatedList(),
+          ],
         ),
       ),
     );
