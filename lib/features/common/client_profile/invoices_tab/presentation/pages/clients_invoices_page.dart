@@ -300,11 +300,7 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(
                 onChanged: (value) {
-                  //       if (invoicesTabCubit.getInvoicesParams.searchQuery == null &&
-                  //           invoicesTabCubit.searchController.text.isEmpty) {
-                  //         return;
-                  //       }
-                  //       invoicesTabCubit.getInvoicesByPrivileges();
+                  // todo: use debounce
                   invoicesTabCubit.getInvoicesParams =
                       invoicesTabCubit.getInvoicesParams.copyWith(
                     searchQuery: value,
