@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as myui;
 
+import 'package:crm_smart/core/common/enums/client_status_enum.dart';
 import 'package:crm_smart/core/common/enums/seller_type_enum.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/pages/invoices_paginated_list.dart';
@@ -34,13 +35,14 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
   late final AgentsCollaboratorsInvoicesViewmodel viewmodel;
 
   DateTime selectedDatefrom = DateTime.now();
+  ClientStatusEnum selectedValufilter_NotReady = ClientStatusEnum.all;
 
   @override
   void initState() {
     super.initState();
     _privilegeCubit = context.read<PrivilegeCubit>();
-    invoicesTabCubit = context.read<InvoicesTabCubit>()
-      ..getInvoicesByPrivileges();
+    invoicesTabCubit = context.read<InvoicesTabCubit>();
+    invoicesTabCubit.getInvoicesByPrivileges();
     viewmodel = Provider.of<AgentsCollaboratorsInvoicesViewmodel>(context,
         listen: false);
 
@@ -92,13 +94,21 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                             );
                           }).toList(),
                           value: selectedSellerTypeFilter,
-                          onChanged: (value) {
+                          onChanged: (value) async {
                             if (value == null) return;
                             invoicesTabCubit.getInvoicesParams =
                                 invoicesTabCubit.getInvoicesParams.copyWith(
                               typeSeller: value,
+                              fkAgent: '',
+                              fkIdUser: '',
+                              participateFk: '',
                             );
+                            selectedSellerTypeFilter = value;
+                            await viewmodel
+                              ..onChangeSellerTypeFilter(value)
+                              ..clearUser();
                             invoicesTabCubit.getInvoicesByPrivileges();
+                            setState(() {});
                           },
                         ),
                       );
@@ -149,46 +159,49 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('from'),
-                      TextFormField(
-                        validator: (value) {
-                          if (selectedDatefrom == DateTime(1, 1, 1)) {
-                            return 'يرجى تعيين التاريخ ';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.date_range,
-                            color: kMainColor,
-                          ),
-                          hintStyle: const TextStyle(
-                              color: Colors.black45,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500),
-                          hintText: selectedDatefrom == DateTime(1, 1, 1)
-                              ? 'from' //_currentDate.toString()
-                              : DateFormat('yyyy-MM-dd')
-                                  .format(selectedDatefrom),
-                          //_invoice!.dateinstall_task.toString(),
-                          filled: true,
-                          fillColor: Colors.grey.shade200,
-                        ),
-                        readOnly: true,
-                        onTap: () {
-                          setState(() async {
-                            final date =
-                                await selectDate(context, DateTime.now());
-                            if (date != null)
-                              setState(() {
-                                invoicesTabCubit.dateFrom = date;
-                                invoicesTabCubit.getInvoicesParams =
-                                    invoicesTabCubit.getInvoicesParams.copyWith(
-                                  from: DateFormat('yyyy-MM-dd')
-                                      .format(selectedDatefrom),
-                                );
-                                invoicesTabCubit.getInvoicesByPrivileges();
-                              });
-                          });
+                      BlocBuilder<InvoicesTabCubit, InvoicesTabState>(
+                        builder: (context, state) {
+                          return TextFormField(
+                            validator: (value) {
+                              if (invoicesTabCubit.dateFrom ==
+                                  DateTime(1, 1, 1)) {
+                                return 'يرجى تعيين التاريخ ';
+                              }
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.date_range,
+                                color: kMainColor,
+                              ),
+                              hintStyle: const TextStyle(
+                                  color: Colors.black45,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
+                              hintText:
+                                  invoicesTabCubit.dateFrom == DateTime(1, 1, 1)
+                                      ? 'from'
+                                      : DateFormat('yyyy-MM-dd')
+                                          .format(invoicesTabCubit.dateFrom),
+                              //_invoice!.dateinstall_task.toString(),
+                              filled: true,
+                              fillColor: Colors.grey.shade200,
+                            ),
+                            readOnly: true,
+                            onTap: () async {
+                              final date =
+                                  await selectDate(context, DateTime.now());
+                              if (date == null) return;
+                              invoicesTabCubit.dateFrom = date;
+                              setState(() {});
+                              invoicesTabCubit.getInvoicesParams =
+                                  invoicesTabCubit.getInvoicesParams.copyWith(
+                                from: DateFormat('yyyy-MM-dd')
+                                    .format(invoicesTabCubit.dateFrom),
+                              );
+                              invoicesTabCubit.getInvoicesByPrivileges();
+                            },
+                          );
                         },
                       ),
                     ],
@@ -246,36 +259,57 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                 ),
               ],
             ),
-            _privilegeCubit.checkPrivilege('156') == true
-                ? Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 8),
-                    child: Consumer<ClientTypeProvider>(
-                        builder: (context, cart, child) {
-                      return DropdownButton(
+            if (_privilegeCubit.checkPrivilege('156') == true)
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 8),
+                child: Consumer<ClientTypeProvider>(
+                    builder: (context, cart, child) {
+                  return StatefulBuilder(
+                    builder: (context, setState) {
+                      return DropdownButton<ClientStatusEnum>(
                         isExpanded: true,
                         hint: Text('حالة الفاتورة'),
-                        items: cart.listtype_notReady.map((level_one) {
+                        items: ClientStatusEnum.values.map((value) {
                           return DropdownMenuItem(
-                            child: Text(level_one),
-                            value: level_one,
+                            child: Text(value.name),
+                            value: value,
                           );
                         }).toList(),
-                        value: cart.selectedValufilter_NotReady,
+                        value: selectedValufilter_NotReady,
                         onChanged: (value) {
                           invoicesTabCubit.getInvoicesParams =
                               invoicesTabCubit.getInvoicesParams.copyWith(
-                            typeReadyClient: value,
+                            typeReadyClient: value!.toParam,
                           );
-                          cart.changevalueNotReady(value.toString());
+                          setState(() {
+                            selectedValufilter_NotReady = value;
+                          });
+                          print("state => " +
+                              invoicesTabCubit.getInvoicesParams.typeReadyClient
+                                  .toString());
+                          // cart.changevalueNotReady(value.toString());
                           invoicesTabCubit.getInvoicesByPrivileges();
                         },
                       );
-                    }),
-                  )
-                : Container(),
+                    },
+                  );
+                }),
+              ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(
+                onChanged: (value) {
+                  //       if (invoicesTabCubit.getInvoicesParams.searchQuery == null &&
+                  //           invoicesTabCubit.searchController.text.isEmpty) {
+                  //         return;
+                  //       }
+                  //       invoicesTabCubit.getInvoicesByPrivileges();
+                  invoicesTabCubit.getInvoicesParams =
+                      invoicesTabCubit.getInvoicesParams.copyWith(
+                    searchQuery: value,
+                  );
+                  invoicesTabCubit.getInvoicesByPrivileges();
+                },
                 controller: invoicesTabCubit.searchController,
                 decoration: InputDecoration(
                   isDense: true,
@@ -370,6 +404,13 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                 return;
               }
 
+              invoicesTabCubit.getInvoicesParams =
+                  invoicesTabCubit.getInvoicesParams.copyWith(
+                fkAgent: null,
+                fkIdUser: null,
+                participateFk: null,
+              );
+
               if (T == ParticipateModel) {
                 invoicesTabCubit.getInvoicesParams =
                     invoicesTabCubit.getInvoicesParams.copyWith(
@@ -389,6 +430,8 @@ class _ClientsInvoicesPageState extends State<ClientsInvoicesPage> {
                     .copyWith(fkIdUser: (seller as UserModel).idUser);
                 viewmodel.onChangeEmployee(seller as UserModel);
               }
+
+              invoicesTabCubit.getInvoicesByPrivileges();
             },
           ),
         ),

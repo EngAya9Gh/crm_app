@@ -121,7 +121,7 @@ class _clientmarketingState extends State<clientmarketing> {
                           presystem: clientModel.preSystem,
                           presystemtitle: clientModel.preSystemTitle,
                           reasonChange: clientModel.reasonChange,
-                          reasonTransfer: clientModel.reasonTransfer,
+                          transferTo: clientModel.reasonTransfer,
                           size_activity: clientModel.sizeActivity,
                           sourcclient: clientModel.sourceClient,
                           tag: clientModel.tag,

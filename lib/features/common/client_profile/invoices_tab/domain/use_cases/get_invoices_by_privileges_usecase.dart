@@ -22,6 +22,8 @@ class GetInvoicesByPrivilegesUsecase extends UseCase<
 }
 
 class GetInvoicesByPrivilegesParams {
+  final int skip;
+  final int limit;
   final SellerTypeEnum? typeSeller;
   final String? fkRegionInvoice;
   final String? typeReadyClient;
@@ -33,6 +35,8 @@ class GetInvoicesByPrivilegesParams {
   final String? fkIdUser;
 
   const GetInvoicesByPrivilegesParams({
+    this.skip = 1,
+    this.limit = 15,
     this.typeSeller,
     this.fkRegionInvoice,
     this.typeReadyClient,
@@ -45,6 +49,8 @@ class GetInvoicesByPrivilegesParams {
   });
 
   GetInvoicesByPrivilegesParams copyWith({
+    int? skip,
+    int? limit,
     SellerTypeEnum? typeSeller,
     String? fkRegionInvoice,
     String? typeReadyClient,
@@ -56,20 +62,36 @@ class GetInvoicesByPrivilegesParams {
     String? fkIdUser,
   }) {
     return GetInvoicesByPrivilegesParams(
+      skip: skip ?? this.skip,
+      limit: limit ?? this.limit,
       typeSeller: typeSeller ?? this.typeSeller,
       fkRegionInvoice: fkRegionInvoice ?? this.fkRegionInvoice,
-      typeReadyClient: typeReadyClient ?? this.typeReadyClient,
+      typeReadyClient: _assignNull(
+          currentValue: this.typeReadyClient, newValue: typeReadyClient),
       from: from ?? this.from,
       to: to ?? this.to,
       searchQuery: searchQuery ?? this.searchQuery,
-      fkAgent: fkAgent ?? this.fkAgent,
-      participateFk: participateFk ?? this.participateFk,
-      fkIdUser: fkIdUser ?? this.fkIdUser,
+      fkAgent: _assignNull(currentValue: this.fkAgent, newValue: fkAgent),
+      participateFk: _assignNull(
+          currentValue: this.participateFk, newValue: participateFk),
+      fkIdUser: _assignNull(currentValue: this.fkIdUser, newValue: fkIdUser),
     );
+  }
+
+  _assignNull({dynamic currentValue, dynamic newValue}) {
+    if (newValue == '') {
+      return null;
+    }
+    if (newValue == null) {
+      return currentValue;
+    }
+    return newValue;
   }
 
   Map<String, dynamic> toMap() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['page'] = (skip / limit).floor() + 1;
+    data['limit'] = limit;
     data['type_seller'] = typeSeller?.value;
     data['fk_regoin_invoice'] = fkRegionInvoice;
     data['TypeReadyClient'] = typeReadyClient;

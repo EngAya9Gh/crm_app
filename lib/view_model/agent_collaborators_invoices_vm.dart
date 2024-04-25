@@ -28,6 +28,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
   DateTime from = DateTime(1, 1, 1);
   DateTime to = DateTime(1, 1, 1);
+
   init() {
     invoicesList = [];
     invoicesFiltered = [];
@@ -45,6 +46,13 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void clearUser() {
+    selectedCollaborator = null;
+    selectedEmployee = null;
+    selectedAgentDistributor = null;
+    notifyListeners();
+  }
+
   setInvoicesList(List<InvoiceModel> invoices) {
     invoicesList = invoices;
     invoicesFiltered = invoices;
@@ -59,7 +67,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
       }
 
       final list = await Invoice_Service.getAgentsAndDistributors();
-      agentDistributorsState = agentDistributorsState.changeToLoaded(list!);
+      agentDistributorsState = agentDistributorsState.changeToLoaded(list);
       notifyListeners();
       return;
     } catch (e) {
@@ -92,14 +100,13 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     selectedSellerTypeFilter = sellerType;
     notifyListeners();
     if (selectedSellerTypeFilter == SellerTypeEnum.all) {
-      onFilter();
       return;
     }
 
     if (selectedSellerTypeFilter == SellerTypeEnum.employee) {
       selectedEmployee = null;
       notifyListeners();
-      onFilter();
+
       return;
     }
 
@@ -108,7 +115,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
       if (agentDistributorsState.data != null) {
         selectedAgentDistributor = null;
         notifyListeners();
-        onFilter();
+
         return;
       }
 
@@ -118,7 +125,6 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
       await getAgentsAndDistributors();
       if (agentDistributorsState.isSuccess) {
         sellerStatus = SellerStatus.loaded;
-        onFilter();
       } else {
         sellerStatus = SellerStatus.failed;
       }
@@ -129,7 +135,7 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     if (collaboratorsEmployeeState.data != null) {
       selectedCollaborator = null;
       notifyListeners();
-      onFilter();
+
       return;
     }
 
@@ -139,7 +145,6 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     await getCollaborators();
     if (collaboratorsEmployeeState.isSuccess) {
       sellerStatus = SellerStatus.loaded;
-      onFilter();
     } else {
       sellerStatus = SellerStatus.failed;
     }
@@ -150,34 +155,14 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
 
   onChangeSelectedCollaborator(ParticipateModel collaborator) {
     selectedCollaborator = collaborator;
-    onFilter();
     notifyListeners();
   }
 
   onChangeSelectedAgentDistributor(
       AgentDistributorModel agentDistributorModel) {
     selectedAgentDistributor = agentDistributorModel;
-    onFilter();
+
     notifyListeners();
-  }
-
-  onChangeRegion(String region) {
-    selectedRegion = region;
-    onFilter();
-  }
-
-  onChangeNotReady(String notReady) {
-    selectednotReady = notReady;
-    onFilter();
-  }
-
-  onChange_date(DateTime from_param, DateTime to_param) {
-    // selectedRegion = region;
-    from = from_param;
-    to = to_param;
-    notifyListeners();
-
-    onFilter();
   }
 
   onSearch(String query) {
@@ -197,157 +182,9 @@ class AgentsCollaboratorsInvoicesViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  onFilter() {
-    final list = List<InvoiceModel>.from(invoicesList);
-    invoicesFiltered = [];
-    invoicesFiltered = list.where((element) {
-      if (isSelectedSellerTypeFilterEqualAll) {
-        if (isSelectedRegionEqualAll) {
-          return true;
-        }
-        return isSelectedRegionEqualInvoice(element);
-      } else if (isSelectedSellerTypeFilterEqualAgentOrDistributor) {
-        if (isSelectedAgentDistributorEqualNull &&
-            isSelectedRegionNotEqualAll) {
-          return isSelectedRegionEqualInvoice(element) &&
-              isSelectedSellerTypeFilterEqualInvoice(element);
-        } else if (!isSelectedAgentDistributorEqualNull &&
-            isSelectedRegionEqualAll) {
-          return isSelectedAgentDistributorEqualInvoice(element);
-        } else if (!isSelectedAgentDistributorEqualNull &&
-            isSelectedRegionNotEqualAll) {
-          return isSelectedAgentDistributorEqualInvoice(element) &&
-              isSelectedRegionEqualInvoice(element);
-        }
-
-        return isSelectedSellerTypeFilterEqualInvoice(element);
-      } else if (isSelectedTypeEqualCollaborator) {
-        if (isSelectedCollaboratorEqualNull && isSelectedRegionNotEqualAll) {
-          return isSelectedRegionEqualInvoice(element) &&
-              isSelectedSellerTypeFilterEqualInvoice(element);
-        } else if (!isSelectedCollaboratorEqualNull &&
-            isSelectedRegionEqualAll) {
-          return isSelectedCollaborateEqualInvoice(element);
-        } else if (!isSelectedCollaboratorEqualNull &&
-            isSelectedRegionNotEqualAll) {
-          return isSelectedCollaborateEqualInvoice(element) &&
-              isSelectedRegionEqualInvoice(element);
-        }
-
-        return isSelectedSellerTypeFilterEqualInvoice(element);
-      } else {
-        if (isSelectedEmployeeEqualNull && isSelectedRegionNotEqualAll) {
-          return isSelectedRegionEqualInvoice(element) &&
-              (isSelectedSellerTypeFilterEqualInvoice(element) ||
-                  element.type_seller == null);
-        } else if (!isSelectedEmployeeEqualNull && isSelectedRegionEqualAll) {
-          return isSelectedEmployeeEqualInvoice(element);
-        } else if (!isSelectedEmployeeEqualNull &&
-            isSelectedRegionNotEqualAll) {
-          return isSelectedEmployeeEqualInvoice(element) &&
-              isSelectedRegionEqualInvoice(element);
-        }
-
-        return isSelectedSellerTypeFilterEqualInvoice(element) ||
-            element.type_seller == null;
-      }
-    }).toList();
-    // isSelectedNotReadyInvoice(el)
-    List<InvoiceModel> invoicesFiltered_temp = [];
-
-    if (selectednotReady == 'غير جاهز') {
-      if (invoicesFiltered.isEmpty)
-        list.forEach((element) {
-          if (element.isdoneinstall == null &&
-              element.ready_install == '0' &&
-              element.TypeReadyClient == 'notReady' &&
-              DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-              DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-            invoicesFiltered_temp.add(element);
-          }
-        });
-      else
-        invoicesFiltered.forEach((element) {
-          if (element.isdoneinstall == null &&
-              element.ready_install == '0' &&
-              element.TypeReadyClient == 'notReady' &&
-              DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-              DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-            invoicesFiltered_temp.add(element);
-          }
-        });
-    } else {
-      if (invoicesFiltered.isEmpty)
-        list.forEach((element) {
-          if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-              DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-            invoicesFiltered_temp.add(element);
-          }
-        });
-      else
-        invoicesFiltered.forEach((element) {
-          if (DateTime.parse(element.date_approve.toString()).isAfter(from) &&
-              DateTime.parse(element.date_approve.toString()).isBefore(to)) {
-            invoicesFiltered_temp.add(element);
-          }
-        });
-    }
-
-    invoicesFiltered = List.from(invoicesFiltered_temp);
-
-    notifyListeners();
-  }
-
-  bool get isSelectedRegionNotEqualAll =>
-      selectedRegion != "0" && selectedRegion != null;
-
-  bool get isSelectedRegionEqualAll =>
-      selectedRegion == "0" || selectedRegion == null;
-
-  bool get isSelectedRegionEqualNull => selectedRegion == null;
-
-  bool isSelectedRegionEqualInvoice(InvoiceModel element) =>
-      element.fk_regoin_invoice == selectedRegion;
-  bool isSelectedNotReadyInvoice(InvoiceModel element) =>
-      element.isdoneinstall == null &&
-      element.ready_install == '0' &&
-      element.TypeReadyClient == 'notReady';
-
-  bool isSelectedSellerTypeFilterEqualInvoice(InvoiceModel element) =>
-      element.type_seller == selectedSellerTypeFilter.index.toString();
-
-  bool isSelectedAgentDistributorEqualInvoice(InvoiceModel element) =>
-      selectedAgentDistributor?.idAgent == element.fk_agent;
-
-  bool isSelectedCollaborateEqualInvoice(InvoiceModel element) =>
-      selectedCollaborator?.id_participate == element.participate_fk;
-
-  bool isSelectedEmployeeEqualInvoice(InvoiceModel element) =>
-      selectedEmployee?.idUser == element.fkIdUser;
-
-  bool get isSelectedSellerTypeFilterEqualAgentOrDistributor => [
-        SellerTypeEnum.distributor,
-        SellerTypeEnum.agent
-      ].contains(selectedSellerTypeFilter);
-
-  bool get isSelectedSellerTypeFilterEqualAll =>
-      selectedSellerTypeFilter == SellerTypeEnum.all;
-
-  bool get isSelectedTypeEqualCollaborator =>
-      selectedSellerTypeFilter == SellerTypeEnum.collaborator;
-
-  bool get isSelectedTypeFilterEqualNull => selectedAgentDistributor == null;
-
-  bool get isSelectedAgentDistributorEqualNull =>
-      selectedAgentDistributor == null;
-
-  bool get isSelectedCollaboratorEqualNull => selectedCollaborator == null;
-
-  bool get isSelectedEmployeeEqualNull => selectedEmployee == null;
-
   void onChangeEmployee(UserModel seller) {
     selectedEmployee = seller;
-    onFilter();
+
     notifyListeners();
   }
 }

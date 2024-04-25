@@ -18,8 +18,8 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
   ) : super(InvoicesTabState());
 
   final TextEditingController searchController = TextEditingController();
-  DateTime dateFrom = DateTime.now();
-  DateTime dateTo = DateTime.now();
+  DateTime dateFrom = DateTime(1, 1, 1);
+  DateTime dateTo = DateTime(1, 1, 1);
 
   GetInvoicesByPrivilegesParams getInvoicesParams =
       GetInvoicesByPrivilegesParams();
@@ -32,13 +32,16 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
   }) async {
     if (isNewFilter) {
       invoicesList.clear();
-      getInvoicesParams = GetInvoicesByPrivilegesParams();
       hasReachedEnd = false;
     }
     if (hasReachedEnd) return;
     emit(state.copyWith(getInvoicesStatus: StateStatus.loading));
 
-    final result = await _getInvoicesByPrivilegesUsecase(getInvoicesParams);
+    final result =
+        await _getInvoicesByPrivilegesUsecase(getInvoicesParams.copyWith(
+      skip: invoicesList.length,
+      searchQuery: searchController.text,
+    ));
     result.fold((l) {
       emit(state.copyWith(
         getInvoicesStatus: StateStatus.failure,
@@ -47,7 +50,6 @@ class InvoicesTabCubit extends Cubit<InvoicesTabState> {
     }, (r) {
       if (r.isEmpty) {
         hasReachedEnd = true;
-        return;
       }
       invoicesList.addAll(r);
       emit(state.copyWith(

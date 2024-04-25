@@ -16,7 +16,7 @@ extension SellerTypeEnumExtension on SellerTypeEnum {
     }
   }
 
-  String get value {
+  String? get value {
     switch (this) {
       case SellerTypeEnum.distributor:
         return '0';
@@ -27,7 +27,7 @@ extension SellerTypeEnumExtension on SellerTypeEnum {
       case SellerTypeEnum.employee:
         return '3';
       case SellerTypeEnum.all:
-        return '4';
+        return null;
     }
   }
 

@@ -17,7 +17,7 @@ class ClientModel1 extends CacheRepository {
     this.mobile,
     this.dateChangetype,
     this.reasonChange,
-    this.reasonTransfer,
+    this.transferTo,
     this.nameCountry,
     this.nameUser,
     this.name_regoin,
@@ -86,7 +86,7 @@ class ClientModel1 extends CacheRepository {
   late final String? mobile;
   late final String? dateChangetype;
   late final String? reasonChange;
-  late final String? reasonTransfer;
+  late final String? transferTo;
   late final String? nameCountry;
 
   late final String? nameUser;
@@ -161,7 +161,7 @@ class ClientModel1 extends CacheRepository {
     mobile = json['mobile'];
     dateChangetype = json['date_changetype'];
     reasonChange = json['reason_change'];
-    reasonTransfer = json['reason_transfer'];
+    transferTo = json['reason_transfer'];
     nameCountry = json['nameCountry'];
     nameUser = json['nameUser'];
     name_regoin = json['name_regoin'];
@@ -233,7 +233,7 @@ class ClientModel1 extends CacheRepository {
     _data['mobile'] = mobile;
     _data['date_changetype'] = dateChangetype;
     _data['reason_change'] = reasonChange;
-    _data['reason_transfer'] = reasonTransfer;
+    _data['reason_transfer'] = transferTo;
     _data['nameCountry'] = nameCountry;
     _data['name_regoin'] = name_regoin;
     _data['total'] = total;
@@ -293,6 +293,6 @@ class ClientModel1 extends CacheRepository {
 
   @override
   String toString() {
-    return 'ClientModel{idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegoin: $fkRegoin, fkcountry: $fkcountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangetype: $dateChangetype, reasonChange: $reasonChange, reasonTransfer: $reasonTransfer, nameCountry: $nameCountry, nameUser: $nameUser, name_regoin: $name_regoin, total: $total, amount_paid: $amount_paid, offer_price: $offer_price, date_price: $date_price, user_do: $user_do, isApprove: $isApprove, nameuserdoning: $nameuserdoning, nameusertransfer: $nameusertransfer, fkusertrasfer: $fkusertrasfer, mobileuser: $mobileuser, total_paid: $total_paid, ismarketing: $ismarketing, address_client: $address_client, descActivController: $descActivController, presystem: $presystem, presystemtitle: $presystemtitle, sourcclient: $sourcclient, activity_type_fk: $activity_type_fk, activity_type_title: $activity_type_title, phone: $phone, user_add: $user_add, nameAdduser: $nameAdduser, date_visit_Client: $date_visit_Client, name_city: $name_city, namemaincity: $namemaincity, id_maincity: $id_maincity}';
+    return 'ClientModel{idClients: $idClients, nameClient: $nameClient, nameEnterprise: $nameEnterprise, typeJob: $typeJob, city: $city, location: $location, fkRegoin: $fkRegoin, fkcountry: $fkcountry, dateCreate: $dateCreate, typeClient: $typeClient, fkUser: $fkUser, dateTransfer: $dateTransfer, mobile: $mobile, dateChangetype: $dateChangetype, reasonChange: $reasonChange, reasonTransfer: $transferTo, nameCountry: $nameCountry, nameUser: $nameUser, name_regoin: $name_regoin, total: $total, amount_paid: $amount_paid, offer_price: $offer_price, date_price: $date_price, user_do: $user_do, isApprove: $isApprove, nameuserdoning: $nameuserdoning, nameusertransfer: $nameusertransfer, fkusertrasfer: $fkusertrasfer, mobileuser: $mobileuser, total_paid: $total_paid, ismarketing: $ismarketing, address_client: $address_client, descActivController: $descActivController, presystem: $presystem, presystemtitle: $presystemtitle, sourcclient: $sourcclient, activity_type_fk: $activity_type_fk, activity_type_title: $activity_type_title, phone: $phone, user_add: $user_add, nameAdduser: $nameAdduser, date_visit_Client: $date_visit_Client, name_city: $name_city, namemaincity: $namemaincity, id_maincity: $id_maincity}';
   }
 }
