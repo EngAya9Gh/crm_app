@@ -36,7 +36,7 @@ class InvoiceFileGalleryPage extends StatefulWidget {
 }
 
 class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
-  late invoice_vm invoiceVm;
+  late InvoiceVm invoiceVm;
   File? recordCommercialImage;
   String? imageRecord;
   bool isDeleteRecordCommercialImageNetworkImage = false;
@@ -46,7 +46,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
 
   @override
   void initState() {
-    invoiceVm = context.read<invoice_vm>();
+    invoiceVm = context.read<InvoiceVm>();
 
     currentInvoice = invoiceVm.currentInvoice!;
     imageRecord = currentInvoice.imageRecord;
@@ -65,7 +65,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
     Widget remindButton = TextButton(
       child: Text("cancel"),
       onPressed: () {
-        invoiceVm = context.read<invoice_vm>();
+        invoiceVm = context.read<InvoiceVm>();
 
         currentInvoice = invoiceVm.currentInvoice!;
         imageRecord = currentInvoice.imageRecord;
@@ -109,7 +109,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<invoice_vm>(
+    return Consumer<InvoiceVm>(
       builder: (context, value, child) {
         return Scaffold(
           appBar: AppBar(
@@ -442,7 +442,7 @@ class _InvoiceFileGalleryPageState extends State<InvoiceFileGalleryPage> {
                   child: (fileAttach.file?.name.ext == '.pdf' ||
                           (fileAttach.fileAttach?.endsWith('.pdf') ?? false))
                       ? InkWell(
-                          onTap: () => invoice_vm().openFile(
+                          onTap: () => InvoiceVm().openFile(
                               attachFile: fileAttach,
                               baseUrl: EndPoints.baseUrls.laravelInvoiceFiles),
                           child: Container(

@@ -94,18 +94,28 @@ class DioServices extends ApiServices {
   }
 
   @override
-  Future<dynamic> postRequestWithFile(
-    String url,
-    Map<String, dynamic> data,
+  Future<dynamic> postRequestWithFile({
+    required String url,
+    required Map<String, dynamic> data,
     File? file,
-    File? fileLogo, {
+    File? fileLogo,
     List<File>? files,
+    bool? isDeleteFile,
+    bool? isDeleteLogo,
   }) async {
     try {
       final formData = FormData.fromMap(data);
-      final preparedFiles = await _getFiles(file, fileLogo, files);
+      final preparedFiles = await _getFiles(
+        file: file,
+        fileLogo: fileLogo,
+        files: files,
+      );
 
       formData..files.addAll(preparedFiles);
+
+      formData.fields.add(MapEntry("isDeleteFile", isDeleteFile.toString()));
+      formData.fields.add(MapEntry("isDeleteLogo", isDeleteLogo.toString()));
+
       final res = await dio.post(url, data: formData);
 
       return res.data;
@@ -114,11 +124,11 @@ class DioServices extends ApiServices {
     }
   }
 
-  Future<List<MapEntry<String, MultipartFile>>> _getFiles(
+  Future<List<MapEntry<String, MultipartFile>>> _getFiles({
     File? file,
     File? fileLogo,
     List<File>? files,
-  ) async {
+  }) async {
     List<MapEntry<String, MultipartFile>> result = [];
 
     if (file != null) {

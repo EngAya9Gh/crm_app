@@ -54,7 +54,7 @@ class InvoiceFilterWidget extends StatelessWidget {
                     value: cart.selectedlisttype_install,
                     onChanged: (value) {
                       cart.changelisttype_install(value.toString());
-                      Provider.of<invoice_vm>(context, listen: false)
+                      Provider.of<InvoiceVm>(context, listen: false)
                           .typeClientValue = value.toString();
                       filterShow(context);
                     },
@@ -94,7 +94,7 @@ class InvoiceFilterWidget extends StatelessWidget {
           user.maincitylist_user?.map((e) => e.asMainCity).toList() ?? [];
     }
 
-    context.read<invoice_vm>().filterInvoices(
+    context.read<InvoiceVm>().filterInvoices(
           listSelectedRegions: selectedRegions,
           selectedCities: cities,
         );

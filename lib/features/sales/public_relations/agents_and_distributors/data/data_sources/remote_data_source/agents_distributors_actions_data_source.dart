@@ -58,10 +58,10 @@ class AgentsDistributorsActionsDataSourceImpl
       final endPoint = EndPoints.agentDistributor.addAgent;
       apiServices.changeBaseUrl(EndPoints.baseUrls.url);
       await apiServices.postRequestWithFile(
-        endPoint,
-        addAgentParams.agentActionModel.toMap(),
-        addAgentParams.file,
-        addAgentParams.agentActionModel.filelogo,
+        url: endPoint,
+        data: addAgentParams.agentActionModel.toMap(),
+        file: addAgentParams.file,
+        fileLogo: addAgentParams.agentActionModel.filelogo,
         files: addAgentParams.files,
       );
       return Right(null);
@@ -79,10 +79,10 @@ class AgentsDistributorsActionsDataSourceImpl
       final endPoint =
           "${EndPoints.agentDistributor.updateAgent}${updateAgentParams.agentId}";
       await apiServices.postRequestWithFile(
-        endPoint,
-        updateAgentParams.agentActionModel.toMap(),
-        updateAgentParams.file,
-        updateAgentParams.agentActionModel.filelogo,
+        url: endPoint,
+        data: updateAgentParams.agentActionModel.toMap(),
+        file: updateAgentParams.file,
+        fileLogo: updateAgentParams.agentActionModel.filelogo,
       );
 
       return Right(null);

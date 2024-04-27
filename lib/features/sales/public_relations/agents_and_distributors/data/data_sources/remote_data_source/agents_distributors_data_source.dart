@@ -1,3 +1,4 @@
+import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
@@ -22,8 +23,8 @@ class AgentsDistributorsDataSourceImpl extends AgentsDistributorsDataSource {
       api.changeBaseUrl(EndPoints.baseUrls.url);
       final String endPoint =
           EndPoints.agentDistributor.getAgentsAndDistributors;
-      final result = await api.get(endPoint: endPoint);
-      final List data = result["message"] ?? [];
+      final response = await api.get(endPoint: endPoint);
+      final data = apiDataHandler(response);
       final List<AgentDistributorModel> agents = [];
 
       for (var agent in data) {

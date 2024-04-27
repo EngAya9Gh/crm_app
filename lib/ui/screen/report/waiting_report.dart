@@ -17,8 +17,7 @@ class _waiting_reportState extends State<waiting_report> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<invoice_vm>(context, listen: false)
-          .getinvoice_waiting();
+      await Provider.of<InvoiceVm>(context, listen: false).getinvoice_waiting();
     });
     super.initState();
   }
@@ -34,7 +33,7 @@ class _waiting_reportState extends State<waiting_report> {
         centerTitle: true,
       ),
       body: Center(
-        child: Provider.of<invoice_vm>(context, listen: true).isloading
+        child: Provider.of<InvoiceVm>(context, listen: true).isloading
             ? CircularProgressIndicator()
             : Padding(
                 padding: const EdgeInsets.only(top: 10.0),
@@ -57,7 +56,7 @@ class _waiting_reportState extends State<waiting_report> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  Provider.of<invoice_vm>(context, listen: true)
+                                  Provider.of<InvoiceVm>(context, listen: true)
                                       .listInvoicesAccept
                                       .length
                                       .toString(),
@@ -70,7 +69,7 @@ class _waiting_reportState extends State<waiting_report> {
                           ),
                           Container(
                             height: MediaQuery.of(context).size.height * 0.8,
-                            child: Consumer<invoice_vm>(
+                            child: Consumer<InvoiceVm>(
                                 builder: (context, value, child) {
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),

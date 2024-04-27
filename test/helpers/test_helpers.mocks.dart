@@ -334,23 +334,28 @@ class MockApiServices extends _i1.Mock implements _i10.ApiServices {
       ) as _i4.Future<dynamic>);
 
   @override
-  _i4.Future<dynamic> postRequestWithFile(
-    String? url,
-    Map<String, dynamic>? data,
+  _i4.Future<dynamic> postRequestWithFile({
+    required String? url,
+    required Map<String, dynamic>? data,
     _i11.File? file,
-    _i11.File? filelogo, {
+    _i11.File? fileLogo,
     List<_i11.File>? files,
+    bool? isDeleteFile,
+    bool? isDeleteLogo,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
           #postRequestWithFile,
-          [
-            url,
-            data,
-            file,
-            filelogo,
-          ],
-          {#files: files},
+          [],
+          {
+            #url: url,
+            #data: data,
+            #file: file,
+            #fileLogo: fileLogo,
+            #files: files,
+            #isDeleteFile: isDeleteFile,
+            #isDeleteLogo: isDeleteLogo,
+          },
         ),
         returnValue: _i4.Future<dynamic>.value(),
       ) as _i4.Future<dynamic>);

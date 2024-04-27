@@ -92,7 +92,7 @@ class search_widget extends StatelessWidget {
                         .searchProducts(pattern);
                     break;
                   case 'marketinvoice':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchmarketing(pattern, getIt<PrivilegeCubit>());
                     break;
                   case 'welcome':
@@ -104,7 +104,7 @@ class search_widget extends StatelessWidget {
                   //       .searchProducts(pattern);
                   //   break;
                   case 'wait':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchwait(context, pattern, getIt<PrivilegeCubit>());
                     break;
                   case 'waitcare':
@@ -112,23 +112,23 @@ class search_widget extends StatelessWidget {
                         .searchwaitcare(pattern);
                     break;
                   case 'waitout':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitout(context, pattern);
                     break;
                   case 'withprev':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitwithprev(pattern, getIt<PrivilegeCubit>());
                     break;
                   case 'waitsupport':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitsupport(pattern);
                     break;
                   case 'debt':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .searchwaitsupport(pattern);
                     break;
                   case 'accept_invoice':
-                    Provider.of<invoice_vm>(context, listen: false)
+                    Provider.of<InvoiceVm>(context, listen: false)
                         .search_accept_invoice_admin(pattern);
                     break;
                 }

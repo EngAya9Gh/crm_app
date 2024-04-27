@@ -27,7 +27,7 @@ class CustomFileWidget extends StatelessWidget {
         children: [
           Positioned.fill(
             child: InkWell(
-              onTap: () => invoice_vm().openFile(
+              onTap: () => InvoiceVm().openFile(
                   attachFile: FileAttach(fileAttach: fileModel.fileUrl)),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),

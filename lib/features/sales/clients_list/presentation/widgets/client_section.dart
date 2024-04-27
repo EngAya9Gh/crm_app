@@ -911,7 +911,7 @@ class _ClientSectionState extends State<ClientSection> {
                                         builder: (context) {
                                           return ModalProgressHUD(
                                             inAsyncCall:
-                                                Provider.of<invoice_vm>(context)
+                                                Provider.of<InvoiceVm>(context)
                                                     .isapproved,
                                             child: Directionality(
                                               textDirection: TextDirection.rtl,
@@ -944,7 +944,7 @@ class _ClientSectionState extends State<ClientSection> {
                                                       //     rootNavigator: true)
                                                       //     .pop(true);
                                                       // update client to approved client
-                                                      Provider.of<invoice_vm>(
+                                                      Provider.of<InvoiceVm>(
                                                               context,
                                                               listen: false)
                                                           .setApproveclient_vm(
@@ -1049,7 +1049,7 @@ class _ClientSectionState extends State<ClientSection> {
                                         builder: (context) {
                                           return ModalProgressHUD(
                                             inAsyncCall:
-                                                Provider.of<invoice_vm>(context)
+                                                Provider.of<InvoiceVm>(context)
                                                     .isapproved,
                                             child: Directionality(
                                               textDirection: TextDirection.rtl,
@@ -1078,7 +1078,7 @@ class _ClientSectionState extends State<ClientSection> {
                                                                 .all(
                                                                     kMainColor)),
                                                     onPressed: () async {
-                                                      Provider.of<invoice_vm>(
+                                                      Provider.of<InvoiceVm>(
                                                               context,
                                                               listen: false)
                                                           .setApproveclient_vm(
@@ -1186,7 +1186,7 @@ class _ClientSectionState extends State<ClientSection> {
                                   builder: (context) {
                                     return ModalProgressHUD(
                                       inAsyncCall:
-                                          Provider.of<invoice_vm>(context)
+                                          Provider.of<InvoiceVm>(context)
                                               .isapproved,
                                       child: Directionality(
                                         textDirection: TextDirection.rtl,
@@ -1213,7 +1213,7 @@ class _ClientSectionState extends State<ClientSection> {
                                                 //     rootNavigator: true)
                                                 //     .pop(true);
                                                 // update client to approved client
-                                                Provider.of<invoice_vm>(context,
+                                                Provider.of<InvoiceVm>(context,
                                                         listen: false)
                                                     .setApproveFclient_vm(
                                                         {

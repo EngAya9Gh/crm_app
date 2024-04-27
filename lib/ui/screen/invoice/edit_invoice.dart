@@ -105,7 +105,7 @@ class _EditInvoiceState extends State<EditInvoice> {
     return Scaffold(
       body: ModalProgressHUD(
         inAsyncCall:
-            Provider.of<invoice_vm>(context, listen: true).isloadingdone,
+            Provider.of<InvoiceVm>(context, listen: true).isloadingdone,
         child: Directionality(
           textDirection: ii.TextDirection.rtl,
           child: Form(
@@ -305,7 +305,7 @@ class _EditInvoiceState extends State<EditInvoice> {
                     text: 'تعديل',
                     onTap: () async {
                       if (_globalKey.currentState!.validate()) {
-                        Provider.of<invoice_vm>(context, listen: false)
+                        Provider.of<InvoiceVm>(context, listen: false)
                             .edit_invoice({
                           "name_enterprise":
                               widget.invoiceModel.name_enterprise,

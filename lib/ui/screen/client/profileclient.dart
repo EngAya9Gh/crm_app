@@ -78,7 +78,7 @@ class _ProfileClientState extends State<ProfileClient>
         ),
         type: ParticipateEnum.participate,
       );
-      Provider.of<invoice_vm>(context, listen: false)
+      Provider.of<InvoiceVm>(context, listen: false)
         ..get_invoiceclientlocal(widget.idClient, '')
         ..get_invoiceclientlocal(widget.idClient, 'مشترك');
 

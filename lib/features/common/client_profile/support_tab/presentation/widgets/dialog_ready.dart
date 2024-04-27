@@ -113,7 +113,7 @@ class _DialogReadyState extends State<DialogReady> {
                         paddcustom: EdgeInsets.all(8),
                         maxline: 5,
                       ),
-                      Consumer<invoice_vm>(
+                      Consumer<InvoiceVm>(
                         builder: (context, value, child) {
                           if (value.isloading) return CustomLoadingIndicator();
                           return isSuspend

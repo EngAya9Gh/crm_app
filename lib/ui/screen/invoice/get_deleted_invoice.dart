@@ -22,7 +22,7 @@ class _deletedinvoiceState extends State<deletedinvoice> {
     _searchTextField.addListener(onSearch);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Add Your Code here.
-      Provider.of<invoice_vm>(context, listen: false).get_invoice_deleted();
+      Provider.of<InvoiceVm>(context, listen: false).get_invoice_deleted();
     });
     super.initState();
   }
@@ -36,7 +36,7 @@ class _deletedinvoiceState extends State<deletedinvoice> {
   }
 
   void onSearch() {
-    context.read<invoice_vm>().onSearch_deleted(_searchTextField.text);
+    context.read<InvoiceVm>().onSearch_deleted(_searchTextField.text);
   }
 
   @override
@@ -98,7 +98,7 @@ class _deletedinvoiceState extends State<deletedinvoice> {
                     style: TextStyle(
                         fontFamily: kfontfamily2, fontWeight: FontWeight.bold),
                   ),
-                  Consumer<invoice_vm>(builder: (context, value, _) {
+                  Consumer<InvoiceVm>(builder: (context, value, _) {
                     final list = _searchTextField.text.isEmpty
                         ? value.listdeletedinvoice
                         : value.listdeletedFilterSearch;
@@ -115,7 +115,7 @@ class _deletedinvoiceState extends State<deletedinvoice> {
             SizedBox(
               height: 5,
             ),
-            Consumer<invoice_vm>(
+            Consumer<InvoiceVm>(
               builder: (context, value, child) {
                 final list = _searchTextField.text.isEmpty
                     ? value.listdeletedinvoice

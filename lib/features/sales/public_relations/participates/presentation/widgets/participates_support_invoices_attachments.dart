@@ -32,17 +32,17 @@ class ParticipatesSupportInvoicesAttachments extends StatefulWidget {
 
 class _ParticipatesSupportInvoicesAttachmentsState
     extends State<ParticipatesSupportInvoicesAttachments> {
-  late invoice_vm invoiceVm;
+  late InvoiceVm invoiceVm;
 
   @override
   void initState() {
-    invoiceVm = context.read<invoice_vm>();
+    invoiceVm = context.read<InvoiceVm>();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<invoice_vm>(
+    return Consumer<InvoiceVm>(
       builder: (context, value, child) {
         final files = value.filesAttach;
         return Column(

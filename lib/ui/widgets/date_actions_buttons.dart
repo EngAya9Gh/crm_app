@@ -214,7 +214,7 @@ class _DateActionsButtonsState extends State<DateActionsButtons> {
                                         onFailure: () {},
                                       );
                                   context
-                                      .read<invoice_vm>()
+                                      .read<InvoiceVm>()
                                       .updateListInvoiceAfterMarkEventIsDone(
                                           event);
                                   refreshState(() => isLoading = false);
