@@ -273,8 +273,8 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                   String? invoiceID = widget.invoice!.idInvoice;
                                   Provider.of<invoice_vm>(context,
                                           listen: false)
-                                      .update_invoiceclient_vm(
-                                    {
+                                      .updateInvoiceClientVm(
+                                    body: {
                                       "name_enterprise": widget
                                           .invoice!.name_enterprise
                                           .toString(),
@@ -303,10 +303,10 @@ class _CardProduct_invoiceState extends State<CardProduct_invoice> {
                                           DateTime.now().toString(),
                                       //"date_changetype":,
                                     },
-                                    invoiceID,
-                                    null,
-                                    null,
-                                    [],
+                                    idInvoice: invoiceID,
+                                    file: null,
+                                    fileLogo: null,
+                                    files: [],
                                   );
                                 } else {
                                   int index = Provider.of<invoice_vm>(context,

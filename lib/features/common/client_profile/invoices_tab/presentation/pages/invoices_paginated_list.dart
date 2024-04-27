@@ -15,7 +15,7 @@ class InvoicesPaginatedList extends StatefulWidget {
 }
 
 class _InvoicesPaginatedListState extends State<InvoicesPaginatedList> {
-  late ScrollController _scrollController;
+  late final ScrollController _scrollController;
   late final InvoicesTabCubit invoicesTabCubit;
 
   @override

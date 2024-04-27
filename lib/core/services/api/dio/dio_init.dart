@@ -41,7 +41,8 @@ class _ApiInterceptors extends Interceptor {
     getIt<Logger>().i("Request: ${options.method} ${options.uri}");
     getIt<Logger>().i("Request headers: ${options.headers}");
     if (options.data is FormData) {
-      getIt<Logger>().i("Request FormData: ${options.data.fields}");
+      getIt<Logger>().i("Request FormData fields: ${options.data.fields}");
+      getIt<Logger>().i("Request FormData files: ${options.data.files}");
     } else {
       getIt<Logger>().i("Request data: ${options.data}");
     }

@@ -7,6 +7,7 @@ import 'package:crm_smart/core/common/enums/enums.dart';
 import 'package:crm_smart/core/common/helpers/api_data_handler.dart';
 import 'package:crm_smart/core/common/models/page_state/page_state.dart'
     as pageState;
+import 'package:crm_smart/core/errors/base_app_exception.dart';
 import 'package:crm_smart/core/utils/end_points.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/domain/use_cases/get_invoices_by_privileges_usecase.dart';
 import 'package:crm_smart/features/common/client_profile/invoices_tab/presentation/manager/invoices_tab_cubit/invoices_tab_cubit.dart';
@@ -1111,10 +1112,10 @@ class invoice_vm extends ChangeNotifier {
     final ApiServices apiServices = getIt<ApiServices>();
     apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
     final response = await apiServices.postRequestWithFile(
-      EndPoints.invoice.addInvoice,
-      body,
-      file,
-      myfilelogo,
+      url: EndPoints.invoice.addInvoice,
+      data: body,
+      file: file,
+      fileLogo: myfilelogo,
       files: files,
     );
     final data = apiDataHandler(response);
@@ -1122,7 +1123,8 @@ class invoice_vm extends ChangeNotifier {
     final InvoiceModel newInvoice = InvoiceModel.fromJson(data);
 
     listinvoices.insert(0, newInvoice);
-    listinvoiceClient.insert(0, newInvoice);
+    // note: uncomment this if you want to add it directly to the client invoices page
+    // listinvoiceClient.insert(0, newInvoice);
     listInvoicesAccept.insert(0, newInvoice);
 
     onAddInvoiceSuccess(newInvoice);
@@ -1227,59 +1229,57 @@ class invoice_vm extends ChangeNotifier {
     return res;
   }
 
-  Future<bool> update_invoiceclient_vm(Map<String, dynamic> body,
-      String? idInvoice, File? file, File? myfilelogo, List<File> files) async {
-    isloadingdone = true;
-    notifyListeners();
+  Future<bool> updateInvoiceClientVm({
+    required Map<String, dynamic> body,
+    String? idInvoice,
+    File? file,
+    File? fileLogo,
+    List<File> files = const [],
+    bool isDeleteFile = false,
+    bool isDeleteLogo = false,
+  }) async {
+    try {
+      isloadingdone = true;
+      notifyListeners();
 
-    // upload files
-    await _uploadFiles(
-      invoiceId: idInvoice!,
-      body: body,
-      file: null,
-      files: files,
-    );
+      final ApiServices apiServices = getIt<ApiServices>();
+      apiServices.changeBaseUrl(EndPoints.baseUrls.urlLaravel);
 
-    final endPoint = EndPoints.invoice.clientUpdateInvoice;
-    ApiServices apiServices = getIt<ApiServices>();
-    apiServices.changeBaseUrl(EndPoints.baseUrls.url);
+      final response = await apiServices.postRequestWithFile(
+        url: "${EndPoints.invoice.updateInvoice}${idInvoice}",
+        data: body,
+        file: file,
+        fileLogo: fileLogo,
+        files: files,
+        isDeleteFile: isDeleteFile,
+        isDeleteLogo: isDeleteLogo,
+      );
 
-    final response = await apiServices.postRequestWithFile(
-      endPoint,
-      body,
-      file,
-      myfilelogo,
-      files: [], // empty to avoid duplicate
-    );
+      final data = apiDataHandler(response);
 
-    final invoicesList = response["message"];
-    final invoice = InvoiceModel.fromJson(invoicesList[0]);
+      final invoice = InvoiceModel.fromJson(data);
 
-    final index = listinvoiceClient
-        .indexWhere((element) => element.idInvoice == idInvoice);
-    // body.addAll({
-    //   "id_invoice":idInvoice,
-    //   "date_create":listinvoiceClient[index].dateCreate.toString(),
-    //
-    //   "products":listproductinvoic.map((e)=>e.toJson()).toList()
-    // });
-    if (index != -1)
-      listinvoiceClient[index] = invoice; //InvoiceModel.fromJson(body);
-    final index1 =
-        listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
-    if (index1 != -1) listinvoices[index1] = invoice;
+      final index = listinvoiceClient
+          .indexWhere((element) => element.idInvoice == idInvoice);
 
-    int index2 = listInvoicesAccept
-        .indexWhere((element) => element.idInvoice == idInvoice);
-    if (index2 != -1) listInvoicesAccept[index2] = invoice;
+      if (index != -1) listinvoiceClient[index] = invoice;
+      final index1 =
+          listinvoices.indexWhere((element) => element.idInvoice == idInvoice);
+      if (index1 != -1) listinvoices[index1] = invoice;
 
-    //InvoiceModel.fromJson(body);
-    //listProduct.insert(0, ProductModel.fromJson(body));
-    isloadingdone = false;
-    currentInvoice = invoice;
-    notifyListeners();
+      int index2 = listInvoicesAccept
+          .indexWhere((element) => element.idInvoice == idInvoice);
+      if (index2 != -1) listInvoicesAccept[index2] = invoice;
 
-    return true;
+      isloadingdone = false;
+      currentInvoice = invoice;
+      notifyListeners();
+
+      return true;
+    } on BaseAppException catch (e) {
+      print("error in updateInvoiceClientVm => $e");
+      return false;
+    }
   }
 
   Future<bool> edit_invoice(

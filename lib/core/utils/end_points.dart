@@ -56,7 +56,7 @@ class _BaseUrls {
       urlFileLogo = 'http://smartcrm.ws/crm/api/imagesApp/logoclient/';
       urlfileAgent = 'http://smartcrm.ws/crm/api/imagesApp/agent/';
       laravelUrlImage = 'http://new.smartcrm.ws/storage/';
-      laravelInvoiceFiles = 'http://new.smartcrm.ws/storage/invoices/';
+      laravelInvoiceFiles = 'http://new.smartcrm.ws/storage/';
     } else {
       url = 'http://smartcrm.ws/test/api/';
       urlLaravel = 'http://test.smartcrm.ws/api/';
@@ -232,6 +232,7 @@ class _Invoice {
   final String updateCommunication = 'updateCommunication';
   final String deleteInvoice = 'deleteInvoice/';
   final String addInvoice = 'addInvoice';
+  final String updateInvoice = 'updateInvoice/';
 }
 
 class _Tickets {

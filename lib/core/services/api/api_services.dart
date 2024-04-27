@@ -29,12 +29,14 @@ abstract class ApiServices {
     Map<String, dynamic>? headers,
   });
 
-  Future<dynamic> postRequestWithFile(
-    String url,
-    Map<String, dynamic> data,
+  Future<dynamic> postRequestWithFile({
+    required String url,
+    required Map<String, dynamic> data,
     File? file,
-    File? filelogo, {
+    File? fileLogo,
     List<File>? files,
+    bool? isDeleteFile,
+    bool? isDeleteLogo,
   });
 
   void changeBaseUrl(String baseUrl);
