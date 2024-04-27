@@ -1123,8 +1123,7 @@ class invoice_vm extends ChangeNotifier {
     final InvoiceModel newInvoice = InvoiceModel.fromJson(data);
 
     listinvoices.insert(0, newInvoice);
-    // note: uncomment this if you want to add it directly to the client invoices page
-    // listinvoiceClient.insert(0, newInvoice);
+    listinvoiceClient.insert(0, newInvoice);
     listInvoicesAccept.insert(0, newInvoice);
 
     onAddInvoiceSuccess(newInvoice);
